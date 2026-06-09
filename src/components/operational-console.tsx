@@ -3,9 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, DatabaseZap, GitPullRequestCreate, History, KeyRound, Server, XCircle } from "lucide-react";
 import { auditEvents, connectorEndpoints, workspaceRoles } from "@/lib/toro-data";
-import type { ApprovalRecord, ApprovalState, SourceMeta } from "@/lib/toro-types";
-
-const STORAGE_KEY = "toro-os-approvals-v03";
+import type { ApprovalRecord, ApprovalState, ApprovalSummary, ConnectorHealthRecord, SourceMeta } from "@/lib/toro-types";
 
 function tone(state: ApprovalState) {
   return state === "Approved"
@@ -35,35 +33,59 @@ function MiniMeta({ item }: { item: SourceMeta }) {
 }
 
 export function OperationalConsole({ initialApprovals }: { initialApprovals: ApprovalRecord[] }) {
-  const [approvals, setApprovals] = useState(() => {
-    if (typeof window === "undefined") {
-      return initialApprovals;
-    }
-
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as ApprovalRecord[]) : initialApprovals;
-  });
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(approvals));
-  }, [approvals]);
+  const [approvals, setApprovals] = useState(initialApprovals);
+  const [connectorHealth, setConnectorHealth] = useState<ConnectorHealthRecord[]>([]);
+  const [isSaving, setIsSaving] = useState<string | null>(null);
+  const [serverMode, setServerMode] = useState("server_persisted");
 
   const summary = useMemo(() => {
-    return approvals.reduce(
+    return approvals.reduce<ApprovalSummary>(
       (acc, approval) => {
         acc[approval.state] += 1;
         return acc;
       },
-      { Pending: 0, Approved: 0, Rejected: 0, "Needs changes": 0 } satisfies Record<ApprovalState, number>,
+      { Pending: 0, Approved: 0, Rejected: 0, "Needs changes": 0 },
     );
   }, [approvals]);
 
-  function setState(id: string, state: ApprovalState) {
-    setApprovals((current) =>
-      current.map((approval) =>
-        approval.id === id ? { ...approval, state, updatedAt: new Date().toISOString() } : approval,
-      ),
-    );
+  useEffect(() => {
+    async function hydrate() {
+      const [approvalResponse, connectorResponse] = await Promise.all([
+        fetch("/api/approvals", { cache: "no-store" }),
+        fetch("/api/connector-health", { cache: "no-store" }),
+      ]);
+
+      if (approvalResponse.ok) {
+        const approvalPayload = await approvalResponse.json();
+        setApprovals(approvalPayload.approvals ?? initialApprovals);
+        setServerMode(approvalPayload.mode ?? "server_persisted");
+      }
+
+      if (connectorResponse.ok) {
+        const connectorPayload = await connectorResponse.json();
+        setConnectorHealth(connectorPayload.records ?? []);
+      }
+    }
+
+    void hydrate();
+  }, [initialApprovals]);
+
+  async function setState(id: string, state: ApprovalState) {
+    setIsSaving(id);
+
+    const response = await fetch("/api/approvals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, state }),
+    });
+
+    if (response.ok) {
+      const payload = await response.json();
+      setApprovals(payload.approvals ?? initialApprovals);
+      setServerMode(payload.mode ?? "server_persisted");
+    }
+
+    setIsSaving(null);
   }
 
   return (
@@ -75,6 +97,7 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
             <h2 className="text-sm font-semibold text-white">Persistent Approval Console</h2>
           </div>
           <div className="flex flex-wrap gap-2">
+            <MiniPill className="border-cyan-400/30 bg-cyan-400/10 text-cyan-100">{serverMode}</MiniPill>
             {(Object.keys(summary) as ApprovalState[]).map((state) => (
               <MiniPill key={state} className={tone(state)}>{summary[state]} {state}</MiniPill>
             ))}
@@ -92,9 +115,9 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
               </div>
               <MiniMeta item={approval} />
               <div className="mt-3 grid grid-cols-3 gap-2">
-                <button onClick={() => setState(approval.id, "Approved")} className="border border-emerald-400/30 bg-emerald-400/10 px-2 py-2 text-xs text-emerald-100"><CheckCircle2 className="mx-auto mb-1 h-4 w-4" />Approve</button>
-                <button onClick={() => setState(approval.id, "Needs changes")} className="border border-amber-300/30 bg-amber-300/10 px-2 py-2 text-xs text-amber-100">Revise</button>
-                <button onClick={() => setState(approval.id, "Rejected")} className="border border-red-400/30 bg-red-400/10 px-2 py-2 text-xs text-red-100"><XCircle className="mx-auto mb-1 h-4 w-4" />Reject</button>
+                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Approved")} className="border border-emerald-400/30 bg-emerald-400/10 px-2 py-2 text-xs text-emerald-100 disabled:opacity-50"><CheckCircle2 className="mx-auto mb-1 h-4 w-4" />Approve</button>
+                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Needs changes")} className="border border-amber-300/30 bg-amber-300/10 px-2 py-2 text-xs text-amber-100 disabled:opacity-50">Revise</button>
+                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Rejected")} className="border border-red-400/30 bg-red-400/10 px-2 py-2 text-xs text-red-100 disabled:opacity-50"><XCircle className="mx-auto mb-1 h-4 w-4" />Reject</button>
               </div>
             </article>
           ))}
@@ -105,9 +128,26 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
         <div className="border border-cyan-400/12 bg-slate-950/72">
           <div className="flex items-center gap-2 border-b border-slate-800 px-4 py-3">
             <Server className="h-4 w-4 text-cyan-300" />
-            <h2 className="text-sm font-semibold text-white">Connector API Scaffolds</h2>
+            <h2 className="text-sm font-semibold text-white">Server Connector Health</h2>
           </div>
           <div className="space-y-2 p-4">
+            {connectorHealth.map((connector) => (
+              <div key={connector.id} className="border border-slate-800 bg-black/25 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-semibold text-white">{connector.name}</h3>
+                  <MiniPill className={connector.mode === "blocked" ? "border-red-400/30 bg-red-400/10 text-red-100" : connector.live ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100" : "border-cyan-400/30 bg-cyan-400/10 text-cyan-100"}>{connector.mode}</MiniPill>
+                </div>
+                <p className="mt-1 text-xs text-slate-400">{connector.detail}</p>
+                <p className="mt-2 text-[11px] text-slate-500">Configured: {connector.configured ? "yes" : "no"} / Live: {connector.live ? "yes" : "no"}</p>
+              </div>
+            ))}
+            <div className="border border-slate-800 bg-black/25 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-sm font-semibold text-white">Connector API Scaffolds</h3>
+                <MiniPill className="border-slate-700 bg-slate-900 text-slate-300">{connectorEndpoints.length} routes</MiniPill>
+              </div>
+              <p className="mt-2 text-xs text-slate-500">The route surfaces below remain available as safe API scaffolds.</p>
+            </div>
             {connectorEndpoints.map((endpoint) => (
               <div key={endpoint.id} className="border border-slate-800 bg-black/25 p-3">
                 <div className="flex items-center justify-between gap-3">
@@ -155,7 +195,7 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
         <div className="border border-cyan-400/12 bg-slate-950/72 p-4">
           <div className="flex gap-2 text-xs text-slate-300">
             <DatabaseZap className="h-4 w-4 shrink-0 text-amber-200" />
-            Local approval decisions persist in browser storage now. Next production step is replacing this with a database-backed approval ledger.
+            Approval decisions now persist through a server-managed cookie ledger. No external business system is modified.
           </div>
         </div>
       </div>

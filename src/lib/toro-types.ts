@@ -120,3 +120,14 @@ export type BlueprintDocument = SourceMeta & {
   role: string;
   summary: string;
 };
+
+export type ApprovalSummary = Record<ApprovalState, number>;
+
+export type ConnectorHealthRecord = SourceMeta & {
+  id: string;
+  name: string;
+  live: boolean;
+  configured: boolean;
+  mode: "live_read" | "read_only" | "prepare_only" | "blocked";
+  detail: string;
+};

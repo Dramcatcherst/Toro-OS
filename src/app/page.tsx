@@ -4,8 +4,9 @@ import {
   Search, Send, Settings, ShieldCheck, Sparkles, Workflow, Zap,
 } from "lucide-react";
 import { OperationalConsole } from "@/components/operational-console";
-import { approvalSeed } from "@/lib/approval-store";
 import { agentProfiles, airtableBase, airtableTables, blueprintDocuments, businessObjects, connectors, modules, queuedActions, safetyModel } from "@/lib/toro-data";
+import { getApprovalLedger } from "@/lib/server/approval-ledger";
+import { getConnectorHealth } from "@/lib/server/connector-health";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 import type { SourceMeta } from "@/lib/toro-types";
 
@@ -100,11 +101,13 @@ async function getBlueprintFeed() {
 }
 
 export default async function Home() {
+  const approvalLedger = await getApprovalLedger();
+  const connectorHealth = await getConnectorHealth();
   const criticalQueue = queuedActions.filter((action) => action.risk === "Critical").length;
-  const approvalCount = queuedActions.filter((action) => action.approval !== "None").length;
-  const connectedCount = connectors.filter((connector) => connector.status === "Active" || connector.status === "Ready").length;
+  const approvalCount = approvalLedger.approvals.filter((approval) => approval.state === "Pending" || approval.state === "Needs changes").length;
+  const connectedCount = connectorHealth.summary.configured;
   const blueprintFeed = await getBlueprintFeed();
-  const blockedConnectors = connectors.filter((connector) => connector.status === "Blocked" || connector.status === "Not connected").length;
+  const blockedConnectors = connectorHealth.summary.blocked;
   const highRiskModules = modules.filter((module) => module.risk === "High" || module.risk === "Critical").length;
   const marketSignals = [
     { label: "Revenue posture", value: "Guarded", detail: "Recommendations only until Kross validation and owner sign-off.", tone: "border-amber-300/25 bg-amber-300/8" },
@@ -214,8 +217,8 @@ export default async function Home() {
                       <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500">Command logic</div>
                       <div className="mt-2 grid gap-2 text-xs text-slate-300">
                         <div className="flex items-center justify-between border-b border-slate-800 pb-2"><span>Business knowledge</span><span className="font-mono text-cyan-200">{airtableTables.length} tables</span></div>
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2"><span>Safe connector surface</span><span className="font-mono text-cyan-200">{connectedCount} active/ready</span></div>
-                        <div className="flex items-center justify-between"><span>Queued action load</span><span className="font-mono text-amber-200">{queuedActions.length} pending actions</span></div>
+                        <div className="flex items-center justify-between border-b border-slate-800 pb-2"><span>Server connector health</span><span className="font-mono text-cyan-200">{connectorHealth.summary.live} live / {connectorHealth.summary.configured} configured</span></div>
+                        <div className="flex items-center justify-between"><span>Approval ledger</span><span className="font-mono text-amber-200">{approvalLedger.summary.Pending} pending / {approvalLedger.summary.Approved} approved</span></div>
                       </div>
                     </div>
                   </div>
@@ -535,7 +538,7 @@ export default async function Home() {
               </Panel>
             </section>
 
-            <OperationalConsole initialApprovals={approvalSeed} />
+            <OperationalConsole initialApprovals={approvalLedger.approvals} />
 
             <footer className="border-t border-cyan-400/10 py-6 text-xs text-slate-500">
               TORO OS v0.3 SAFE foundation. Direct writes to Kross, Alegra, WhatsApp, social channels, reservations, prices, availability, invoices, payments and media deletion are not implemented.
