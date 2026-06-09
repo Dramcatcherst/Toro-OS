@@ -5,7 +5,8 @@ import {
 } from "lucide-react";
 import { OperationalConsole } from "@/components/operational-console";
 import { approvalSeed } from "@/lib/approval-store";
-import { agentProfiles, airtableBase, airtableTables, businessObjects, connectors, modules, queuedActions, safetyModel } from "@/lib/toro-data";
+import { agentProfiles, airtableBase, airtableTables, blueprintDocuments, businessObjects, connectors, modules, queuedActions, safetyModel } from "@/lib/toro-data";
+import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 import type { SourceMeta } from "@/lib/toro-types";
 
 const navIcons = [Activity, Brain, Blocks, Bot, CircleDollarSign, Megaphone, FileText, Search, RadioTower, Send, Workflow, Layers3, Database, ShieldCheck, ClipboardCheck, Monitor, Code2, Settings];
@@ -64,10 +65,35 @@ function SectionTitle({ icon: Icon, title, action }: { icon: typeof Activity; ti
   );
 }
 
-export default function Home() {
+async function getBlueprintFeed() {
+  const result = await readAirtableRecords({
+    baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
+    tableId: airtableBase.blueprintTableId,
+    pageSize: 6,
+  });
+
+  const liveRecords = Array.isArray((result.data as { records?: unknown[] } | null)?.records)
+    ? ((result.data as { records: Array<{ id: string; fields?: Record<string, unknown> }> }).records).map((record) => ({
+        id: record.id,
+        name: typeof record.fields?.["Document Name"] === "string" ? record.fields["Document Name"] : record.id,
+      }))
+    : [];
+
+  return {
+    mode: result.configured && liveRecords.length > 0 ? "live" : "mock",
+    configured: result.configured,
+    error: result.error,
+    records: liveRecords.length > 0
+      ? liveRecords
+      : blueprintDocuments.map((document) => ({ id: document.id, name: document.name })),
+  };
+}
+
+export default async function Home() {
   const criticalQueue = queuedActions.filter((action) => action.risk === "Critical").length;
   const approvalCount = queuedActions.filter((action) => action.approval !== "None").length;
   const connectedCount = connectors.filter((connector) => connector.status === "Active" || connector.status === "Ready").length;
+  const blueprintFeed = await getBlueprintFeed();
 
   return (
     <main className="command-grid min-h-screen bg-[radial-gradient(circle_at_20%_0%,rgba(14,165,233,0.18),transparent_34%),radial-gradient(circle_at_80%_8%,rgba(245,158,11,0.12),transparent_28%),#030712]">
@@ -115,7 +141,12 @@ export default function Home() {
               <Panel className="p-5">
                 <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                   <div className="max-w-3xl">
-                    <div className="mb-3 flex items-center gap-2 text-cyan-200"><Sparkles className="h-4 w-4" />Main prompt: {airtableBase.mainPromptRecord}</div>
+                    <div className="mb-3 flex flex-wrap items-center gap-2 text-cyan-200">
+                      <span className="flex items-center gap-2"><Sparkles className="h-4 w-4" />Main prompt: {airtableBase.mainPromptRecord}</span>
+                      <Pill className={blueprintFeed.mode === "live" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100" : "border-amber-300/30 bg-amber-300/10 text-amber-100"}>
+                        Airtable {blueprintFeed.mode}
+                      </Pill>
+                    </div>
                     <h2 className="text-3xl font-black leading-tight text-white md:text-5xl">Safe business execution starts as queued intelligence.</h2>
                     <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">TORO OS understands the business, prepares market, pricing, content, operations and builder actions, then routes every sensitive step through source authority, risk scoring, confidence, approval and logs.</p>
                   </div>
@@ -232,6 +263,58 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
+                </div>
+              </Panel>
+            </section>
+
+            <section id="blueprint-feed" className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+              <Panel>
+                <SectionTitle icon={FileText} title="Blueprint Authority Feed" action={blueprintFeed.mode === "live" ? "read-only live source" : "mock mirror active"} />
+                <div className="space-y-3 p-4">
+                  <div className="border border-slate-800 bg-black/25 p-4 text-xs leading-6 text-slate-300">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Pill className={blueprintFeed.mode === "live" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100" : "border-amber-300/30 bg-amber-300/10 text-amber-100"}>
+                        {blueprintFeed.mode === "live" ? "Live Airtable read" : "Repo mirror fallback"}
+                      </Pill>
+                      <span className="text-slate-400">{airtableBase.name} / {airtableBase.blueprintTable}</span>
+                    </div>
+                    <p className="mt-3">
+                      TORO OS is pulling the build authority from the Airtable blueprint table when credentials are available, and falls back to the mirrored repo records when they are not.
+                    </p>
+                    {blueprintFeed.error ? <p className="mt-2 text-amber-200">{blueprintFeed.error}</p> : null}
+                  </div>
+                  <div className="grid gap-2">
+                    {blueprintFeed.records.map((record) => (
+                      <div key={record.id} className="flex items-center justify-between gap-3 border border-slate-800 bg-slate-950/80 p-3">
+                        <div>
+                          <div className="text-sm font-semibold text-white">{record.name}</div>
+                          <div className="font-mono text-[11px] text-slate-500">{record.id}</div>
+                        </div>
+                        <Pill className="border-cyan-300/30 bg-cyan-300/10 text-cyan-100">source</Pill>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Panel>
+
+              <Panel>
+                <SectionTitle icon={Brain} title="Blueprint Records In Use" action={`${blueprintDocuments.length} mirrored documents`} />
+                <div className="space-y-3 p-4">
+                  {blueprintDocuments.map((document) => (
+                    <article key={document.id} className="border border-slate-800 bg-black/25 p-4">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <h3 className="font-semibold text-white">{document.name}</h3>
+                          <p className="mt-1 text-xs text-slate-400">{document.version} / {document.role}</p>
+                          <p className="mt-3 text-xs leading-5 text-slate-300">{document.summary}</p>
+                        </div>
+                        <Pill className="border-slate-700 bg-slate-900 text-slate-300">{document.version}</Pill>
+                      </div>
+                      <div className="mt-3">
+                        <MetaStrip item={document} />
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </Panel>
             </section>

@@ -1,4 +1,4 @@
-import type { AgentProfile, AirtableTableModel, AuditEvent, BusinessObject, Connector, ConnectorEndpoint, OperatingModule, QueuedAction, WorkspaceRole } from "./toro-types";
+import type { AgentProfile, AirtableTableModel, AuditEvent, BlueprintDocument, BusinessObject, Connector, ConnectorEndpoint, OperatingModule, QueuedAction, WorkspaceRole } from "./toro-types";
 
 export const airtableBase = {
   id: "appFdcxw7KqReHJI6",
@@ -81,6 +81,61 @@ export const queuedActions: QueuedAction[] = [
   { id: "qa-002", title: "Create Codex task for booking engine content preview", module: "Codex Builder Queue", targetTool: "Codex/GitHub", actionLevel: "queue_task", impact: "Creates implementation work item after review", log: ["Prepared from Airtable blueprint", "Awaiting approval"], source: "31 TORO OS Build Blueprint", status: "Ready", risk: "Medium", confidence: 92, approval: "Human review", nextAction: "Approve builder task scope." },
   { id: "qa-003", title: "Draft WhatsApp reply for group buyout inquiry", module: "Communication Center", targetTool: "WhatsApp / WeSpeak", actionLevel: "draft", impact: "Guest-facing text if sent manually", log: ["Uses on-request language", "Blocks price/availability promises"], source: "13 Guest Communication + 03 Villas", status: "Review", risk: "High", confidence: 86, approval: "Human review", nextAction: "Human reviews before sending." },
   { id: "qa-004", title: "Revenue recommendation for high-demand weekend", module: "Revenue & Pricing Control", targetTool: "Kross PMS", actionLevel: "recommend", impact: "Pricing advice only; no live rate change", log: ["Kross is authority", "Recommendation only"], source: "Kross References + Market Research", status: "Draft", risk: "Critical", confidence: 74, approval: "Owner approval", nextAction: "Compare with live Kross and market comps." },
+];
+
+export const blueprintDocuments: BlueprintDocument[] = [
+  {
+    id: "recEK2AD2Udqp1qf5",
+    name: "TORO OS Autonomous Business Operator Prompt v0.3 SAFE",
+    version: "v0.3 SAFE",
+    role: "Primary operating prompt",
+    summary: "Defines TORO OS as the AI operating brain with approval gates, business understanding, research, connector prep and queued actions.",
+    source: "31 TORO OS Build Blueprint",
+    status: "Active",
+    risk: "High",
+    confidence: 98,
+    approval: "Owner approval",
+    nextAction: "Keep as the single main prompt for v0.3 builds.",
+  },
+  {
+    id: "recmJi0ErKRquI8DG",
+    name: "TORO OS Operational Build Prompt v0.2",
+    version: "v0.2",
+    role: "Build context",
+    summary: "Earlier build framing that still informs module scope, safety boundaries and implementation sequencing.",
+    source: "31 TORO OS Build Blueprint",
+    status: "Review",
+    risk: "Medium",
+    confidence: 90,
+    approval: "Human review",
+    nextAction: "Use for reference only where it does not conflict with v0.3 SAFE.",
+  },
+  {
+    id: "recFoHJjTvdaIqUr2",
+    name: "TORO OS Airtable Data Mapping v0.2",
+    version: "v0.2",
+    role: "Data contract reference",
+    summary: "Maps business objects, authorities and table responsibilities used to shape the TypeScript model and mock data.",
+    source: "31 TORO OS Build Blueprint",
+    status: "Active",
+    risk: "Medium",
+    confidence: 94,
+    approval: "Human review",
+    nextAction: "Keep table contracts aligned with this mapping as live reads expand.",
+  },
+  {
+    id: "rec5KZUQ6CasrrVrr",
+    name: "TORO OS Codex Readiness Checklist v0.2",
+    version: "v0.2",
+    role: "Execution checklist",
+    summary: "Defines repo mirrors, data typing, mock shape fidelity and deployment expectations before deeper automation.",
+    source: "31 TORO OS Build Blueprint",
+    status: "Ready",
+    risk: "Medium",
+    confidence: 93,
+    approval: "Human review",
+    nextAction: "Use as the implementation gate before adding live connectors or agent routes.",
+  },
 ];
 
 export const agentProfiles: AgentProfile[] = [

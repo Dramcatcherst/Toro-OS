@@ -112,3 +112,11 @@ export type ConnectorEndpoint = SourceMeta & {
   envRequired: string[];
   externalWrite: false;
 };
+
+export type BlueprintDocument = SourceMeta & {
+  id: string;
+  name: string;
+  version: string;
+  role: string;
+  summary: string;
+};
