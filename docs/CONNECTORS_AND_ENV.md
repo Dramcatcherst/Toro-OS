@@ -2,6 +2,20 @@
 
 All connectors in v0.3 are `read_only` or `prepare_only`. External writes remain disabled until role, permission and approval persistence are live.
 
+## Internal Approval Ledger
+
+Route: `/api/approvals`
+
+Persistence backends:
+
+- `BLOB_READ_WRITE_TOKEN` present: durable internal persistence in Vercel Blob at `toro-os/system/approval-ledger.json`
+- local non-Vercel runtime: durable local file at `.toro-data/approval-ledger.json`
+- Vercel without Blob token: cookie fallback only, not durable across browsers/users
+
+Allowed now: persist internal approval decisions for TORO OS UI state.
+
+Blocked now: write approval outcomes into external business tools automatically.
+
 ## Airtable
 
 Route: `/api/connectors/airtable`
@@ -32,6 +46,16 @@ Required later:
 Allowed now: show preview URL, deployment status plan.
 
 Blocked now: promote production automatically.
+
+## Connector Health
+
+Route: `/api/connector-health`
+
+Purpose:
+
+- aggregate safe server-side connector status
+- show whether each connector is `live_read`, `read_only`, `prepare_only` or `blocked`
+- separate configured-but-not-live from truly live data access
 
 ## GitHub / Codex
 
