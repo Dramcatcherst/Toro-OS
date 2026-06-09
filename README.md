@@ -27,6 +27,7 @@ Blocked or approval-gated actions include Kross writes, price/availability chang
 
 ## Connector Scaffolds
 
+- `/api/modules`
 - `/api/approvals`
 - `/api/agent/prepare`
 - `/api/policy/evaluate`
@@ -36,6 +37,13 @@ Blocked or approval-gated actions include Kross writes, price/availability chang
 - `/api/connectors/dropbox`
 
 All connector routes currently return `externalWrite:false` and operate as `read_only` or `prepare_only`.
+
+## Module Routes
+
+- `/modules`
+- `/modules/[id]`
+
+Each module page carries source, status, risk, confidence, approval requirement, next action, queued actions and connector surface.
 
 ## Source Files
 

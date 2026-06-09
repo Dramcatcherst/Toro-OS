@@ -6,6 +6,10 @@ All connectors in v0.3 are `read_only` or `prepare_only`. External writes remain
 
 Route: `/api/connectors/airtable`
 
+Optional live-read query:
+
+`/api/connectors/airtable?tableId=tblHVdeHMb02gPxFP&pageSize=10`
+
 Required later:
 
 - `AIRTABLE_TOKEN`
@@ -23,6 +27,7 @@ Required later:
 
 - `VERCEL_TOKEN`
 - `VERCEL_PROJECT_ID`
+- `VERCEL_TEAM_ID`
 
 Allowed now: show preview URL, deployment status plan.
 
