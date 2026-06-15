@@ -4,11 +4,22 @@ TORO OS is an AI business operator foundation. It models the `TORO OS - Master B
 
 Product name is TORO OS only.
 
-## Preview
+## Production / Routes
 
-Latest preview:
+Current production deployment:
 
-https://toro-os-v03-gklbiqzri-dreamcatcher-s-projects.vercel.app
+https://toro-os-v03.vercel.app
+
+Public Dreamcatcher site:
+
+- `/` — Dreamcatcher Hotel public home
+- `/dreamcatcher` — Dreamcatcher Hotel microsite alias/review route
+
+TORO OS operator dashboard:
+
+- `/os` — internal TORO OS dashboard
+
+Deployment note: the previous `403 Forbidden` limitation was specific to this Cloud execution environment when installing/authenticating Vercel CLI. It was not a code or project deployment blocker; production is resolved outside this environment.
 
 ## Local Development
 
