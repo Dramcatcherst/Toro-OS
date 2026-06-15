@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   ArrowRight,
   CheckCircle2,
@@ -93,6 +94,35 @@ const sourceAudit = [
   "TORO OS v0.2/v0.3 docs map Dreamcatcher as the first workspace while keeping the product universal.",
   "Airtable table contracts identify Properties, Villas, Rooms, Sellable Units, Assets Registry, Website Pages and Website V11 Conversion OS as the content spine.",
   "The runtime environment exposes no Airtable, Dropbox/Eagle, Kross or Vercel credentials here, so the page uses source-labeled repo data and draft-only CTAs.",
+];
+
+const mediaAssets = [
+  {
+    src: "/dreamcatcher-media/pool-courtyard.svg",
+    title: "Pool courtyard mood",
+    caption: "Warm, intimate hospitality atmosphere for the hotel-stay path.",
+  },
+  {
+    src: "/dreamcatcher-media/villa-toro.svg",
+    title: "Villa Toro premium stay",
+    caption: "Villa-scale positioning without publishing unvalidated live inventory.",
+  },
+  {
+    src: "/dreamcatcher-media/makaiza-hideaway.svg",
+    title: "Makaiza hideaway",
+    caption: "Layered private-villa energy for group inquiries on request.",
+  },
+  {
+    src: "/dreamcatcher-media/buyout-gathering.svg",
+    title: "Full-property buyout",
+    caption: "A gathering-first visual for retreats, weddings and events.",
+  },
+];
+
+const storyFrames = [
+  { src: "/dreamcatcher-media/surf-morning.svg", title: "Morning surf pull", text: "Santa Teresa desire cue for the top of the journey." },
+  { src: "/dreamcatcher-media/pool-courtyard.svg", title: "Slow pool hour", text: "Hotel intimacy and downtime before the conversion ask." },
+  { src: "/dreamcatcher-media/buyout-gathering.svg", title: "Golden-hour gathering", text: "Group energy routed into a qualified request, not instant promises." },
 ];
 
 const trustNotes = [
@@ -196,7 +226,18 @@ export default async function DreamcatcherLanding() {
           <div className="relative">
             <div className="absolute -inset-10 rounded-full bg-[#2c7466]/20 blur-3xl" />
             <div className="relative overflow-hidden rounded-[2.4rem] border border-white/14 bg-white/[0.08] p-3 shadow-[0_40px_140px_rgba(0,0,0,0.44)] backdrop-blur-xl">
-              <div className="min-h-[620px] rounded-[1.8rem] bg-[radial-gradient(circle_at_28%_18%,rgba(247,215,166,0.78),transparent_18%),radial-gradient(circle_at_72%_28%,rgba(255,255,255,0.22),transparent_16%),linear-gradient(145deg,rgba(24,64,57,0.92),rgba(18,15,11,0.84)),url('/globe.svg')] bg-[length:auto,auto,auto,620px] bg-center p-6">
+              <div className="relative min-h-[620px] overflow-hidden rounded-[1.8rem] p-6">
+                <Image
+                  src="/dreamcatcher-media/hero-santa-teresa.svg"
+                  alt="Cinematic Dreamcatcher Hotel Santa Teresa media artwork with beach, jungle, pool light and Pacific sunset tones"
+                  fill
+                  priority
+                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 48vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,15,11,0.08),rgba(18,15,11,0.26)_45%,rgba(18,15,11,0.64))]" />
+                <div className="relative z-10">
                 <div className="flex items-start justify-between gap-4">
                   <div className="rounded-3xl border border-white/15 bg-[#120f0b]/32 p-4 backdrop-blur">
                     <SectionEyebrow>Conversion concept</SectionEyebrow>
@@ -211,6 +252,7 @@ export default async function DreamcatcherLanding() {
                       {item}
                     </div>
                   ))}
+                </div>
                 </div>
               </div>
             </div>
@@ -302,6 +344,41 @@ export default async function DreamcatcherLanding() {
         </div>
       </section>
 
+      <section className="relative z-10 px-5 py-20 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 lg:grid-cols-[0.76fr_1.24fr] lg:items-end">
+            <div>
+              <SectionEyebrow>Media layer</SectionEyebrow>
+              <h2 className="mt-4 text-5xl font-black leading-none tracking-[-0.065em] text-white md:text-7xl">Now the page shows the stay.</h2>
+            </div>
+            <p className="max-w-3xl text-base leading-8 text-white/62 lg:justify-self-end">
+              Added project-local Dreamcatcher media so the temporary production site no longer depends on empty placeholders. These are owned editorial artworks for the live page; final photography can replace them once Dropbox/Eagle assets are approved.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {mediaAssets.map((asset) => (
+              <article key={asset.src} className="group overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.065]">
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={asset.src}
+                    alt={`${asset.title} — ${asset.caption}`}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,15,11,0),rgba(18,15,11,0.72))]" />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-2xl font-black tracking-[-0.045em] text-white">{asset.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-white/54">{asset.caption}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="villas" className="relative z-10 px-5 py-20 sm:px-8 lg:px-12">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[2.4rem] bg-[#f7d7a6] p-8 text-[#17120c] md:p-10">
@@ -352,6 +429,19 @@ export default async function DreamcatcherLanding() {
               </p>
             </div>
             <div className="grid gap-4">
+              <div className="grid gap-4 md:grid-cols-3">
+                {storyFrames.map((frame) => (
+                  <article key={frame.title} className="overflow-hidden rounded-[2rem] border border-white/12 bg-white/[0.065]">
+                    <div className="relative aspect-[5/4]">
+                      <Image src={frame.src} alt={`${frame.title}: ${frame.text}`} fill unoptimized sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-2xl font-black tracking-[-0.045em] text-white">{frame.title}</h3>
+                      <p className="mt-3 text-sm leading-6 text-white/52">{frame.text}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
               {santaTeresaDay.map((moment) => (
                 <article key={moment.time} className="grid gap-5 rounded-[2rem] border border-white/12 bg-white/[0.065] p-5 md:grid-cols-[0.24fr_1fr] md:p-7">
                   <div className="font-mono text-5xl tracking-[-0.08em] text-[#f7d7a6]">{moment.time}</div>
