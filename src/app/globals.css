@@ -38,3 +38,41 @@ body {
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 34px 34px;
 }
+
+
+@keyframes dreamcatcher-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(0.35deg); }
+}
+
+@keyframes dreamcatcher-reveal {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes dreamcatcher-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.dreamcatcher-float {
+  animation: dreamcatcher-float 8s ease-in-out infinite;
+}
+
+.dreamcatcher-reveal {
+  animation: dreamcatcher-reveal 0.72s ease-out both;
+}
+
+.dreamcatcher-shimmer {
+  background-size: 220% 220%;
+  animation: dreamcatcher-shimmer 10s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dreamcatcher-float,
+  .dreamcatcher-reveal,
+  .dreamcatcher-shimmer {
+    animation: none;
+  }
+}

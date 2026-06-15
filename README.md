@@ -4,11 +4,32 @@ TORO OS is an AI business operator foundation. It models the `TORO OS - Master B
 
 Product name is TORO OS only.
 
-## Preview
+## Production / Routes
 
-Latest preview:
+Current production deployment:
 
-https://toro-os-v03-gklbiqzri-dreamcatcher-s-projects.vercel.app
+https://toro-os-v03.vercel.app
+
+Public Dreamcatcher site:
+
+- `/` — Dreamcatcher Hotel public home
+- `/dreamcatcher` — Dreamcatcher Hotel microsite alias/review route
+- `/dreamcatcher-media/*` — local editorial media pack used by the public site
+- `/sitemap.xml`, `/robots.txt` and `/manifest.webmanifest` — production SEO/PWA crawl surfaces
+
+TORO OS operator dashboard:
+
+- `/os` — internal TORO OS dashboard
+
+Deployment note: the previous `403 Forbidden` limitation was specific to this Cloud execution environment when installing/authenticating Vercel CLI. It was not a code or project deployment blocker; production is resolved outside this environment.
+
+Public website status: the Dreamcatcher surface now includes local media, SEO/social metadata, Hotel + FAQ structured data, sitemap/robots/manifest support, qualified inquiry CTAs and explicit Kross/connector guardrails. Approved Dropbox/Eagle photography can replace the editorial SVG media later without changing the route architecture.
+
+Preview validation helper:
+
+- `/api/site-health` — safe JSON route map for validating Vercel Preview deployments without Playwright screenshots.
+- `/api/connectors/kross` — read-only direct-booking readiness contract for the approved Kross booking URL.
+- `docs/PREVIEW_VALIDATION.md` — exact Vercel Preview validation checklist and curl commands.
 
 ## Local Development
 

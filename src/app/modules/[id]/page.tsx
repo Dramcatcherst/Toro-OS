@@ -22,7 +22,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ i
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link href="/modules" className="text-xs uppercase tracking-[0.18em] text-cyan-300">TORO OS / Modules</Link>
-          <Link href="/" className="text-xs text-slate-400 hover:text-white">Back to Command Home</Link>
+          <Link href="/os" className="text-xs text-slate-400 hover:text-white">Back to Command Home</Link>
         </div>
 
         <section className="mt-6 border border-cyan-400/12 bg-slate-950/80 p-6">

@@ -5,7 +5,7 @@ export default function ModulesPage() {
   return (
     <main className="min-h-screen bg-[#030712] p-6 text-slate-100">
       <div className="mx-auto max-w-7xl">
-        <Link href="/" className="text-xs uppercase tracking-[0.18em] text-cyan-300">TORO OS / Command Home</Link>
+        <Link href="/os" className="text-xs uppercase tracking-[0.18em] text-cyan-300">TORO OS / Command Home</Link>
         <h1 className="mt-3 text-4xl font-black text-white">Operational Modules</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
           Dedicated module registry. Every module keeps source, status, risk, confidence, approval and next action visible before any business action can move forward.
