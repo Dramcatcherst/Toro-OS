@@ -130,6 +130,7 @@ export default async function DreamcatcherLanding() {
             <a href="#villas" className="transition hover:text-white">Villas</a>
             <a href="#inquiry" className="transition hover:text-white">Inquiry</a>
             <a href="#trust" className="transition hover:text-white">Trust</a>
+            <a href="/os" className="transition hover:text-white">TORO OS</a>
           </div>
           <a href="#inquiry" className="rounded-full bg-white px-5 py-3 text-xs font-black uppercase tracking-[0.16em] text-[#17120c] transition hover:bg-[#f7d7a6]">Start request</a>
         </nav>
