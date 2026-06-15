@@ -40,6 +40,10 @@ npm run lint
 npm run build
 ```
 
+## Codex Cloud
+
+Use `Dramcatcherst/Toro-OS` on branch `main`. Cloud environment setup, network allowlist, and variable names are documented in `docs/CODEX_CLOUD_SETUP.md`. Repository operating rules for Codex live in `AGENTS.md`.
+
 ## Safety Model
 
 v0.3 does not perform direct external writes.
