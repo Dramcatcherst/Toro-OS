@@ -33,6 +33,16 @@ test("rejects Vercel builds that override AIRTABLE_BASE_ID to a retiring Dreamca
   }
 });
 
+test("checks a retiring AIRTABLE_BASE_ID before reporting a missing Supabase key", () => {
+  assert.throws(
+    () => validateRevenueBuildEnv({
+      VERCEL: "1",
+      AIRTABLE_BASE_ID: "appuk6zInco941sgc",
+    }),
+    /AIRTABLE_BASE_ID/,
+  );
+});
+
 test("allows a safe Airtable base override while migration is in progress", () => {
   assert.doesNotThrow(() => validateRevenueBuildEnv({
     VERCEL: "1",
