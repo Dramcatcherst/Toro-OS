@@ -2,17 +2,24 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRevenueBuildEnv } from "../scripts/revenue-env-guard.mjs";
 
-test("rejects Vercel builds when SUPABASE_PUBLISHABLE_KEY is missing", () => {
+test("rejects Vercel builds when no Supabase publishable key is configured", () => {
   assert.throws(
     () => validateRevenueBuildEnv({ VERCEL: "1" }),
     /SUPABASE_PUBLISHABLE_KEY/,
   );
 });
 
-test("accepts Vercel builds when the publishable key is configured", () => {
+test("accepts Vercel builds when the server-side publishable key is configured", () => {
   assert.doesNotThrow(() => validateRevenueBuildEnv({
     VERCEL: "1",
     SUPABASE_PUBLISHABLE_KEY: "present-but-not-inspected",
+  }));
+});
+
+test("accepts Vercel builds when the existing public publishable key alias is configured", () => {
+  assert.doesNotThrow(() => validateRevenueBuildEnv({
+    VERCEL: "1",
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "present-but-not-inspected",
   }));
 });
 
