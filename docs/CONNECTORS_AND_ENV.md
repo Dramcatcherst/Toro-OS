@@ -1,6 +1,6 @@
 # TORO OS Connector Environment Plan
 
-All connectors in v0.3 are `read_only` or `prepare_only`. External writes remain disabled until role, permission and approval persistence are live.
+All connectors in v0.3 are `read_only` or `prepare_only` unless a route is explicitly documented as an authenticated internal workflow. External business-system writes remain disabled until role, permission and approval persistence are live.
 
 ## Internal Approval Ledger
 
@@ -24,7 +24,7 @@ Optional live-read query:
 
 `/api/connectors/airtable?tableId=tblHVdeHMb02gPxFP&pageSize=10`
 
-Required later:
+Required when using the legacy read connector:
 
 - `AIRTABLE_TOKEN`
 - `AIRTABLE_BASE_ID`
@@ -32,6 +32,42 @@ Required later:
 Allowed now: read schemas, read records, inspect source authority.
 
 Blocked now: create/update/delete records.
+
+Decommission note: Dreamcatcher production data is moving to canonical Supabase. Do not point `AIRTABLE_BASE_ID` at a base approved for retirement without registering that dependency in the decommission audit.
+
+## Supabase Revenue Admin
+
+Private page: `/revenue`
+
+Private routes:
+
+- `POST /api/auth/revenue/login`
+- `GET /api/auth/revenue/me`
+- `POST /api/auth/revenue/logout`
+- `GET /api/revenue/agency-rates`
+
+Required environment:
+
+- `SUPABASE_PUBLISHABLE_KEY`
+- optional `SUPABASE_URL` (defaults to the canonical Dreamcatcher Supabase project URL in server code)
+
+Never configure a service-role key in browser code or expose it through a public environment variable.
+
+Authentication:
+
+- Supabase Auth email/password
+- access and refresh tokens stored in HttpOnly cookies
+- private Revenue rows are read server-side with the authenticated user's JWT
+- database RLS and RPC authorization require one of `ADMIN`, `GERENCIA`, or `REVENUE`
+- anonymous users cannot execute the private Revenue lookup RPC
+
+Canonical source:
+
+- `revenue.*`
+- `public.get_current_revenue_access()`
+- `public.get_agency_rate_lookup(...)`
+
+Current verified scope is room-by-season agency pricing. Occupancy is informational only and does not alter price. Villa pricing must not be invented until a verified canonical source is modeled.
 
 ## Vercel
 
