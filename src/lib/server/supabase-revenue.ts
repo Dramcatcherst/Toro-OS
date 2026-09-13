@@ -12,7 +12,7 @@ export function getSupabaseUrl() {
 export function getSupabasePublishableKey() {
   const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!key) {
-    throw new Error("SUPABASE_PUBLISHABLE_KEY is not configured.");
+    throw new Error("SUPABASE_PUBLISHABLE_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is not configured.");
   }
   return key;
 }
