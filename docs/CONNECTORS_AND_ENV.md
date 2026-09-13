@@ -48,10 +48,12 @@ Private routes:
 
 Required environment:
 
-- `SUPABASE_PUBLISHABLE_KEY`
+- preferred server-only name: `SUPABASE_PUBLISHABLE_KEY`
+- accepted compatibility alias: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- configure exactly an enabled Supabase **publishable/anon** key, never a service-role key
 - optional `SUPABASE_URL` (defaults to the canonical Dreamcatcher Supabase project URL in server code)
 
-Never configure a service-role key in browser code or expose it through a public environment variable.
+The Revenue routes are server-side, so `SUPABASE_PUBLISHABLE_KEY` is preferred even though Supabase publishable keys are designed for public clients. Never configure a service-role key in browser code or expose any privileged credential through a public environment variable.
 
 Authentication:
 
