@@ -16,6 +16,31 @@ test("accepts Vercel builds when the publishable key is configured", () => {
   }));
 });
 
+test("rejects Vercel builds that override AIRTABLE_BASE_ID to a retiring Dreamcatcher base", () => {
+  for (const baseId of [
+    "appuk6zInco941sgc",
+    "appYRL3P7ugPtQN1h",
+    "appltN1brkbhD4FVb",
+  ]) {
+    assert.throws(
+      () => validateRevenueBuildEnv({
+        VERCEL: "1",
+        SUPABASE_PUBLISHABLE_KEY: "present-but-not-inspected",
+        AIRTABLE_BASE_ID: baseId,
+      }),
+      /AIRTABLE_BASE_ID/,
+    );
+  }
+});
+
+test("allows a safe Airtable base override while migration is in progress", () => {
+  assert.doesNotThrow(() => validateRevenueBuildEnv({
+    VERCEL: "1",
+    SUPABASE_PUBLISHABLE_KEY: "present-but-not-inspected",
+    AIRTABLE_BASE_ID: "appFdcxw7KqReHJI6",
+  }));
+});
+
 test("does not require Vercel-only runtime env during ordinary CI", () => {
   assert.doesNotThrow(() => validateRevenueBuildEnv({ CI: "true" }));
 });
