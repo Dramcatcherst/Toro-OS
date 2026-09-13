@@ -16,9 +16,13 @@ export function validateRevenueBuildEnv(env = process.env) {
     );
   }
 
-  if (!String(env.SUPABASE_PUBLISHABLE_KEY || "").trim()) {
+  const publishableKey = String(
+    env.SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "",
+  ).trim();
+
+  if (!publishableKey) {
     throw new Error(
-      "SUPABASE_PUBLISHABLE_KEY is required for Vercel Revenue Admin builds. Configure the publishable key in Vercel without exposing its value.",
+      "SUPABASE_PUBLISHABLE_KEY or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is required for Vercel Revenue Admin builds. Configure one publishable key in Vercel without exposing its value.",
     );
   }
 
