@@ -16,12 +16,15 @@ type RevenueRow = {
   starts_on: string;
   ends_on: string;
   currency: string;
+  base_rack_rate: number | string | null;
   rack_rate: number | string | null;
+  base_commission_rate: number | string | null;
   commission_rate: number | string | null;
   agency_earn_amount: number | string | null;
   hotel_net_rate: number | string | null;
-  commercial_conditions?: string | null;
-  override_reason?: string | null;
+  commercial_conditions: string | null;
+  override_reason: string | null;
+  override_active: boolean;
 };
 
 function uniqueOptions(rows: RevenueRow[]) {
