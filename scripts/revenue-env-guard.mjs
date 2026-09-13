@@ -9,16 +9,16 @@ const RETIRING_AIRTABLE_BASE_IDS = new Set([
 export function validateRevenueBuildEnv(env = process.env) {
   if (!env.VERCEL) return true;
 
-  if (!String(env.SUPABASE_PUBLISHABLE_KEY || "").trim()) {
-    throw new Error(
-      "SUPABASE_PUBLISHABLE_KEY is required for Vercel Revenue Admin builds. Configure the publishable key in Vercel without exposing its value.",
-    );
-  }
-
   const airtableBaseId = String(env.AIRTABLE_BASE_ID || "").trim();
   if (airtableBaseId && RETIRING_AIRTABLE_BASE_IDS.has(airtableBaseId)) {
     throw new Error(
       "AIRTABLE_BASE_ID points to a Dreamcatcher base that is in the decommission program. Remove the override or point it to a non-retiring authority before deploying.",
+    );
+  }
+
+  if (!String(env.SUPABASE_PUBLISHABLE_KEY || "").trim()) {
+    throw new Error(
+      "SUPABASE_PUBLISHABLE_KEY is required for Vercel Revenue Admin builds. Configure the publishable key in Vercel without exposing its value.",
     );
   }
 
