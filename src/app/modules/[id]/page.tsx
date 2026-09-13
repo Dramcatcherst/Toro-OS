@@ -30,6 +30,11 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ i
             <div>
               <h1 className="text-4xl font-black text-white">{operatingModule.name}</h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">{operatingModule.purpose}</p>
+              {id === "revenue" ? (
+                <Link href="/revenue" className="mt-5 inline-flex rounded-sm bg-cyan-300 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-slate-950 hover:bg-cyan-200">
+                  Open private Revenue Admin
+                </Link>
+              ) : null}
             </div>
             <span className="rounded-sm border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs uppercase text-amber-100">{operatingModule.actionLevel}</span>
           </div>
