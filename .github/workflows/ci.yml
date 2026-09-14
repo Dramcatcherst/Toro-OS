@@ -22,6 +22,12 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Inspect installed Next docs
+        run: |
+          echo "NEXT_DOCS_BEGIN"
+          find node_modules/next/dist/docs -type f | sort | grep -E 'route|client|server|fetch|data|loading|error' | head -120
+          echo "NEXT_DOCS_END"
+
       - name: Test
         run: npm test
 
