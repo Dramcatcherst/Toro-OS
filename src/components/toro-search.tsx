@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { AlertTriangle, ArrowRight, Loader2, Search } from "lucide-react";
+import { AlertTriangle, ArrowRight, ChevronDown, ChevronUp, Loader2, Search } from "lucide-react";
+import { getSearchResultAction } from "@/lib/search/ui-contract.mjs";
 
 type SearchResult = {
   entityType: string;
@@ -44,10 +45,12 @@ export function ToroSearch() {
   const [query, setQuery] = useState("");
   const [payload, setPayload] = useState<SearchPayload | null>(null);
   const [loading, setLoading] = useState(false);
+  const [expandedResultId, setExpandedResultId] = useState<string | null>(null);
 
   async function runSearch(value: string) {
     const clean = value.trim();
     setQuery(clean);
+    setExpandedResultId(null);
     if (!clean) {
       setPayload(null);
       return;
@@ -142,28 +145,53 @@ export function ToroSearch() {
                 <h2 className="text-sm font-semibold text-white">{group.label}</h2>
               </div>
               <div className="divide-y divide-slate-800">
-                {group.results.map((result) => (
-                  <article key={`${result.entityType}:${result.key}`} className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-semibold text-white">{result.title}</h3>
-                        {result.status ? <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-cyan-200">{result.status}</span> : null}
+                {group.results.map((result) => {
+                  const resultId = `${result.entityType}:${result.key}`;
+                  const action = getSearchResultAction(result);
+                  const expanded = expandedResultId === resultId;
+
+                  return (
+                    <article key={resultId} className="p-4">
+                      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-semibold text-white">{result.title}</h3>
+                            {result.status ? <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-cyan-200">{result.status}</span> : null}
+                          </div>
+                          {result.subtitle ? <p className="mt-1 text-xs leading-5 text-slate-400">{result.subtitle}</p> : null}
+                          <p className="mt-1 font-mono text-[10px] text-slate-600">{result.matchType} · {result.source}</p>
+                        </div>
+
+                        {action.kind === "room360" && action.href ? (
+                          <Link
+                            href={action.href}
+                            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 border border-cyan-300/30 bg-cyan-300/8 px-3 text-xs font-semibold text-cyan-100 hover:bg-cyan-300/14"
+                          >
+                            {action.label} <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            aria-expanded={expanded}
+                            onClick={() => setExpandedResultId(expanded ? null : resultId)}
+                            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 border border-cyan-300/30 bg-cyan-300/8 px-3 text-xs font-semibold text-cyan-100 hover:bg-cyan-300/14"
+                          >
+                            {action.label} {expanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                          </button>
+                        )}
                       </div>
-                      {result.subtitle ? <p className="mt-1 text-xs leading-5 text-slate-400">{result.subtitle}</p> : null}
-                      <p className="mt-1 font-mono text-[10px] text-slate-600">{result.matchType} · {result.source}</p>
-                    </div>
-                    {result.entityType === "room" ? (
-                      <Link
-                        href={`/toro/habitaciones/${encodeURIComponent(result.key)}`}
-                        className="inline-flex h-10 shrink-0 items-center justify-center gap-2 border border-cyan-300/30 bg-cyan-300/8 px-3 text-xs font-semibold text-cyan-100 hover:bg-cyan-300/14"
-                      >
-                        Ver ficha 360 <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-                    ) : (
-                      <div className="text-xs text-slate-500">Detalle integrado en próxima capa</div>
-                    )}
-                  </article>
-                ))}
+
+                      {expanded ? (
+                        <div className="mt-3 grid gap-2 border border-slate-800 bg-black/25 p-3 text-xs text-slate-300 sm:grid-cols-2 lg:grid-cols-4">
+                          <div><span className="text-slate-500">Tipo</span><br />{result.entityType}</div>
+                          <div><span className="text-slate-500">Estado</span><br />{result.status || "Sin clasificar"}</div>
+                          <div><span className="text-slate-500">Fuente</span><br />{result.source}</div>
+                          <div><span className="text-slate-500">Referencia TORO</span><br /><span className="font-mono">{result.key}</span></div>
+                        </div>
+                      ) : null}
+                    </article>
+                  );
+                })}
               </div>
             </section>
           ))}
