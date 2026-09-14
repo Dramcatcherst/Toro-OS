@@ -1,402 +1,281 @@
-# TORO OS Role-Based Interface — Design Specification
+# TORO OS — Especificación de producto e interfaz basada en roles
 
-Date: 2026-09-14
-Status: Approved architecture, specification pending final user review
-Repository: `Dramcatcherst/Toro-OS`
-Canonical data platform: Supabase project `abtyrbqlqbsastmridzp`
+Fecha: 2026-09-14
+Estado: Arquitectura vigente aprobada por Mauricio
+Repositorio: `Dramcatcherst/Toro-OS`
 
-## 1. Objective
+## 1. Decisión principal
 
-TORO OS becomes Dreamcatcher's single operational application. Supabase is the canonical structured system; specialized transactional systems such as Kross and Alegra retain authority for the domains they own. Airtable remains only as controlled backup/reference, ideally consolidated into one residual backup base and never used as a hidden operational database.
+**“Cerebro de Toro” = TORO OS.** No es otra app, otra base, otro agente, otro backend ni otro proyecto.
 
-The product must reduce Mauricio's cognitive load, let staff work from role-specific interfaces, preserve source-of-truth boundaries, and keep every sensitive action auditable, reversible when possible, and permission-gated.
+TORO OS debe sentirse como una sola superficie visual e inteligente que permite ver, buscar, relacionar, decidir y ejecutar sin obligar al usuario a conocer qué sistema vive debajo.
 
-## 2. Product principles
+La arquitectura debe simplificar el ecosistema existente, no reemplazarlo por una migración masiva.
 
-1. One operational app, multiple role experiences.
-2. Mobile-first; desktop enhances rather than changes the model.
-3. Users see business concepts, not database tables.
-4. Supabase is canonical for Dreamcatcher master data and operational state owned by TORO OS.
-5. Kross remains live authority for reservation, room assignment, price, availability, payment and other live PMS transaction facts.
-6. Alegra remains fiscal/accounting authority where applicable.
-7. Airtable is backup/reference only after cutover.
-8. Least privilege everywhere: RLS, server-side RPC, scoped actions.
-9. Every important write produces audit evidence.
-10. Any action with financial, legal, guest-impacting or destructive consequences has an approval gate.
-11. No feature exists only because data exists; every screen must answer a real job-to-be-done.
-12. Frequent safe actions should take no more than three taps on mobile.
+## 2. Jerarquía de autoridad vigente
 
-## 3. Architecture
+1. **Mauricio** — decisión explícita actual.
+2. **Sistemas transaccionales especializados** — autoridad viva de su dominio:
+   - Kross: precio, disponibilidad, reserva, asignación, pago y estado PMS.
+   - Alegra / bancos / fiscal: autoridad financiera o contable según el dato.
+   - WeSpeak / WhatsApp: canal de comunicación; no sustituye la verdad transaccional.
+3. **Airtable `TORO OS — Sistema Operativo Central`** — capa gobernada actual de catálogo, relaciones, control, tareas, validaciones, aprobaciones y portafolio ejecutivo.
+4. **Supabase** — backend técnico cuando exista una necesidad concreta de runtime, Auth, RLS, alto volumen, relaciones complejas, búsqueda avanzada o aplicación. **No es automáticamente una segunda verdad general ni el destino obligatorio de Airtable.**
+5. **Notion** — memoria larga, arquitectura, decisiones y handoffs; no operación viva.
+6. **Dropbox / Drive** — archivos, evidencia y media; TORO enlaza y gobierna su uso.
+7. **GitHub / Vercel** — código, CI y despliegue.
 
-### User flow
+## 3. Agentes y superficies visibles
 
-User -> TORO Web App -> role/action layer -> Supabase canonical services -> specialized systems / agents.
+- **TORO**: dirección, prioridades, decisiones, riesgos, coordinación y seguimiento.
+- **TERE**: huéspedes, recepción, reservas asistidas, concierge, comunicación y conversión.
+- **RICO**: operación hotelera, housekeeping, mantenimiento, lavandería, inventario y calidad.
+- **FIONA**: administración, finanzas, contabilidad, fiscal y People/HR.
+- **SKY**: crecimiento, marca, contenido, reputación, campañas, experiencias y otros ingresos.
+- **SOBRESITO**: sistemas, producto, datos, integraciones, web, seguridad y automatización.
 
-### Specialized agents
+TORO es la puerta de entrada; los demás agentes son subdivisiones de la misma experiencia.
 
-- TORO: executive orchestration and decision routing.
-- TERE: guest sales, reservations support, concierge, lifecycle.
-- RICO: hotel operations, housekeeping, maintenance, laundry and service quality.
-- FIONA: finance, accounting administration, compliance and people operations.
-- SKY: marketing, growth, brand and ancillary revenue.
-- SOBRESITO: systems, product, data, integrations, reliability and security.
+## 4. Principios de producto
 
-### External authorities
+1. Una sola TORO OS, múltiples experiencias por rol.
+2. Mobile-first; escritorio amplía, no cambia el modelo.
+3. Usuarios ven conceptos de negocio, no tablas crudas.
+4. Navegación visual primero; IA como acelerador complementario.
+5. Una sola autoridad por dato; no copiar para “tenerlo también”.
+6. Kross/Alegra y demás autoridades mantienen sus dominios.
+7. Reutilizar Airtable actual mientras siga siendo la capa gobernada vigente.
+8. Supabase entra por problema concreto, no por preferencia arquitectónica.
+9. Todo cambio sensible debe ser auditable y permission-gated.
+10. Acciones frecuentes y seguras deben requerir pocos toques.
+11. Reducir ruido antes de agregar funciones.
+12. No crear V2/V3 paralelas para sortear una limitación puntual de herramienta.
 
-- Kross: reservation and live PMS truth.
-- Alegra: accounting/fiscal truth where applicable.
-- WeSpeak/WhatsApp: guest communication channel.
-- Dropbox/media stores: file/media source where governed.
-- GitHub/Vercel: software source/deployment truth.
-- Airtable: archive/backup reference only after cutover.
+## 5. Human Mode — Hoy
 
-## 4. Roles and primary experiences
+La página existente `TORO OS Executive Command Center → Human Mode — Hoy` se conserva como entrada ejecutiva. **No crear Human Mode V2.**
 
-### Mauricio — Executive Home
+Debe responder en segundos:
 
-Purpose: make decisions, see exceptions, monitor progress, and delegate without navigating operational detail.
+1. ¿Necesitan algo de Mauricio?
+2. ¿Qué está pasando ahora?
+3. ¿Qué puede bloquearlo?
+4. ¿Qué está esperando aprobación?
 
-Primary blocks:
+Reglas verificadas a 2026-09-14:
 
-1. **Necesita mi decisión** — maximum five items. Each item must show recommendation, impact, deadline, evidence and one-tap approval/delegation options.
-2. **Qué está mal hoy** — guest, operations, money and systems exceptions only.
-3. **Qué avanza sin mí** — 3–7 delegated actions with owner, next step and evidence.
-4. **Mis proyectos** — milestone, blocker, next action, owner and confidence/status.
-5. **Acciones rápidas** — approve, delegate, create issue, ask TORO, open reception, finance or maintenance.
+### Decisiones
+Fuente: `tasks`
 
-Primary navigation:
+`founder_action_required = true` y `status NOT IN (done, cancelled)`.
 
-`Inicio · Decisiones · Hotel · Huéspedes · Dinero · Proyectos · Equipo · Conocimiento · Sistemas`
+Snapshot actual: 0.
 
-### Gerencia — Manager Home
+### Acciones activas
+Fuente: `tasks`
 
-Purpose: daily hotel control, staffing, guest issues, approvals and execution monitoring.
+`portfolio_lane = NOW OR status = in_progress`, excluyendo `done/cancelled`.
 
-Key views: today, unresolved incidents, room readiness, staff handoffs, approvals, purchases, financial exceptions, projects.
+Snapshot actual: 8 registros; 3 tienen `status=in_progress`.
 
-### Recepción — TERE / Reception Hub
+### Riesgos
+Fuente: `validations`
 
-Purpose: guest-facing execution with governed knowledge.
+`severity IN (high, critical)` y `status IN (open, in_review)`.
 
-Must provide room/villa knowledge, FAQs, guest messages, experiences, direct-sales guidance and escalation. Kross remains live transactional authority for reservation facts and writes.
+Snapshot actual: 7.
 
-### Operations — RICO
+### Aprobaciones
+Fuente: `approvals`
 
-Purpose: convert hotel issues into actionable work.
+`approval_status = pending`.
 
-Role variants:
-- Housekeeping
-- Laundry
-- Maintenance
+Snapshot actual: 0.
 
-Each gets focused checklists/tickets, not the full operational database.
+La edición física de estos filtros debe hacerse sobre la página existente. Si una herramienta no permite editarla, registrar el bloqueo; **no crear una página paralela**.
 
-### Finance/Admin — FIONA
+## 6. Búsqueda universal V1
 
-Purpose: reconciliations, invoices, payments, recurring obligations, exceptions, reports and administrative evidence. Private financial data must never surface to unrelated roles.
+La búsqueda inicial no necesita una tabla `universal_search_index` ni una migración a Supabase.
 
-### Growth — SKY
+Pruebas reales ya verificadas sobre Airtable actual:
 
-Purpose: campaigns, content, SEO/SEM, reviews, partnerships, ancillary products and verified media/content workflows.
+- `25` → habitación 25 y relaciones.
+- `Oliver` → empleado de mantenimiento.
+- `desayuno` → SOPs/políticas relevantes.
+- `Santa Toro` → propiedad archivada/histórica y límites de uso.
+- `proyector` → amenidad y habitaciones/villa relacionadas.
 
-### Systems — SOBRESITO
+### Fuentes iniciales
 
-Purpose: integration health, deploy status, data quality, sync/import runs, security issues, backups, system ownership and incident response.
+- `rooms`
+- `villas`
+- `sellable_units`
+- `properties`
+- `amenities`
+- `staff_directory`
+- `tasks`
+- `validations`
+- `experiences`
+- `sops`
+- `source_objects`
 
-## 5. Shared navigation and interaction model
+### Ranking obligatorio
 
-### Mobile
+1. clave/número exacto;
+2. nombre visible exacto;
+3. alias exacto;
+4. prefijo;
+5. fuzzy/full-text.
 
-- bottom navigation for the 4–5 most frequent role-specific sections;
-- global `+` quick action;
-- notification/inbox badge;
-- contextual TORO assistant entry;
-- search accessible from every major screen;
-- cards first, tables only for drill-down.
+Un resultado fuzzy nunca debe superar un match exacto.
 
-### Desktop
+La salida debe proyectar solo campos seguros: nombre, tipo, resumen corto, estado relevante, key y acción `Ver`. No mostrar payloads privados, notas gigantes ni campos financieros/personales por defecto.
 
-- persistent left navigation;
-- larger dashboard layouts;
-- side-by-side detail panel where useful;
-- no desktop-only critical functions.
+## 7. Ficha 360° piloto — Habitación 25
 
-### Global search
+La ficha usa relaciones actuales; no crear relaciones nuevas si no son necesarias.
 
-Search should route users to governed entities rather than raw rows: rooms, villas, guests where authorized, tasks, projects, SOPs, providers, experiences, knowledge, integrations and reports.
+Verdad ya verificada para `DC-ROOM-25`:
 
-## 6. Decision system
+- habitación #25;
+- capacidad 5;
+- 1 King + 1 Queen + 1 individual/rollaway;
+- cocina privada;
+- proyector;
+- 22 amenidades relacionadas;
+- propiedad Dreamcatcher Hotel;
+- referencia/enlace Kross;
+- media relacionada;
+- se vende como habitación individual;
+- forma parte de Villa Toro;
+- forma parte del Full Property Buyout.
 
-A decision item contains:
+### Secciones
 
-- title;
-- domain;
-- urgency/impact;
-- recommendation;
-- rationale;
-- options;
-- evidence;
-- owner/requester;
-- deadline;
-- approval requirement;
-- downstream action on approval;
-- audit trail.
+**Resumen** — estado, capacidad, camas, cocina, piso/características verificadas.
 
-Supported actions:
+**Venta** — unidad individual, Villa Toro y Full Buyout.
 
-`Aprobar · Modificar · Delegar · Posponer · Rechazar · Explícame mejor`
+**Kross** — referencia/enlace y estado de sincronización. Nunca copiar precio/disponibilidad como verdad TORO.
 
-The historical Airtable Command Center is archive input only. It must not be reactivated as the live decision system.
+**Media** — hero, galería gobernada, Kross y pendientes. No listar cientos de assets crudos.
 
-## 7. Data and source-of-truth rules
+**Operación** — tareas/validaciones unidas por `linked_entity_key`, claves de validación o links estructurados. No usar el número `25` en full-text como relación primaria porque genera falsos positivos.
 
-Each displayed datum should have, where relevant:
+**Conocimiento** — SOPs/reglas relacionadas y gobernadas.
 
-- canonical source;
-- freshness timestamp;
-- provenance/source reference;
-- verified/needs-review state;
-- public/private sensitivity;
-- last material change.
+## 8. Roles y experiencias
 
-TORO OS must never silently copy a transactional system into a second operational ledger if a live authoritative source can be queried or freshly imported.
+### Mauricio — TORO / Mi Día
 
-## 8. Actions, approvals and rollback
+Prioridades, decisiones, excepciones, proyectos y acciones rápidas.
 
-### Low-risk actions
+### Gerencia
 
-Examples: acknowledge, assign, comment, add internal note, create draft task. These can execute directly if role permits.
+Control diario, incidencias, habitaciones, personal, aprobaciones y compras.
 
-### Medium-risk actions
+### TERE / Recepción
 
-Examples: modify operational configuration, publish governed content, approve provider data. Require confirmation and audit.
+Llegadas/salidas, Room Fit, cotizador, mensajes, experiencias, upsells y acceso Kross.
 
-### High-risk actions
+### RICO / Operación
 
-Examples: money, legal/compliance, guest reservation changes, destructive deletion, permissions/security, public commitments with material risk. Require explicit approval, source validation and evidence.
+Habitaciones listas, housekeeping, mantenimiento, lavandería, inventario, tickets e inspecciones.
 
-Every reversible action should record rollback metadata or a prior-state snapshot where practical.
+### FIONA
 
-## 9. Notifications
+Cierres, conciliaciones, impuestos, pagos, turnos, asistencia, vacaciones, planilla y excepciones.
 
-Notifications must be exception-driven, not a second task list.
+### SKY
 
-Categories:
-- approval required;
-- guest-impacting issue;
-- operational SLA breach;
-- money/compliance exception;
-- integration failure;
-- data quality/freshness issue;
-- project blocker.
+Contenido, campañas, SEO, reputación, media utilizable, experiencias y resultados atribuibles.
 
-Users should be able to acknowledge, snooze, delegate or open the source item.
+### SOBRESITO
 
-## 10. Permissions and security
+Fuentes/autoridades, integraciones, releases, seguridad, permisos, sync, backups, observabilidad y costo técnico.
 
-- Supabase Auth for identities.
-- RLS on private tables.
-- server-side actions/RPC for sensitive operations.
-- no service-role credentials in browser code.
-- role + organization/property scoping.
-- explicit access boundaries for Revenue, Finance and guest/private data.
-- least privilege defaults.
-- audit log for sensitive reads/writes where practical.
-- no secret values in logs or evidence tables.
+## 9. Seguridad y privacidad
 
-## 11. Reliability and observability
+- Menor privilegio por defecto.
+- No exponer PII/finanzas a roles no autorizados.
+- No usar secretos en cliente, logs o evidencia.
+- Las acciones financieras, legales, de reservas, permisos o destrucción requieren gates explícitos.
+- Lecturas agregadas o de catálogo deben proyectar solo campos necesarios.
+- Supabase Auth/RLS se usa cuando una superficie/app lo requiera; no obliga a migrar las fuentes actuales.
 
-System status must expose:
+## 10. Estados de carga y confiabilidad
 
-- connector health;
-- last successful sync/import;
-- stale-data warnings;
-- deployment status;
-- failed background jobs;
-- backup/restore state;
-- security warnings;
-- ownership/recovery owner.
+Toda superficie nueva debe distinguir:
 
-A failure in an external system should degrade gracefully to read-only/stale-state messaging rather than silently presenting stale data as current.
+- loading;
+- vacío real;
+- stale;
+- permiso denegado;
+- error parcial;
+- sistema externo caído;
+- recuperación/reintento.
 
-## 12. Loading, empty and error states
+Nunca presentar datos stale como actuales sin aviso.
 
-Every major screen requires explicit:
+## 11. Criterios de uso de Supabase
 
-- loading state;
-- empty state that explains what to do next;
-- permission-denied state;
-- stale-data state;
-- partial-system-outage state;
-- retry/escalation path.
+Antes de agregar una tabla, índice o migración a Supabase responder:
 
-No raw stack traces or database errors are user-visible.
+> ¿Qué problema concreto no puede resolver razonablemente la arquitectura actual?
 
-## 13. Accessibility and usability
+Justificaciones válidas pueden incluir:
 
-- touch targets suitable for one-handed mobile use;
-- semantic labels;
-- keyboard operation on desktop;
-- readable contrast;
-- status not conveyed by color alone;
-- Spanish operational naming by default;
-- concise language and progressive disclosure.
+- Auth/RLS real para una app;
+- alto volumen o costo de Airtable;
+- latencia demostrada;
+- búsqueda semántica/vectorial necesaria;
+- relaciones/consultas que Airtable no resuelve razonablemente;
+- runtime transaccional propio;
+- almacenamiento histórico/warehouse aprobado.
 
-## 14. Airtable target state
+Si no existe un problema concreto medido, no migrar.
 
-Preferred end-state:
+## 12. Primera ola de implementación
 
-`DREAMCATCHER VAULT — BACKUP`
+1. Cerrar filtros de `Human Mode — Hoy` en la página existente.
+2. Implementar router de Búsqueda Universal V1 sobre fuentes actuales.
+3. Implementar view-model de Ficha 360° de #25 reutilizando relaciones existentes.
+4. Integrar ambos en la UI de TORO OS cuando exista entorno capaz de cumplir las reglas del repo/Next.js y ejecutar QA.
+5. Medir latencia, éxito de búsqueda, pasos móviles y ruido antes de decidir cualquier infraestructura adicional.
 
-Purpose:
-- controlled archival snapshot/reference;
-- restore support;
-- no primary operational workflows;
-- no hidden automation dependency;
-- no live decision/task system;
-- documented owner and retention policy.
+## 13. Métricas de éxito
 
-More than one Airtable base is allowed only if restore, permission/ownership or technical limitations provide a concrete documented reason.
+- tiempo para entender “qué necesita atención”;
+- pasos/taps para llegar al dato útil;
+- éxito de búsqueda en primer resultado;
+- porcentaje de búsquedas sin resultado;
+- falsos positivos de búsqueda;
+- tiempo para abrir una ficha 360°;
+- decisiones reales visibles vs backlog histórico;
+- cantidad de nuevas fuentes de verdad creadas: objetivo 0 salvo necesidad demostrada;
+- reducción de cambio de contexto entre sistemas.
 
-Residual Airtable bases must be classified as:
+## 14. Definition of Done de esta ola
 
-`OPERATIONAL UNTIL REPLACED · MIGRATE · ARCHIVE TO VAULT · SAFE TO RETIRE`
+Esta ola queda terminada cuando:
 
-## 15. Migration and decommission model
+- `Human Mode — Hoy` usa los filtros ejecutivos vigentes y pasó QA móvil;
+- la búsqueda resuelve casos comunes con exacto > alias > fuzzy y no expone payloads privados;
+- `25` abre una ficha 360° útil basada en relaciones actuales;
+- no se creó una segunda verdad ni una migración masiva;
+- Supabase solo se usó si apareció una necesidad demostrable;
+- lint/build/tests/QA de la superficie de código están verdes;
+- los cambios se documentan en la tarea/portafolio/handoff ya existentes.
 
-Before retiring an operational Airtable dependency:
+## 15. No objetivos
 
-1. inventory data/interfaces/forms/automations/consumers;
-2. classify canonical vs reloadable vs historical;
-3. migrate only unique useful data;
-4. preserve provenance;
-5. replace operational workflow;
-6. verify parity;
-7. capture backup and restore evidence;
-8. obtain required human approval;
-9. only then archive/retire.
-
-Historical Kross/Alegra/OTA data that can be regenerated should not be copied merely to make a migration look complete.
-
-## 16. Screen hierarchy — first implementation wave
-
-1. Authentication / role resolution
-2. Mauricio Executive Home
-3. Decisions
-4. Global search
-5. Reception / TERE
-6. Operations / RICO
-7. Projects
-8. Knowledge
-9. Finance / FIONA
-10. Growth / SKY
-11. Systems / SOBRESITO
-12. Admin / permissions / audit
-
-Wave 1 must prove the shared shell and permissions before adding department depth.
-
-## 17. Analytics and product telemetry
-
-Measure product usefulness rather than page views:
-
-- decisions resolved;
-- time-to-decision;
-- actions delegated without Mauricio intervention;
-- task/SLA completion;
-- guest issue resolution;
-- direct-sales/upsell support where attributable;
-- system errors and stale-data events;
-- search success;
-- role adoption;
-- number of Airtable operational dependencies remaining.
-
-No sensitive guest or financial payload should be copied into analytics unnecessarily.
-
-## 18. Feature flags and rollout
-
-Roll out by role and module. New modules should be enableable independently. High-risk writes should launch read-only first, then limited internal write access, then broader rollout after validation.
-
-Recommended order:
-
-1. Mauricio read/decision shell
-2. Reception / TERE
-3. Operations / RICO
-4. Projects/Knowledge
-5. Finance
-6. Growth
-7. Systems/Admin depth
-
-## 19. Testing strategy
-
-Required layers:
-
-- unit tests for role/permission and transformation logic;
-- integration tests for server actions/RPC;
-- RLS positive and negative tests;
-- end-to-end mobile and desktop critical flows;
-- stale/error state tests;
-- high-risk action confirmation tests;
-- audit evidence assertions;
-- source-of-truth parity tests for external-system reads;
-- backup/restore drills for critical canonical data.
-
-No module is considered complete solely because it renders.
-
-## 20. Acceptance criteria — 25 improvements
-
-1. Single source of truth boundaries documented and enforced.
-2. Mobile-first critical flows.
-3. Spanish operational naming.
-4. Role-based navigation.
-5. Least privilege.
-6. RLS on private canonical data.
-7. Safe server-side RPC/actions.
-8. Audit history for sensitive actions.
-9. Provenance for migrated/imported data.
-10. Freshness indicators for external/live data.
-11. Import validation gates.
-12. Deterministic deduplication where applicable.
-13. Data-quality/verification states.
-14. Valid backups.
-15. Restore drills.
-16. Disaster-recovery runbook.
-17. Private Revenue access.
-18. No unnecessary Kross duplication.
-19. Canonical TERE knowledge.
-20. Media rights/identity controls.
-21. Actionable task hygiene; historical tasks inactive.
-22. Integration-health view.
-23. Drift detection for legacy/external sources.
-24. Embedded operating documentation/runbooks.
-25. Controlled legacy retirement with explicit evidence.
-
-These are acceptance criteria, not 25 separate projects.
-
-## 21. Definition of done
-
-TORO OS is complete enough for operational cutover when:
-
-- Mauricio and each active role can perform their critical daily jobs through TORO OS;
-- source-of-truth boundaries are enforced;
-- critical writes are permissioned and auditable;
-- role-specific mobile flows are tested;
-- no critical operational workflow depends solely on Airtable;
-- Airtable is reduced to backup/reference state with documented restore capability;
-- integration health and stale-data states are visible;
-- Revenue/Finance/private data remain restricted;
-- the system has a tested backup/restore and rollback story;
-- remaining legacy systems have owners and explicit disposition.
-
-## 22. Explicit non-goals for initial build
-
-- replacing Kross as PMS;
-- replacing Alegra as accounting ledger;
-- migrating every historical transactional record;
-- building separate apps per department;
-- exposing raw Supabase tables as the user interface;
-- recreating Airtable UI patterns for their own sake;
-- autonomous high-risk financial/legal/reservation changes without approval.
-
-## 23. Implementation boundary
-
-This document approves architecture and product behavior only. Code implementation starts after final review of this specification and a separate implementation plan generated under the Superpowers writing-plans workflow.
+- reemplazar Kross;
+- reemplazar Alegra;
+- migrar todo Airtable a Supabase;
+- crear un “Master Brain” nuevo;
+- duplicar Human Mode;
+- crear apps separadas por agente;
+- exponer tablas crudas como experiencia;
+- ejecutar cambios de alto riesgo sin aprobación;
+- construir un índice universal antes de demostrar que hace falta.
