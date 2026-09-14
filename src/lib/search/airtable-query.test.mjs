@@ -17,7 +17,7 @@ test("builds an allowlisted Airtable query with bounded page size", () => {
   assert.match(params.get("filterByFormula") ?? "", /25/);
 });
 
-test("escapes quotes and backslashes in user search text", () => {
+test("escapes quotes and backslashes in normalized user search text", () => {
   const params = buildAirtableReadQuery({
     fields: ["property_name"],
     searchFields: ["property_name"],
@@ -27,7 +27,7 @@ test("escapes quotes and backslashes in user search text", () => {
 
   const formula = params.get("filterByFormula") ?? "";
   assert.equal(formula.includes('"Toro"'), false);
-  assert.match(formula, /\\"Toro\\"/);
+  assert.match(formula, /\\"toro\\"/);
   assert.match(formula, /\\\\ test/);
 });
 
