@@ -35,8 +35,22 @@ const input = {
     secret: "never expose",
   },
   media: [
-    { key: "HERO-25", name: "Room 25 hero", role: "hero", publicUrl: "https://example.com/hero.jpg", approved: true },
-    { key: "WEB-25", name: "Room 25 web", role: "web", publicUrl: "https://example.com/web.jpg", approved: true },
+    {
+      key: "HERO-25",
+      name: "Room 25 hero",
+      role: "hero",
+      publicUrl: "https://example.com/hero.jpg",
+      approved: true,
+      roomKeys: ["DC-ROOM-25"],
+    },
+    {
+      key: "WEB-25-26-SHARED",
+      name: "Room 25-26 shared web photo",
+      role: "web",
+      publicUrl: "https://example.com/web.jpg",
+      approved: true,
+      roomKeys: ["DC-ROOM-25", "DC-ROOM-26"],
+    },
     { key: "KROSS-25", name: "Room 25 Kross", role: "kross", publicUrl: "https://example.com/kross.jpg", approved: true },
     { key: "PENDING-25", name: "Room 25 pending", role: "pending", approved: false, rawPayload: "never expose" },
   ],
@@ -92,6 +106,13 @@ test("groups media instead of returning raw assets", () => {
   assert.equal(view.media.kross.length, 1);
   assert.equal(view.media.pending.length, 1);
   assert.equal("rawPayload" in view.media.pending[0], false);
+});
+
+test("marks structurally shared media as valid shared-room media", () => {
+  const view = buildRoom360(input);
+  assert.deepEqual(view.media.web[0].sharedWith, ["DC-ROOM-26"]);
+  assert.equal(view.media.web[0].identityScope, "shared");
+  assert.equal(view.media.hero[0].identityScope, "exact");
 });
 
 test("operation uses exact structural links and ignores textual number mentions", () => {
