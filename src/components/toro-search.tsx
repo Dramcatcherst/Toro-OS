@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { AlertTriangle, ArrowRight, Loader2, Search } from "lucide-react";
 
@@ -152,12 +153,12 @@ export function ToroSearch() {
                       <p className="mt-1 font-mono text-[10px] text-slate-600">{result.matchType} · {result.source}</p>
                     </div>
                     {result.entityType === "room" ? (
-                      <a
+                      <Link
                         href={`/toro/habitaciones/${encodeURIComponent(result.key)}`}
                         className="inline-flex h-10 shrink-0 items-center justify-center gap-2 border border-cyan-300/30 bg-cyan-300/8 px-3 text-xs font-semibold text-cyan-100 hover:bg-cyan-300/14"
                       >
                         Ver ficha 360 <ArrowRight className="h-3.5 w-3.5" />
-                      </a>
+                      </Link>
                     ) : (
                       <div className="text-xs text-slate-500">Detalle integrado en próxima capa</div>
                     )}
