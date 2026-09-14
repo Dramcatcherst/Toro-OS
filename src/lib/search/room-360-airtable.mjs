@@ -10,11 +10,17 @@ function text(value) {
   return "";
 }
 
-function explicitRoomKeysFromAssetName(name, currentRoomKey) {
-  const normalized = String(name ?? "").replace(/\s+/g, "");
-  if (/21[-/]22/i.test(normalized)) return ["DC-ROOM-21", "DC-ROOM-22"];
-  if (/25[-/]26/i.test(normalized)) return ["DC-ROOM-25", "DC-ROOM-26"];
-  return currentRoomKey ? [currentRoomKey] : [];
+function explicitRoomKeysFromAssetName(name) {
+  const rawName = String(name ?? "");
+  const normalized = rawName.replace(/\s+/g, "");
+
+  if (/(?:room)?#?21[-/]22/i.test(normalized)) return ["DC-ROOM-21", "DC-ROOM-22"];
+  if (/(?:room)?#?25[-/]26/i.test(normalized)) return ["DC-ROOM-25", "DC-ROOM-26"];
+
+  const exactMatch = rawName.match(/(?:^|[^a-z0-9])(?:room\s*|#)(\d{1,3})(?!\d)/i);
+  if (!exactMatch) return [];
+
+  return [`DC-ROOM-${Number(exactMatch[1])}`];
 }
 
 function mediaRole(assetFields) {
@@ -75,16 +81,17 @@ export function buildRoom360FromAirtable({
         const key = text(assetFields.asset_key);
         if (!key) return null;
         const name = text(assetFields.asset_name);
+        const roomKeys = explicitRoomKeysFromAssetName(name);
         return {
           key,
           name,
           publicUrl: text(assetFields.public_url),
           approved: assetFields.approved_for_web === true || assetFields.approved_for_kross === true,
           role: mediaRole(assetFields),
-          roomKeys: explicitRoomKeysFromAssetName(name, roomKey),
+          roomKeys,
         };
       })
-      .filter(Boolean),
+      .filter((asset) => asset && asset.roomKeys.includes(roomKey)),
     tasks: taskRecords.map((record) => {
       const taskFields = fields(record);
       return {
