@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import type { NavItem } from "@/features/auth/role-nav";
 import type { ToroSession } from "@/features/auth/session";
+import { SignOutButton } from "@/features/auth/sign-out-button";
 import { SearchDialog } from "@/features/search/search-dialog";
 
 import { DesktopNav } from "./desktop-nav";
@@ -31,6 +32,7 @@ export function AppShell({
               <span className="hidden rounded-full border border-black/10 bg-white px-3 py-1 text-xs font-medium sm:inline-flex">
                 {session.role}
               </span>
+              <SignOutButton />
             </div>
           </header>
           <main className="p-4 md:p-6">{children}</main>
