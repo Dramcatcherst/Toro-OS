@@ -39,3 +39,9 @@ jobs:
 
       - name: Run Task 1 test
         run: npm test -- src/lib/supabase/env.test.ts
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
