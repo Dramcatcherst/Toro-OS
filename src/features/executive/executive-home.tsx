@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { DataState } from "@/components/toro/data-state";
+
 import type { ExecutiveHomeData } from "./types";
 
 type ExecutiveHomeProps = {
@@ -8,10 +10,6 @@ type ExecutiveHomeProps = {
 
 const sectionClass =
   "rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-5";
-
-function EmptyState({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm leading-6 text-neutral-500">{children}</p>;
-}
 
 export function ExecutiveHome({ data }: ExecutiveHomeProps) {
   const visibleDecisions = data.decisions.slice(0, 5);
@@ -24,9 +22,7 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-neutral-950">
-              Inicio
-            </h1>
+            <h1 className="text-3xl font-semibold tracking-tight text-neutral-950">Inicio</h1>
             <p className="mt-1 max-w-2xl text-sm leading-6 text-neutral-600">
               Decisiones, excepciones y avances que realmente requieren tu atención.
             </p>
@@ -36,6 +32,15 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
           </p>
         </div>
       </header>
+
+      {data.systemHealth.status === "degraded" ? (
+        <DataState
+          variant="stale"
+          source="Integraciones TORO"
+          freshness={data.systemHealth.checkedAt ?? "Sin verificación reciente"}
+          detail="Parte de la información puede estar atrasada. TORO la marca antes de que tomes decisiones con ella."
+        />
+      ) : null}
 
       <section className={sectionClass} aria-labelledby="decisions-heading">
         <div className="mb-4 flex items-center justify-between gap-3">
@@ -51,7 +56,7 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
         </div>
 
         {visibleDecisions.length === 0 ? (
-          <EmptyState>No hay decisiones pendientes en este momento.</EmptyState>
+          <DataState variant="empty" detail="No hay decisiones pendientes en este momento." />
         ) : (
           <div className="grid gap-3">
             {visibleDecisions.map((decision) => (
@@ -95,14 +100,12 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
           Qué está mal hoy
         </h2>
         {data.exceptions.length === 0 ? (
-          <EmptyState>No hay excepciones conectadas para mostrar todavía.</EmptyState>
+          <DataState variant="empty" detail="No hay excepciones conectadas para mostrar todavía." />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {data.exceptions.map((item) => (
               <article key={item.id} className="rounded-xl border border-neutral-200 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
-                  {item.domain}
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{item.domain}</p>
                 <h3 className="mt-1 font-medium text-neutral-950">{item.title}</h3>
                 <p className="mt-2 text-xs text-neutral-500">
                   Fuente: {item.source}{item.freshness ? ` · ${item.freshness}` : ""}
@@ -118,7 +121,7 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
           Qué avanza sin mí
         </h2>
         {data.delegatedActions.length === 0 ? (
-          <EmptyState>Las acciones delegadas aparecerán aquí cuando estén conectadas.</EmptyState>
+          <DataState variant="empty" detail="Las acciones delegadas aparecerán aquí cuando estén conectadas." />
         ) : (
           <div className="grid gap-3">
             {data.delegatedActions.slice(0, 7).map((action) => (
@@ -132,11 +135,9 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
       </section>
 
       <section className={sectionClass} aria-labelledby="projects-heading">
-        <h2 id="projects-heading" className="mb-4 text-lg font-semibold text-neutral-950">
-          Mis proyectos
-        </h2>
+        <h2 id="projects-heading" className="mb-4 text-lg font-semibold text-neutral-950">Mis proyectos</h2>
         {data.projects.length === 0 ? (
-          <EmptyState>Los proyectos prioritarios aparecerán aquí cuando el adaptador canónico esté conectado.</EmptyState>
+          <DataState variant="empty" detail="Los proyectos prioritarios aparecerán aquí cuando el adaptador canónico esté conectado." />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {data.projects.map((project) => (
@@ -155,20 +156,12 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
       </section>
 
       <section className={sectionClass} aria-labelledby="quick-actions-heading">
-        <h2 id="quick-actions-heading" className="mb-4 text-lg font-semibold text-neutral-950">
-          Acciones rápidas
-        </h2>
+        <h2 id="quick-actions-heading" className="mb-4 text-lg font-semibold text-neutral-950">Acciones rápidas</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <Link
-            href="/toro/decisiones"
-            className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900"
-          >
+          <Link href="/toro/decisiones" className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900">
             Decisiones
           </Link>
-          <Link
-            href="/toro"
-            className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900"
-          >
+          <Link href="/toro" className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900">
             Preguntar a TORO
           </Link>
         </div>
