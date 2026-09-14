@@ -1,4 +1,4 @@
-name: Phase 1 Task 1 TDD
+name: Phase 1 Validation
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  task1:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,8 +37,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Task 1 test
-        run: npm test -- src/lib/supabase/env.test.ts
+      - name: Test
+        run: npm test
 
       - name: Lint
         run: npm run lint
