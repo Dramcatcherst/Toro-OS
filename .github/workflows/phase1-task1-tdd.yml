@@ -5,6 +5,9 @@ on:
     branches:
       - feat/toro-os-phase-1-executive-shell-20260914
 
+permissions:
+  contents: write
+
 jobs:
   task1:
     runs-on: ubuntu-latest
@@ -21,11 +24,15 @@ jobs:
       - name: Generate lockfile
         run: npm install --package-lock-only --ignore-scripts
 
-      - name: Upload lockfile
-        uses: actions/upload-artifact@v4
-        with:
-          name: phase1-task1-package-lock
-          path: package-lock.json
+      - name: Commit lockfile if needed
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: sync package lock for phase 1"
+            git push origin HEAD:feat/toro-os-phase-1-executive-shell-20260914
+          fi
 
       - name: Install dependencies
         run: npm install
