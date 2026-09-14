@@ -22,11 +22,20 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Inspect installed Next docs
+      - name: Read installed Next docs required by AGENTS
         run: |
-          echo "NEXT_DOCS_BEGIN"
-          find node_modules/next/dist/docs -type f | sort | grep -E 'route|client|server|fetch|data|loading|error' | head -120
-          echo "NEXT_DOCS_END"
+          for file in \
+            node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md \
+            node_modules/next/dist/docs/01-app/01-getting-started/06-fetching-data.md \
+            node_modules/next/dist/docs/01-app/01-getting-started/15-route-handlers.md \
+            node_modules/next/dist/docs/01-app/03-api-reference/01-directives/use-client.md \
+            node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/route.md \
+            node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/loading.md \
+            node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/error.md
+          do
+            echo "===== $file ====="
+            sed -n '1,220p' "$file"
+          done
 
       - name: Test
         run: npm test
