@@ -14,10 +14,18 @@ const TABLES = {
 } as const;
 
 type AirtableRecord = { id: string; fields?: Record<string, unknown> };
-
 type AirtableListPayload = { records?: AirtableRecord[] };
+type Room360AirtableInput = {
+  roomRecords?: AirtableRecord[];
+  amenityLinkRecords?: AirtableRecord[];
+  taskRecords?: AirtableRecord[];
+  validationRecords?: AirtableRecord[];
+  mediaRecords?: AirtableRecord[];
+};
 
-function records(result: { data: unknown | null; error: string | null }) {
+const buildRoom360 = buildRoom360FromAirtable as unknown as (input?: Room360AirtableInput) => ReturnType<typeof buildRoom360FromAirtable>;
+
+function records(result: { data: unknown | null; error: string | null }): AirtableRecord[] {
   if (result.error || !result.data || typeof result.data !== "object") return [];
   const payload = result.data as AirtableListPayload;
   return Array.isArray(payload.records) ? payload.records : [];
@@ -31,7 +39,7 @@ function roomNumberFromKey(roomKey: string) {
 export async function loadRoom360FromAirtable(roomKey: string) {
   const baseId = process.env.AIRTABLE_BASE_ID ?? CANONICAL_TORO_OS_BASE_ID;
   const cleanKey = String(roomKey ?? "").trim().slice(0, 80);
-  if (!cleanKey) return buildRoom360FromAirtable();
+  if (!cleanKey) return buildRoom360();
 
   const roomResult = await readAirtableRecords({
     baseId,
@@ -102,7 +110,7 @@ export async function loadRoom360FromAirtable(roomKey: string) {
     }),
   ]);
 
-  return buildRoom360FromAirtable({
+  return buildRoom360({
     roomRecords,
     amenityLinkRecords: records(amenityResult),
     taskRecords: records(taskResult),
