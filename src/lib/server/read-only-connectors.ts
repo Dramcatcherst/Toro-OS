@@ -1,5 +1,7 @@
 import "server-only";
 
+import { buildAirtableReadQuery } from "../search/airtable-query.mjs";
+
 export type ReadOnlyConnectorResult<T> = {
   configured: boolean;
   externalWrite: false;
@@ -12,6 +14,9 @@ export async function readAirtableRecords(input: {
   baseId: string;
   tableId: string;
   pageSize?: number;
+  fields?: string[];
+  searchFields?: string[];
+  query?: string;
 }): Promise<ReadOnlyConnectorResult<unknown>> {
   const token = process.env.AIRTABLE_TOKEN;
 
@@ -26,7 +31,16 @@ export async function readAirtableRecords(input: {
   }
 
   const url = new URL(`https://api.airtable.com/v0/${encodeURIComponent(input.baseId)}/${encodeURIComponent(input.tableId)}`);
-  url.searchParams.set("pageSize", String(input.pageSize ?? 10));
+  const params = buildAirtableReadQuery({
+    fields: input.fields,
+    searchFields: input.searchFields,
+    query: input.query,
+    pageSize: input.pageSize,
+  });
+
+  for (const [key, value] of params.entries()) {
+    url.searchParams.append(key, value);
+  }
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
