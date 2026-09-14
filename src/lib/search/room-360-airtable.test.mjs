@@ -29,6 +29,7 @@ const raw = {
   mediaRecords: [
     { id: "media1", fields: { asset_key: "MEDIA-25", asset_name: "#25 Bedroom", public_url: "https://example.com/25.jpg", approved_for_web: true, hero_candidate: true } },
     { id: "media2", fields: { asset_key: "MEDIA-25-26", asset_name: "#25-26 Bedroom Shared", public_url: "https://example.com/25-26.jpg", approved_for_web: true } },
+    { id: "media3", fields: { asset_key: "WHATSAPP-INCIDENTAL-25", asset_name: "dc_whatsapp_5ad6fe67936b1e15_image_218940025.JPEG", public_url: "https://example.com/incidental.jpg", approved_for_web: true } },
   ],
 };
 
@@ -64,4 +65,12 @@ test("marks only explicitly paired media as shared", () => {
   assert.equal(view.media.hero[0].identityScope, "exact");
   assert.equal(view.media.web[0].identityScope, "shared");
   assert.deepEqual(view.media.web[0].sharedWith, ["DC-ROOM-26"]);
+});
+
+test("rejects media whose asset name only contains the room number incidentally", () => {
+  const view = buildRoom360FromAirtable(raw);
+  const mediaKeys = Object.values(view.media).flat().map((item) => item.key);
+
+  assert.deepEqual(mediaKeys, ["MEDIA-25", "MEDIA-25-26"]);
+  assert.equal(mediaKeys.includes("WHATSAPP-INCIDENTAL-25"), false);
 });
