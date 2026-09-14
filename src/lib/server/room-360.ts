@@ -104,7 +104,7 @@ export async function loadRoom360FromAirtable(roomKey: string) {
         "hero_candidate",
         "kross_gallery_role",
       ],
-      searchFields: ["asset_key", "asset_name"],
+      searchFields: ["asset_name"],
       query: roomNumber,
       pageSize: 25,
     }),
