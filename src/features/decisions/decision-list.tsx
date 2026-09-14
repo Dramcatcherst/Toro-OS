@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 
+import { DataState } from "@/components/toro/data-state";
+
 import { resolveDecision, type DecisionAction } from "./actions";
 import type { DecisionCard } from "./types";
 
@@ -91,6 +93,7 @@ function DecisionActions({ decision }: { decision: DecisionCard }) {
         </Link>
       </div>
 
+      {isPending ? <p role="status" className="text-sm text-neutral-500">Registrando acción…</p> : null}
       {message ? (
         <p role="status" className="text-sm text-neutral-600">
           {message}
@@ -102,7 +105,7 @@ function DecisionActions({ decision }: { decision: DecisionCard }) {
 
 export function DecisionList({ decisions }: DecisionListProps) {
   if (decisions.length === 0) {
-    return <p className="text-sm text-neutral-600">No hay decisiones pendientes.</p>;
+    return <DataState variant="empty" detail="No hay decisiones pendientes en la cola gobernada." />;
   }
 
   return (
