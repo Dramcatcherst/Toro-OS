@@ -7,12 +7,17 @@ function projectUnit(unit) {
   };
 }
 
-function projectMedia(asset) {
+function projectMedia(asset, roomKey) {
+  const linkedRooms = Array.isArray(asset.roomKeys) ? asset.roomKeys : [];
+  const sharedWith = linkedRooms.filter((key) => key && key !== roomKey);
+
   return {
     key: asset.key,
     name: asset.name ?? "",
     publicUrl: asset.publicUrl ?? "",
     approved: Boolean(asset.approved),
+    identityScope: sharedWith.length ? "shared" : "exact",
+    sharedWith,
   };
 }
 
@@ -55,11 +60,11 @@ function uniqueByKey(items = []) {
   return output;
 }
 
-function mediaBuckets(media = []) {
+function mediaBuckets(media = [], roomKey = "") {
   const buckets = { hero: [], web: [], kross: [], pending: [] };
 
   for (const asset of media) {
-    const projected = projectMedia(asset);
+    const projected = projectMedia(asset, roomKey);
     if (asset.role === "hero") buckets.hero.push(projected);
     else if (asset.role === "web") buckets.web.push(projected);
     else if (asset.role === "kross") buckets.kross.push(projected);
@@ -102,7 +107,7 @@ export function buildRoom360(input = {}) {
       directBookingUrl: input.kross?.directBookingUrl ?? "",
       syncStatus: input.kross?.syncStatus ?? "",
     },
-    media: mediaBuckets(input.media),
+    media: mediaBuckets(input.media, roomKey),
     operation: {
       tasks: uniqueByKey((input.tasks ?? []).filter((item) => hasExactEntityLink(item, roomKey))).map(projectTask),
       validations: uniqueByKey(
