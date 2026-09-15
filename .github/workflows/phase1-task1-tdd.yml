@@ -37,6 +37,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Production dependency audit
+        continue-on-error: true
+        run: npm audit --omit=dev
+
       - name: Test
         run: npm test
 
