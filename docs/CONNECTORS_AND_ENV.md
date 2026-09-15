@@ -23,19 +23,24 @@ Founder authorization is not inferred from `ADMIN`. It requires explicit Auth Ap
 
 ## TORO Phase 1 — Protected E2E
 
-`tests/e2e/toro-phase-1.spec.ts` consumes these names:
+`tests/e2e/toro-phase-1.spec.ts` and `.github/workflows/phase1-preview-e2e.yml` use these names:
 
 - `TORO_E2E_BASE_URL`
 - `TORO_E2E_FOUNDER_EMAIL`
 - `TORO_E2E_FOUNDER_PASSWORD`
 - `TORO_E2E_RESTRICTED_EMAIL`
 - `TORO_E2E_RESTRICTED_PASSWORD`
+- `VERCEL_AUTOMATION_BYPASS_SECRET` (Vercel Deployment Protection automation bypass)
 - `TORO_E2E_DECISION_TITLE` (only for the disposable mutation fixture)
 - `TORO_E2E_MUTATION_ENABLED` (`true` only while the disposable fixture is present)
 
-Passwords must be supplied only through protected CI/local environment secrets. Never commit them, paste them into chat, store them in Airtable, or expose them to Vercel public runtime variables.
+The protected Vercel Preview requires the automation bypass secret for CI. Playwright sends it only as the `x-vercel-protection-bypass` request header and requests the bypass cookie. Never place the bypass secret in public/client environment variables.
+
+Passwords and the Vercel automation bypass secret must be supplied only through protected CI/local environment secrets. Never commit them, paste them into chat, store them in Airtable, or expose them to Vercel public runtime variables.
 
 The restricted E2E identity must be a dedicated non-Founder identity; do not silently repurpose a real staff account. Mutation E2E may act only on a clearly disposable test decision, never on a live business decision.
+
+The Phase 1 E2E workflow may complete with a clear `credential gate pending` notice when protected secrets are not configured. That state is **not** an E2E pass; Stage A remains blocked until Playwright actually executes the Founder and restricted paths.
 
 ## Internal Approval Ledger
 
