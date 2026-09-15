@@ -1,12 +1,12 @@
 # TORO OS Master Plan v2 — Adoption + Operational Independence
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to execute each stage task-by-task. This master coordinates the product program; detailed feature implementation remains in the phase plans and must follow TDD.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to execute each stage task-by-task. This master coordinates the product program; detailed implementation remains in stage plans and must follow TDD.
 
-**Goal:** Make TORO OS Dreamcatcher's single mobile-first, role-based operating interface while reducing Airtable to governed backup/reference use and preserving Kross, Alegra and other specialist systems as domain authorities.
+**Goal:** Make TORO OS Dreamcatcher's single mobile-first, role-based operating interface while reducing Airtable to governed backup/reference use and preserving Kross, Alegra, WeSpeak and other specialist systems as domain authorities.
 
-**Architecture:** TORO OS is the front door. Supabase is canonical for TORO-owned structured data and governance. Kross remains authority for reservations, live availability/rates/assignment/payments; Alegra remains fiscal/accounting authority; WeSpeak and other specialist systems keep their approved scopes. Airtable is not a required runtime or daily operating interface after cutover; it may remain as one or a few justified backup/reference bases.
+**Architecture:** TORO OS is the front door. Supabase is canonical for TORO-owned structured data and governance. Kross remains authority for reservations/live availability/rates/assignment/payments; Alegra remains fiscal/accounting authority; WeSpeak/WhatsApp remains a specialist communication channel. Airtable must not be required by production runtime or daily operations after cutover, but may remain as one or a few justified backup/reference bases.
 
-**Tech Stack:** Next.js App Router; current Phase 1 branch uses Next.js `16.3.5`, React `19.2.4`, TypeScript 5, Tailwind 4, Supabase Postgres/Auth/RLS/RPC, Vitest, Testing Library and Playwright.
+**Tech Stack:** Next.js App Router; current Phase 1 uses Next.js `16.3.5`, React `19.2.4`, TypeScript 5, Tailwind 4, Supabase Postgres/Auth/RLS/RPC, Vitest, Testing Library, Playwright and Vercel Preview.
 
 **Spec:** `docs/superpowers/specs/2026-09-14-toro-os-role-based-interface-design.md`
 
@@ -22,7 +22,7 @@
 - Never treat an Airtable copy alone as disaster recovery. Critical data requires an independent artifact plus restore evidence.
 - No service-role secret in browser code. Browser/runtime uses publishable credentials only.
 - Private data uses least privilege, RLS and controlled server actions/RPC.
-- Sensitive writes must record actor, source, timestamp, action/evidence and a recovery/rollback path where meaningful.
+- Sensitive writes record actor, source, timestamp, action/evidence and a recovery/rollback path where meaningful.
 - Historical tasks/decisions remain historical unless explicitly reactivated.
 - Existing Supabase domain models must be adapted before creating new tables.
 - Do not migrate reloadable Kross/Alegra/OTA history merely to make Airtable smaller.
@@ -59,9 +59,9 @@ Each product stage must pass six gates:
 
 ---
 
-## Current Estate Baseline
+## Current Airtable Estate Baseline
 
-Canonical Airtable registry currently covers **384 registered tables across 8 bases**.
+Canonical registry currently covers **384 registered tables across 8 bases**.
 
 | Base | Registered tables | Unique data remaining |
 | --- | ---: | ---: |
@@ -74,7 +74,7 @@ Canonical Airtable registry currently covers **384 registered tables across 8 ba
 | TORO OS — Command Center | 2 | 0 |
 | Proveedores de Tours · Santa Teresa | 1 | 0 |
 
-Interpretation rule for remaining Airtable content:
+Interpret remaining content by this rule:
 
 - **Unique manual truth** -> preserve/migrate with provenance.
 - **Current TORO operational state** -> canonical Supabase/TORO model.
@@ -82,183 +82,181 @@ Interpretation rule for remaining Airtable content:
 - **Regenerable derived data** -> archive or regenerate; do not force canonical persistence.
 - **Historical snapshots** -> archive/reference unless a current rule explicitly depends on them.
 
+Detailed Airtable plan:
+`docs/superpowers/plans/2026-09-14-toro-os-airtable-operational-independence.md`
+
 ---
 
 # Delivery Order
 
 ## Stage A — Close TORO Core / Phase 1
 
-**Purpose:** get Mauricio into a real, secure, useful TORO experience before expanding the surface.
+**Purpose:** get Mauricio into a real, secure and useful TORO experience before expanding the product.
 
-Detailed implementation plan: `docs/superpowers/plans/2026-09-14-toro-os-phase-1-executive-shell.md`.
+Implementation baseline:
+`docs/superpowers/plans/2026-09-14-toro-os-phase-1-executive-shell.md`
+
+Closeout plan:
+`docs/superpowers/plans/2026-09-14-toro-os-phase-1-closeout.md`
 
 Current implementation includes Auth, fail-closed role resolution, mobile shell, Mauricio Executive Home, Decisions, founder-only audited decision actions, governed global search, loading/error/stale states, logout, rollout runbook and Playwright harness.
 
-### A1 — Runtime identity gate
+Remaining sequence:
 
-- [ ] Identify/create a real Mauricio Founder Auth identity through an authorized Auth flow; do not silently repurpose another user.
-- [ ] Ensure Founder identity has explicit `app_metadata.toro_role=FOUNDER` and active `ADMIN` or `GERENCIA` membership for the relevant organization.
-- [ ] Identify/create a restricted non-Founder test identity.
-- [ ] Verify restricted user cannot see/execute Founder-only decision actions.
+1. Establish a real Mauricio Founder Auth identity and restricted test identity.
+2. Verify Preview public Supabase configuration and current head `READY`.
+3. Run real Founder/restricted Playwright E2E with a disposable test decision fixture only.
+4. Mauricio validates the flow on a real phone.
+5. Re-run tests, lint, build, SQL authorization and production dependency/security checks.
+6. Remove DRAFT and merge PR #15 only after evidence is complete.
 
-### A2 — Preview runtime gate
-
-- [ ] Require latest Phase 1 deployment `READY` in Vercel Preview.
-- [ ] Verify Preview has `NEXT_PUBLIC_SUPABASE_URL` and a publishable Supabase key; never use service role in browser/runtime.
-- [ ] Verify `/toro` redirects unauthenticated users to login and serves the authenticated shell after login.
-
-### A3 — Real E2E + Mauricio parity
-
-- [ ] Run Playwright critical path against the real preview using test credentials supplied only through secure environment variables.
-- [ ] Verify Founder sees the five Executive Home sections and <=5 immediate decisions.
-- [ ] Verify a development/test decision can be resolved and durable audit evidence exists.
-- [ ] Verify restricted denial and search privacy.
-- [ ] Mauricio validates mobile navigation, readability and decision flow on an actual phone.
-
-### A4 — Merge/cutover
-
-- [ ] Keep PR #15 DRAFT until A1-A3 pass.
-- [ ] Re-run tests, lint, build, SQL security assertions and dependency audit on final head.
-- [ ] Merge only after Product/Data/Security/Integrations/Resilience/Adoption gates are evidenced.
-- [ ] Keep legacy Command Center available as read-only/reference until parity evidence is recorded.
-
-**Stage A exit gate:** Mauricio can sign in, see only authorized executive data, resolve a decision with audit evidence, search governed entities and use the experience comfortably from mobile.
+**Stage A exit gate:** Mauricio can sign in, see only authorized executive data, resolve a test decision with audit evidence, search governed entities and use the experience comfortably from mobile.
 
 ---
 
 ## Stage B — Revenue Bridge
 
-**Purpose:** eliminate the separate aging Revenue workstream and retire the live AGENCIAS dependency before it drifts further.
+**Purpose:** eliminate the aging parallel Revenue workstream and retire the active AGENCIAS operational dependency before it drifts further.
 
-Source workstream: PR #12 `feat/revenue-admin-cutover-20260912`.
+Detailed plan:
+`docs/superpowers/plans/2026-09-14-toro-os-revenue-bridge.md`
 
-### B1 — Rebase/extract, do not merge PR #12 blindly
+Source branch/workstream: PR #12 `feat/revenue-admin-cutover-20260912`.
 
-- [ ] After Stage A lands on `main`, compare PR #12 against new `main`.
-- [ ] Extract/rebase only the Revenue-specific private Admin/read model work that is not already superseded by Phase 1 auth/shell patterns.
-- [ ] Open a clean Revenue Bridge PR on top of post-Phase-1 `main`.
-- [ ] Reuse current auth/session/navigation patterns instead of maintaining a parallel login stack.
+Execution rule:
 
-### B2 — Runtime parity
+1. Do not merge PR #12 blindly.
+2. After Phase 1 lands on `main`, compare/extract Revenue-specific work into a clean branch on the new main.
+3. Reuse the shared TORO Auth/session/navigation architecture.
+4. Re-run the canonical Revenue parity contract.
+5. Deploy READY Preview and verify authorized/unauthorized access.
+6. Compare representative live UI values with Airtable AGENCIAS.
+7. Mark AGENCIAS migrated/inactive only after runtime parity.
+8. Close PR #12 as superseded after the clean bridge lands.
 
-- [ ] Deploy Revenue Bridge Preview READY.
-- [ ] Test authorized ADMIN/GERENCIA/REVENUE access and unauthorized denial.
-- [ ] Compare representative agency/room/season/date results with the current Airtable AGENCIAS interface: rack, commission, agency earning, hotel net, conditions and overrides.
-- [ ] Record parity evidence in Supabase dependency ledger.
-
-### B3 — Retire AGENCIAS operational dependency
-
-- [ ] Mark the Airtable AGENCIAS dependency migrated/inactive only after runtime parity.
-- [ ] Do not promote historical legacy villa/product rates into current `revenue.*` without a separately verified current source.
-
-**Stage B exit gate:** Revenue operates inside the TORO architecture and the active Airtable AGENCIAS interface is no longer operationally required.
+**Stage B exit gate:** Revenue is inside TORO architecture and AGENCIAS is no longer operationally required.
 
 ---
 
 ## Stage C — Daily Hotel Operations: TERE + RICO
 
-Detailed source plan: `docs/superpowers/plans/2026-09-14-toro-os-phase-2-reception-operations.md`.
+Source plan:
+`docs/superpowers/plans/2026-09-14-toro-os-phase-2-reception-operations.md`
 
-**Revised rule:** reuse `operations.tasks`, `facilities.maintenance_events`, canonical rooms/knowledge/message templates and existing governance before creating any new ticket/domain table.
+**Execution override:** reuse `operations.tasks`, `facilities.maintenance_events`, canonical rooms, knowledge and guest-message templates before creating any new ticket/domain table.
 
-Execution order:
+Order:
 
 1. **C1 TERE Reception read experience** — arrivals/departures/issues/room-villa knowledge with visible Kross authority/freshness.
 2. **C2 Governed guest messages** — canonical templates, unresolved-token blocking, preview/handoff before send.
-3. **C3 RICO Maintenance** — prioritize first because `facilities.maintenance_events` already contains operational evidence and therefore offers the shortest path to live value.
-4. **C4 Housekeeping** — room readiness, QA, damages, stock alerts; internal TORO state must not rewrite Kross reservation truth.
-5. **C5 Laundry** — load lifecycle, separation controls, incidents, handoff and stock/linen signals.
+3. **C3 RICO Maintenance** — prioritize because `facilities.maintenance_events` already contains operational evidence.
+4. **C4 Housekeeping** — readiness, QA, damages and stock alerts; never rewrite Kross reservation truth.
+5. **C5 Laundry** — load lifecycle, incidents, handoffs and linen/stock signals.
 6. **C6 Controlled writes + rollout** — enable only after role, audit, stale-state and parity tests.
 
-**Stage C exit gate:** reception, maintenance, housekeeping and laundry can perform their common mobile workflows without raw Airtable; Kross boundaries remain explicit.
+**Stage C exit gate:** reception, maintenance, housekeeping and laundry perform common mobile workflows without raw Airtable; Kross boundaries remain explicit.
 
 ---
 
 ## Stage D — Management: Projects + Knowledge, then FIONA
 
-Detailed source plan: `docs/superpowers/plans/2026-09-14-toro-os-phase-3-projects-knowledge-finance.md`.
+Source plan:
+`docs/superpowers/plans/2026-09-14-toro-os-phase-3-projects-knowledge-finance.md`
 
 ### D1 — Projects + Knowledge first
 
 Existing foundation already includes `operations.projects`, `operations.tasks` and `operations.knowledge_items`.
 
-- [ ] Build a project portfolio from existing canonical records before inventing new project/task tables.
-- [ ] Keep archived/historical tasks out of the active portfolio unless explicitly reactivated.
-- [ ] Build knowledge browsing/search with provenance, verification state and review/freshness badges.
-- [ ] Fold DreamTeam Knowledge OS residual unique content into the governed knowledge model when verified.
+- Build the portfolio from existing records before creating project/task tables.
+- Keep archived/historical work out of the active portfolio unless explicitly reactivated.
+- Expose provenance, verification and freshness in knowledge.
+- Fold DreamTeam Knowledge OS residual unique content into governed knowledge only after semantic verification.
 
-### D2 — FIONA Finance after Projects/Knowledge
+### D2 — FIONA Finance second
 
-- [ ] Treat Alegra as fiscal authority and banks/Kross as source evidence, not as ledgers to reproduce blindly.
-- [ ] Populate `finance.*` through governed imports/read models only where an analytical or workflow need exists.
-- [ ] Build exception/close/reconciliation views before raw transaction editing.
-- [ ] Keep Finance role-restricted and server-side.
+- Alegra remains fiscal authority; banks/Kross remain source evidence.
+- Populate `finance.*` only where a real analytical/workflow need exists.
+- Prefer exception/close/reconciliation views over raw ledger editing.
+- Keep finance server-side and role-restricted.
 
-**Stage D exit gate:** projects and knowledge have one governed home; Finance provides useful restricted analysis/workflow without impersonating Alegra.
+**Stage D exit gate:** projects and knowledge have one governed home; Finance is useful and restricted without impersonating Alegra.
 
 ---
 
 ## Stage E — Systems, Resilience, Admin, then Growth
 
-Detailed source plan: `docs/superpowers/plans/2026-09-14-toro-os-phase-4-growth-systems-admin.md`.
+Source plan:
+`docs/superpowers/plans/2026-09-14-toro-os-phase-4-growth-systems-admin.md`
 
-Revised execution order:
+Execution order override:
 
 1. **E1 SOBRESITO Systems Health** — connector/deployment/sync/freshness exceptions first.
-2. **E2 Backup + Restore + DR** — real artifacts, restore drills, ownership, Airtable estate health.
+2. **E2 Backup + Restore + DR** — real artifacts, restore drills, ownership and Airtable estate health.
 3. **E3 Admin** — permissions, role changes, audit and rollout controls.
-4. **E4 SKY Growth** — campaigns, SEO, media approvals, offers, experience/provider readiness.
-5. **E5 Privacy-safe telemetry** — adoption and failure signals without guest/bank/secret payload leakage.
+4. **E4 SKY Growth** — campaigns, SEO, media approvals, offers and experience/provider readiness.
+5. **E5 Privacy-safe telemetry** — adoption/failure signals without guest/bank/secret payload leakage.
 
-**Stage E exit gate:** operators can see system health and recovery state, permissions are governed, Growth uses verified content, and the full product has product-wide critical-path evidence.
-
----
-
-# Airtable Consolidation Track
-
-Airtable work is now driven by operational dependency and unique truth, not by raw table count.
-
-Recommended order:
-
-1. **Command Center** — 2 tables, 18 historical rows preserved, unique remaining 0. Move to backup/reference after Phase 1 parity + automation/consumer audit.
-2. **DreamTeam Knowledge OS** — only one unique table remains (`Waste & Recycling`, 5 rows); validate and preserve it early.
-3. **Master Brain** — prioritize runtime fallback removal, guest-communication semantic diff, external mappings redaction and the 21 unique tables.
-4. **Inventory & Assets** — inventory its 25 tables record-level and map to existing `assets`, `facilities`, `risk`, knowledge and supplier models before creating anything new.
-5. **Sistema Operativo Central** — process by domain, not by 118-table mega-migration. Archive/regenerate external history and derived data; migrate only current unique business truth.
-6. **WEB / Provider / Main physical retirement** — keep legacy delete-readiness gates for optional destructive retirement, but do not let deletion distract from operational independence.
-
-Physical Airtable deletion remains separately authorized. No software phase may delete bases automatically.
+**Stage E exit gate:** system/recovery health is visible, permissions are governed, Growth uses verified content, and product-wide critical paths are evidenced.
 
 ---
 
 # Validation Strategy Without Supabase Branching
 
-The current Supabase plan does not provide Development Branching. Do not repeatedly attempt to create a branch unless plan capability changes.
+Current Supabase plan does not support Development Branching. Do not repeatedly attempt branch creation unless account capability changes.
 
-Accepted validation sequence for database changes:
+Accepted database-change sequence:
 
-1. TDD at application/contract layer.
-2. Apply migration to an **isolated PostgreSQL CI fixture** that reproduces required schemas/roles/helpers; run positive and negative authorization assertions.
-3. Run production **schema preflight** for required tables, columns, helper functions and RLS state.
-4. Prepare rollback/reversal path for the exact change.
-5. Apply reviewed migration to production only when the change is fail-closed and preflight-compatible.
-6. Immediately run post-DDL assertions and Supabase security advisor.
-7. Do not perform test mutations against real business records; use a dedicated test fixture only where explicitly safe.
-
-This replaces the obsolete requirement that every Phase 1 migration first use Supabase Development Branching.
+1. Write application/contract tests first.
+2. Validate SQL in isolated PostgreSQL CI with Supabase-compatible fixtures for RLS/JWT contracts that can be simulated faithfully.
+3. Run production schema preflight: required schemas/tables/columns/helpers/privileges must exist.
+4. Prepare explicit rollback SQL or a safe forward-fix path.
+5. Apply the reviewed minimal migration to production only after isolated validation/preflight pass.
+6. Immediately run post-migration authorization checks and Supabase security advisor.
+7. Never mutate live business rows merely to prove a migration. Use disposable fixtures only where the environment safely supports them.
 
 ---
 
-# Current Program State at v2 Adoption
+# Airtable Operational Independence Order
 
-- Phase 1 application work: approximately 90%; PR #15 remains DRAFT/mergeable pending real identity/E2E/mobile gates.
-- Phase 1 database migrations and Founder organization-membership hardening have been applied and SQL authorization assertions passed.
-- Phase 1 Preview deployments are reaching READY.
-- Current Phase 1 branch uses patched Next.js `16.3.5`.
-- Revenue PR #12 remains a separate DRAFT and must be converged through Stage B instead of allowed to drift indefinitely.
-- Airtable canonical registry: 384 tables / 8 bases; operational independence is incomplete.
-- `Legacy Airtable Phase-1 delete readiness` remains a separate legacy metric; do not use it as TORO OS overall progress.
+1. **Command Center** — unique remaining 0; retire operational use after Phase 1 parity + automation/consumer audit.
+2. **DreamTeam Knowledge OS** — validate/preserve remaining `Waste & Recycling` unique content.
+3. **Master Brain** — remove runtime fallback risk first, then domain parity.
+4. **Inventory & Assets** — map 25 tables to existing `assets`, `facilities`, `risk`, knowledge/supplier models before creating new structures.
+5. **Sistema Operativo Central** — reduce 118 tables by domain; migrate current unique business truth only.
+6. **WEB / Provider / Main physical retirement** — keep the original delete-readiness gates only for optional destructive retirement.
 
-# Next Single Highest-Impact Action
+Physical deletion remains separately authorized and is never required for TORO product completion.
 
-Close **A1 Founder Auth**: safely create/identify Mauricio's real TORO Auth identity with explicit Founder metadata and organization membership, then create/identify one restricted test identity. That unlocks real Preview E2E and mobile parity without opening another major workstream.
+---
+
+# Progress Reporting
+
+Do not publish one blended percentage that implies precision across unlike workstreams.
+
+Report at least:
+
+- `TORO Core / Stage A`
+- `Revenue Bridge / Stage B`
+- `Daily Operations / Stage C`
+- `Management / Stage D`
+- `Systems + Adoption / Stage E`
+- `Airtable operational independence`
+- `Legacy Airtable delete readiness` only when discussing optional physical retirement.
+
+The current overall program estimate may be used only as a broad planning range, with the component tracks shown beside it.
+
+---
+
+# Program Definition of Done
+
+TORO OS is complete when:
+
+- Mauricio and representative staff operate through one role-based mobile-first interface.
+- Supabase owns TORO canonical truth with provenance/freshness/governance.
+- Kross, Alegra, WeSpeak and specialist systems retain their domain authority without unnecessary duplication.
+- TERE, RICO, FIONA, SKY and SOBRESITO share the same governed architecture.
+- No critical runtime or daily workflow depends on Airtable.
+- Unique current business truth has a governed destination.
+- Critical backups have restore evidence and named recovery ownership.
+- Airtable remains only as documented backup/reference, ideally one base or a few justified bases.
+- The six gates PRODUCT, DATA, SECURITY, INTEGRATIONS, RESILIENCE and ADOPTION pass for production-critical paths.
