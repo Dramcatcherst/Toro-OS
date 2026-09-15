@@ -8,6 +8,7 @@ on:
       - 'supabase/migrations/20260914080000_toro_decision_read_model.sql'
       - 'supabase/migrations/20260914082000_toro_decision_actions.sql'
       - 'supabase/migrations/20260914084000_toro_global_search.sql'
+      - 'supabase/migrations/20260915040000_toro_search_revoked_membership_guard.sql'
       - 'tests/sql/**'
       - '.github/workflows/phase1-sql-validation.yml'
   workflow_dispatch:
@@ -43,5 +44,6 @@ jobs:
           psql -f supabase/migrations/20260914080000_toro_decision_read_model.sql
           psql -f supabase/migrations/20260914082000_toro_decision_actions.sql
           psql -f supabase/migrations/20260914084000_toro_global_search.sql
+          psql -f supabase/migrations/20260915040000_toro_search_revoked_membership_guard.sql
       - name: Assert authorization, audit and search contracts
         run: psql -f tests/sql/phase1_assertions.sql
