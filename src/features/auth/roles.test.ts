@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
 
 import { getRoleNavigation } from "./role-nav";
-import { resolveToroRole } from "./roles";
+import { resolveToroRole, type ToroRole } from "./roles";
+
+const toroRoles: ToroRole[] = [
+  "FOUNDER",
+  "GERENCIA",
+  "RECEPCION",
+  "OPERACIONES",
+  "FINANZAS",
+  "GROWTH",
+  "SYSTEMS",
+];
 
 describe("resolveToroRole", () => {
   it("uses an explicit canonical TORO role for the founder", () => {
@@ -25,6 +35,24 @@ describe("resolveToroRole", () => {
 });
 
 describe("getRoleNavigation", () => {
+  it.each(toroRoles)("only enables routes that exist for %s", (role) => {
+    const enabledHrefs = getRoleNavigation(role).flatMap((item) =>
+      item.href ? [item.href] : [],
+    );
+
+    expect(enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href))).toBe(true);
+  });
+
+  it("keeps future founder modules visible without an actionable destination", () => {
+    const navigation = getRoleNavigation("FOUNDER");
+
+    for (const label of ["Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas"]) {
+      const item = navigation.find((candidate) => candidate.label === label);
+      expect(item).toMatchObject({ label, availability: "coming-soon" });
+      expect(item?.href).toBeUndefined();
+    }
+  });
+
   it("gives founder the full executive navigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
       "Inicio",

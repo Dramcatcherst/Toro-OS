@@ -8,10 +8,17 @@ export function DesktopNav({ items }: { items: NavItem[] }) {
       <div className="mb-6 text-lg font-semibold">TORO OS</div>
       <ul className="space-y-1">
         {items.map((item) => (
-          <li key={item.href}>
-            <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-black/5" href={item.href}>
-              {item.label}
-            </Link>
+          <li key={item.label}>
+            {item.availability === "available" ? (
+              <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-black/5" href={item.href}>
+                {item.label}
+              </Link>
+            ) : (
+              <span aria-disabled="true" className="block rounded-xl px-3 py-2 text-sm text-neutral-500">
+                <span className="block">{item.label}</span>
+                <span className="block text-xs">Próximamente</span>
+              </span>
+            )}
           </li>
         ))}
       </ul>

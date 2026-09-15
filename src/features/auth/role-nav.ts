@@ -1,54 +1,61 @@
 import type { ToroRole } from "./roles";
 
-export type NavItem = {
-  label: string;
-  href: string;
-};
+export type NavItem =
+  | {
+      label: string;
+      availability: "available";
+      href: string;
+    }
+  | {
+      label: string;
+      availability: "coming-soon";
+      href?: never;
+    };
 
 const founderNavigation: NavItem[] = [
-  { label: "Inicio", href: "/toro" },
-  { label: "Decisiones", href: "/toro/decisiones" },
-  { label: "Hotel", href: "/toro/hotel" },
-  { label: "Huéspedes", href: "/toro/huespedes" },
-  { label: "Dinero", href: "/toro/dinero" },
-  { label: "Proyectos", href: "/toro/proyectos" },
-  { label: "Equipo", href: "/toro/equipo" },
-  { label: "Conocimiento", href: "/toro/conocimiento" },
-  { label: "Sistemas", href: "/toro/sistemas" },
+  { label: "Inicio", availability: "available", href: "/toro" },
+  { label: "Decisiones", availability: "available", href: "/toro/decisiones" },
+  { label: "Hotel", availability: "coming-soon" },
+  { label: "Huéspedes", availability: "coming-soon" },
+  { label: "Dinero", availability: "coming-soon" },
+  { label: "Proyectos", availability: "coming-soon" },
+  { label: "Equipo", availability: "coming-soon" },
+  { label: "Conocimiento", availability: "coming-soon" },
+  { label: "Sistemas", availability: "coming-soon" },
 ];
 
 const navigationByRole: Record<ToroRole, NavItem[]> = {
   FOUNDER: founderNavigation,
   GERENCIA: founderNavigation.filter((item) => item.label !== "Sistemas"),
   RECEPCION: [
-    { label: "Inicio", href: "/toro" },
-    { label: "Huéspedes", href: "/toro/huespedes" },
-    { label: "Hotel", href: "/toro/hotel" },
-    { label: "Conocimiento", href: "/toro/conocimiento" },
+    { label: "Inicio", availability: "available", href: "/toro" },
+    { label: "Huéspedes", availability: "coming-soon" },
+    { label: "Hotel", availability: "coming-soon" },
+    { label: "Conocimiento", availability: "coming-soon" },
   ],
   OPERACIONES: [
-    { label: "Inicio", href: "/toro" },
-    { label: "Hotel", href: "/toro/hotel" },
-    { label: "Equipo", href: "/toro/equipo" },
-    { label: "Conocimiento", href: "/toro/conocimiento" },
+    { label: "Inicio", availability: "available", href: "/toro" },
+    { label: "Hotel", availability: "coming-soon" },
+    { label: "Equipo", availability: "coming-soon" },
+    { label: "Conocimiento", availability: "coming-soon" },
   ],
   FINANZAS: [
-    { label: "Inicio", href: "/toro" },
-    { label: "Dinero", href: "/toro/dinero" },
-    { label: "Proyectos", href: "/toro/proyectos" },
-    { label: "Conocimiento", href: "/toro/conocimiento" },
+    { label: "Inicio", availability: "available", href: "/toro" },
+    { label: "Dinero", availability: "coming-soon" },
+    { label: "Proyectos", availability: "coming-soon" },
+    { label: "Conocimiento", availability: "coming-soon" },
   ],
   GROWTH: [
-    { label: "Inicio", href: "/toro" },
-    { label: "Huéspedes", href: "/toro/huespedes" },
-    { label: "Proyectos", href: "/toro/proyectos" },
-    { label: "Conocimiento", href: "/toro/conocimiento" },
+    { label: "Inicio", availability: "available", href: "/toro" },
+    { label: "Huéspedes", availability: "coming-soon" },
+    { label: "Proyectos", availability: "coming-soon" },
+    { label: "Conocimiento", availability: "coming-soon" },
   ],
   SYSTEMS: [
-    { label: "Inicio", href: "/toro" },
-    { label: "Sistemas", href: "/toro/sistemas" },
-    { label: "Proyectos", href: "/toro/proyectos" },
-    { label: "Conocimiento", href: "/toro/conocimiento" },
+    { label: "Inicio", availability: "available", href: "/toro" },
+    { label: "Sistemas", availability: "coming-soon" },
+    { label: "Proyectos", availability: "coming-soon" },
+    { label: "Conocimiento", availability: "coming-soon" },
   ],
 };
 

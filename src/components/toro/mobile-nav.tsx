@@ -12,13 +12,23 @@ export function MobileNav({ items }: { items: NavItem[] }) {
     >
       <ul className="grid grid-cols-5 gap-1">
         {visibleItems.map((item) => (
-          <li key={item.href}>
-            <Link
-              className="flex min-h-12 items-center justify-center rounded-xl px-1 text-center text-xs font-medium hover:bg-black/5"
-              href={item.href}
-            >
-              {item.label}
-            </Link>
+          <li key={item.label}>
+            {item.availability === "available" ? (
+              <Link
+                className="flex min-h-12 items-center justify-center rounded-xl px-1 text-center text-xs font-medium hover:bg-black/5"
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span
+                aria-disabled="true"
+                className="flex min-h-12 flex-col items-center justify-center rounded-xl px-1 text-center text-xs text-neutral-500"
+              >
+                <span className="font-medium">{item.label}</span>
+                <span className="text-[10px]">Próximamente</span>
+              </span>
+            )}
           </li>
         ))}
       </ul>
