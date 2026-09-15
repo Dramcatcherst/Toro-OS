@@ -2,6 +2,41 @@
 
 All connectors in v0.3 are `read_only` or `prepare_only`. External writes remain disabled until role, permission and approval persistence are live.
 
+## TORO Phase 1 — Supabase Auth
+
+Browser/server SSR clients use only the Supabase project URL and a **publishable** key.
+
+Required for TORO Preview/runtime:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (browser-compatible public key)
+- `SUPABASE_PUBLISHABLE_KEY` may be used by server-side code as a compatible public alias, but browser code must not depend on a non-`NEXT_PUBLIC_` variable.
+
+Forbidden in browser/public environment variables:
+
+- Supabase service-role keys
+- Supabase secret keys
+- database passwords
+- user passwords or session tokens
+
+Founder authorization is not inferred from `ADMIN`. It requires explicit Auth App Metadata `toro_role=FOUNDER` plus an active, non-revoked `ADMIN` or `GERENCIA` organization membership.
+
+## TORO Phase 1 — Protected E2E
+
+`tests/e2e/toro-phase-1.spec.ts` consumes these names:
+
+- `TORO_E2E_BASE_URL`
+- `TORO_E2E_FOUNDER_EMAIL`
+- `TORO_E2E_FOUNDER_PASSWORD`
+- `TORO_E2E_RESTRICTED_EMAIL`
+- `TORO_E2E_RESTRICTED_PASSWORD`
+- `TORO_E2E_DECISION_TITLE` (only for the disposable mutation fixture)
+- `TORO_E2E_MUTATION_ENABLED` (`true` only while the disposable fixture is present)
+
+Passwords must be supplied only through protected CI/local environment secrets. Never commit them, paste them into chat, store them in Airtable, or expose them to Vercel public runtime variables.
+
+The restricted E2E identity must be a dedicated non-Founder identity; do not silently repurpose a real staff account. Mutation E2E may act only on a clearly disposable test decision, never on a live business decision.
+
 ## Internal Approval Ledger
 
 Route: `/api/approvals`
