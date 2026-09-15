@@ -5,11 +5,15 @@
 \set admin_id '33333333-3333-3333-3333-333333333333'
 \set restricted_id '44444444-4444-4444-4444-444444444444'
 \set outsider_founder_id 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+\set revoked_id 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
 
 insert into public.user_roles(user_id,org_id,role,status) values
   (:'founder_id', :'org_id', 'ADMIN', 'active'),
   (:'admin_id', :'org_id', 'ADMIN', 'active'),
   (:'restricted_id', :'org_id', 'RECEPCION', 'active');
+
+insert into public.user_roles(user_id,org_id,role,status,revoked_at)
+values (:'revoked_id', :'org_id', 'GERENCIA', 'active', now());
 
 insert into operations.executive_decisions(id,org_id,decision_title,priority,status,recommendation)
 values ('55555555-5555-5555-5555-555555555555', :'org_id', 'Decisión fixture', 'P1', 'Pendiente', 'Probar de forma aislada');
@@ -33,6 +37,16 @@ select set_config('request.jwt.claim.sub', :'restricted_id', false);
 select set_config('request.jwt.claims', jsonb_build_object('sub', :'restricted_id', 'app_metadata', jsonb_build_object('toro_role','RECEPTION'))::text, false);
 set role authenticated;
 do $$ declare n integer; begin select count(*) into n from public.list_my_decisions(5); if n <> 0 then raise exception 'restricted user saw % executive decisions', n; end if; end $$;
+reset role;
+
+-- A revoked membership must not retain global-search visibility even if its status was not cleaned up.
+select set_config('request.jwt.claim.sub', :'revoked_id', false);
+select set_config('request.jwt.claims', jsonb_build_object('sub', :'revoked_id', 'app_metadata', jsonb_build_object('toro_role','GERENCIA'))::text, false);
+set role authenticated;
+do $$ declare n integer; begin
+  select count(*) into n from public.search_toro('Fixture',12);
+  if n <> 0 then raise exception 'revoked membership saw % search results', n; end if;
+end $$;
 reset role;
 
 select set_config('request.jwt.claim.sub', :'admin_id', false);
