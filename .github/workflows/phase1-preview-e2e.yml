@@ -30,7 +30,7 @@ jobs:
       TORO_E2E_RESTRICTED_PASSWORD: ${{ secrets.TORO_E2E_RESTRICTED_PASSWORD }}
       VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
       TORO_E2E_DECISION_TITLE: ${{ secrets.TORO_E2E_DECISION_TITLE }}
-      TORO_E2E_MUTATION_ENABLED: ${{ secrets.TORO_E2E_MUTATION_ENABLED }}
+      TORO_E2E_MUTATION_ENABLED: "false"
     steps:
       - name: Checkout
         uses: actions/checkout@v4

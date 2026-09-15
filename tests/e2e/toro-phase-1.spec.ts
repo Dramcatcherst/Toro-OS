@@ -74,6 +74,11 @@ test.describe("TORO Phase 1 restricted-role guard", () => {
   );
 
   test("restricted user cannot execute founder-only decision actions", async ({ page }) => {
+    test.skip(
+      !mutationEnabled,
+      "Restricted-role mutation test requires TORO_E2E_MUTATION_ENABLED=true.",
+    );
+
     await login(page, restrictedEmail!, restrictedPassword!);
     await page.goto("/toro/decisiones");
 
