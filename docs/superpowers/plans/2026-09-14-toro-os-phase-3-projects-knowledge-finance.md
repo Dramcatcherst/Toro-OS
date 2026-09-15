@@ -1,24 +1,29 @@
-# TORO OS Phase 3 Projects, Knowledge and Finance Implementation Plan
+# TORO OS Stage D — Projects, Knowledge and FIONA Plan v2
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` or `superpowers:executing-plans`. Follow TDD and the Master Plan v2 gates.
 
-**Goal:** Consolidate project/knowledge work into governed TORO modules and deliver a restricted FIONA finance/admin workspace without replacing Alegra as fiscal authority.
+**Goal:** Consolidate project and knowledge work first, then add a restricted FIONA finance/admin experience without recreating Alegra or bank ledgers inside TORO.
 
-**Architecture:** Reuse shared shell, auth, audit and search from Phases 1–2. Projects and knowledge live canonically in Supabase; Finance uses restricted read models/actions over canonical operational evidence plus imported/read-through accounting evidence, never a duplicate fiscal ledger.
+**Architecture:** Reuse existing `operations.projects`, `operations.tasks`, `operations.knowledge_items`, canonical content/governance and the shared TORO shell. Projects/knowledge are TORO-owned domains. Finance is an exception/workflow/read-model layer over governed imports and external authority, not a second accounting system.
 
-**Tech Stack:** Existing TORO Next.js/Supabase stack, Vitest/Playwright.
+**Tech Stack:** TORO Next.js/Supabase stack after Stage C, Vitest/Testing Library/Playwright.
 
 **Spec:** `docs/superpowers/specs/2026-09-14-toro-os-role-based-interface-design.md`
 
 ## Global Constraints
 
-- Historical project/task records remain historical unless explicitly activated.
-- Knowledge items expose provenance, verification and review state.
-- Alegra remains accounting/fiscal authority where applicable.
-- Finance data is restricted to authorized roles and server-side access.
-- No bank/accounting secrets or sensitive payloads enter analytics/logs unnecessarily.
+- Stage D starts after Stage C core adoption, unless read-only work is explicitly independent.
+- Historical project/task records remain historical unless explicitly reactivated.
+- Knowledge exposes provenance, verification and freshness/review state.
+- Alegra remains fiscal/accounting authority.
+- Kross/payment/bank data is source evidence; do not duplicate entire ledgers merely to populate TORO.
+- Finance private data is server-side and role-restricted.
+- Existing Supabase tables are preferred over new schemas/tables.
+- Database DDL validation uses isolated PostgreSQL CI + production preflight/post-DDL advisor on the current plan.
 
 ---
+
+## D1 — Projects + Knowledge First
 
 ### Task 1: Governed project portfolio
 
@@ -28,19 +33,17 @@
 - Create: `src/features/projects/server.test.ts`
 - Create: `src/features/projects/project-portfolio.tsx`
 - Create: `src/app/toro/proyectos/page.tsx`
-- Create: `supabase/migrations/20260914_toro_project_portfolio.sql`
+- Add only a minimal read RPC/view if existing RLS queries are insufficient.
 
-**Interfaces:**
-- Produces `ProjectSummary` with milestone, blocker, nextAction, owner, evidence, confidence/status and source freshness.
+**Produces:** `ProjectSummary` with milestone, blocker, nextAction, owner, evidence, confidence/status and source freshness.
 
-- [ ] Write failing tests excluding archived/historical-only tasks from active portfolio and asserting one current milestone/next action per project.
-- [ ] Run tests; expect FAIL.
-- [ ] Add minimal RLS-respecting view/RPC over existing canonical project/task data; do not create duplicate project tables if existing data suffices.
-- [ ] Build mobile/desktop project portfolio with exceptions first.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add governed project portfolio`.
+- [ ] Write failing tests excluding archived/historical-only tasks from active portfolio.
+- [ ] Assert one current milestone/next action per active project rather than a duplicate task dump.
+- [ ] Implement adapter over existing projects/tasks.
+- [ ] Build exception-first mobile/desktop portfolio.
+- [ ] Verify tests/lint/build PASS.
 
-### Task 2: Knowledge workspace and provenance
+### Task 2: Knowledge workspace + provenance
 
 **Files:**
 - Create: `src/features/knowledge/types.ts`
@@ -48,86 +51,82 @@
 - Create: `src/features/knowledge/server.test.ts`
 - Create: `src/features/knowledge/knowledge-browser.tsx`
 - Create: `src/app/toro/conocimiento/page.tsx`
-- Create: `supabase/migrations/20260914_toro_knowledge_search.sql`
 
-**Interfaces:**
-- Produces authorized search/filter over `operations.knowledge_items`, governance rules, SOPs and canonical room/villa facts.
+- [ ] Write failing tests for verified vs needs-review, audience/visibility filtering, provenance and review timestamps.
+- [ ] Implement authorized read/search over `operations.knowledge_items`, governance rules, hotel facts, room/villa truth and SOPs.
+- [ ] Keep private finance/guest/internal-only knowledge out of broad search.
+- [ ] Build filters: `SOP · Habitaciones/Villas · Políticas · Operación · Sistemas · Archivo`.
+- [ ] Surface source, verification and freshness badges.
+- [ ] Verify tests/lint/build PASS.
 
-- [ ] Write tests for verified vs needs-review state, audience/visibility filtering, source provenance and review timestamps.
-- [ ] Run tests; expect FAIL.
-- [ ] Add RLS-respecting search/read model; private finance/guest knowledge must not leak through broad search.
-- [ ] Build browser with filters `SOP · Habitaciones/Villas · Políticas · Operación · Sistemas · Archivo` and explicit source/review badge.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add governed knowledge workspace`.
+### Task 3: DreamTeam Knowledge residual quick win
 
-### Task 3: FIONA finance executive read model
+Current residual estate shows DreamTeam Knowledge OS with one unique table remaining: `Waste & Recycling`, 5 rows.
+
+- [ ] Compare the five rows semantically with current sustainability/knowledge records.
+- [ ] Preserve unique valid content with source references; do not duplicate if canonical equivalent exists.
+- [ ] Update Airtable registry/migration map so unique remaining becomes zero only with evidence.
+- [ ] Keep source base backup/reference until automation/consumer/archive gates pass.
+
+---
+
+## D2 — FIONA Finance After Projects/Knowledge
+
+### Task 4: Finance executive read model
 
 **Files:**
 - Create: `src/features/finance/types.ts`
 - Create: `src/features/finance/server.ts`
 - Create: `src/features/finance/server.test.ts`
-- Create: `src/app/toro/dinero/page.tsx`
 - Create: `src/features/finance/finance-home.tsx`
-- Create: `supabase/migrations/20260914_toro_finance_read_model.sql`
+- Create: `src/app/toro/dinero/page.tsx`
 
-**Interfaces:**
-- Produces `FinanceSnapshot` with close status, reconciliation exceptions, receivable/payable alerts, tax/reporting blockers and freshness/source labels.
+**Produces:** `FinanceSnapshot` with close status, reconciliation exceptions, receivable/payable alerts, tax/reporting blockers and source/freshness labels.
 
-- [ ] Write failing tests: Reception/Operations denied; FOUNDER/GERENCIA/FINANZAS allowed according to policy; source labels distinguish Alegra/bank/Kross evidence from TORO analytical state.
-- [ ] Run tests; expect FAIL.
-- [ ] Add restricted read model/RPC with explicit org/role checks and no `anon` execute.
-- [ ] Build `/toro/dinero` with exception cards and no raw accounting ledger editing.
-- [ ] Run Supabase negative/positive role tests and app tests; expect PASS.
-- [ ] Commit: `feat: add FIONA finance snapshot`.
+- [ ] Write failing authorization tests: Reception/Operations denied; Founder/Gerencia/Finanzas allowed only by policy.
+- [ ] Assert source labels distinguish Alegra/bank/Kross evidence from TORO analytical state.
+- [ ] Build the smallest restricted read model needed for exceptions/close state.
+- [ ] Do not bulk-copy fiscal history into TORO merely because `finance.*` tables exist.
+- [ ] Build exception cards; no raw accounting ledger editor.
+- [ ] Verify RLS positive/negative cases and tests/lint/build PASS.
 
-### Task 4: Finance/admin controlled actions
+### Task 5: Controlled finance/admin workflow actions
 
 **Files:**
 - Create: `src/features/finance/actions.ts`
 - Create: `src/features/finance/actions.test.ts`
-- Create: `supabase/migrations/20260914_toro_finance_actions.sql`
+- Add controlled RPC only where an existing action boundary is insufficient.
 
-**Interfaces:**
-- Supports internal acknowledge/assign/request-document/approve-TORO-workflow actions only; does not post fiscal entries to Alegra in this phase.
+Allowed initial TORO actions: acknowledge, assign, request document, approve internal workflow.
 
-- [ ] Write tests requiring role and confirmation for approvals; deny any action that would masquerade as an Alegra ledger write.
-- [ ] Run tests; expect FAIL.
-- [ ] Implement audited internal actions with actor/evidence and explicit `external_write=false` unless a later approved connector adds real external action support.
-- [ ] Run tests/RLS checks; expect PASS.
-- [ ] Commit: `feat: add controlled FIONA workflow actions`.
+- [ ] Write failing tests requiring role + confirmation for approvals.
+- [ ] Explicitly deny any action that masquerades as an Alegra fiscal entry.
+- [ ] Implement audited internal actions with `external_write=false` unless a later connector is explicitly approved.
+- [ ] Verify RLS/RPC and app tests PASS.
 
-### Task 5: Cross-module project/knowledge search integration
+### Task 6: Management search integration
 
-**Files:**
-- Modify: `src/features/search/server.ts`
-- Modify: `src/features/search/search.test.ts`
-- Modify: `src/components/toro/app-shell.tsx`
+- [ ] Extend governed search to project/knowledge destinations using existing authorization contracts.
+- [ ] Keep Finance-private text excluded from broad global search unless a separate authorized finance search contract is created.
+- [ ] Verify role filtering and freshness badges.
 
-- [ ] Extend failing tests for project and knowledge results with authorization filtering.
-- [ ] Run tests; expect FAIL.
-- [ ] Extend search RPC/adapter without exposing finance-private text to unauthorized roles.
-- [ ] Verify search destinations and freshness badges.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: extend TORO search to projects and knowledge`.
-
-### Task 6: Phase 3 E2E and rollout
+### Task 7: Stage D rollout
 
 **Files:**
 - Create: `tests/e2e/toro-phase-3.spec.ts`
 - Create: `docs/runbooks/TORO_PHASE_3_ROLLOUT.md`
 
-- [ ] Add E2E for project drill-down, knowledge search, finance role denial and authorized founder/finance read.
-- [ ] Add stale accounting-evidence state asserting visible freshness rather than silent current-looking data.
-- [ ] Run `npm test && npm run lint && npm run build && npx playwright test tests/e2e/toro-phase-3.spec.ts`; expect PASS.
+- [ ] E2E project drill-down.
+- [ ] E2E knowledge search/provenance.
+- [ ] E2E Finance denial and authorized read.
+- [ ] E2E stale accounting evidence visible as stale, not current-looking truth.
 - [ ] Validate with Mauricio/Gerencia and one Finance/Admin user.
-- [ ] Record parity and remaining Airtable knowledge/project dependencies.
-- [ ] Classify replaced Airtable project/knowledge interfaces for archival only after real usage validation.
-- [ ] Commit rollout docs: `docs: add TORO phase 3 rollout runbook`.
+- [ ] Record adoption/parity and residual Airtable project/knowledge dependencies.
 
-## Phase 3 Definition of Done
+## Stage D Definition of Done
 
 - Projects have one governed portfolio rather than duplicate task dumps.
 - Knowledge is searchable with provenance/verification state.
-- Finance data is restricted and clearly separates TORO analytics from Alegra fiscal truth.
-- Internal finance workflow actions are auditable and cannot impersonate fiscal ledger writes.
-- Phase 3 CI/E2E and real-user validation pass.
+- DreamTeam Knowledge residual unique truth is preserved.
+- Finance is restricted and clearly separates TORO workflow/analytics from Alegra fiscal truth.
+- Real-user validation passes before legacy project/knowledge interfaces become backup-only.
