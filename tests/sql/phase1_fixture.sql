@@ -23,7 +23,8 @@ create table public.user_roles (
   user_id uuid not null,
   org_id uuid not null,
   role text not null,
-  status text not null default 'active'
+  status text not null default 'active',
+  revoked_at timestamptz
 );
 
 create or replace function private.has_org_role(p_org_id uuid, p_roles text[])
@@ -33,6 +34,7 @@ returns boolean language sql stable security definer set search_path=public as $
     where ur.user_id = auth.uid()
       and ur.org_id = p_org_id
       and ur.status = 'active'
+      and ur.revoked_at is null
       and ur.role = any(p_roles)
   )
 $$;
