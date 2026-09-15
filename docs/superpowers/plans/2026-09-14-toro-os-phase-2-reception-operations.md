@@ -1,45 +1,46 @@
-# TORO OS Phase 2 Reception and Operations Implementation Plan
+# TORO OS Stage C — TERE + RICO Daily Operations Plan v2
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans`. Follow TDD and the Master Plan v2 quality gates.
 
-**Goal:** Deliver TERE Reception Hub and RICO operational workspaces for reception, housekeeping, laundry and maintenance without replacing Kross transactional authority.
+**Goal:** Deliver the daily mobile workflows that remove raw Airtable from reception, maintenance, housekeeping and laundry without replacing Kross transactional authority.
 
-**Architecture:** Reuse the Phase 1 authenticated shell, role model, audit/evidence pattern and Supabase clients. Build read models and controlled actions per domain; external Kross facts remain read-through/freshly imported and are visibly labeled as external authority.
+**Architecture:** Reuse the Phase 1 shell, Auth, roles, audit patterns and Supabase clients. Prefer adapters/RPCs over existing `operations.tasks`, `facilities.maintenance_events`, canonical rooms, knowledge and guest-message templates before creating new domain tables. Kross-owned truth remains visible as external authority/freshness, never silently copied into TORO as a second PMS.
 
-**Tech Stack:** Existing TORO Next.js/Supabase stack plus the Phase 1 Vitest/Playwright harness.
+**Tech Stack:** TORO Next.js/Supabase stack after Phase 1, Vitest/Testing Library/Playwright.
 
 **Spec:** `docs/superpowers/specs/2026-09-14-toro-os-role-based-interface-design.md`
 
 ## Global Constraints
 
-- Kross remains authority for reservations, availability, assignment, live price and payment.
-- Reception must not invent guest facts, pricing, availability or access codes.
-- `[ACCESS_CODE]` comes from assigned Kross room/unit ZIP Code only after assignment and population are verified.
+- Do not start Stage C writes until Phase 1 exit gate passes.
+- Kross remains authority for reservations, assignment, availability, live price and payments.
+- Reception must not invent guest facts, availability, pricing or access codes.
+- `[ACCESS_CODE]` comes from the assigned Kross room/unit ZIP Code only after assignment and source population are verified.
 - Private guest data remains role-restricted.
-- RICO operational writes are internal TORO state, not PMS writes unless a dedicated approved connector action exists.
+- Internal TORO operational state must not mutate PMS truth unless a dedicated approved connector action exists.
+- Reuse existing canonical models before creating a new `OperationTicket` table.
+- Database DDL uses isolated PostgreSQL CI + production preflight/post-DDL advisor; Supabase Development Branching is not required on the current plan.
 
 ---
 
-### Task 1: Reception Hub read model
+### Task 1: TERE Reception Hub read model
 
 **Files:**
 - Create: `src/features/reception/types.ts`
 - Create: `src/features/reception/server.ts`
 - Create: `src/features/reception/server.test.ts`
-- Create: `src/app/toro/recepcion/page.tsx`
 - Create: `src/features/reception/reception-hub.tsx`
-- Create: `supabase/migrations/20260914_toro_reception_read_model.sql`
+- Create: `src/app/toro/recepcion/page.tsx`
+- Create only if needed: a minimal Supabase migration/read RPC.
 
-**Interfaces:**
-- Produces `ReceptionDay` with arrivals, departures, guest issues, message readiness, room/villa facts and source freshness.
+**Produces:** `ReceptionDay` with arrivals, departures, guest issues, message readiness, room/villa facts and freshness/source labels.
 
-- [ ] Write failing tests asserting Kross-owned fields expose source/freshness and are not writable through the TORO read adapter.
-- [ ] Run `npm test -- src/features/reception/server.test.ts`; expect FAIL.
-- [ ] Add minimal Supabase read model/RPC for canonical TORO knowledge plus approved imported Kross evidence; authenticated Reception/Manager roles only.
-- [ ] Implement `getReceptionDay(date)` and fail closed when live authority is unavailable.
-- [ ] Build `/toro/recepcion` mobile cards for `Llegadas`, `Salidas`, `Pendientes`, `Mensajes`, `Habitaciones/Villas`, `Experiencias`.
-- [ ] Run `npm test -- src/features/reception/server.test.ts && npm run lint && npm run build`; expect PASS.
-- [ ] Commit: `feat: add TERE reception hub`.
+- [ ] Write failing tests that Kross-owned fields are visibly external/read-only and stale/unavailable data fails closed.
+- [ ] Run the targeted test; confirm RED for missing adapter/UI.
+- [ ] Implement the minimal read adapter over canonical TORO data + approved Kross evidence.
+- [ ] Build mobile cards: `Llegadas`, `Salidas`, `Pendientes`, `Mensajes`, `Habitaciones/Villas`, `Experiencias`.
+- [ ] Run targeted tests, lint and build; expect PASS.
+- [ ] Commit the Reception read experience.
 
 ### Task 2: Governed guest-message workflow
 
@@ -47,106 +48,93 @@
 - Create: `src/features/reception/messages.ts`
 - Create: `src/features/reception/messages.test.ts`
 - Create: `src/features/reception/message-composer.tsx`
-- Create: `supabase/migrations/20260914_toro_guest_message_actions.sql`
+- Add controlled RPC/action only if existing canonical APIs are insufficient.
 
-**Interfaces:**
-- Consumes canonical `operations.guest_message_templates`.
-- Produces `prepareGuestMessage({ templateKey, reservationContext })` with source verification and unresolved-token errors.
+**Consumes:** `operations.guest_message_templates`, canonical hotel facts/knowledge and Kross dynamic context.
 
-- [ ] Write failing tests for master templates 01–05, superseded `master_04_one_more_night_checkout` exclusion, unresolved access code blocking and neutral review invitation behavior.
-- [ ] Run tests; expect FAIL.
-- [ ] Add server/RPC guard that refuses inactive/superseded templates and logs actor/template/source/timestamp.
-- [ ] Implement composer with preview, missing-data warnings and explicit send/handoff action; do not auto-send in this phase.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add governed TERE message workflow`.
+- [ ] Write failing tests for active master templates, superseded-template exclusion, unresolved access-code blocking and neutral review invitation behavior.
+- [ ] Verify RED.
+- [ ] Implement `prepareGuestMessage()` with source verification and unresolved-token errors.
+- [ ] Build preview + warnings + explicit send/handoff; do not auto-send yet.
+- [ ] Audit actor/template/source/timestamp for controlled preparation actions.
+- [ ] Verify tests/lint/build PASS.
 
-### Task 3: Shared RICO incident/ticket model
+### Task 3: Reuse-first RICO operational adapter
 
 **Files:**
 - Create: `src/features/operations/types.ts`
 - Create: `src/features/operations/server.ts`
 - Create: `src/features/operations/server.test.ts`
-- Create: `supabase/migrations/20260914_toro_operations_tickets.sql`
 
-**Interfaces:**
-- Produces `OperationTicket` with id, domain, room/area, severity, status, owner, evidence, createdAt, dueAt, resolutionProof.
-- Produces controlled actions `createTicket`, `assignTicket`, `completeTicket`.
+**Decision rule:** inspect `operations.tasks` and `facilities.maintenance_events` first. Create a new normalized ticket table only if the existing model cannot represent required lifecycle/evidence without distortion.
 
-- [ ] Write failing tests for Housekeeping/Laundry/Maintenance role boundaries and mandatory proof on completion for damage/maintenance tickets.
-- [ ] Run tests; expect FAIL.
-- [ ] Add normalized internal ticket table/RLS only if no existing canonical task structure satisfies the contract; otherwise adapt existing canonical tasks through a view/RPC.
-- [ ] Implement server actions with audit evidence and explicit state transitions.
-- [ ] Run tests and RLS negative/positive checks on Supabase branch.
-- [ ] Commit: `feat: add RICO operational ticket model`.
+- [ ] Write failing tests for role boundaries, room/area linkage, severity, owner, evidence and completion proof.
+- [ ] Map existing canonical fields to a shared `OperationWorkItem` contract.
+- [ ] Prove in tests which fields are reused and which extension, if any, is genuinely required.
+- [ ] Implement create/assign/complete controlled actions only for TORO-owned state.
+- [ ] Verify positive/negative RLS/action cases using isolated SQL CI if DDL is introduced.
 
-### Task 4: Housekeeping mobile workspace
+### Task 4: RICO Maintenance — first operational write module
 
-**Files:**
-- Create: `src/app/toro/operacion/aseo/page.tsx`
-- Create: `src/features/operations/housekeeping-board.tsx`
-- Create: `src/features/operations/housekeeping.test.tsx`
-
-**Interfaces:**
-- Consumes `OperationTicket` and canonical room readiness/housekeeping evidence.
-
-- [ ] Write tests for prioritized room list, start/finish flow, damage escalation, QA note and stock alert.
-- [ ] Run tests; expect FAIL.
-- [ ] Build mobile-first cards; no raw grids on primary workflow.
-- [ ] Ensure completion cannot change Kross reservation truth.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add RICO housekeeping workspace`.
-
-### Task 5: Laundry workspace
-
-**Files:**
-- Create: `src/app/toro/operacion/lavanderia/page.tsx`
-- Create: `src/features/operations/laundry-board.tsx`
-- Create: `src/features/operations/laundry.test.tsx`
-
-**Interfaces:**
-- Tracks load status, dry weight, machine/program, incidents and handoff; preserves clean/dirty separation conceptually.
-
-- [ ] Write tests for load lifecycle and invalid skip from received directly to stored.
-- [ ] Run tests; expect FAIL.
-- [ ] Build state machine `received -> sorted -> washing -> drying -> qa -> stored` with incident escape path.
-- [ ] Add controlled internal writes and audit evidence.
-- [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add RICO laundry workspace`.
-
-### Task 6: Maintenance workspace
+**Why first:** `facilities.maintenance_events` already contains real operational evidence, giving the shortest path to live value.
 
 **Files:**
 - Create: `src/app/toro/operacion/mantenimiento/page.tsx`
 - Create: `src/features/operations/maintenance-board.tsx`
 - Create: `src/features/operations/maintenance.test.tsx`
 
-**Interfaces:**
-- Adds asset/equipment context, supplier/cost estimate and proof-of-fix to maintenance tickets.
-
-- [ ] Write tests for severity sorting, room/area linkage, photo/evidence requirement, estimate vs approved cost separation.
-- [ ] Run tests; expect FAIL.
-- [ ] Implement maintenance board and controlled ticket updates.
+- [ ] Write failing tests for severity order, room/area linkage, photo/evidence requirement, estimate vs approved cost and proof-of-fix.
+- [ ] Implement mobile exception-first board using the shared RICO adapter.
+- [ ] Ensure completion writes only audited TORO/facilities state and does not alter Kross reservations.
 - [ ] Run tests/lint/build; expect PASS.
-- [ ] Commit: `feat: add RICO maintenance workspace`.
+- [ ] Validate with one active Maintenance user before enabling broad writes.
 
-### Task 7: Phase 2 E2E, stale states and rollout
+### Task 5: Housekeeping mobile workspace
+
+**Files:**
+- Create: `src/app/toro/operacion/aseo/page.tsx`
+- Create: `src/features/operations/housekeeping-board.tsx`
+- Create: `src/features/operations/housekeeping.test.tsx`
+
+- [ ] Write failing tests for prioritized rooms, start/finish, damage escalation, QA note and stock alert.
+- [ ] Implement card workflow; no raw grids on the primary path.
+- [ ] Keep PMS reservation/room-assignment truth read-only.
+- [ ] Audit TORO-owned status/evidence updates.
+- [ ] Verify tests/lint/build PASS.
+
+### Task 6: Laundry workspace
+
+**Files:**
+- Create: `src/app/toro/operacion/lavanderia/page.tsx`
+- Create: `src/features/operations/laundry-board.tsx`
+- Create: `src/features/operations/laundry.test.tsx`
+
+- [ ] Write failing lifecycle tests for `received -> sorted -> washing -> drying -> qa -> stored` plus incident escape path.
+- [ ] Reuse canonical inventory/operations models where sufficient; avoid creating duplicate stock ledgers.
+- [ ] Implement mobile state transitions and evidence.
+- [ ] Verify invalid lifecycle skips are blocked.
+- [ ] Run tests/lint/build PASS.
+
+### Task 7: Stage C real-user rollout
 
 **Files:**
 - Create: `tests/e2e/toro-phase-2.spec.ts`
 - Create: `docs/runbooks/TORO_PHASE_2_ROLLOUT.md`
 
-- [ ] Add mobile E2E for Reception standard question/message preparation and each RICO role critical workflow.
-- [ ] Add stale/unavailable Kross scenario asserting the UI shows unavailable/stale rather than fabricated truth.
-- [ ] Run `npm test && npm run lint && npm run build && npx playwright test tests/e2e/toro-phase-2.spec.ts`; expect PASS.
-- [ ] Deploy read/limited-write preview and validate with one Reception user and one Operations user per active role.
-- [ ] Record deployment, tested users/roles, parity and residual Airtable dependencies in Supabase evidence.
-- [ ] Only after usage parity classify replaced Airtable operational interfaces/workflows for archival.
-- [ ] Commit rollout docs: `docs: add TORO phase 2 rollout runbook`.
+- [ ] E2E: Reception standard question/message prep.
+- [ ] E2E: Maintenance create/assign/complete with proof.
+- [ ] E2E: Housekeeping critical room flow.
+- [ ] E2E: Laundry lifecycle.
+- [ ] E2E: stale/unavailable Kross shows `stale/unavailable`, never fabricated truth.
+- [ ] Validate Preview with one Reception user and representative Operations users.
+- [ ] Record parity, adoption and residual Airtable dependencies in Supabase.
+- [ ] Only after adoption parity classify replaced Airtable operational interfaces as backup/reference.
 
-## Phase 2 Definition of Done
+## Stage C Definition of Done
 
-- Reception can answer standard questions and prepare governed messages without raw Airtable.
+- Reception resolves common workflows without raw Airtable.
+- Maintenance, Housekeeping and Laundry use focused mobile flows.
 - Kross authority boundaries are explicit and tested.
-- Housekeeping/Laundry/Maintenance use focused mobile workflows with audit evidence.
-- Private guest data remains role-restricted.
-- Phase 2 CI/E2E passes and real-user parity is recorded before Airtable workflow retirement.
+- Private guest data is role-restricted.
+- Critical writes are auditable.
+- Real-user adoption evidence exists before legacy workflow retirement.
