@@ -74,9 +74,14 @@ export async function listMyDecisions({ limit = 5 }: { limit?: number }) {
     throw new Error("Invalid decision payload received from the server.");
   }
 
-  return data.map((raw): DecisionCard => {
+  return data.flatMap((raw): DecisionCard[] => {
     const row = parseDecisionRow(raw);
-    return {
+
+    if (row.status !== "Pendiente") {
+      return [];
+    }
+
+    return [{
       id: row.id,
       title: row.title,
       domain: row.domain,
@@ -88,6 +93,6 @@ export async function listMyDecisions({ limit = 5 }: { limit?: number }) {
       deadline: row.deadline,
       approvalLevel: row.approval_level,
       status: row.status,
-    };
+    } satisfies DecisionCard];
   });
 }

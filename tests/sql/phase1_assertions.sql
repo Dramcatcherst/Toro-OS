@@ -15,8 +15,15 @@ insert into public.user_roles(user_id,org_id,role,status) values
 insert into public.user_roles(user_id,org_id,role,status,revoked_at)
 values (:'revoked_id', :'org_id', 'GERENCIA', 'active', now());
 
-insert into operations.executive_decisions(id,org_id,decision_title,priority,status,recommendation)
-values ('55555555-5555-5555-5555-555555555555', :'org_id', 'Decisión fixture', 'P1', 'Pendiente', 'Probar de forma aislada');
+insert into operations.executive_decisions(id,org_id,decision_title,priority,status,recommendation,decision_value,processed_at,superseded_by)
+values
+  ('55555555-5555-5555-5555-555555555555', :'org_id', 'Decisión pendiente limpia', 'P1', 'Pendiente', 'Probar de forma aislada', null, null, null),
+  ('55555555-5555-5555-5555-555555555552', :'org_id', 'Pendiente con valor', 'P1', 'Pendiente', 'No debe volver a ejecutarse', 'approved', null, null),
+  ('55555555-5555-5555-5555-555555555553', :'org_id', 'Pendiente procesada', 'P1', 'Pendiente', 'No debe volver a ejecutarse', null, '2026-09-14 12:00:00+00', null),
+  ('55555555-5555-5555-5555-555555555554', :'org_id', 'Decisión en ejecución', 'P1', 'En ejecución', 'No debe volver a ejecutarse', null, null, null),
+  ('55555555-5555-5555-5555-555555555558', :'org_id', 'Decisión sin estado', 'P1', null, 'No debe ejecutarse', null, null, null),
+  ('55555555-5555-5555-5555-555555555556', :'org_id', 'Decisión con estado desconocido', 'P1', 'Desconocido', 'No debe ejecutarse', null, null, null),
+  ('55555555-5555-5555-5555-555555555557', :'org_id', 'Decisión sustituida', 'P1', 'Pendiente', 'No debe ejecutarse', null, null, '55555555-5555-5555-5555-555555555555');
 insert into core.rooms(id,org_id,name_es,room_number,room_type,slug)
 values ('66666666-6666-6666-6666-666666666666', :'org_id', 'Habitación Fixture', 25, 'suite', 'habitacion-fixture');
 insert into operations.projects(id,org_id,project_name,project_key,category,status,business_area)
@@ -72,12 +79,52 @@ select set_config('request.jwt.claim.sub', :'founder_id', false);
 select set_config('request.jwt.claims', jsonb_build_object('sub', :'founder_id', 'app_metadata', jsonb_build_object('toro_role','FOUNDER'))::text, false);
 set role authenticated;
 do $$ declare n integer; begin
-  select count(*) into n from public.list_my_decisions(5); if n <> 1 then raise exception 'FOUNDER expected 1 decision, got %', n; end if;
+  select count(*) into n from public.list_my_decisions(20); if n <> 1 then raise exception 'FOUNDER expected 1 actionable decision, got %', n; end if;
+  select count(*) into n from public.list_my_decisions(20) where id = '55555555-5555-5555-5555-555555555555';
+  if n <> 1 then raise exception 'FOUNDER did not receive the clean pending decision'; end if;
+
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555552','approve',null,null); raise exception 'decision with value unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555553','approve',null,null); raise exception 'processed decision unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555554','approve',null,null); raise exception 'in-progress decision unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555558','approve',null,null); raise exception 'null-status decision unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555556','approve',null,null); raise exception 'unknown-status decision unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+  begin perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555557','approve',null,null); raise exception 'superseded decision unexpectedly mutated';
+  exception when others then if sqlerrm not like '%Decision is no longer actionable%' then raise; end if; end;
+
   perform public.resolve_toro_decision('55555555-5555-5555-5555-555555555555','approve','fixture approval',null);
 end $$;
 reset role;
 
 do $$ declare n integer; begin select count(*) into n from public.audit_logs where record_id='55555555-5555-5555-5555-555555555555' and operation='toro_decision_approve'; if n <> 1 then raise exception 'expected one audit log, got %', n; end if; end $$;
+do $$ declare n integer; begin
+  select count(*) into n from public.audit_logs where record_id in (
+    '55555555-5555-5555-5555-555555555552',
+    '55555555-5555-5555-5555-555555555553',
+    '55555555-5555-5555-5555-555555555554',
+    '55555555-5555-5555-5555-555555555558',
+    '55555555-5555-5555-5555-555555555556',
+    '55555555-5555-5555-5555-555555555557'
+  );
+  if n <> 0 then raise exception 'ineligible decisions generated % audit rows', n; end if;
+end $$;
+
+do $$ declare n integer; begin
+  select count(*) into n
+  from operations.executive_decisions
+  where
+    (id = '55555555-5555-5555-5555-555555555552' and status = 'Pendiente' and decision_value = 'approved' and processed_at is null)
+    or (id = '55555555-5555-5555-5555-555555555553' and status = 'Pendiente' and decision_value is null and processed_at = '2026-09-14 12:00:00+00')
+    or (id = '55555555-5555-5555-5555-555555555554' and status = 'En ejecución' and decision_value is null and processed_at is null)
+    or (id = '55555555-5555-5555-5555-555555555558' and status is null and decision_value is null and processed_at is null)
+    or (id = '55555555-5555-5555-5555-555555555556' and status = 'Desconocido' and decision_value is null and processed_at is null)
+    or (id = '55555555-5555-5555-5555-555555555557' and status = 'Pendiente' and decision_value is null and processed_at is null and superseded_by = '55555555-5555-5555-5555-555555555555');
+  if n <> 6 then raise exception 'expected 6 untouched ineligible decisions, got %', n; end if;
+end $$;
 
 select set_config('request.jwt.claim.sub', :'founder_id', false);
 select set_config('request.jwt.claims', jsonb_build_object('sub', :'founder_id', 'app_metadata', jsonb_build_object('toro_role','FOUNDER'))::text, false);

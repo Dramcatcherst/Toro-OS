@@ -20,7 +20,7 @@ const rows = [
     owner: "Mauricio",
     deadline: null,
     approval_level: "founder_approval",
-    status: "En ejecución",
+    status: "Pendiente",
   },
 ];
 
@@ -55,7 +55,34 @@ describe("listMyDecisions", () => {
         owner: "Mauricio",
         deadline: null,
         approvalLevel: "founder_approval",
-        status: "En ejecución",
+        status: "Pendiente",
+      },
+    ]);
+  });
+
+  it("omits decisions whose status is not explicitly pending", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        rows[0],
+        { ...rows[0], id: "00000000-0000-0000-0000-000000000002", status: "En ejecución" },
+        { ...rows[0], id: "00000000-0000-0000-0000-000000000003", status: "Desconocido" },
+      ],
+      error: null,
+    });
+
+    await expect(listMyDecisions({ limit: 5 })).resolves.toEqual([
+      {
+        id: rows[0].id,
+        title: "Decisión P0",
+        domain: "hotel",
+        urgency: "P0",
+        recommendation: "Aprobar",
+        rationale: "Impacto inmediato",
+        evidence: "evidence://1",
+        owner: "Mauricio",
+        deadline: null,
+        approvalLevel: "founder_approval",
+        status: "Pendiente",
       },
     ]);
   });
