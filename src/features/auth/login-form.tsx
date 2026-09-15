@@ -44,7 +44,7 @@ export function LoginForm() {
         <span className="text-sm font-medium">Correo</span>
         <input
           autoComplete="email"
-          className="min-h-12 w-full rounded-xl border border-black/15 bg-white px-3 outline-none focus:border-black"
+          className="min-h-12 w-full rounded-xl border border-black/15 bg-white px-3 text-neutral-950 caret-neutral-950 outline-none focus:border-black"
           onChange={(event) => setEmail(event.target.value)}
           required
           type="email"
@@ -55,7 +55,7 @@ export function LoginForm() {
         <span className="text-sm font-medium">Contraseña</span>
         <input
           autoComplete="current-password"
-          className="min-h-12 w-full rounded-xl border border-black/15 bg-white px-3 outline-none focus:border-black"
+          className="min-h-12 w-full rounded-xl border border-black/15 bg-white px-3 text-neutral-950 caret-neutral-950 outline-none focus:border-black"
           onChange={(event) => setPassword(event.target.value)}
           required
           type="password"
