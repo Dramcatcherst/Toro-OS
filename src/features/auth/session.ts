@@ -11,17 +11,37 @@ export type ToroSession = {
   role: ToroRole;
 };
 
-type UserRoleRow = {
-  roles: { code?: string | null } | { code?: string | null }[] | null;
-};
+function membershipCode(value: unknown): string | null {
+  if (!value || typeof value !== "object") return null;
 
-function roleCodesFromRows(rows: UserRoleRow[]): string[] {
-  return rows.flatMap((row) => {
-    if (Array.isArray(row.roles)) {
-      return row.roles.map((role) => role.code).filter((code): code is string => Boolean(code));
+  const code = (value as { code?: unknown }).code;
+  return typeof code === "string" && code.trim() ? code.trim() : null;
+}
+
+function roleCodesFromRows(rows: unknown): string[] | null {
+  if (!Array.isArray(rows)) return null;
+
+  const codes: string[] = [];
+  for (const row of rows) {
+    if (!row || typeof row !== "object" || !("roles" in row)) return null;
+
+    const roles = (row as { roles: unknown }).roles;
+    if (Array.isArray(roles)) {
+      if (roles.length === 0) return null;
+      for (const role of roles) {
+        const code = membershipCode(role);
+        if (!code) return null;
+        codes.push(code);
+      }
+      continue;
     }
-    return row.roles?.code ? [row.roles.code] : [];
-  });
+
+    const code = membershipCode(roles);
+    if (!code) return null;
+    codes.push(code);
+  }
+
+  return codes;
 }
 
 export async function getToroSession(): Promise<ToroSession | null> {
@@ -44,22 +64,35 @@ export async function getToroSession(): Promise<ToroSession | null> {
       )
     : [];
 
-  const { data: roleRows } = await supabase
+  const { data: roleRows, error: roleError } = await supabase
     .from("user_roles")
     .select("roles(code)")
     .eq("user_id", user.id)
     .eq("status", "active")
     .is("revoked_at", null);
 
+  if (roleError) return null;
+
+  const membershipRoleCodes = roleCodesFromRows(roleRows);
+  if (!membershipRoleCodes?.length) return null;
+
   const role = resolveToroRole({
     explicitToroRole,
     systemRoleCodes: [
       ...metadataRoleCodes,
-      ...roleCodesFromRows((roleRows ?? []) as unknown as UserRoleRow[]),
+      ...membershipRoleCodes,
     ],
   });
 
   if (!role) return null;
+  if (
+    role === "FOUNDER" &&
+    !membershipRoleCodes.some((code) =>
+      ["ADMIN", "GERENCIA"].includes(code.toUpperCase()),
+    )
+  ) {
+    return null;
+  }
 
   const displayNameCandidate =
     user.user_metadata?.display_name ?? user.user_metadata?.full_name;
