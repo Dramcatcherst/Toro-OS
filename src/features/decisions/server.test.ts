@@ -2,6 +2,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const rpc = vi.fn();
 
+vi.mock("@/features/auth/session", () => ({
+  getToroSession: async () => ({
+    userId: "00000000-0000-4000-8000-000000000001",
+    email: "synthetic@example.invalid",
+    displayName: "Synthetic QA",
+    role: "GERENCIA",
+  }),
+}));
+
 vi.mock("@/lib/supabase/server", () => ({
   createServerSupabaseClient: async () => ({ rpc }),
 }));

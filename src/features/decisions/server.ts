@@ -1,5 +1,8 @@
 import "server-only";
 
+import { redirect } from "next/navigation";
+
+import { getToroSession } from "@/features/auth/session";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import type { DecisionApprovalLevel, DecisionCard } from "./types";
@@ -57,6 +60,11 @@ function parseDecisionRow(value: unknown): DecisionRpcRow {
 }
 
 export async function listMyDecisions({ limit = 5 }: { limit?: number }) {
+  const session = await getToroSession();
+  if (!session) {
+    redirect("/login?next=/toro");
+  }
+
   const requestedLimit = Number.isFinite(limit)
     ? Math.min(20, Math.max(1, Math.trunc(limit)))
     : 5;
