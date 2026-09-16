@@ -1,0 +1,51 @@
+name: Phase 1 SQL Validation
+
+on:
+  push:
+    branches:
+      - feat/toro-os-phase-1-executive-shell-20260914
+    paths:
+      - 'supabase/migrations/20260914080000_toro_decision_read_model.sql'
+      - 'supabase/migrations/20260914082000_toro_decision_actions.sql'
+      - 'supabase/migrations/20260914084000_toro_global_search.sql'
+      - 'supabase/migrations/20260915040000_toro_search_revoked_membership_guard.sql'
+      - 'supabase/migrations/20260915164500_toro_decision_actionability_guard.sql'
+      - 'tests/sql/**'
+      - '.github/workflows/phase1-sql-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  sql-validation:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toro_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d toro_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGPASSWORD: postgres
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGDATABASE: toro_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load isolated Supabase-compatible fixture
+        run: psql -f tests/sql/phase1_fixture.sql
+      - name: Apply TORO Phase 1 migrations
+        run: |
+          psql -f supabase/migrations/20260914080000_toro_decision_read_model.sql
+          psql -f supabase/migrations/20260914082000_toro_decision_actions.sql
+          psql -f supabase/migrations/20260914084000_toro_global_search.sql
+          psql -f supabase/migrations/20260915040000_toro_search_revoked_membership_guard.sql
+          psql -f supabase/migrations/20260915164500_toro_decision_actionability_guard.sql
+      - name: Assert authorization, audit and search contracts
+        run: psql -f tests/sql/phase1_assertions.sql
