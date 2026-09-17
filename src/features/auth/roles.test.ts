@@ -41,6 +41,7 @@ describe("getRoleNavigation", () => {
       "/toro/hotel",
       "/toro/proyectos",
       "/toro/conocimiento",
+      "/toro/sistemas",
     ].includes(href))).toBe(true);
   });
 
@@ -62,8 +63,13 @@ describe("getRoleNavigation", () => {
       availability: "available",
       href: "/toro/conocimiento",
     });
+    expect(navigation.find((item) => item.label === "Sistemas")).toEqual({
+      label: "Sistemas",
+      availability: "available",
+      href: "/toro/sistemas",
+    });
 
-    for (const label of ["Huéspedes", "Dinero", "Equipo", "Sistemas"]) {
+    for (const label of ["Huéspedes", "Dinero", "Equipo"]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
@@ -93,6 +99,14 @@ describe("getRoleNavigation", () => {
       label: "Hotel",
       availability: "available",
       href: "/toro/hotel",
+    });
+  });
+
+  it("exposes Systems health to the Systems role", () => {
+    expect(getRoleNavigation("SYSTEMS").find((item) => item.label === "Sistemas")).toEqual({
+      label: "Sistemas",
+      availability: "available",
+      href: "/toro/sistemas",
     });
   });
 
