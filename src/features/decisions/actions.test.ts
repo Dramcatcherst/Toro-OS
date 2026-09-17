@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const rpc = vi.fn();
-const revalidatePath = vi.fn();
+const { rpc, revalidatePath } = vi.hoisted(() => ({
+  rpc: vi.fn(),
+  revalidatePath: vi.fn(),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerSupabaseClient: async () => ({ rpc }),
