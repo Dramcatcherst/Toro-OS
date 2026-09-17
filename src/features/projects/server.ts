@@ -59,6 +59,9 @@ export async function loadProjectDirectory(): Promise<ProjectDirectoryItem[]> {
   if (!session) {
     redirect("/login?next=/toro/proyectos");
   }
+  if (session.role !== "FOUNDER" && session.role !== "GERENCIA") {
+    redirect("/toro");
+  }
 
   const supabase = await createServerSupabaseClient();
   const { data, error } = await supabase
