@@ -15,9 +15,7 @@ const toroRoles: ToroRole[] = [
 
 describe("resolveToroRole", () => {
   it("uses an explicit canonical TORO role for the founder", () => {
-    expect(
-      resolveToroRole({ explicitToroRole: "FOUNDER", systemRoleCodes: ["ADMIN"] }),
-    ).toBe("FOUNDER");
+    expect(resolveToroRole({ explicitToroRole: "FOUNDER", systemRoleCodes: ["ADMIN"] })).toBe("FOUNDER");
   });
 
   it("maps known system roles conservatively", () => {
@@ -36,20 +34,24 @@ describe("resolveToroRole", () => {
 
 describe("getRoleNavigation", () => {
   it.each(toroRoles)("only enables routes that exist for %s", (role) => {
-    const enabledHrefs = getRoleNavigation(role).flatMap((item) =>
-      item.href ? [item.href] : [],
-    );
-
-    expect(
-      enabledHrefs.every((href) =>
-        ["/toro", "/toro/decisiones", "/toro/proyectos", "/toro/conocimiento"].includes(href),
-      ),
-    ).toBe(true);
+    const enabledHrefs = getRoleNavigation(role).flatMap((item) => item.href ? [item.href] : []);
+    expect(enabledHrefs.every((href) => [
+      "/toro",
+      "/toro/decisiones",
+      "/toro/hotel",
+      "/toro/proyectos",
+      "/toro/conocimiento",
+    ].includes(href))).toBe(true);
   });
 
   it("exposes implemented founder modules and keeps the rest non-actionable", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
+    expect(navigation.find((item) => item.label === "Hotel")).toEqual({
+      label: "Hotel",
+      availability: "available",
+      href: "/toro/hotel",
+    });
     expect(navigation.find((item) => item.label === "Proyectos")).toEqual({
       label: "Proyectos",
       availability: "available",
@@ -61,7 +63,7 @@ describe("getRoleNavigation", () => {
       href: "/toro/conocimiento",
     });
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Equipo", "Sistemas"]) {
+    for (const label of ["Huéspedes", "Dinero", "Equipo", "Sistemas"]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
@@ -70,28 +72,34 @@ describe("getRoleNavigation", () => {
 
   it("gives founder the full executive navigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
-      "Inicio",
-      "Decisiones",
-      "Hotel",
-      "Huéspedes",
-      "Dinero",
-      "Proyectos",
-      "Equipo",
-      "Conocimiento",
-      "Sistemas",
+      "Inicio", "Decisiones", "Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas",
     ]);
   });
 
-  it("does not expose finance or systems navigation to reception", () => {
-    const labels = getRoleNavigation("RECEPCION").map((item) => item.label);
-    expect(labels).toContain("Huéspedes");
+  it("exposes Hotel to reception but not finance or systems modules", () => {
+    const navigation = getRoleNavigation("RECEPCION");
+    expect(navigation.find((item) => item.label === "Hotel")).toEqual({
+      label: "Hotel",
+      availability: "available",
+      href: "/toro/hotel",
+    });
+    const labels = navigation.map((item) => item.label);
     expect(labels).not.toContain("Dinero");
     expect(labels).not.toContain("Sistemas");
+  });
+
+  it("exposes Hotel to operations", () => {
+    expect(getRoleNavigation("OPERACIONES").find((item) => item.label === "Hotel")).toEqual({
+      label: "Hotel",
+      availability: "available",
+      href: "/toro/hotel",
+    });
   });
 
   it("keeps finance away from guest-private operational navigation", () => {
     const labels = getRoleNavigation("FINANZAS").map((item) => item.label);
     expect(labels).toContain("Dinero");
     expect(labels).not.toContain("Huéspedes");
+    expect(labels).not.toContain("Hotel");
   });
 });
