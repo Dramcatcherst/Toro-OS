@@ -21,7 +21,7 @@ const founderNavigation: NavItem[] = [
   { label: "Proyectos", availability: "available", href: "/toro/proyectos" },
   { label: "Equipo", availability: "coming-soon" },
   { label: "Conocimiento", availability: "available", href: "/toro/conocimiento" },
-  { label: "Sistemas", availability: "coming-soon" },
+  { label: "Sistemas", availability: "available", href: "/toro/sistemas" },
 ];
 
 const navigationByRole: Record<ToroRole, NavItem[]> = {
@@ -53,7 +53,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
   ],
   SYSTEMS: [
     { label: "Inicio", availability: "available", href: "/toro" },
-    { label: "Sistemas", availability: "coming-soon" },
+    { label: "Sistemas", availability: "available", href: "/toro/sistemas" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],
