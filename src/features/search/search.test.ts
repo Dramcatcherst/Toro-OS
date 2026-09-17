@@ -46,6 +46,33 @@ describe("searchToro", () => {
     ]);
   });
 
+  it("makes only canonical Room 360 destinations actionable for room results", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "room",
+          entity_id: "00000000-0000-0000-0000-000000000025",
+          title: "Habitación 25",
+          subtitle: "suite · Hab. 25",
+          destination_path: "/toro/habitaciones/DC-ROOM-25",
+          freshness: "2026-09-17T18:30:00Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("25")).resolves.toEqual([
+      {
+        entityType: "room",
+        id: "00000000-0000-0000-0000-000000000025",
+        title: "Habitación 25",
+        subtitle: "suite · Hab. 25",
+        href: "/toro/habitaciones/DC-ROOM-25",
+        freshness: "2026-09-17T18:30:00Z",
+      },
+    ]);
+  });
+
   it("keeps only explicitly implemented TORO destinations actionable", async () => {
     rpc.mockResolvedValue({
       data: [
