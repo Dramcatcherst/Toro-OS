@@ -15,6 +15,7 @@ import type {
 
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const operationalStaleAfterMs = 48 * 60 * 60 * 1000;
 
 type ExecutiveTaskRow = {
   id: string;
@@ -100,18 +101,28 @@ function healthForOperationalSources({
   failedSources: string[];
   freshness: string[];
 }): ExecutiveSystemHealth {
+  const checkedAt = latestTimestamp(freshness);
+
   if (failedSources.length) {
     return {
       status: "degraded",
       label: `Cobertura parcial · fuente sin respuesta: ${failedSources.join(", ")}`,
-      checkedAt: latestTimestamp(freshness),
+      checkedAt,
+    };
+  }
+
+  if (checkedAt && Date.now() - Date.parse(checkedAt) > operationalStaleAfterMs) {
+    return {
+      status: "degraded",
+      label: "Información operativa desactualizada · última señal supera 48 horas",
+      checkedAt,
     };
   }
 
   return {
     status: "unknown",
     label: "Fuentes operativas TORO conectadas · cobertura parcial del negocio",
-    checkedAt: latestTimestamp(freshness),
+    checkedAt,
   };
 }
 
