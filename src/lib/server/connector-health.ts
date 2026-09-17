@@ -3,6 +3,7 @@ import "server-only";
 import { airtableBase, connectors } from "@/lib/toro-data";
 import {
   readAirtableRecords,
+  readKrossPublicHealth,
   readSupabaseHealth,
   readVercelDeployments,
 } from "@/lib/server/read-only-connectors";
@@ -40,7 +41,7 @@ export async function getConnectorHealth(): Promise<{
   summary: { live: number; configured: number; blocked: number; degraded: number };
 }> {
   const checkedAt = new Date().toISOString();
-  const [airtableRead, vercelRead, supabaseRead] = await Promise.all([
+  const [airtableRead, vercelRead, supabaseRead, krossPublicRead] = await Promise.all([
     readAirtableRecords({
       baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
       tableId: airtableBase.blueprintTableId,
@@ -51,6 +52,7 @@ export async function getConnectorHealth(): Promise<{
       teamId: process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO",
     }),
     readSupabaseHealth(),
+    readKrossPublicHealth(),
   ]);
 
   const runtimeConnectors = [supabaseConnector, ...connectors];
@@ -107,6 +109,21 @@ export async function getConnectorHealth(): Promise<{
             : "unconfigured",
         checkedAt,
         detail: detail ?? vercelRead.error ?? "Vercel no respondió a la prueba runtime.",
+      };
+    }
+
+    if (connector.id === "kross") {
+      const publicReachable = Boolean(krossPublicRead.data?.reachable);
+      return {
+        ...connector,
+        configured: true,
+        live: false,
+        mode: "read_only",
+        health: publicReachable ? "configured_unverified" : "degraded",
+        checkedAt,
+        detail: publicReachable
+          ? "Motor público Kross reachable. Operación autenticada no verificada; no usar este probe para afirmar ocupación, llegadas, salidas, disponibilidad o reservas live."
+          : krossPublicRead.error ?? "Kross público no respondió; operación autenticada tampoco está verificada.",
       };
     }
 
