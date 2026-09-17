@@ -130,8 +130,8 @@
 - Application validation SHA: `e13fb502de99eecb4c6111e1fcac6fcf03aa9c37`.
 - GitHub Actions app run: `35262687926` — 107/107 tests, ESLint, TypeScript, Next build PASS; `/toro/habitaciones/[key]` present in route build.
 - GitHub Actions isolated SQL run: `35262687895` — migration application, existing Phase 1 authorization/audit assertions, and Room 360 destination assertion PASS.
-- Current final branch differs from that verified application SHA only by removal of the two temporary validation workflows and persistence of the already-green Room 360 SQL steps into the existing Phase 1 SQL workflow.
-- No live migration, production promotion, real-user permission mutation, price/reservation/payment write, or Airtable write was performed by the application changes.
+- Current final branch differs from that verified application SHA only by removal of the two temporary validation workflows and persistence of the already-green Room 360 SQL steps into the existing Phase 1 SQL workflow plus documentation.
+- No live migration, production promotion, real-user permission mutation, price/reservation/payment write, or Airtable application write was performed.
 
 ## Next highest-impact work
 
