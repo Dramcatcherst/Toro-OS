@@ -6,42 +6,35 @@ on:
       - feat/toro-today-action-loop-20260917
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
+    if: ${{ !contains(github.event.head_commit.message, 'chore: apply non-forced dependency remediation') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feat/toro-today-action-loop-20260917
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
       - run: npm ci
-      - name: Try non-forced lockfile remediation
-        shell: bash
-        run: |
-          npm audit fix --package-lock-only || true
-          echo "LOCK_DIFF_STAT"
-          git diff --stat -- package-lock.json
-          echo "LOCK_DIFF_PACKAGES"
-          git diff -- package-lock.json | grep -E '^[+-].*"(version|resolved)"' | head -120 || true
-      - name: Audit remediated lockfile
+      - name: Apply non-forced lockfile remediation
+        run: npm audit fix --package-lock-only
+      - name: Verify vulnerability floor
         shell: bash
         run: |
           npm audit --json > audit-after.json || true
           node - <<'NODE'
           const fs = require('fs');
           const audit = JSON.parse(fs.readFileSync('audit-after.json', 'utf8'));
-          console.log('AUDIT_AFTER_SUMMARY=' + JSON.stringify(audit.metadata?.vulnerabilities ?? {}));
-          for (const [name, v] of Object.entries(audit.vulnerabilities ?? {})) {
-            console.log('AUDIT_AFTER_ITEM=' + JSON.stringify({
-              name,
-              severity: v.severity,
-              isDirect: v.isDirect,
-              range: v.range,
-              fixAvailable: v.fixAvailable
-            }));
+          const summary = audit.metadata?.vulnerabilities ?? {};
+          console.log('AUDIT_AFTER_SUMMARY=' + JSON.stringify(summary));
+          if ((summary.critical ?? 0) > 0 || (summary.high ?? 0) > 0) {
+            console.error('High/critical vulnerabilities remain after non-forced remediation.');
+            process.exit(1);
           }
           NODE
       - name: Verify remediated dependency graph
@@ -50,3 +43,15 @@ jobs:
           npm test
           npm run lint
           npm run build
+      - name: Commit verified lockfile only
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "No package-lock change required."
+          else
+            git commit -m "chore: apply non-forced dependency remediation"
+            git push origin HEAD:feat/toro-today-action-loop-20260917
+          fi
