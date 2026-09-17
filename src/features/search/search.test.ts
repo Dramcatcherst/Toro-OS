@@ -158,6 +158,75 @@ describe("searchToro", () => {
     ]);
   });
 
+  it("makes canonical knowledge destinations actionable only for management roles", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000031",
+          title: "Regla de autoridad Kross",
+          subtitle: "source_of_truth_rule · verified",
+          destination_path: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+          freshness: "2026-09-15T22:09:18.725Z",
+        },
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000032",
+          title: "Bad path",
+          subtitle: null,
+          destination_path: "/toro/conocimiento?item=bad",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("Kross")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000031",
+        title: "Regla de autoridad Kross",
+        subtitle: "source_of_truth_rule · verified",
+        href: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+        freshness: "2026-09-15T22:09:18.725Z",
+      },
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000032",
+        title: "Bad path",
+        subtitle: null,
+        href: null,
+        freshness: null,
+      },
+    ]);
+
+    getToroSession.mockResolvedValue({ ...founderSession, role: "RECEPCION", navRole: "RECEPCION" });
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000031",
+          title: "Regla de autoridad Kross",
+          subtitle: "source_of_truth_rule · verified",
+          destination_path: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+          freshness: "2026-09-15T22:09:18.725Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("Kross")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000031",
+        title: "Regla de autoridad Kross",
+        subtitle: "source_of_truth_rule · verified",
+        href: null,
+        freshness: "2026-09-15T22:09:18.725Z",
+      },
+    ]);
+  });
+
   it("keeps only explicitly implemented TORO destinations actionable", async () => {
     rpc.mockResolvedValue({
       data: [
