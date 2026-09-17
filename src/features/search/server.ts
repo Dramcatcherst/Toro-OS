@@ -26,6 +26,8 @@ const implementedDestinations = new Set([
 const room360DestinationPattern = /^\/toro\/habitaciones\/DC-ROOM-\d{1,3}$/;
 const projectDestinationPattern =
   /^\/toro\/proyectos\?project=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const knowledgeDestinationPattern =
+  /^\/toro\/conocimiento\?item=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
@@ -59,12 +61,16 @@ function parseSearchResult(value: unknown): SearchRpcRow {
 
 function actionableDestination(
   row: SearchRpcRow,
-  canOpenProjects: boolean,
+  canOpenManagementModules: boolean,
 ) {
   if (row.entity_type === "project") {
-    return canOpenProjects && projectDestinationPattern.test(row.destination_path)
+    return canOpenManagementModules && projectDestinationPattern.test(row.destination_path)
       ? row.destination_path
       : null;
+  }
+
+  if (row.entity_type === "knowledge" && knowledgeDestinationPattern.test(row.destination_path)) {
+    return canOpenManagementModules ? row.destination_path : null;
   }
 
   const [pathname] = row.destination_path.split("?", 1);
@@ -83,7 +89,7 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
     getToroSession(),
     createServerSupabaseClient(),
   ]);
-  const canOpenProjects = session?.role === "FOUNDER" || session?.role === "GERENCIA";
+  const canOpenManagementModules = session?.role === "FOUNDER" || session?.role === "GERENCIA";
 
   const { data, error } = await supabase.rpc("search_toro", {
     p_query: normalized,
@@ -105,7 +111,7 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
       id: row.entity_id,
       title: row.title,
       subtitle: row.subtitle,
-      href: actionableDestination(row, canOpenProjects),
+      href: actionableDestination(row, canOpenManagementModules),
       freshness: row.freshness,
     };
   });
