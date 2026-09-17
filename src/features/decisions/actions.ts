@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export type DecisionAction =
@@ -90,6 +92,9 @@ export async function resolveDecision(input: ResolveDecisionInput): Promise<Acti
   }
 
   const result = parseActionResult(data);
+
+  revalidatePath("/toro/decisiones");
+  revalidatePath("/toro");
 
   return {
     decisionId: result.decision_id,
