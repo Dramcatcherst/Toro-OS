@@ -1,0 +1,56 @@
+name: TORO Vitest Upgrade Evaluation
+
+on:
+  push:
+    branches:
+      - feat/toro-today-action-loop-20260917
+
+permissions:
+  contents: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/toro-today-action-loop-20260917
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Upgrade only Vitest to patched 4.x
+        run: npm install --save-dev --package-lock-only vitest@4.1.11
+      - name: Verify audit after Vitest upgrade
+        shell: bash
+        run: |
+          npm audit --json > audit-vitest.json || true
+          node - <<'NODE'
+          const fs = require('fs');
+          const audit = JSON.parse(fs.readFileSync('audit-vitest.json', 'utf8'));
+          const v = audit.metadata?.vulnerabilities ?? {};
+          console.log('VITEST_UPGRADE_AUDIT=' + JSON.stringify(v));
+          if ((v.critical ?? 0) > 0 || (v.high ?? 0) > 0 || (v.moderate ?? 0) > 0) {
+            console.error('Moderate-or-higher vulnerabilities remain.');
+            process.exit(1);
+          }
+          NODE
+      - name: Verify upgraded test tooling
+        run: |
+          npm ci
+          npm test
+          npm run lint
+          npm run build
+      - name: Commit package metadata if fully verified
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          if git diff --cached --quiet; then
+            echo "No dependency metadata change required."
+          else
+            git commit -m "chore: upgrade Vitest to patched 4.x"
+            git push origin HEAD:feat/toro-today-action-loop-20260917
+          fi
