@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getToroSession } from "@/features/auth/session";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+import { classifyOperationalSnapshot } from "./operational-snapshot";
 import type { HotelDirectoryData, HotelRoomItem, HotelSourceState } from "./types";
 
 const uuidPattern =
@@ -126,5 +127,6 @@ export async function loadHotelDirectory(): Promise<HotelDirectoryData> {
   return {
     rooms,
     source: sourceState(rooms),
+    operational: classifyOperationalSnapshot(null),
   };
 }
