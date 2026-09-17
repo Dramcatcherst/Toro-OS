@@ -16,27 +16,38 @@ const room = {
   room360Key: "DC-ROOM-25",
 };
 
+const unavailableOperational = {
+  state: "unavailable" as const,
+  canClaimCurrent: false,
+  sourceAsOf: null,
+  ageMinutes: null,
+  label: "Sin snapshot operativo verificable",
+  metrics: null,
+};
+
 describe("HotelDirectory", () => {
-  it("renders safe room metadata, stale source evidence and Room 360 links", () => {
+  it("renders safe room metadata, stale source evidence, operational Kross state and Room 360 links", () => {
     render(
       <HotelDirectory
         data={{
           rooms: [room],
           source: { status: "stale", latestAt: "2026-09-14T09:59:49.828Z" },
+          operational: unavailableOperational,
         }}
       />,
     );
 
     expect(screen.getByRole("heading", { name: "Hotel" })).toBeInTheDocument();
     expect(screen.getByText("Información desactualizada.")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Estado operativo Kross" })).toBeInTheDocument();
+    expect(screen.getByText("Sin snapshot operativo verificable")).toBeInTheDocument();
+    expect(screen.getByText(/ocupación, llegadas, salidas y huéspedes en casa no se presentan como actuales/i)).toBeInTheDocument();
     expect(screen.getByText("Suite premium cinema")).toBeInTheDocument();
     expect(screen.getByText(/Capacidad: 5/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /abrir ficha 360 de habitación 25/i })).toHaveAttribute(
       "href",
       "/toro/habitaciones/DC-ROOM-25",
     );
-    expect(screen.queryByText(/ocupación/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/precio/i)).not.toBeInTheDocument();
   });
 
   it("marks rooms needing verification without hiding them", () => {
@@ -45,6 +56,7 @@ describe("HotelDirectory", () => {
         data={{
           rooms: [{ ...room, roomNumber: 28, room360Key: "DC-ROOM-28", verifiedStatus: "needs_verification" }],
           source: { status: "fresh", latestAt: "2026-09-17T20:00:00.000Z" },
+          operational: unavailableOperational,
         }}
       />,
     );
@@ -54,7 +66,11 @@ describe("HotelDirectory", () => {
   });
 
   it("shows an honest empty state", () => {
-    render(<HotelDirectory data={{ rooms: [], source: { status: "empty", latestAt: null } }} />);
+    render(
+      <HotelDirectory
+        data={{ rooms: [], source: { status: "empty", latestAt: null }, operational: unavailableOperational }}
+      />,
+    );
     expect(screen.getByText(/No hay habitaciones activas disponibles/i)).toBeInTheDocument();
   });
 });
