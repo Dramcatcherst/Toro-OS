@@ -6,7 +6,7 @@ on:
       - feat/toro-today-action-loop-20260917
     paths:
       - 'supabase/migrations/**'
-      - 'tests/sql/room360_search_assertions.sql'
+      - 'tests/sql/**'
       - '.github/workflows/toro-room360-sql-validation.yml'
   workflow_dispatch:
 
@@ -39,12 +39,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Load isolated Supabase-compatible fixture
         run: psql -f tests/sql/phase1_fixture.sql
-      - name: Apply existing TORO migrations
+      - name: Apply TORO migrations including Room 360 destination
         run: |
           psql -f supabase/migrations/20260914080000_toro_decision_read_model.sql
           psql -f supabase/migrations/20260914082000_toro_decision_actions.sql
           psql -f supabase/migrations/20260914084000_toro_global_search.sql
           psql -f supabase/migrations/20260915040000_toro_search_revoked_membership_guard.sql
           psql -f supabase/migrations/20260915164500_toro_decision_actionability_guard.sql
+          psql -f supabase/migrations/20260917190500_toro_room360_search_destination.sql
+      - name: Assert existing Phase 1 authorization and audit contracts
+        run: psql -f tests/sql/phase1_assertions.sql
       - name: Assert canonical Room 360 destination
         run: psql -f tests/sql/room360_search_assertions.sql
