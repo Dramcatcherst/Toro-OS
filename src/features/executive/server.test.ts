@@ -126,8 +126,8 @@ describe("loadExecutiveHome operational signals", () => {
       },
     ]);
     expect(JSON.stringify(data)).not.toContain("must-not-leak");
-    expect(data.systemHealth.status).toBe("unknown");
-    expect(data.systemHealth.label).toMatch(/cobertura parcial/i);
+    expect(data.systemHealth.status).toBe("degraded");
+    expect(data.systemHealth.label).toMatch(/desactualizada/i);
 
     expect(client.taskQuery.eq).toHaveBeenCalledWith("active", true);
     expect(client.taskQuery.eq).toHaveBeenCalledWith("status", "blocked");
@@ -137,6 +137,41 @@ describe("loadExecutiveHome operational signals", () => {
     expect(client.projectQuery.eq).toHaveBeenCalledWith("active", true);
     expect(client.projectQuery.in).toHaveBeenCalledWith("status", ["Blocked", "In Progress"]);
     expect(client.projectQuery.limit).toHaveBeenCalledWith(6);
+  });
+
+  it("keeps fresh successful operational sources as connected but explicitly partial coverage", async () => {
+    const fresh = new Date().toISOString();
+    const client = supabaseWith(
+      {
+        data: [{
+          id: "00000000-0000-0000-0000-000000000012",
+          task_name: "Bloqueo reciente",
+          category: "systems",
+          area: "TORO",
+          priority: "high",
+          status: "blocked",
+          updated_at: fresh,
+        }],
+        error: null,
+      },
+      {
+        data: [{
+          id: "00000000-0000-0000-0000-000000000023",
+          project_name: "Proyecto reciente",
+          status: "In Progress",
+          owner_name: null,
+          next_action: null,
+          updated_at: fresh,
+        }],
+        error: null,
+      },
+    );
+    createServerSupabaseClient.mockResolvedValue(client);
+
+    const data = await loadExecutiveHome();
+
+    expect(data.systemHealth.status).toBe("unknown");
+    expect(data.systemHealth.label).toMatch(/cobertura parcial/i);
   });
 
   it("degrades honestly when one operational source fails without hiding the source that still works", async () => {
