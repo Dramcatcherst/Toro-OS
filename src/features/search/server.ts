@@ -22,6 +22,8 @@ const implementedDestinations = new Set([
   "/toro/decisiones",
 ]);
 
+const room360DestinationPattern = /^\/toro\/habitaciones\/DC-ROOM-\d{1,3}$/;
+
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
 }
@@ -54,7 +56,9 @@ function parseSearchResult(value: unknown): SearchRpcRow {
 
 function actionableDestination(destinationPath: string) {
   const [pathname] = destinationPath.split("?", 1);
-  return implementedDestinations.has(pathname) ? destinationPath : null;
+  if (implementedDestinations.has(pathname)) return destinationPath;
+  if (room360DestinationPattern.test(pathname)) return pathname;
+  return null;
 }
 
 export async function searchToro(query: string): Promise<SearchResult[]> {
