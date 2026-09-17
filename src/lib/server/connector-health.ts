@@ -7,6 +7,7 @@ import {
   readSupabaseHealth,
   readVercelDeployments,
 } from "@/lib/server/read-only-connectors";
+import { getToroVercelRuntimeConfig } from "@/lib/server/vercel-runtime";
 import type { Connector, ConnectorHealthRecord } from "@/lib/toro-types";
 
 const supabaseConnector: Connector = {
@@ -41,6 +42,7 @@ export async function getConnectorHealth(): Promise<{
   summary: { live: number; configured: number; blocked: number; degraded: number };
 }> {
   const checkedAt = new Date().toISOString();
+  const vercelRuntime = getToroVercelRuntimeConfig();
   const [airtableRead, vercelRead, supabaseRead, krossPublicRead] = await Promise.all([
     readAirtableRecords({
       baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
@@ -48,8 +50,8 @@ export async function getConnectorHealth(): Promise<{
       pageSize: 1,
     }),
     readVercelDeployments({
-      projectId: process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA",
-      teamId: process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO",
+      projectId: vercelRuntime.projectId,
+      teamId: vercelRuntime.teamId,
     }),
     readSupabaseHealth(),
     readKrossPublicHealth(),
@@ -108,7 +110,9 @@ export async function getConnectorHealth(): Promise<{
             ? "degraded"
             : "unconfigured",
         checkedAt,
-        detail: detail ?? vercelRead.error ?? "Vercel no respondió a la prueba runtime.",
+        detail: detail
+          ? `${detail} · Proyecto canónico: ${vercelRuntime.projectName} / ${vercelRuntime.repository}`
+          : vercelRead.error ?? `Vercel no respondió para ${vercelRuntime.projectName}.`,
       };
     }
 
