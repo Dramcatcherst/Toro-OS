@@ -1,6 +1,7 @@
 import "server-only";
 
 import { buildAirtableReadQuery } from "@/lib/search/airtable-query";
+import { getSupabasePublicConfig } from "@/lib/supabase/env";
 
 export type ReadOnlyConnectorResult<T> = {
   configured: boolean;
@@ -110,4 +111,63 @@ export async function readVercelDeployments(input: {
     data: await response.json(),
     error: null,
   };
+}
+
+export async function readSupabaseHealth(): Promise<
+  ReadOnlyConnectorResult<{ reachable: true }>
+> {
+  let config: ReturnType<typeof getSupabasePublicConfig>;
+  try {
+    config = getSupabasePublicConfig();
+  } catch {
+    return {
+      configured: false,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Supabase public config is not configured.",
+    };
+  }
+
+  const url = new URL("/rest/v1/rooms", config.url);
+  url.searchParams.set("select", "id");
+  url.searchParams.set("active", "eq.true");
+  url.searchParams.set("limit", "1");
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        apikey: config.publishableKey,
+        Authorization: `Bearer ${config.publishableKey}`,
+        "Accept-Profile": "core",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        configured: true,
+        externalWrite: false,
+        mode: "read_only",
+        data: null,
+        error: `Supabase read failed with ${response.status}.`,
+      };
+    }
+
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: { reachable: true },
+      error: null,
+    };
+  } catch {
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Supabase read failed before a response was received.",
+    };
+  }
 }
