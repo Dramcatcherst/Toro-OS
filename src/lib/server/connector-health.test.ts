@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { readAirtableRecords, readVercelDeployments, readSupabaseHealth, readKrossPublicHealth } = vi.hoisted(() => ({
   readAirtableRecords: vi.fn(),
@@ -18,6 +18,7 @@ import { getConnectorHealth } from "./connector-health";
 
 describe("getConnectorHealth", () => {
   beforeEach(() => {
+    vi.stubEnv("AIRTABLE_BASE_ID", "app-explicit-health-base");
     readAirtableRecords.mockReset();
     readVercelDeployments.mockReset();
     readSupabaseHealth.mockReset();
@@ -26,6 +27,10 @@ describe("getConnectorHealth", () => {
     readVercelDeployments.mockResolvedValue({ configured: true, externalWrite: false, mode: "read_only", data: { deployments: [{ name: "preview", state: "READY", url: "preview.example" }] }, error: null });
     readSupabaseHealth.mockResolvedValue({ configured: true, externalWrite: false, mode: "read_only", data: { reachable: true }, error: null });
     readKrossPublicHealth.mockResolvedValue({ configured: true, externalWrite: false, mode: "read_only", data: { reachable: true, finalUrl: "https://dreamcatcherhotel.kross.travel/" }, error: null });
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("treats Supabase as a first-class live connector and timestamps active probes", async () => {
