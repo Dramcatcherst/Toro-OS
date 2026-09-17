@@ -1,0 +1,48 @@
+name: TORO Dependency Audit
+
+on:
+  push:
+    branches:
+      - feat/toro-today-action-loop-20260917
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Capture npm audit
+        shell: bash
+        run: |
+          npm audit --json > audit.json || true
+          node - <<'NODE'
+          const fs = require('fs');
+          const audit = JSON.parse(fs.readFileSync('audit.json', 'utf8'));
+          console.log('AUDIT_SUMMARY=' + JSON.stringify(audit.metadata?.vulnerabilities ?? {}));
+          for (const [name, v] of Object.entries(audit.vulnerabilities ?? {})) {
+            const via = (v.via ?? []).map(x => typeof x === 'string' ? x : ({
+              source: x.source,
+              name: x.name,
+              title: x.title,
+              severity: x.severity,
+              range: x.range,
+              url: x.url
+            }));
+            console.log('AUDIT_ITEM=' + JSON.stringify({
+              name,
+              severity: v.severity,
+              isDirect: v.isDirect,
+              range: v.range,
+              via,
+              effects: v.effects,
+              fixAvailable: v.fixAvailable
+            }));
+          }
+          NODE
