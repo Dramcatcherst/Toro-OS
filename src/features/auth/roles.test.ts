@@ -42,7 +42,7 @@ describe("getRoleNavigation", () => {
 
     expect(
       enabledHrefs.every((href) =>
-        ["/toro", "/toro/decisiones", "/toro/proyectos"].includes(href),
+        ["/toro", "/toro/decisiones", "/toro/proyectos", "/toro/conocimiento"].includes(href),
       ),
     ).toBe(true);
   });
@@ -55,8 +55,13 @@ describe("getRoleNavigation", () => {
       availability: "available",
       href: "/toro/proyectos",
     });
+    expect(navigation.find((item) => item.label === "Conocimiento")).toEqual({
+      label: "Conocimiento",
+      availability: "available",
+      href: "/toro/conocimiento",
+    });
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Equipo", "Conocimiento", "Sistemas"]) {
+    for (const label of ["Hotel", "Huéspedes", "Dinero", "Equipo", "Sistemas"]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
