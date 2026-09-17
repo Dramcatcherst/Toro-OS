@@ -47,6 +47,13 @@ describe("loadProjectDirectory", () => {
     expect(createServerSupabaseClient).not.toHaveBeenCalled();
   });
 
+  it("blocks restricted TORO roles before querying projects", async () => {
+    getToroSession.mockResolvedValue({ ...session, role: "RECEPCION", navRole: "RECEPCION" });
+
+    await expect(loadProjectDirectory()).rejects.toThrow("redirect:/toro");
+    expect(createServerSupabaseClient).not.toHaveBeenCalled();
+  });
+
   it("maps a bounded RLS-governed active project directory without leaking private notes", async () => {
     const projectQuery = query({
       data: [
