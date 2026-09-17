@@ -18,7 +18,7 @@ const founderNavigation: NavItem[] = [
   { label: "Hotel", availability: "coming-soon" },
   { label: "Huéspedes", availability: "coming-soon" },
   { label: "Dinero", availability: "coming-soon" },
-  { label: "Proyectos", availability: "coming-soon" },
+  { label: "Proyectos", availability: "available", href: "/toro/proyectos" },
   { label: "Equipo", availability: "coming-soon" },
   { label: "Conocimiento", availability: "coming-soon" },
   { label: "Sistemas", availability: "coming-soon" },
