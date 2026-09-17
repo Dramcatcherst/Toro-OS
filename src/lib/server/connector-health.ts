@@ -1,8 +1,29 @@
 import "server-only";
 
 import { airtableBase, connectors } from "@/lib/toro-data";
-import { readAirtableRecords, readVercelDeployments } from "@/lib/server/read-only-connectors";
-import type { ConnectorHealthRecord } from "@/lib/toro-types";
+import {
+  readAirtableRecords,
+  readSupabaseHealth,
+  readVercelDeployments,
+} from "@/lib/server/read-only-connectors";
+import type { Connector, ConnectorHealthRecord } from "@/lib/toro-types";
+
+const supabaseConnector: Connector = {
+  id: "supabase",
+  name: "Supabase",
+  category: "Runtime data",
+  mode: "Read-only health probe + governed app runtime",
+  authority: "Canonical relational runtime for TORO OS governed domains",
+  currentCapability: "Governed runtime reads behind Supabase RLS; live commercial truth remains external where declared.",
+  futureConnectorNeed: "Keep health probe read-only and expand only through reviewed domain contracts.",
+  allowedActions: ["observe", "analyze"],
+  source: "TORO OS canonical runtime architecture",
+  status: "Active",
+  risk: "High",
+  confidence: 96,
+  approval: "Human review",
+  nextAction: "Use live probe status before claiming Supabase is connected.",
+};
 
 function summarizeVercelLiveRead(data: unknown) {
   const deployments = (data as { deployments?: Array<{ name?: string; state?: string; url?: string }> } | null)?.deployments;
@@ -16,20 +37,43 @@ function summarizeVercelLiveRead(data: unknown) {
 
 export async function getConnectorHealth(): Promise<{
   records: ConnectorHealthRecord[];
-  summary: { live: number; configured: number; blocked: number };
+  summary: { live: number; configured: number; blocked: number; degraded: number };
 }> {
-  const airtableRead = await readAirtableRecords({
-    baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
-    tableId: airtableBase.blueprintTableId,
-    pageSize: 1,
-  });
+  const checkedAt = new Date().toISOString();
+  const [airtableRead, vercelRead, supabaseRead] = await Promise.all([
+    readAirtableRecords({
+      baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
+      tableId: airtableBase.blueprintTableId,
+      pageSize: 1,
+    }),
+    readVercelDeployments({
+      projectId: process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA",
+      teamId: process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO",
+    }),
+    readSupabaseHealth(),
+  ]);
 
-  const vercelRead = await readVercelDeployments({
-    projectId: process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA",
-    teamId: process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO",
-  });
+  const runtimeConnectors = [supabaseConnector, ...connectors];
+  const records = runtimeConnectors.map<ConnectorHealthRecord>((connector) => {
+    if (connector.id === "supabase") {
+      const live = Boolean(supabaseRead.data?.reachable);
+      return {
+        ...connector,
+        configured: supabaseRead.configured,
+        live,
+        mode: live ? "live_read" : "read_only",
+        health: live
+          ? "reachable"
+          : supabaseRead.configured
+            ? "degraded"
+            : "unconfigured",
+        checkedAt,
+        detail: live
+          ? "Supabase respondió a una prueba read-only del runtime canónico."
+          : supabaseRead.error ?? "Supabase no respondió a la prueba runtime.",
+      };
+    }
 
-  const records = connectors.map<ConnectorHealthRecord>((connector) => {
     if (connector.id === "airtable") {
       const hasLiveData = Boolean((airtableRead.data as { records?: unknown[] } | null)?.records?.length);
       return {
@@ -37,9 +81,15 @@ export async function getConnectorHealth(): Promise<{
         configured: airtableRead.configured,
         live: hasLiveData,
         mode: hasLiveData ? "live_read" : "read_only",
+        health: hasLiveData
+          ? "reachable"
+          : airtableRead.configured
+            ? "degraded"
+            : "unconfigured",
+        checkedAt,
         detail: hasLiveData
-          ? "Blueprint table reachable through read-only server adapter."
-          : airtableRead.error ?? "Waiting for read-only Airtable credentials.",
+          ? "Airtable respondió a una lectura read-only del Blueprint."
+          : airtableRead.error ?? "Airtable no respondió a la prueba runtime.",
       };
     }
 
@@ -50,16 +100,35 @@ export async function getConnectorHealth(): Promise<{
         configured: vercelRead.configured,
         live: Boolean(detail),
         mode: detail ? "live_read" : "read_only",
-        detail: detail ?? vercelRead.error ?? "Preview deployment metadata not available yet.",
+        health: detail
+          ? "reachable"
+          : vercelRead.configured
+            ? "degraded"
+            : "unconfigured",
+        checkedAt,
+        detail: detail ?? vercelRead.error ?? "Vercel no respondió a la prueba runtime.",
       };
     }
 
+    const configured = connector.status === "Active" || connector.status === "Ready";
+    const blocked = connector.status === "Blocked" || connector.status === "Not connected";
+
     return {
       ...connector,
-      configured: connector.status === "Active" || connector.status === "Ready",
+      configured,
       live: false,
-      mode: connector.status === "Blocked" || connector.status === "Not connected" ? "blocked" : "prepare_only",
-      detail: connector.currentCapability,
+      mode: blocked ? "blocked" : configured ? "prepare_only" : "read_only",
+      health: blocked
+        ? "blocked"
+        : configured
+          ? "configured_unverified"
+          : "unconfigured",
+      checkedAt: null,
+      detail: blocked
+        ? `${connector.currentCapability} · Sin conexión runtime habilitada.`
+        : configured
+          ? `${connector.currentCapability} · Configurado, pero sin prueba runtime activa.`
+          : `${connector.currentCapability} · No hay prueba runtime ni configuración live confirmada.`,
     };
   });
 
@@ -68,7 +137,8 @@ export async function getConnectorHealth(): Promise<{
     summary: {
       live: records.filter((record) => record.live).length,
       configured: records.filter((record) => record.configured).length,
-      blocked: records.filter((record) => record.mode === "blocked").length,
+      blocked: records.filter((record) => record.health === "blocked").length,
+      degraded: records.filter((record) => record.health === "degraded").length,
     },
   };
 }
