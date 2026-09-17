@@ -1,5 +1,6 @@
 import "server-only";
 
+import { getToroSession } from "@/features/auth/session";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import type { SearchEntityType, SearchResult } from "./types";
@@ -23,10 +24,8 @@ const implementedDestinations = new Set([
 ]);
 
 const room360DestinationPattern = /^\/toro\/habitaciones\/DC-ROOM-\d{1,3}$/;
-const projectDestinationPattern = new RegExp(
-  `^/toro/proyectos\\?project=${uuidPattern.source.replace(/^\^|\$$/g, "")}$`,
-  "i",
-);
+const projectDestinationPattern =
+  /^\/toro\/proyectos\?project=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
@@ -58,12 +57,19 @@ function parseSearchResult(value: unknown): SearchRpcRow {
   return row as SearchRpcRow;
 }
 
-function actionableDestination(destinationPath: string) {
-  if (projectDestinationPattern.test(destinationPath)) return destinationPath;
+function actionableDestination(
+  row: SearchRpcRow,
+  canOpenProjects: boolean,
+) {
+  if (row.entity_type === "project") {
+    return canOpenProjects && projectDestinationPattern.test(row.destination_path)
+      ? row.destination_path
+      : null;
+  }
 
-  const [pathname] = destinationPath.split("?", 1);
-  if (implementedDestinations.has(pathname)) return destinationPath;
-  if (room360DestinationPattern.test(pathname)) return pathname;
+  const [pathname] = row.destination_path.split("?", 1);
+  if (implementedDestinations.has(pathname)) return row.destination_path;
+  if (row.entity_type === "room" && room360DestinationPattern.test(pathname)) return pathname;
   return null;
 }
 
@@ -73,7 +79,12 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
     return [];
   }
 
-  const supabase = await createServerSupabaseClient();
+  const [session, supabase] = await Promise.all([
+    getToroSession(),
+    createServerSupabaseClient(),
+  ]);
+  const canOpenProjects = session?.role === "FOUNDER" || session?.role === "GERENCIA";
+
   const { data, error } = await supabase.rpc("search_toro", {
     p_query: normalized,
     p_limit: 12,
@@ -94,7 +105,7 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
       id: row.entity_id,
       title: row.title,
       subtitle: row.subtitle,
-      href: actionableDestination(row.destination_path),
+      href: actionableDestination(row, canOpenProjects),
       freshness: row.freshness,
     };
   });
