@@ -18,7 +18,7 @@ describe("searchToro", () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it("maps only authorization-safe result fields", async () => {
+  it("maps only authorization-safe result fields and disables destinations that are not implemented", async () => {
     rpc.mockResolvedValue({
       data: [
         {
@@ -40,8 +40,35 @@ describe("searchToro", () => {
         id: "00000000-0000-0000-0000-000000000001",
         title: "Habitación 25",
         subtitle: "Toro Villa",
-        href: "/toro/hotel?room=00000000-0000-0000-0000-000000000001",
+        href: null,
         freshness: "2026-09-14T21:50:00Z",
+      },
+    ]);
+  });
+
+  it("keeps only explicitly implemented TORO destinations actionable", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000002",
+          title: "Decisiones",
+          subtitle: null,
+          destination_path: "/toro/decisiones",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("decisiones")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000002",
+        title: "Decisiones",
+        subtitle: null,
+        href: "/toro/decisiones",
+        freshness: null,
       },
     ]);
   });
