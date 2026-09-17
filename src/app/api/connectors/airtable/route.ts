@@ -2,14 +2,38 @@ import { NextResponse } from "next/server";
 import { airtableBase, airtableTables } from "@/lib/toro-data";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 
+const allowedAirtableTableIds = new Set([
+  airtableBase.blueprintTableId,
+  ...airtableTables.map((table) => table.id),
+]);
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const tableId = searchParams.get("tableId");
-  const liveRead = tableId
+  const requestedTableId = searchParams.get("tableId");
+
+  if (requestedTableId && !allowedAirtableTableIds.has(requestedTableId)) {
+    return NextResponse.json(
+      {
+        connector: "airtable",
+        mode: "read_only",
+        externalWrite: false,
+        liveRead: null,
+        error: "Requested Airtable table is not allowlisted.",
+      },
+      { status: 400 },
+    );
+  }
+
+  const requestedPageSize = Number(searchParams.get("pageSize") ?? 10);
+  const pageSize = Number.isFinite(requestedPageSize)
+    ? Math.min(Math.max(Math.trunc(requestedPageSize), 1), 50)
+    : 10;
+
+  const liveRead = requestedTableId
     ? await readAirtableRecords({
         baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
-        tableId,
-        pageSize: Number(searchParams.get("pageSize") ?? 10),
+        tableId: requestedTableId,
+        pageSize,
       })
     : null;
 
@@ -22,6 +46,6 @@ export async function GET(request: Request) {
     tableCount: airtableTables.length,
     tables: airtableTables,
     liveRead,
-    nextAction: "Add read-only Airtable credentials, then replace mock table reads with scoped server reads.",
+    nextAction: "Use only allowlisted Airtable tables and keep reads scoped server-side.",
   });
 }
