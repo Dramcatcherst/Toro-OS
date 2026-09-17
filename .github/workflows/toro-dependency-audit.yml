@@ -18,31 +18,35 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci
-      - name: Capture npm audit
+      - name: Try non-forced lockfile remediation
         shell: bash
         run: |
-          npm audit --json > audit.json || true
+          npm audit fix --package-lock-only || true
+          echo "LOCK_DIFF_STAT"
+          git diff --stat -- package-lock.json
+          echo "LOCK_DIFF_PACKAGES"
+          git diff -- package-lock.json | grep -E '^[+-].*"(version|resolved)"' | head -120 || true
+      - name: Audit remediated lockfile
+        shell: bash
+        run: |
+          npm audit --json > audit-after.json || true
           node - <<'NODE'
           const fs = require('fs');
-          const audit = JSON.parse(fs.readFileSync('audit.json', 'utf8'));
-          console.log('AUDIT_SUMMARY=' + JSON.stringify(audit.metadata?.vulnerabilities ?? {}));
+          const audit = JSON.parse(fs.readFileSync('audit-after.json', 'utf8'));
+          console.log('AUDIT_AFTER_SUMMARY=' + JSON.stringify(audit.metadata?.vulnerabilities ?? {}));
           for (const [name, v] of Object.entries(audit.vulnerabilities ?? {})) {
-            const via = (v.via ?? []).map(x => typeof x === 'string' ? x : ({
-              source: x.source,
-              name: x.name,
-              title: x.title,
-              severity: x.severity,
-              range: x.range,
-              url: x.url
-            }));
-            console.log('AUDIT_ITEM=' + JSON.stringify({
+            console.log('AUDIT_AFTER_ITEM=' + JSON.stringify({
               name,
               severity: v.severity,
               isDirect: v.isDirect,
               range: v.range,
-              via,
-              effects: v.effects,
               fixAvailable: v.fixAvailable
             }));
           }
           NODE
+      - name: Verify remediated dependency graph
+        run: |
+          npm ci
+          npm test
+          npm run lint
+          npm run build
