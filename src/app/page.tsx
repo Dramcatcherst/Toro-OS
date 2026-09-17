@@ -77,8 +77,19 @@ function SectionTitle({ icon: Icon, title, action }: { icon: typeof Activity; ti
 }
 
 async function getBlueprintFeed() {
+  const configuredBaseId = process.env.AIRTABLE_BASE_ID;
+
+  if (!configuredBaseId) {
+    return {
+      mode: "mock" as const,
+      configured: false,
+      error: null,
+      records: blueprintDocuments.map((document) => ({ id: document.id, name: document.name })),
+    };
+  }
+
   const result = await readAirtableRecords({
-    baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
+    baseId: configuredBaseId,
     tableId: airtableBase.blueprintTableId,
     pageSize: 6,
   });
