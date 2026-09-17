@@ -171,3 +171,46 @@ export async function readSupabaseHealth(): Promise<
     };
   }
 }
+
+export async function readKrossPublicHealth(): Promise<
+  ReadOnlyConnectorResult<{ reachable: true; finalUrl: string }>
+> {
+  const target = "https://dreamcatcherhotel.kross.travel/";
+
+  try {
+    const response = await fetch(target, {
+      method: "GET",
+      redirect: "follow",
+      cache: "no-store",
+      headers: {
+        Accept: "text/html,application/xhtml+xml",
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        configured: true,
+        externalWrite: false,
+        mode: "read_only",
+        data: null,
+        error: `Kross public read failed with ${response.status}.`,
+      };
+    }
+
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: { reachable: true, finalUrl: response.url || target },
+      error: null,
+    };
+  } catch {
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Kross public read failed before a response was received.",
+    };
+  }
+}
