@@ -43,12 +43,21 @@ export async function getConnectorHealth(): Promise<{
 }> {
   const checkedAt = new Date().toISOString();
   const vercelRuntime = getToroVercelRuntimeConfig();
+  const configuredAirtableBaseId = process.env.AIRTABLE_BASE_ID;
+  const airtableReadPromise = configuredAirtableBaseId
+    ? readAirtableRecords({
+        baseId: configuredAirtableBaseId,
+        tableId: airtableBase.blueprintTableId,
+        pageSize: 1,
+      })
+    : Promise.resolve({
+        configured: false,
+        data: null,
+        error: "AIRTABLE_BASE_ID is not configured; implicit Master Brain fallback is disabled.",
+      });
+
   const [airtableRead, vercelRead, supabaseRead, krossPublicRead] = await Promise.all([
-    readAirtableRecords({
-      baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
-      tableId: airtableBase.blueprintTableId,
-      pageSize: 1,
-    }),
+    airtableReadPromise,
     readVercelDeployments({
       projectId: vercelRuntime.projectId,
       teamId: vercelRuntime.teamId,
