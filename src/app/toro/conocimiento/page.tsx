@@ -2,7 +2,7 @@ import { KnowledgeDirectory } from "@/features/knowledge/knowledge-directory";
 import { loadKnowledgeDirectory } from "@/features/knowledge/server";
 
 const uuidPattern =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type KnowledgePageProps = {
   searchParams: Promise<{ item?: string | string[] }>;
