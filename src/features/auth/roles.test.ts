@@ -40,13 +40,23 @@ describe("getRoleNavigation", () => {
       item.href ? [item.href] : [],
     );
 
-    expect(enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href))).toBe(true);
+    expect(
+      enabledHrefs.every((href) =>
+        ["/toro", "/toro/decisiones", "/toro/proyectos"].includes(href),
+      ),
+    ).toBe(true);
   });
 
-  it("keeps future founder modules visible without an actionable destination", () => {
+  it("exposes implemented founder modules and keeps the rest non-actionable", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas"]) {
+    expect(navigation.find((item) => item.label === "Proyectos")).toEqual({
+      label: "Proyectos",
+      availability: "available",
+      href: "/toro/proyectos",
+    });
+
+    for (const label of ["Hotel", "Huéspedes", "Dinero", "Equipo", "Conocimiento", "Sistemas"]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
