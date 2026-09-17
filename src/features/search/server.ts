@@ -16,6 +16,12 @@ type SearchRpcRow = {
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+const implementedDestinations = new Set([
+  "/toro",
+  "/toro/buscar",
+  "/toro/decisiones",
+]);
+
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
 }
@@ -37,13 +43,18 @@ function parseSearchResult(value: unknown): SearchRpcRow {
     typeof row.title !== "string" ||
     !isNullableString(row.subtitle) ||
     typeof row.destination_path !== "string" ||
-    !row.destination_path.startsWith("/toro/") ||
+    !row.destination_path.startsWith("/toro") ||
     !isNullableString(row.freshness)
   ) {
     throw new Error("Invalid search result received from the server.");
   }
 
   return row as SearchRpcRow;
+}
+
+function actionableDestination(destinationPath: string) {
+  const [pathname] = destinationPath.split("?", 1);
+  return implementedDestinations.has(pathname) ? destinationPath : null;
 }
 
 export async function searchToro(query: string): Promise<SearchResult[]> {
@@ -73,7 +84,7 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
       id: row.entity_id,
       title: row.title,
       subtitle: row.subtitle,
-      href: row.destination_path,
+      href: actionableDestination(row.destination_path),
       freshness: row.freshness,
     };
   });
