@@ -106,7 +106,7 @@ describe("loadKnowledgeDirectory", () => {
     );
     expect(knowledgeQuery.eq).toHaveBeenCalledWith("active", true);
     expect(knowledgeQuery.neq).toHaveBeenCalledWith("visibility", "private");
-    expect(knowledgeQuery.limit).toHaveBeenCalledWith(100);
+    expect(knowledgeQuery.limit).toHaveBeenCalledWith(200);
   });
 
   it("fails closed on source errors and malformed metadata", async () => {
