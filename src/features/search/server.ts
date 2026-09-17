@@ -23,6 +23,10 @@ const implementedDestinations = new Set([
 ]);
 
 const room360DestinationPattern = /^\/toro\/habitaciones\/DC-ROOM-\d{1,3}$/;
+const projectDestinationPattern = new RegExp(
+  `^/toro/proyectos\\?project=${uuidPattern.source.replace(/^\^|\$$/g, "")}$`,
+  "i",
+);
 
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
@@ -55,6 +59,8 @@ function parseSearchResult(value: unknown): SearchRpcRow {
 }
 
 function actionableDestination(destinationPath: string) {
+  if (projectDestinationPattern.test(destinationPath)) return destinationPath;
+
   const [pathname] = destinationPath.split("?", 1);
   if (implementedDestinations.has(pathname)) return destinationPath;
   if (room360DestinationPattern.test(pathname)) return pathname;
