@@ -9,6 +9,8 @@ type HotelDirectoryProps = {
 };
 
 export function HotelDirectory({ data }: HotelDirectoryProps) {
+  const operational = data.operational;
+
   return (
     <div className="space-y-4 pb-24 md:space-y-6 md:pb-8">
       <header className="space-y-2">
@@ -29,6 +31,41 @@ export function HotelDirectory({ data }: HotelDirectoryProps) {
           </p>
         </div>
       </header>
+
+      <section aria-labelledby="kross-operational-heading" className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 id="kross-operational-heading" className="font-semibold text-neutral-950">Estado operativo Kross</h2>
+            <p className="mt-1 text-sm text-neutral-700">{operational.label}</p>
+          </div>
+          {operational.sourceAsOf ? (
+            <p className="text-xs text-neutral-500">Fuente: {operational.sourceAsOf}</p>
+          ) : null}
+        </div>
+
+        {operational.metrics ? (
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+            <div><p className="text-xs text-neutral-500">Ocupación</p><p className="font-semibold">{operational.metrics.occupancyPct}%</p></div>
+            <div><p className="text-xs text-neutral-500">Llegadas</p><p className="font-semibold">{operational.metrics.arrivals}</p></div>
+            <div><p className="text-xs text-neutral-500">Salidas</p><p className="font-semibold">{operational.metrics.departures}</p></div>
+            <div><p className="text-xs text-neutral-500">En casa</p><p className="font-semibold">{operational.metrics.inHouse}</p></div>
+            <div><p className="text-xs text-neutral-500">Disponibles</p><p className="font-semibold">{operational.metrics.availableRooms}</p></div>
+            <div><p className="text-xs text-neutral-500">Ocupadas</p><p className="font-semibold">{operational.metrics.occupiedRooms}</p></div>
+            <div><p className="text-xs text-neutral-500">Bloqueadas</p><p className="font-semibold">{operational.metrics.blockedRooms}</p></div>
+            <div><p className="text-xs text-neutral-500">Reservas</p><p className="font-semibold">{operational.metrics.reservations}</p></div>
+          </div>
+        ) : (
+          <p className="mt-3 text-sm leading-6 text-neutral-600">
+            Ocupación, llegadas, salidas y huéspedes en casa no se presentan como actuales hasta disponer de Kross autenticado o un snapshot reciente verificable con fecha de fuente.
+          </p>
+        )}
+
+        {!operational.canClaimCurrent && operational.metrics ? (
+          <p className="mt-3 text-xs leading-5 text-neutral-500">
+            Estos valores son referencia fechada; TORO no los etiqueta como estado actual.
+          </p>
+        ) : null}
+      </section>
 
       {data.source.status === "stale" ? (
         <DataState
