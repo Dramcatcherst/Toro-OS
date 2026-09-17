@@ -73,6 +73,49 @@ describe("searchToro", () => {
     ]);
   });
 
+  it("makes only UUID-scoped TORO project destinations actionable", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000021",
+          title: "TORO Executive Control",
+          subtitle: "systems · In Progress",
+          destination_path: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+          freshness: "2026-09-15T14:45:16.838Z",
+        },
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000022",
+          title: "Bad path",
+          subtitle: null,
+          destination_path: "/toro/proyectos?project=not-a-uuid",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("TORO")).resolves.toEqual([
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000021",
+        title: "TORO Executive Control",
+        subtitle: "systems · In Progress",
+        href: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+        freshness: "2026-09-15T14:45:16.838Z",
+      },
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000022",
+        title: "Bad path",
+        subtitle: null,
+        href: null,
+        freshness: null,
+      },
+    ]);
+  });
+
   it("keeps only explicitly implemented TORO destinations actionable", async () => {
     rpc.mockResolvedValue({
       data: [
