@@ -20,7 +20,7 @@ const founderNavigation: NavItem[] = [
   { label: "Dinero", availability: "coming-soon" },
   { label: "Proyectos", availability: "available", href: "/toro/proyectos" },
   { label: "Equipo", availability: "coming-soon" },
-  { label: "Conocimiento", availability: "coming-soon" },
+  { label: "Conocimiento", availability: "available", href: "/toro/conocimiento" },
   { label: "Sistemas", availability: "coming-soon" },
 ];
 
