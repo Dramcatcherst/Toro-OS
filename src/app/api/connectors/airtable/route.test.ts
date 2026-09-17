@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { authorizeToroApi, readAirtableRecords } = vi.hoisted(() => ({
   authorizeToroApi: vi.fn(),
@@ -34,6 +34,8 @@ import { GET } from "./route";
 
 describe("GET /api/connectors/airtable", () => {
   beforeEach(() => {
+    vi.stubEnv("AIRTABLE_BASE_ID", "app-safe");
+    vi.stubEnv("AIRTABLE_TOKEN", "test-token");
     authorizeToroApi.mockReset();
     readAirtableRecords.mockReset();
     authorizeToroApi.mockResolvedValue({
@@ -47,6 +49,10 @@ describe("GET /api/connectors/airtable", () => {
       data: { records: [{ fields: { "fld-safe-a": "x" } }] },
       error: null,
     });
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("rejects unauthenticated access before touching Airtable", async () => {
