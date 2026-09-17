@@ -1,3 +1,5 @@
+import type { ClassifiedOperationalSnapshot } from "./operational-snapshot";
+
 export type HotelRoomItem = {
   id: string;
   roomNumber: number;
@@ -19,4 +21,5 @@ export type HotelSourceState = {
 export type HotelDirectoryData = {
   rooms: HotelRoomItem[];
   source: HotelSourceState;
+  operational: ClassifiedOperationalSnapshot;
 };
