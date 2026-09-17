@@ -84,7 +84,7 @@ export async function loadKnowledgeDirectory(): Promise<KnowledgeDirectoryItem[]
     .eq("active", true)
     .neq("visibility", "private")
     .order("updated_at", { ascending: false })
-    .limit(100);
+    .limit(200);
 
   if (error) {
     throw new Error(error.message || "Unable to load TORO knowledge.");
