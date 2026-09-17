@@ -6,23 +6,26 @@ import { getRoleNavigation } from "@/features/auth/role-nav";
 import { DesktopNav } from "./desktop-nav";
 import { MobileNav } from "./mobile-nav";
 
-const availableFounderLinks = [
+const founderDesktopLinks = [
   ["Inicio", "/toro"],
   ["Decisiones", "/toro/decisiones"],
   ["Hotel", "/toro/hotel"],
   ["Proyectos", "/toro/proyectos"],
   ["Conocimiento", "/toro/conocimiento"],
+  ["Sistemas", "/toro/sistemas"],
 ] as const;
+
+const founderMobileLinks = founderDesktopLinks.slice(0, 5);
 
 describe("desktop navigation", () => {
   it("renders implemented modules as links and future modules as unavailable items", () => {
     render(<DesktopNav items={getRoleNavigation("FOUNDER")} />);
     const navigation = within(screen.getByRole("navigation", { name: "Navegación principal" }));
 
-    for (const [label, href] of availableFounderLinks) {
+    for (const [label, href] of founderDesktopLinks) {
       expect(navigation.getByRole("link", { name: label })).toHaveAttribute("href", href);
     }
-    expect(navigation.getAllByRole("link")).toHaveLength(5);
+    expect(navigation.getAllByRole("link")).toHaveLength(6);
 
     const unavailableGuests = navigation.getByText("Huéspedes").closest("[aria-disabled='true']");
     expect(unavailableGuests).toBeInTheDocument();
@@ -32,14 +35,15 @@ describe("desktop navigation", () => {
 });
 
 describe("mobile navigation", () => {
-  it("prioritizes the five implemented founder modules before future placeholders", () => {
+  it("prioritizes the five primary implemented founder modules", () => {
     render(<MobileNav items={getRoleNavigation("FOUNDER")} />);
     const navigation = within(screen.getByRole("navigation", { name: "Navegación móvil" }));
 
-    for (const [label, href] of availableFounderLinks) {
+    for (const [label, href] of founderMobileLinks) {
       expect(navigation.getByRole("link", { name: label })).toHaveAttribute("href", href);
     }
     expect(navigation.getAllByRole("link")).toHaveLength(5);
+    expect(navigation.queryByRole("link", { name: "Sistemas" })).not.toBeInTheDocument();
     expect(navigation.queryByText("Próximamente")).not.toBeInTheDocument();
   });
 });
