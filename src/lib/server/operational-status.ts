@@ -4,6 +4,7 @@ import { classifyOperationalSnapshot, type ClassifiedOperationalSnapshot } from 
 import type { ConnectorHealthRecord } from "@/lib/toro-types";
 
 import { getConnectorHealth } from "./connector-health";
+import { formatOperationalStatusForChat } from "./operational-status-message";
 
 type ConnectorHealthData = Awaited<ReturnType<typeof getConnectorHealth>>;
 
@@ -22,6 +23,7 @@ export type ToroOperationalStatus = {
     records: PublicSourceHealth[];
   };
   warnings: string[];
+  chatSummary: string;
 };
 
 export function buildOperationalStatus(input: {
@@ -49,8 +51,8 @@ export function buildOperationalStatus(input: {
     warnings.push(`${input.connectorHealth.summary.degraded} fuente(s) runtime están degradadas.`);
   }
 
-  return {
-    version: "v1",
+  const base = {
+    version: "v1" as const,
     generatedAt,
     currentHotelClaimsAllowed: input.hotelOperational.canClaimCurrent,
     hotel: input.hotelOperational,
@@ -66,6 +68,11 @@ export function buildOperationalStatus(input: {
       })),
     },
     warnings,
+  };
+
+  return {
+    ...base,
+    chatSummary: formatOperationalStatusForChat(base),
   };
 }
 
