@@ -34,9 +34,11 @@ export async function GET(request: Request) {
     );
   }
 
-  const liveRead = selectedTable
+  const configuredBaseId = process.env.AIRTABLE_BASE_ID;
+
+  const liveRead = selectedTable && configuredBaseId
     ? await readAirtableRecords({
-        baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
+        baseId: configuredBaseId,
         tableId: selectedTable.id,
         pageSize: boundedPageSize(searchParams.get("pageSize")),
         fields: selectedTable.fields.map((field) => field.id),
@@ -47,7 +49,7 @@ export async function GET(request: Request) {
     connector: "airtable",
     mode: "read_only",
     externalWrite: false,
-    configured: Boolean(process.env.AIRTABLE_TOKEN),
+    configured: Boolean(process.env.AIRTABLE_TOKEN && configuredBaseId),
     base: {
       id: airtableBase.id,
       name: airtableBase.name,
