@@ -1,16 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const rpc = vi.fn();
+const { rpc, getToroSession } = vi.hoisted(() => ({
+  rpc: vi.fn(),
+  getToroSession: vi.fn(),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerSupabaseClient: async () => ({ rpc }),
 }));
+vi.mock("@/features/auth/session", () => ({ getToroSession }));
 
 import { searchToro } from "./server";
+
+const founderSession = {
+  userId: "00000000-0000-0000-0000-000000000001",
+  role: "FOUNDER",
+  navRole: "FOUNDER",
+  displayName: "Founder",
+  memberships: [],
+};
 
 describe("searchToro", () => {
   beforeEach(() => {
     rpc.mockReset();
+    getToroSession.mockReset();
+    getToroSession.mockResolvedValue(founderSession);
   });
 
   it("returns no results and performs no RPC for an empty query", async () => {
@@ -73,7 +87,7 @@ describe("searchToro", () => {
     ]);
   });
 
-  it("makes only UUID-scoped TORO project destinations actionable", async () => {
+  it("makes only UUID-scoped TORO project destinations actionable for management roles", async () => {
     rpc.mockResolvedValue({
       data: [
         {
@@ -112,6 +126,34 @@ describe("searchToro", () => {
         subtitle: null,
         href: null,
         freshness: null,
+      },
+    ]);
+  });
+
+  it("keeps project search results non-actionable for restricted TORO roles", async () => {
+    getToroSession.mockResolvedValue({ ...founderSession, role: "RECEPCION", navRole: "RECEPCION" });
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000021",
+          title: "TORO Executive Control",
+          subtitle: "systems · In Progress",
+          destination_path: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+          freshness: "2026-09-15T14:45:16.838Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("TORO")).resolves.toEqual([
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000021",
+        title: "TORO Executive Control",
+        subtitle: "systems · In Progress",
+        href: null,
+        freshness: "2026-09-15T14:45:16.838Z",
       },
     ]);
   });
