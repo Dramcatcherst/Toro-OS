@@ -115,6 +115,7 @@
 - ESLint PASS.
 - TypeScript PASS inside Next build.
 - Next.js 16.3.5 build PASS with dynamic routes `/toro`, `/toro/buscar`, `/toro/conocimiento`, `/toro/decisiones`, `/toro/habitaciones/[key]`, `/toro/proyectos`.
+- Current branch after evidence differs by CI-workflow cleanup and this documentation only; behavior code is unchanged from the verified SHA.
 - Current dependency audit remains 5 vulnerabilities (2 moderate, 3 high); no unsafe forced upgrade performed.
 - Temporary Projects and Knowledge validation workflows were removed after evidence capture.
 - No live migration, production promotion, real-user permission mutation, price/reservation/payment write, or destructive Airtable write was performed.
