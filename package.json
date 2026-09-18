@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm audit --audit-level=high && npm test && npm run lint && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "node scripts/run-tests.mjs",
