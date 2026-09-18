@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm audit --audit-level=high && npx vitest run src/lib/server/vercel-authority-read.test.ts && npm run lint && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
