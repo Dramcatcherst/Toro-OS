@@ -7,7 +7,7 @@ import { OperationalConsole } from "@/components/operational-console";
 import { agentProfiles, airtableBase, airtableTables, blueprintDocuments, businessObjects, connectors, modules, queuedActions, safetyModel } from "@/lib/toro-data";
 import { getApprovalLedger } from "@/lib/server/approval-ledger";
 import { getConnectorHealth } from "@/lib/server/connector-health";
-import { readAirtableRecords } from "@/lib/server/read-only-connectors";
+import { readAirtableBlueprintSnapshot } from "@/lib/server/read-only-connectors";
 import type { SourceMeta } from "@/lib/toro-types";
 
 const navIcons = [Activity, Brain, Blocks, Bot, CircleDollarSign, Megaphone, FileText, Search, RadioTower, Send, Workflow, Layers3, Database, ShieldCheck, ClipboardCheck, Monitor, Code2, Settings];
@@ -88,10 +88,9 @@ async function getBlueprintFeed() {
     };
   }
 
-  const result = await readAirtableRecords({
+  const result = await readAirtableBlueprintSnapshot({
     baseId: configuredBaseId,
     tableId: airtableBase.blueprintTableId,
-    pageSize: 6,
   });
 
   const liveRecords = Array.isArray((result.data as { records?: unknown[] } | null)?.records)
