@@ -158,3 +158,69 @@ Runtime reliability is not considered complete until:
 - Do not store passwords, cookies or connector secrets in GitHub/Airtable notes.
 - Do not make financial writes, Kross reservation writes or guest communications as part of a health check.
 - Do not merge PR #16 or promote it to production until inherited hosted/security QA gates are satisfied.
+
+
+## Target runtime update — 2026-09-18
+
+**Target WhatsApp identity:** `+506 8370-9777`.
+
+Keep the layers separate:
+
+- **WhatsApp** is the guest communication transport.
+- **WeSpeak** is a currently evidenced production conversation/runtime layer.
+- **OpenClaw** is a separate agent/runtime dependency reported as linked to the target number; its actual config, logs and live session health are still unverified from TORO.
+- **TERE** is the governed guest-facing behavior/context, not the transport.
+- **TORO/Supabase** remains the governed hotel knowledge/policy layer.
+- **Kross** remains authority for live price, availability, reservations, restrictions and payment-related booking truth.
+
+Current evidence:
+- WeSpeak alerts on 2026-09-18 confirm active production guest-message traffic.
+- The OpenClaw scoped TORO status route exists and has passed tests/lint/build in PR #16.
+- The OpenClaw runtime itself is not yet directly observable by TORO; therefore it must remain `configured_unverified`, never `reachable`, until a real probe succeeds.
+- The service credential remains intentionally outside source control and must be configured only in approved secret stores on both runtimes.
+
+### Guest-agent QA failures to block mechanically
+
+Current runtime evidence shows recurring failure classes that should become pre-send checks:
+
+1. **Date/weekday drift** — resolve dates to ISO values in the hotel timezone before producing weekday language.
+2. **Numbered-room duplication** — a physical room number is a unique room identity; never quote two units of the same numbered room.
+3. **Capacity reasoning drift** — do not explain unavailability with capacity unless the canonical room capacity actually fails the requested occupancy.
+4. **Unverified promotions** — do not quote a precise discount when current promotion terms conflict or have not been checked against the authoritative booking source.
+5. **Booking-link context loss** — prefer a direct official Kross link that preserves known dates, occupancy, language and currency.
+6. **Menu hallucination** — do not invent provenance, ingredients, allergens, catch details, service windows or preparation rules.
+7. **Room-feature drift** — canonical room facts override stale public copy; do not invent private pool, balcony or terrace.
+8. **Cancellation/payment-policy conflict** — when current Kross terms and governed policy disagree, escalate/qualify instead of promising a refund, charge date or payment rule.
+9. **Intent targeting** — promotions must not be injected into supplier, agency, already-booked or unrelated operational conversations.
+10. **High-risk handoff** — payment verification, reservation mutation, refunds, identity-sensitive requests and unresolved in-stay incidents remain human-gated until explicit tools and idempotency controls exist.
+
+### Required pre-send pipeline
+
+For the OpenClaw/WhatsApp agent on the target number:
+
+1. classify sender/context: guest, lead, existing booking, supplier, agency, staff or unknown;
+2. isolate the DM session per channel + sender;
+3. load only the minimum guest-safe governed context;
+4. normalize dates/times before reasoning;
+5. gate live commercial claims on Kross freshness/authority;
+6. validate numbered-room identity, capacity and canonical amenity facts;
+7. validate promotions/policies or explicitly abstain when conflicting;
+8. generate deterministic official booking links with preserved context;
+9. run a final policy/consistency check before sending;
+10. emit structured telemetry for outcome, source freshness, escalation and runtime health without logging guest message bodies by default.
+
+### OpenClaw runtime verification checklist
+
+When runtime access is available, capture these results without exposing secrets:
+
+- `openclaw status --deep`
+- `openclaw channels status --probe`
+- `openclaw doctor`
+- `GET /health`
+- active WhatsApp account/session identity confirms the target number
+- `session.dmScope` isolates guest DMs
+- guest-facing tool policy denies filesystem/runtime/exec/write capabilities unless explicitly required
+- WhatsApp access policy and group policy are explicit rather than accidental defaults
+- reconnect/watchdog activity is visible in logs
+- a disconnect/retry test proves no duplicate outbound message or external side effect
+- the scoped TORO status endpoint returns 401 for a bad credential, 503 when unconfigured, and the PII-free projection only when correctly configured.
