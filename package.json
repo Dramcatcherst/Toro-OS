@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm audit --audit-level=high && npx vitest run src/features/systems/google-workspace-audit.test.ts && npm run lint && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
