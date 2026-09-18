@@ -6,9 +6,11 @@ Product name is TORO OS only.
 
 ## Preview
 
-Latest preview:
+Canonical preview project: `toro-pr11-preview`
 
-https://toro-os-v03-gklbiqzri-dreamcatcher-s-projects.vercel.app
+https://toro-pr11-preview.vercel.app
+
+The legacy `toro-os-v03` Vercel project is not TORO's runtime authority.
 
 ## Local Development
 
