@@ -1,5 +1,7 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+
 import { buildAirtableReadQuery } from "@/lib/search/airtable-query";
 import { getSupabasePublicConfig } from "@/lib/supabase/env";
 
@@ -65,6 +67,24 @@ export async function readAirtableRecords(input: {
     data: await response.json(),
     error: null,
   };
+}
+
+const readAirtableBlueprintSnapshotCached = unstable_cache(
+  async (baseId: string, tableId: string) =>
+    readAirtableRecords({
+      baseId,
+      tableId,
+      pageSize: 6,
+    }),
+  ["toro-airtable-blueprint-snapshot-v1"],
+  { revalidate: 300 },
+);
+
+export async function readAirtableBlueprintSnapshot(input: {
+  baseId: string;
+  tableId: string;
+}) {
+  return readAirtableBlueprintSnapshotCached(input.baseId, input.tableId);
 }
 
 export async function readVercelDeployments(input: {
