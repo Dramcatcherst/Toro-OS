@@ -1,0 +1,26 @@
+name: Google Workspace migration validation
+
+on:
+  push:
+    branches:
+      - feat/google-workspace-readonly-migration-20260918
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npx vitest run src/features/systems/google-workspace-audit.test.ts
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
