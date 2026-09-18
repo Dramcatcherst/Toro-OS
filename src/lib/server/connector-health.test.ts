@@ -58,6 +58,25 @@ describe("getConnectorHealth", () => {
     expect(codex?.detail).toMatch(/sin prueba runtime/i);
   });
 
+  it("tracks WhatsApp and OpenClaw separately without calling either live before a direct runtime probe", async () => {
+    const result = await getConnectorHealth();
+    const whatsapp = result.records.find((record) => record.id === "whatsapp");
+    const openclaw = result.records.find((record) => record.id === "openclaw");
+
+    expect(whatsapp).toMatchObject({
+      configured: true,
+      live: false,
+      health: "configured_unverified",
+    });
+    expect(openclaw).toMatchObject({
+      configured: true,
+      live: false,
+      health: "configured_unverified",
+    });
+    expect(openclaw?.name).toMatch(/OpenClaw/);
+    expect(openclaw?.detail).toMatch(/sin prueba runtime/i);
+  });
+
   it("marks configured Supabase as degraded when the live probe fails", async () => {
     readSupabaseHealth.mockResolvedValue({ configured: true, externalWrite: false, mode: "read_only", data: null, error: "Supabase read failed with 503." });
 
