@@ -2,7 +2,7 @@ import "server-only";
 
 import { airtableBase, connectors } from "@/lib/toro-data";
 import {
-  readAirtableBlueprintSnapshot,
+  readAirtableRecords,
   readKrossPublicHealth,
   readSupabaseHealth,
   readVercelDeployments,
@@ -45,9 +45,10 @@ export async function getConnectorHealth(): Promise<{
   const vercelRuntime = getToroVercelRuntimeConfig();
   const configuredAirtableBaseId = process.env.AIRTABLE_BASE_ID;
   const airtableReadPromise = configuredAirtableBaseId
-    ? readAirtableBlueprintSnapshot({
+    ? readAirtableRecords({
         baseId: configuredAirtableBaseId,
         tableId: airtableBase.blueprintTableId,
+        pageSize: 1,
       })
     : Promise.resolve({
         configured: false,
