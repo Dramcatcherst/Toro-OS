@@ -135,9 +135,17 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
       </section>
 
       <section className={sectionClass} aria-labelledby="projects-heading">
-        <h2 id="projects-heading" className="mb-4 text-lg font-semibold text-neutral-950">Mis proyectos</h2>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 id="projects-heading" className="text-lg font-semibold text-neutral-950">Mis proyectos</h2>
+          <Link
+            href="/toro/proyectos"
+            className="min-h-11 rounded-xl px-3 py-2 text-sm font-medium text-neutral-700 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-900"
+          >
+            Ver todos los proyectos
+          </Link>
+        </div>
         {data.projects.length === 0 ? (
-          <DataState variant="empty" detail="Los proyectos prioritarios aparecerán aquí cuando el adaptador canónico esté conectado." />
+          <DataState variant="empty" detail="No hay proyectos activos disponibles para esta sesión." />
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {data.projects.map((project) => (
@@ -149,6 +157,12 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
                 {project.milestone ? <p className="mt-2 text-sm text-neutral-600">Hito: {project.milestone}</p> : null}
                 {project.blocker ? <p className="mt-1 text-sm text-neutral-600">Bloqueo: {project.blocker}</p> : null}
                 {project.nextAction ? <p className="mt-1 text-sm text-neutral-600">Siguiente: {project.nextAction}</p> : null}
+                <Link
+                  href={`/toro/proyectos?project=${project.id}`}
+                  className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-neutral-800 underline-offset-4 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-900"
+                >
+                  Abrir proyecto {project.title}
+                </Link>
               </article>
             ))}
           </div>
@@ -160,6 +174,9 @@ export function ExecutiveHome({ data }: ExecutiveHomeProps) {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <Link href="/toro/decisiones" className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900">
             Decisiones
+          </Link>
+          <Link href="/toro/proyectos" className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900">
+            Proyectos
           </Link>
           <Link href="/toro" className="flex min-h-14 items-center justify-center rounded-xl border border-neutral-300 px-3 py-3 text-center text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900">
             Preguntar a TORO

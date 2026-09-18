@@ -1,5 +1,10 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+
+import { buildAirtableReadQuery } from "@/lib/search/airtable-query";
+import { getSupabasePublicConfig } from "@/lib/supabase/env";
+
 export type ReadOnlyConnectorResult<T> = {
   configured: boolean;
   externalWrite: false;
@@ -12,6 +17,9 @@ export async function readAirtableRecords(input: {
   baseId: string;
   tableId: string;
   pageSize?: number;
+  fields?: string[];
+  searchFields?: string[];
+  query?: string;
 }): Promise<ReadOnlyConnectorResult<unknown>> {
   const token = process.env.AIRTABLE_TOKEN;
 
@@ -26,7 +34,16 @@ export async function readAirtableRecords(input: {
   }
 
   const url = new URL(`https://api.airtable.com/v0/${encodeURIComponent(input.baseId)}/${encodeURIComponent(input.tableId)}`);
-  url.searchParams.set("pageSize", String(input.pageSize ?? 10));
+  const params = buildAirtableReadQuery({
+    fields: input.fields,
+    searchFields: input.searchFields,
+    query: input.query,
+    pageSize: input.pageSize,
+  });
+
+  for (const [key, value] of params.entries()) {
+    url.searchParams.append(key, value);
+  }
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${token}` },
@@ -50,6 +67,24 @@ export async function readAirtableRecords(input: {
     data: await response.json(),
     error: null,
   };
+}
+
+const readAirtableBlueprintSnapshotCached = unstable_cache(
+  async (baseId: string, tableId: string) =>
+    readAirtableRecords({
+      baseId,
+      tableId,
+      pageSize: 6,
+    }),
+  ["toro-airtable-blueprint-snapshot-v1"],
+  { revalidate: 300 },
+);
+
+export async function readAirtableBlueprintSnapshot(input: {
+  baseId: string;
+  tableId: string;
+}) {
+  return readAirtableBlueprintSnapshotCached(input.baseId, input.tableId);
 }
 
 export async function readVercelDeployments(input: {
@@ -96,4 +131,106 @@ export async function readVercelDeployments(input: {
     data: await response.json(),
     error: null,
   };
+}
+
+export async function readSupabaseHealth(): Promise<
+  ReadOnlyConnectorResult<{ reachable: true }>
+> {
+  let config: ReturnType<typeof getSupabasePublicConfig>;
+  try {
+    config = getSupabasePublicConfig();
+  } catch {
+    return {
+      configured: false,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Supabase public config is not configured.",
+    };
+  }
+
+  const url = new URL("/rest/v1/rooms", config.url);
+  url.searchParams.set("select", "id");
+  url.searchParams.set("active", "eq.true");
+  url.searchParams.set("limit", "1");
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        apikey: config.publishableKey,
+        Authorization: `Bearer ${config.publishableKey}`,
+        "Accept-Profile": "core",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        configured: true,
+        externalWrite: false,
+        mode: "read_only",
+        data: null,
+        error: `Supabase read failed with ${response.status}.`,
+      };
+    }
+
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: { reachable: true },
+      error: null,
+    };
+  } catch {
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Supabase read failed before a response was received.",
+    };
+  }
+}
+
+export async function readKrossPublicHealth(): Promise<
+  ReadOnlyConnectorResult<{ reachable: true; finalUrl: string }>
+> {
+  const target = "https://dreamcatcherhotel.kross.travel/";
+
+  try {
+    const response = await fetch(target, {
+      method: "GET",
+      redirect: "follow",
+      cache: "no-store",
+      headers: {
+        Accept: "text/html,application/xhtml+xml",
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        configured: true,
+        externalWrite: false,
+        mode: "read_only",
+        data: null,
+        error: `Kross public read failed with ${response.status}.`,
+      };
+    }
+
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: { reachable: true, finalUrl: response.url || target },
+      error: null,
+    };
+  } catch {
+    return {
+      configured: true,
+      externalWrite: false,
+      mode: "read_only",
+      data: null,
+      error: "Kross public read failed before a response was received.",
+    };
+  }
 }

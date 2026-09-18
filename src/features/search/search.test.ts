@@ -1,16 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const rpc = vi.fn();
+const { rpc, getToroSession } = vi.hoisted(() => ({
+  rpc: vi.fn(),
+  getToroSession: vi.fn(),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerSupabaseClient: async () => ({ rpc }),
 }));
+vi.mock("@/features/auth/session", () => ({ getToroSession }));
 
 import { searchToro } from "./server";
+
+const founderSession = {
+  userId: "00000000-0000-0000-0000-000000000001",
+  role: "FOUNDER",
+  navRole: "FOUNDER",
+  displayName: "Founder",
+  memberships: [],
+};
 
 describe("searchToro", () => {
   beforeEach(() => {
     rpc.mockReset();
+    getToroSession.mockReset();
+    getToroSession.mockResolvedValue(founderSession);
   });
 
   it("returns no results and performs no RPC for an empty query", async () => {
@@ -18,7 +32,7 @@ describe("searchToro", () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it("maps only authorization-safe result fields", async () => {
+  it("maps only authorization-safe result fields and disables destinations that are not implemented", async () => {
     rpc.mockResolvedValue({
       data: [
         {
@@ -40,8 +54,202 @@ describe("searchToro", () => {
         id: "00000000-0000-0000-0000-000000000001",
         title: "Habitación 25",
         subtitle: "Toro Villa",
-        href: "/toro/hotel?room=00000000-0000-0000-0000-000000000001",
+        href: null,
         freshness: "2026-09-14T21:50:00Z",
+      },
+    ]);
+  });
+
+  it("makes only canonical Room 360 destinations actionable for room results", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "room",
+          entity_id: "00000000-0000-0000-0000-000000000025",
+          title: "Habitación 25",
+          subtitle: "suite · Hab. 25",
+          destination_path: "/toro/habitaciones/DC-ROOM-25",
+          freshness: "2026-09-17T18:30:00Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("25")).resolves.toEqual([
+      {
+        entityType: "room",
+        id: "00000000-0000-0000-0000-000000000025",
+        title: "Habitación 25",
+        subtitle: "suite · Hab. 25",
+        href: "/toro/habitaciones/DC-ROOM-25",
+        freshness: "2026-09-17T18:30:00Z",
+      },
+    ]);
+  });
+
+  it("makes only UUID-scoped TORO project destinations actionable for management roles", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000021",
+          title: "TORO Executive Control",
+          subtitle: "systems · In Progress",
+          destination_path: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+          freshness: "2026-09-15T14:45:16.838Z",
+        },
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000022",
+          title: "Bad path",
+          subtitle: null,
+          destination_path: "/toro/proyectos?project=not-a-uuid",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("TORO")).resolves.toEqual([
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000021",
+        title: "TORO Executive Control",
+        subtitle: "systems · In Progress",
+        href: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+        freshness: "2026-09-15T14:45:16.838Z",
+      },
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000022",
+        title: "Bad path",
+        subtitle: null,
+        href: null,
+        freshness: null,
+      },
+    ]);
+  });
+
+  it("keeps project search results non-actionable for restricted TORO roles", async () => {
+    getToroSession.mockResolvedValue({ ...founderSession, role: "RECEPCION", navRole: "RECEPCION" });
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "project",
+          entity_id: "00000000-0000-0000-0000-000000000021",
+          title: "TORO Executive Control",
+          subtitle: "systems · In Progress",
+          destination_path: "/toro/proyectos?project=00000000-0000-0000-0000-000000000021",
+          freshness: "2026-09-15T14:45:16.838Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("TORO")).resolves.toEqual([
+      {
+        entityType: "project",
+        id: "00000000-0000-0000-0000-000000000021",
+        title: "TORO Executive Control",
+        subtitle: "systems · In Progress",
+        href: null,
+        freshness: "2026-09-15T14:45:16.838Z",
+      },
+    ]);
+  });
+
+  it("makes canonical knowledge destinations actionable only for management roles", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000031",
+          title: "Regla de autoridad Kross",
+          subtitle: "source_of_truth_rule · verified",
+          destination_path: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+          freshness: "2026-09-15T22:09:18.725Z",
+        },
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000032",
+          title: "Bad path",
+          subtitle: null,
+          destination_path: "/toro/conocimiento?item=bad",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("Kross")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000031",
+        title: "Regla de autoridad Kross",
+        subtitle: "source_of_truth_rule · verified",
+        href: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+        freshness: "2026-09-15T22:09:18.725Z",
+      },
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000032",
+        title: "Bad path",
+        subtitle: null,
+        href: null,
+        freshness: null,
+      },
+    ]);
+
+    getToroSession.mockResolvedValue({ ...founderSession, role: "RECEPCION", navRole: "RECEPCION" });
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000031",
+          title: "Regla de autoridad Kross",
+          subtitle: "source_of_truth_rule · verified",
+          destination_path: "/toro/conocimiento?item=00000000-0000-0000-0000-000000000031",
+          freshness: "2026-09-15T22:09:18.725Z",
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("Kross")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000031",
+        title: "Regla de autoridad Kross",
+        subtitle: "source_of_truth_rule · verified",
+        href: null,
+        freshness: "2026-09-15T22:09:18.725Z",
+      },
+    ]);
+  });
+
+  it("keeps only explicitly implemented TORO destinations actionable", async () => {
+    rpc.mockResolvedValue({
+      data: [
+        {
+          entity_type: "knowledge",
+          entity_id: "00000000-0000-0000-0000-000000000002",
+          title: "Decisiones",
+          subtitle: null,
+          destination_path: "/toro/decisiones",
+          freshness: null,
+        },
+      ],
+      error: null,
+    });
+
+    await expect(searchToro("decisiones")).resolves.toEqual([
+      {
+        entityType: "knowledge",
+        id: "00000000-0000-0000-0000-000000000002",
+        title: "Decisiones",
+        subtitle: null,
+        href: "/toro/decisiones",
+        freshness: null,
       },
     ]);
   });

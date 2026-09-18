@@ -1,5 +1,6 @@
 import "server-only";
 
+import { getToroSession } from "@/features/auth/session";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import type { SearchEntityType, SearchResult } from "./types";
@@ -15,6 +16,18 @@ type SearchRpcRow = {
 
 const uuidPattern =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const implementedDestinations = new Set([
+  "/toro",
+  "/toro/buscar",
+  "/toro/decisiones",
+]);
+
+const room360DestinationPattern = /^\/toro\/habitaciones\/DC-ROOM-\d{1,3}$/;
+const projectDestinationPattern =
+  /^\/toro\/proyectos\?project=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const knowledgeDestinationPattern =
+  /^\/toro\/conocimiento\?item=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isEntityType(value: unknown): value is SearchEntityType {
   return value === "room" || value === "project" || value === "knowledge";
@@ -37,7 +50,7 @@ function parseSearchResult(value: unknown): SearchRpcRow {
     typeof row.title !== "string" ||
     !isNullableString(row.subtitle) ||
     typeof row.destination_path !== "string" ||
-    !row.destination_path.startsWith("/toro/") ||
+    !row.destination_path.startsWith("/toro") ||
     !isNullableString(row.freshness)
   ) {
     throw new Error("Invalid search result received from the server.");
@@ -46,13 +59,38 @@ function parseSearchResult(value: unknown): SearchRpcRow {
   return row as SearchRpcRow;
 }
 
+function actionableDestination(
+  row: SearchRpcRow,
+  canOpenManagementModules: boolean,
+) {
+  if (row.entity_type === "project") {
+    return canOpenManagementModules && projectDestinationPattern.test(row.destination_path)
+      ? row.destination_path
+      : null;
+  }
+
+  if (row.entity_type === "knowledge" && knowledgeDestinationPattern.test(row.destination_path)) {
+    return canOpenManagementModules ? row.destination_path : null;
+  }
+
+  const [pathname] = row.destination_path.split("?", 1);
+  if (implementedDestinations.has(pathname)) return row.destination_path;
+  if (row.entity_type === "room" && room360DestinationPattern.test(pathname)) return pathname;
+  return null;
+}
+
 export async function searchToro(query: string): Promise<SearchResult[]> {
   const normalized = query.trim().replace(/\s+/g, " ");
   if (!normalized) {
     return [];
   }
 
-  const supabase = await createServerSupabaseClient();
+  const [session, supabase] = await Promise.all([
+    getToroSession(),
+    createServerSupabaseClient(),
+  ]);
+  const canOpenManagementModules = session?.role === "FOUNDER" || session?.role === "GERENCIA";
+
   const { data, error } = await supabase.rpc("search_toro", {
     p_query: normalized,
     p_limit: 12,
@@ -73,7 +111,7 @@ export async function searchToro(query: string): Promise<SearchResult[]> {
       id: row.entity_id,
       title: row.title,
       subtitle: row.subtitle,
-      href: row.destination_path,
+      href: actionableDestination(row, canOpenManagementModules),
       freshness: row.freshness,
     };
   });
