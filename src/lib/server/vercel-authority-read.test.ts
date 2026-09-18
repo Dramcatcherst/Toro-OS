@@ -17,7 +17,7 @@ afterEach(() => {
 
 describe("governed Vercel authority reads", () => {
   it("sanitizes project metadata to the approved read-only projection", async () => {
-    const fetchMock = vi.fn(async () =>
+    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>(async () =>
       new Response(
         JSON.stringify({
           id: "prj_123",
@@ -80,7 +80,7 @@ describe("governed Vercel authority reads", () => {
 
   it("paginates domains, labels Vercel aliases, and returns only approved metadata", async () => {
     const fetchMock = vi
-      .fn()
+      .fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
       .mockResolvedValueOnce(
         new Response(
           JSON.stringify({
@@ -167,7 +167,7 @@ describe("governed Vercel authority reads", () => {
   });
 
   it("fails closed on a repeated pagination cursor", async () => {
-    const fetchMock = vi.fn(async () =>
+    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>(async () =>
       new Response(
         JSON.stringify({ domains: [], pagination: { next: "same" } }),
         { status: 200, headers: { "content-type": "application/json" } },
@@ -188,7 +188,7 @@ describe("governed Vercel authority reads", () => {
 
   it("does not make a request when VERCEL_TOKEN is missing", async () => {
     delete process.env.VERCEL_TOKEN;
-    const fetchMock = vi.fn();
+    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>();
     vi.stubGlobal("fetch", fetchMock);
 
     const { readVercelProject, readVercelProjectDomains } = await import("./read-only-connectors");
