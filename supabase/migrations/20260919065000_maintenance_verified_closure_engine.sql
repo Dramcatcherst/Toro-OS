@@ -826,10 +826,18 @@ begin
         when c.result_status='pass'
           and (not c.requires_supervisor_review or c.supervisor_confirmed)
         then true else false
-      end as closure_ready
+      end as closure_ready,
+      me.supplier_or_technician as supplier_or_technician,
+      me.amount as cost_signal_amount,
+      me.currency as cost_signal_currency,
+      me.amount_kind as cost_signal_kind,
+      me.amount_verification as cost_signal_verification,
+      null::numeric as approved_cost_amount,
+      null::text as approved_cost_currency
     from facilities.inspection_checks c
     join latest l on l.id=c.inspection_round_id
     left join core.rooms cr on cr.id=c.room_id
+    left join facilities.maintenance_events me on me.id=c.target_event_id
     order by c.check_order
   )
   select jsonb_build_object(
