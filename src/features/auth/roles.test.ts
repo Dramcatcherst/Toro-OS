@@ -8,6 +8,7 @@ const toroRoles: ToroRole[] = [
   "GERENCIA",
   "RECEPCION",
   "OPERACIONES",
+  "CAMPO",
   "FINANZAS",
   "GROWTH",
   "SYSTEMS",
@@ -20,9 +21,19 @@ describe("resolveToroRole", () => {
     ).toBe("FOUNDER");
   });
 
+  it("uses the explicit limited field role without broadening system privileges", () => {
+    expect(
+      resolveToroRole({ explicitToroRole: "CAMPO", systemRoleCodes: ["EMPLEADO"] }),
+    ).toBe("CAMPO");
+  });
+
   it("maps known system roles conservatively", () => {
     expect(resolveToroRole({ systemRoleCodes: ["GERENCIA"] })).toBe("GERENCIA");
     expect(resolveToroRole({ systemRoleCodes: ["CONTABILIDAD"] })).toBe("FINANZAS");
+  });
+
+  it("does not infer field access from EMPLEADO alone", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["EMPLEADO"] })).toBeNull();
   });
 
   it("does not infer founder privileges from ADMIN alone", () => {
@@ -79,6 +90,13 @@ describe("getRoleNavigation", () => {
       "Equipo",
       "Conocimiento",
       "Sistemas",
+    ]);
+  });
+
+  it("keeps CAMPO limited to Inicio and Mantenimiento", () => {
+    expect(getRoleNavigation("CAMPO")).toEqual([
+      { label: "Inicio", availability: "available", href: "/toro" },
+      { label: "Mantenimiento", availability: "available", href: "/toro/operacion/mantenimiento" },
     ]);
   });
 
