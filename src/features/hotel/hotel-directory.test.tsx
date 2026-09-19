@@ -14,6 +14,15 @@ const room = {
   lastReviewed: "2026-09-14",
   freshness: "2026-09-14T09:59:49.828Z",
   room360Key: "DC-ROOM-25",
+  operationalGate: {
+    status: "HUMAN_QA_REQUIRED" as const,
+    reason: "Fresh housekeeping QA and human reception release are required.",
+    p0BlockerCount: 0,
+    p1AttentionCount: 0,
+    recentUnresolvedEvidenceCount: 0,
+    openTaskSummary: null,
+    calculatedAtCr: "2026-09-19T12:02:05.000Z",
+  },
 };
 
 const unavailableOperational = {
@@ -44,7 +53,8 @@ describe("HotelDirectory", () => {
     expect(screen.getByText(/ocupación, llegadas, salidas y huéspedes en casa no se presentan como actuales/i)).toBeInTheDocument();
     expect(screen.getByText("Suite premium cinema")).toBeInTheDocument();
     expect(screen.getByText(/Capacidad: 5/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /abrir ficha 360 de habitación 25/i })).toHaveAttribute(
+    expect(screen.getByText("HUMAN_QA_REQUIRED")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /revisar ficha 360/i })).toHaveAttribute(
       "href",
       "/toro/habitaciones/DC-ROOM-25",
     );
@@ -62,7 +72,7 @@ describe("HotelDirectory", () => {
     );
 
     expect(screen.getByText("needs_verification")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /abrir ficha 360 de habitación 28/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /revisar ficha 360/i })).toBeInTheDocument();
   });
 
   it("shows an honest empty state", () => {
