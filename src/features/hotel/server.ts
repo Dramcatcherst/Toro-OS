@@ -13,6 +13,17 @@ const uuidPattern =
 const STALE_AFTER_MS = 48 * 60 * 60 * 1000;
 const hotelRoles = new Set(["FOUNDER", "GERENCIA", "RECEPCION", "OPERACIONES"]);
 
+type RoomOperationalGateRow = {
+  room_id: string;
+  gate_status: string;
+  gate_reason: string;
+  p0_blocker_count: number;
+  p1_attention_count: number;
+  recent_unresolved_evidence_count: number;
+  open_task_summary: string | null;
+  calculated_at_cr: string | null;
+};
+
 type HotelRoomRow = {
   id: string;
   room_number: number;
@@ -67,6 +78,28 @@ function parseRoomRow(value: unknown): HotelRoomRow {
   return row as HotelRoomRow;
 }
 
+function parseOperationalGateRow(value: unknown): RoomOperationalGateRow | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as Record<string, unknown>;
+  if (
+    typeof row.room_id !== "string" ||
+    !uuidPattern.test(row.room_id) ||
+    typeof row.gate_status !== "string" ||
+    typeof row.gate_reason !== "string" ||
+    typeof row.p0_blocker_count !== "number" ||
+    typeof row.p1_attention_count !== "number" ||
+    typeof row.recent_unresolved_evidence_count !== "number" ||
+    !isNullableString(row.open_task_summary) ||
+    !isNullableString(row.calculated_at_cr)
+  ) return null;
+  return row as RoomOperationalGateRow;
+}
+
+function normalizedGateStatus(value: string | undefined) {
+  if (value === "BLOCKED" || value === "REVIEW_REQUIRED" || value === "HUMAN_QA_REQUIRED") return value;
+  return "UNKNOWN" as const;
+}
+
 function sourceState(rooms: HotelRoomItem[]): HotelSourceState {
   if (!rooms.length) {
     return { status: "empty", latestAt: null };
@@ -93,22 +126,36 @@ export async function loadHotelDirectory(): Promise<HotelDirectoryData> {
   }
 
   const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase
-    .schema("core")
-    .from("rooms")
-    .select("id,room_number,name_es,name_en,room_type,max_capacity,kitchen_type,verified_status,last_reviewed,updated_at")
-    .eq("active", true)
-    .order("room_number", { ascending: true })
-    .limit(50);
+  const [roomRead, gateRead] = await Promise.all([
+    supabase
+      .schema("core")
+      .from("rooms")
+      .select("id,room_number,name_es,name_en,room_type,max_capacity,kitchen_type,verified_status,last_reviewed,updated_at")
+      .eq("active", true)
+      .order("room_number", { ascending: true })
+      .limit(50),
+    supabase
+      .schema("operations")
+      .from("room_operational_gate")
+      .select("room_id,gate_status,gate_reason,p0_blocker_count,p1_attention_count,recent_unresolved_evidence_count,open_task_summary,calculated_at_cr")
+      .limit(100),
+  ]);
 
-  if (error) {
-    throw new Error(error.message || "Unable to load TORO hotel rooms.");
+  if (roomRead.error) {
+    throw new Error(roomRead.error.message || "Unable to load TORO hotel rooms.");
   }
-  if (!Array.isArray(data)) {
+  if (!Array.isArray(roomRead.data)) {
     throw new Error("Invalid hotel room payload received from the server.");
   }
 
-  const rooms = data.map((raw) => {
+  const gateByRoomId = new Map(
+    (Array.isArray(gateRead.data) ? gateRead.data : [])
+      .map(parseOperationalGateRow)
+      .filter((row): row is RoomOperationalGateRow => Boolean(row))
+      .map((row) => [row.room_id, row] as const),
+  );
+
+  const rooms = roomRead.data.map((raw) => {
     const row = parseRoomRow(raw);
     return {
       id: row.id,
@@ -121,6 +168,29 @@ export async function loadHotelDirectory(): Promise<HotelDirectoryData> {
       lastReviewed: row.last_reviewed,
       freshness: row.updated_at,
       room360Key: `DC-ROOM-${row.room_number}`,
+      operationalGate: (() => {
+        if (gateRead.error) {
+          return {
+            status: "UNKNOWN" as const,
+            reason: "No se pudo consultar el gate operativo; requiere verificación humana.",
+            p0BlockerCount: 0,
+            p1AttentionCount: 0,
+            recentUnresolvedEvidenceCount: 0,
+            openTaskSummary: null,
+            calculatedAtCr: null,
+          };
+        }
+        const gate = gateByRoomId.get(row.id);
+        return {
+          status: normalizedGateStatus(gate?.gate_status),
+          reason: gate?.gate_reason ?? "Sin gate operativo calculado; requiere verificación humana.",
+          p0BlockerCount: gate?.p0_blocker_count ?? 0,
+          p1AttentionCount: gate?.p1_attention_count ?? 0,
+          recentUnresolvedEvidenceCount: gate?.recent_unresolved_evidence_count ?? 0,
+          openTaskSummary: gate?.open_task_summary ?? null,
+          calculatedAtCr: gate?.calculated_at_cr ?? null,
+        };
+      })(),
     } satisfies HotelRoomItem;
   });
 
