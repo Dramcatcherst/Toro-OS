@@ -1,6 +1,9 @@
 name: Validate maintenance CAMPO access
 
 on:
+  pull_request:
+    branches:
+      - feat/maintenance-verified-closure-db-20260919
   push:
     branches:
       - feat/phase2-maintenance-workspace-20260919
