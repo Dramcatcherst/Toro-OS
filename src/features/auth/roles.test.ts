@@ -8,6 +8,7 @@ const toroRoles: ToroRole[] = [
   "GERENCIA",
   "RECEPCION",
   "OPERACIONES",
+  "CAMPO",
   "FINANZAS",
   "GROWTH",
   "SYSTEMS",
@@ -20,9 +21,19 @@ describe("resolveToroRole", () => {
     ).toBe("FOUNDER");
   });
 
+  it("uses the explicit limited field role without broadening system privileges", () => {
+    expect(
+      resolveToroRole({ explicitToroRole: "CAMPO", systemRoleCodes: ["EMPLEADO"] }),
+    ).toBe("CAMPO");
+  });
+
   it("maps known system roles conservatively", () => {
     expect(resolveToroRole({ systemRoleCodes: ["GERENCIA"] })).toBe("GERENCIA");
     expect(resolveToroRole({ systemRoleCodes: ["CONTABILIDAD"] })).toBe("FINANZAS");
+  });
+
+  it("does not infer field access from EMPLEADO alone", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["EMPLEADO"] })).toBeNull();
   });
 
   it("does not infer founder privileges from ADMIN alone", () => {
@@ -40,13 +51,27 @@ describe("getRoleNavigation", () => {
       item.href ? [item.href] : [],
     );
 
-    expect(enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href))).toBe(true);
+    expect(
+      enabledHrefs.every((href) =>
+        ["/toro", "/toro/decisiones", "/toro/operacion/mantenimiento"].includes(
+          href,
+        ),
+      ),
+    ).toBe(true);
   });
 
   it("keeps future founder modules visible without an actionable destination", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas"]) {
+    for (const label of [
+      "Hotel",
+      "Huéspedes",
+      "Dinero",
+      "Proyectos",
+      "Equipo",
+      "Conocimiento",
+      "Sistemas",
+    ]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
@@ -57,6 +82,7 @@ describe("getRoleNavigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
       "Inicio",
       "Decisiones",
+      "Mantenimiento",
       "Hotel",
       "Huéspedes",
       "Dinero",
@@ -67,9 +93,17 @@ describe("getRoleNavigation", () => {
     ]);
   });
 
+  it("keeps CAMPO limited to Inicio and Mantenimiento", () => {
+    expect(getRoleNavigation("CAMPO")).toEqual([
+      { label: "Inicio", availability: "available", href: "/toro" },
+      { label: "Mantenimiento", availability: "available", href: "/toro/operacion/mantenimiento" },
+    ]);
+  });
+
   it("does not expose finance or systems navigation to reception", () => {
     const labels = getRoleNavigation("RECEPCION").map((item) => item.label);
     expect(labels).toContain("Huéspedes");
+    expect(labels).not.toContain("Mantenimiento");
     expect(labels).not.toContain("Dinero");
     expect(labels).not.toContain("Sistemas");
   });
@@ -78,5 +112,6 @@ describe("getRoleNavigation", () => {
     const labels = getRoleNavigation("FINANZAS").map((item) => item.label);
     expect(labels).toContain("Dinero");
     expect(labels).not.toContain("Huéspedes");
+    expect(labels).not.toContain("Mantenimiento");
   });
 });
