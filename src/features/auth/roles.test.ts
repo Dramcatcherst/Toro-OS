@@ -40,13 +40,27 @@ describe("getRoleNavigation", () => {
       item.href ? [item.href] : [],
     );
 
-    expect(\n      enabledHrefs.every((href) =>\n        ["/toro", "/toro/decisiones", "/toro/operacion/mantenimiento"].includes(\n          href,\n        ),\n      ),\n    ).toBe(true);
+    expect(
+      enabledHrefs.every((href) =>
+        ["/toro", "/toro/decisiones", "/toro/operacion/mantenimiento"].includes(
+          href,
+        ),
+      ),
+    ).toBe(true);
   });
 
   it("keeps future founder modules visible without an actionable destination", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas"]) {
+    for (const label of [
+      "Hotel",
+      "Huéspedes",
+      "Dinero",
+      "Proyectos",
+      "Equipo",
+      "Conocimiento",
+      "Sistemas",
+    ]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
@@ -71,6 +85,7 @@ describe("getRoleNavigation", () => {
   it("does not expose finance or systems navigation to reception", () => {
     const labels = getRoleNavigation("RECEPCION").map((item) => item.label);
     expect(labels).toContain("Huéspedes");
+    expect(labels).not.toContain("Mantenimiento");
     expect(labels).not.toContain("Dinero");
     expect(labels).not.toContain("Sistemas");
   });
@@ -79,5 +94,6 @@ describe("getRoleNavigation", () => {
     const labels = getRoleNavigation("FINANZAS").map((item) => item.label);
     expect(labels).toContain("Dinero");
     expect(labels).not.toContain("Huéspedes");
+    expect(labels).not.toContain("Mantenimiento");
   });
 });
