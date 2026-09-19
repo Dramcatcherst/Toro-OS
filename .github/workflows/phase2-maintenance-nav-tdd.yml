@@ -1,4 +1,4 @@
-name: Phase 2 Maintenance Navigation TDD
+name: Phase 2 Maintenance Final Validation
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  nav-tdd:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,4 +18,13 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci
-      - run: npm test -- src/features/auth/role-nav.test.ts
+      - name: Navigation contract
+        run: npm test -- src/features/auth/role-nav.test.ts
+      - name: Maintenance contract
+        run: npm test -- src/features/operations/maintenance.test.tsx src/features/operations/maintenance-actions.test.ts
+      - name: Full test suite
+        run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
