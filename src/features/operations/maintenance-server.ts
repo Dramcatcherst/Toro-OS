@@ -26,7 +26,7 @@ export type MaintenanceWorkspaceLoad =
       detail: string;
     };
 
-const ALLOWED_ROLES = new Set(["FOUNDER", "GERENCIA", "OPERACIONES"]);
+const ALLOWED_ROLES = new Set(["FOUNDER", "GERENCIA", "OPERACIONES", "CAMPO"]);
 
 function uniqueOrgIds(value: unknown): string[] | null {
   if (!Array.isArray(value)) return null;
@@ -51,7 +51,7 @@ export async function loadMaintenanceWorkspace(): Promise<MaintenanceWorkspaceLo
   if (!ALLOWED_ROLES.has(session.role)) {
     return {
       kind: "forbidden",
-      detail: "Este espacio está reservado para Operaciones y Gerencia.",
+      detail: "Este espacio está reservado para Operaciones, personal de campo autorizado y Gerencia.",
     };
   }
 
