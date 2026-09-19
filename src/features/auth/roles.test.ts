@@ -40,7 +40,7 @@ describe("getRoleNavigation", () => {
       item.href ? [item.href] : [],
     );
 
-    expect(enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href))).toBe(true);
+    expect(\n      enabledHrefs.every((href) =>\n        ["/toro", "/toro/decisiones", "/toro/operacion/mantenimiento"].includes(\n          href,\n        ),\n      ),\n    ).toBe(true);
   });
 
   it("keeps future founder modules visible without an actionable destination", () => {
@@ -57,6 +57,7 @@ describe("getRoleNavigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
       "Inicio",
       "Decisiones",
+      "Mantenimiento",
       "Hotel",
       "Huéspedes",
       "Dinero",
