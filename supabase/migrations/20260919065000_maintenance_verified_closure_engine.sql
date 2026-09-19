@@ -91,6 +91,26 @@ create index if not exists inspection_checks_parent_task_idx
   on facilities.inspection_checks (parent_task_id)
   where parent_task_id is not null;
 
+create index if not exists inspection_checks_property_idx
+  on facilities.inspection_checks (property_id)
+  where property_id is not null;
+
+create index if not exists inspection_checks_room_idx
+  on facilities.inspection_checks (room_id)
+  where room_id is not null;
+
+create index if not exists inspection_checks_captured_by_idx
+  on facilities.inspection_checks (captured_by)
+  where captured_by is not null;
+
+create index if not exists inspection_checks_supervisor_by_idx
+  on facilities.inspection_checks (supervisor_confirmed_by)
+  where supervisor_confirmed_by is not null;
+
+create index if not exists inspection_rounds_property_idx
+  on facilities.inspection_rounds (property_id)
+  where property_id is not null;
+
 alter table facilities.inspection_checks enable row level security;
 alter table facilities.inspection_rounds enable row level security;
 
