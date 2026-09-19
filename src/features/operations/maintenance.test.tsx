@@ -123,8 +123,11 @@ describe("maintenance workspace", () => {
       />,
     );
 
-    expect(screen.getByText(/cotización reportada/i)).toHaveTextContent("USD 2,800");
-    expect(screen.getByText(/costo aprobado/i)).toHaveTextContent(/no disponible/i);
+    const quoteLine = screen.getByText(/cotización reportada/i).closest("p");
+    const approvedLine = screen.getByText(/costo aprobado/i).closest("p");
+
+    expect(quoteLine).toHaveTextContent("Cotización reportada: USD 2,800");
+    expect(approvedLine).toHaveTextContent("Costo aprobado: No disponible");
   });
 
   it("fails closed on malformed field payloads", () => {
