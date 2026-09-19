@@ -7,7 +7,6 @@ import { describe, expect, it } from "vitest";
 import {
   parseMaintenanceFieldRound,
   sortMaintenanceChecks,
-  type MaintenanceFieldRound,
 } from "./maintenance";
 import { MaintenanceBoard } from "./maintenance-board";
 
@@ -104,7 +103,7 @@ describe("maintenance workspace", () => {
     );
 
     expect(screen.getByText(/#22 · Habitación 22/i)).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/foto / evidencia/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByLabelText(/foto \/ evidencia/i).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: "PASS" }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: "FAIL" }).length).toBeGreaterThan(0);
   });
