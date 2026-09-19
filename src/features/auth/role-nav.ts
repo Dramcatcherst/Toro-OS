@@ -47,6 +47,10 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Equipo", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],
+  CAMPO: [
+    { label: "Inicio", availability: "available", href: "/toro" },
+    maintenanceNavigationItem,
+  ],
   FINANZAS: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Dinero", availability: "coming-soon" },
