@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import "@testing-library/jest-dom/vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -123,8 +123,14 @@ describe("maintenance workspace", () => {
       />,
     );
 
-    const quoteLine = screen.getByText(/cotización reportada/i).closest("p");
-    const approvedLine = screen.getByText(/costo aprobado/i).closest("p");
+    const quoteLabel = screen.getByText(/cotización reportada/i);
+    const quoteCard = quoteLabel.closest("article");
+
+    expect(quoteCard).not.toBeNull();
+
+    const card = within(quoteCard as HTMLElement);
+    const quoteLine = quoteLabel.closest("p");
+    const approvedLine = card.getByText(/costo aprobado/i).closest("p");
 
     expect(quoteLine).toHaveTextContent("Cotización reportada: USD 2,800");
     expect(approvedLine).toHaveTextContent("Costo aprobado: No disponible");
