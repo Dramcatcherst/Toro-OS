@@ -47,10 +47,10 @@ const status = {
 const humanLayer = {
   state: "verified",
   knowledgeKey: "toro_human_layer_runtime_config_current",
-  snapshotKey: "toro_human_layer_runtime_config_v1_4_20260922",
-  configVersion: "TORO-HUMAN-LAYER-v1.4",
+  snapshotKey: "toro_human_layer_runtime_config_v1_5_20260922",
+  configVersion: "TORO-HUMAN-LAYER-v1.5",
   configHash:
-    "sha256:64e24f8fa21b3238b95e93828f874a627e4ed68e03701c08e58513d2ebc31768",
+    "sha256:7ff7e085153ff8f443fef01bb048fdabf70a44f86276e3bb796e96630f85d2d0",
   onboardingStepCount: 10,
   statePersistence: "not_implemented",
   sourceUpdatedAt: "2026-09-22T20:45:00.000Z",
@@ -90,9 +90,9 @@ describe("GET /api/service/operational-status", () => {
     const response = await GET(
       new Request("http://localhost/api/service/operational-status", {
         headers: {
-          "x-toro-human-layer-version": "TORO-HUMAN-LAYER-v1.4",
+          "x-toro-human-layer-version": "TORO-HUMAN-LAYER-v1.5",
           "x-toro-human-layer-hash":
-            "sha256:64e24f8fa21b3238b95e93828f874a627e4ed68e03701c08e58513d2ebc31768",
+            "sha256:7ff7e085153ff8f443fef01bb048fdabf70a44f86276e3bb796e96630f85d2d0",
         },
       }),
     );
