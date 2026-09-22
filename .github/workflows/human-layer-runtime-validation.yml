@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - feat/toro-human-layer-runtime-config-20260922
+  pull_request:
+    branches:
+      - feat/toro-today-action-loop-20260917
+  workflow_dispatch:
 
 jobs:
   validate:
