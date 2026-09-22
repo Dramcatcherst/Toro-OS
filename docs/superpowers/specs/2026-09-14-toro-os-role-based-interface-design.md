@@ -32,14 +32,19 @@ The product must reduce Mauricio's cognitive load, let staff work from role-spec
 
 User -> TORO Web App -> role/action layer -> Supabase canonical services -> specialized systems / agents.
 
-### Specialized agents
+### Specialized TORO capabilities
 
-- TORO: executive orchestration and decision routing.
-- TERE: guest sales, reservations support, concierge, lifecycle.
-- RICO: hotel operations, housekeeping, maintenance, laundry and service quality.
-- FIONA: finance, accounting administration, compliance and people operations.
-- SKY: marketing, growth, brand and ancillary revenue.
-- SOBRESITO: systems, product, data, integrations, reliability and security.
+Normal users see one TORO. Specialist personas remain internal routing/capability layers:
+
+- TORO Core: executive orchestration and decision routing.
+- TORO TERE: guest sales, reservations support, concierge and lifecycle.
+- TORO RICO: hotel operations, housekeeping, maintenance, laundry and service quality.
+- TORO FIONA: finance, accounting administration and compliance.
+- TORO SKY: marketing, growth, brand and ancillary revenue.
+- TORO SOBRESITO: systems, product, data, integrations, reliability and security.
+- TORO People: HR, attendance, schedules, leave, payroll operations and employee self-service.
+
+TORO People is the canonical destination of the standalone DreamTeam application. People/HR is not owned by TORO FIONA; payroll accounting may cross the governed TORO People ↔ TORO Finance boundary.
 
 ### External authorities
 
@@ -74,13 +79,13 @@ Purpose: daily hotel control, staffing, guest issues, approvals and execution mo
 
 Key views: today, unresolved incidents, room readiness, staff handoffs, approvals, purchases, financial exceptions, projects.
 
-### Recepción — TERE / Reception Hub
+### Recepción — TORO TERE / Reception Hub
 
 Purpose: guest-facing execution with governed knowledge.
 
 Must provide room/villa knowledge, FAQs, guest messages, experiences, direct-sales guidance and escalation. Kross remains live transactional authority for reservation facts and writes.
 
-### Operations — RICO
+### Operations — TORO RICO
 
 Purpose: convert hotel issues into actionable work.
 
@@ -91,15 +96,21 @@ Role variants:
 
 Each gets focused checklists/tickets, not the full operational database.
 
-### Finance/Admin — FIONA
+### Finance/Admin — TORO FIONA
 
 Purpose: reconciliations, invoices, payments, recurring obligations, exceptions, reports and administrative evidence. Private financial data must never surface to unrelated roles.
 
-### Growth — SKY
+### People / HR — TORO People
+
+Purpose: employees, employment context, attendance, schedules, leave, payroll operations, requests, employee self-service and HR evidence.
+
+TORO People reuses the proven DreamTeam HR model and security boundaries. It must not create a second auth, messaging, approval or agent universe. Employee HR-private records are organization-governed and remain separate from the user's personal TORO User Vault.
+
+### Growth — TORO SKY
 
 Purpose: campaigns, content, SEO/SEM, reviews, partnerships, ancillary products and verified media/content workflows.
 
-### Systems — SOBRESITO
+### Systems — TORO SOBRESITO
 
 Purpose: integration health, deploy status, data quality, sync/import runs, security issues, backups, system ownership and incident response.
 
@@ -284,14 +295,15 @@ Historical Kross/Alegra/OTA data that can be regenerated should not be copied me
 2. Mauricio Executive Home
 3. Decisions
 4. Global search
-5. Reception / TERE
-6. Operations / RICO
+5. Reception / TORO TERE
+6. Operations / TORO RICO
 7. Projects
 8. Knowledge
-9. Finance / FIONA
-10. Growth / SKY
-11. Systems / SOBRESITO
-12. Admin / permissions / audit
+9. TORO People
+10. Finance / TORO FIONA
+11. Growth / TORO SKY
+12. Systems / TORO SOBRESITO
+13. Admin / permissions / audit
 
 Wave 1 must prove the shared shell and permissions before adding department depth.
 
