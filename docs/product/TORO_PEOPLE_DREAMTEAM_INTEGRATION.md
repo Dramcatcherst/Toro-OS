@@ -80,6 +80,21 @@ Before broad TORO People rollout, classify each unlinked employee:
 
 Do not auto-link identities by name alone.
 
+## 4.1 Employment profile source reconciliation
+
+Airtable table `hr_employment_profiles` currently contains 12 profile rows:
+
+- 10 status `ACTIVO`;
+- 1 status `INACTIVO`;
+- 1 status `POR_VALIDAR`;
+- 11 have `employee_portal_enabled = true`;
+- 11 have no `effective_to`, indicating a current/open-ended profile candidate;
+- historical data status: 8 `PARCIAL`, 2 `PENDIENTE`, 1 `VERIFICADO`, 1 `NO_APLICA`.
+
+This explains why useful employment-profile truth still exists outside the canonical Supabase table.
+
+**Migration rule:** do not bulk-copy these 12 rows. Match each candidate through governed staff/clock identity mapping, verify effective dates/status, preserve source provenance, and queue ambiguous rows for review. Salary/rate fields remain restricted and must not be copied into general TORO Knowledge or User Vault.
+
 ## 5. Security debt retained from DreamTeam
 
 DreamTeam documentation records a hosted RLS/RPC gate that remains NO-GO/NOT_APPLIED for parts of the security-hardening plan. Local synthetic tests are useful evidence but do not prove production actor behavior.
