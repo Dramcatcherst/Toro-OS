@@ -18,9 +18,9 @@ function query(result: { data: unknown; error: { message?: string } | null }) {
 }
 
 const currentKey = "toro_human_layer_runtime_config_current";
-const snapshotKey = "toro_human_layer_runtime_config_v1_2_20260922";
+const snapshotKey = "toro_human_layer_runtime_config_v1_4_20260922";
 const configHash =
-  "sha256:5bfe3b0d56db9f66f6737dde086d365a56b0d580dfb4c38c05105fc77a475c77";
+  "sha256:64e24f8fa21b3238b95e93828f874a627e4ed68e03701c08e58513d2ebc31768";
 
 describe("loadHumanLayerRuntimeConfig", () => {
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
         active: true,
         structured_content: {
           current_snapshot_key: snapshotKey,
-          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_version: "TORO-HUMAN-LAYER-v1.4",
           config_hash: configHash,
           onboarding_step_count: 10,
           state_persistence: "NOT_IMPLEMENTED",
@@ -50,7 +50,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
         verified_status: "verified",
         active: true,
         structured_content: {
-          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_version: "TORO-HUMAN-LAYER-v1.4",
           config_hash: configHash,
           onboarding_step_count: 10,
         },
@@ -79,7 +79,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
       state: "verified",
       knowledgeKey: currentKey,
       snapshotKey,
-      configVersion: "TORO-HUMAN-LAYER-v1.2",
+      configVersion: "TORO-HUMAN-LAYER-v1.4",
       configHash,
       onboardingStepCount: 10,
       statePersistence: "not_implemented",
@@ -103,7 +103,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
           {
             knowledge_key: currentKey,
             snapshot_key: snapshotKey,
-            config_version: "TORO-HUMAN-LAYER-v1.2",
+            config_version: "TORO-HUMAN-LAYER-v1.4",
             config_hash: configHash,
             onboarding_step_count: 10,
             state_persistence: "NOT_IMPLEMENTED",
@@ -123,7 +123,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
       state: "verified",
       knowledgeKey: currentKey,
       snapshotKey,
-      configVersion: "TORO-HUMAN-LAYER-v1.2",
+      configVersion: "TORO-HUMAN-LAYER-v1.4",
       configHash,
       onboardingStepCount: 10,
       statePersistence: "not_implemented",
@@ -180,7 +180,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
         active: true,
         structured_content: {
           current_snapshot_key: snapshotKey,
-          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_version: "TORO-HUMAN-LAYER-v1.4",
           config_hash: configHash,
           onboarding_step_count: 10,
           state_persistence: "NOT_IMPLEMENTED",
@@ -195,7 +195,7 @@ describe("loadHumanLayerRuntimeConfig", () => {
         verified_status: "verified",
         active: true,
         structured_content: {
-          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_version: "TORO-HUMAN-LAYER-v1.4",
           config_hash:
             "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           onboarding_step_count: 10,
