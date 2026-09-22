@@ -246,3 +246,35 @@ No project may create its own identity, permissions, message store, approval sys
 - No new internal subsystem name without `TORO`.
 - External authority remains external authority.
 - Learning is governed and reversible.
+
+
+## 11. GitHub estate classification
+
+The following repositories were inspected to prevent repository count from being mistaken for subsystem count.
+
+| Repository | Classification | Canonical relationship |
+| --- | --- | --- |
+| `Dramcatcherst/Toro-OS` | CURRENT canonical product repository | TORO OS core architecture/code |
+| `Dramcatcherst/toro-os-v88-new` | legacy/reference TORO knowledge + historical implementation | mine useful rules/evidence; do not treat as parallel canonical TORO |
+| `Dramcatcherst/Toro-OS---Dreamcatcher-Hotel` | legacy hotel-specific TORO implementation | reference/proving evidence; absorb only verified unique value |
+| `Dramcatcherst/dream-team` | legacy standalone operational app | migrate into TORO People |
+| `Dramcatcherst/dreamauro` | RicoSky marketplace experiment | TORO Exchange only if product decision retains it |
+| `Dramcatcherst/ai-for-dreamers` | separate product | powered by TORO; not a TORO subsystem by default |
+| `Dramcatcherst/dreamcatcher-website-vnext` | current governed public-site channel implementation | TORO Channels governs it; not a TORO subsystem |
+| `Dramcatcherst/dreamcatcher-hotel-santa-teresa-v100` | prior/parallel website implementation | reference until canonical website cutover evidence says otherwise |
+| `Dramcatcherst/agoversion-v100` | static snapshot/reference mirror | archive/QA evidence; never operational truth |
+| `Dramcatcherst/dc-king` | website implementation candidate/legacy build | classify against current website canonical repo; not a TORO subsystem |
+| `Dramcatcherst/SITE0926` | repository exists but README was not available in inspection | UNKNOWN until content inspection; must not be treated as canonical |
+
+### Repository rule
+
+A GitHub repository is not automatically:
+- a product;
+- a subsystem;
+- a source of truth;
+- a live deployment.
+
+Every repository must have one disposition:
+`CANONICAL · ACTIVE CHANNEL · MIGRATE · REFERENCE · ARCHIVE · EXPERIMENT · UNKNOWN`.
+
+No new TORO repository may become canonical without updating this registry and the product context.
