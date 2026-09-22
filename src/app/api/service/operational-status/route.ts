@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { loadHumanLayerRuntimeConfig } from "@/lib/server/human-layer-config";
 import { authorizeOpenClawStatus } from "@/lib/server/machine-auth";
 import { getOperationalStatus } from "@/lib/server/operational-status";
 
@@ -9,7 +10,10 @@ export async function GET(request: Request) {
   const auth = authorizeOpenClawStatus(request);
   if (!auth.ok) return auth.response;
 
-  const status = await getOperationalStatus();
+  const [status, humanLayer] = await Promise.all([
+    getOperationalStatus(),
+    loadHumanLayerRuntimeConfig(),
+  ]);
 
   return NextResponse.json(
     {
@@ -20,6 +24,7 @@ export async function GET(request: Request) {
       sourceSummary: status.sources.summary,
       warnings: status.warnings,
       chatSummary: status.chatSummary,
+      humanLayer,
     },
     {
       headers: {
