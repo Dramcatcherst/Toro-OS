@@ -90,6 +90,49 @@ describe("loadHumanLayerRuntimeConfig", () => {
     expect(snapshotQuery.eq).toHaveBeenCalledWith("knowledge_key", snapshotKey);
   });
 
+  it("uses the PII-free public projection when machine auth has no Supabase user session", async () => {
+    const deniedQuery = query({
+      data: null,
+      error: { message: "permission denied for table knowledge_items" },
+    });
+    const rpc = vi.fn(async (name: string, args: { p_org_slug: string }) => {
+      expect(name).toBe("get_toro_human_layer_config_identity");
+      expect(args).toEqual({ p_org_slug: "dreamcatcher" });
+      return {
+        data: [
+          {
+            knowledge_key: currentKey,
+            snapshot_key: snapshotKey,
+            config_version: "TORO-HUMAN-LAYER-v1.2",
+            config_hash: configHash,
+            onboarding_step_count: 10,
+            state_persistence: "NOT_IMPLEMENTED",
+            source_updated_at: "2026-09-22T20:45:00.000Z",
+          },
+        ],
+        error: null,
+      };
+    });
+
+    createServerSupabaseClient.mockResolvedValue({
+      schema: () => ({ from: () => deniedQuery }),
+      rpc,
+    });
+
+    await expect(loadHumanLayerRuntimeConfig()).resolves.toEqual({
+      state: "verified",
+      knowledgeKey: currentKey,
+      snapshotKey,
+      configVersion: "TORO-HUMAN-LAYER-v1.2",
+      configHash,
+      onboardingStepCount: 10,
+      statePersistence: "not_implemented",
+      sourceUpdatedAt: "2026-09-22T20:45:00.000Z",
+      reason: null,
+    });
+    expect(rpc).toHaveBeenCalledTimes(1);
+  });
+
   it("fails closed when the current pointer is missing or unavailable", async () => {
     const missingQuery = query({ data: null, error: null });
     createServerSupabaseClient.mockResolvedValue({
