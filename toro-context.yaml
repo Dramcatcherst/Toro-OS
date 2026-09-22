@@ -72,6 +72,43 @@ product_rules:
   integrated_does_not_mean_automated: true
   automated_does_not_mean_verified: true
   deployed_does_not_mean_adopted: true
+  internal_subsystems_require_toro_prefix: true
+  one_canonical_identity_per_human: true
+  no_silent_cross_user_memory: true
+  no_silent_personal_to_employer_data_promotion: true
+
+subsystem_architecture:
+  registry_document: docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md
+  naming_pattern: "TORO <Subsystem>"
+  specialist_naming_pattern: "TORO <Specialist>"
+  legacy_names_are_migration_aliases: true
+  dreamteam_destination: TORO People
+  personal_assistant_destination: TORO Personal
+  communication_destination: TORO Comms
+  ricosky_if_integrated: TORO Exchange
+  ai_for_dreamers_relationship: separate_product_powered_by_toro
+
+user_vault:
+  model: logical_user_isolation_in_canonical_supabase
+  physical_database_per_user_default: false
+  scopes:
+    - personal
+    - work_private
+    - work_org
+    - shared
+    - system
+  durable_memory_requires:
+    - user_id
+    - purpose
+    - scope
+    - provenance
+    - confidence
+    - sensitivity
+    - visibility
+    - retention
+    - verification_state
+  personal_content_employer_visible_by_default: false
+  memory_promotion: "observed -> candidate -> confirmed_or_verified -> durable -> superseded_or_expired_or_deleted"
 
 brand:
   identity: blue_bull
