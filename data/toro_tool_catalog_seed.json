@@ -1,0 +1,576 @@
+{
+  "version": "2026-09-22-v1",
+  "rules": {
+    "available_does_not_mean_connected": true,
+    "connected_does_not_mean_authorized": true,
+    "authorized_does_not_mean_operational": true,
+    "personal_and_organization_connections_separate": true
+  },
+  "capabilities": [
+    "search",
+    "read",
+    "draft",
+    "create",
+    "update",
+    "execute",
+    "approve",
+    "monitor",
+    "notify",
+    "export",
+    "admin"
+  ],
+  "tools": [
+    {
+      "key": "kross",
+      "name": "Kross",
+      "category": "hospitality",
+      "relationship": "external_authority",
+      "integration_status": "current_authority",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "read",
+        "search",
+        "monitor"
+      ]
+    },
+    {
+      "key": "wespeak",
+      "name": "WeSpeak",
+      "category": "communication",
+      "relationship": "external_runtime",
+      "integration_status": "confirmed_active",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "read",
+        "draft",
+        "notify"
+      ]
+    },
+    {
+      "key": "openclaw",
+      "name": "OpenClaw",
+      "category": "communication",
+      "relationship": "gateway_runtime",
+      "integration_status": "configured_unverified",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "read",
+        "draft",
+        "execute",
+        "notify"
+      ]
+    },
+    {
+      "key": "alegra",
+      "name": "Alegra",
+      "category": "finance",
+      "relationship": "external_authority",
+      "integration_status": "authority_connector_needed",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "read",
+        "search",
+        "export"
+      ]
+    },
+    {
+      "key": "dropbox",
+      "name": "Dropbox",
+      "category": "files",
+      "relationship": "source_connector",
+      "integration_status": "current_source",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "export"
+      ]
+    },
+    {
+      "key": "google-drive",
+      "name": "Google Drive",
+      "category": "files",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "notion",
+      "name": "Notion",
+      "category": "knowledge",
+      "relationship": "source_connector",
+      "integration_status": "current_strategy_source",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "airtable",
+      "name": "Airtable",
+      "category": "data",
+      "relationship": "transitional_source",
+      "integration_status": "transitional",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "search",
+        "read",
+        "export"
+      ]
+    },
+    {
+      "key": "gmail",
+      "name": "Gmail",
+      "category": "email",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "draft",
+        "execute"
+      ]
+    },
+    {
+      "key": "outlook-email",
+      "name": "Outlook Email",
+      "category": "email",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "draft",
+        "execute"
+      ]
+    },
+    {
+      "key": "google-calendar",
+      "name": "Google Calendar",
+      "category": "calendar",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "outlook-calendar",
+      "name": "Outlook Calendar",
+      "category": "calendar",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "google-contacts",
+      "name": "Google Contacts",
+      "category": "contacts",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "personal",
+        "organization"
+      ],
+      "default_risk": "L2",
+      "capabilities": [
+        "search",
+        "read"
+      ]
+    },
+    {
+      "key": "slack",
+      "name": "Slack",
+      "category": "communication",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "draft",
+        "create",
+        "notify"
+      ]
+    },
+    {
+      "key": "teams",
+      "name": "Microsoft Teams",
+      "category": "communication",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "draft",
+        "create",
+        "notify"
+      ]
+    },
+    {
+      "key": "github",
+      "name": "GitHub",
+      "category": "development",
+      "relationship": "code_authority",
+      "integration_status": "current_authority",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update",
+        "approve",
+        "monitor"
+      ]
+    },
+    {
+      "key": "vercel",
+      "name": "Vercel",
+      "category": "development",
+      "relationship": "deployment_authority",
+      "integration_status": "current_authority",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "read",
+        "monitor",
+        "execute"
+      ]
+    },
+    {
+      "key": "supabase",
+      "name": "Supabase",
+      "category": "data",
+      "relationship": "runtime_authority",
+      "integration_status": "current_authority",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L5",
+      "capabilities": [
+        "read",
+        "search",
+        "create",
+        "update",
+        "execute",
+        "admin"
+      ]
+    },
+    {
+      "key": "openai-platform",
+      "name": "OpenAI Platform",
+      "category": "ai",
+      "relationship": "model_platform",
+      "integration_status": "current_platform",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "read",
+        "create",
+        "admin"
+      ]
+    },
+    {
+      "key": "figma",
+      "name": "Figma",
+      "category": "design",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L2",
+      "capabilities": [
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "canva",
+      "name": "Canva",
+      "category": "design",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L2",
+      "capabilities": [
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "booking",
+      "name": "Booking.com",
+      "category": "travel_hospitality",
+      "relationship": "research_handoff",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "personal",
+        "organization"
+      ],
+      "default_risk": "L2",
+      "capabilities": [
+        "search",
+        "read"
+      ]
+    },
+    {
+      "key": "tripadvisor",
+      "name": "Tripadvisor",
+      "category": "travel_hospitality",
+      "relationship": "research_source",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "personal",
+        "organization"
+      ],
+      "default_risk": "L1",
+      "capabilities": [
+        "search",
+        "read"
+      ]
+    },
+    {
+      "key": "hubspot",
+      "name": "HubSpot",
+      "category": "crm",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "close",
+      "name": "Close",
+      "category": "crm",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L4",
+      "capabilities": [
+        "search",
+        "read",
+        "draft",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "linear",
+      "name": "Linear",
+      "category": "projects",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "clickup",
+      "name": "ClickUp",
+      "category": "projects",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "asana",
+      "name": "Asana",
+      "category": "projects",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "monday",
+      "name": "monday.com",
+      "category": "projects",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "create",
+        "update"
+      ]
+    },
+    {
+      "key": "calendly",
+      "name": "Calendly",
+      "category": "calendar",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "read",
+        "create",
+        "update",
+        "execute"
+      ]
+    },
+    {
+      "key": "zoom",
+      "name": "Zoom",
+      "category": "meetings",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization",
+        "personal"
+      ],
+      "default_risk": "L2",
+      "capabilities": [
+        "search",
+        "read"
+      ]
+    },
+    {
+      "key": "posthog",
+      "name": "PostHog",
+      "category": "analytics",
+      "relationship": "connector_candidate",
+      "integration_status": "ecosystem_candidate",
+      "owner_modes": [
+        "organization"
+      ],
+      "default_risk": "L3",
+      "capabilities": [
+        "search",
+        "read",
+        "monitor"
+      ]
+    }
+  ]
+}
