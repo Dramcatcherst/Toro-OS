@@ -17,32 +17,59 @@ function query(result: { data: unknown; error: { message?: string } | null }) {
   return chain;
 }
 
+const currentKey = "toro_human_layer_runtime_config_current";
+const snapshotKey = "toro_human_layer_runtime_config_v1_2_20260922";
+const configHash =
+  "sha256:5bfe3b0d56db9f66f6737dde086d365a56b0d580dfb4c38c05105fc77a475c77";
+
 describe("loadHumanLayerRuntimeConfig", () => {
   beforeEach(() => {
     createServerSupabaseClient.mockReset();
   });
 
-  it("returns the verified version/hash from the canonical knowledge snapshot", async () => {
-    const humanLayerQuery = query({
+  it("resolves the stable current pointer and verifies the versioned snapshot", async () => {
+    const pointerQuery = query({
       data: {
-        knowledge_key: "toro_human_layer_runtime_config_v1_1_20260922",
+        knowledge_key: currentKey,
         verified_status: "verified",
         active: true,
         structured_content: {
-          config_version: "TORO-HUMAN-LAYER-v1.1",
-          config_hash: "sha256:913eb1581bdc59ae9311875cfbc5b07c4030de2f46436d6172d5599a67e83e4e",
+          current_snapshot_key: snapshotKey,
+          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_hash: configHash,
+          onboarding_step_count: 10,
+          state_persistence: "NOT_IMPLEMENTED",
         },
-        updated_at: "2026-09-22T20:31:21.822Z",
+        updated_at: "2026-09-22T20:45:00.000Z",
       },
       error: null,
     });
+    const snapshotQuery = query({
+      data: {
+        knowledge_key: snapshotKey,
+        verified_status: "verified",
+        active: true,
+        structured_content: {
+          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_hash: configHash,
+          onboarding_step_count: 10,
+        },
+        updated_at: "2026-09-22T20:44:00.000Z",
+      },
+      error: null,
+    });
+    const from = vi
+      .fn()
+      .mockReturnValueOnce(pointerQuery)
+      .mockReturnValueOnce(snapshotQuery);
+
     createServerSupabaseClient.mockResolvedValue({
       schema: (name: string) => {
         expect(name).toBe("operations");
         return {
           from: (table: string) => {
             expect(table).toBe("knowledge_items");
-            return humanLayerQuery;
+            return from(table);
           },
         };
       },
@@ -50,23 +77,20 @@ describe("loadHumanLayerRuntimeConfig", () => {
 
     await expect(loadHumanLayerRuntimeConfig()).resolves.toEqual({
       state: "verified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
-      configVersion: "TORO-HUMAN-LAYER-v1.1",
-      configHash: "sha256:913eb1581bdc59ae9311875cfbc5b07c4030de2f46436d6172d5599a67e83e4e",
-      sourceUpdatedAt: "2026-09-22T20:31:21.822Z",
+      knowledgeKey: currentKey,
+      snapshotKey,
+      configVersion: "TORO-HUMAN-LAYER-v1.2",
+      configHash,
+      onboardingStepCount: 10,
+      statePersistence: "not_implemented",
+      sourceUpdatedAt: "2026-09-22T20:45:00.000Z",
       reason: null,
     });
-    expect(humanLayerQuery.select).toHaveBeenCalledWith(
-      "knowledge_key,verified_status,active,structured_content,updated_at",
-    );
-    expect(humanLayerQuery.eq).toHaveBeenCalledWith(
-      "knowledge_key",
-      "toro_human_layer_runtime_config_v1_1_20260922",
-    );
-    expect(humanLayerQuery.eq).toHaveBeenCalledWith("active", true);
+    expect(pointerQuery.eq).toHaveBeenCalledWith("knowledge_key", currentKey);
+    expect(snapshotQuery.eq).toHaveBeenCalledWith("knowledge_key", snapshotKey);
   });
 
-  it("fails closed when the canonical snapshot is missing or the source errors", async () => {
+  it("fails closed when the current pointer is missing or unavailable", async () => {
     const missingQuery = query({ data: null, error: null });
     createServerSupabaseClient.mockResolvedValue({
       schema: () => ({ from: () => missingQuery }),
@@ -74,55 +98,89 @@ describe("loadHumanLayerRuntimeConfig", () => {
 
     await expect(loadHumanLayerRuntimeConfig()).resolves.toEqual({
       state: "unverified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
+      knowledgeKey: currentKey,
+      snapshotKey: null,
       configVersion: null,
       configHash: null,
+      onboardingStepCount: null,
+      statePersistence: "unverified",
       sourceUpdatedAt: null,
-      reason: "snapshot_missing",
+      reason: "pointer_missing",
     });
 
-    const failedQuery = query({ data: null, error: { message: "permission denied" } });
+    const failedQuery = query({
+      data: null,
+      error: { message: "permission denied" },
+    });
     createServerSupabaseClient.mockResolvedValue({
       schema: () => ({ from: () => failedQuery }),
     });
 
     await expect(loadHumanLayerRuntimeConfig()).resolves.toEqual({
       state: "unverified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
+      knowledgeKey: currentKey,
+      snapshotKey: null,
       configVersion: null,
       configHash: null,
+      onboardingStepCount: null,
+      statePersistence: "unverified",
       sourceUpdatedAt: null,
-      reason: "snapshot_unavailable",
+      reason: "pointer_unavailable",
     });
   });
 
-  it("rejects unverified or malformed snapshots without leaking payload content", async () => {
-    const invalidQuery = query({
+  it("rejects pointer/snapshot drift without leaking canonical payload", async () => {
+    const pointerQuery = query({
       data: {
-        knowledge_key: "toro_human_layer_runtime_config_v1_1_20260922",
-        verified_status: "needs_verification",
+        knowledge_key: currentKey,
+        verified_status: "verified",
         active: true,
         structured_content: {
-          config_version: "TORO-HUMAN-LAYER-v1.1",
-          config_hash: "bad-hash",
-          canonical_payload: { private_fact: "must-not-leak" },
+          current_snapshot_key: snapshotKey,
+          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_hash: configHash,
+          onboarding_step_count: 10,
+          state_persistence: "NOT_IMPLEMENTED",
         },
-        updated_at: "bad-date",
+        updated_at: "2026-09-22T20:45:00.000Z",
       },
       error: null,
     });
+    const snapshotQuery = query({
+      data: {
+        knowledge_key: snapshotKey,
+        verified_status: "verified",
+        active: true,
+        structured_content: {
+          config_version: "TORO-HUMAN-LAYER-v1.2",
+          config_hash:
+            "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          onboarding_step_count: 10,
+          canonical_payload: { private_fact: "must-not-leak" },
+        },
+        updated_at: "2026-09-22T20:44:00.000Z",
+      },
+      error: null,
+    });
+    const from = vi
+      .fn()
+      .mockReturnValueOnce(pointerQuery)
+      .mockReturnValueOnce(snapshotQuery);
     createServerSupabaseClient.mockResolvedValue({
-      schema: () => ({ from: () => invalidQuery }),
+      schema: () => ({ from }),
     });
 
     const result = await loadHumanLayerRuntimeConfig();
     expect(result).toEqual({
       state: "unverified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
+      knowledgeKey: currentKey,
+      snapshotKey,
       configVersion: null,
       configHash: null,
+      onboardingStepCount: null,
+      statePersistence: "unverified",
       sourceUpdatedAt: null,
-      reason: "snapshot_invalid",
+      reason: "snapshot_mismatch",
     });
     expect(JSON.stringify(result)).not.toContain("must-not-leak");
   });
