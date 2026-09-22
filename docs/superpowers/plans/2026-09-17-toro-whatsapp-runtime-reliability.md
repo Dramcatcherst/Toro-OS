@@ -224,3 +224,21 @@ When runtime access is available, capture these results without exposing secrets
 - reconnect/watchdog activity is visible in logs
 - a disconnect/retry test proves no duplicate outbound message or external side effect
 - the scoped TORO status endpoint returns 401 for a bad credential, 503 when unconfigured, and the PII-free projection only when correctly configured.
+
+
+## Demo/test disclosure state — 2026-09-21
+
+Owner-approved behavior for TERE/OpenClaw demo sessions:
+
+- Canonical config: `private.tere_configuration / tere-openclaw-demo-disclosure-once-20260921`.
+- When a conversation is intentionally in demo/test mode, disclose it **once only** at the first appropriate assistant response.
+- Do not prepend or repeat “modo de prueba”, “modo demo”, “test mode” or equivalent boilerplate on later turns in the same conversation.
+- After the first disclosure, use the normal TERE/Dreamcatcher voice: human, clear, playful when natural, lightly surprising and useful; do not force a joke every turn.
+- Persist the disclosure flag by isolated channel + sender + conversation/session.
+- Reconnects, replay-safe retries, app-server restarts and handoffs must preserve the flag and must not produce a second generic disclosure.
+- A specifically simulated action may still be labeled simulated when necessary to avoid confusion; that is separate from the generic demo disclosure.
+- Reset only for a genuinely new demo session/conversation or an explicit tester reset.
+- Real/production mode must not show a demo/test disclaimer.
+- Acceptance test: in one demo conversation, the generic demo disclosure count is exactly 1 across normal turns, one replay-safe retry and one reconnect; in a new demo session it becomes 1 again; in real mode it is 0.
+
+This rule is live in canonical TORO/Supabase configuration. It does **not** prove that the external OpenClaw host is consuming the configuration. Runtime application remains `configured_unverified` until direct host/session access confirms the target WhatsApp runtime loaded it.
