@@ -1,0 +1,88 @@
+product:
+  id: toro-os
+  name: TORO OS
+  category: AI Business Operating System
+  context_version: "2026.09.22-engine-first"
+  status: internal_proof
+  external_business_onboarding: blocked
+
+north_star: "Deep inside. Simple outside."
+
+build_order:
+  - identity_constitution_context
+  - business_truth_model
+  - connector_fabric
+  - intelligence_orchestration
+  - workflow_execution
+  - governance_security_resilience
+  - continuous_learning
+  - human_experience
+  - commercial_presentation
+
+current_reference_implementation:
+  name: Dreamcatcher Hotel
+  role: proving_ground
+  product_boundary: false
+
+current_scope:
+  prove_dreamcatcher_deeply: true
+  external_businesses: false
+  generalized_industry_templates: false
+  portal_as_architectural_foundation: false
+  whatsapp_as_architectural_foundation: false
+
+interfaces:
+  eventual_primary:
+    - whatsapp
+    - toro_portal
+  rule: "Interfaces expose the governed engine; they do not own shadow truth."
+
+canonical_sources:
+  product_constitution: github
+  code_and_architecture: github
+  toro_owned_runtime_data: supabase
+  human_control_and_transition: airtable
+  narrative_strategy_and_working_memory: notion
+  source_files_media_and_evidence: dropbox
+  deployment_runtime_evidence: vercel
+  specialist_transactional_authority: domain_system
+
+authority_examples:
+  kross: live_pms_truth
+  alegra: fiscal_accounting_truth
+  github: code_truth
+  vercel: deployment_truth
+
+agent_rules:
+  read_start_here_first: true
+  identify_scope_before_work: true
+  identify_authority_before_change: true
+  inspect_before_modify: true
+  verify_before_done: true
+  preserve_evidence: true
+  prefer_reversible_changes: true
+  never_claim_unverified_execution: true
+
+product_rules:
+  user_complexity_should_decrease_as_capability_grows: true
+  one_visible_toro_for_normal_users: true
+  specialist_agents_hidden_by_default: true
+  no_duplicate_source_of_truth: true
+  connected_does_not_mean_integrated: true
+  integrated_does_not_mean_automated: true
+  automated_does_not_mean_verified: true
+  deployed_does_not_mean_adopted: true
+
+brand:
+  identity: blue_bull
+  generated_substitutes_allowed: false
+  source_repository: Dramcatcherst/toro-os-v88-new
+  source_asset: public/assets/toro-azul-logo.jpg
+  source_registry_entry: BRAND-005
+  approved_derived_pack: public/assets/toro-blue-pack/
+  deprecated_pack: public/assets/toro-blue-pack-v1-deprecated/
+
+readiness:
+  gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
+  current_stage: internal_proof
+  notify_owner_on_stage_change: true
