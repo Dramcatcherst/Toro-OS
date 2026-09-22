@@ -86,9 +86,15 @@ describe("GET /api/service/operational-status", () => {
     expect(loadHumanLayerRuntimeConfig).not.toHaveBeenCalled();
   });
 
-  it("returns only the scoped PII-free status plus Human Layer identity", async () => {
+  it("returns scoped Human Layer identity and MATCH ack for an exact runtime report", async () => {
     const response = await GET(
-      new Request("http://localhost/api/service/operational-status"),
+      new Request("http://localhost/api/service/operational-status", {
+        headers: {
+          "x-toro-human-layer-version": "TORO-HUMAN-LAYER-v1.2",
+          "x-toro-human-layer-hash":
+            "sha256:5bfe3b0d56db9f66f6737dde086d365a56b0d580dfb4c38c05105fc77a475c77",
+        },
+      }),
     );
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toMatch(/no-store/i);
@@ -103,11 +109,70 @@ describe("GET /api/service/operational-status", () => {
       warnings: status.warnings,
       chatSummary: status.chatSummary,
       humanLayer,
+      humanLayerAck: {
+        state: "match",
+        versionMatches: true,
+        hashMatches: true,
+      },
     });
     expect(JSON.stringify(body)).not.toContain("internal deployment detail");
     expect(JSON.stringify(body)).not.toMatch(
       /guest|email|phone|token|password|canonical_payload|private_fact/i,
     );
+  });
+
+
+  it("reports NOT_REPORTED when OpenClaw sends no config identity", async () => {
+    const response = await GET(
+      new Request("http://localhost/api/service/operational-status"),
+    );
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expect(body.humanLayerAck).toEqual({
+      state: "not_reported",
+      versionMatches: null,
+      hashMatches: null,
+    });
+  });
+
+  it("reports MISMATCH without echoing untrusted header values", async () => {
+    const response = await GET(
+      new Request("http://localhost/api/service/operational-status", {
+        headers: {
+          "x-toro-human-layer-version": "TORO-HUMAN-LAYER-v1.1",
+          "x-toro-human-layer-hash":
+            "sha256:913eb1581bdc59ae9311875cfbc5b07c4030de2f46436d6172d5599a67e83e4e",
+        },
+      }),
+    );
+    expect(response.status).toBe(200);
+
+    const body = await response.json();
+    expect(body.humanLayerAck).toEqual({
+      state: "mismatch",
+      versionMatches: false,
+      hashMatches: false,
+    });
+    expect(JSON.stringify(body.humanLayerAck)).not.toContain("v1.1");
+    expect(JSON.stringify(body.humanLayerAck)).not.toContain("913eb158");
+  });
+
+  it("reports INVALID_REPORT when only one or a malformed identity header is supplied", async () => {
+    const response = await GET(
+      new Request("http://localhost/api/service/operational-status", {
+        headers: {
+          "x-toro-human-layer-version": "not-a-version",
+        },
+      }),
+    );
+
+    const body = await response.json();
+    expect(body.humanLayerAck).toEqual({
+      state: "invalid_report",
+      versionMatches: null,
+      hashMatches: null,
+    });
   });
 
   it("preserves fail-closed Human Layer state without affecting hotel status", async () => {
@@ -140,6 +205,11 @@ describe("GET /api/service/operational-status", () => {
       statePersistence: "unverified",
       sourceUpdatedAt: null,
       reason: "pointer_unavailable",
+    });
+    expect(body.humanLayerAck).toEqual({
+      state: "source_unverified",
+      versionMatches: null,
+      hashMatches: null,
     });
   });
 });
