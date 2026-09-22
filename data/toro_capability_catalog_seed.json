@@ -1,0 +1,561 @@
+{
+  "version": "2026-09-22-v1",
+  "principle": "Users activate useful capabilities; provider/tool implementation stays behind TORO where possible.",
+  "statuses": [
+    "implemented_foundation",
+    "partial",
+    "specified",
+    "planned"
+  ],
+  "capabilities": [
+    {
+      "key": "ask_toro",
+      "name": "Preguntar a TORO",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Core",
+      "risk": "L0-L4",
+      "status": "partial"
+    },
+    {
+      "key": "daily_brief",
+      "name": "Resumen de hoy",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Core",
+      "risk": "L0",
+      "status": "partial"
+    },
+    {
+      "key": "personal_tasks",
+      "name": "Tareas y recordatorios personales",
+      "context": [
+        "personal"
+      ],
+      "owner": "TORO Personal",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "work_tasks",
+      "name": "Mis tareas de trabajo",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Projects",
+      "risk": "L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "calendar_assistant",
+      "name": "Agenda y calendario",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Tools",
+      "risk": "L3",
+      "status": "specified"
+    },
+    {
+      "key": "email_assistant",
+      "name": "Asistente de correo",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Tools",
+      "risk": "L3",
+      "status": "specified"
+    },
+    {
+      "key": "contacts_assistant",
+      "name": "Contactos y seguimiento",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Tools",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "personal_memory",
+      "name": "Memoria personal controlada",
+      "context": [
+        "personal"
+      ],
+      "owner": "TORO Personal",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "memory_control",
+      "name": "Qué sabe TORO de mí",
+      "context": [
+        "personal",
+        "work_private"
+      ],
+      "owner": "TORO Personal",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "tool_connections",
+      "name": "Mis herramientas",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Tools",
+      "risk": "L3-L5",
+      "status": "specified"
+    },
+    {
+      "key": "team_messages",
+      "name": "Mensajes del equipo",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Comms",
+      "risk": "L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "direct_toro",
+      "name": "TORO Direct",
+      "context": [
+        "personal",
+        "work_private"
+      ],
+      "owner": "TORO Comms",
+      "risk": "L0-L4",
+      "status": "specified"
+    },
+    {
+      "key": "handoffs",
+      "name": "Entregas y handoffs",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Comms",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "message_to_task",
+      "name": "Convertir conversación en tarea",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Comms",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "notifications",
+      "name": "Notificaciones y resúmenes",
+      "context": [
+        "personal",
+        "work"
+      ],
+      "owner": "TORO Comms",
+      "risk": "L1",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "shift_schedule",
+      "name": "Mi horario y turno",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L1",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "attendance_self",
+      "name": "Mi asistencia",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L1",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "leave_requests",
+      "name": "Vacaciones y permisos",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "payroll_self",
+      "name": "Mi planilla/comprobante",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L3",
+      "status": "partial"
+    },
+    {
+      "key": "employee_profile",
+      "name": "Mi perfil laboral",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L2",
+      "status": "partial"
+    },
+    {
+      "key": "recognition_points",
+      "name": "Reconocimiento y puntos",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L2",
+      "status": "planned"
+    },
+    {
+      "key": "training",
+      "name": "Capacitación y SOPs",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People + TORO Knowledge",
+      "risk": "L1",
+      "status": "partial"
+    },
+    {
+      "key": "report_issue",
+      "name": "Reportar problema con foto/audio",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Operations",
+      "risk": "L2",
+      "status": "specified"
+    },
+    {
+      "key": "maintenance_tasks",
+      "name": "Mantenimiento",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Operations",
+      "risk": "L2-L3",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "housekeeping_work",
+      "name": "Housekeeping y readiness",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Operations",
+      "risk": "L2",
+      "status": "partial"
+    },
+    {
+      "key": "inspections",
+      "name": "Inspecciones y rondas",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Operations",
+      "risk": "L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "guest_assistant",
+      "name": "Asistente de huéspedes",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Guests / TORO TERE",
+      "risk": "L3-L4",
+      "status": "partial"
+    },
+    {
+      "key": "guest_reply_draft",
+      "name": "Preparar respuesta a huésped",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Guests / TORO Comms",
+      "risk": "L3",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "guest_handoff",
+      "name": "Escalar solicitud de huésped",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Guests / TORO Comms",
+      "risk": "L2-L3",
+      "status": "specified"
+    },
+    {
+      "key": "experiences",
+      "name": "Tours y experiencias",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Guests / TORO Growth",
+      "risk": "L2-L3",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "business_search",
+      "name": "Buscar en la empresa",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Knowledge / TORO Core",
+      "risk": "L1",
+      "status": "partial"
+    },
+    {
+      "key": "knowledge_answers",
+      "name": "Preguntar por SOPs y conocimiento",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Knowledge",
+      "risk": "L1",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "manager_team",
+      "name": "Mi equipo",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L2-L3",
+      "status": "partial"
+    },
+    {
+      "key": "team_coverage",
+      "name": "Cobertura del equipo",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO People",
+      "risk": "L2",
+      "status": "partial"
+    },
+    {
+      "key": "assign_delegate",
+      "name": "Asignar y delegar",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Projects / TORO Governance",
+      "risk": "L2",
+      "status": "partial"
+    },
+    {
+      "key": "approvals",
+      "name": "Aprobaciones",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Governance",
+      "risk": "L3-L4",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "executive_decisions",
+      "name": "Decisiones",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Core / TORO Governance",
+      "risk": "L4",
+      "status": "partial"
+    },
+    {
+      "key": "project_portfolio",
+      "name": "Portafolio de proyectos",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Projects",
+      "risk": "L1-L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "finance_exceptions",
+      "name": "Excepciones financieras",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Finance / TORO FIONA",
+      "risk": "L4",
+      "status": "partial"
+    },
+    {
+      "key": "invoice_workflow",
+      "name": "Facturas y evidencia",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Finance",
+      "risk": "L3-L4",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "payment_calendar",
+      "name": "Próximos pagos y obligaciones",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Finance",
+      "risk": "L3-L4",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "reconciliation",
+      "name": "Conciliaciones",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Finance",
+      "risk": "L4",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "revenue_dashboard",
+      "name": "Revenue y tarifas",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Revenue",
+      "risk": "L4",
+      "status": "partial"
+    },
+    {
+      "key": "campaigns",
+      "name": "Campañas y crecimiento",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Growth",
+      "risk": "L3",
+      "status": "partial"
+    },
+    {
+      "key": "content_control",
+      "name": "Contenido web/canales",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Channels",
+      "risk": "L3-L4",
+      "status": "partial"
+    },
+    {
+      "key": "market_research",
+      "name": "Investigación de mercado",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Research",
+      "risk": "L1",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "asset_search",
+      "name": "Buscar fotos/archivos/activos",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Assets",
+      "risk": "L1-L2",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "system_health",
+      "name": "Salud de sistemas",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Systems",
+      "risk": "L1-L3",
+      "status": "partial"
+    },
+    {
+      "key": "connector_health",
+      "name": "Estado de conectores",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Tools / TORO Systems",
+      "risk": "L1-L3",
+      "status": "partial"
+    },
+    {
+      "key": "backup_recovery",
+      "name": "Backups y recuperación",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Systems / TORO Governance",
+      "risk": "L4",
+      "status": "partial"
+    },
+    {
+      "key": "builder_queue",
+      "name": "Cola de construcción/Codex",
+      "context": [
+        "work"
+      ],
+      "owner": "TORO Builder",
+      "risk": "L3-L4",
+      "status": "implemented_foundation"
+    },
+    {
+      "key": "travel_assistant",
+      "name": "Viajes personales",
+      "context": [
+        "personal"
+      ],
+      "owner": "TORO Personal / TORO Tools",
+      "risk": "L2-L3",
+      "status": "specified"
+    },
+    {
+      "key": "personal_documents",
+      "name": "Mis documentos",
+      "context": [
+        "personal"
+      ],
+      "owner": "TORO Personal / TORO Tools",
+      "risk": "L2-L3",
+      "status": "specified"
+    },
+    {
+      "key": "personal_projects",
+      "name": "Mis proyectos personales",
+      "context": [
+        "personal"
+      ],
+      "owner": "TORO Personal / TORO Projects",
+      "risk": "L2",
+      "status": "specified"
+    }
+  ]
+}
