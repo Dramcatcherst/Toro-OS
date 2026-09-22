@@ -61,6 +61,16 @@ Historical TORO documents are evidence and context. They do not override the cur
 
 No tool becomes authoritative merely because TORO can connect to it.
 
+## Subsystem and user-data rule
+
+- Every internal TORO subsystem uses the naming pattern `TORO <Subsystem>`.
+- Specialist personas use TORO-prefixed identities (for example TORO TERE or TORO RICO) but do not create separate truth, identity or permission universes.
+- DreamTeam is a legacy standalone implementation whose canonical destination is `TORO People`.
+- Each human has one canonical TORO identity and a logically isolated `TORO User Vault`, not a separate physical database by default.
+- Personal, work-private, organization, shared and system scopes must remain explicit; personal content is not employer-visible by default.
+- Durable memory requires purpose, provenance, sensitivity, confidence, retention and verification state.
+- See `docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md` before creating or naming a subsystem, user-memory model or personal/work context.
+
 ## Brand rule
 
 TORO OS uses the approved **blue bull** identity.
