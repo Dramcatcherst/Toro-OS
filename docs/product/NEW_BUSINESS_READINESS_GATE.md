@@ -74,13 +74,17 @@ PASS requires:
 - no critical hallucination/authority failure remains open;
 - corrections feed a governed improvement process.
 
-## Gate F — Security and tenant isolation
+## Gate F — Security, tenant isolation and user privacy
 
 PASS requires:
 - organization isolation is proven with positive and negative tests;
 - role boundaries are proven;
 - RLS/server-side enforcement protects private data;
 - one tenant cannot retrieve or mutate another tenant's data;
+- one human keeps one canonical TORO identity across memberships without cross-tenant leakage;
+- personal User Vault content is inaccessible to employers/organization admins by default;
+- personal, work-private, work-organization, shared and system scopes are explicitly enforced;
+- offboarding removes organization access without deleting the user's personal TORO data;
 - audit identity is attributable;
 - permission escalation paths are controlled.
 
@@ -109,6 +113,10 @@ PASS requires:
 - no hard-coded Dreamcatcher assumption in the universal core;
 - a clean organization can be created without copying Dreamcatcher private data;
 - company identity, people, permissions, systems, knowledge and workflows can be configured independently;
+- user membership is distinct from role assignment;
+- one user can belong to at least two isolated organizations in the sandbox without duplicate identity;
+- a new employee/person can be onboarded without creating a subsystem-specific account;
+- personal User Vault data survives organization offboarding and remains private;
 - the second sandbox tenant completes core setup and workflows successfully;
 - teardown/export is documented.
 
