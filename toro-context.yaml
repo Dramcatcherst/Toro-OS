@@ -37,6 +37,15 @@ interfaces:
     - toro_portal
   rule: "Interfaces expose the governed engine; they do not own shadow truth."
 
+canonical_product_specs:
+  subsystem_registry: docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md
+  subsystem_alignment_audit: docs/product/TORO_SUBSYSTEM_ALIGNMENT_AUDIT_2026-09-22.md
+  identity_user_vault: docs/product/TORO_IDENTITY_USER_VAULT_V1.md
+  people_integration: docs/product/TORO_PEOPLE_DREAMTEAM_INTEGRATION.md
+  communications: docs/product/TORO_COMMS_V1.md
+  tools: docs/product/TORO_TOOLS_V1.md
+  user_portal: docs/product/TORO_USER_PORTAL_V1.md
+
 canonical_sources:
   product_constitution: github
   code_and_architecture: github
@@ -87,6 +96,10 @@ subsystem_architecture:
   communication_destination: TORO Comms
   ricosky_if_integrated: TORO Exchange
   ai_for_dreamers_relationship: separate_product_powered_by_toro
+  recognition_points_owner: TORO People
+  employee_learning_owners: TORO People + TORO Knowledge
+  physical_map_owners: TORO Operations + TORO Assets
+  automation_owners: TORO Core + TORO Tools + TORO Agents
 
 user_vault:
   model: logical_user_isolation_in_canonical_supabase
