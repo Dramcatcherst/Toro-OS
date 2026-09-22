@@ -46,11 +46,14 @@ const status = {
 
 const humanLayer = {
   state: "verified",
-  knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
-  configVersion: "TORO-HUMAN-LAYER-v1.1",
+  knowledgeKey: "toro_human_layer_runtime_config_current",
+  snapshotKey: "toro_human_layer_runtime_config_v1_2_20260922",
+  configVersion: "TORO-HUMAN-LAYER-v1.2",
   configHash:
-    "sha256:913eb1581bdc59ae9311875cfbc5b07c4030de2f46436d6172d5599a67e83e4e",
-  sourceUpdatedAt: "2026-09-22T20:31:21.822Z",
+    "sha256:5bfe3b0d56db9f66f6737dde086d365a56b0d580dfb4c38c05105fc77a475c77",
+  onboardingStepCount: 10,
+  statePersistence: "not_implemented",
+  sourceUpdatedAt: "2026-09-22T20:45:00.000Z",
   reason: null,
 };
 
@@ -110,11 +113,14 @@ describe("GET /api/service/operational-status", () => {
   it("preserves fail-closed Human Layer state without affecting hotel status", async () => {
     loadHumanLayerRuntimeConfig.mockResolvedValue({
       state: "unverified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
+      knowledgeKey: "toro_human_layer_runtime_config_current",
+      snapshotKey: null,
       configVersion: null,
       configHash: null,
+      onboardingStepCount: null,
+      statePersistence: "unverified",
       sourceUpdatedAt: null,
-      reason: "snapshot_unavailable",
+      reason: "pointer_unavailable",
     });
 
     const response = await GET(
@@ -126,11 +132,14 @@ describe("GET /api/service/operational-status", () => {
     expect(body.currentHotelClaimsAllowed).toBe(false);
     expect(body.humanLayer).toEqual({
       state: "unverified",
-      knowledgeKey: "toro_human_layer_runtime_config_v1_1_20260922",
+      knowledgeKey: "toro_human_layer_runtime_config_current",
+      snapshotKey: null,
       configVersion: null,
       configHash: null,
+      onboardingStepCount: null,
+      statePersistence: "unverified",
       sourceUpdatedAt: null,
-      reason: "snapshot_unavailable",
+      reason: "pointer_unavailable",
     });
   });
 });
