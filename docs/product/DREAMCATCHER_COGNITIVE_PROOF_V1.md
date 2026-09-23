@@ -197,6 +197,43 @@ This stream has strong historical/process knowledge but a gap between:
 - current operational event capture;
 - live authoritative reservation/Kross input.
 
+**COGNITIVE INTERVENTION R1 — PREPARED / SOURCE-GATED**
+Verified 2026-09-23:
+- main authority contract defines `operations.breakfast_orders` as the canonical operational workflow;
+- `operations.breakfast_prefill_candidates` only marks a reservation `READY_FOR_PREFILL` when the reservation source is live, read-only, synchronized within 6 hours and not cancelled/no-show;
+- current main runtime has 0 breakfast orders, 0 prefill candidates and 0 live reservation rows;
+- the transition backend contains 27 reconstructed dates from 19/08–18/09;
+- 26/27 reconstructed dates are arithmetically consistent;
+- reconstructed totals are 391 reported vs 389 calculated; the +2 difference is isolated to 06/09 and remains explicit;
+- the daily reconciliation contains 389 payable breakfasts across the reconstructed period;
+- all 27 dates are `NOT_SETTLEMENT_AUTHORITY`;
+- USD 1,120 is an **estimate only for dates with rate coverage**, not an authorized settlement;
+- the Kitchen final daily report is the authoritative source for what was actually served;
+- Kross live validated report/API/POS is the required authority for entitlement/charges;
+- Kross notification emails remain secondary signals only;
+- the existing parity audit already classifies daily transition data as `DERIVED_DUPLICATE` and weekly data as duplicate summary.
+
+**ELIMINATE / DO NOT BUILD**
+- do not bulk-migrate reconstructed daily rows into the live workflow merely to fill the table;
+- do not create a second POS;
+- do not create another daily operational truth;
+- do not use stale Kross snapshots as today's breakfast list;
+- do not treat arithmetic consistency as settlement authority.
+
+**First live F&B proof**
+Prove **one service date only**:
+
+```text
+fresh authoritative Kross entitlement/charges
++ kitchen final reviewed served report
+-> operations.breakfast_orders
+-> derived reconciliation
+-> human review
+-> evidence
+```
+
+Only after one date passes should TORO expand to a complete Monday–Sunday cycle.
+
 **NEXT proof after VS1**
 - map exact current-state daily workflow;
 - eliminate duplicate reporting;

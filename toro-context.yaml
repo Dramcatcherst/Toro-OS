@@ -354,6 +354,35 @@ cognitive_proving_ground:
     target_delta_test_persisted_new_round: false
     rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
   no_new_project_or_task_for_proof: true
+  next_pilot_prepared:
+    value_stream: breakfast_fnb
+    status: PREPARED_BLOCKED_BY_LIVE_SOURCE
+    canonical_workflow: operations.breakfast_orders
+    prefill_view: operations.breakfast_prefill_candidates
+    freshness_gate_hours: 6
+    current_runtime:
+      breakfast_orders_rows: 0
+      prefill_candidate_rows: 0
+      live_reservation_rows: 0
+    transition_baseline:
+      dates: 27
+      date_min: "2026-08-19"
+      date_max: "2026-09-18"
+      arithmetic_ok_dates: 26
+      reported_total: 391
+      calculated_total: 389
+      total_delta: 2
+      delta_date: "2026-09-06"
+      payable_breakfasts: 389
+      settlement_authority_dates: 0
+      rate_covered_estimate_usd: 1120
+    eliminate:
+      - bulk_migration_of_derived_daily_duplicates
+      - parallel_pos
+      - parallel_daily_operational_truth
+      - stale_snapshot_as_today
+    first_live_proof: "one service_date: fresh Kross entitlement/charges + kitchen final reviewed served report -> breakfast_orders -> derived reconciliation -> human review"
+    expand_only_after_single_day_pass: true
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
