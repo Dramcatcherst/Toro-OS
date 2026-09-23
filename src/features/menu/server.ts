@@ -24,15 +24,17 @@ type ToolboxManifest = {
 
 const manifest = toolboxManifest as ToolboxManifest;
 
-function buildConservativeCapabilityStates() {
+function buildConservativeCapabilityStates(profileId?: string | null) {
   const states: Record<string, ToroMenuAvailabilityState> = {};
+  const profiles = profileId
+    ? [manifest.profiles?.[profileId]].filter(Boolean)
+    : Object.values(manifest.profiles ?? {});
 
-  // This surface proves identity/role/position routing only. Visibility is
-  // discoverability, not evidence that an underlying read or write path is
-  // operational. Capabilities stay BLOCKED until a source-aware capability
-  // resolver proves freshness, permission and runtime availability.
-  for (const profile of Object.values(manifest.profiles ?? {})) {
-    for (const capability of profile.capabilities ?? []) {
+  // Visibility is discoverability, not evidence that an underlying read or
+  // write path is operational. Everything starts BLOCKED and is promoted only
+  // by source-aware proof.
+  for (const profile of profiles) {
+    for (const capability of profile?.capabilities ?? []) {
       states[capability] = "BLOCKED";
     }
   }
@@ -173,7 +175,17 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
   }
 
   const membership = context.membership;
-  const baseline = buildConservativeCapabilityStates();
+
+  const discoveryMenu = resolveToroMenu({
+    mode: "organization",
+    roles: membership.roles,
+    positionCode: membership.positionCode,
+    positionName: membership.positionName,
+    capabilityStates: buildConservativeCapabilityStates(),
+    hasSecondaryOptions: false,
+  });
+
+  const baseline = buildConservativeCapabilityStates(discoveryMenu?.profileId);
 
   let capabilityStates = baseline;
   let sourceReadiness: ToroSourceReadiness = {
