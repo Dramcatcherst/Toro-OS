@@ -651,11 +651,14 @@ tere_wespeak_runtime_gate:
   qa_packet_case_count: 5
   qa_packet_ci_guarded: true
   expected_v4_hash: 4df90ab2ae494826f5850bb413c28f6d
+  expected_current_target_hash: 0cab1a8be477f9bc6f25ceaeb5df56c7
+  expected_current_target_version: TERE-OPERATING-VOICE-v5
   runtime_active: verified
   pre_v4_activity: verified
   post_v4_activity: not_observed
   runtime_version_hash: unverified
   v4_consumption: unverified
+  v5_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
   evidence_intake_state: implemented_ci_pending_merge
@@ -673,7 +676,7 @@ tere_wespeak_runtime_gate:
   real_guest_contact_for_config_proof: forbidden
 
 tere_runtime_config_consolidation:
-  version: TERE-OPERATING-VOICE-v4
+  version: TERE-OPERATING-VOICE-v5
   applied_on: "2026-09-23"
   source: private.tere_configuration
   identity_key: tere-identity-short-core
@@ -683,9 +686,14 @@ tere_runtime_config_consolidation:
   rollback_snapshot: docs/evidence/TERE_RUNTIME_CONFIG_PRECONSOLIDATION_2026-09-23.json
   evidence: docs/evidence/TERE_RUNTIME_CONFIG_CONSOLIDATION_2026-09-23.md
   conversational_navigation_evidence: docs/evidence/TERE_CONVERSATIONAL_NAVIGATION_V4_APPLIED_2026-09-23.md
-  active_content_md5: 4df90ab2ae494826f5850bb413c28f6d
-  config_state: APPLIED_V4
-  runtime_consumption: ACTIVE_RUNTIME_V4_UNVERIFIED
+  active_content_md5: 0cab1a8be477f9bc6f25ceaeb5df56c7
+  config_state: APPLIED_V5
+  runtime_consumption: ACTIVE_RUNTIME_V5_UNVERIFIED
+  official_booking_handoff:
+    url: https://dreamcatcherhotel.kross.travel/
+    live_quote_fallback: true
+    stale_rate_reuse_forbidden: true
+    public_booking_result_is_not_structured_runtime_truth: true
   no_runtime_success_inference: true
 
 
