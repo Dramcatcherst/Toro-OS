@@ -946,7 +946,7 @@ kross_live_read_gate:
   rebaselined_on: "2026-09-23"
   normalizer: src/features/kross/normalize-reservation.ts
   acceptance_evaluator: src/features/kross/acceptance.ts
-  internal_normalization_state: implemented_ci_pending
+  internal_normalization_state: implemented_ci_verified
   scoped_identity_guard:
     migration: kross_reservation_scope_identity_guard_20260923
     index: operations.reservations_kross_scope_external_uq
@@ -960,6 +960,7 @@ kross_live_read_gate:
   evidence: docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md
   canonical_task: kross_readonly_reservation_mirror_2026_09
   transport_state: blocked_external_transport_not_available_to_toro
+  external_transport_request_state: provider_response_pending
   schema_state: present
   source_is_live_rows: 0
   current_reservations_safe_rows: 0
