@@ -345,6 +345,19 @@ function cleanNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+function briefDetail(value: unknown, maxLength = 220) {
+  const text = cleanText(value);
+  if (!text) return undefined;
+
+  const firstLine = text.split(/\n+/)[0]?.trim() ?? text;
+  const firstSentenceMatch = firstLine.match(/^(.+?[.!?])(?:\s|$)/);
+  const candidate = (firstSentenceMatch?.[1] ?? firstLine).trim();
+
+  return candidate.length <= maxLength
+    ? candidate
+    : `${candidate.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
 async function loadCapabilityFocus(
   context: ToroResolvedContext,
   capability: string,
@@ -430,7 +443,7 @@ async function loadCapabilityFocus(
       ].join(" · "),
       detail:
         blockedCritical > 0
-          ? "TORO prioriza debajo solo una muestra reciente para evitar convertir el brief en otra lista infinita."
+          ? "TORO muestra solo una muestra reciente; el resto permanece en la fuente para evitar ruido."
           : "No hay tareas críticas bloqueadas visibles en este contexto.",
     });
 
@@ -441,7 +454,7 @@ async function loadCapabilityFocus(
         meta: ["Decisión", cleanText(row.priority), cleanText(row.status)]
           .filter(Boolean)
           .join(" · "),
-        detail: cleanText(row.next_action) ?? undefined,
+        detail: briefDetail(row.next_action),
       });
     }
 
@@ -457,7 +470,7 @@ async function loadCapabilityFocus(
         ]
           .filter(Boolean)
           .join(" · "),
-        detail: cleanText(row.next_action) ?? undefined,
+        detail: briefDetail(row.next_action),
       });
     }
 
@@ -472,7 +485,7 @@ async function loadCapabilityFocus(
         ]
           .filter(Boolean)
           .join(" · "),
-        detail: cleanText(row.blocking_reason) ?? undefined,
+        detail: briefDetail(row.blocking_reason),
       });
     }
 
@@ -508,7 +521,7 @@ async function loadCapabilityFocus(
           meta: [status, priority, completion === null ? null : `${completion}%`]
             .filter(Boolean)
             .join(" · "),
-          detail: cleanText(row.next_action) ?? undefined,
+          detail: briefDetail(row.next_action),
         };
       }),
     };
@@ -535,7 +548,7 @@ async function loadCapabilityFocus(
           meta: [cleanText(row.status), cleanText(row.priority)]
             .filter(Boolean)
             .join(" · "),
-          detail: cleanText(row.next_action) ?? undefined,
+          detail: briefDetail(row.next_action),
         };
       }),
     };
