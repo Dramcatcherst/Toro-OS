@@ -178,3 +178,21 @@ test("verified claim is downgraded/fails when eval is incomplete or critical", (
   assert.ok(result.errors.some((e) => e.includes("VERIFIED requires 10/10 agent cases")));
   assert.ok(result.errors.some((e) => e.includes("VERIFIED requires zero critical failures")));
 });
+
+
+test("verified state requires playbook authority source and recovery evidence", () => {
+  const manifest = validManifest({
+    loaded_playbooks: [],
+    workflow_authority: [],
+    source_authorities: [],
+    fallback: {},
+    rollback: {},
+  });
+  const result = validateRuntimeInventory(manifest, playbooks);
+  assert.equal(result.status, "FAIL");
+  assert.ok(result.errors.includes("VERIFIED requires at least one loaded canonical playbook"));
+  assert.ok(result.errors.includes("VERIFIED requires at least one workflow authority"));
+  assert.ok(result.errors.includes("VERIFIED requires at least one source authority"));
+  assert.ok(result.errors.includes("VERIFIED requires fallback mode/reference"));
+  assert.ok(result.errors.includes("VERIFIED requires rollback reference"));
+});
