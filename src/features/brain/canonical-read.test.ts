@@ -266,7 +266,7 @@ describe("loadCanonicalBrainReadSlice isolation", () => {
     const orgFilters = eqCalls.filter(({ field }) => field === "org_id");
     expect(orgFilters).toHaveLength(4);
     expect(orgFilters.every(({ value }) => value === ORG_ID)).toBe(true);
-    expect(new Set(orgFilters.map(({ path }) => path)).toEqual(
+    expect(new Set(orgFilters.map(({ path }) => path))).toEqual(
       new Set([
         "operations.projects",
         "integrations.source_authority_rules",
