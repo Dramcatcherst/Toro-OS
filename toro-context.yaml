@@ -394,6 +394,13 @@ cognitive_proving_ground:
       reviewed_head: d3035efe65463043313a61b733fab51ff57b2f7c
       main_has_context_types: true
       main_has_resolver_implementation: false
+      resolver_only_extraction_safe: false
+      extraction_decision: DO_NOT_EXTRACT_RESOLVER_ALONE
+      extraction_evidence: docs/evidence/TORO_PHASE1_CONTEXT_EXTRACTION_AUDIT_2026-09-23.md
+      phase1_lock_only_entries: 159
+      phase1_lock_differing_entries: 24
+      preserve_main_dependency_versions: true
+      copy_phase1_lock_wholesale: false
       resolver_fixture_tests: 9
       legacy_session_adapter_tests: 8
       targeted_fixture_tests_total: 17
