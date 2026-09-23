@@ -520,6 +520,10 @@ cognitive_proving_ground:
       reservation_rows: 33
       live_reservation_rows: 0
       current_reservations_safe_rows: 0
+  current_safe_view_hardened: true
+  current_safe_view_requires_verified_quality: true
+  current_safe_view_requires_source_timestamp_not_future: true
+  current_safe_view_requires_sync_timestamp_not_future: true
       stay_rows: 0
       latest_reservation_snapshot: "2026-09-21T09:28:30.675Z"
       import_runs_rows: 6
@@ -940,6 +944,8 @@ product_proof_focus:
 
 kross_live_read_gate:
   rebaselined_on: "2026-09-23"
+  acceptance_runbook: docs/runbooks/TORO_KROSS_FIRST_LIVE_READ_ACCEPTANCE_GATE.md
+  evidence: docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md
   canonical_task: kross_readonly_reservation_mirror_2026_09
   transport_state: blocked_not_verified_live
   schema_state: present
