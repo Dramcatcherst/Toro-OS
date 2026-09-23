@@ -1,0 +1,53 @@
+name: Phase 1 Validation
+
+on:
+  push:
+    branches:
+      - feat/toro-os-phase-1-executive-shell-20260914
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Generate lockfile
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Apply non-breaking production audit fixes to lockfile
+        run: npm audit fix --package-lock-only --omit=dev
+
+      - name: Commit lockfile if needed
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: sync patched package lock for phase 1"
+            git push origin HEAD:feat/toro-os-phase-1-executive-shell-20260914
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Production dependency audit
+        run: npm audit --omit=dev
+
+      - name: Test
+        run: npm test
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
