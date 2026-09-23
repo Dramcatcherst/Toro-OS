@@ -354,6 +354,24 @@ cognitive_proving_ground:
     target_delta_test_persisted_new_round: false
     rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
   no_new_project_or_task_for_proof: true
+  blocked_pilots:
+    guest_journey:
+      status: BLOCKED_FAIL_CLOSED_LIVE_PMS
+      reservation_rows: 33
+      live_reservation_rows: 0
+      stay_rows: 0
+      latest_reservation_snapshot: "2026-09-21T09:28:30.675Z"
+      gate_task: kross_readonly_reservation_mirror_2026_09
+      autonomy: A1_A2_ONLY_UNTIL_LIVE_AUTHORITY
+      rule: "No second mirror; snapshot truth cannot be described as current hotel state."
+    finance_to_cash:
+      status: BLOCKED_FAIL_CLOSED_CURRENT_BANK_EVIDENCE
+      bank_transaction_rows: 1839
+      latest_bank_transaction_date: "2026-07-31"
+      reconciliations: 4
+      monthly_metric_rows: 9
+      autonomy: A1_A2_ONLY_UNTIL_CURRENT_EVIDENCE_RECONCILED
+      rule: "PMS production, accounting, settlement and bank cash remain separate semantic lanes; historical volume is not current cash."
   people_pilot_prepared:
     value_stream: people_identity_access
     status: PREPARED_BLOCKED_BY_PHASE1_MAIN_INTEGRATION
