@@ -17,6 +17,31 @@ describe("resolveToroMenu", () => {
     expect(menu?.items.map((item) => item.key)).toEqual(["today", "calendar"]);
   });
 
+  it("uses stable position code before display-name matching", () => {
+    const menu = resolveToroMenu({
+      mode: "organization",
+      roles: ["EMPLEADO"],
+      positionCode: "RECEPTION",
+      positionName: "Front Desk",
+      capabilityStates: ready("guest.arrivals_departures"),
+    });
+
+    expect(menu?.profileId).toBe("reception");
+    expect(menu?.selectionReason).toBe("position_code:reception");
+  });
+
+  it("maps reception operations lead code to manager experience", () => {
+    const menu = resolveToroMenu({
+      mode: "organization",
+      roles: ["EMPLEADO", "JEFE_DEPARTAMENTO"],
+      positionCode: "RECEPTION_OPS_LEAD",
+      capabilityStates: ready("operations.hotel_today"),
+    });
+
+    expect(menu?.profileId).toBe("manager");
+    expect(menu?.selectionReason).toBe("position_code:reception_ops_lead");
+  });
+
   it("uses position-specific maintenance profile before generic employee", () => {
     const menu = resolveToroMenu({
       mode: "organization",
