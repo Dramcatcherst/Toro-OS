@@ -29,6 +29,10 @@ function usable(probe: ToroSourceProbe) {
   return probe.readable && probe.rows > 0;
 }
 
+function current(probe: ToroSourceProbe) {
+  return usable(probe) && probe.fresh === true;
+}
+
 export function evaluateSourceAwareCapabilityStates(
   baseline: Record<string, ToroMenuAvailabilityState>,
   snapshot: ToroMenuSourceSnapshot,
@@ -41,6 +45,8 @@ export function evaluateSourceAwareCapabilityStates(
   const blockedReads: string[] = [];
 
   const enableRead = (capability: string, label: string, condition: boolean) => {
+    if (!(capability in states)) return;
+
     if (condition) {
       states[capability] = "READ_ONLY";
       readyReads.push(label);
@@ -54,20 +60,20 @@ export function evaluateSourceAwareCapabilityStates(
   enableRead(
     "executive.brief",
     "Resumen ejecutivo",
-    usable(snapshot.executiveDecisions) &&
-      usable(snapshot.projects) &&
-      usable(snapshot.tasks),
+    current(snapshot.executiveDecisions) &&
+      current(snapshot.projects) &&
+      current(snapshot.tasks),
   );
   enableRead(
     "executive.decisions",
     "Decisiones",
-    usable(snapshot.executiveDecisions),
+    current(snapshot.executiveDecisions),
   );
-  enableRead("projects.status", "Proyectos", usable(snapshot.projects));
+  enableRead("projects.status", "Proyectos", current(snapshot.projects));
   enableRead(
     "operations.exceptions",
     "Excepciones operativas",
-    usable(snapshot.tasks) || usable(snapshot.maintenanceEvents),
+    current(snapshot.tasks) || current(snapshot.maintenanceEvents),
   );
 
   // Finance remains closed unless the cash source is readable and fresh.
@@ -97,30 +103,34 @@ export function evaluateSourceAwareCapabilityStates(
   );
 
   // A snapshot is not live PMS authority, so quote remains blocked here.
-  states["hospitality.quote"] = "BLOCKED";
-  if (!blockedReads.includes("Cotización live")) blockedReads.push("Cotización live");
+  if ("hospitality.quote" in states) {
+    states["hospitality.quote"] = "BLOCKED";
+    if (!blockedReads.includes("Cotización live")) blockedReads.push("Cotización live");
+  }
 
   // Guest inbox stays blocked until channel/runtime identity and continuity are verified.
-  states["comms.guest_messages"] = "BLOCKED";
-  if (!blockedReads.includes("Inbox omnicanal live")) blockedReads.push("Inbox omnicanal live");
+  if ("comms.guest_messages" in states) {
+    states["comms.guest_messages"] = "BLOCKED";
+    if (!blockedReads.includes("Inbox omnicanal live")) blockedReads.push("Inbox omnicanal live");
+  }
 
   // Maintenance can safely see priorities from TORO-owned operational data.
   enableRead(
     "maintenance.priorities",
     "Prioridades de mantenimiento",
-    usable(snapshot.maintenanceEvents),
+    current(snapshot.maintenanceEvents),
   );
   enableRead(
     "maintenance.my_tasks",
     "Tareas de mantenimiento",
-    usable(snapshot.tasks) && usable(snapshot.maintenanceEvents),
+    current(snapshot.tasks) && current(snapshot.maintenanceEvents),
   );
 
   // Manager high-level operational read.
   enableRead(
     "operations.hotel_today",
     "Hotel hoy",
-    usable(snapshot.tasks) || usable(snapshot.maintenanceEvents),
+    current(snapshot.tasks) || current(snapshot.maintenanceEvents),
   );
 
   return {
