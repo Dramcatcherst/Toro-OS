@@ -203,6 +203,32 @@ Keep the first screen to approximately 4–6 primary options.
 
 ---
 
+
+## 7A. Menu option contract
+
+Each machine-readable menu option contains:
+- `key`;
+- `emoji`;
+- `label`;
+- `aliases`;
+- `capability`.
+
+Example:
+
+```json
+{
+  "key": "quote_sell",
+  "emoji": "💵",
+  "label": "Cotizar / vender",
+  "aliases": ["cotizar", "vender", "precio"],
+  "capability": "hospitality.quote"
+}
+```
+
+UI-only controls use the `ui.` capability prefix (for example `ui.more`).
+
+Every non-UI capability must exist in the corresponding role toolbox profile. CI audits this alignment.
+
 ## 8. Role menu profiles
 
 These are default starting points. Runtime rendering must filter them by current permission and enabled capability.
