@@ -82,3 +82,22 @@ Required next identity proof:
 3. synthetic/protected hosted isolation QA;
 4. successful login resolving `positionCode=MAINTENANCE`;
 5. only then consider one bounded field-capture write.
+
+
+## Read isolation posture
+
+Verified on 2026-09-23:
+- `facilities.inspection_field_capture_v` -> `security_invoker=true`;
+- `facilities.inspection_round_progress_v` -> `security_invoker=true`;
+- base table `facilities.inspection_checks` -> RLS enabled;
+- base table `facilities.inspection_rounds` -> RLS enabled.
+
+This supports a permission-scoped read path.
+
+Still required before claiming real field-user isolation:
+- a linked Maintenance user identity;
+- protected hosted login;
+- positive authorized read test;
+- negative unauthorized-role read test.
+
+Schema posture alone is not user-isolation proof.
