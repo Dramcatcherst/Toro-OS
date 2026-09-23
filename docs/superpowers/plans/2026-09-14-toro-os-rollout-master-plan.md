@@ -1,5 +1,8 @@
 # TORO OS Master Plan v2 — Adoption + Operational Independence
 
+> **Subordination rule — 2026-09-22:** This is an execution plan under the canonical **TORO Brain General Plan** (`docs/product/TORO_BRAIN_GENERAL_PLAN.md`). It is not a parallel master plan. Where program direction conflicts, the TORO Brain General Plan governs; this file retains execution detail only.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to execute each stage task-by-task. This master coordinates the product program; detailed implementation remains in stage plans and must follow TDD.
 
 ## TORO Brain umbrella — 2026-09-22 override
