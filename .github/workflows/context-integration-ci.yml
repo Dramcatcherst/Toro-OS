@@ -1,0 +1,31 @@
+name: TORO Brain Context Integration CI
+
+on:
+  push:
+    branches:
+      - feat/toro-brain-context-on-phase1-20260922
+
+jobs:
+  validate-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Context tests
+        run: npm test -- src/features/context/resolver.test.ts
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
