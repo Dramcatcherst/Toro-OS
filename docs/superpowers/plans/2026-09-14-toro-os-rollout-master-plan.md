@@ -2,6 +2,32 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to execute each stage task-by-task. This master coordinates the product program; detailed implementation remains in stage plans and must follow TDD.
 
+## TORO Brain umbrella — 2026-09-22 override
+
+This plan now executes under **TORO Brain** as the master product architecture.
+
+- TORO Brain = master intelligence, memory, governance, portfolio/scope graph and orchestration.
+- TORO OS = operating/execution layer inside a specific business/workspace.
+- Dreamcatcher remains the first proving ground.
+- A principal may ultimately govern multiple organizations, businesses, projects and external client/ally scopes from one TORO Brain.
+- Cross-scope reasoning is policy-controlled; personal and external-client data remain isolated by default.
+- New reusable capabilities must be extracted into an existing TORO subsystem/capability catalog rather than trapped in one business implementation.
+- Every critical external system is expected to have a configuration profile plus recurring expected-vs-observed audit.
+- OpenClaw is a gateway/runtime under TORO Comms/Tools/Systems, never a second brain.
+- The future workforce horizon may include humans, AI agents and robots trained from governed TORO knowledge, but this is not a current implementation priority.
+
+Canonical master references:
+- `docs/product/TORO_BRAIN_CONSTITUTION.md`
+- `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`
+- `docs/product/TORO_SUBSYSTEM_ALIGNMENT_AUDIT_2026-09-22.md`
+- `docs/product/TORO_IDENTITY_USER_VAULT_V1.md`
+- `docs/product/TORO_COMMS_V1.md`
+- `docs/product/TORO_TOOLS_V1.md`
+- `docs/product/TORO_USER_PORTAL_V1.md`
+
+Current external-business readiness remains blocked by the existing readiness gate. The architecture is portfolio-ready by design; production onboarding must still wait for isolation, reliability and portability proof.
+
+
 **Goal:** Make TORO OS Dreamcatcher's single mobile-first, role-based operating interface while reducing Airtable to governed backup/reference use and preserving Kross, Alegra, WeSpeak and other specialist systems as domain authorities.
 
 **Architecture:** TORO OS is the front door. Supabase is canonical for TORO-owned structured data and governance. Kross remains authority for reservations/live availability/rates/assignment/payments; Alegra remains fiscal/accounting authority; WeSpeak/WhatsApp remains a specialist communication channel. Airtable must not be required by production runtime or daily operations after cutover, but may remain as one or a few justified backup/reference bases.
