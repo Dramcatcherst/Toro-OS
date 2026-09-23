@@ -3,6 +3,7 @@ import "server-only";
 import { airtableBase, connectors } from "@/lib/toro-data";
 import { readAirtableRecords, readVercelDeployments } from "@/lib/server/read-only-connectors";
 import type { ConnectorHealthRecord } from "@/lib/toro-types";
+import { resolveVercelRuntimeConfig } from "@/lib/vercel-runtime";
 
 function summarizeVercelLiveRead(data: unknown) {
   const deployments = (data as { deployments?: Array<{ name?: string; state?: string; url?: string }> } | null)?.deployments;
@@ -24,9 +25,10 @@ export async function getConnectorHealth(): Promise<{
     pageSize: 1,
   });
 
+  const vercelRuntime = resolveVercelRuntimeConfig();
   const vercelRead = await readVercelDeployments({
-    projectId: process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA",
-    teamId: process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO",
+    projectId: vercelRuntime.projectId,
+    teamId: vercelRuntime.teamId,
   });
 
   const records = connectors.map<ConnectorHealthRecord>((connector) => {
