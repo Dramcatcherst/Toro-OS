@@ -1,0 +1,1173 @@
+{
+  "mapping_id": "TORO-AGENT-CAPABILITY-OWNERSHIP-v1",
+  "date": "2026-09-23",
+  "authority": "docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md",
+  "rule": "Subsystem ownership is preserved. primary_agent is decision/routing ownership, not a new source of truth. User-facing default remains TORO except guest lifecycle where TERE is the explicit face.",
+  "agent_creation_result": "0 new agents required for current 54-capability catalog",
+  "summary": {
+    "capabilities": 54,
+    "primary_agent_counts": {
+      "TORO": 27,
+      "SOBRESITO": 6,
+      "FIONA": 9,
+      "RICO": 5,
+      "TERE": 3,
+      "SKY": 4
+    },
+    "families": 21
+  },
+  "consolidation_families": {
+    "toro_entry": [
+      "ask_toro",
+      "direct_toro"
+    ],
+    "executive_control": [
+      "daily_brief",
+      "executive_decisions",
+      "project_portfolio"
+    ],
+    "personal_productivity": [
+      "personal_tasks",
+      "calendar_assistant",
+      "email_assistant",
+      "contacts_assistant",
+      "travel_assistant",
+      "personal_projects"
+    ],
+    "work_management": [
+      "work_tasks",
+      "assign_delegate"
+    ],
+    "personal_context": [
+      "personal_memory",
+      "memory_control",
+      "personal_documents"
+    ],
+    "systems_tools": [
+      "tool_connections"
+    ],
+    "comms_coordination": [
+      "team_messages",
+      "handoffs",
+      "message_to_task",
+      "notifications"
+    ],
+    "people_self_service": [
+      "shift_schedule",
+      "attendance_self",
+      "leave_requests",
+      "payroll_self",
+      "employee_profile"
+    ],
+    "people_development": [
+      "recognition_points",
+      "training"
+    ],
+    "operations_readiness": [
+      "report_issue",
+      "maintenance_tasks",
+      "housekeeping_work",
+      "inspections"
+    ],
+    "guest_lifecycle": [
+      "guest_assistant",
+      "guest_reply_draft",
+      "guest_handoff"
+    ],
+    "growth_products": [
+      "experiences"
+    ],
+    "knowledge_intelligence": [
+      "business_search",
+      "knowledge_answers"
+    ],
+    "people_management": [
+      "manager_team",
+      "team_coverage"
+    ],
+    "governance": [
+      "approvals"
+    ],
+    "finance_control": [
+      "finance_exceptions",
+      "invoice_workflow",
+      "payment_calendar",
+      "reconciliation"
+    ],
+    "revenue_intelligence": [
+      "revenue_dashboard"
+    ],
+    "growth_demand": [
+      "campaigns",
+      "content_control",
+      "market_research"
+    ],
+    "assets_information": [
+      "asset_search"
+    ],
+    "systems_reliability": [
+      "system_health",
+      "connector_health",
+      "backup_recovery"
+    ],
+    "systems_builder": [
+      "builder_queue"
+    ]
+  },
+  "capabilities": [
+    {
+      "key": "ask_toro",
+      "name": "Preguntar a TORO",
+      "subsystem_owner": "TORO Core",
+      "risk": "L0-L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "surface",
+      "capability_family": "toro_entry",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "daily_brief",
+      "name": "Resumen de hoy",
+      "subsystem_owner": "TORO Core",
+      "risk": "L0",
+      "catalog_status": "partial",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "FIONA",
+        "RICO",
+        "TERE",
+        "SKY",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "executive_control",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "personal_tasks",
+      "name": "Tareas y recordatorios personales",
+      "subsystem_owner": "TORO Personal",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "work_tasks",
+      "name": "Mis tareas de trabajo",
+      "subsystem_owner": "TORO Projects",
+      "risk": "L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "work_management",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "calendar_assistant",
+      "name": "Agenda y calendario",
+      "subsystem_owner": "TORO Tools",
+      "risk": "L3",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "email_assistant",
+      "name": "Asistente de correo",
+      "subsystem_owner": "TORO Tools",
+      "risk": "L3",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "contacts_assistant",
+      "name": "Contactos y seguimiento",
+      "subsystem_owner": "TORO Tools",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "personal_memory",
+      "name": "Memoria personal controlada",
+      "subsystem_owner": "TORO Personal",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "personal_context",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "memory_control",
+      "name": "Qué sabe TORO de mí",
+      "subsystem_owner": "TORO Personal",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work_private"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "personal_context",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "tool_connections",
+      "name": "Mis herramientas",
+      "subsystem_owner": "TORO Tools",
+      "risk": "L3-L5",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "systems_tools",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "team_messages",
+      "name": "Mensajes del equipo",
+      "subsystem_owner": "TORO Comms",
+      "risk": "L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "capability",
+      "capability_family": "comms_coordination",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "direct_toro",
+      "name": "TORO Direct",
+      "subsystem_owner": "TORO Comms",
+      "risk": "L0-L4",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal",
+        "work_private"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "surface",
+      "capability_family": "toro_entry",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "handoffs",
+      "name": "Entregas y handoffs",
+      "subsystem_owner": "TORO Comms",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "TERE",
+        "RICO",
+        "FIONA",
+        "SKY",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "comms_coordination",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "message_to_task",
+      "name": "Convertir conversación en tarea",
+      "subsystem_owner": "TORO Comms",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "comms_coordination",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "notifications",
+      "name": "Notificaciones y resúmenes",
+      "subsystem_owner": "TORO Comms",
+      "risk": "L1",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "personal",
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "comms_coordination",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "shift_schedule",
+      "name": "Mi horario y turno",
+      "subsystem_owner": "TORO People",
+      "risk": "L1",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "RICO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "people_self_service",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "attendance_self",
+      "name": "Mi asistencia",
+      "subsystem_owner": "TORO People",
+      "risk": "L1",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "people_self_service",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "leave_requests",
+      "name": "Vacaciones y permisos",
+      "subsystem_owner": "TORO People",
+      "risk": "L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "people_self_service",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "payroll_self",
+      "name": "Mi planilla/comprobante",
+      "subsystem_owner": "TORO People",
+      "risk": "L3",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "people_self_service",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "employee_profile",
+      "name": "Mi perfil laboral",
+      "subsystem_owner": "TORO People",
+      "risk": "L2",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "people_self_service",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "recognition_points",
+      "name": "Reconocimiento y puntos",
+      "subsystem_owner": "TORO People",
+      "risk": "L2",
+      "catalog_status": "planned",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "FIONA",
+        "RICO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "people_development",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "training",
+      "name": "Capacitación y SOPs",
+      "subsystem_owner": "TORO People + TORO Knowledge",
+      "risk": "L1",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "RICO",
+        "FIONA"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "people_development",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "report_issue",
+      "name": "Reportar problema con foto/audio",
+      "subsystem_owner": "TORO Operations",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "RICO",
+      "support_agents": [
+        "TERE",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "operations_readiness",
+      "canonical_skill": "rico-operations",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "maintenance_tasks",
+      "name": "Mantenimiento",
+      "subsystem_owner": "TORO Operations",
+      "risk": "L2-L3",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "RICO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "operations_readiness",
+      "canonical_skill": "rico-operations",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "housekeeping_work",
+      "name": "Housekeeping y readiness",
+      "subsystem_owner": "TORO Operations",
+      "risk": "L2",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "RICO",
+      "support_agents": [
+        "TERE"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "operations_readiness",
+      "canonical_skill": "rico-operations",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "inspections",
+      "name": "Inspecciones y rondas",
+      "subsystem_owner": "TORO Operations",
+      "risk": "L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "RICO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "operations_readiness",
+      "canonical_skill": "rico-operations",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "guest_assistant",
+      "name": "Asistente de huéspedes",
+      "subsystem_owner": "TORO Guests / TORO TERE",
+      "risk": "L3-L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TERE",
+      "support_agents": [
+        "SKY",
+        "RICO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "guest_lifecycle",
+      "canonical_skill": "tere-revenue",
+      "user_surface": "TERE",
+      "new_agent_required": false
+    },
+    {
+      "key": "guest_reply_draft",
+      "name": "Preparar respuesta a huésped",
+      "subsystem_owner": "TORO Guests / TORO Comms",
+      "risk": "L3",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TERE",
+      "support_agents": [
+        "RICO",
+        "FIONA",
+        "SKY"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "guest_lifecycle",
+      "canonical_skill": "tere-revenue",
+      "user_surface": "TERE",
+      "new_agent_required": false
+    },
+    {
+      "key": "guest_handoff",
+      "name": "Escalar solicitud de huésped",
+      "subsystem_owner": "TORO Guests / TORO Comms",
+      "risk": "L2-L3",
+      "catalog_status": "specified",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TERE",
+      "support_agents": [
+        "RICO",
+        "FIONA",
+        "SKY",
+        "SOBRESITO",
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "guest_lifecycle",
+      "canonical_skill": "tere-revenue",
+      "user_surface": "TERE",
+      "new_agent_required": false
+    },
+    {
+      "key": "experiences",
+      "name": "Tours y experiencias",
+      "subsystem_owner": "TORO Guests / TORO Growth",
+      "risk": "L2-L3",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SKY",
+      "support_agents": [
+        "TERE",
+        "RICO",
+        "FIONA"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "growth_products",
+      "canonical_skill": "sky-growth",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "business_search",
+      "name": "Buscar en la empresa",
+      "subsystem_owner": "TORO Knowledge / TORO Core",
+      "risk": "L1",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "knowledge_intelligence",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "knowledge_answers",
+      "name": "Preguntar por SOPs y conocimiento",
+      "subsystem_owner": "TORO Knowledge",
+      "risk": "L1",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "TERE",
+        "RICO",
+        "FIONA",
+        "SKY",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "knowledge_intelligence",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "manager_team",
+      "name": "Mi equipo",
+      "subsystem_owner": "TORO People",
+      "risk": "L2-L3",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "FIONA",
+        "RICO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "people_management",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "team_coverage",
+      "name": "Cobertura del equipo",
+      "subsystem_owner": "TORO People",
+      "risk": "L2",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "RICO",
+      "support_agents": [
+        "FIONA",
+        "TORO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "people_management",
+      "canonical_skill": "rico-operations",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "assign_delegate",
+      "name": "Asignar y delegar",
+      "subsystem_owner": "TORO Projects / TORO Governance",
+      "risk": "L2",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "workflow",
+      "capability_family": "work_management",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "approvals",
+      "name": "Aprobaciones",
+      "subsystem_owner": "TORO Governance",
+      "risk": "L3-L4",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "FIONA",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "governance",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "executive_decisions",
+      "name": "Decisiones",
+      "subsystem_owner": "TORO Core / TORO Governance",
+      "risk": "L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "TERE",
+        "RICO",
+        "FIONA",
+        "SKY",
+        "SOBRESITO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "executive_control",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "project_portfolio",
+      "name": "Portafolio de proyectos",
+      "subsystem_owner": "TORO Projects",
+      "risk": "L1-L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "executive_control",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "finance_exceptions",
+      "name": "Excepciones financieras",
+      "subsystem_owner": "TORO Finance / TORO FIONA",
+      "risk": "L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "finance_control",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "invoice_workflow",
+      "name": "Facturas y evidencia",
+      "subsystem_owner": "TORO Finance",
+      "risk": "L3-L4",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "finance_control",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "payment_calendar",
+      "name": "Próximos pagos y obligaciones",
+      "subsystem_owner": "TORO Finance",
+      "risk": "L3-L4",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "finance_control",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "reconciliation",
+      "name": "Conciliaciones",
+      "subsystem_owner": "TORO Finance",
+      "risk": "L4",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "FIONA",
+      "support_agents": [
+        "RICO",
+        "SOBRESITO",
+        "TORO"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "finance_control",
+      "canonical_skill": "fiona-finance",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "revenue_dashboard",
+      "name": "Revenue y tarifas",
+      "subsystem_owner": "TORO Revenue",
+      "risk": "L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "FIONA",
+        "TERE",
+        "SKY"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "revenue_intelligence",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "campaigns",
+      "name": "Campañas y crecimiento",
+      "subsystem_owner": "TORO Growth",
+      "risk": "L3",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SKY",
+      "support_agents": [
+        "TERE",
+        "FIONA",
+        "SOBRESITO",
+        "TORO"
+      ],
+      "delivery_shape": "composite",
+      "capability_family": "growth_demand",
+      "canonical_skill": "sky-growth",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "content_control",
+      "name": "Contenido web/canales",
+      "subsystem_owner": "TORO Channels",
+      "risk": "L3-L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SKY",
+      "support_agents": [
+        "SOBRESITO",
+        "TERE"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "growth_demand",
+      "canonical_skill": "sky-growth",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "market_research",
+      "name": "Investigación de mercado",
+      "subsystem_owner": "TORO Research",
+      "risk": "L1",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SKY",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "growth_demand",
+      "canonical_skill": "sky-growth",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "asset_search",
+      "name": "Buscar fotos/archivos/activos",
+      "subsystem_owner": "TORO Assets",
+      "risk": "L1-L2",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "SKY",
+        "RICO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "assets_information",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "system_health",
+      "name": "Salud de sistemas",
+      "subsystem_owner": "TORO Systems",
+      "risk": "L1-L3",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "systems_reliability",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "connector_health",
+      "name": "Estado de conectores",
+      "subsystem_owner": "TORO Tools / TORO Systems",
+      "risk": "L1-L3",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "systems_reliability",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "backup_recovery",
+      "name": "Backups y recuperación",
+      "subsystem_owner": "TORO Systems / TORO Governance",
+      "risk": "L4",
+      "catalog_status": "partial",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "TORO",
+        "FIONA"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "systems_reliability",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "builder_queue",
+      "name": "Cola de construcción/Codex",
+      "subsystem_owner": "TORO Builder",
+      "risk": "L3-L4",
+      "catalog_status": "implemented_foundation",
+      "contexts": [
+        "work"
+      ],
+      "primary_agent": "SOBRESITO",
+      "support_agents": [
+        "TORO"
+      ],
+      "delivery_shape": "workflow",
+      "capability_family": "systems_builder",
+      "canonical_skill": "sobresito-systems",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "travel_assistant",
+      "name": "Viajes personales",
+      "subsystem_owner": "TORO Personal / TORO Tools",
+      "risk": "L2-L3",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "skill",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "personal_documents",
+      "name": "Mis documentos",
+      "subsystem_owner": "TORO Personal / TORO Tools",
+      "risk": "L2-L3",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "delivery_shape": "capability",
+      "capability_family": "personal_context",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    },
+    {
+      "key": "personal_projects",
+      "name": "Mis proyectos personales",
+      "subsystem_owner": "TORO Personal / TORO Projects",
+      "risk": "L2",
+      "catalog_status": "specified",
+      "contexts": [
+        "personal"
+      ],
+      "primary_agent": "TORO",
+      "support_agents": [],
+      "delivery_shape": "capability",
+      "capability_family": "personal_productivity",
+      "canonical_skill": "toro-brain",
+      "user_surface": "TORO",
+      "new_agent_required": false
+    }
+  ]
+}
