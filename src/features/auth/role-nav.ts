@@ -57,7 +57,7 @@ const departmentLeadNavigation: NavItem[] = [
 
 const auditNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
-  { label: "Asistencia", availability: "coming-soon" },
+  { label: "Asistencia", availability: "available", href: "/toro/asistencia" },
   { label: "Planilla", availability: "coming-soon" },
   { label: "Aprobaciones", availability: "coming-soon" },
   { label: "Auditoría", availability: "coming-soon" },
