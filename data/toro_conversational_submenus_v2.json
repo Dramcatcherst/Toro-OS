@@ -1,6 +1,6 @@
 {
   "version": "2026.09.23-v2",
-  "status": "specified_not_runtime_verified",
+  "status": "source_aware_resolver_integrated_child_availability_gated",
   "rules": {
     "max_visible_suggestions": 3,
     "max_submenu_items": 6,
