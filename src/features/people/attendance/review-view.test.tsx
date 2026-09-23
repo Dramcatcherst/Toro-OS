@@ -8,6 +8,7 @@ const ready: AttendanceReviewState = {
   status: "ready",
   data: {
     roles: ["RRHH"],
+    canViewImports: true,
     days: [
       {
         id: "day-1",
@@ -64,6 +65,31 @@ describe("AttendanceReviewView", () => {
     expect(screen.queryByRole("button", { name: /resolver/i })).not.toBeInTheDocument();
     expect(screen.queryByText(/sha/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/raw_payload/i)).not.toBeInTheDocument();
+  });
+
+  it("hides import cards when the role cannot view time imports", () => {
+    render(
+      <AttendanceReviewView
+        state={{
+          ...ready,
+          data: {
+            ...ready.data,
+            roles: ["GERENCIA"],
+            canViewImports: false,
+            recentImports: [],
+          },
+        }}
+      />,
+    );
+
+    expect(
+      screen.queryByRole("heading", { name: "Últimas importaciones del reloj" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Las importaciones del reloj no forman parte de tu vista autorizada.",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("renders a safe role-denied state", () => {
