@@ -268,16 +268,210 @@ async function loadProfileSummary(
   return [];
 }
 
+
+export type ToroCapabilityFocusItem = {
+  title: string;
+  meta?: string;
+  detail?: string;
+};
+
+export type ToroCapabilityFocus = {
+  capability: string;
+  label: string;
+  items: ToroCapabilityFocusItem[];
+};
+
+const FOCUSABLE_CAPABILITIES = new Set([
+  "projects.status",
+  "executive.decisions",
+  "catalog.rooms_villas",
+  "catalog.experiences",
+]);
+
+function cleanText(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function cleanNumber(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+async function loadCapabilityFocus(
+  context: ToroResolvedContext,
+  capability: string,
+  label: string,
+  supabase: SupabaseServerClient,
+): Promise<ToroCapabilityFocus | null> {
+  if (!context.orgId || !FOCUSABLE_CAPABILITIES.has(capability)) return null;
+  const orgId = context.orgId;
+
+  if (capability === "projects.status") {
+    const { data, error } = await supabase
+      .schema("operations")
+      .from("projects")
+      .select("project_name, status, priority, next_action, completion_pct")
+      .eq("org_id", orgId)
+      .eq("active", true)
+      .order("updated_at", { ascending: false })
+      .limit(8);
+
+    if (error || !Array.isArray(data)) return null;
+
+    return {
+      capability,
+      label,
+      items: data.map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const completion = cleanNumber(row.completion_pct);
+        const status = cleanText(row.status);
+        const priority = cleanText(row.priority);
+        return {
+          title: cleanText(row.project_name) ?? "Proyecto",
+          meta: [status, priority, completion === null ? null : `${completion}%`]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.next_action) ?? undefined,
+        };
+      }),
+    };
+  }
+
+  if (capability === "executive.decisions") {
+    const { data, error } = await supabase
+      .schema("operations")
+      .from("executive_decisions")
+      .select("decision_title, status, priority, next_action")
+      .eq("org_id", orgId)
+      .order("updated_at", { ascending: false })
+      .limit(8);
+
+    if (error || !Array.isArray(data)) return null;
+
+    return {
+      capability,
+      label,
+      items: data.map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        return {
+          title: cleanText(row.decision_title) ?? "Decisión",
+          meta: [cleanText(row.status), cleanText(row.priority)]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.next_action) ?? undefined,
+        };
+      }),
+    };
+  }
+
+  if (capability === "catalog.rooms_villas") {
+    const [roomsResult, villasResult] = await Promise.all([
+      supabase
+        .schema("core")
+        .from("rooms")
+        .select("room_number, name_es, name_en, max_capacity")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .order("room_number", { ascending: true })
+        .limit(8),
+      supabase
+        .schema("core")
+        .from("villas")
+        .select("name_es, name_en, room_count, max_capacity")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .order("name_es", { ascending: true })
+        .limit(4),
+    ]);
+
+    if (roomsResult.error || villasResult.error) return null;
+
+    const roomItems = (roomsResult.data ?? []).map((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      const number = cleanNumber(row.room_number);
+      const capacity = cleanNumber(row.max_capacity);
+      return {
+        title:
+          cleanText(row.name_es) ??
+          cleanText(row.name_en) ??
+          (number === null ? "Habitación" : `Habitación ${number}`),
+        meta: [
+          number === null ? null : `#${number}`,
+          capacity === null ? null : `hasta ${capacity} personas`,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      };
+    });
+
+    const villaItems = (villasResult.data ?? []).map((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      const rooms = cleanNumber(row.room_count);
+      const capacity = cleanNumber(row.max_capacity);
+      return {
+        title: cleanText(row.name_es) ?? cleanText(row.name_en) ?? "Villa",
+        meta: [
+          rooms === null ? null : `${rooms} habitaciones`,
+          capacity === null ? null : `hasta ${capacity} personas`,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      };
+    });
+
+    return {
+      capability,
+      label,
+      items: [...roomItems, ...villaItems].slice(0, 10),
+    };
+  }
+
+  if (capability === "catalog.experiences") {
+    const { data, error } = await supabase
+      .schema("catalog")
+      .from("experiences")
+      .select("name_es, name_en, category, public_price_label_es, verified_status")
+      .eq("org_id", orgId)
+      .eq("status", "active")
+      .order("merchandising_priority", { ascending: false })
+      .limit(8);
+
+    if (error || !Array.isArray(data)) return null;
+
+    return {
+      capability,
+      label,
+      items: data.map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        return {
+          title: cleanText(row.name_es) ?? cleanText(row.name_en) ?? "Experiencia",
+          meta: [cleanText(row.category), cleanText(row.public_price_label_es)]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.verified_status)
+            ? `Verificación: ${cleanText(row.verified_status)}`
+            : undefined,
+        };
+      }),
+    };
+  }
+
+  return null;
+}
+
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
   menu: ToroResolvedMenu | null;
   sourceReadiness: ToroSourceReadiness | null;
   profileSummary: ToroProfileSummaryItem[];
+  focusableCapabilities: string[];
+  focus: ToroCapabilityFocus | null;
   state: "resolved" | "context_choice_required" | "no_menu";
 };
 
-export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView | null> {
+export async function resolveCurrentToroReadOnlyMenu(
+  focusCapability?: string | null,
+): Promise<ToroRealMenuView | null> {
   const context = await resolveToroContext({ mode: "organization" });
 
   if (!context) return null;
@@ -289,6 +483,8 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
       menu: null,
       sourceReadiness: null,
       profileSummary: [],
+      focusableCapabilities: [],
+      focus: null,
       state: "context_choice_required",
     };
   }
@@ -313,8 +509,9 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
     blockedReads: ["Fuentes de esta vista"],
   };
 
+  let supabase: SupabaseServerClient | null = null;
   try {
-    const supabase = await createServerSupabaseClient();
+    supabase = await createServerSupabaseClient();
     const [snapshot, summary] = await Promise.all([
       loadMenuSourceSnapshot(context, supabase),
       loadProfileSummary(context, discoveryMenu?.profileId, supabase),
@@ -337,6 +534,34 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
     hasSecondaryOptions: false,
   });
 
+  const focusableCapabilities =
+    menu?.items
+      .filter(
+        (item) =>
+          item.state === "READ_ONLY" &&
+          FOCUSABLE_CAPABILITIES.has(item.capability),
+      )
+      .map((item) => item.capability) ?? [];
+
+  let focus: ToroCapabilityFocus | null = null;
+  if (
+    focusCapability &&
+    supabase &&
+    focusableCapabilities.includes(focusCapability)
+  ) {
+    const item = menu?.items.find(
+      (candidate) => candidate.capability === focusCapability,
+    );
+    if (item) {
+      focus = await loadCapabilityFocus(
+        context,
+        focusCapability,
+        item.label,
+        supabase,
+      );
+    }
+  }
+
   return {
     context,
     preferredDisplayName:
@@ -344,6 +569,8 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
     menu,
     sourceReadiness,
     profileSummary,
+    focusableCapabilities,
+    focus,
     state: menu ? "resolved" : "no_menu",
   };
 }

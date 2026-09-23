@@ -33,8 +33,15 @@ function statusLabel(state: string) {
   return state;
 }
 
-export default async function MyToroPage() {
-  const view = await resolveCurrentToroReadOnlyMenu();
+export default async function MyToroPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ focus?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const requestedFocus =
+    typeof params.focus === "string" ? params.focus : null;
+  const view = await resolveCurrentToroReadOnlyMenu(requestedFocus);
 
   if (!view) {
     return (
@@ -135,6 +142,48 @@ export default async function MyToroPage() {
           </section>
         ) : null}
 
+        {view.focus ? (
+          <section className="mt-5 rounded-[2rem] border border-cyan-300/20 bg-slate-950/80 p-5 md:p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-200">
+                  Focus · solo lectura
+                </div>
+                <h2 className="mt-1 text-2xl font-black text-white">{view.focus.label}</h2>
+              </div>
+              <Link
+                href="/my-toro"
+                className="inline-flex items-center gap-2 self-start rounded-full border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:border-cyan-300/30 hover:text-white"
+              >
+                Volver a Mi TORO
+              </Link>
+            </div>
+
+            {view.focus.items.length ? (
+              <div className="mt-5 grid gap-3">
+                {view.focus.items.map((item, index) => (
+                  <article
+                    key={`${item.title}-${index}`}
+                    className="rounded-2xl border border-slate-800 bg-black/25 p-4"
+                  >
+                    <div className="font-semibold text-white">{item.title}</div>
+                    {item.meta ? (
+                      <div className="mt-1 text-xs font-medium text-cyan-200/80">{item.meta}</div>
+                    ) : null}
+                    {item.detail ? (
+                      <p className="mt-2 text-sm leading-6 text-slate-400">{item.detail}</p>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-4 text-sm text-slate-400">
+                No hay elementos visibles en este contexto autorizado.
+              </p>
+            )}
+          </section>
+        ) : null}
+
         <section className="mt-5 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5 md:p-6">
             <div className="flex items-center justify-between gap-3">
@@ -147,16 +196,22 @@ export default async function MyToroPage() {
 
             {menu?.items.length ? (
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {menu.items.map((item) => (
-                  <article
-                    key={item.key}
-                    className="rounded-2xl border border-slate-800 bg-black/25 p-4"
-                  >
+                {menu.items.map((item) => {
+                  const focusable =
+                    item.state === "READ_ONLY" &&
+                    view.focusableCapabilities.includes(item.capability);
+                  const card = (
                     <div className="flex items-start gap-3">
                       <div className="text-2xl">{item.emoji}</div>
                       <div className="min-w-0 flex-1">
                         <div className="font-semibold text-white">{item.label}</div>
-                        <div className="mt-1 text-xs text-slate-500">{item.capability}</div>
+                        <div className="mt-1 text-xs text-slate-500">
+                          {focusable
+                            ? "Toca para consultar"
+                            : item.state === "READ_ONLY"
+                              ? "Lectura disponible"
+                              : "Todavía no disponible"}
+                        </div>
                       </div>
                       <span
                         className={[
@@ -169,8 +224,25 @@ export default async function MyToroPage() {
                         {statusLabel(item.state)}
                       </span>
                     </div>
-                  </article>
-                ))}
+                  );
+
+                  return focusable ? (
+                    <Link
+                      key={item.key}
+                      href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
+                      className="rounded-2xl border border-slate-800 bg-black/25 p-4 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.05]"
+                    >
+                      {card}
+                    </Link>
+                  ) : (
+                    <article
+                      key={item.key}
+                      className="rounded-2xl border border-slate-800 bg-black/25 p-4"
+                    >
+                      {card}
+                    </article>
+                  );
+                })}
               </div>
             ) : (
               <div className="mt-5 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] p-4 text-sm text-amber-100/80">
