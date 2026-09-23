@@ -85,6 +85,6 @@ describe("BrainView", () => {
 
     expect(screen.getByText(/real · read only/i)).toBeInTheDocument();
     expect(screen.queryByText("Kross PMS")).not.toBeInTheDocument();
-    expect(screen.getByText(/source unavailable/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Source unavailable\.$/i)).toBeInTheDocument();
   });
 });
