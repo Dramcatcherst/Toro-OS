@@ -48,9 +48,10 @@ export type ToroResolvedMembership = {
   orgId: string;
   membershipId: string | null;
   membershipType: ToroMembershipType | null;
-  status: ToroMembershipStatus | null;
+  status: ToroMembershipStatus;
   roles: ToroCanonicalRole[];
   employeeId: string | null;
+  source: "organization_memberships" | "legacy_user_roles";
 };
 
 export type ToroContextRequest = {
@@ -60,9 +61,12 @@ export type ToroContextRequest = {
 
 export type ToroResolvedContext = {
   userId: string;
+  email: string | null;
+  displayName: string;
   mode: ToroContextMode;
   orgId: string | null;
   membership: ToroResolvedMembership | null;
+  availableOrgIds: string[];
   allowedDataScopes: ToroDataScope[];
   allowedTools: ToroToolPermission[];
   canUsePersonalVault: boolean;
@@ -71,18 +75,19 @@ export type ToroResolvedContext = {
 };
 
 /**
- * Canonical contract for every TORO human-facing surface.
+ * Canonical contract for every TORO Brain human-facing surface.
  *
  * Implementations must:
  * - derive actor identity from the authenticated session;
- * - never infer organization membership from an email domain, display name, or employee name;
- * - require an active organization membership before granting organization context;
+ * - never infer organization membership from an email domain, display name, phone number, or employee name;
+ * - require an active organization relationship before granting organization context;
  * - keep personal User Vault scope unavailable to organization administrators by default;
  * - fail closed when requested organization or scope cannot be resolved;
- * - resolve tool ownership independently for personal and organization connections.
+ * - resolve tool ownership independently for personal and organization connections;
+ * - make temporary membership provenance visible while legacy user_roles remains the transition source.
  *
- * WhatsApp/OpenClaw, Portal, email, automations and specialist agents should all
- * consume the same resolved context contract rather than defining channel-specific
+ * WhatsApp/OpenClaw, Portal, email, automations and specialist agents must all
+ * consume this same context contract rather than defining channel-specific
  * identity or privacy rules.
  */
 export type ResolveToroContext = (
