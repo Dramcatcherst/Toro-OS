@@ -108,6 +108,7 @@ canonical_product_specs:
   people_code_migration: docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md
   communications: docs/product/TORO_COMMS_V1.md
   tools: docs/product/TORO_TOOLS_V1.md
+  action_taxonomy: docs/product/TORO_ACTION_TAXONOMY_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
