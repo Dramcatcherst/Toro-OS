@@ -1152,30 +1152,70 @@ AI design/code tools may accelerate delivery but do not become architecture auth
 - Do not repoint/delete production without inventory, parity verification and rollback.
 
 ### Supabase
-Visible inspected projects are currently domain-specialized:
-- DreamTeam/People/attendance/payroll/security;
-- Kross/F&B operational reporting/import data.
+Read-only schema audit now verifies `abtyrbqlqbsastmridzp` as the current canonical TORO structured runtime data plane for the Dreamcatcher reference implementation.
 
-A unified canonical Scope Graph/Event Spine is not yet evidenced by the inspected public table inventory.
+Verified domain families include:
+- public identity/people/governance foundations;
+- `operations.projects`, `operations.tasks`, `operations.executive_decisions`, `operations.obligations`;
+- `integrations.source_authority_rules`, `integrations.domain_governance`, `integrations.external_dependency_registry`, `integrations.data_conflicts`, import/migration evidence;
+- Finance metrics/evidence;
+- Revenue structures;
+- Assets/inventory;
+- guest/reservation/knowledge/web-growth structures.
 
-Rule:
-- do not create a third “brain DB” automatically;
-- first map existing schemas;
-- select/reconcile the canonical TORO runtime data plane;
-- then add graph/event projections without duplicating domain truth.
+Specialist external systems retain domain authority where this Plan General says so.
+
+`fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation. Useful patterns may be generalized, but it is not a second TORO Brain database.
+
+Rules:
+- do not create a third “brain DB”;
+- reuse strong typed domain tables;
+- use permission-filtered read models/projections for Visual Brain;
+- do not add generic graph DDL merely to render a graph;
+- add only the thinnest cross-entity relationship/event layer when measured use requires it.
+
+### Visual Brain implementation status — verified 2026-09-23
+
+**Stage A — COMPLETED**
+- canonical projection/event/permission/semantic contracts merged;
+- TypeScript Brain contract surface merged;
+- Supabase/domain mapping completed;
+- issue #32 closed.
+
+**Stage B — COMPLETED**
+- synthetic read-only `/brain` prototype merged to canonical `main`;
+- 10-node / 10-edge / 5-event focused scenario;
+- approval gate, evidence, source authority, freshness, verification and mobile/list fallback present;
+- lint/build/CI passed;
+- Vercel production-target deployment READY;
+- protected deployment visually inspected in a real browser with no detected overlap, clipping, missing sections or desktop overflow;
+- issue #40 closed.
+
+**Stage C — BLOCKED_BY_IDENTITY**
+- real private data must not be connected until canonical server-side context/authorization exists on `main`;
+- current `main` has context types but not the complete server-side resolver/Auth foundation;
+- PR #42 contains the context resolver on top of Phase 1 but remains draft and is not based directly on `main`;
+- Phase 1 PR #15 remains draft/diverged and must be reconciled safely before its auth foundation can become canonical;
+- PR #16 already contains useful read-only Projects, Knowledge, Hotel, Systems/connector-health and safe Kross projection work; Stage C must extract/reuse those capabilities instead of rebuilding them.
+
+### Current runtime security baseline — verified 2026-09-23
+- canonical `main` uses Next.js **16.3.6** and matching `eslint-config-next`;
+- security patch PR #47 merged after CI + Vercel preview;
+- `npm audit` reached **0 known vulnerabilities** using non-forced lockfile remediation;
+- production-target Vercel deployment is READY.
 
 ## NEXT
 
-1. Map existing Supabase schemas against TORO Scope Graph, Identity, People, Operations and Event Spine requirements.
-2. Define canonical graph/entity/event contracts before adding visual runtime tables.
-3. Build a synthetic read-only Brain prototype inside `Dramcatcherst/Toro-OS`.
-4. Establish the shared TORO design system and semantic component states.
-5. Audit Vercel legacy/canonical projects, domains, environment variables, functions and rollback dependencies.
-6. Keep legacy production untouched until canonical preview achieves parity for required behavior.
-7. Connect real read-only Dreamcatcher state only after permission/filtering contracts exist.
-8. Add realtime normalized events after static/read-only truth is verified.
-9. Add governed actions only after approval/evidence flows are enforced.
-10. Build public “Watch TORO Work” after private operational truth and demo-data isolation are proven.
+1. Reconcile the Phase 1 identity/auth integration path; do not bypass its hosted/security gates.
+2. Promote a canonical server-side `resolveToroContext()` + membership/isolation contract onto the eventual `main` integration path.
+3. Produce a Stage C extraction map from PR #16 for Projects, Knowledge, Systems health, Hotel/Kross-safe reads and API authorization so those capabilities are reused rather than rebuilt.
+4. Connect the Visual Brain to real **read-only** Dreamcatcher state only after server-side context/permission filtering is canonical and tested.
+5. Establish the shared TORO design system/Figma semantic tokens without changing product authority.
+6. Continue Vercel legacy/canonical runtime migration audit and preserve rollback until parity is proven.
+7. Normalize Event Spine adapters after static/read-only real-state projection is verified.
+8. Add governed actions only after approval/evidence/verification flows are canonical.
+9. Build public “Watch TORO Work” from synthetic/public-safe fixtures after private product behavior is stable.
+10. Keep richer 3D/presentation work deferred until operational usability is proven.
 
 ## FUTURE
 

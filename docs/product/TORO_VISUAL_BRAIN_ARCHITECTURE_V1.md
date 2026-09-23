@@ -459,6 +459,18 @@ Generated code must enter:
 
 ---
 
+### 9.7 Current framework security baseline
+
+Verified 2026-09-23:
+- Next.js 16.3.6;
+- matching `eslint-config-next` 16.3.6;
+- canonical dependency graph remediated to `npm audit = 0` without `--force`;
+- security patch validated with lint, production build and Vercel preview/production-target deployment.
+
+Framework versions remain implementation details and must continue to follow security advisories.
+
+---
+
 ## 10. Repository architecture
 
 Do not create a second TORO Brain repository merely for the visual product.
@@ -802,18 +814,19 @@ Required migration:
 
 ### Supabase
 
-Verified visible projects:
-- `supabase-bisque-kettle` — primarily DreamTeam/People/attendance/payroll/security structures;
-- `toro-auth-pilot` — currently contains Kross/F&B operational import/report structures.
+Verified current structured runtime decision:
+- `abtyrbqlqbsastmridzp` = canonical TORO structured runtime data plane for the current Dreamcatcher reference implementation;
+- it contains identity/people/governance anchors plus canonical `operations`, `integrations`, `finance`, `revenue`, `assets` and other governed domains;
+- `fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation, not a parallel Brain database.
 
-Interpretation:
-- the visible Supabase estate is currently domain-specialized;
-- a unified canonical Scope Graph/Event Spine is not yet evidenced by the inspected table lists.
+The Visual Brain consumes permission-filtered projections from strong domain tables.
 
 Rule:
-- do not create a third “brain database” automatically;
-- first map existing schemas and migration boundaries;
-- choose/reconcile the canonical TORO runtime data plane through an explicit migration contract.
+- no third Brain database;
+- no generic graph storage merely for visualization;
+- keep domain truth in domain models;
+- reuse source-authority/freshness/evidence contracts;
+- add a thin relationship/event layer only when a real multi-scope or realtime requirement justifies it.
 
 ---
 
@@ -839,7 +852,7 @@ Stage B must consume these contracts rather than inventing a second vocabulary.
 ## 23. Implementation stages
 
 ### Stage A — Contracts first
-**NEXT**
+**COMPLETED / CURRENT CONTRACT**
 
 - approve this spec;
 - register it in `toro-context.yaml`;
@@ -852,7 +865,7 @@ Exit:
 a developer can build the same conceptual Brain without inventing new truth or permissions.
 
 ### Stage B — Static Brain prototype
-**NEXT**
+**COMPLETED / CURRENT SYNTHETIC PROTOTYPE**
 
 - build focused graph using synthetic Dreamcatcher-shaped data;
 - entity focus panel;
@@ -865,13 +878,19 @@ Exit:
 visual model is understandable before realtime complexity.
 
 ### Stage C — Canonical read-only integration
-**NEXT / dependent on data mapping**
+**BLOCKED_BY_IDENTITY / NEXT**
 
 - read canonical entities;
 - read system health;
-- read projects/goals;
-- read evidence;
-- permission-filtered graph.
+- read projects/decisions/tasks/obligations;
+- read domain-owned metrics/evidence;
+- permission-filtered graph;
+- reuse validated read-only capabilities from existing Phase 1/PR #16 work where compatible.
+
+Hard gate:
+- canonical server-side context/authorization must exist on the final integration path before private real data is projected;
+- PR #42 currently contains the context resolver on the Phase 1 branch, not canonical `main`;
+- do not recreate that resolver inside Visual Brain.
 
 No external writes.
 
