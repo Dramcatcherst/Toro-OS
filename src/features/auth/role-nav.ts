@@ -37,7 +37,7 @@ const employeeNavigation: NavItem[] = [
 const peopleAdminNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
   { label: "Personas", availability: "coming-soon" },
-  { label: "Asistencia", availability: "coming-soon" },
+  { label: "Asistencia", availability: "available", href: "/toro/asistencia" },
   { label: "Horarios", availability: "coming-soon" },
   { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Planilla", availability: "coming-soon" },
