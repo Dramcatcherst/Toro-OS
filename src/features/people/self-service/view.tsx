@@ -1,3 +1,5 @@
+import { isPendingLeaveStatus, leaveStatusLabel } from "@/features/people/leave/status";
+
 import type { PeopleSelfServiceState } from "./types";
 
 function formatDate(value: string | null) {
@@ -75,8 +77,8 @@ export function PeopleSelfServiceView({
     recentAttendance,
   } = state.data;
 
-  const pendingLeave = leaveRequests.filter(
-    (request) => request.requestStatus === "pending",
+  const pendingLeave = leaveRequests.filter((request) =>
+    isPendingLeaveStatus(request.requestStatus),
   );
   const vacationBalance =
     leaveBalances.find((balance) => balance.leaveType === "vacation") ??
@@ -201,7 +203,7 @@ export function PeopleSelfServiceView({
                     {request.leaveType || "Permiso"}
                   </p>
                   <span className="text-xs font-medium text-neutral-500">
-                    {request.requestStatus}
+                    {leaveStatusLabel(request.requestStatus)}
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-neutral-600">
