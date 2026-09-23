@@ -305,6 +305,15 @@ Verified 2026-09-23:
 - total observed targeted fixture tests: 17;
 - Vercel status for Phase 1 head is success; this does not substitute for hosted authenticated isolation E2E.
 
+**EXTRACTION AUDIT — 2026-09-23**
+- resolver-only extraction is explicitly rejected;
+- current main lacks the Supabase server/env and auth-role modules imported by the resolver;
+- current main also lacks the Supabase runtime dependencies and Vitest harness used by Phase 1;
+- Phase 1 package-lock has 159 package entries absent from main and 24 differing entries, including Next 16.3.5 vs main 16.3.6;
+- copying the Phase 1 lock wholesale is prohibited;
+- next implementation must preserve current main versions and integrate one coherent auth/context slice;
+- evidence: `docs/evidence/TORO_PHASE1_CONTEXT_EXTRACTION_AUDIT_2026-09-23.md`.
+
 **OWNER HOLD**
 Employees are not to be contacted, invited or onboarded for this proof yet.
 
