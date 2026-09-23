@@ -64,6 +64,7 @@ describe("getRoleNavigation", () => {
           "/toro/decisiones",
           "/toro/mi-perfil",
           "/toro/mi-asistencia",
+          "/toro/mi-horario",
           "/toro/asistencia",
           "/toro/solicitudes",
         ].includes(href)),
@@ -133,6 +134,12 @@ describe("getRoleNavigation", () => {
     ).toMatchObject({
       availability: "available",
       href: "/toro/mi-asistencia",
+    });
+    expect(
+      getRoleNavigation("EMPLEADO").find((item) => item.label === "Horario"),
+    ).toMatchObject({
+      availability: "available",
+      href: "/toro/mi-horario",
     });
   });
 
