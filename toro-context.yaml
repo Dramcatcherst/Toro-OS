@@ -124,6 +124,9 @@ agent_rules:
   preserve_evidence: true
   prefer_reversible_changes: true
   never_claim_unverified_execution: true
+  resolve_canonical_project_before_creation: true
+  no_parallel_projects: true
+  uncertain_project_destination_means_do_not_create: true
 
 product_rules:
   one_master_brain: true
@@ -141,6 +144,8 @@ product_rules:
   one_canonical_identity_per_human: true
   no_silent_cross_user_memory: true
   no_silent_personal_to_employer_data_promotion: true
+  one_active_project_per_canonical_module: true
+  branches_prs_bases_dashboards_agents_are_not_projects: true
 
 subsystem_architecture:
   registry_document: docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md
@@ -223,3 +228,27 @@ readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
   current_stage: internal_proof
   notify_owner_on_stage_change: true
+
+
+project_governance:
+  canonical_registry: operations.projects
+  human_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  root_project_key: toro_os_portfolio_master
+  same_module_active_limit: 1
+  default_behavior: reuse_or_absorb
+  uncertain_behavior: do_not_create
+  machine_rule: toro_no_parallel_projects_rule_v1
+  policy: POLICY-TORO-NO-PARALLEL-PROJECTS-V1
+  allowed_new_project_scopes:
+    - separate_business
+    - separate_property
+    - external_product
+    - legally_separate_scope
+  required_for_new_project:
+    - parent_project_key
+    - canonical_module_key
+    - owner
+    - authority
+    - consumers
+    - done_criteria
+    - retirement_or_convergence_criteria
