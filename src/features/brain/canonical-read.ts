@@ -7,6 +7,12 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export const CANONICAL_BRAIN_READ_CONTRACT = "stage-c-read-v1" as const;
 
+export type CanonicalOrganizationSummary = {
+  ref: string;
+  label: string;
+  status: string;
+};
+
 export type CanonicalProjectSummary = {
   ref: string;
   label: string;
@@ -55,10 +61,17 @@ export type CanonicalBrainReadSlice = {
   contractVersion: typeof CANONICAL_BRAIN_READ_CONTRACT;
   generatedAt: string;
   scopeRef: string;
+  organization: CanonicalOrganizationSummary;
   projects: CanonicalProjectSummary[];
   sourceAuthority: CanonicalSourceAuthoritySummary[];
   domainGovernance: CanonicalDomainGovernanceSummary[];
   krossHealth: CanonicalKrossHealthSummary[];
+};
+
+type OrganizationRow = {
+  id: string;
+  name: string;
+  status: string;
 };
 
 type ProjectRow = {
@@ -141,6 +154,7 @@ function assertOrganizationContext(
 
 export function projectCanonicalBrainReadSlice(input: {
   orgId: string;
+  organization: OrganizationRow;
   projects: ProjectRow[];
   sourceAuthority: SourceAuthorityRow[];
   domainGovernance: DomainGovernanceRow[];
@@ -151,6 +165,11 @@ export function projectCanonicalBrainReadSlice(input: {
     contractVersion: CANONICAL_BRAIN_READ_CONTRACT,
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     scopeRef: stableProjectionRef("scope", input.orgId),
+    organization: {
+      ref: stableProjectionRef("organization", input.organization.id),
+      label: input.organization.name,
+      status: input.organization.status,
+    },
     projects: input.projects.map((row) => ({
       ref: stableProjectionRef("project", row.id),
       label: row.project_name,
@@ -204,8 +223,19 @@ export async function loadCanonicalBrainReadSlice(
 
   const supabase = await createServerSupabaseClient();
 
-  const [projectsResult, authorityResult, governanceResult, krossResult] =
-    await Promise.all([
+  const [
+    organizationResult,
+    projectsResult,
+    authorityResult,
+    governanceResult,
+    krossResult,
+  ] = await Promise.all([
+      supabase
+        .from("organizations")
+        .select("id,name,status")
+        .eq("id", context.orgId)
+        .is("deleted_at", null)
+        .limit(1),
       supabase
         .schema("operations")
         .from("projects")
@@ -246,6 +276,7 @@ export async function loadCanonicalBrainReadSlice(
     ]);
 
   for (const result of [
+    organizationResult,
     projectsResult,
     authorityResult,
     governanceResult,
@@ -256,8 +287,13 @@ export async function loadCanonicalBrainReadSlice(
     }
   }
 
+  if (!Array.isArray(organizationResult.data) || organizationResult.data.length !== 1) {
+    throw new Error("Canonical Brain organization source unavailable.");
+  }
+
   return projectCanonicalBrainReadSlice({
     orgId: context.orgId,
+    organization: organizationResult.data[0] as OrganizationRow,
     projects: (projectsResult.data ?? []) as ProjectRow[],
     sourceAuthority: (authorityResult.data ?? []) as SourceAuthorityRow[],
     domainGovernance: (governanceResult.data ?? []) as DomainGovernanceRow[],
