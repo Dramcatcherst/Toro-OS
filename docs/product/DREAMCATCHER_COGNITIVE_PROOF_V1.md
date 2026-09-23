@@ -359,9 +359,23 @@ demand
 - 0 canonical stays.
 - 0 live reservation rows.
 - latest reservation snapshot observed: 2026-09-21 09:28:30.675+00.
+- existing mirror task explicitly reports `sourceIsLive=false` and automatic first export not verified.
 
 **DIAGNOSIS**
 Guest-facing design/content exists, but a current operational journey cannot be certified from the canonical mirror while Kross current-state data is stale/non-live.
+
+This is a source-authority constraint, not a reason to create another reservation pipeline.
+
+**FAIL-CLOSED RULE**
+- historical/snapshot reservations may support dated analysis;
+- they may not be called current availability, current in-house, current arrival/departure or current booking state;
+- 0 live rows does not mean 0 guests/reservations;
+- do not create a second mirror;
+- do not silently route around the Kross authority gate with email, historical Airtable or a browser snapshot.
+
+**Autonomy state**
+- A1/A2 only for current-state Guest Journey decisions until live authority is restored;
+- higher autonomy requires live/fresh PMS input and a verified E2E journey.
 
 **GATE**
 Reuse:
@@ -394,10 +408,32 @@ reservation / PMS production
 - 4 reconciliation records.
 - 9 monthly-metric rows.
 - latest canonical bank transaction date observed: 2026-07-31.
-- existing current finance tasks explicitly report missing/current external evidence and scope-reconciliation work.
+- current finance control explicitly states that current August–September bank evidence is incomplete and current reconciliations remain candidate/ambiguous.
 
 **DIAGNOSIS**
-The finance model has high data volume but cannot yet be treated as current end-to-end cash truth.
+The finance model has high historical data volume but cannot yet be treated as current end-to-end cash truth.
+
+This is the finance equivalent of the maintenance finding:
+
+> **data volume is not the same as outcome/current truth**
+
+**FAIL-CLOSED RULE**
+Keep these lanes separate:
+- PMS production;
+- accounting/fiscal record;
+- processor/channel settlement;
+- bank cash.
+
+Do not:
+- present 1,839 historical bank rows as current cash coverage;
+- infer cash from PMS payments;
+- infer tax filing/payment from accounting reports;
+- force ambiguous reconciliations closed;
+- create another finance truth/dashboard.
+
+**Autonomy state**
+- A1/A2 for cash/current finance claims until current evidence is reconciled;
+- higher autonomy requires current bank/accounting evidence, explicit matching semantics and tested exception/rollback behavior.
 
 Existing owners:
 - `finance_accounting_reset_2026_09_15`;
