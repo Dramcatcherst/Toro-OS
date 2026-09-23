@@ -1944,3 +1944,62 @@ Before declaring DreamTeam self-service replaced:
 6. shared Governance split for approvals/audit;
 7. payroll only after People identity/self-service stability;
 8. loans/settlements last.
+
+
+### Attendance execution update — 2026-09-23
+
+#### HECHO — TORO People Attendance Wave 3A
+PR #94 merged into the Phase 1 integration line.
+
+Verified employee surface:
+- `/toro/mi-asistencia`;
+- own attendance days only;
+- own entry/exit summary;
+- actual vs official minutes;
+- attendance/approval/payroll-inclusion status;
+- no raw punches;
+- no clock employee ID;
+- no source import ID;
+- no attendance blocks;
+- 45-day bounded self projection.
+
+Verified review surface:
+- `/toro/asistencia`;
+- read-review scope for ADMIN/RRHH/GERENCIA/AUDITOR/CONTABILIDAD;
+- navigation enabled only where current role UX/RLS supports it;
+- open attendance exceptions;
+- bounded recent attendance days;
+- recent time-import metadata;
+- no file name/hash/raw payload;
+- no resolution payload;
+- no raw_punches;
+- no attendance_blocks.
+
+Current production aggregates observed read-only at design time:
+- 495 attendance days;
+- 408 complete;
+- 46 incomplete;
+- 40 pending_identity;
+- 1 unknown_identity;
+- 252 approval approved;
+- 241 approval pending;
+- 2 approval rejected;
+- 94 open attendance exceptions;
+- 72 resolved exceptions;
+- 5 visible time imports.
+
+Explicitly still blocked:
+- attendance correction;
+- incident resolution;
+- time-clock commit/replace;
+- payroll inclusion decision;
+- payroll recalculation.
+
+Validation:
+- Vitest PASS;
+- lint PASS;
+- build PASS;
+- Vercel PASS.
+
+Merge commit:
+`e1d5d1ef01a5ab0490ed75fb3dc9c13d86debe71`
