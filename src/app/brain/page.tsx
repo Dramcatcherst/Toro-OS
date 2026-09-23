@@ -22,7 +22,7 @@ import type { BrainNode } from "@/lib/brain-contracts";
 import { visualBrainDemo, visualBrainDemoLayout } from "@/lib/brain-fixtures";
 import styles from "./brain.module.css";
 
-const nodeIcons = {
+const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
   organization: Building2,
   agent: Bot,
   connector: Database,
@@ -31,7 +31,7 @@ const nodeIcons = {
   project: FolderKanban,
   approval: LockKeyhole,
   decision: Brain,
-} satisfies Partial<Record<BrainNode["kind"], typeof Brain>>;
+};
 
 const riskClass = {
   Low: styles.riskLow,
