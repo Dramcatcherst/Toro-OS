@@ -1247,19 +1247,24 @@ Historical names do not regain authority by title. Reuse/absorb before creating 
 
 ### TORO Brain context resolver
 Branch:
-`feat/toro-brain-context-on-phase1-20260922`
+`feat/toro-brain-context-on-phase1-v2-20260923`
 
 Draft PR:
-`#38 — feat: add TORO Brain personal/work context resolver`
+`#42 — feat: integrate TORO Brain context resolver on current Phase 1`
+
+Superseded:
+`#38` closed after Phase 1 advanced 77 commits beyond its branch point; #42 was re-extracted cleanly from the current Phase 1 HEAD.
 
 Verified:
-- branch is based on the existing Phase 1 Auth implementation;
+- branch is based on the current Phase 1 Auth implementation and is maintained at 0 commits behind at the latest alignment check;
 - personal context no longer requires an organization role;
 - organization context remains fail-closed;
 - one active organization can be inferred during transition;
 - multiple organizations require explicit context choice;
 - invalid requested organization returns no context;
 - organization roles never unlock personal User Vault scope;
+- personal context remains available when the organization-role store is unavailable; enterprise access fails closed;
+- a transitional legacy-session adapter scopes Phase 1 roles to the active organization and blocks cross-organization legacy-role elevation;
 - transitional membership provenance is marked `legacy_user_roles`;
 - strict TypeScript typecheck passed in isolated validation;
 - Vercel preview build for the branch reached READY.
