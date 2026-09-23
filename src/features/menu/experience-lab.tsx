@@ -48,6 +48,7 @@ const personas: Persona[] = [
       mode: "organization",
       roles: ["ADMIN"],
       positionName: "Gerente General",
+      positionCode: "GENERAL_MANAGER",
     },
     capabilities: [
       "executive.brief",
@@ -67,6 +68,7 @@ const personas: Persona[] = [
       mode: "organization",
       roles: ["EMPLEADO"],
       positionName: "Recepción",
+      positionCode: "RECEPTION",
     },
     capabilities: [
       "guest.arrivals_departures",
