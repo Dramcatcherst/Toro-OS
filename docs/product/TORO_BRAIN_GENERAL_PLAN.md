@@ -2003,3 +2003,46 @@ Validation:
 
 Merge commit:
 `e1d5d1ef01a5ab0490ed75fb3dc9c13d86debe71`
+
+
+### Schedule execution update — Wave 4A — 2026-09-23
+
+#### HECHO — Mi horario
+PR #97 merged into the Phase 1 integration line.
+
+Verified:
+- route `/toro/mi-horario`;
+- own linked employee identity only;
+- current/future assignments only;
+- only `published` / `confirmed` shift states;
+- maximum 60 rows;
+- start/end, break and visible status;
+- identity boundary `user_id + org_id + employee_id`;
+- no draft/cancelled shifts;
+- no `data` JSON/internal notes;
+- no shift template administration;
+- no `salary_history`;
+- no payroll forecast;
+- no other employee schedule;
+- no write action or schema change;
+- Vitest PASS;
+- lint PASS;
+- build PASS;
+- Vercel PASS.
+
+Current production aggregate observed read-only during design:
+- 102 published assignments;
+- 70 draft assignments;
+- 99 cancelled assignments;
+- 10 active templates.
+
+Merge commit:
+`359c95594d3cd08333381ff0e47aaa579e8273cf`
+
+#### NEXT schedule sequence
+1. Wave 4B — management/team schedule read-only with existing org/department RLS.
+2. Wave 4C — planning writes only after separate audit/evidence.
+3. Wave 4D — publish/copy as higher-impact action.
+4. Wave 4E — employee change/swap only after a reviewed self-service RLS/RPC contract exists.
+
+Salary/payroll forecast must remain a separately authorized finance capability and must not leak into generic team schedule views.
