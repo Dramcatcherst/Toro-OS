@@ -153,6 +153,14 @@ agent_skill_system:
   eval_suite: data/toro_agent_eval_cases_v1.json
   eval_runbook: docs/runbooks/TORO_AGENT_RUNTIME_EVAL_V1.md
   capability_ownership_map: data/toro_agent_capability_ownership_v1.json
+  canonical_skill_playbooks: data/toro_canonical_skill_playbooks_v1.json
+  static_steward_audit:
+    script: scripts/agent-steward-static-audit.mjs
+    test: tests/agent-steward-static-audit.test.mjs
+    state: OBSERVE_STATIC_CI
+    runtime_mutation: false
+    agent_creation: false
+    permission_expansion: false
   external_skill_adapter_policy: data/toro_external_skill_adapter_policy_v1.json
   capability_audit_evidence: docs/evidence/TORO_CAPABILITY_SKILL_OWNERSHIP_AUDIT_2026-09-23.md
   capability_catalog_audit:
@@ -681,7 +689,19 @@ agent_lifecycle_supervision:
   demand_scaling_reuses_existing_roles: true
   candidate_is_not_active_agent: true
   default_output: evidenced_recommendation_or_candidate
-  current_autonomy_granted: none
+  current_autonomy_granted: observe_static_ci_only
+  implemented_observation:
+    state: OBSERVE_STATIC_CI
+    scope:
+      - capability_ownership_integrity
+      - playbook_coverage
+      - canonical_skill_and_alias_collisions
+      - new_agent_request_detection
+      - external_skill_import_guard
+      - eval_suite_agent_coverage
+    production_runtime_access: false
+    runtime_inventory_access: false
+    may_recommend_runtime_changes: false
   target_automation:
     triggers: authorized_events_and_risk_based_reviews
     requires_existing_runtime_mapping: true
