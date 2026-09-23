@@ -1,6 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { createServerSupabaseClientMock } = vi.hoisted(() => ({
+  createServerSupabaseClientMock: vi.fn(),
+}));
+
+vi.mock("@/lib/supabase/server", () => ({
+  createServerSupabaseClient: createServerSupabaseClientMock,
+}));
+
+import type { ToroResolvedContext } from "@/features/context/types";
 
 import {
+  loadCanonicalBrainReadSlice,
   projectCanonicalBrainReadSlice,
 } from "./canonical-read";
 
@@ -140,5 +151,166 @@ describe("projectCanonicalBrainReadSlice", () => {
     expect(slice.guests).toBeUndefined();
     expect(slice.payments).toBeUndefined();
     expect(slice.employees).toBeUndefined();
+  });
+});
+
+
+const OTHER_ORG_ID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+
+function buildOrganizationContext(
+  overrides: Partial<ToroResolvedContext> = {},
+): ToroResolvedContext {
+  return {
+    userId: "synthetic-user",
+    email: "synthetic@example.invalid",
+    displayName: "Synthetic QA",
+    mode: "organization",
+    orgId: ORG_ID,
+    membership: {
+      orgId: ORG_ID,
+      membershipId: null,
+      membershipType: "employee",
+      status: "active",
+      roles: ["GERENCIA"],
+      employeeId: "synthetic-employee",
+      source: "legacy_user_roles",
+    },
+    availableOrgIds: [ORG_ID],
+    allowedDataScopes: ["work_private", "work_org", "shared", "system"],
+    allowedTools: [],
+    canUsePersonalVault: false,
+    canUseOrganizationData: true,
+    requiresContextChoice: false,
+    ...overrides,
+  };
+}
+
+function buildScopedClient() {
+  const eqCalls: Array<{ path: string; field: string; value: unknown }> = [];
+
+  function queryFor(
+    path: string,
+    data: Array<Record<string, unknown>>,
+  ) {
+    const query = {
+      select: vi.fn(),
+      eq: vi.fn(),
+      is: vi.fn(),
+      order: vi.fn(),
+      limit: vi.fn(),
+    };
+
+    query.select.mockReturnValue(query);
+    query.eq.mockImplementation((field: string, value: unknown) => {
+      eqCalls.push({ path, field, value });
+      return query;
+    });
+    query.is.mockReturnValue(query);
+    query.order.mockReturnValue(query);
+    query.limit.mockResolvedValue({ data, error: null });
+
+    return query;
+  }
+
+  const client = {
+    from: vi.fn((tableName: string) =>
+      queryFor(
+        `public.${tableName}`,
+        tableName === "organizations"
+          ? [{ id: ORG_ID, name: "Dreamcatcher Hotel", status: "active" }]
+          : [],
+      ),
+    ),
+    schema: vi.fn((schemaName: string) => ({
+      from: vi.fn((tableName: string) =>
+        queryFor(`${schemaName}.${tableName}`, []),
+      ),
+    })),
+  };
+
+  return { client, eqCalls };
+}
+
+describe("loadCanonicalBrainReadSlice isolation", () => {
+  beforeEach(() => {
+    createServerSupabaseClientMock.mockReset();
+  });
+
+  it("rejects personal context before opening a canonical data client", async () => {
+    const context = buildOrganizationContext({
+      mode: "personal",
+      orgId: null,
+      membership: null,
+      allowedDataScopes: ["personal", "shared", "system"],
+      canUsePersonalVault: true,
+      canUseOrganizationData: false,
+    });
+
+    await expect(loadCanonicalBrainReadSlice(context)).rejects.toThrow(
+      "Canonical Brain read requires an active organization context.",
+    );
+    expect(createServerSupabaseClientMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects a membership from a different organization before any read", async () => {
+    const context = buildOrganizationContext({
+      membership: {
+        orgId: OTHER_ORG_ID,
+        membershipId: null,
+        membershipType: "employee",
+        status: "active",
+        roles: ["GERENCIA"],
+        employeeId: "synthetic-employee",
+        source: "legacy_user_roles",
+      },
+    });
+
+    await expect(loadCanonicalBrainReadSlice(context)).rejects.toThrow(
+      "Canonical Brain read requires an active organization context.",
+    );
+    expect(createServerSupabaseClientMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects organization reads when the resolved policy denies them", async () => {
+    const context = buildOrganizationContext({
+      allowedDataScopes: ["system"],
+      canUseOrganizationData: false,
+    });
+
+    await expect(loadCanonicalBrainReadSlice(context)).rejects.toThrow(
+      "Canonical Brain read requires an active organization context.",
+    );
+    expect(createServerSupabaseClientMock).not.toHaveBeenCalled();
+  });
+
+  it("scopes the organization record and every domain read to the active org", async () => {
+    const { client, eqCalls } = buildScopedClient();
+    createServerSupabaseClientMock.mockResolvedValue(client);
+
+    const slice = await loadCanonicalBrainReadSlice(buildOrganizationContext());
+
+    expect(slice.organization.label).toBe("Dreamcatcher Hotel");
+    expect(slice.projects).toEqual([]);
+    expect(slice.sourceAuthority).toEqual([]);
+    expect(slice.domainGovernance).toEqual([]);
+    expect(slice.krossHealth).toEqual([]);
+
+    const orgFilters = eqCalls.filter(({ field }) => field === "org_id");
+    expect(orgFilters).toHaveLength(4);
+    expect(orgFilters.every(({ value }) => value === ORG_ID)).toBe(true);
+    expect(new Set(orgFilters.map(({ path }) => path))).toEqual(
+      new Set([
+        "operations.projects",
+        "integrations.source_authority_rules",
+        "integrations.domain_governance",
+        "integrations.kross_snapshot_health",
+      ]),
+    );
+
+    expect(eqCalls).toContainEqual({
+      path: "public.organizations",
+      field: "id",
+      value: ORG_ID,
+    });
   });
 });
