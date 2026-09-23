@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts"
+    "test": "vitest run src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.7.0",
