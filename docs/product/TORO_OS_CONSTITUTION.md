@@ -1,6 +1,10 @@
 # TORO OS — Product Constitution
 
-**Status:** CURRENT  
+**Status:** SUPERSEDED AS MASTER CONSTITUTION — retained as historical execution-layer architecture
+**Superseded by:** `docs/product/TORO_BRAIN_CONSTITUTION.md`
+**TORO OS role now:** operating/execution layer of TORO Brain
+
+**Historical status:** formerly CURRENT  
 **Approved:** 2026-09-22  
 **Scope:** Product architecture and operating principles
 
