@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export const EXPECTED_AGENTS = Object.freeze([
@@ -278,7 +279,7 @@ async function main() {
     return;
   }
 
-  const resultsUrl = pathToFileURL(process.cwd() + "/" + resultsPath);
+  const resultsUrl = pathToFileURL(resolve(resultsPath));
   const results = JSON.parse(await readFile(resultsUrl, "utf8"));
   const validation = validateRunResults(suite, results);
   const summary = summarizeRun(suite, results);
