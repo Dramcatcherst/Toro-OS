@@ -51,7 +51,8 @@ export function deriveToroContextPolicy(
 }
 
 export function roleCanUnlockPersonalScope(
-  _roles: ToroCanonicalRole[] | null | undefined,
+  roles: ToroCanonicalRole[] | null | undefined,
 ): false {
+  void roles;
   return false;
 }
