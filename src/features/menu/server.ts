@@ -85,7 +85,7 @@ async function probeLatest(
     return { readable: false, rows: 0 };
   }
 
-  const row = data[0] as Record<string, unknown> | undefined;
+  const row = data[0] as unknown as Record<string, unknown> | undefined;
   const raw = row?.[latestColumn];
   const latestAt = typeof raw === "string" ? raw : null;
   const latestMs = latestAt ? Date.parse(latestAt) : Number.NaN;
