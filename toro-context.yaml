@@ -1068,6 +1068,11 @@ kross_live_read_gate:
     reason: live_price_availability_authority_not_verified
   public_booking_handoff:
     url: https://dreamcatcherhotel.kross.travel/
+    booking_assist_route: /booking-assist
+    deep_link_builder: src/features/kross/public-search-link.ts
+    deep_link_evidence: docs/evidence/KROSS_PUBLIC_DEEPLINK_OBSERVATION_2026-09-23.md
+    deep_link_scope: one_room_only
+    deep_link_is_vendor_api_contract: false
     role: official_confirmation_surface
     allowed_when_quote_blocked: true
     automated_price_or_availability_ingestion: false
