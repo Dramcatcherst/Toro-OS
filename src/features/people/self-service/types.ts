@@ -1,3 +1,11 @@
+export type PeopleEmploymentSummary = {
+  employeeId: string;
+  preferredName: string;
+  employmentStatus: string;
+  hireDate: string | null;
+  workArea: string | null;
+};
+
 export type PeopleSelfServiceProfile = {
   employeeId: string;
   preferredName: string;
@@ -46,6 +54,7 @@ export type PeopleAttendanceDay = {
 };
 
 export type PeopleSelfServiceData = {
+  employment: PeopleEmploymentSummary;
   profile: PeopleSelfServiceProfile | null;
   upcomingShifts: PeopleShift[];
   leaveRequests: PeopleLeaveRequest[];
@@ -65,7 +74,8 @@ export type PeopleSelfServiceState =
       reason:
         | "organization_context_required"
         | "organization_access_required"
-        | "employee_link_required";
+        | "employee_link_required"
+        | "employee_identity_mismatch";
     }
   | {
       status: "error";
