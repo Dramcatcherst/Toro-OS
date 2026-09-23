@@ -906,7 +906,7 @@ product_proof_focus:
   effective_date: "2026-09-23"
   executive_brief_readonly_focus:
     route: /my-toro?focus=executive.brief
-    state: implementation_in_pr_ci_pending
+    state: merged_ci_verified_production_ready_owner_outcome_unverified
     source_authority:
       - operations.executive_decisions
       - operations.projects
@@ -915,6 +915,9 @@ product_proof_focus:
     details_are_bounded_for_owner_cognitive_load: true
     writes_enabled: false
     verified_requires_real_owner_use_and_measured_outcome: true
+    baseline_evidence: docs/evidence/TORO_EXECUTIVE_BRIEF_READONLY_BASELINE_2026-09-23.md
+    production_commit: 5c14fd27172dc78bc94389f72b67ae7d21bb7844
+    production_deployment_state: READY
   status: active_inside_internal_proof
   external_onboarding_remains_blocked: true
   canonical_spec: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
