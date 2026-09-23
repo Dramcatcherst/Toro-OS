@@ -187,6 +187,37 @@ export default async function MyToroPage() {
               </div>
             </div>
 
+            <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5">
+              <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Qué puede leer TORO ahora</div>
+              {view.sourceReadiness?.readyReads.length ? (
+                <div className="mt-4 space-y-2">
+                  {view.sourceReadiness.readyReads.slice(0, 5).map((label) => (
+                    <div key={label} className="flex items-center gap-2 text-sm text-emerald-100">
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
+                      {label}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-3 text-sm leading-6 text-slate-400">
+                  Todavía no hay una lectura de este menú promovida por evidencia de fuente.
+                </p>
+              )}
+
+              {view.sourceReadiness?.blockedReads.length ? (
+                <div className="mt-5 border-t border-slate-800 pt-4">
+                  <div className="text-xs font-semibold text-slate-500">Todavía falta una fuente actual</div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {view.sourceReadiness.blockedReads.slice(0, 5).map((label) => (
+                      <span key={label} className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs text-slate-400">
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             <div className="rounded-[2rem] border border-cyan-300/15 bg-cyan-300/[0.06] p-5">
               <div className="flex items-center gap-2 text-sm font-semibold text-cyan-100">
                 <CheckCircle2 className="h-4 w-4" /> Probar conversación
