@@ -66,7 +66,7 @@ describe("resolveCurrentToroReadOnlyMenu", () => {
       href: "/booking-assist",
       note:
         "TORO prepara fechas y ocupación; Kross confirma tarifas, disponibilidad y reserva final.",
-      external: true,
+      external: false,
     });
   });
 
