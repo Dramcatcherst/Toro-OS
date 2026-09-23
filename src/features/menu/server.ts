@@ -329,6 +329,7 @@ export type ToroCapabilityFocus = {
 };
 
 const FOCUSABLE_CAPABILITIES = new Set([
+  "executive.brief",
   "projects.status",
   "executive.decisions",
   "catalog.rooms_villas",
@@ -352,6 +353,135 @@ async function loadCapabilityFocus(
 ): Promise<ToroCapabilityFocus | null> {
   if (!context.orgId || !FOCUSABLE_CAPABILITIES.has(capability)) return null;
   const orgId = context.orgId;
+
+  if (capability === "executive.brief") {
+    const [
+      decisionsResult,
+      projectsResult,
+      tasksResult,
+      blockedCriticalResult,
+      inProgressCriticalResult,
+    ] = await Promise.all([
+      supabase
+        .schema("operations")
+        .from("executive_decisions")
+        .select("decision_title, status, priority, next_action, updated_at")
+        .eq("org_id", orgId)
+        .eq("status", "En ejecución")
+        .order("updated_at", { ascending: false })
+        .limit(3),
+      supabase
+        .schema("operations")
+        .from("projects")
+        .select("project_name, status, priority, next_action, completion_pct, updated_at")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .in("status", ["NOW", "BLOCKED"])
+        .order("updated_at", { ascending: false })
+        .limit(4),
+      supabase
+        .schema("operations")
+        .from("tasks")
+        .select("task_name, status, priority, blocking_reason, area, updated_at")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .in("status", ["in_progress", "blocked"])
+        .in("priority", ["critical", "P0", "p0"])
+        .order("updated_at", { ascending: false })
+        .limit(4),
+      supabase
+        .schema("operations")
+        .from("tasks")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .eq("status", "blocked")
+        .in("priority", ["critical", "P0", "p0"]),
+      supabase
+        .schema("operations")
+        .from("tasks")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .eq("status", "in_progress")
+        .in("priority", ["critical", "P0", "p0"]),
+    ]);
+
+    if (
+      decisionsResult.error ||
+      projectsResult.error ||
+      tasksResult.error ||
+      blockedCriticalResult.error ||
+      inProgressCriticalResult.error
+    ) {
+      return null;
+    }
+
+    const items: ToroCapabilityFocusItem[] = [];
+
+    const blockedCritical = blockedCriticalResult.count ?? 0;
+    const inProgressCritical = inProgressCriticalResult.count ?? 0;
+
+    items.push({
+      title: "Pulso ejecutivo",
+      meta: [
+        `${inProgressCritical} críticas en curso`,
+        `${blockedCritical} críticas bloqueadas`,
+      ].join(" · "),
+      detail:
+        blockedCritical > 0
+          ? "TORO prioriza debajo solo una muestra reciente para evitar convertir el brief en otra lista infinita."
+          : "No hay tareas críticas bloqueadas visibles en este contexto.",
+    });
+
+    for (const raw of decisionsResult.data ?? []) {
+      const row = raw as unknown as Record<string, unknown>;
+      items.push({
+        title: cleanText(row.decision_title) ?? "Decisión en ejecución",
+        meta: ["Decisión", cleanText(row.priority), cleanText(row.status)]
+          .filter(Boolean)
+          .join(" · "),
+        detail: cleanText(row.next_action) ?? undefined,
+      });
+    }
+
+    for (const raw of projectsResult.data ?? []) {
+      const row = raw as unknown as Record<string, unknown>;
+      const completion = cleanNumber(row.completion_pct);
+      items.push({
+        title: cleanText(row.project_name) ?? "Proyecto",
+        meta: [
+          cleanText(row.status),
+          cleanText(row.priority),
+          completion === null ? null : `${completion}%`,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+        detail: cleanText(row.next_action) ?? undefined,
+      });
+    }
+
+    for (const raw of tasksResult.data ?? []) {
+      const row = raw as unknown as Record<string, unknown>;
+      items.push({
+        title: cleanText(row.task_name) ?? "Tarea crítica",
+        meta: [
+          cleanText(row.status),
+          cleanText(row.priority),
+          cleanText(row.area),
+        ]
+          .filter(Boolean)
+          .join(" · "),
+        detail: cleanText(row.blocking_reason) ?? undefined,
+      });
+    }
+
+    return {
+      capability,
+      label,
+      items: items.slice(0, 10),
+    };
+  }
 
   if (capability === "projects.status") {
     const { data, error } = await supabase
