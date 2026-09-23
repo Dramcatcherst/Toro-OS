@@ -18,8 +18,9 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import type { BrainNode } from "@/lib/brain-contracts";
-import { visualBrainDemo, visualBrainDemoLayout } from "@/lib/brain-fixtures";
+import type { BrainNode, BrainProjection } from "@/lib/brain-contracts";
+import type { BrainLayout } from "@/lib/server/brain-projection";
+import { loadBrainProjectionView } from "@/lib/server/brain-projection";
 import styles from "./brain.module.css";
 
 const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
@@ -55,9 +56,9 @@ const verificationLabel = {
   not_applicable: "n/a",
 };
 
-function NodeCard({ node }: { node: BrainNode }) {
+function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
   const Icon = nodeIcons[node.kind] ?? Activity;
-  const point = visualBrainDemoLayout[node.id];
+  const point = layout[node.id];
 
   if (!point) return null;
 
@@ -92,8 +93,8 @@ function NodeCard({ node }: { node: BrainNode }) {
   );
 }
 
-function Graph() {
-  const points = visualBrainDemoLayout;
+function Graph({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
+  const points = layout;
 
   return (
     <div className={styles.graphFrame}>
@@ -116,7 +117,7 @@ function Graph() {
               <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHead} />
             </marker>
           </defs>
-          {visualBrainDemo.edges.map((edge) => {
+          {projection.edges.map((edge) => {
             const source = points[edge.source];
             const target = points[edge.target];
             if (!source || !target) return null;
@@ -135,16 +136,17 @@ function Graph() {
           })}
         </svg>
 
-        {visualBrainDemo.nodes.map((node) => <NodeCard key={node.id} node={node} />)}
+        {projection.nodes.map((node) => <NodeCard key={node.id} node={node} layout={layout} />)}
       </div>
     </div>
   );
 }
 
-export default function BrainPage() {
-  const pendingApproval = visualBrainDemo.nodes.find((node) => node.kind === "approval");
-  const cashNode = visualBrainDemo.nodes.find((node) => node.id === "node:cash");
-  const revenueNode = visualBrainDemo.nodes.find((node) => node.id === "node:revenue");
+export default async function BrainPage() {
+  const { projection, layout, runtime } = await loadBrainProjectionView();
+  const pendingApproval = projection.nodes.find((node) => node.kind === "approval");
+  const cashNode = projection.nodes.find((node) => node.id === "node:cash");
+  const revenueNode = projection.nodes.find((node) => node.id === "node:revenue");
 
   return (
     <main className={styles.page}>
@@ -152,9 +154,10 @@ export default function BrainPage() {
         <div className={styles.heroTopline}>
           <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
           <div className={styles.badges}>
-            <span className={styles.synthetic}><Sparkles aria-hidden="true" /> synthetic</span>
+            <span className={styles.synthetic}><Sparkles aria-hidden="true" /> {projection.synthetic ? "synthetic" : "canonical"}</span>
             <span><ShieldCheck aria-hidden="true" /> read only</span>
-            <span>contract {visualBrainDemo.contractVersion}</span>
+            <span>{runtime.mode.replaceAll("_", " ")}</span>
+            <span>contract {projection.contractVersion}</span>
           </div>
         </div>
 
@@ -163,12 +166,12 @@ export default function BrainPage() {
             <p className={styles.eyebrow}>Dreamcatcher Hotel · reference simulation</p>
             <h1>See what the business is doing, what TORO sees, and where a human decision is required.</h1>
             <p className={styles.lead}>
-              This is a contract-driven prototype. Every node, edge and activity state represents a defined TORO concept. No live guest, employee, payment or production data is used here.
+              This is a contract-driven prototype. Every node, edge and activity state represents a defined TORO concept. No live guest, employee, payment or production data is used here. The UI now consumes a single server-side projection seam so Stage C can replace the source without creating a second interface architecture.
             </p>
           </div>
           <div className={styles.heroStats}>
-            <div><span>Visible nodes</span><strong>{visualBrainDemo.nodes.length}</strong><small>bounded focus view</small></div>
-            <div><span>Recent events</span><strong>{visualBrainDemo.recentEvents?.length ?? 0}</strong><small>one correlation chain</small></div>
+            <div><span>Visible nodes</span><strong>{projection.nodes.length}</strong><small>bounded focus view</small></div>
+            <div><span>Recent events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>one correlation chain</small></div>
             <div><span>Approval gates</span><strong>1</strong><small>external change blocked</small></div>
           </div>
         </div>
@@ -196,7 +199,7 @@ export default function BrainPage() {
       </section>
 
       <section className={styles.mainGrid}>
-        <Graph />
+        <Graph projection={projection} layout={layout} />
 
         <aside className={styles.activityPanel}>
           <div className={styles.panelHead}>
@@ -208,7 +211,7 @@ export default function BrainPage() {
           </div>
 
           <ol className={styles.timeline}>
-            {visualBrainDemo.recentEvents?.map((event, index) => (
+            {projection.recentEvents?.map((event, index) => (
               <li key={event.eventId}>
                 <div className={styles.timelineRail}>
                   <span>{index + 1}</span>
@@ -250,7 +253,7 @@ export default function BrainPage() {
             <Landmark aria-hidden="true" />
           </div>
           <div className={styles.sourceList}>
-            {visualBrainDemo.sources.map((source) => (
+            {projection.sources.map((source) => (
               <div key={source.sourceSystem}>
                 <div>
                   <strong>{source.sourceSystem}</strong>
@@ -291,7 +294,7 @@ export default function BrainPage() {
           <Activity aria-hidden="true" />
         </div>
         <div className={styles.nodeList}>
-          {visualBrainDemo.nodes.map((node) => {
+          {projection.nodes.map((node) => {
             const Icon = nodeIcons[node.kind] ?? Activity;
             return (
               <article key={node.id}>
@@ -315,10 +318,10 @@ export default function BrainPage() {
       <footer className={styles.footer}>
         <div>
           <ShieldCheck aria-hidden="true" />
-          <span>Simulation only · no external writes · no private operational data</span>
+          <span>{runtime.realData ? "Canonical read-only projection" : "Simulation only"} · no external writes · {runtime.realData ? "permission-filtered data" : "no private operational data"}</span>
         </div>
         <div>
-          {visualBrainDemo.nodes.length} nodes · {visualBrainDemo.edges.length} edges · {visualBrainDemo.recentEvents?.length ?? 0} events
+          {projection.nodes.length} nodes · {projection.edges.length} edges · {projection.recentEvents?.length ?? 0} events
         </div>
       </footer>
     </main>
