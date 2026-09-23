@@ -5,6 +5,8 @@
 **Master product:** TORO Brain  
 **Owners:** TORO User Portal + TORO Comms + TORO Identity + TORO People  
 **Machine-readable profiles:** data/toro_conversational_menu_profiles_v1.json  
+**Role message experience:** docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md  
+**Message pack:** data/toro_role_message_pack_v1.json  
 **Runtime state:** SPECIFIED / NOT YET RUNTIME-VERIFIED
 
 ---
