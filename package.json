@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run src/lib/action-taxonomy.test.ts src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/menu/resolver.test.ts src/features/menu/server.test.ts src/features/menu/source-aware.test.ts src/features/menu/submenu-resolver.test.ts src/features/onboarding/server.test.ts src/features/kross/normalize-reservation.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts && npm run test:workstation-health && npm run test:agent-eval && npm run test:agent-steward && npm run test:menu-profiles",
+    "test": "vitest run src/lib/action-taxonomy.test.ts src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/menu/resolver.test.ts src/features/menu/server.test.ts src/features/menu/source-aware.test.ts src/features/menu/submenu-resolver.test.ts src/features/onboarding/server.test.ts src/features/kross/normalize-reservation.test.ts src/features/kross/acceptance.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts && npm run test:workstation-health && npm run test:agent-eval && npm run test:agent-steward && npm run test:menu-profiles",
     "health:pc": "pwsh -NoProfile -File scripts/pc-health.ps1",
     "test:workstation-health": "node --test tests/pc-health-classifier.test.mjs",
     "test:agent-eval": "node --test tests/agent-eval-validator.test.mjs && node scripts/agent-eval-validator.mjs",
