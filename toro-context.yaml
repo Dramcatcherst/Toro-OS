@@ -454,6 +454,7 @@ cognitive_operating_model:
     A5: bounded_autonomy
     A6: closed_loop_pro
   legacy_autonomy_compatibility:
+    autonomy_policy_migration: data/toro_autonomy_policy_migration_v1.json
     historical_L_levels_are_action_risk_classes: true
     historical_agents_autonomy_ceiling_is_compatibility_metadata: true
     numeric_L_to_A_mapping_allowed: false
