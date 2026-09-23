@@ -6,6 +6,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { resolvePeopleSelfServiceScope } from "./context";
 import {
   mapAttendance,
+  mapEmploymentSummary,
   mapLeaveBalances,
   mapLeaveRequests,
   mapSelfProfile,
@@ -34,12 +35,21 @@ export async function loadMyPeopleSelfService(
   const today = costaRicaToday();
 
   const [
+    identityResult,
     profileResult,
     shiftsResult,
     leaveRequestsResult,
     leaveBalancesResult,
     attendanceResult,
   ] = await Promise.all([
+    supabase
+      .from("employees")
+      .select("id,preferred_name,employment_status,hire_date,work_area")
+      .eq("id", scope.employeeId)
+      .eq("org_id", scope.orgId)
+      .eq("user_id", context.userId)
+      .is("deleted_at", null)
+      .maybeSingle(),
     supabase.rpc("employee_self_profile", {
       p_org_id: scope.orgId,
     }),
@@ -83,6 +93,7 @@ export async function loadMyPeopleSelfService(
   ]);
 
   const failedSources = [
+    identityResult.error ? "employee_identity" : null,
     profileResult.error ? "profile" : null,
     shiftsResult.error ? "shifts" : null,
     leaveRequestsResult.error ? "leave_requests" : null,
@@ -98,10 +109,25 @@ export async function loadMyPeopleSelfService(
     };
   }
 
+  const employment = mapEmploymentSummary(identityResult.data);
+  const profile = mapSelfProfile(profileResult.data);
+
+  if (
+    !employment ||
+    employment.employeeId !== scope.employeeId ||
+    (profile && profile.employeeId !== scope.employeeId)
+  ) {
+    return {
+      status: "not_available",
+      reason: "employee_identity_mismatch",
+    };
+  }
+
   return {
     status: "ready",
     data: {
-      profile: mapSelfProfile(profileResult.data),
+      employment,
+      profile,
       upcomingShifts: mapShifts(shiftsResult.data),
       leaveRequests: mapLeaveRequests(leaveRequestsResult.data),
       leaveBalances: mapLeaveBalances(leaveBalancesResult.data),
