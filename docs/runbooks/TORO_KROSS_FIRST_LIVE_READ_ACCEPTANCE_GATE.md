@@ -308,3 +308,22 @@ Required before first authorized reservation read:
 If any of those are missing, the first read remains blocked.
 
 The template itself is not provider evidence and must never be used to set `source_is_live=true`.
+
+
+## Public booking-engine handoff
+
+Dreamcatcher's official public booking surface is:
+- `https://dreamcatcherhotel.kross.travel/`.
+
+Allowed interim use:
+- open the official booking surface for a guest/reception user to confirm current dates, rates and availability themselves;
+- present it as a safe next step when TORO cannot yet quote from structured live authority.
+
+Not allowed:
+- call the public booking page an API;
+- scrape/rendered-page observations into `source_is_live=true`;
+- infer internal arrivals/departures from public search output;
+- copy public search results into TORO as transactional truth without a governed transport contract;
+- claim a quote was produced by TORO merely because the user was handed off to Kross.
+
+This handoff is a user-experience fallback, not a substitute for the Kross live-read acceptance gate.
