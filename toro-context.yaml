@@ -702,6 +702,7 @@ conversational_menu_system:
     - membership
     - role
     - position
+    - position_code
     - permissions
     - enabled_capabilities
     - current_state
@@ -710,6 +711,8 @@ conversational_menu_system:
     - usage_favorites
   menu_visibility_never_grants_permission: true
   personalization_never_expands_authority: true
+  prefer_stable_position_code_for_profile_routing: true
+  position_name_is_fallback_only_when_code_unavailable: true
   stale_numeric_shortcut_must_not_execute_consequential_action: true
   role_message_pack:
     canonical_spec: docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md
