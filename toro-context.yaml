@@ -2,7 +2,7 @@ product:
   id: toro-brain
   name: TORO Brain
   category: AI Portfolio and Business Operating Brain
-  context_version: "2026.09.22-brain-master"
+  context_version: "2026.09.22-brain-cognitive-v1"
   status: internal_proof
   external_business_onboarding: blocked
   visible_brand: TORO Brain
