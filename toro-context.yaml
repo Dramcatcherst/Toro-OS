@@ -11,6 +11,12 @@ north_star: "Deep inside. Simple outside."
 
 general_plan_governance:
   owner: TORO Brain
+  portfolio_root_project_key: toro_os_portfolio_master
+  operating_layer_project_key: toro_executive_control
+  legacy_key_meanings:
+    toro_os_portfolio_master: TORO Brain portfolio root
+    toro_executive_control: TORO OS operating/execution module
+    business_truth_bible: Dreamcatcher Data & Integrations module; not the global Bible
   canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   canonical_name: TORO Brain General Plan
   aliases:
