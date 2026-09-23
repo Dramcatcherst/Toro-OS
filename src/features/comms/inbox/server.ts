@@ -4,7 +4,11 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { resolveToroCommsScope } from "./context";
-import { countUnreadMessages, mapTeamMessages } from "./mappers";
+import {
+  countUnreadMessages,
+  filterPersonalInboxMessages,
+  mapTeamMessages,
+} from "./mappers";
 import type { ToroCommsInboxState } from "./types";
 
 export async function loadToroCommsInbox(
@@ -48,7 +52,10 @@ export async function loadToroCommsInbox(
     };
   }
 
-  const messages = mapTeamMessages(messagesResult.data, scope.userId);
+  const messages = filterPersonalInboxMessages(
+    mapTeamMessages(messagesResult.data, scope.userId),
+    scope.employeeId,
+  );
   const lastReadAt =
     typeof readStateResult.data?.last_read_at === "string"
       ? readStateResult.data.last_read_at
