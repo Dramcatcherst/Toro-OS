@@ -150,6 +150,31 @@ agent_rules:
 
 agent_skill_system:
   specification: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
+  eval_suite: data/toro_agent_eval_cases_v1.json
+  eval_runbook: docs/runbooks/TORO_AGENT_RUNTIME_EVAL_V1.md
+  last_agent_audit: "2026-09-23"
+  contract_coverage:
+    total_cases: 60
+    supported: 60
+    runtime_tested: 0
+    runtime_verified: 0
+  runtime_verification_required: true
+  context_pack_audit:
+    active: 33
+    archived: 9
+    draft: 1
+    invalid_active_agent_keys: 0
+    stale_material_routing_patterns_detected: 0
+  policy_audit:
+    active: 37
+    invalid_active_agent_keys: 0
+  supabase_projection:
+    agent_architecture_key: toro_agent_architecture_v1
+    agent_architecture_status: CONFIG_APPLIED_RUNTIME_UNVERIFIED
+    tere_compact_context_key: wespeak_tere_compact_context_packet_2026_09_v1
+    tere_compact_context_status: CONFIG_RECONCILED_RUNTIME_UNVERIFIED
+    tere_journey_key: tere_guest_journey_contract_2026_09_v1
+    runtime_consumption: UNVERIFIED
   principle: smallest_capable_agent_organization
   entity_separation:
     agent_not_skill: true
