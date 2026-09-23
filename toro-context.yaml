@@ -106,6 +106,7 @@ canonical_product_specs:
   tools: docs/product/TORO_TOOLS_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
+  github_vercel_alignment: docs/product/TORO_GITHUB_VERCEL_ALIGNMENT_V1.md
 
 canonical_sources:
   product_constitution: github
@@ -231,3 +232,32 @@ readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
   current_stage: internal_proof
   notify_owner_on_stage_change: true
+
+
+delivery_fabric:
+  owner: TORO Brain
+  rule: "GitHub records product/code change; Vercel records deployment/runtime evidence; neither creates a parallel brain or master plan."
+  canonical_governance_repo: Dramcatcherst/Toro-OS
+  current_runtime_implementation_repo: Dramcatcherst/toro-os-v88-new
+  current_runtime_vercel_project: toro-os-v03
+  dreamcatcher_website_repo: Dramcatcherst/dreamcatcher-website-vnext
+  dreamcatcher_website_preview_project: dreamcatcher-website-vnext-media-p0
+  dreamteam_repo: Dramcatcherst/dream-team
+  general_plan_owner: TORO Brain
+  new_repo_requires_general_plan_mapping: true
+  new_vercel_project_requires_general_plan_mapping: true
+  preview_before_production: true
+  no_parallel_master_repo: true
+  no_parallel_master_deployment: true
+  preserve_historical_projects_until_dependency_audit: true
+  destructive_cleanup_requires_explicit_gate: true
+  material_initiative_traceability:
+    - scope
+    - subsystem
+    - plan_item
+    - canonical_repository
+    - branch_or_pull_request
+    - vercel_project_if_deployed
+    - deployment_evidence
+    - verification_state
+    - rollback_or_retirement_path
