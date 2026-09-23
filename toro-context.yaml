@@ -152,6 +152,25 @@ agent_skill_system:
   specification: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
   eval_suite: data/toro_agent_eval_cases_v1.json
   eval_runbook: docs/runbooks/TORO_AGENT_RUNTIME_EVAL_V1.md
+  capability_ownership_map: data/toro_agent_capability_ownership_v1.json
+  external_skill_adapter_policy: data/toro_external_skill_adapter_policy_v1.json
+  capability_audit_evidence: docs/evidence/TORO_CAPABILITY_SKILL_OWNERSHIP_AUDIT_2026-09-23.md
+  capability_catalog_audit:
+    catalog_capabilities: 54
+    capability_families: 21
+    orphan_capabilities: 0
+    new_agents_required: 0
+    primary_agent_counts:
+      TORO: 27
+      FIONA: 9
+      SOBRESITO: 6
+      RICO: 5
+      SKY: 4
+      TERE: 3
+  external_platform_skill_audit:
+    observed_skills: 254
+    canonical_toro_skills_imported: 0
+    policy: dynamic_adapters_not_internal_registry
   last_agent_audit: "2026-09-23"
   contract_coverage:
     total_cases: 60
