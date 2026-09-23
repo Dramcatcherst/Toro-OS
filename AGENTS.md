@@ -4,7 +4,7 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# AGENTS.md — TORO OS Product Contract
+# AGENTS.md — TORO Brain Product Contract
 
 ## Mandatory preflight
 
@@ -12,21 +12,26 @@ Before substantive work:
 
 1. Read `START_HERE.md`.
 2. Read `toro-context.yaml`.
-3. Read `docs/product/TORO_OS_CONSTITUTION.md`.
-4. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
-5. Identify the source of authority for every material fact or write.
-6. Inspect existing implementation before creating a second system.
-7. Define verification and rollback before risky changes.
+3. Read `docs/product/TORO_BRAIN_CONSTITUTION.md`.
+4. Read `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md` when scope/portfolio/product boundaries matter.
+5. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
+6. Identify the source of authority for every material fact or write.
+7. Inspect existing implementation before creating a second system.
+8. Define verification and rollback before risky changes.
+9. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
+10. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
 
 ## Product architecture
 
-TORO OS is built inside-out:
+TORO Brain is the master intelligence/memory/governance/orchestration layer. TORO OS is its business execution layer.
 
-`context -> truth -> connectors -> intelligence -> execution -> governance/resilience -> continuous learning -> experience -> commercial presentation`
+TORO Brain is built inside-out:
 
-WhatsApp and TORO Portal are late-stage surfaces over the same governed engine. They are not independent databases or architectural foundations.
+`identity/scope graph -> truth -> connectors -> intelligence -> execution -> governance/resilience -> continuous learning -> experience -> portfolio intelligence -> commercial presentation`
+
+WhatsApp and TORO Portal are surfaces over the same governed TORO Brain. They are not independent databases or architectural foundations.
 
 Dreamcatcher is the first proving ground. Do not hard-code hotel assumptions into universal core modules unless they are explicitly scoped to the Dreamcatcher implementation.
 
@@ -93,6 +98,19 @@ No unapproved:
 - production migration without reviewed validation and recovery path.
 
 ## Continuous improvement
+
+After every material task, consider whether there is a high-value improvement in:
+- reusable capability/skill;
+- system configuration;
+- automation;
+- cost;
+- revenue/service;
+- privacy/security;
+- simplification;
+- duplicate-system removal;
+- future portability.
+
+Only surface/apply improvements that materially help; do not create noise or speculative complexity.
 
 When the same error or confusion occurs twice:
 1. identify root cause;
