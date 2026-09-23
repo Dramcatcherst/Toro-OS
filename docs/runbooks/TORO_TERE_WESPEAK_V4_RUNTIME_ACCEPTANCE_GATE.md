@@ -52,6 +52,9 @@ Before QA:
 
 ## Required scenarios
 
+Canonical packet:
+- `data/tere_v4_runtime_qa_cases_v1.json`
+
 All five must pass.
 
 ### 1. First contact
@@ -98,6 +101,7 @@ Expected:
 ## Acceptance
 
 Use:
+- `data/tere_v4_runtime_qa_cases_v1.json`
 - `src/features/tere/runtime-acceptance.ts`
 
 PASS requires:
