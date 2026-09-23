@@ -50,5 +50,5 @@ export type ToroMenuIntentResolution =
   | { kind: "back" }
   | { kind: "more" }
   | { kind: "help" }
-  | { kind: "item"; item: ToroResolvedMenuItem }
+  | { kind: "item"; item: ToroResolvedMenuItem; matchedBy?: "number" | "exact" | "phrase" }
   | { kind: "unknown" };

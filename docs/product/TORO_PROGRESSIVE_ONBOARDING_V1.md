@@ -148,6 +148,46 @@ Rules:
 - onboarding can be continued with one-word/number answers whenever possible;
 - each onboarding turn should make it obvious what the user can answer next.
 
+## 5A. Onboarding as guided conversation
+
+Onboarding should be usable almost entirely by replying with a **number, one word or a normal sentence**.
+
+Every onboarding turn should normally have:
+- one short explanation;
+- one question;
+- up to 3 suggested responses;
+- free text always available;
+- **saltar** when optional;
+- **atrás** when reversible;
+- **continuar** to resume a paused step;
+- **inicio** to leave onboarding and use TORO normally.
+
+Example:
+
+> **¿Qué quieres que TORO te ayude a mejorar primero?**
+> 1️⃣ Clientes y ventas
+> 2️⃣ Operación y equipo
+> 3️⃣ Control y dinero
+>
+> O dime con tus palabras qué te quita más tiempo.
+
+After selection, TORO shapes the next step around that goal instead of continuing a generic questionnaire.
+
+### Personal familiarity
+
+Where authorized, onboarding may acknowledge:
+- preferred name;
+- business;
+- role;
+- invited organization;
+- already-connected tools;
+- previously confirmed preferences.
+
+It should never re-ask a fact already verified merely to complete a wizard.
+
+Desired feeling:
+**“TORO ya entiende bastante; solo me pregunta lo que de verdad falta.”**
+
 ## 6. Business/admin onboarding path
 
 Business onboarding must be outcome-led rather than form-led.

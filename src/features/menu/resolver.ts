@@ -159,7 +159,7 @@ export function resolveToroMenuIntent(
   if (/^\d+$/.test(trimmed)) {
     const index = Number(trimmed);
     const item = menu.items.find((candidate) => candidate.index === index);
-    return item ? { kind: "item", item } : { kind: "unknown" };
+    return item ? { kind: "item", item, matchedBy: "number" } : { kind: "unknown" };
   }
 
   const matches = menu.items.filter((item) => {
@@ -168,7 +168,27 @@ export function resolveToroMenuIntent(
     return item.aliases.some((alias) => normalize(alias) === value);
   });
 
-  return matches.length === 1
-    ? { kind: "item", item: matches[0] }
+  if (matches.length === 1) {
+    return { kind: "item", item: matches[0], matchedBy: "exact" };
+  }
+
+  const words = (input: string) =>
+    " " +
+    normalize(input)
+      .replace(/[^a-z0-9ñ]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim() +
+    " ";
+
+  const inputWords = words(trimmed);
+  const phraseMatches = menu.items.filter((item) =>
+    [item.key, item.label, ...item.aliases]
+      .map((candidate) => words(candidate).trim())
+      .filter((candidate) => candidate.length >= 4)
+      .some((candidate) => inputWords.includes(" " + candidate + " ")),
+  );
+
+  return phraseMatches.length === 1
+    ? { kind: "item", item: phraseMatches[0], matchedBy: "phrase" }
     : { kind: "unknown" };
 }

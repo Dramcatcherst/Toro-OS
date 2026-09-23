@@ -127,7 +127,29 @@ describe("resolveToroMenuIntent", () => {
   it("resolves alias keyword accent-insensitively", () => {
     const result = resolveToroMenuIntent(menu, "cotizar");
     expect(result.kind).toBe("item");
-    if (result.kind === "item") expect(result.item.capability).toBe("hospitality.quote");
+    if (result.kind === "item") {
+      expect(result.item.capability).toBe("hospitality.quote");
+      expect(result.matchedBy).toBe("exact");
+    }
+  });
+
+  it("resolves an unambiguous option phrase inside natural language", () => {
+    const result = resolveToroMenuIntent(menu, "quiero cotizar para 4 personas");
+    expect(result.kind).toBe("item");
+    if (result.kind === "item") {
+      expect(result.item.capability).toBe("hospitality.quote");
+      expect(result.matchedBy).toBe("phrase");
+    }
+  });
+
+  it("does not execute when natural language matches multiple visible options", () => {
+    const ambiguous = resolveToroMenu({
+      mode: "organization",
+      roles: ["EMPLEADO"],
+      positionName: "Recepción",
+      capabilityStates: ready("comms.guest_messages", "hospitality.quote"),
+    })!;
+    expect(resolveToroMenuIntent(ambiguous, "quiero mensajes y cotizar").kind).toBe("unknown");
   });
 
   it("resolves universal navigation", () => {
