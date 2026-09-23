@@ -1,5 +1,7 @@
 # TORO OS Product Blueprint v0.3 SAFE
 
+> **SUPERSEDED BY TORO BRAIN MASTER ARCHITECTURE (2026-09-22).** Retained as historical build evidence. Current authority: `docs/product/TORO_BRAIN_CONSTITUTION.md`, `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`, `toro-context.yaml`. Statements such as “product name is TORO OS only” are historical and no longer authoritative.
+
 Source: Airtable base `TORO OS - Master Brain`, table `31 TORO OS Build Blueprint`.
 
 Primary record: `TORO OS Autonomous Business Operator Prompt v0.3 SAFE`.
