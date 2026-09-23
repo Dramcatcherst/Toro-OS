@@ -115,6 +115,7 @@ canonical_product_specs:
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
+  runtime_inventory_contract: docs/product/TORO_RUNTIME_INVENTORY_CONTRACT_V1.md
 
 canonical_sources:
   product_constitution: github
@@ -618,6 +619,52 @@ tere_runtime_config_consolidation:
   config_state: APPLIED
   runtime_consumption: UNVERIFIED
   no_runtime_success_inference: true
+
+runtime_inventory:
+  contract: docs/product/TORO_RUNTIME_INVENTORY_CONTRACT_V1.md
+  machine_contract: data/toro_runtime_inventory_contract_v1.json
+  validator: scripts/runtime-inventory-validator.mjs
+  verification_states:
+    - UNVERIFIED
+    - OBSERVED
+    - VERIFIED
+  verified_requires:
+    - known_runtime_version
+    - known_runtime_build_ref
+    - canonical_agent_skill_pair
+    - known_skill_version
+    - known_config_version
+    - sha256_config_hash
+    - owned_playbooks_only
+    - A0_A6_workflow_authority
+    - no_secret_fields
+    - canonical_eval_10_of_10
+    - zero_critical_failures
+    - evidence_refs
+  expected_targets:
+    codex_builder_runtime:
+      expected_agent: SOBRESITO
+      expected_skill: sobresito-systems
+      state: UNVERIFIED
+    openclaw_whatsapp_toro:
+      expected_agent: TORO
+      expected_skill: toro-brain
+      state: UNVERIFIED
+    openclaw_whatsapp_tere:
+      expected_agent: TERE
+      expected_skill: tere-revenue
+      state: UNVERIFIED
+    wespeak_tere:
+      expected_agent: TERE
+      expected_skill: tere-revenue
+      state: UNVERIFIED
+    toro_portal:
+      expected_agent: TORO
+      expected_skill: toro-brain
+      state: UNVERIFIED
+  no_parallel_runtime_registry: true
+  no_secret_material_in_manifests: true
+  unknown_version_or_hash_blocks_verified: true
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
