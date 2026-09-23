@@ -196,3 +196,24 @@ test("verified state requires playbook authority source and recovery evidence", 
   assert.ok(result.errors.includes("VERIFIED requires fallback mode/reference"));
   assert.ok(result.errors.includes("VERIFIED requires rollback reference"));
 });
+
+
+test("observed TORO portal evidence manifest remains OBSERVED", async () => {
+  const observed = JSON.parse(
+    await readFile(
+      new URL(
+        "../docs/evidence/runtime-manifests/toro_portal_observed_2026-09-23.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const result = validateRuntimeInventory(observed, playbooks);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.status, "PASS");
+  assert.equal(result.claimedVerificationState, "OBSERVED");
+  assert.equal(result.effectiveVerificationState, "OBSERVED");
+  assert.equal(result.summary.agent, "TORO");
+  assert.equal(result.summary.canonicalSkill, "toro-brain");
+  assert.equal(result.summary.loadedPlaybooks, 0);
+});
