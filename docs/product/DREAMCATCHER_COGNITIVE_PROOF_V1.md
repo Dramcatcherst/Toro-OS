@@ -283,22 +283,54 @@ People/attendance data is materially more mature than identity/onboarding/access
 
 Constraint:
 ```text
-identity + membership + channel/access verification
+identity + membership + context isolation + channel/access verification
 ```
+
+Verified 2026-09-23:
+- production `organization_memberships` does not yet exist;
+- 5 users have active/non-revoked organization roles;
+- all 5 currently belong to only one real organization;
+- 4 membership candidates map to an existing employee relationship;
+- 1 candidate is non-employee/`other` and must not be classified as owner/contractor/advisor from role alone;
+- 12 employees are active: 4 linked to user identity and 8 unlinked;
+- current real data contains 0 multi-organization users, so multi-org isolation cannot be claimed from production evidence.
+
+**PHASE 1 IMPLEMENTATION STATE**
+- PR #42 integrated `resolveToroContext()`, isolation policy and the legacy-session adapter into the existing Phase 1 branch;
+- Phase 1 head used for this review: `d3035efe65463043313a61b733fab51ff57b2f7c`;
+- main currently contains the context type contract but not the resolver implementation;
+- Phase 1 PR #15 remains DRAFT and diverged from current main; it must be reconciled/extracted rather than bypassed;
+- 9 synthetic resolver tests cover personal/no-role, single org, multi-org choice, explicit org, unauthorized org denial, ADMIN no personal-vault access, personal fallback during role-store failure, organization fail-closed on role read failure and employee relationship read failure;
+- 8 legacy-session adapter tests cover Founder constraints, active-org role mapping, personal-context denial and cross-org membership mismatch;
+- total observed targeted fixture tests: 17;
+- Vercel status for Phase 1 head is success; this does not substitute for hosted authenticated isolation E2E.
+
+**OWNER HOLD**
+Employees are not to be contacted, invited or onboarded for this proof yet.
+
+Do not:
+- invite the 8 unlinked employees;
+- auto-link by name;
+- repurpose staff credentials as QA fixtures;
+- apply the membership draft to production before isolated validation;
+- claim multi-org isolation proven from current real users;
+- create another identity/account system.
 
 Existing owner:
 - `ops_ws_people_daily_management`;
+- `toro_company_user_portal_contract_20260922`;
 - existing Phase 1/Tenant/Identity work.
 
 **NEXT proof**
-Complete one person end-to-end without duplicating identity, then prove:
-- allowed access;
-- denied access;
-- persistent onboarding state;
-- no cross-scope leakage;
-- operational closeout/notification.
+1. reconcile/extract the Phase 1 identity/context lane onto the current main integration path;
+2. use synthetic/fictitious identities (or Mauricio where explicitly appropriate), not employees;
+3. prove personal vs organization isolation;
+4. prove allowed + denied organization access;
+5. prove explicit multi-org context choice with synthetic organizations;
+6. prove Founder/role mapping uses the active organization only;
+7. prove persistent flow/session context before any real onboarding launch.
 
-Do not scale onboarding to the rest of staff until one complete flow passes.
+Real employee onboarding remains outside this proof until a later explicit launch decision.
 
 ---
 
