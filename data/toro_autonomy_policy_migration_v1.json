@@ -1,0 +1,65 @@
+{
+  "migration_id": "TORO-AUTONOMY-POLICY-MIGRATION-v1",
+  "date": "2026-09-23",
+  "canonical_spec": "docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md",
+  "principle": "Preserve agents.autonomy_ceiling legacy L-values; replace only the six primary permission-profile write_ceiling texts with canonical A-level semantics. No numeric L-to-A mapping.",
+  "agents": [
+    {
+      "agent_key": "AGENT-TORO-OS",
+      "legacy_agents_autonomy_ceiling": "L3",
+      "permission_policy_key": "POLICY-AGENT-TORO-OS-PERMISSION",
+      "legacy_permission_write_ceiling": "L2",
+      "target_write_ceiling": "A3 default for reasoning/preparation/internal control state; A4 only for an explicitly approved workflow/action with connector authority; A5/A6 only per separately proven workflow; no global A5/A6 grant."
+    },
+    {
+      "agent_key": "AGENT-TERE",
+      "legacy_agents_autonomy_ceiling": "L2",
+      "permission_policy_key": "POLICY-AGENT-TERE-PERMISSION",
+      "legacy_permission_write_ceiling": "L2",
+      "target_write_ceiling": "A3 default for guest reasoning/draft; routine low-risk external sends/actions remain A4 until a specific runtime-verified workflow earns bounded A5; refunds/cancellations/reservation/payment/exception actions remain human-gated or prohibited by policy."
+    },
+    {
+      "agent_key": "AGENT-RICO",
+      "legacy_agents_autonomy_ceiling": "L2",
+      "permission_policy_key": "POLICY-AGENT-RICO-PERMISSION",
+      "legacy_permission_write_ceiling": "L2",
+      "target_write_ceiling": "A3 default for operational analysis/preparation; approved low-risk digital workflow writes may use A4 and later A5 only after workflow verification; physical work remains human unless separately automated; reservation/safety/material-spend/disciplinary/contract actions remain gated."
+    },
+    {
+      "agent_key": "AGENT-FIONA",
+      "legacy_agents_autonomy_ceiling": "L1",
+      "permission_policy_key": "POLICY-AGENT-FIONA-PERMISSION",
+      "legacy_permission_write_ceiling": "L2",
+      "target_write_ceiling": "A3 default for analysis/reconciliation/preparation; low-risk governed metadata writes may use A4 and later bounded A5 only if verified; payments/refunds/tax filing/payroll approval or payment/binding accounting/legal actions remain human or professional gated."
+    },
+    {
+      "agent_key": "AGENT-SKY",
+      "legacy_agents_autonomy_ceiling": "L1",
+      "permission_policy_key": "POLICY-AGENT-SKY-PERMISSION",
+      "legacy_permission_write_ceiling": "L1",
+      "target_write_ceiling": "A3 default for research/offer/campaign/content preparation; publication/campaign changes require A4 unless a specific reversible workflow earns bounded A5; spend/billing/provider contracts/unverified public claims remain gated."
+    },
+    {
+      "agent_key": "AGENT-SOBRESITO",
+      "legacy_agents_autonomy_ceiling": "L2",
+      "permission_policy_key": "POLICY-AGENT-SOBRESITO-PERMISSION",
+      "legacy_permission_write_ceiling": "L1",
+      "target_write_ceiling": "A3 default for inspect/design/prepare and isolated build work; approved reversible system writes use A4; A5 only for tested low-risk automation with rollback/observability; production-risk deploys/destructive migration/permissions/security/secrets/domain-account ownership remain gated."
+    }
+  ],
+  "compatibility_rules": [
+    "agents.autonomy_ceiling remains unchanged in this migration",
+    "legacy L-values are not runtime permission",
+    "effective authority is per workflow/action",
+    "most restrictive gate wins",
+    "A5/A6 promotion requires direct evidence and policy",
+    "CODEX remains archived agent record / governed implementation tool"
+  ],
+  "post_apply_checks": [
+    "all six primary permission_profile write_ceiling texts contain A-level semantics",
+    "no six primary permission_profile write_ceiling remains bare L1/L2/L3",
+    "agents.autonomy_ceiling historical values remain unchanged",
+    "no permission expansion is inferred from the migration",
+    "Supabase toro_agent_architecture_v1 references canonical autonomy spec"
+  ]
+}
