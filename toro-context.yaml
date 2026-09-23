@@ -986,8 +986,11 @@ product_proof_focus:
 kross_live_read_gate:
   rebaselined_on: "2026-09-23"
   normalizer: src/features/kross/normalize-reservation.ts
+  transport_adapter: src/features/kross/transport-adapter.ts
+  transport_adapter_mode: configurable_field_map_no_vendor_field_guessing
   acceptance_evaluator: src/features/kross/acceptance.ts
   internal_normalization_state: implemented_ci_verified
+  transport_adapter_state: implemented_ci_pending_merge
   scoped_identity_guard:
     migration: kross_reservation_scope_identity_guard_20260923
     index: operations.reservations_kross_scope_external_uq
