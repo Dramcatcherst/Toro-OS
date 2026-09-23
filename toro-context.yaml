@@ -605,6 +605,20 @@ cognitive_proving_ground:
     first_live_proof: "one service_date: fresh Kross entitlement/charges + kitchen final reviewed served report -> breakfast_orders -> derived reconciliation -> human review"
     expand_only_after_single_day_pass: true
 
+tere_runtime_config_consolidation:
+  version: TERE-OPERATING-VOICE-v2
+  applied_on: "2026-09-23"
+  source: private.tere_configuration
+  identity_key: tere-identity-short-core
+  dream_language_key: tere-dream-language-guideline
+  active_voice_principle: "80% useful reality / 15% Dreamcatcher identity / 5% surprise"
+  legacy_personality_packs_superseded: 6
+  rollback_snapshot: docs/evidence/TERE_RUNTIME_CONFIG_PRECONSOLIDATION_2026-09-23.json
+  evidence: docs/evidence/TERE_RUNTIME_CONFIG_CONSOLIDATION_2026-09-23.md
+  config_state: APPLIED
+  runtime_consumption: UNVERIFIED
+  no_runtime_success_inference: true
+
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
   current_stage: internal_proof
