@@ -25,5 +25,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Visual preparation policy tests
+        run: node --experimental-strip-types --test tests/visual-preflight.test.mjs
+
       - name: Build
         run: npm run build
