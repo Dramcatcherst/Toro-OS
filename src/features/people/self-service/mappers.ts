@@ -1,5 +1,6 @@
 import type {
   PeopleAttendanceDay,
+  PeopleEmploymentSummary,
   PeopleLeaveBalance,
   PeopleLeaveRequest,
   PeopleSelfServiceProfile,
@@ -23,6 +24,23 @@ function nullableText(value: unknown): string | null {
 function numberValue(value: unknown, fallback = 0): number {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+export function mapEmploymentSummary(
+  value: unknown,
+): PeopleEmploymentSummary | null {
+  const row = record(value);
+  const employeeId = text(row.id);
+  const preferredName = text(row.preferred_name);
+  if (!employeeId || !preferredName) return null;
+
+  return {
+    employeeId,
+    preferredName,
+    employmentStatus: text(row.employment_status),
+    hireDate: nullableText(row.hire_date),
+    workArea: nullableText(row.work_area),
+  };
 }
 
 export function mapSelfProfile(value: unknown): PeopleSelfServiceProfile | null {
