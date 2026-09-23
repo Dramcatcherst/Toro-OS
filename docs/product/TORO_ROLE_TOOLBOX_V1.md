@@ -68,6 +68,21 @@ Where permitted:
 - 👤 Profile / preferences
 - 0️⃣ Menu / home
 
+
+## 4A. Personal toolbox
+
+Primary jobs:
+- today;
+- personal calendar;
+- personal tasks/reminders;
+- important personal messages;
+- projects/goals;
+- personal connected tools;
+- travel/plans where connected;
+- profile/preferences.
+
+Personal mode does not expose organization capabilities unless the user explicitly transitions to an authorized organization context.
+
 ## 5. Owner / Executive toolbox
 
 Primary jobs:
