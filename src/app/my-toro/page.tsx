@@ -136,6 +136,7 @@ export default async function MyToroPage({
             menu={menu}
             focusableCapabilities={view.focusableCapabilities}
             currentFocus={view.focus?.capability ?? null}
+            availableSubmenus={view.availableSubmenus}
           />
         ) : null}
 

@@ -11,22 +11,28 @@ export function MyToroCommandBar({
   menu,
   focusableCapabilities,
   currentFocus,
+  availableSubmenus,
 }: {
   menu: ToroResolvedMenu;
   focusableCapabilities: string[];
   currentFocus?: string | null;
+  availableSubmenus: Record<string, ToroResolvedMenu>;
 }) {
   const router = useRouter();
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [activeSubmenuKey, setActiveSubmenuKey] = useState<string | null>(null);
   const focusable = useMemo(
     () => new Set(focusableCapabilities),
     [focusableCapabilities],
   );
 
-  const suggestions = menu.items
+  const activeMenu =
+    (activeSubmenuKey && availableSubmenus[activeSubmenuKey]) || menu;
+
+  const suggestions = activeMenu.items
     .filter((item) => item.capability !== currentFocus)
-    .slice(0, currentFocus ? 2 : 3);
+    .slice(0, currentFocus || activeSubmenuKey ? 2 : 3);
 
   function navigateToCapability(capability: string) {
     router.push(`/my-toro?focus=${encodeURIComponent(capability)}`);
@@ -59,11 +65,22 @@ export function MyToroCommandBar({
       return;
     }
 
-    const resolution = resolveToroMenuIntent(menu, value);
+    const resolution = resolveToroMenuIntent(activeMenu, value);
 
-    if (resolution.kind === "home" || resolution.kind === "back") {
+    if (resolution.kind === "home") {
       setFeedback(null);
+      setActiveSubmenuKey(null);
       router.push("/my-toro");
+      return;
+    }
+
+    if (resolution.kind === "back") {
+      setFeedback(null);
+      if (activeSubmenuKey) {
+        setActiveSubmenuKey(null);
+      } else {
+        router.push("/my-toro");
+      }
       return;
     }
 
@@ -82,6 +99,13 @@ export function MyToroCommandBar({
     }
 
     if (resolution.kind === "item") {
+      const submenu = availableSubmenus[resolution.item.key];
+      if (!activeSubmenuKey && submenu) {
+        setFeedback(null);
+        setActiveSubmenuKey(resolution.item.key);
+        return;
+      }
+
       if (focusable.has(resolution.item.capability)) {
         setFeedback(null);
         navigateToCapability(resolution.item.capability);
@@ -112,7 +136,9 @@ export function MyToroCommandBar({
         <MessageCircle className="h-4 w-4" /> Pregúntale a TORO
       </div>
       <p className="mt-2 text-sm text-slate-400">
-        Escribe un número, una palabra o una frase normal. Aquí solo navegamos lecturas autorizadas.
+        {activeSubmenuKey
+          ? "Estás dentro de un submenú seguro. 9 vuelve un nivel."
+          : "Escribe un número, una palabra o una frase normal. Aquí solo navegamos lecturas autorizadas."}
       </p>
 
       <form onSubmit={submit} className="mt-4 flex gap-2">
@@ -133,6 +159,15 @@ export function MyToroCommandBar({
 
       {suggestions.length || currentFocus ? (
         <div className="mt-3 flex flex-wrap gap-2">
+          {activeSubmenuKey ? (
+            <button
+              type="button"
+              onClick={() => handleValue("9")}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
+            >
+              ↩️ Atrás
+            </button>
+          ) : null}
           {currentFocus ? (
             <button
               type="button"
@@ -156,7 +191,7 @@ export function MyToroCommandBar({
               ) : null}
             </button>
           ))}
-          {currentFocus && focusableCapabilities.length > 1 ? (
+          {currentFocus && !activeSubmenuKey && focusableCapabilities.length > 1 ? (
             <button
               type="button"
               onClick={() => handleValue("continuar")}

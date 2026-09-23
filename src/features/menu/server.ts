@@ -7,6 +7,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
+import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
   evaluateSourceAwareCapabilityStates,
   type ToroMenuSourceSnapshot,
@@ -508,6 +509,7 @@ export type ToroRealMenuView = {
   profileSummary: ToroProfileSummaryItem[];
   capabilityNotes: Record<string, string>;
   focusableCapabilities: string[];
+  availableSubmenus: Record<string, ToroResolvedMenu>;
   focus: ToroCapabilityFocus | null;
   state: "resolved" | "context_choice_required" | "no_menu";
 };
@@ -528,6 +530,7 @@ export async function resolveCurrentToroReadOnlyMenu(
       profileSummary: [],
       capabilityNotes: {},
       focusableCapabilities: [],
+      availableSubmenus: {},
       focus: null,
       state: "context_choice_required",
     };
@@ -590,6 +593,11 @@ export async function resolveCurrentToroReadOnlyMenu(
       )
       .map((item) => item.capability) ?? [];
 
+  const availableSubmenus = resolveAvailableToroSubmenus({
+    menu,
+    capabilityStates,
+  });
+
   let focus: ToroCapabilityFocus | null = null;
   if (
     focusCapability &&
@@ -625,6 +633,7 @@ export async function resolveCurrentToroReadOnlyMenu(
     profileSummary,
     capabilityNotes,
     focusableCapabilities,
+    availableSubmenus,
     focus,
     state: menu ? "resolved" : "no_menu",
   };

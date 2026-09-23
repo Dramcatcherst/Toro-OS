@@ -789,3 +789,23 @@ Still unverified / intentionally not enabled:
 - production execution of blocked workflows.
 
 Do not downgrade this surface back to “synthetic-only,” and do not upgrade it to “production action verified” without direct execution evidence.
+
+
+## 16D. Source-aware submenu runtime — 2026-09-23
+
+The structured submenu manifest now has a canonical pure resolver:
+- `src/features/menu/submenu-resolver.ts`.
+
+Production-surface rule:
+- a submenu is exposed in `/my-toro` only when at least one child capability is currently usable;
+- usable child states are `READY`, `READ_ONLY` or `DEGRADED`;
+- `BLOCKED`, `CONNECT`, `REQUEST_ACCESS` and `HIDDEN` children do not become dead buttons;
+- if every child is unavailable, the submenu does not appear;
+- numeric shortcuts are re-indexed inside the active submenu;
+- `9 / atrás` returns one level;
+- entering a submenu never changes permission or source authority.
+
+This means the existing rich role submenus can become visible automatically as their child capabilities mature, without redesigning the role menu or adding parallel navigation logic.
+
+Current Dreamcatcher note:
+many configured submenus remain intentionally invisible because their child workflows are still blocked by live PMS, omnichannel, finance or write-authority gates.

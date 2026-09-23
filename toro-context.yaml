@@ -676,6 +676,15 @@ conversational_menu_system:
   runtime_resolver_status: authenticated_source_aware_read_only_surface_integrated_ci_verified
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
   structured_submenus: data/toro_conversational_submenus_v2.json
+  submenu_runtime_resolver: src/features/menu/submenu-resolver.ts
+  submenu_surface: /my-toro
+  submenu_visibility_rule: at_least_one_safe_child_required
+  submenu_child_states_visible:
+    - READY
+    - READ_ONLY
+    - DEGRADED
+  blocked_only_submenus_are_hidden: true
+  submenu_numeric_scope_is_local: true
   implementation_status: specified_not_runtime_verified
   conversation_first: true
   free_text_always_allowed: true
