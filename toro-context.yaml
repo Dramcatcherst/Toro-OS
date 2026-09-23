@@ -270,7 +270,7 @@ brand:
   production_closeout_remaining:
     - vector_master
     - monochrome_and_reverse_variants
-    - favicon_master_and_small_size_simplification
+    - favicon_and_small_size_simplification
     - typography_and_license_spec
     - clear_space_and_minimum_size_rules
     - durable_rights_evidence
@@ -384,7 +384,7 @@ initiative_bindings:
       - Build trusted server-side evidence through issue 3; never accept clearance supplied by a client or model output.
       - Independently review PR 43 and recheck its exact current commit; null or unknown integration status is not a confirmed conflict.
       - Prepare one conservative derivative, compare before/after, obtain exact derivative/channel approval and verify the intended destination.
-      - Record the result and reusable learning in the existing work items; do not duplicate backlog or claim runtime completion from documentation.
+      - Record the result and reusable learning in the existing work items; do not duplicate backlog or claim runtime_completion from documentation.
 
 # Design contract only. Runtime registration/activation requires the existing governed path.
 agent_lifecycle_supervision:
