@@ -775,10 +775,10 @@ function buildSafeAlternatives(
 
   if (quote) {
     alternatives["hospitality.quote"] = {
-      label: "Abrir Kross oficial",
-      href: OFFICIAL_KROSS_BOOKING_URL,
+      label: "Preparar búsqueda en Kross",
+      href: "/booking-assist",
       note:
-        "Kross confirma las tarifas y disponibilidad vigentes. TORO no importa ni interpreta ese resultado automáticamente.",
+        "TORO prepara fechas y ocupación; Kross confirma tarifas, disponibilidad y reserva final.",
       external: true,
     };
   }
