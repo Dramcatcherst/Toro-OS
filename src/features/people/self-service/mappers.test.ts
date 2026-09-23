@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   mapAttendance,
+  mapEmploymentSummary,
   mapLeaveBalances,
   mapLeaveRequests,
   mapSelfProfile,
@@ -9,6 +10,27 @@ import {
 } from "./mappers";
 
 describe("TORO People self-service mappers", () => {
+  it("exposes only minimal safe employment identity fields", () => {
+    expect(
+      mapEmploymentSummary({
+        id: "employee-1",
+        preferred_name: "Persona",
+        employment_status: "active",
+        hire_date: "2026-01-10",
+        work_area: "Recepción",
+        legal_name: "SHOULD_NOT_PROJECT",
+        salary: 999999,
+        bank_account: "SHOULD_NOT_PROJECT",
+      }),
+    ).toEqual({
+      employeeId: "employee-1",
+      preferredName: "Persona",
+      employmentStatus: "active",
+      hireDate: "2026-01-10",
+      workArea: "Recepción",
+    });
+  });
+
   it("exposes only the approved self-profile fields", () => {
     expect(
       mapSelfProfile({
