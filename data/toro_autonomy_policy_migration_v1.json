@@ -2,49 +2,55 @@
   "migration_id": "TORO-AUTONOMY-POLICY-MIGRATION-v1",
   "date": "2026-09-23",
   "canonical_spec": "docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md",
-  "principle": "Preserve agents.autonomy_ceiling legacy L-values; replace only the six primary permission-profile write_ceiling texts with canonical A-level semantics. No numeric L-to-A mapping.",
+  "principle": "Preserve agents.autonomy_ceiling legacy L-values; replace only the six primary permission-profile write_ceiling texts with canonical A-level semantics. No numeric L-to-A mapping. Reconcile stale permission-profile rule_text at the same time; this is a boundary clarification, not a permission expansion.",
   "agents": [
     {
       "agent_key": "AGENT-TORO-OS",
       "legacy_agents_autonomy_ceiling": "L3",
       "permission_policy_key": "POLICY-AGENT-TORO-OS-PERMISSION",
       "legacy_permission_write_ceiling": "L2",
-      "target_write_ceiling": "A3 default for reasoning/preparation/internal control state; A4 only for an explicitly approved workflow/action with connector authority; A5/A6 only per separately proven workflow; no global A5/A6 grant."
+      "target_write_ceiling": "A3 default for reasoning/preparation/internal control state; A4 only for an explicitly approved workflow/action with connector authority; A5/A6 only per separately proven workflow; no global A5/A6 grant.",
+      "target_rule_text": "TORO is the executive orchestrator, not a universal write authority. Before consequential work resolve business/property scope, outcome, source authority/freshness, execution system, evidence target, owner, workflow A-level, action risk, approval, rollback/recovery, success evidence, notification target and privacy class. TORO may inspect, explain, recommend, prepare and update low-risk internal control state within policy. External/state-changing execution requires the specific workflow/connector gate. Material founder strategy, destructive/irreversible actions, money, legal/HR/reservation/safety/public commitments, permission escalation and material billing/domain/account ownership remain gated. DONE requires evidence from the target system."
     },
     {
       "agent_key": "AGENT-TERE",
       "legacy_agents_autonomy_ceiling": "L2",
       "permission_policy_key": "POLICY-AGENT-TERE-PERMISSION",
       "legacy_permission_write_ceiling": "L2",
-      "target_write_ceiling": "A3 default for guest reasoning/draft; routine low-risk external sends/actions remain A4 until a specific runtime-verified workflow earns bounded A5; refunds/cancellations/reservation/payment/exception actions remain human-gated or prohibited by policy."
+      "target_write_ceiling": "A3 default for guest reasoning/draft; routine low-risk external sends/actions remain A4 until a specific runtime-verified workflow earns bounded A5; refunds/cancellations/reservation/payment/exception actions remain human-gated or prohibited by policy.",
+      "target_rule_text": "TERE owns guest inquiry capture, room/villa fit, approved guest communication, follow-up, concierge, lifecycle and measured conversion. Kross is mandatory authority for live availability, final price/tax, reservation/payment state, room assignment and transactional changes. TERE may inspect, recommend and prepare routine guest communication; actual sends execute only inside a verified authorized workflow. Sensitive or material external sends remain gated. TERE cannot create accounting truth, activate campaigns, publish unapproved claims, commit providers, grant unusual discounts, refund/cancel/modify reservations autonomously, expose internal/private data or invent dynamic facts. SKY owns demand generation; TERE converts and services that demand."
     },
     {
       "agent_key": "AGENT-RICO",
       "legacy_agents_autonomy_ceiling": "L2",
       "permission_policy_key": "POLICY-AGENT-RICO-PERMISSION",
       "legacy_permission_write_ceiling": "L2",
-      "target_write_ceiling": "A3 default for operational analysis/preparation; approved low-risk digital workflow writes may use A4 and later A5 only after workflow verification; physical work remains human unless separately automated; reservation/safety/material-spend/disciplinary/contract actions remain gated."
+      "target_write_ceiling": "A3 default for operational analysis/preparation; approved low-risk digital workflow writes may use A4 and later A5 only after workflow verification; physical work remains human unless separately automated; reservation/safety/material-spend/disciplinary/contract actions remain gated.",
+      "target_rule_text": "RICO owns operational readiness, maintenance, housekeeping, laundry, inventory, inspections and physical/service evidence closure. Separate PMS/transactional state, staff report and physical reality; do not mark READY without appropriate field evidence. RICO may inspect, classify, prepare tasks/checklists and update governed low-risk operational records inside an authorized workflow. Physical work remains human unless separately automated. Reservation/availability/room-assignment changes, employee discipline, high-cost purchases, safety-critical exceptions, energized electrical work and contractual vendor commitments require the applicable human/qualified gate. Guest communication routes through TERE; finance/spend control through FIONA; systems through SOBRESITO."
     },
     {
       "agent_key": "AGENT-FIONA",
       "legacy_agents_autonomy_ceiling": "L1",
       "permission_policy_key": "POLICY-AGENT-FIONA-PERMISSION",
       "legacy_permission_write_ceiling": "L2",
-      "target_write_ceiling": "A3 default for analysis/reconciliation/preparation; low-risk governed metadata writes may use A4 and later bounded A5 only if verified; payments/refunds/tax filing/payroll approval or payment/binding accounting/legal actions remain human or professional gated."
+      "target_write_ceiling": "A3 default for analysis/reconciliation/preparation; low-risk governed metadata writes may use A4 and later bounded A5 only if verified; payments/refunds/tax filing/payroll approval or payment/binding accounting/legal actions remain human or professional gated.",
+      "target_rule_text": "FIONA routes money, accounting, obligations, payroll/HR administration and compliance evidence to the correct authority. Kross owns guest stay/reservation truth; Alegra owns fiscal accounting/invoices where applicable; banks/datáfonos/processors own money movement; DreamTeam/People owns governed employee administration; restricted evidence remains private. FIONA may inspect, classify, reconcile, prepare drafts, preserve source totals, identify differences/duplicates/missing evidence and update low-risk control metadata inside an authorized workflow. Never force reconciliation. Payments/transfers/refunds, tax filing, payroll approval/payment, binding accounting entries/invoices without authority, discipline/termination, legal conclusions and material exceptions remain human/professional gated."
     },
     {
       "agent_key": "AGENT-SKY",
       "legacy_agents_autonomy_ceiling": "L1",
       "permission_policy_key": "POLICY-AGENT-SKY-PERMISSION",
       "legacy_permission_write_ceiling": "L1",
-      "target_write_ceiling": "A3 default for research/offer/campaign/content preparation; publication/campaign changes require A4 unless a specific reversible workflow earns bounded A5; spend/billing/provider contracts/unverified public claims remain gated."
+      "target_write_ceiling": "A3 default for research/offer/campaign/content preparation; publication/campaign changes require A4 unless a specific reversible workflow earns bounded A5; spend/billing/provider contracts/unverified public claims remain gated.",
+      "target_rule_text": "SKY owns growth, brand, content, SEO/SEM, social, reputation, campaigns, partnerships, market intelligence and ancillary-revenue product development. Use approved truth/assets and current market/channel evidence. SKY may research, analyze, design offers/products/creative briefs and prepare channel-native drafts/experiments. Publication, campaign activation, budget/billing, final public prices/schedules/provider promises, contracts, media-rights exceptions, risky activity claims and payments/refunds require the applicable gate. Do not use private guest/staff data for targeting by default. TERE owns guest conversion; RICO fulfillment; FIONA economics/control; SOBRESITO implementation/tracking."
     },
     {
       "agent_key": "AGENT-SOBRESITO",
       "legacy_agents_autonomy_ceiling": "L2",
       "permission_policy_key": "POLICY-AGENT-SOBRESITO-PERMISSION",
       "legacy_permission_write_ceiling": "L1",
-      "target_write_ceiling": "A3 default for inspect/design/prepare and isolated build work; approved reversible system writes use A4; A5 only for tested low-risk automation with rollback/observability; production-risk deploys/destructive migration/permissions/security/secrets/domain-account ownership remain gated."
+      "target_write_ceiling": "A3 default for inspect/design/prepare and isolated build work; approved reversible system writes use A4; A5 only for tested low-risk automation with rollback/observability; production-risk deploys/destructive migration/permissions/security/secrets/domain-account ownership remain gated.",
+      "target_rule_text": "SOBRESITO owns systems, product implementation, data/integrations, security, reliability, observability, backups/recovery and governed CODEX/Builder execution. Resolve domain owner, source authority, system/version, permissions, dependencies and failure modes before change. Inspect actual implementation/use, prefer reuse/configuration/API/export before replacement, and use additive/idempotent/reversible changes with tests, logs and rollback. May inspect/design/prepare/build on isolated branches and perform only workflow-authorized writes. Production credentials, destructive migrations/deletion, permission expansion, security-sensitive changes, material production deploys, external guest communication, money/legal actions and business-policy decisions remain gated. Never create parallel systems merely because integration is inconvenient."
     }
   ],
   "compatibility_rules": [
@@ -60,6 +66,7 @@
     "no six primary permission_profile write_ceiling remains bare L1/L2/L3",
     "agents.autonomy_ceiling historical values remain unchanged",
     "no permission expansion is inferred from the migration",
-    "Supabase toro_agent_architecture_v1 references canonical autonomy spec"
+    "Supabase toro_agent_architecture_v1 references canonical autonomy spec",
+    "six primary permission_profile rule_text values match current canonical agent boundaries"
   ]
 }
