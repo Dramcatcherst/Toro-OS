@@ -1001,7 +1001,23 @@ kross_live_read_gate:
   evidence: docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md
   canonical_task: kross_readonly_reservation_mirror_2026_09
   transport_state: blocked_external_transport_not_available_to_toro
-  external_transport_request_state: provider_response_pending
+  external_transport_request_state: followup_draft_not_sent_provider_local_contact_confirmed
+  provider_contact_evidence:
+    kross_ticket: KB-305650/26
+    kross_message_date: "2026-09-18"
+    confirmed_fact: kross_contacted_local_provider_and_was_waiting_for_provider_response
+  owner_side_followup:
+    state: draft_not_sent
+    drafted_on: "2026-09-23"
+    asks_for:
+      - current_activation_status
+      - read_only_reservations_and_stays_method
+      - live_rates_and_availability_method
+      - official_transport_options
+      - api_documentation_and_scopes
+      - legal_terms
+      - all_costs_before_activation
+    prohibits_implicit_billable_activation: true
   schema_state: present
   source_is_live_rows: 0
   current_reservations_safe_rows: 0
