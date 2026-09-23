@@ -5,6 +5,7 @@
 **Master product:** TORO Brain  
 **Owners:** TORO User Portal + TORO Comms + TORO Identity + TORO People  
 **Machine-readable profiles:** data/toro_conversational_menu_profiles_v1.json  
+**Structured submenus/continuations:** data/toro_conversational_submenus_v2.json  
 **Role message experience:** docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md  
 **Message pack:** data/toro_role_message_pack_v1.json  
 **Role toolbox:** docs/product/TORO_ROLE_TOOLBOX_V1.md  
@@ -84,6 +85,42 @@ For plain chat:
 The user may still type anything else.
 
 ---
+
+## 3A. Next-best-action contract
+
+TORO should not merely end with “¿algo más?”.
+
+When useful, it should offer **1–3 contextual continuations** selected from:
+- the most likely next step in the current workflow;
+- the next unresolved related item;
+- a safe complementary action;
+- home/back only when genuinely useful.
+
+Examples:
+- after a quote: **Ver mensaje · Cambiar opción · Preparar envío**;
+- after room completion: **Siguiente habitación · Reportar algo · Inicio**;
+- after a blocked action: **Ver qué falta · Hacer lo que sí se puede · Pedir ayuda**.
+
+Rules:
+- never suggest an action hidden or unauthorized for the user;
+- if one next action is clearly best, show one rather than three;
+- “continuar” resumes the most recent active workflow only when identity/context/session match is safe;
+- short confirmations never bypass approvals;
+- ambiguity fails closed and TORO asks or shows choices.
+
+Structured defaults live in:
+- data/toro_conversational_submenus_v2.json
+
+## 3B. Conversational continuation words
+
+Besides numeric choices, TORO should understand workflow-local words such as:
+- **continuar**;
+- **sí / dale / listo** when one explicit next action is pending;
+- **cambiar**;
+- **ver**;
+- **enviar** when the intended action is unambiguous and permitted;
+- **después / ahora no** to pause optional setup;
+- **saltar** for optional onboarding steps.
 
 ## 4. Menu depth
 
