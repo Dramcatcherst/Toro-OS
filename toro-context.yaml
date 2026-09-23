@@ -643,6 +643,17 @@ tere_wespeak_runtime_gate:
   v4_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
+  pre_v4_alert_baseline:
+    evidence: docs/evidence/TERE_WESPEAK_ALERT_BASELINE_2026-09-23.md
+    window: "2026-09-14..2026-09-23"
+    total_alerts: 83
+    requires_advisor: 50
+    in_stay_problem: 15
+    payment_information: 7
+    reservation_intent: 5
+    reservation_change_or_cancel: 4
+    max_stay_exceeded: 2
+    use: human_escalation_workload_baseline_not_v4_quality_evidence
   real_guest_contact_for_config_proof: forbidden
 
 tere_runtime_config_consolidation:
