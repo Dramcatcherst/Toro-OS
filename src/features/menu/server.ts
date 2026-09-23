@@ -7,6 +7,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
+import { formatMaintenanceProofItems } from "./maintenance-proof";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
   evaluateSourceAwareCapabilityStates,
@@ -361,18 +362,9 @@ async function loadMaintenanceProofFocus(
     })
     .filter((value): value is string => Boolean(value));
 
-  const checkByEvent = new Map<
-    string,
-    {
-      checkText: string | null;
-      passCriteria: string | null;
-      requiresSupervisor: boolean;
-      resultStatus: string | null;
-    }
-  >();
-
+  let checkData: unknown[] = [];
   if (eventIds.length) {
-    const { data: checkData, error: checkError } = await supabase
+    const checkResult = await supabase
       .schema("facilities")
       .from("inspection_checks")
       .select(
@@ -381,59 +373,18 @@ async function loadMaintenanceProofFocus(
       .in("target_event_id", eventIds)
       .order("updated_at", { ascending: false });
 
-    if (!checkError && Array.isArray(checkData)) {
-      for (const raw of checkData) {
-        const row = raw as unknown as Record<string, unknown>;
-        const eventId = cleanText(row.target_event_id);
-        if (!eventId || checkByEvent.has(eventId)) continue;
-        checkByEvent.set(eventId, {
-          checkText: cleanText(row.check_text),
-          passCriteria: cleanText(row.pass_criteria),
-          requiresSupervisor: row.requires_supervisor_review === true,
-          resultStatus: cleanText(row.result_status),
-        });
-      }
+    if (!checkResult.error && Array.isArray(checkResult.data)) {
+      checkData = checkResult.data;
     }
   }
 
   return {
     capability,
     label,
-    items: queueData.map((raw) => {
-      const row = raw as unknown as Record<string, unknown>;
-      const eventId = cleanText(row.id);
-      const closureAction = cleanText(row.closure_action);
-      const check = eventId ? checkByEvent.get(eventId) : undefined;
-      const room = cleanText(row.room_unit);
-      const priority = cleanText(row.priority);
-      const statusLabel =
-        closureAction === "verify_resolution"
-          ? "Listo para verificar"
-          : "Pendiente de revisar";
-
-      const meta = [
-        statusLabel,
-        priority,
-        room ? `Unidad ${room}` : cleanText(row.property_area),
-        check?.requiresSupervisor ? "Requiere supervisor" : null,
-      ]
-        .filter(Boolean)
-        .join(" · ");
-
-      const detail =
-        closureAction === "verify_resolution"
-          ? check?.passCriteria ??
-            cleanText(row.closure_instruction) ??
-            cleanText(row.recommended_action)
-          : cleanText(row.recommended_action) ??
-            cleanText(row.closure_instruction);
-
-      return {
-        title: cleanText(row.title) ?? "Incidencia de mantenimiento",
-        meta,
-        detail: detail ?? undefined,
-      };
-    }),
+    items: formatMaintenanceProofItems(
+      queueData as unknown as Array<Record<string, unknown>>,
+      checkData as Array<Record<string, unknown>>,
+    ),
   };
 }
 
