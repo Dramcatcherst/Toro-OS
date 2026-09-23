@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   TORO_ACTION_TAXONOMY,
+  classifyToroActionIntentText,
   getToroActionIntent,
   type ToroActionIntentId,
 } from "./action-taxonomy";
@@ -74,5 +75,62 @@ describe("TORO_ACTION_TAXONOMY", () => {
   it("keeps read-oriented guest inquiry and availability semantic risk low", () => {
     expect(getToroActionIntent("guest_inquiry").defaultRisk).toBe("Low");
     expect(getToroActionIntent("availability_quote").defaultRisk).toBe("Low");
+  });
+});
+
+
+describe("classifyToroActionIntentText", () => {
+  it("matches a governed semantic intent without choosing an execution system", () => {
+    const result = classifyToroActionIntentText(
+      "Necesito cotizar disponibilidad para dos personas",
+    );
+
+    expect(result).toMatchObject({
+      status: "matched",
+      id: "availability_quote",
+    });
+    expect(JSON.stringify(result)).not.toContain("executionSystem");
+    expect(JSON.stringify(result)).not.toContain("sourceOfTruth");
+  });
+
+  it("is accent and punctuation insensitive", () => {
+    const result = classifyToroActionIntentText(
+      "¡PUBLICAR EN REDES SOCIALES!",
+    );
+
+    expect(result).toMatchObject({
+      status: "matched",
+      id: "social_publication",
+    });
+  });
+
+  it("fails closed as unclassified for vague language", () => {
+    expect(classifyToroActionIntentText("Haz eso que hablamos antes")).toEqual({
+      status: "unclassified",
+    });
+  });
+
+  it("fails closed as ambiguous when two strong intents compete", () => {
+    const result = classifyToroActionIntentText(
+      "guest invoice supplier invoice",
+    );
+
+    expect(result.status).toBe("ambiguous");
+    if (result.status === "ambiguous") {
+      expect(result.candidates).toEqual([
+        "guest_invoice",
+        "supplier_invoice",
+      ]);
+    }
+  });
+
+  it("never echoes arbitrary request text or embedded secret-shaped data", () => {
+    const result = classifyToroActionIntentText(
+      "check availability secret-value-should-not-return",
+    );
+
+    expect(JSON.stringify(result)).not.toContain(
+      "secret-value-should-not-return",
+    );
   });
 });
