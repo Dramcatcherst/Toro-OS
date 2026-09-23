@@ -30,6 +30,7 @@ export type ToroOnboardingJourney = {
 };
 
 export type ToroOnboardingFirstValueTarget = {
+  key: string;
   capability: string;
   label: string;
   href: string;
@@ -140,10 +141,17 @@ export async function resolveCurrentOnboarding(): Promise<ToroOnboardingView | n
     const readableItems =
       currentMenu?.menu?.items.filter((item) => item.state === "READ_ONLY") ?? [];
 
-    if (adaptedJourney?.steps[0] && readableItems.length > 0) {
+    const focusable = new Set(currentMenu?.focusableCapabilities ?? []);
+    const onboardingItems = [...readableItems].sort((a, b) => {
+      const aFocus = focusable.has(a.capability) ? 1 : 0;
+      const bFocus = focusable.has(b.capability) ? 1 : 0;
+      return bFocus - aFocus;
+    });
+
+    if (adaptedJourney?.steps[0] && onboardingItems.length > 0) {
       adaptedJourney.steps[0] = {
         ...adaptedJourney.steps[0],
-        choices: readableItems.slice(0, 3).map((item) => ({
+        choices: onboardingItems.slice(0, 3).map((item) => ({
           key: item.key,
           emoji: item.emoji,
           label: item.label,
@@ -151,11 +159,11 @@ export async function resolveCurrentOnboarding(): Promise<ToroOnboardingView | n
       };
     }
 
-    const focusable = new Set(currentMenu?.focusableCapabilities ?? []);
-    firstValueTargets = readableItems
+    firstValueTargets = onboardingItems
       .filter((item) => focusable.has(item.capability))
       .slice(0, 3)
       .map((item) => ({
+        key: item.key,
         capability: item.capability,
         label: item.label,
         href: `/my-toro?focus=${encodeURIComponent(item.capability)}`,
