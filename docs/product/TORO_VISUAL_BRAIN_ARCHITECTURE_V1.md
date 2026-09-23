@@ -817,7 +817,7 @@ Required migration:
 6. archive/reclassify legacy;
 7. delete only after explicit evidence and approval.
 
-Tracker: issue #69.
+Tracker: issue #33.
 
 ### Supabase
 
