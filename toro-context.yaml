@@ -10,6 +10,7 @@ product:
 north_star: "Deep inside. Simple outside."
 
 general_plan_governance:
+  owner: TORO Brain
   canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   canonical_name: TORO Brain General Plan
   aliases:
