@@ -116,6 +116,25 @@ export default async function MyToroPage() {
           </div>
         </header>
 
+        {view.profileSummary.length ? (
+          <section className="mt-5 grid gap-3 md:grid-cols-3" aria-label="Resumen del contexto actual">
+            {view.profileSummary.map((item) => (
+              <article
+                key={item.label}
+                className="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-4"
+              >
+                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                  {item.label}
+                </div>
+                <div className="mt-2 font-mono text-3xl font-bold text-white">{item.value}</div>
+                {item.detail ? (
+                  <div className="mt-1 text-xs text-slate-500">{item.detail}</div>
+                ) : null}
+              </article>
+            ))}
+          </section>
+        ) : null}
+
         <section className="mt-5 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5 md:p-6">
             <div className="flex items-center justify-between gap-3">
