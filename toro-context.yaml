@@ -2,7 +2,7 @@ product:
   id: toro-brain
   name: TORO Brain
   category: AI Portfolio and Business Operating Brain
-  context_version: "2026.09.22-brain-cognitive-v1"
+  context_version: "2026.09.23-agent-skill-v1"
   status: internal_proof
   external_business_onboarding: blocked
   visible_brand: TORO Brain
@@ -112,6 +112,7 @@ canonical_product_specs:
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
+  agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
 
 canonical_sources:
   product_constitution: github
@@ -145,6 +146,93 @@ agent_rules:
   eliminate_simplify_standardize_before_automate: true
   autonomy_is_per_workflow_not_global: true
   fail_closed_on_material_truth_freshness_gap: true
+
+agent_skill_system:
+  specification: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
+  principle: smallest_capable_agent_organization
+  entity_separation:
+    agent_not_skill: true
+    skill_not_workflow: true
+    workflow_not_tool: true
+    tool_not_runtime: true
+    runtime_not_model: true
+    prompt_not_identity: true
+  creation_preference:
+    - eliminate_or_simplify
+    - reuse_existing
+    - add_skill
+    - configure_workflow
+    - scale_worker_capacity
+    - propose_specialist_candidate_only_if_justified
+  normal_user_surface: TORO
+  canonical_specialists:
+    TORO:
+      agent_key: AGENT-TORO-OS
+      canonical_skill: toro-brain
+      aliases:
+        - toro-os-hospitality
+        - toro-manager
+      differentiator: second_order_business_reasoning
+    TERE:
+      agent_key: AGENT-TERE
+      canonical_skill: tere-revenue
+      aliases:
+        - tere-guest-sales
+      differentiator: guest_fit_sensing
+    RICO:
+      agent_key: AGENT-RICO
+      canonical_skill: rico-operations
+      aliases:
+        - rico-hotel-operations
+      differentiator: pre_failure_operational_detection
+    FIONA:
+      agent_key: AGENT-FIONA
+      canonical_skill: fiona-finance
+      aliases:
+        - fiona-hotel-finance
+      differentiator: reconciliation_without_self_deception
+    SKY:
+      agent_key: AGENT-SKY
+      canonical_skill: sky-growth
+      aliases:
+        - sky-experiences-growth
+      differentiator: commercial_productization_of_context
+    SOBRESITO:
+      agent_key: AGENT-SOBRESITO
+      canonical_skill: sobresito-systems
+      aliases:
+        - sobresito-hotel-systems
+      differentiator: reversible_observable_system_design
+  codex:
+    status: governed_implementation_tool
+    archived_agent_record_allowed_for_provenance: true
+    business_authority: false
+    governed_by:
+      - TORO
+      - SOBRESITO
+  profile_rule:
+    durable_behavior_only: true
+    volatile_business_truth_in_profile: false
+    volatile_truth_resolves_from_current_authority: true
+  skill_maturity:
+    - documented
+    - candidate
+    - structurally_validated
+    - scenario_tested
+    - pilot
+    - runtime_verified
+    - measured
+    - superseded_or_retired
+  routing_requires_negative_triggers: true
+  correct_abstention_counts_as_success: true
+  handoff_requires_scope_authority_gap_output_risk_and_proof: true
+  runtime_claim_requires_direct_evidence: true
+  plugin_or_platform_skills_are_not_toro_owned_by_default: true
+  agent_steward:
+    status: documented_not_deployed
+    may_expand_own_permissions: false
+    may_approve_itself: false
+    may_create_unbounded_agents: false
 
 product_rules:
   one_master_brain: true
