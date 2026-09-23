@@ -1429,6 +1429,19 @@ This cognitive model is implemented through existing TORO subsystems and current
 
 ## Dreamcatcher proof requirement
 
+Canonical proving-ground contract:
+
+`docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md`
+
+Current proof order is evidence-driven:
+1. Guest-ready physical operation / maintenance.
+2. Breakfast / F&B.
+3. People / onboarding.
+4. Demand / booking / stay / post-stay.
+5. Finance-to-cash.
+
+The first live cognitive proof uses the existing `maintenance_daily_p0_p1_round` and `MNT-DAILY-P0-P1-20260923`; no new project/task is created. Repeated equivalent execution packets must be suppressed when the prior current packet remains unexecuted and no material delta exists.
+
 Before TORO can claim generalized “new business -> optimized -> autonomous” capability, Dreamcatcher must provide real evidence of:
 
 1. cross-functional Business Anatomy coverage;
