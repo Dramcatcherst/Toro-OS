@@ -129,3 +129,92 @@ Notion saved Skills search returned 0 active Skills (the workspace can create Sk
   - `agent_distinctiveness_and_handoff_envelope_v1`
 
 No production runtime activation, permission expansion, external publication, payment/reservation mutation or new agent/project was performed by this audit.
+
+
+## Continuation — context, policy and runtime-knowledge hygiene
+
+### 60-case evaluation contract
+- Added `data/toro_agent_eval_cases_v1.json`: 60 synthetic cases, 10 per active agent.
+- Added `docs/evidence/TORO_AGENT_EVAL_CONTRACT_COVERAGE_2026-09-23.md`.
+- Contract/static result after profile hardening: 60/60 cases have explicit expected behavior; runtime-tested = 0/60; runtime-verified = 0/60.
+- Added edge modes to all six profiles for urgency, missing data, tool/runtime failure, privacy and negative routing where applicable.
+
+### Airtable context-pack cleanup
+Before cleanup:
+- 43 context packs total;
+- 36 ACTIVE;
+- 6 ARCHIVED;
+- 1 DRAFT;
+- at least one ACTIVE non-canonical agent key (`tere`);
+- active packets contained stale mutable roster/commercial facts and old technical branch/PR/SHA routing.
+
+After cleanup:
+- 33 ACTIVE;
+- 9 ARCHIVED;
+- 1 DRAFT;
+- **0 invalid ACTIVE agent keys**;
+- **0 detected material stale-routing patterns** under the audit pattern set.
+
+Reversible actions:
+- normalized `TERE-ROOMS-TOURS-ROUTING-2026-07-18` to `AGENT-TERE`;
+- cleaned mutable roster/rate/policy facts from `CTX-TERE-WESPEAK-KNOWLEDGE-LOAD-2026-06-11`;
+- archived duplicate/stale `CTX-SOBRESITO-CODEX-EXECUTION-V1-20260825`;
+- consolidated CODEX builder context into `ctx_codex_governed_builder` under `AGENT-SOBRESITO`;
+- archived generic `CTX-PROMPT-CODEX-001`;
+- archived obsolete `CTX-TORO-MANAGER-V1-ARCH-C-20260825`;
+- refreshed FIONA, RICO, SKY and SOBRESITO generic prompt packs to current role contracts;
+- removed stale August branch/PR/HEAD snapshot from active WeSpeak/Kross link-health context.
+
+Learning rule added:
+- `active_agent_context_routing_freshness_hygiene_v1`.
+
+### Airtable policy-key normalization
+Seven ACTIVE policy records used non-agent values in `agent_key` (`all_agents`, `all_tables`, `report_runs`, `website_generation`, `staff_directory`, `media_assets`).
+
+They were normalized to real owners while preserving `scope` / `applies_to`:
+- global governance/privacy/autonomy/report/media rules -> `AGENT-TORO-OS`;
+- website generation gate -> `AGENT-SOBRESITO`;
+- staff-directory privacy -> `AGENT-FIONA`.
+
+Post-check:
+- 37 ACTIVE policies;
+- **0 invalid ACTIVE policy agent keys**.
+
+### Supabase runtime-knowledge reconciliation
+Read-only schema audit found no dedicated agent/skill/capability table in the main Supabase project. Existing `operations.knowledge_items` already supports `ai_behavior_rule`, so **no new table or agent registry was created**.
+
+Existing records reconciled:
+1. `toro_agent_architecture_v1`
+   - version -> `TORO-AGENT-SKILL-SYSTEM-v1.1`;
+   - six differentiated directors + canonical skill aliases;
+   - 60-case contract coverage stored as 60 supported / 0 runtime tested / 0 runtime verified;
+   - state explicitly `CONFIG_APPLIED_RUNTIME_UNVERIFIED`.
+
+2. `wespeak_tere_compact_context_packet_2026_09_v1`
+   - upgraded to compact-context v2;
+   - always-loaded layer now contains behavior/authority/privacy only;
+   - staff rosters, remembered prices/payment schedules, hardcoded hours/access/Wi-Fi/promotions and other variable facts moved to fetch-on-demand authority;
+   - state `CONFIG_RECONCILED_RUNTIME_UNVERIFIED`.
+
+3. `tere_guest_journey_contract_2026_09_v1`
+   - journey stages remain durable;
+   - check-in/out, promotions, menu/wellness and other changing facts now resolve from current authority;
+   - TICOS is no longer hardcoded active; state is fetched from current promotion authority;
+   - runtime consumption remains `UNVERIFIED`.
+
+Rollback snapshot created before Supabase writes:
+- `docs/evidence/TORO_AGENT_RUNTIME_KNOWLEDGE_PRECHANGE_2026-09-23.json`
+- Git commit: `5fabd5f438a6ac4177bb131fce4fa5afbae72ab6`.
+
+### Current verified boundary
+Configuration/alignment is now materially cleaner across GitHub + Airtable + Supabase.
+
+Still **not proven**:
+- actual OpenClaw/Codex/WeSpeak skill loading;
+- exact runtime profile version/hash;
+- 60 synthetic outputs;
+- runtime evaluator scores;
+- Agent Steward runtime deployment;
+- outcome telemetry.
+
+Do not promote any agent or skill to `scenario_tested` / `runtime_verified` until the target runtime produces direct evidence.
