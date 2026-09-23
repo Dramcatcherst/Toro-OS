@@ -9,6 +9,24 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+general_plan_governance:
+  canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  canonical_name: TORO Brain General Plan
+  aliases:
+    - Plan General
+    - plan general
+    - Total Brain
+  no_parallel_master_plans: true
+  all_new_initiatives_must_map_to_general_plan: true
+  all_subsystems_must_be_children_of_general_plan: true
+  all_execution_plans_are_subordinate: true
+  every_material_request_requires_generalization_scan: true
+  every_material_request_requires_scope_assignment: true
+  every_material_request_requires_subsystem_assignment: true
+  every_material_request_requires_current_target_next_future_classification: true
+  duplicates_must_be_merge_retire_or_explicit_exception: true
+  future_ideas_are_recorded_but_not_automatically_prioritized: true
+
 build_order:
   - identity_constitution_context
   - business_truth_model
