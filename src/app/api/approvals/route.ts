@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { auditSeed } from "@/lib/approval-store";
-import { applyApprovalUpdate, getApprovalLedger, persistApprovalLedger } from "@/lib/server/approval-ledger";
+import { authorizeToroApi } from "@/lib/server/api-auth";
+import {
+  applyApprovalUpdate,
+  getApprovalLedger,
+  persistApprovalLedger,
+} from "@/lib/server/approval-ledger";
 import type { ApprovalState } from "@/lib/toro-types";
 
+const approvalRoles = ["FOUNDER", "GERENCIA"] as const;
+
 export async function GET() {
+  const auth = await authorizeToroApi(approvalRoles);
+  if (!auth.ok) return auth.response;
+
   const ledger = await getApprovalLedger();
 
   return NextResponse.json({
@@ -19,10 +30,17 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await authorizeToroApi(approvalRoles);
+  if (!auth.ok) return auth.response;
+
   const body = await request.json().catch(() => ({}));
   const approvalId = typeof body.id === "string" ? body.id : null;
   const requestedState = body.state as ApprovalState | undefined;
-  const isValidState = requestedState === "Pending" || requestedState === "Approved" || requestedState === "Rejected" || requestedState === "Needs changes";
+  const isValidState =
+    requestedState === "Pending" ||
+    requestedState === "Approved" ||
+    requestedState === "Rejected" ||
+    requestedState === "Needs changes";
 
   if (!approvalId || !isValidState) {
     return NextResponse.json(
@@ -36,13 +54,22 @@ export async function POST(request: NextRequest) {
   }
 
   const ledger = await getApprovalLedger();
-  const approvals = applyApprovalUpdate(ledger.approvals, approvalId, requestedState);
+  const approvals = applyApprovalUpdate(
+    ledger.approvals,
+    approvalId,
+    requestedState,
+  );
   const summary = approvals.reduce(
     (acc, approval) => {
       acc[approval.state] += 1;
       return acc;
     },
-    { Pending: 0, Approved: 0, Rejected: 0, "Needs changes": 0 } as Record<ApprovalState, number>,
+    {
+      Pending: 0,
+      Approved: 0,
+      Rejected: 0,
+      "Needs changes": 0,
+    } as Record<ApprovalState, number>,
   );
 
   if (ledger.backend !== "cookie_fallback") {
@@ -56,7 +83,8 @@ export async function POST(request: NextRequest) {
       requestedState,
       approvals,
       summary,
-      auditMessage: "Approval decision persisted in the TORO OS internal ledger store. No external business system was modified.",
+      auditMessage:
+        "Approval decision persisted in the TORO OS internal ledger store. No external business system was modified.",
       updatedAt: persisted.updatedAt,
     });
   }
@@ -70,21 +98,26 @@ export async function POST(request: NextRequest) {
     requestedState,
     approvals,
     summary,
-    auditMessage: "Approval decision fell back to cookie persistence because no durable store is configured.",
+    auditMessage:
+      "Approval decision fell back to cookie persistence because no durable store is configured.",
     updatedAt: new Date().toISOString(),
   });
 
   const persisted = await persistApprovalLedger(approvals, response.cookies);
-  return NextResponse.json({
-    mode: persisted.mode,
-    backend: persisted.backend,
-    durable: persisted.durable,
-    externalWrite: false,
-    approvalId,
-    requestedState,
-    approvals,
-    summary,
-    auditMessage: "Approval decision fell back to cookie persistence because no durable store is configured.",
-    updatedAt: persisted.updatedAt,
-  }, { headers: response.headers });
+  return NextResponse.json(
+    {
+      mode: persisted.mode,
+      backend: persisted.backend,
+      durable: persisted.durable,
+      externalWrite: false,
+      approvalId,
+      requestedState,
+      approvals,
+      summary,
+      auditMessage:
+        "Approval decision fell back to cookie persistence because no durable store is configured.",
+      updatedAt: persisted.updatedAt,
+    },
+    { headers: response.headers },
+  );
 }
