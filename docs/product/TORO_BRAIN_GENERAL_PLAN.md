@@ -3,7 +3,7 @@
 **Status:** CURRENT MASTER PLAN
 **Date:** 2026-09-22
 **Master product:** TORO Brain
-**Operating layer:** TORO OS
+**Visible brand/product:** TORO Brain
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
@@ -26,9 +26,9 @@ TORO Brain should eventually allow one Principal to operate a complex portfolio 
 - one evidence/audit model;
 - reusable skills learned without leaking private scope data.
 
-TORO OS is the business operating/execution layer powered by TORO Brain.
+The operating/execution layer is an internal capability of TORO Brain, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
 
-Normal users experience **one TORO**.
+Normal users experience **one TORO Brain**.
 
 ---
 
@@ -47,8 +47,8 @@ Master brain:
 - system auditing;
 - proactive improvement.
 
-## TORO OS
-Execution layer inside a business/workspace:
+## TORO Brain operating/execution layer
+Execution capabilities inside a business/workspace:
 - dashboards;
 - workflows;
 - tasks;
@@ -88,6 +88,21 @@ Internal routing, not separate systems:
 - TORO FIONA
 - TORO SKY
 - TORO SOBRESITO
+
+---
+
+
+## Brand identity canon — owner approved 2026-09-22
+
+- **Only visible brand/product:** TORO Brain.
+- **Bull metaphor:** the bull represents the business as a large, powerful living organization.
+- **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
+- **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
+- **Do not use:** bullfighting/violence imagery, a generic replacement bull, or TORO OS as a parallel visible brand/product/brain.
+- **Current full-logo master:** `1001725196.png`, 1536×1536, SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`.
+- **Current symbol-only master:** `1001725217.png`, 1536×1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
+- Previous logo hashes remain lineage/history, not current masters.
+- Professional closeout still requires: vector master, small-size/favicons, monochrome/reverse variants, typography/license specification, clear-space/min-size rules, durable rights evidence, trademark/domain checks and governed permanent-file storage.
 
 ---
 
@@ -466,7 +481,7 @@ TORO Brain is the only portfolio root and owns the General Plan.
 
 Active hierarchy:
 - TORO Brain · Portafolio General
-  - TORO OS · Sistema Operativo y Ejecución
+  - TORO Brain · Sistema Operativo y Ejecución
   - Dreamcatcher Hotel · Proyecto Madre
     - Dreamcatcher · Datos e Integraciones
     - Dreamcatcher · Operación Hotelera
@@ -489,7 +504,7 @@ Current audit:
 
 Technical project keys are retained for compatibility and do not redefine architecture:
 - toro_os_portfolio_master = TORO Brain portfolio root;
-- toro_executive_control = TORO OS operating/execution module;
+- toro_executive_control = TORO Brain operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
 - business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
 
 ## Canonical
