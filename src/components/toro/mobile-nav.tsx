@@ -3,7 +3,10 @@ import Link from "next/link";
 import type { NavItem } from "@/features/auth/role-nav";
 
 export function MobileNav({ items }: { items: NavItem[] }) {
-  const visibleItems = items.slice(0, 5);
+  const visibleItems = [
+    ...items.filter((item) => item.availability === "available"),
+    ...items.filter((item) => item.availability === "coming-soon"),
+  ].slice(0, 5);
 
   return (
     <nav
