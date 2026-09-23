@@ -137,7 +137,7 @@ Therefore:
 - canonical repository deployments are visible in Vercel project `toro-pr11-preview`;
 - legacy runtime lineage remains visible in `toro-os-v03`, sourced from `toro-os-v88-new`;
 - current canonical code's read-only Vercel connector can target a project/team through `VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID`;
-- current connector health fallback still points at the legacy `toro-os-v03` project, which is consistent with monitoring the current legacy runtime until cutover;
+- canonical connector health and `/api/connectors/vercel` now share one Vercel runtime resolver whose fallback is the canonical `toro-pr11-preview` project; explicit `VERCEL_PROJECT_ID` / `VERCEL_TEAM_ID` overrides remain supported, and regression tests forbid the legacy project/alias from returning as the default;
 - `VERCEL_TOKEN` is required for live deployment reads;
 - `BLOB_READ_WRITE_TOKEN` changes approval-ledger persistence from non-durable cookie fallback to Vercel Blob;
 - preview/auth plans require Supabase public URL/publishable configuration and prohibit service-role exposure in browser contexts.
