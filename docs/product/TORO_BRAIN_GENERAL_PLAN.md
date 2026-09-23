@@ -766,6 +766,49 @@ It may not silently become another "master plan".
 
 Any execution plan that conflicts with this Plan General is subordinate and must be reconciled.
 
+## No parallel-project rule — P0
+
+The Plan General is also the portfolio-routing authority.
+
+Before any project-like identity is created, TORO Brain must resolve:
+1. scope/entity;
+2. existing project home in `operations.projects`;
+3. `parent_project_key`;
+4. `canonical_module_key`;
+5. current tasks/workstreams;
+6. source authority and consumers.
+
+**Hard rule:** within one organization there may be at most one active project per `canonical_module_key`.
+
+If the same result/capability/domain already has a canonical home, the new work is recorded there as a task, milestone, workstream, capability, branch/PR, document or deliverable. It is not a new project.
+
+The following are not project identities by themselves:
+- chats/prompts;
+- agents/subagents;
+- Git branches or pull requests;
+- Airtable bases;
+- Vercel projects;
+- dashboards/apps;
+- Superpowers plans;
+- documents/runbooks.
+
+If destination is uncertain: **do not create a project**. Record the ambiguity inside the nearest canonical module and resolve it there.
+
+A new project identity is allowed only for a materially separate scope such as:
+- separate business;
+- separate property;
+- external product;
+- legally separate scope.
+
+Even then it must remain under `toro_os_portfolio_master` and declare owner, authority, consumers, done criteria and retirement/convergence criteria.
+
+Historical absorbed projects remain `MERGED/inactive`; a new chat or implementation surface does not reactivate them.
+
+Machine enforcement contract:
+- `toro_no_parallel_projects_rule_v1`
+- `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`
+- DRAFT DB gate: `20260922214000_toro_project_uniqueness_gate.sql`
+
 ## Continuous improvement rule
 
 On each substantive pass, TORO Brain checks:
