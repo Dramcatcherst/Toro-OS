@@ -220,6 +220,8 @@ The menu shown to a person is a projection of:
 
 `identity ∩ active context ∩ membership ∩ role ∩ position ∩ permission ∩ enabled capabilities ∩ current state ∩ relevance`
 
+Prefer stable position codes for routing when available; use the visible position name only as a compatibility/fallback signal. Renaming or translating a job title must not silently change the user's TORO experience.
+
 Personalization never grants authority.
 
 Menu visibility is not permission.

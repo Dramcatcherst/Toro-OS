@@ -22,6 +22,7 @@ export type ToroMenuResolutionInput = {
   mode: ToroContextMode;
   roles?: ToroCanonicalRole[];
   positionName?: string | null;
+  positionCode?: string | null;
   externalAudience?: "guest" | "guest_or_prospect" | null;
   guestLifecycle?: ToroGuestLifecycle | null;
   capabilityStates?: Record<string, ToroMenuAvailabilityState>;
