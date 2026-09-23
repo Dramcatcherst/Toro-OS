@@ -1780,3 +1780,19 @@ After PR #87 passes:
 2. perform representative employee hosted/mobile QA when a safe employee identity is available;
 3. add leave-request creation as a separately gated write workflow;
 4. do not retire DreamTeam UI until self-service parity + pilot evidence exists.
+
+
+### Dependency security finding — 2026-09-23
+
+CURRENT:
+- canonical CI `npm ci` reports 5 dependency vulnerabilities: 2 moderate, 3 high;
+- this is a package-audit signal, not proof that all findings are exploitable in TORO runtime.
+
+RULE:
+- do not run `npm audit fix --force` automatically;
+- TORO Systems/Builder must identify affected packages, production reachability, patched versions, compatibility risk and rollback before upgrading;
+- dependency security becomes part of the recurring system/dependency audit profile.
+
+NEXT:
+- produce a dependency vulnerability triage after current People/Portal PR gates finish;
+- patch only through tested PRs with tests/lint/build and preview evidence.
