@@ -656,7 +656,10 @@ role_toolbox_system:
 conversational_menu_system:
   canonical_spec: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   runtime_resolver: src/features/menu/resolver.ts
-  runtime_resolver_status: implemented_pure_with_conservative_phrase_resolution_not_connected_to_user_surface
+  experience_lab_route: /experience-lab
+  experience_lab_data: synthetic_only
+  experience_lab_external_writes: false
+  runtime_resolver_status: connected_to_synthetic_experience_lab_not_production_surface
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
   structured_submenus: data/toro_conversational_submenus_v2.json
   implementation_status: specified_not_runtime_verified
