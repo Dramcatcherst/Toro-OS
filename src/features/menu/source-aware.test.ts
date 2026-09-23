@@ -26,6 +26,7 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         projects: probe(41, { fresh: true }),
         tasks: probe(344, { fresh: true }),
         maintenanceEvents: probe(163, { fresh: true }),
+        inspectionFieldCapture: probe(0),
         reservations: probe(33, { fresh: false }),
         currentReservationsSafe: probe(0),
         krossCurrentHealth: probe(0),
@@ -58,6 +59,7 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         projects: probe(1, { fresh: true }),
         tasks: probe(1, { fresh: true }),
         maintenanceEvents: probe(1, { fresh: true }),
+        inspectionFieldCapture: probe(0),
         reservations: probe(33, { fresh: false }),
         currentReservationsSafe: probe(0),
         krossCurrentHealth: probe(0),
@@ -86,6 +88,7 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         projects: probe(0),
         tasks: probe(0),
         maintenanceEvents: probe(0),
+        inspectionFieldCapture: probe(0),
         reservations: probe(33, { fresh: false }),
         currentReservationsSafe: probe(4),
         krossCurrentHealth: probe(1),
@@ -110,6 +113,7 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         projects: probe(0),
         tasks: probe(0),
         maintenanceEvents: probe(0),
+        inspectionFieldCapture: probe(0),
         reservations: probe(33, { fresh: false }),
         currentReservationsSafe: probe(4),
         krossCurrentHealth: probe(0),
@@ -124,6 +128,56 @@ describe("evaluateSourceAwareCapabilityStates", () => {
     expect(result.states["guest.arrivals_departures"]).toBe("BLOCKED");
   });
 
+  it("uses current field-capture data for maintenance priorities", () => {
+    const result = evaluateSourceAwareCapabilityStates(
+      {
+        "maintenance.priorities": "BLOCKED",
+      },
+      {
+        executiveDecisions: probe(0),
+        projects: probe(0),
+        tasks: probe(0),
+        maintenanceEvents: probe(1, { fresh: false }),
+        inspectionFieldCapture: probe(21, { fresh: true }),
+        reservations: probe(0),
+        currentReservationsSafe: probe(0),
+        krossCurrentHealth: probe(0),
+        stays: probe(0),
+        rooms: probe(0),
+        villas: probe(0),
+        experiences: probe(0),
+        bankTransactions: probe(0),
+      },
+    );
+
+    expect(result.states["maintenance.priorities"]).toBe("READ_ONLY");
+  });
+
+  it("keeps maintenance priorities blocked when field capture and maintenance events are not current", () => {
+    const result = evaluateSourceAwareCapabilityStates(
+      {
+        "maintenance.priorities": "BLOCKED",
+      },
+      {
+        executiveDecisions: probe(0),
+        projects: probe(0),
+        tasks: probe(0),
+        maintenanceEvents: probe(1, { fresh: false }),
+        inspectionFieldCapture: probe(21, { fresh: false }),
+        reservations: probe(0),
+        currentReservationsSafe: probe(0),
+        krossCurrentHealth: probe(0),
+        stays: probe(0),
+        rooms: probe(0),
+        villas: probe(0),
+        experiences: probe(0),
+        bankTransactions: probe(0),
+      },
+    );
+
+    expect(result.states["maintenance.priorities"]).toBe("BLOCKED");
+  });
+
   it("fails closed when a source is unreadable", () => {
     const result = evaluateSourceAwareCapabilityStates(
       { "projects.status": "BLOCKED" },
@@ -132,6 +186,7 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         projects: probe(41, { readable: false }),
         tasks: probe(0, { readable: false }),
         maintenanceEvents: probe(0, { readable: false }),
+        inspectionFieldCapture: probe(0),
         reservations: probe(0, { readable: false }),
         currentReservationsSafe: probe(0, { readable: false }),
         krossCurrentHealth: probe(0, { readable: false }),
