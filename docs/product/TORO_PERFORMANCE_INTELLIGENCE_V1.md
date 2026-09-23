@@ -366,6 +366,16 @@ A metric can be **trusted for decision use** only when relevant checks pass.
 13. reconciliation tolerance defined;
 14. material conflicts recorded in `integrations.data_conflicts`.
 
+### Freshness gate
+
+Current-state questions require current-state evidence.
+
+- every live/current metric declares a maximum acceptable source age;
+- when the source exceeds that threshold, TORO must not present it as `CURRENT` even if the snapshot is internally consistent;
+- stale snapshots may still support historical/dated analysis when their cutoff is explicit;
+- questions such as “today”, “now”, current availability, current occupancy, current balance, current in-house state or current pickup must fail closed when the relevant authority is stale or non-live;
+- freshness is evaluated per metric/source; a fresh marketing signal does not refresh PMS or cash.
+
 ### Quality label
 
 - **GREEN** — decision-ready for the declared scope.
