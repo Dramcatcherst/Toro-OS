@@ -1,22 +1,26 @@
--- TORO Brain maintenance no-delta rollover guard
--- Proposed/applied via Supabase governed migration path.
--- Rollback source: docs/evidence/maintenance_daily_round_prechange_20260923.sql
--- Pre-change MD5: 080aca2d53cc87f637ac2ddb9a5e75c9
+-- TORO Brain maintenance material-delta-aware no-rollover guard
+-- Second hardening pass, 2026-09-23.
+-- Replaces the first no-delta guard with target-change detection.
+-- First-guard MD5 before this migration: 41c3b8c4b137f150baab2952e58dfa31
+-- Full rollback to original behavior:
+-- docs/evidence/maintenance_daily_round_prechange_20260923.sql
 
 CREATE OR REPLACE FUNCTION facilities.create_daily_maintenance_round(p_round_date date)
-RETURNS TABLE(inspection_round_id uuid, round_key text, check_count integer, generic_new_task_checks integer)
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path TO ''
+ RETURNS TABLE(inspection_round_id uuid, round_key text, check_count integer, generic_new_task_checks integer)
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO ''
 AS $function$
 declare
   v_new_key text := 'MNT-DAILY-P0-P1-' || to_char(p_round_date,'YYYYMMDD');
   v_prev_round_id uuid;
   v_prev_round_key text;
   v_prev_round_status text;
+  v_prev_round_created_at timestamptz;
   v_prev_required_count integer := 0;
   v_prev_pending_count integer := 0;
   v_uncovered_task_count integer := 0;
+  v_target_delta_count integer := 0;
   v_new_round_id uuid;
   v_generic_count integer := 0;
 begin
@@ -34,8 +38,8 @@ begin
     return;
   end if;
 
-  select r.id,r.round_key,r.status
-    into v_prev_round_id,v_prev_round_key,v_prev_round_status
+  select r.id,r.round_key,r.status,r.created_at
+    into v_prev_round_id,v_prev_round_key,v_prev_round_status,v_prev_round_created_at
   from facilities.inspection_rounds r
   where r.round_key like 'MNT-DAILY-P0-P1-%'
     and r.round_key < v_new_key
@@ -68,6 +72,19 @@ begin
         and (c.target_task_id=t.id or c.parent_task_id=t.id)
     );
 
+  select count(*)::integer
+    into v_target_delta_count
+  from facilities.inspection_checks c
+  left join facilities.maintenance_events e on e.id=c.target_event_id
+  left join operations.tasks t on t.id=c.target_task_id
+  left join operations.tasks pt on pt.id=c.parent_task_id
+  where c.inspection_round_id=v_prev_round_id
+    and (
+      (c.target_event_id is not null and e.updated_at > v_prev_round_created_at)
+      or (c.target_task_id is not null and t.updated_at > v_prev_round_created_at)
+      or (c.parent_task_id is not null and pt.updated_at > v_prev_round_created_at)
+    );
+
   -- Cognitive proof guard:
   -- A scheduled artifact is not an outcome. If the previous logical round is still
   -- completely unexecuted and no new P0/P1 task is uncovered, reuse it instead of
@@ -75,7 +92,8 @@ begin
   if v_prev_round_status='ready'
      and v_prev_required_count > 0
      and v_prev_pending_count = v_prev_required_count
-     and v_uncovered_task_count = 0 then
+     and v_uncovered_task_count = 0
+     and v_target_delta_count = 0 then
     return query
     select v_prev_round_id,v_prev_round_key,
            (select count(*)::integer from facilities.inspection_checks c where c.inspection_round_id=v_prev_round_id),
@@ -205,4 +223,5 @@ begin
          (select count(*)::integer from facilities.inspection_checks c where c.inspection_round_id=v_new_round_id),
          v_generic_count;
 end;
-$function$;
+$function$
+
