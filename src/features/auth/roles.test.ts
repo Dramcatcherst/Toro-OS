@@ -28,6 +28,10 @@ describe("resolveToroRole", () => {
     expect(resolveToroRole({ systemRoleCodes: ["CONTABILIDAD"] })).toBe("FINANZAS");
   });
 
+  it("maps the existing REVENUE system role into the bounded finance surface", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["REVENUE"] })).toBe("FINANZAS");
+  });
+
   it("does not infer field access from EMPLEADO alone", () => {
     expect(resolveToroRole({ systemRoleCodes: ["EMPLEADO"] })).toBeNull();
   });
@@ -142,5 +146,24 @@ describe("getRoleNavigation", () => {
     expect(labels).toContain("Dinero");
     expect(labels).not.toContain("Huéspedes");
     expect(labels).not.toContain("Hotel");
+  });
+
+  it.each(["FOUNDER", "GERENCIA", "FINANZAS"] as const)(
+    "exposes the private Revenue surface to %s",
+    (role) => {
+      expect(getRoleNavigation(role)).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            label: "Revenue",
+            availability: "available",
+            href: "/toro/revenue",
+          }),
+        ]),
+      );
+    },
+  );
+
+  it("keeps Revenue out of reception navigation", () => {
+    expect(getRoleNavigation("RECEPCION").map((item) => item.label)).not.toContain("Revenue");
   });
 });
