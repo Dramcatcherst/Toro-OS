@@ -341,6 +341,24 @@ Persistent cross-channel progress remains TARGET and must land only in the canon
 
 ---
 
+## 8B. First-value handoff — 2026-09-23
+
+The onboarding UI now reorders its first choices using the authenticated **source-aware menu**.
+
+Rules:
+- readable/verified menu capabilities are offered before blocked ones;
+- only capabilities already promoted to `READ_ONLY` may become direct first-value destinations;
+- focusable reads are preferred in onboarding choices because they can produce immediate visible value;
+- if the user's choice matches an available first-value target, that target is shown first at completion;
+- if no safe target matches, TORO returns to `/my-toro` without pretending the requested workflow is ready;
+- onboarding does not promote a capability; it only consumes the same readiness decision as Mi TORO.
+
+Current effect for Dreamcatcher:
+- Reception can start with current room/villa or experience catalog reads while live arrivals, guest inbox and quoting remain blocked until their authority is current;
+- Owner onboarding is compressed because identity/business context is already known and is not re-asked.
+
+---
+
 ## 9. State model
 
 Conceptual states:
