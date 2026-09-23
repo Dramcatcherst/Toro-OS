@@ -5,6 +5,7 @@ import { ArrowRight, MessageCircle, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { resolveToroMenuIntent } from "./resolver";
+import type { ToroCapabilitySafeAlternative } from "./server";
 import type { ToroResolvedMenu } from "./types";
 
 export function MyToroCommandBar({
@@ -12,15 +13,19 @@ export function MyToroCommandBar({
   focusableCapabilities,
   currentFocus,
   availableSubmenus,
+  capabilityAlternatives,
 }: {
   menu: ToroResolvedMenu;
   focusableCapabilities: string[];
   currentFocus?: string | null;
   availableSubmenus: Record<string, ToroResolvedMenu>;
+  capabilityAlternatives: Record<string, ToroCapabilitySafeAlternative>;
 }) {
   const router = useRouter();
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [safeAlternative, setSafeAlternative] =
+    useState<ToroCapabilitySafeAlternative | null>(null);
   const [activeSubmenuKey, setActiveSubmenuKey] = useState<string | null>(null);
   const focusable = useMemo(
     () => new Set(focusableCapabilities),
@@ -58,6 +63,7 @@ export function MyToroCommandBar({
 
       if (next && next.capability !== currentFocus) {
         setFeedback(null);
+      setSafeAlternative(null);
         navigateToCapability(next.capability);
       } else {
         setFeedback("No hay otra lectura disponible ahora. Puedes volver al inicio.");
@@ -69,6 +75,7 @@ export function MyToroCommandBar({
 
     if (resolution.kind === "home") {
       setFeedback(null);
+      setSafeAlternative(null);
       setActiveSubmenuKey(null);
       router.push("/my-toro");
       return;
@@ -76,6 +83,7 @@ export function MyToroCommandBar({
 
     if (resolution.kind === "back") {
       setFeedback(null);
+      setSafeAlternative(null);
       if (activeSubmenuKey) {
         setActiveSubmenuKey(null);
       } else {
@@ -102,18 +110,24 @@ export function MyToroCommandBar({
       const submenu = availableSubmenus[resolution.item.key];
       if (!activeSubmenuKey && submenu) {
         setFeedback(null);
+      setSafeAlternative(null);
         setActiveSubmenuKey(resolution.item.key);
         return;
       }
 
       if (focusable.has(resolution.item.capability)) {
         setFeedback(null);
+      setSafeAlternative(null);
         navigateToCapability(resolution.item.capability);
         return;
       }
 
+      const alternative = capabilityAlternatives[resolution.item.capability] ?? null;
+      setSafeAlternative(alternative);
       setFeedback(
-        `“${resolution.item.label}” pertenece a tu menú, pero todavía no tiene una lectura actual habilitada en esta superficie.`,
+        alternative
+          ? `“${resolution.item.label}” todavía no puede resolverse dentro de TORO con fuente live. Puedes continuar en el canal oficial.`
+          : `“${resolution.item.label}” pertenece a tu menú, pero todavía no tiene una lectura actual habilitada en esta superficie.`,
       );
       return;
     }
@@ -205,7 +219,22 @@ export function MyToroCommandBar({
 
       {feedback ? (
         <div className="mt-3 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-100/80">
-          {feedback}
+          <div>{feedback}</div>
+          {safeAlternative ? (
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <a
+                href={safeAlternative.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 self-start rounded-full border border-amber-200/25 bg-amber-200/10 px-3 py-2 text-xs font-semibold text-amber-50 hover:border-amber-200/45"
+              >
+                {safeAlternative.label} <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+              <span className="max-w-md text-xs leading-5 text-amber-100/60">
+                {safeAlternative.note}
+              </span>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </section>
