@@ -33,7 +33,7 @@ Documentation/configuration alone never counts as VERIFIED.
 | 4 | Maintenance issue -> assignment -> proof of ready | RICO / Operations | Current maintenance cognitive pilot; facilities maintenance objects; no-delta guard verified | RUNNING | Capture real field result(s), owner, completion evidence and verified closure |
 | 5 | Room/area readiness before guest impact | RICO / Operations | Current guest-ready maintenance proof and inspection structures | RUNNING | Convert inspection/maintenance evidence into explicit ready/not-ready outcome and measure prevented/recovered issue |
 | 6 | Omnichannel guest inquiry -> useful response | TERE + Comms | WeSpeak active runtime, TERE V3 config, Comms omnichannel contract | PREPARED | Verify runtime consumption + real channel identity/continuity; do not infer support for every channel |
-| 7 | Quote -> follow-up -> reservation handoff | TERE + Revenue | TERE sales logic, PMS/Kross authority contract, guest journey proof design | PREPARED / BLOCKED | Fresh live PMS/Kross authority required before current price/availability/booking claims |
+| 7 | Quote -> follow-up -> reservation handoff | TERE + Revenue | TERE sales logic, PMS/Kross authority contract, guest journey proof design; Kross live-read gate rebaselined 2026-09-23 | PREPARED / BLOCKED | Import schema exists, but there is still no verified Kross live transport/run. current_reservations_safe=0; quote additionally requires verified live price/availability authority. See docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md |
 | 8 | In-stay request / complaint -> service recovery | TERE + RICO + Comms | Message-to-task/incident contract, maintenance/tasks/guest structures | STRUCTURAL | Prove one message creates governed work, operational evidence and customer follow-up without duplicate shadow task |
 | 9 | Payment reminder / collection communication | FIONA + TERE + Comms | Finance authority model + new customer-lifecycle boundary | PREPARED / BLOCKED | Current authoritative amount/payment state and explicit collection policy/approval; customer-facing tone stays with TERE |
 | 10 | Finance reconciliation / cash exception | FIONA | Finance-to-cash pilot data, bank transactions/reconciliations/monthly metrics | PREPARED / BLOCKED | Current bank evidence and semantic reconciliation; historical volume is not current cash |
@@ -62,7 +62,10 @@ Do not create replacements for these existing streams:
 
 ### Guest journey
 - reuse for workflows 6, 7 and 8;
-- live PMS authority remains a hard gate for current reservation truth.
+- live PMS authority remains a hard gate for current reservation truth;
+- do not create a second Kross mirror;
+- arrivals/departures may promote only from operations.current_reservations_safe plus governed Kross health;
+- quote/availability remains separately blocked until verified live price/availability authority exists.
 
 ### Finance-to-cash
 - reuse for workflows 9 and 10;
