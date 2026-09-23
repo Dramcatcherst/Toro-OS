@@ -1636,3 +1636,44 @@ GATES:
 - No message send/write/read-state mutation yet.
 - No communication channel/binding tables yet.
 - OpenClaw bindings remain blocked by live runtime audit.
+
+
+### TORO People Self-Service Wave 1 — 2026-09-23
+
+CURRENT:
+- implementation branch: `feat/toro-people-self-service-wave1-20260923`;
+- draft PR: `#84 — add TORO People employee self-service read model`;
+- PR is mergeable and remains DRAFT;
+- HEAD Vercel preview = SUCCESS;
+- no UI route, no write action and no production schema change.
+
+Wave 1 read model includes:
+- own employment identity summary;
+- own private contact/emergency profile through `employee_self_profile`;
+- upcoming shifts;
+- own leave requests;
+- own leave balances;
+- recent attendance.
+
+Security verified:
+- consumes canonical `ToroResolvedContext`;
+- Personal context denied;
+- active organization + employee link required;
+- authenticated Supabase session only; no service-role read;
+- RLS self-read policies exist for employees, shifts, leave requests/balances and attendance;
+- private HR table is not queried directly;
+- `employee_self_profile` is auth.uid()-scoped with fixed search_path;
+- server checks context user_id + org_id + employee_id before returning the snapshot;
+- private-profile/context employee mismatch blocks the result;
+- allowlisted projections exclude salary, bank data and arbitrary HR/shift JSON.
+
+GATE:
+- actual Vitest execution is still pending; Vercel build success is not counted as a test pass.
+- do not merge/cut over UI until the approved test runner executes the context, mapper and server boundary tests.
+
+NEXT:
+1. execute PR #84 tests through an approved runner;
+2. if PASS, merge into Phase 1;
+3. then build TORO People employee self-service UI on the shared TORO Portal shell;
+4. add leave-request creation only after read model/UI parity;
+5. pilot with one non-owner employee before broader DreamTeam retirement.
