@@ -7,7 +7,11 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
-import { formatMaintenanceProofItems } from "./maintenance-proof";
+import {
+  formatMaintenanceProofItems,
+  type MaintenanceProofCheckRow,
+  type MaintenanceProofQueueRow,
+} from "./maintenance-proof";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
   evaluateSourceAwareCapabilityStates,
@@ -382,8 +386,8 @@ async function loadMaintenanceProofFocus(
     capability,
     label,
     items: formatMaintenanceProofItems(
-      queueData as unknown as Array<Record<string, unknown>>,
-      checkData as Array<Record<string, unknown>>,
+      queueData as unknown as MaintenanceProofQueueRow[],
+      checkData as unknown as MaintenanceProofCheckRow[],
     ),
   };
 }
