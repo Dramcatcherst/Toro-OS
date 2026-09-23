@@ -126,6 +126,28 @@ The user enters the real product before completing every optional step.
 
 ---
 
+
+## 5A. Teach by doing, then reveal shortcuts
+
+Do not teach a full menu at the start.
+
+After the first useful outcome, show only 2–3 likely shortcuts based on role/context:
+
+> **Esto es lo que probablemente vas a usar más:**
+> 1️⃣ {shortcut}
+> 2️⃣ {shortcut}
+> 3️⃣ {shortcut}
+>
+> Puedes responder con el número, escribir la palabra o simplemente decirme qué necesitas.
+
+Rules:
+- menu is optional;
+- free text always works;
+- introduce secondary options later;
+- offer "personalizar mi menú" only after enough usage evidence exists;
+- onboarding can be continued with one-word/number answers whenever possible;
+- each onboarding turn should make it obvious what the user can answer next.
+
 ## 6. Business/admin onboarding path
 
 Business onboarding must be outcome-led rather than form-led.

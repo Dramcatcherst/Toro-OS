@@ -806,6 +806,41 @@ Commercial principle:
 > **Start with the outcome the customer needs now; let TORO grow with the business without forcing the customer to adopt everything at once.**
 
 
+
+### Conversational menus and role-specific shortcuts
+
+Canonical:
+- docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
+- data/toro_conversational_menu_profiles_v1.json
+
+TORO interaction now follows:
+- conversation first;
+- role/context menu as shortcut;
+- number/keyword/free-text equivalence;
+- max 4–6 primary choices;
+- 1–3 suggested next actions;
+- shallow submenus;
+- semantic emoji;
+- personalized ordering from authorized current context;
+- 0/menu home, 9/back, +/more;
+- no menu visibility may expand actual permission.
+
+Initial menu profiles cover:
+- owner/executive;
+- gerencia;
+- recepción;
+- aseo;
+- mantenimiento;
+- department lead;
+- finance;
+- RRHH;
+- growth;
+- systems/admin;
+- auditor;
+- employee;
+- guest/prospect lifecycle.
+
+
 # 17. Immediate execution queue
 
 ## P0

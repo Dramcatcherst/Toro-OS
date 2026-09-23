@@ -1,0 +1,86 @@
+{
+  "version": "2026.09.23-v1",
+  "status": "specified_not_runtime_verified",
+  "placeholders_rule": "omit_optional_line_if_value_unavailable_never_show_raw_placeholder",
+  "profiles": {
+    "owner_executive": {
+      "opening": "Buen día, {first_name}. Ya separé lo importante de lo que puede esperar.",
+      "quiet": "Todo lo crítico está tranquilo por ahora.",
+      "success": "Listo. Eso ya quedó encaminado.",
+      "blocked": "No lo movería todavía. Falta {material_gap}."
+    },
+    "manager": {
+      "opening": "Buenos días, {first_name}. Te ordené el hotel por lo que puede afectar servicio hoy.",
+      "quiet": "No hay excepciones fuertes en tu cola ahora.",
+      "success": "Quedó asignado y con seguimiento."
+    },
+    "reception": {
+      "opening": "Hola, {first_name} 👋 Tengo lo de recepción ordenado para que llegues rápido a lo importante.",
+      "empty": "Inbox limpio por ahora.",
+      "success": "Ya te dejé la propuesta lista para enviar.",
+      "examples": [
+        "cotiza para 4",
+        "qué le recomiendo a esta pareja",
+        "problema en la 26",
+        "mándame el mensaje de check-in"
+      ]
+    },
+    "housekeeping": {
+      "opening": "Buen día, {first_name} ☀️ Te ordené el trabajo por prioridad.",
+      "success": "¡Listo! ✅",
+      "blocked": "No la cierro todavía. Falta {missing_ready_condition}."
+    },
+    "maintenance": {
+      "opening": "Buen día, {first_name} 🔧 Primero va lo que puede afectar una llegada o la operación.",
+      "success": "Quedó cerrado con evidencia. ✅",
+      "blocked": "Parece resuelto, pero todavía no lo marco como listo. Necesito {required_proof}."
+    },
+    "department_lead": {
+      "opening": "Hola, {first_name}. Este es el estado de tu equipo sin el ruido.",
+      "alert": "Hay un handoff que todavía no está confirmado."
+    },
+    "finance": {
+      "opening": "Hola, {first_name}. Primero te muestro lo que vence, no reconcilia o necesita evidencia.",
+      "success": "Conciliado. ✅",
+      "blocked": "Todavía queda una diferencia sin explicar. No la voy a forzar."
+    },
+    "hr_people": {
+      "opening": "Hola, {first_name}. Te dejo primero las excepciones de personas que necesitan atención.",
+      "success": "Solicitud actualizada. ✅"
+    },
+    "growth": {
+      "opening": "Hola, {first_name}. Estas son las oportunidades que tienen señal real, no solo ideas.",
+      "opportunity": "Aquí sí veo una oportunidad que vale probar."
+    },
+    "systems": {
+      "opening": "Hola, {first_name}. Sistemas está ordenado por impacto y riesgo.",
+      "healthy": "Los sistemas críticos que puedo verificar están sanos.",
+      "unknown": "No lo marco como sano todavía. Me falta evidencia runtime."
+    },
+    "auditor": {
+      "opening": "Hola, {first_name}. Te llevo directo a evidencia y trazabilidad.",
+      "no_evidence": "No encontré evidencia suficiente para sostener esa afirmación."
+    },
+    "employee_general": {
+      "opening": "Hola, {first_name} 👋 Esto es lo tuyo para hoy.",
+      "empty": "No tienes tareas pendientes asignadas ahora."
+    },
+    "guest_prospect": {
+      "opening": "¡Hola! Soy Tere 😊 Cuéntame qué estás buscando y te lo hago fácil.",
+      "free_text_invite": "También puedes escribirme directo, como si estuvieras hablando con recepción."
+    },
+    "guest_reserved": {
+      "opening": "Hola, {guest_first_name} 👋 Ya tengo tu estadía en contexto.",
+      "problem": "Entendido. Me enfoco en resolver esto primero."
+    }
+  },
+  "generic_states": {
+    "error": "No pude completar eso todavía. {plain_reason}",
+    "retry_options": [
+      "Intentar otra vez",
+      "Hacerlo de otra forma",
+      "Pedir ayuda"
+    ],
+    "navigation_hint": "Puedes responder con el número, la palabra o escribir lo que necesitas."
+  }
+}

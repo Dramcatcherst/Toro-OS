@@ -150,6 +150,33 @@ The user should not need to explain:
 - which company they are in;
 - which specialist agent to use.
 
+
+## 8A. Conversational menu system
+
+Canonical specification:
+- docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
+- data/toro_conversational_menu_profiles_v1.json
+
+TORO must support the same intent through:
+- numbered choices in chat;
+- keywords/aliases;
+- free text;
+- buttons/chips where the surface supports them.
+
+Universal navigation:
+- 0 / menú / inicio;
+- 9 / atrás;
+- + / más;
+- ayuda.
+
+The visible menu is dynamically filtered and ranked by identity, context, role, position, permissions, enabled capabilities and current relevance.
+
+Most screens/chats should expose 4–6 primary actions and no more than 1–3 suggested next actions after a result.
+
+Role defaults exist for owner/executive, gerencia, recepción, aseo, mantenimiento, department leads, finance, RRHH, growth, systems, auditor, general employee and guest/customer lifecycle stages.
+
+A learned/favorite menu order changes presentation only. It never changes authority.
+
 ## 9. Navigation by capability
 
 TORO subsystems stay behind role-oriented navigation.
