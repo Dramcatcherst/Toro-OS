@@ -251,6 +251,18 @@ delivery_fabric:
   no_parallel_master_deployment: true
   preserve_historical_projects_until_dependency_audit: true
   destructive_cleanup_requires_explicit_gate: true
+  observed_active_business_deployments:
+    - business: Dreamcatcher Hotel
+      domain: dreamcatcherhotel.com
+      vercel_project: dreamcatcher-website-vnext-media-p0
+      source_repo: Dramcatcherst/dreamcatcher-website-vnext
+      relationship: reference_business
+    - business: La Julia Guatape
+      domain: lajuliaguatape.com
+      vercel_project: site-production-v1
+      source_repo: unknown_recover_before_create
+      relationship: separate_portfolio_business_or_project
+      alignment_issue: Dramcatcherst/Toro-OS#39
   material_initiative_traceability:
     - scope
     - subsystem
