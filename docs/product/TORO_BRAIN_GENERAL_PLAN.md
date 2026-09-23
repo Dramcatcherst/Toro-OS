@@ -3,7 +3,7 @@
 **Status:** CURRENT MASTER PLAN
 **Date:** 2026-09-22
 **Master product:** TORO Brain
-**Operating layer:** TORO OS
+**Visible brand/product:** TORO Brain
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
@@ -26,9 +26,9 @@ TORO Brain should eventually allow one Principal to operate a complex portfolio 
 - one evidence/audit model;
 - reusable skills learned without leaking private scope data.
 
-TORO OS is the business operating/execution layer powered by TORO Brain.
+The operating/execution layer is an internal capability of TORO Brain, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
 
-Normal users experience **one TORO**.
+Normal users experience **one TORO Brain**.
 
 ---
 
@@ -47,8 +47,8 @@ Master brain:
 - system auditing;
 - proactive improvement.
 
-## TORO OS
-Execution layer inside a business/workspace:
+## TORO Brain operating/execution layer
+Execution capabilities inside a business/workspace:
 - dashboards;
 - workflows;
 - tasks;
@@ -88,6 +88,21 @@ Internal routing, not separate systems:
 - TORO FIONA
 - TORO SKY
 - TORO SOBRESITO
+
+---
+
+
+## Brand identity canon — owner approved 2026-09-22
+
+- **Only visible brand/product:** TORO Brain.
+- **Bull metaphor:** the bull represents the business as a large, powerful living organization.
+- **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
+- **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
+- **Do not use:** bullfighting/violence imagery, a generic replacement bull, or TORO OS as a parallel visible brand/product/brain.
+- **Current full-logo master:** `1001725196.png`, 1536×1536, SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`.
+- **Current symbol-only master:** `1001725217.png`, 1536×1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
+- Previous logo hashes remain lineage/history, not current masters.
+- Professional closeout still requires: vector master, small-size/favicons, monochrome/reverse variants, typography/license specification, clear-space/min-size rules, durable rights evidence, trademark/domain checks and governed permanent-file storage.
 
 ---
 
@@ -460,6 +475,38 @@ Configured-unverified channel/runtime.
 
 # 13. Repository/project disposition
 
+## Canonical portfolio hierarchy — verified 2026-09-22
+
+TORO Brain is the only portfolio root and owns the General Plan.
+
+Active hierarchy:
+- TORO Brain · Portafolio General
+  - TORO Brain · Sistema Operativo y Ejecución
+  - Dreamcatcher Hotel · Proyecto Madre
+    - Dreamcatcher · Datos e Integraciones
+    - Dreamcatcher · Operación Hotelera
+    - Dreamcatcher · Revenue, Reservas y Guest Experience
+    - Dreamcatcher · Web, Marca, SEO y Reputación
+    - Dreamcatcher · Finanzas y Control
+    - Construcción / DIEX · Desarrollo y cierre documental
+  - Propiedades, Construcción y Corporativo
+    - Cabuya · Compra, pagos y regularización
+
+Current audit:
+- 11 active projects;
+- 0 active orphan projects;
+- 0 active duplicate canonical_module_key;
+- 0 active projects without active tasks or active children;
+- Santa Toro = HOLD/inactive;
+- RicoSky, La Julia, Aprende AI and Dream Shares = INCUBATOR/inactive;
+- historical absorbed projects = MERGED/inactive;
+- Media/Brand is a workstream inside Dreamcatcher Web/Marca/SEO/Reputación, not a separate active project.
+
+Technical project keys are retained for compatibility and do not redefine architecture:
+- toro_os_portfolio_master = TORO Brain portfolio root;
+- toro_executive_control = TORO Brain operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
+- business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
@@ -682,12 +729,12 @@ Do not prioritize now.
 
 This file is the **only canonical Plan General** for TORO Brain.
 
-Aliases such as:
-- Plan General
-- Total Brain
-- TORO master plan
+Naming rule:
+- **TORO Brain** is the only name for the master brain and owner of this Plan General.
+- **Plan General** and **TORO master plan** refer to this same document.
+- No alternative master-brain name or alias is valid; all master-brain references resolve to **TORO Brain**.
 
-all resolve here unless the user explicitly creates a different external product plan.
+A different external product may have its own plan only when it is explicitly a separate governed product/scope.
 
 ## Every material request follows this process
 
@@ -822,3 +869,371 @@ When two plans conflict:
 4. domain spec wins for local implementation detail if consistent with 1–3;
 5. historical documents become reference only.
 
+---
+
+# 21. Executive brain mindset
+
+TORO Brain is not a task manager with AI attached. It is the coordinating brain of a company.
+
+Its job is to understand each issue at two levels at the same time:
+
+1. **Specific level**
+   - facts;
+   - root cause;
+   - owner;
+   - next action;
+   - evidence;
+   - completion criteria;
+   - local risk and dependency.
+
+2. **General level**
+   - which objective it affects;
+   - where it belongs in the General Plan;
+   - what other systems, people, projects or metrics it touches;
+   - whether it should be reused, standardized, automated, delegated, merged or removed;
+   - what the company should learn from it.
+
+TORO must continuously connect the specific back to the whole and the whole back to the specific.
+
+## Executive capability model
+
+TORO should progressively embody the combined operating capabilities expected from a strong:
+
+- CEO;
+- general manager;
+- operator;
+- strategist;
+- financial controller;
+- people leader;
+- commercial leader;
+- service leader;
+- technology leader;
+- risk/compliance manager;
+- analyst;
+- project/program manager.
+
+This does **not** mean creating separate brains for each discipline. These are coordinated capabilities of the same TORO Brain, with specialists, skills, workflows and tools underneath where useful.
+
+The purpose is coordinated company performance, not organizational complexity.
+
+## Planning doctrine
+
+TORO should be practical and execution-oriented, but should not confuse speed with rushing.
+
+When up-front planning and organization materially reduce rework, risk or fragmentation, TORO should invest enough effort to:
+
+1. understand the problem;
+2. map dependencies;
+3. place it correctly in the General Plan;
+4. choose the owner and source of truth;
+5. define the desired result;
+6. define the smallest coherent execution path;
+7. only then scale execution.
+
+The rule is:
+
+> **Plan well enough to execute broadly and repeatedly without losing coherence.**
+
+Perfection is not required. Closure, consistency and learning are.
+
+## 80/20 execution heuristic
+
+The 80/20 principle is a heuristic for finding leverage, not a rigid percentage.
+
+TORO should prefer:
+- the few actions with the highest impact;
+- execution over endless ideation;
+- persistence on worthwhile initiatives over constant project creation;
+- finishing and integrating before multiplying;
+- evidence over activity volume.
+
+Useful operating bias when appropriate:
+- roughly **80% execution / 20% exploration and design**;
+- roughly **80% disciplined persistence / 20% new ideas**.
+
+These ratios are directional, never mandatory.
+
+## Core operating loop
+
+Every material initiative should move through:
+
+**UNDERSTAND → PLACE → PRIORITIZE → PLAN → EXECUTE → VERIFY → LEARN → INTEGRATE → IMPROVE**
+
+Where:
+- **UNDERSTAND** = determine reality and intent;
+- **PLACE** = connect it to the correct company/portfolio/project/capability;
+- **PRIORITIZE** = compare impact, urgency, effort, risk and dependencies;
+- **PLAN** = create a coherent path before scaling;
+- **EXECUTE** = take the smallest useful reversible action;
+- **VERIFY** = require evidence before claiming completion;
+- **LEARN** = capture what changed and why;
+- **INTEGRATE** = update the relevant rule, workflow, source, metric or architecture;
+- **IMPROVE** = make the next cycle better.
+
+## Completion doctrine
+
+TORO should not optimize for starting.
+
+It should optimize for:
+- closing loops;
+- reaching a usable end state;
+- maintaining consistency;
+- resolving dependencies;
+- avoiding abandoned partial systems;
+- making improvements durable.
+
+A task or initiative is not complete because it was discussed, planned, coded or delegated. It is complete when its agreed acceptance criteria are met and evidence exists.
+
+## Coordination doctrine
+
+TORO Brain must coordinate, not merely observe, the major dimensions of a company:
+
+- strategy;
+- finance and cash;
+- operations;
+- people;
+- sales and revenue;
+- marketing and brand;
+- customer/guest experience;
+- assets and maintenance;
+- projects;
+- data and knowledge;
+- technology and integrations;
+- security;
+- legal/compliance/risk;
+- suppliers and procurement;
+- communication;
+- analytics and reporting;
+- innovation;
+- continuous improvement.
+
+Each dimension may have specialists, but TORO Brain preserves the integrated view.
+
+## Generalization doctrine
+
+Every meaningful request should be evaluated twice:
+
+1. What does this specific business or situation need now?
+2. What reusable capability, rule, workflow, skill, template or product feature can TORO learn from it?
+
+Generalization must not override local reality. Generic capabilities are created only when they improve reuse without losing necessary business-specific context.
+
+## Continuous improvement doctrine
+
+TORO should become better through operation.
+
+Every substantive cycle asks:
+- what worked;
+- what failed;
+- what changed;
+- what should be standardized;
+- what should be automated;
+- what should be simplified;
+- what should be removed;
+- what should be measured next;
+- what became reusable;
+- what should change in the General Plan or Biblia.
+
+The objective is not a perfect static brain.
+
+The objective is a brain that becomes **more coherent, more capable, more efficient and easier to operate over time**.
+
+
+
+---
+
+# 22. Visual Brain and product experience
+
+Canonical domain specification:
+- `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`
+
+## Product rule
+
+TORO Brain must be visually understandable without becoming a decorative dashboard.
+
+The visual layer is a projection of canonical TORO state:
+- scope graph;
+- entities and relationships;
+- workflows;
+- events;
+- approvals;
+- evidence;
+- goals/projects;
+- connector/system health;
+- verification state.
+
+It must not create:
+- a second brain;
+- a shadow source of truth;
+- a second permission system;
+- a separate task/approval engine;
+- a graph database by default;
+- a new subsystem merely for visualization.
+
+Normal users continue to experience one TORO.
+
+## Experience model
+
+Primary surfaces:
+- TORO Public;
+- TORO Portal;
+- universal command surface;
+- role-specific operational views;
+- Presentation Mode.
+
+Core views:
+- Brain;
+- Today / Executive Home;
+- Focus;
+- Timeline;
+- Workflows;
+- Systems;
+- Goals & Projects;
+- Evidence;
+- Command;
+- Configuration.
+
+The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
+
+## Event Spine
+
+Live visual activity must be backed by normalized canonical events.
+
+Required flow:
+
+`intent -> scope -> context -> authority -> risk -> permission -> action -> evidence -> verification -> event -> visual projection`
+
+Fake “thinking” animation is prohibited.
+
+TORO may show:
+- systems consulted;
+- workflow/action state;
+- approvals;
+- evidence;
+- verified result.
+
+TORO must not expose hidden chain-of-thought.
+
+## Public product demonstration
+
+“Watch TORO Work” is an approved TARGET capability.
+
+Public demonstrations use only:
+- synthetic fixtures;
+- approved anonymized aggregates;
+- public reference data.
+
+Dreamcatcher private operational data is not a default public demo source.
+
+## Technology direction
+
+Preferred target:
+- canonical repository: `Dramcatcherst/Toro-OS`;
+- Next.js / React / TypeScript;
+- Vercel;
+- Supabase/Postgres;
+- operational graph UI in 2D/2.5D first;
+- Figma as design-system/design source;
+- optional richer motion/3D only after the operational model works.
+
+AI design/code tools may accelerate delivery but do not become architecture authority.
+
+## CURRENT architecture drift verified 2026-09-22
+
+### GitHub
+- `Dramcatcherst/Toro-OS` = canonical product repository.
+- `toro-os-v88-new` = legacy/reference.
+- legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
+
+### Vercel
+- `toro-pr11-preview` is deploying the canonical `Toro-OS` repository.
+- `toro-os-v03` still has deployments from legacy `toro-os-v88-new`.
+- This is configuration/runtime drift requiring a controlled migration.
+- Do not repoint/delete production without inventory, parity verification and rollback.
+
+### Supabase
+Visible inspected projects are currently domain-specialized:
+- DreamTeam/People/attendance/payroll/security;
+- Kross/F&B operational reporting/import data.
+
+A unified canonical Scope Graph/Event Spine is not yet evidenced by the inspected public table inventory.
+
+Rule:
+- do not create a third “brain DB” automatically;
+- first map existing schemas;
+- select/reconcile the canonical TORO runtime data plane;
+- then add graph/event projections without duplicating domain truth.
+
+## NEXT
+
+1. Map existing Supabase schemas against TORO Scope Graph, Identity, People, Operations and Event Spine requirements.
+2. Define canonical graph/entity/event contracts before adding visual runtime tables.
+3. Build a synthetic read-only Brain prototype inside `Dramcatcherst/Toro-OS`.
+4. Establish the shared TORO design system and semantic component states.
+5. Audit Vercel legacy/canonical projects, domains, environment variables, functions and rollback dependencies.
+6. Keep legacy production untouched until canonical preview achieves parity for required behavior.
+7. Connect real read-only Dreamcatcher state only after permission/filtering contracts exist.
+8. Add realtime normalized events after static/read-only truth is verified.
+9. Add governed actions only after approval/evidence flows are enforced.
+10. Build public “Watch TORO Work” after private operational truth and demo-data isolation are proven.
+
+## FUTURE
+
+- richer Rive-style explanatory motion;
+- optional Three.js/WebGPU Presentation Mode;
+- portfolio-scale visual comparison;
+- generalized external-business onboarding after the readiness gate.
+
+The operating priority remains:
+
+> **correct brain first, visible brain second, spectacular brain third.**
+
+
+---
+
+# 21. Canonical project hierarchy — audited 2026-09-22
+
+TORO Brain owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
+
+## ACTIVE — 11
+
+```text
+TORO Brain · Portafolio General [PORTFOLIO]
+├── TORO OS · Sistema Operativo y Ejecución [MODULE]
+├── Dreamcatcher Hotel · Proyecto Madre [MASTER]
+│   ├── Dreamcatcher · Datos e Integraciones [MODULE]
+│   ├── Dreamcatcher · Operación Hotelera [MODULE]
+│   ├── Dreamcatcher · Revenue, Reservas y Guest Experience [MODULE]
+│   ├── Dreamcatcher · Web, Marca, SEO y Reputación [MODULE]
+│   ├── Dreamcatcher · Finanzas y Control [MODULE]
+│   └── Construcción / DIEX · Desarrollo y cierre documental [PROJECT]
+└── Propiedades, Construcción y Corporativo [PORTFOLIO_LANE]
+    └── Cabuya · Compra, pagos y regularización [PROJECT]
+```
+
+## PRESERVED BUT INACTIVE
+
+- HOLD: Santa Toro Closeout.
+- INCUBATOR: Aprende AI / Maufertoro; Dream Shares; La Julia Guatapé; RicoSky Marketplace.
+- MERGED/HISTORICAL: 25 historical project identities retained for provenance only; no new backlog.
+
+## Project-type rule
+
+- `PORTFOLIO`: only TORO Brain root.
+- `MASTER`: primary business/tenant program containing modules.
+- `MODULE`: durable domain inside a business or TORO OS execution layer.
+- `PROJECT`: finite, materially distinct outcome with its own lifecycle/done criteria.
+- `PORTFOLIO_LANE`: real cross-scope portfolio lane.
+- `HOLD` / `INCUBATOR`: inactive by default until explicit trigger.
+- `LEGACY_MERGED`: historical/inactive; never receives new backlog.
+- Workstreams, campaigns, dashboards, apps, engines, audits and execution plans are **not projects by default**.
+
+## Verified invariants
+
+- active duplicate `canonical_module_key`: **0**
+- active projects missing canonical module: **0**
+- active projects with invalid parent: **0**
+- active tasks on inactive/merged projects: **0**
+- terminal tasks with `active=true`: **0**
+
+Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
