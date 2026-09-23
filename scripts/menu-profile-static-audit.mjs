@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 export const REQUIRED_MENU_PROFILES = Object.freeze([
+  "personal",
   "owner_executive",
   "manager",
   "reception",
