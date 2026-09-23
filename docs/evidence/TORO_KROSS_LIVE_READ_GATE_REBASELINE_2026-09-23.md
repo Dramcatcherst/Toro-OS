@@ -96,3 +96,37 @@ This rebaseline:
 - does not change price or availability;
 - does not activate promotions;
 - does not authorize billable services.
+
+
+## Safe-view hardening applied
+
+Production migration applied on 2026-09-23:
+- `harden_current_reservations_safe_kross_gate_20260923`.
+
+The safe view now additionally requires:
+- `transactional_authority='Kross'`;
+- `read_only_mirror=true`;
+- `source_is_live=true`;
+- `data_quality_status='verified'`;
+- non-null external reservation identity;
+- non-null check-in/check-out;
+- non-null source snapshot timestamp;
+- source snapshot not in the future;
+- source snapshot age <= 6 hours;
+- non-null sync timestamp;
+- sync timestamp not in the future;
+- sync age <= 6 hours;
+- checkout >= yesterday.
+
+Verification after migration:
+- `operations.current_reservations_safe`: **0 rows**;
+- `security_invoker=true`;
+- `security_barrier=true`;
+- current 33 reservation snapshots remain excluded;
+- current quality distribution observed before migration: 31 `review`, 2 `conflict`, 0 `verified`;
+- current `source_is_live=true`: 0.
+
+Rollback source:
+- `supabase/drafts/rollback_current_reservations_safe_pre_20260923.sql`.
+
+This migration is a read-safety hardening only. It changes no reservation rows and creates no PMS write path.
