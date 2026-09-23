@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts"
+    "test": "vitest run src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts && npm run test:workstation-health",
+    "health:pc": "pwsh -NoProfile -File scripts/pc-health.ps1",
+    "test:workstation-health": "node --test tests/pc-health-classifier.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.7.0",
