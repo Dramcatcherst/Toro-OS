@@ -5,7 +5,8 @@ product:
   context_version: "2026.09.22-brain-master"
   status: internal_proof
   external_business_onboarding: blocked
-  operating_layer: TORO OS
+  visible_brand: TORO Brain
+  legacy_operating_alias: TORO OS
 
 north_star: "Deep inside. Simple outside."
 
@@ -15,7 +16,7 @@ general_plan_governance:
   operating_layer_project_key: toro_executive_control
   legacy_key_meanings:
     toro_os_portfolio_master: TORO Brain portfolio root
-    toro_executive_control: TORO OS operating/execution module
+    toro_executive_control: TORO Brain operating/execution module; TORO OS is a technical legacy alias only
     business_truth_bible: Dreamcatcher Data & Integrations module; not the global Bible
   canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   canonical_name: TORO Brain General Plan
@@ -136,7 +137,8 @@ agent_rules:
 product_rules:
   one_master_brain: true
   master_brain_name: TORO Brain
-  toro_os_is_execution_layer: true
+  toro_os_is_execution_layer: false
+  toro_os_is_technical_legacy_alias_only: true
   user_complexity_should_decrease_as_capability_grows: true
   one_visible_toro_for_normal_users: true
   specialist_agents_hidden_by_default: true
@@ -219,13 +221,50 @@ user_vault:
   memory_promotion: "observed -> candidate -> confirmed_or_verified -> durable -> superseded_or_expired_or_deleted"
 
 brand:
-  identity: blue_bull
+  canonical_name: TORO Brain
+  visible_brand: TORO Brain
+  identity: blue_bull_brain_chip
+  metaphor:
+    bull: business_or_living_organization
+    brain_chip: biological_intelligence_plus_ai_computation
+    core_message: small_well_connected_intelligence_coordinates_a_much_larger_system
   generated_substitutes_allowed: false
-  source_repository: Dramcatcherst/toro-os-v88-new
-  source_asset: public/assets/toro-azul-logo.jpg
-  source_registry_entry: BRAND-005
-  approved_derived_pack: public/assets/toro-blue-pack/
-  deprecated_pack: public/assets/toro-blue-pack-v1-deprecated/
+  generic_replacement_bull_allowed: false
+  bullfighting_or_violent_imagery_allowed: false
+  current_master_logo:
+    library_path: /TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png
+    dimensions: 1536x1536
+    sha256: 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98
+  current_master_isotype:
+    library_path: /TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png
+    dimensions: 1536x1536
+    sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
+  legacy_source_artwork:
+    repository: Dramcatcherst/toro-os-v88-new
+    asset: public/assets/toro-azul-logo.jpg
+    registry_entry: BRAND-005
+    status: historical_source_reference
+  brand_manifest: /TORO Brain/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
+  palette_approximation_from_current_master:
+    deep_navy: "#020C1E"
+    midnight: "#010511"
+    royal_blue_dark: "#052456"
+    royal_blue: "#084A8F"
+    electric_blue: "#0D7CC8"
+    cyan_highlight: "#39B2F0"
+    gold_main: "#EBAE4A"
+    gold_light: "#F9DB83"
+    gold_deep: "#A66F2F"
+    bronze_shadow: "#593718"
+  production_closeout_remaining:
+    - vector_master
+    - monochrome_and_reverse_variants
+    - favicon_and_small_size_simplification
+    - typography_and_license_spec
+    - clear_space_and_minimum_size_rules
+    - durable_rights_evidence
+    - trademark_and_domain_clearance
+    - governed_external_backup
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
