@@ -3,6 +3,7 @@ export type ToroRole =
   | "GERENCIA"
   | "RECEPCION"
   | "OPERACIONES"
+  | "CAMPO"
   | "FINANZAS"
   | "GROWTH"
   | "SYSTEMS";
@@ -12,6 +13,7 @@ const TORO_ROLES = new Set<ToroRole>([
   "GERENCIA",
   "RECEPCION",
   "OPERACIONES",
+  "CAMPO",
   "FINANZAS",
   "GROWTH",
   "SYSTEMS",
@@ -34,6 +36,7 @@ export function resolveToroRole(profile: ToroRoleProfile): ToroRole | null {
 
   if (roleCodes.has("GERENCIA")) return "GERENCIA";
   if (roleCodes.has("CONTABILIDAD")) return "FINANZAS";
+  if (roleCodes.has("REVENUE")) return "FINANZAS";
 
   return null;
 }

@@ -1,21 +1,55 @@
 import { NextResponse } from "next/server";
-import { readVercelDeployments } from "@/lib/server/read-only-connectors";
+
+import { authorizeToroApi } from "@/lib/server/api-auth";
+import {
+  readVercelDeployments,
+  readVercelProject,
+  readVercelProjectDomains,
+} from "@/lib/server/read-only-connectors";
+import { getToroVercelRuntimeConfig } from "@/lib/server/vercel-runtime";
+
+const vercelRoles = ["FOUNDER", "SYSTEMS"] as const;
 
 export async function GET() {
-  const projectId = process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA";
-  const teamId = process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO";
-  const liveRead = await readVercelDeployments({ projectId, teamId });
+  const auth = await authorizeToroApi(vercelRoles);
+  if (!auth.ok) return auth.response;
+
+  const runtime = getToroVercelRuntimeConfig();
+  const [deploymentRead, projectRead, domainRead] = await Promise.all([
+    readVercelDeployments({
+      projectId: runtime.projectId,
+      teamId: runtime.teamId,
+    }),
+    readVercelProject({
+      projectId: runtime.projectId,
+      teamId: runtime.teamId,
+    }),
+    readVercelProjectDomains({
+      projectId: runtime.projectId,
+      teamId: runtime.teamId,
+    }),
+  ]);
+
+  const domains = domainRead.data ?? [];
+  const customDomains = domains
+    .filter((domain) => !domain.isVercelAlias)
+    .map((domain) => domain.name);
 
   return NextResponse.json({
     connector: "vercel",
     mode: "read_only",
     externalWrite: false,
-    configured: Boolean(process.env.VERCEL_TOKEN && process.env.VERCEL_PROJECT_ID),
-    projectId,
-    teamId,
-    previewUrl: "https://toro-os-v03-gklbiqzri-dreamcatcher-s-projects.vercel.app",
-    productionAlias: "https://toro-os-v03.vercel.app",
-    liveRead,
-    nextAction: "Use Vercel connector or REST token to read deployment status and runtime logs.",
+    configured: Boolean(process.env.VERCEL_TOKEN),
+    projectId: runtime.projectId,
+    teamId: runtime.teamId,
+    projectName: runtime.projectName,
+    repository: runtime.repository,
+    projectUrl: runtime.projectUrl,
+    productionAliases: customDomains,
+    projectRead,
+    domainRead,
+    deploymentRead,
+    nextAction:
+      "Use governed Vercel reads for the Toro-OS preview project; no production promotion is authorized.",
   });
 }

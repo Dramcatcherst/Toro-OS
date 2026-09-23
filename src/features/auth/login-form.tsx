@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
+import { safeNextPath } from "./safe-next";
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,8 +32,7 @@ export function LoginForm() {
         return;
       }
 
-      const next = searchParams.get("next");
-      router.replace(next?.startsWith("/") ? next : "/toro");
+      router.replace(safeNextPath(searchParams.get("next")));
       router.refresh();
     } finally {
       setSubmitting(false);

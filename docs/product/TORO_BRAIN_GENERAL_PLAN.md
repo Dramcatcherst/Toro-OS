@@ -641,10 +641,11 @@ critical runtimes are observable and audited.
 - Growth;
 - Assets;
 - Research;
-- owner dashboards.
+- owner dashboards;
+- **Performance Intelligence** as a cross-subsystem capability governed by `docs/product/TORO_PERFORMANCE_INTELLIGENCE_V1.md`: one metric contract across Revenue, Finance, Data, Portal and WhatsApp. It is not a new subsystem or parallel dashboard authority.
 
 Exit:
-owner manages Dreamcatcher through exceptions and decisions rather than apps/tables.
+owner manages Dreamcatcher through exceptions and decisions rather than apps/tables, with metric state, cutoff, provenance and quality visible when material.
 
 ## Phase 5 — Portfolio sandbox
 **Priority: later**
@@ -714,6 +715,7 @@ Do not prioritize now.
 13. Personal TORO pilot.
 14. Cross-channel Portal/WhatsApp continuity.
 15. Website/channel repository consolidation.
+16. Reconcile Dreamcatcher Performance Intelligence through the existing `occ_sep_oct_daily_revenue_dashboard_20260825` execution item: validate inventory denominator, source scope, metric states and original-file parity before any standalone dashboard retirement. Do not create a second performance project.
 
 ---
 
@@ -1237,3 +1239,48 @@ TORO Brain · Portafolio General [PORTFOLIO]
 - terminal tasks with `active=true`: **0**
 
 Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
+
+
+## No parallel-project rule — P0
+
+The Plan General is the portfolio-routing authority.
+
+Before any project-like identity is created, TORO Brain resolves:
+1. scope/entity;
+2. existing project home in `operations.projects`;
+3. `parent_project_key`;
+4. `canonical_module_key`;
+5. current tasks/workstreams;
+6. source authority and consumers.
+
+**Hard rule:** within one organization there may be at most one active project per `canonical_module_key`.
+
+If a canonical home exists, new work is a task, milestone, workstream, capability, branch/PR, document or deliverable inside it—not a new project. Chats, prompts, agents, branches/PRs, Airtable bases, Vercel projects, dashboards, Superpowers plans and documents are implementation surfaces, not project identities.
+
+If destination is uncertain: **do not create a project**. Separate businesses, properties, external products or legal scopes may have their own project identity only under `toro_os_portfolio_master` with owner, authority, consumers, done criteria and retirement/convergence criteria.
+
+Historical absorbed projects remain MERGED/inactive.
+
+Machine enforcement contract:
+- `toro_no_parallel_projects_rule_v1`
+- `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`
+- DRAFT DB gate: `20260922214000_toro_project_uniqueness_gate.sql`
+
+
+## Real-first AI principle — TORO-REAL-AI-80-20-R1
+
+Owner direction: **80% real / 20% AI, well applied**. Reality first; AI amplifies it.
+
+This is a cross-domain authenticity heuristic, not a quota of truthful data, human labor, file counts, AI authorship or automation. All material claims presented as real require appropriate evidence. Unknowns remain unknown; estimates, forecasts, proposals and simulations are labeled separately. A highly automated workflow or entirely AI-assisted draft is permitted when its sources, authority, outcome and safeguards are verified. No artificial content must be added merely to meet 20%.
+
+Commercial photographs must faithfully represent the actual product, correct unit and real conditions, with provenance, rights and privacy checks. AI may assist selection, order, compression, subtitles and approved conservative adjustments; it must not invent rooms, views, amenities or testimonials, conceal real defects or replace skies. Clearly labeled conceptual illustrations are not product evidence.
+
+Keep this distinct from **80% execution / 20% exploration** and Dreamcatcher brand expression **80% reality / 20% magic**. If a specific experiment needs a numeric ratio, define its denominator, time window, method and exceptions before measuring it. Never invent a detected AI percentage.
+
+The machine definition remains `operations.knowledge_items/biblia_release_2026_09_22_v4`, field `structured_content.real_ai_80_20_v1`. This section is the versioned program contract, not another operational store.
+
+### Acceptance checks, not new tasks
+
+Within the existing work item record: real source/base; useful AI contribution; risk of confusing synthetic and real; permissions and proportional verification; existing executor; outcome metric. Reuse current source, media, release and review gates. Do not create a second policy database or agent for this rule.
+
+This principle is review guidance; it does not by itself create runtime enforcement, a production release or successful real-user testing.

@@ -37,18 +37,36 @@ export default async function ToroSearchPage({
         <p className="text-sm text-neutral-600">No encontramos resultados gobernados para “{q.trim()}”.</p>
       ) : (
         <div className="grid gap-3">
-          {results.map((result) => (
-            <Link
-              key={`${result.entityType}:${result.id}`}
-              href={result.href}
-              className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{result.entityType}</p>
-              <h2 className="mt-1 font-semibold text-neutral-950">{result.title}</h2>
-              {result.subtitle ? <p className="mt-1 text-sm text-neutral-600">{result.subtitle}</p> : null}
-              {result.freshness ? <p className="mt-2 text-xs text-neutral-500">Actualizado: {result.freshness}</p> : null}
-            </Link>
-          ))}
+          {results.map((result) => {
+            const content = (
+              <>
+                <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{result.entityType}</p>
+                <h2 className="mt-1 font-semibold text-neutral-950">{result.title}</h2>
+                {result.subtitle ? <p className="mt-1 text-sm text-neutral-600">{result.subtitle}</p> : null}
+                {result.freshness ? <p className="mt-2 text-xs text-neutral-500">Actualizado: {result.freshness}</p> : null}
+                {!result.href ? (
+                  <p className="mt-3 text-xs font-medium text-neutral-500">Detalle en preparación · resultado no accionable</p>
+                ) : null}
+              </>
+            );
+
+            return result.href ? (
+              <Link
+                key={`${result.entityType}:${result.id}`}
+                href={result.href}
+                className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-900"
+              >
+                {content}
+              </Link>
+            ) : (
+              <article
+                key={`${result.entityType}:${result.id}`}
+                className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm"
+              >
+                {content}
+              </article>
+            );
+          })}
         </div>
       )}
     </section>

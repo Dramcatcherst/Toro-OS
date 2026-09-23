@@ -3,15 +3,27 @@ name: TORO OS CI
 on:
   push:
     branches: [main]
+  # Stacked PRs (for example #20 -> #16) need the same checks as PRs to main.
   pull_request:
-    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout
+      - name: Checkout exact candidate
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -19,11 +31,26 @@ jobs:
           node-version: "24"
           cache: npm
 
+      - name: Record validation identity
+        run: |
+          git rev-parse HEAD
+          node --version
+          npm --version
+
       - name: Install
-        run: npm ci
+        run: npm ci --include=dev
+
+      - name: Test
+        run: npm test
+
+      - name: Visual preparation policy tests
+        run: node --experimental-strip-types --test tests/visual-preflight.test.mjs
 
       - name: Lint
         run: npm run lint
 
       - name: Build
         run: npm run build
+
+      - name: Typecheck built candidate
+        run: ./node_modules/.bin/tsc --noEmit

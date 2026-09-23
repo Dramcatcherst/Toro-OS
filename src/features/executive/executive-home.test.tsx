@@ -17,6 +17,8 @@ const decisions = Array.from({ length: 7 }, (_, index) => ({
   status: "En ejecución",
 }));
 
+const projectId = "00000000-0000-0000-0000-000000000021";
+
 const data = {
   decisions,
   exceptions: [
@@ -26,7 +28,7 @@ const data = {
     { id: "action-1", title: "Revisar habitación 25", owner: "Mantenimiento", nextStep: "Validar proyector", evidence: "ticket://1" },
   ],
   projects: [
-    { id: "project-1", title: "TORO OS", milestone: "Fase 1", blocker: null, nextAction: "Validar Executive Home", owner: "Mauricio", status: "En curso" },
+    { id: projectId, title: "TORO OS", milestone: "Fase 1", blocker: null, nextAction: "Validar Executive Home", owner: "Mauricio", status: "En curso" },
   ],
   systemHealth: { status: "healthy" as const, label: "Sistemas operativos", checkedAt: "2026-09-14T21:40:00Z" },
 };
@@ -48,5 +50,15 @@ describe("ExecutiveHome", () => {
     expect(screen.getAllByTestId("executive-decision-card")).toHaveLength(5);
     expect(screen.queryByText("Decisión 6")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ver todas las decisiones/i })).toHaveAttribute("href", "/toro/decisiones");
+  });
+
+  it("links executive projects to the governed read-only directory", () => {
+    render(<ExecutiveHome data={data} />);
+
+    expect(screen.getByRole("link", { name: /ver todos los proyectos/i })).toHaveAttribute("href", "/toro/proyectos");
+    expect(screen.getByRole("link", { name: /abrir proyecto toro os/i })).toHaveAttribute(
+      "href",
+      `/toro/proyectos?project=${projectId}`,
+    );
   });
 });

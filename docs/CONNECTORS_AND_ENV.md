@@ -62,16 +62,23 @@ Route: `/api/connectors/airtable`
 
 Optional live-read query:
 
-`/api/connectors/airtable?tableId=tblHVdeHMb02gPxFP&pageSize=10`
+`/api/connectors/airtable?tableId=<allowlisted-table-id>&pageSize=10`
+
+Security contract:
+- requires a valid TORO session with FOUNDER or SYSTEMS role
+- `tableId` must exist in the declared `airtableTables` allowlist
+- only the field IDs declared for that table are projected to Airtable
+- `pageSize` is bounded to 1–25
+- arbitrary table IDs never reach the server Airtable token
 
 Required later:
 
 - `AIRTABLE_TOKEN`
 - `AIRTABLE_BASE_ID`
 
-Allowed now: read schemas, read records, inspect source authority.
+Allowed now: read allowlisted schemas/projections, read only declared safe fields, inspect source authority.
 
-Blocked now: create/update/delete records.
+Blocked now: arbitrary table reads, undeclared fields, create/update/delete records.
 
 ## Vercel
 
@@ -143,3 +150,39 @@ Any action with external impact, critical risk or execution intent must route th
 3. Audit log
 4. Connector-specific adapter
 5. Human approval before execution
+
+
+## API Surface Authorization
+
+All internal `/api/*` routes now require an explicit authorization gate.
+
+Role policy:
+- Airtable and Vercel connector metadata: FOUNDER / SYSTEMS
+- GitHub-Codex prepare: FOUNDER / SYSTEMS
+- Dropbox prepare: FOUNDER / GROWTH / SYSTEMS
+- approval ledger GET/POST: FOUNDER / GERENCIA
+- connector health: FOUNDER / SYSTEMS
+- operational status (human): FOUNDER / GERENCIA / SYSTEMS
+- agent prepare, policy evaluate and module registry: any authenticated TORO role
+
+Unauthenticated requests fail with 401. Authenticated roles outside a route allowlist fail with 403.
+
+## OpenClaw service-to-service status reader
+
+Route: `/api/service/operational-status`
+
+Environment:
+- `TORO_OPENCLAW_STATUS_TOKEN`
+
+Security contract:
+- disabled by default when the secret is absent or shorter than 32 characters
+- uses a dedicated Bearer credential; never reuses a Founder cookie or user password
+- constant-time credential comparison
+- GET/read-only only
+- response is a reduced PII-free projection: hotel aggregate state, source summary, warnings and governed `chatSummary`
+- connector-level internal detail is not returned
+- response uses `Cache-Control: private, no-store`
+
+The same secret must be configured independently in the approved OpenClaw runtime and the TORO server environment. Do not store it in GitHub source, Airtable, Supabase application tables, chat messages, or browser-visible variables. Rotate it if runtime access changes.
+
+Until both sides are configured, this endpoint intentionally returns `503 service_auth_unconfigured`.

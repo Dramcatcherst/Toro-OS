@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
+
 import { evaluatePolicy } from "@/lib/policy-engine";
+import { authorizeToroApi } from "@/lib/server/api-auth";
 
 export async function POST(request: Request) {
+  const auth = await authorizeToroApi();
+  if (!auth.ok) return auth.response;
+
   const body = await request.json().catch(() => ({}));
   const action = String(body.action ?? "draft_business_recommendation");
   const decision = evaluatePolicy({
@@ -17,8 +22,12 @@ export async function POST(request: Request) {
     decision,
     draft: {
       title: body.title ?? "Prepared TORO OS agent output",
-      summary: "This is a guarded draft. It can be reviewed, edited and queued, but not executed externally in v0.3.",
-      nextAction: decision.approval === "Blocked" ? "Revise action scope." : "Route to approval queue.",
+      summary:
+        "This is a guarded draft. It can be reviewed, edited and queued, but not executed externally in v0.3.",
+      nextAction:
+        decision.approval === "Blocked"
+          ? "Revise action scope."
+          : "Route to approval queue.",
     },
   });
 }

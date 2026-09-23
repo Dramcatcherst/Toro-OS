@@ -12,16 +12,30 @@ export type NavItem =
       href?: never;
     };
 
+const maintenanceNavigationItem: NavItem = {
+  label: "Mantenimiento",
+  availability: "available",
+  href: "/toro/operacion/mantenimiento",
+};
+
+const revenueNavigationItem: NavItem = {
+  label: "Revenue",
+  availability: "available",
+  href: "/toro/revenue",
+};
+
 const founderNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
   { label: "Decisiones", availability: "available", href: "/toro/decisiones" },
-  { label: "Hotel", availability: "coming-soon" },
+  maintenanceNavigationItem,
+  { label: "Hotel", availability: "available", href: "/toro/hotel" },
   { label: "Huéspedes", availability: "coming-soon" },
   { label: "Dinero", availability: "coming-soon" },
-  { label: "Proyectos", availability: "coming-soon" },
+  revenueNavigationItem,
+  { label: "Proyectos", availability: "available", href: "/toro/proyectos" },
   { label: "Equipo", availability: "coming-soon" },
-  { label: "Conocimiento", availability: "coming-soon" },
-  { label: "Sistemas", availability: "coming-soon" },
+  { label: "Conocimiento", availability: "available", href: "/toro/conocimiento" },
+  { label: "Sistemas", availability: "available", href: "/toro/sistemas" },
 ];
 
 const navigationByRole: Record<ToroRole, NavItem[]> = {
@@ -30,18 +44,24 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
   RECEPCION: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Huéspedes", availability: "coming-soon" },
-    { label: "Hotel", availability: "coming-soon" },
+    { label: "Hotel", availability: "available", href: "/toro/hotel" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],
   OPERACIONES: [
     { label: "Inicio", availability: "available", href: "/toro" },
-    { label: "Hotel", availability: "coming-soon" },
+    maintenanceNavigationItem,
+    { label: "Hotel", availability: "available", href: "/toro/hotel" },
     { label: "Equipo", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+  ],
+  CAMPO: [
+    { label: "Inicio", availability: "available", href: "/toro" },
+    maintenanceNavigationItem,
   ],
   FINANZAS: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Dinero", availability: "coming-soon" },
+    revenueNavigationItem,
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],
@@ -53,7 +73,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
   ],
   SYSTEMS: [
     { label: "Inicio", availability: "available", href: "/toro" },
-    { label: "Sistemas", availability: "coming-soon" },
+    { label: "Sistemas", availability: "available", href: "/toro/sistemas" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],

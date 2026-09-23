@@ -123,11 +123,20 @@ export type BlueprintDocument = SourceMeta & {
 
 export type ApprovalSummary = Record<ApprovalState, number>;
 
+export type ConnectorHealthState =
+  | "reachable"
+  | "configured_unverified"
+  | "degraded"
+  | "unconfigured"
+  | "blocked";
+
 export type ConnectorHealthRecord = SourceMeta & {
   id: string;
   name: string;
   live: boolean;
   configured: boolean;
   mode: "live_read" | "read_only" | "prepare_only" | "blocked";
+  health: ConnectorHealthState;
+  checkedAt: string | null;
   detail: string;
 };

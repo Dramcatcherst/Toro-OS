@@ -5,6 +5,6 @@ export type SearchResult = {
   id: string;
   title: string;
   subtitle: string | null;
-  href: string;
+  href: string | null;
   freshness: string | null;
 };

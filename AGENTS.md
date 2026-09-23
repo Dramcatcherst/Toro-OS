@@ -144,3 +144,24 @@ All new material work must:
 Domain plans and implementation plans are subordinate. They may not become parallel master plans.
 
 If a new request is reusable, preserve the immediate business solution and separately extract the reusable TORO capability/skill/profile without leaking private scope data.
+
+
+## Project identity gate — P0
+
+TORO Brain may orchestrate many scopes, but within one organization there must be at most one active project per `canonical_module_key`.
+
+Before creating any project, subproject, repo-backed initiative, app, dashboard, agent backlog or planning lane:
+- resolve the existing canonical project/module in the Plan General and `operations.projects`;
+- if a canonical home exists, create a task, milestone, workstream, capability, branch/PR, document or deliverable inside it;
+- chats, prompts, agents, subagents, Git branches/PRs, Airtable bases, Vercel projects, dashboards, Superpowers plans and documents are implementation surfaces, not projects;
+- if the destination is uncertain, do not create a new project; record the ambiguity inside the nearest canonical module;
+- materially separate businesses, properties, external products or legal scopes may have their own project identity, but remain children of `toro_os_portfolio_master` with explicit ownership and convergence criteria.
+
+Historical absorbed projects remain MERGED/inactive. A new chat or implementation surface never reactivates them.
+
+Machine contract: `toro_no_parallel_projects_rule_v1` / `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`.
+
+
+## Real-first AI review
+
+Apply `TORO-REAL-AI-80-20-R1` from the General Plan before accepting a material deliverable. This is an authenticity heuristic, not a numeric quota or automation cap. Real claims require evidence; simulations and synthetic content remain labeled. Commercial product imagery must preserve the real product and may use AI only for faithful, reviewed assistance.
