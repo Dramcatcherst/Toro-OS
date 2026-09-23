@@ -59,7 +59,9 @@ describe("PeopleLeaveWorkspace", () => {
     expect(screen.getByText("Pendientes: 1")).toBeInTheDocument();
     expect(screen.getByText("Pendiente de jefatura")).toBeInTheDocument();
     expect(screen.getByText("Aprobada")).toBeInTheDocument();
-    expect(screen.getByText("5.50 días")).toBeInTheDocument();
+    expect(screen.getByText(/Vacaciones disponibles:/)).toHaveTextContent(
+      "Vacaciones disponibles: 5.50 días",
+    );
     expect(screen.getByTestId("leave-form")).toBeInTheDocument();
   });
 
