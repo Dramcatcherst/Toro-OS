@@ -674,3 +674,151 @@ Do not prioritize now.
 
 > **TORO Brain should become more sophisticated internally while every person, business and project becomes easier to understand and operate externally.**
 
+
+
+---
+
+# 19. General Plan integration protocol
+
+This file is the **only canonical Plan General** for TORO Brain.
+
+Aliases such as:
+- Plan General
+- Total Brain
+- TORO master plan
+
+all resolve here unless the user explicitly creates a different external product plan.
+
+## Every material request follows this process
+
+1. **Identify scope**
+   - personal;
+   - portfolio;
+   - organization;
+   - business;
+   - workspace;
+   - project/product;
+   - external client/ally;
+   - platform/core.
+
+2. **Identify owner subsystem**
+   - existing TORO subsystem first;
+   - create no new subsystem unless an existing one cannot own the capability cleanly.
+
+3. **Classify status**
+   - CURRENT;
+   - TARGET;
+   - NEXT;
+   - FUTURE.
+
+4. **Classify work**
+   - feature;
+   - workflow;
+   - connector;
+   - system audit;
+   - capability;
+   - skill;
+   - data migration;
+   - governance rule;
+   - product decision;
+   - experiment.
+
+5. **Check duplication**
+   - merge;
+   - reuse;
+   - retire;
+   - archive;
+   - or document a real reason for parallel existence.
+
+6. **Generalization scan**
+   Ask whether the request should become:
+   - a reusable TORO capability;
+   - a generic skill;
+   - a configuration profile;
+   - an onboarding option;
+   - a product feature;
+   - a business-specific rule only.
+
+7. **Update canonical contracts**
+   Only when the request materially changes architecture, permissions, source authority, subsystem ownership, target product behavior or roadmap.
+
+8. **Prioritize**
+   Use impact, urgency, effort, risk and dependencies.
+
+9. **Execute**
+   Prefer smallest reversible step that advances the North Star.
+
+10. **Verify**
+    Do not mark complete without evidence.
+
+## No parallel-plan rule
+
+A document may be:
+- domain specification;
+- execution plan;
+- migration plan;
+- audit;
+- runbook;
+- evidence;
+- historical reference.
+
+It may not silently become another "master plan".
+
+Any execution plan that conflicts with this Plan General is subordinate and must be reconciled.
+
+## Continuous improvement rule
+
+On each substantive pass, TORO Brain checks:
+
+- what changed;
+- what was learned;
+- what became reusable;
+- what is duplicated;
+- what can be simplified;
+- what should be automated;
+- what system should be audited;
+- what cost/revenue/service opportunity appeared;
+- what should be added to NEXT;
+- what belongs only in FUTURE.
+
+Do not add low-value ideas merely to grow the plan.
+
+---
+
+# 20. Plan governance
+
+## Owner
+TORO Brain.
+
+## Human authority
+Mauricio / authorized product owner retains final authority for:
+- irreversible product direction;
+- production risk acceptance;
+- external business onboarding;
+- high-risk permissions;
+- financial/legal commitments.
+
+## Machine-readable authority
+`toro-context.yaml`
+
+## Architecture authority
+- `TORO_BRAIN_CONSTITUTION.md`
+- `TORO_BRAIN_MASTER_ARCHITECTURE.md`
+- domain specifications referenced by `toro-context.yaml`
+
+## Execution authority
+The current approved execution plan for the relevant domain.
+
+## Evidence authority
+Live systems and canonical evidence sources.
+
+## Conflict rule
+
+When two plans conflict:
+
+1. verified live reality wins for CURRENT;
+2. TORO Brain Constitution wins for architecture/principles;
+3. this General Plan wins for program direction/prioritization;
+4. domain spec wins for local implementation detail if consistent with 1–3;
+5. historical documents become reference only.
+
