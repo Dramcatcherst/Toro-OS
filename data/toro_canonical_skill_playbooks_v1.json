@@ -1,0 +1,542 @@
+{
+  "manifest_id": "TORO-CANONICAL-SKILL-PLAYBOOKS-v1",
+  "date": "2026-09-23",
+  "authority": "docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md",
+  "principle": "Six canonical parent skills; capability families become internal playbooks before becoming new skills.",
+  "split_gate": "Create a new subskill only when repeated evaluation shows a distinct trigger, context/input contract, permission boundary, evaluator, reusable method, or parent context-budget/false-routing problem.",
+  "summary": {
+    "canonical_skills": 6,
+    "playbooks": 17,
+    "capabilities_covered": 54,
+    "duplicate_capability_assignments": 0,
+    "missing_capabilities": 0
+  },
+  "agents": {
+    "TORO": {
+      "canonical_skill": "toro-brain",
+      "aliases": [
+        "toro-os-hospitality",
+        "toro-manager"
+      ],
+      "playbooks": [
+        {
+          "id": "toro-executive-control",
+          "capabilities": [
+            "daily_brief",
+            "executive_decisions",
+            "project_portfolio",
+            "ask_toro",
+            "direct_toro"
+          ],
+          "triggers": [
+            "cross-domain decision",
+            "owner brief",
+            "portfolio prioritization",
+            "business-wide trade-off",
+            "what should we do next"
+          ],
+          "negative_triggers": [
+            "single-domain operational execution with a clear specialist owner"
+          ],
+          "method": [
+            "resolve scope and authority",
+            "identify business outcome",
+            "map dependencies and second-order effects",
+            "recommend one next action",
+            "route specialist work",
+            "verify closure"
+          ],
+          "output": "recommendation -> decisive reasons -> next action -> material gate/risk",
+          "default_action_ceiling": "A2-A3 unless an existing workflow policy grants more"
+        },
+        {
+          "id": "toro-personal-productivity",
+          "capabilities": [
+            "personal_tasks",
+            "calendar_assistant",
+            "email_assistant",
+            "contacts_assistant",
+            "travel_assistant",
+            "personal_projects"
+          ],
+          "triggers": [
+            "personal planning",
+            "calendar",
+            "email",
+            "contacts",
+            "travel",
+            "personal project organization"
+          ],
+          "negative_triggers": [
+            "private data belonging to another person",
+            "domain-specialist business transaction"
+          ],
+          "method": [
+            "resolve personal vs work scope",
+            "minimize context",
+            "organize or prepare action",
+            "execute only through authorized connector",
+            "verify created/sent/scheduled state"
+          ],
+          "output": "what changed -> what remains -> next useful action",
+          "default_action_ceiling": "A2-A4 depending connector and explicit authorization"
+        },
+        {
+          "id": "toro-work-coordination",
+          "capabilities": [
+            "work_tasks",
+            "assign_delegate",
+            "team_messages",
+            "handoffs",
+            "message_to_task",
+            "notifications"
+          ],
+          "triggers": [
+            "delegate",
+            "turn conversation into work",
+            "team handoff",
+            "notification",
+            "cross-agent coordination"
+          ],
+          "negative_triggers": [
+            "creating a parallel project where a canonical home exists"
+          ],
+          "method": [
+            "resolve canonical project/home",
+            "set owner and outcome",
+            "package minimum handoff context",
+            "define proof-of-done",
+            "avoid duplicate task/action"
+          ],
+          "output": "owner -> outcome -> next action -> proof/due if real",
+          "default_action_ceiling": "A2-A3"
+        },
+        {
+          "id": "toro-context-and-knowledge",
+          "capabilities": [
+            "personal_memory",
+            "memory_control",
+            "personal_documents",
+            "business_search",
+            "knowledge_answers"
+          ],
+          "triggers": [
+            "find business knowledge",
+            "what does TORO know",
+            "retrieve governed context",
+            "explain SOP/policy"
+          ],
+          "negative_triggers": [
+            "cross-user private context without authorization",
+            "stale snapshot presented as current truth"
+          ],
+          "method": [
+            "resolve identity/scope",
+            "retrieve minimum relevant evidence",
+            "apply source/freshness rules",
+            "separate fact from inference",
+            "cite/trace source"
+          ],
+          "output": "answer -> evidence/freshness -> uncertainty -> next action if needed",
+          "default_action_ceiling": "A1-A2"
+        },
+        {
+          "id": "toro-people-leadership",
+          "capabilities": [
+            "recognition_points",
+            "training",
+            "manager_team"
+          ],
+          "triggers": [
+            "team development",
+            "training priorities",
+            "recognition",
+            "manager overview"
+          ],
+          "negative_triggers": [
+            "payroll/private HR administration that belongs to FIONA",
+            "physical staffing coverage that belongs to RICO"
+          ],
+          "method": [
+            "resolve role and privacy",
+            "identify outcome/skill gap",
+            "use verified performance or SOP evidence",
+            "propose development/recognition",
+            "measure behavior/result"
+          ],
+          "output": "people outcome -> evidence -> action -> measurement",
+          "default_action_ceiling": "A2-A3"
+        },
+        {
+          "id": "toro-governance-and-revenue",
+          "capabilities": [
+            "approvals",
+            "revenue_dashboard"
+          ],
+          "triggers": [
+            "approval queue",
+            "revenue cross-domain interpretation",
+            "pricing/revenue decision requiring multiple domains"
+          ],
+          "negative_triggers": [
+            "final accounting posting",
+            "guest quote without Kross",
+            "campaign activation without SKY/gate"
+          ],
+          "method": [
+            "resolve authority and current data",
+            "separate revenue demand conversion economics",
+            "surface only material decision",
+            "route domain evidence",
+            "preserve approval gate"
+          ],
+          "output": "decision/insight -> evidence -> impact -> recommended action/gate",
+          "default_action_ceiling": "A2-A4"
+        }
+      ]
+    },
+    "TERE": {
+      "canonical_skill": "tere-revenue",
+      "aliases": [
+        "tere-guest-sales"
+      ],
+      "playbooks": [
+        {
+          "id": "tere-guest-lifecycle",
+          "capabilities": [
+            "guest_assistant",
+            "guest_reply_draft",
+            "guest_handoff"
+          ],
+          "triggers": [
+            "guest question",
+            "room/villa fit",
+            "direct booking inquiry",
+            "concierge",
+            "pre-arrival/in-stay/post-stay message",
+            "complaint/recovery"
+          ],
+          "negative_triggers": [
+            "internal finance control",
+            "systems architecture",
+            "marketing campaign ownership",
+            "physical operations execution"
+          ],
+          "method": [
+            "answer real question first",
+            "ask only material missing context",
+            "resolve current authority",
+            "recommend 1-3 fit options",
+            "make one next action easy",
+            "handoff minimum context when another specialist owns execution"
+          ],
+          "output": "direct answer -> one useful detail -> one easy next step",
+          "default_action_ceiling": "A2-A3 routine communication; transactional mutations remain gated"
+        }
+      ]
+    },
+    "RICO": {
+      "canonical_skill": "rico-operations",
+      "aliases": [
+        "rico-hotel-operations"
+      ],
+      "playbooks": [
+        {
+          "id": "rico-operations-readiness",
+          "capabilities": [
+            "report_issue",
+            "maintenance_tasks",
+            "housekeeping_work",
+            "inspections"
+          ],
+          "triggers": [
+            "maintenance",
+            "housekeeping",
+            "inspection",
+            "room readiness",
+            "physical incident",
+            "inventory/service readiness"
+          ],
+          "negative_triggers": [
+            "financial approval",
+            "guest commercial promise",
+            "system architecture"
+          ],
+          "method": [
+            "separate system/staff/physical evidence",
+            "prioritize safety and arriving guest",
+            "assign owner/action",
+            "require proof-of-ready",
+            "scan recurrence/root cause"
+          ],
+          "output": "READY/NOT READY/UNKNOWN -> impact -> owner -> next action -> proof",
+          "default_action_ceiling": "A2-A3; safety/material spend/reservation impact remains gated"
+        },
+        {
+          "id": "rico-team-coverage",
+          "capabilities": [
+            "team_coverage"
+          ],
+          "triggers": [
+            "operational staffing coverage",
+            "who is available for physical/service work",
+            "coverage gap"
+          ],
+          "negative_triggers": [
+            "salary/payroll/disciplinary details",
+            "strategic org design"
+          ],
+          "method": [
+            "resolve shift/role/operation need",
+            "use minimum people data",
+            "identify coverage gap",
+            "propose safe reassignment/escalation",
+            "verify coverage"
+          ],
+          "output": "coverage state -> gap -> owner/action -> verification",
+          "default_action_ceiling": "A2-A3"
+        }
+      ]
+    },
+    "FIONA": {
+      "canonical_skill": "fiona-finance",
+      "aliases": [
+        "fiona-hotel-finance"
+      ],
+      "playbooks": [
+        {
+          "id": "fiona-finance-control",
+          "capabilities": [
+            "finance_exceptions",
+            "invoice_workflow",
+            "payment_calendar",
+            "reconciliation"
+          ],
+          "triggers": [
+            "reconciliation",
+            "invoice",
+            "obligation",
+            "payment calendar",
+            "financial exception",
+            "cash/control question"
+          ],
+          "negative_triggers": [
+            "guest recommendation",
+            "physical diagnosis",
+            "campaign creative"
+          ],
+          "method": [
+            "resolve entity/property/period/currency",
+            "preserve source totals",
+            "separate timing/fee/tax/duplicate/scope effects",
+            "leave unexplained differences visible",
+            "prepare controlled next action"
+          ],
+          "output": "PROVEN/RECONCILED/UNEXPLAINED/BLOCKED -> evidence -> next controlled action",
+          "default_action_ceiling": "A2-A3; payments/tax/payroll postings remain A4/human-professional gated"
+        },
+        {
+          "id": "fiona-people-self-service",
+          "capabilities": [
+            "shift_schedule",
+            "attendance_self",
+            "leave_requests",
+            "payroll_self",
+            "employee_profile"
+          ],
+          "triggers": [
+            "own shift",
+            "own attendance",
+            "own leave",
+            "own payroll receipt",
+            "employee admin record"
+          ],
+          "negative_triggers": [
+            "another employee's private data without authorized manager scope",
+            "disciplinary/legal judgment"
+          ],
+          "method": [
+            "resolve authenticated person and role",
+            "minimum necessary fields",
+            "separate self-service from manager/admin action",
+            "preserve privacy and audit",
+            "gate sensitive mutation"
+          ],
+          "output": "current self-service state -> allowed action -> next step",
+          "default_action_ceiling": "A1-A3 depending role/RLS"
+        }
+      ]
+    },
+    "SKY": {
+      "canonical_skill": "sky-growth",
+      "aliases": [
+        "sky-experiences-growth"
+      ],
+      "playbooks": [
+        {
+          "id": "sky-growth-demand",
+          "capabilities": [
+            "campaigns",
+            "content_control",
+            "market_research"
+          ],
+          "triggers": [
+            "growth opportunity",
+            "campaign",
+            "brand/content",
+            "market research",
+            "SEO/content demand",
+            "partnership prospecting"
+          ],
+          "negative_triggers": [
+            "guest live transaction",
+            "financial posting",
+            "systems change",
+            "physical incident"
+          ],
+          "method": [
+            "define audience/problem/desire",
+            "ground insight in evidence",
+            "design differentiated offer/content/channel",
+            "include economics/effort",
+            "define experiment KPI and stop condition"
+          ],
+          "output": "INSIGHT -> OPPORTUNITY -> PROPOSAL/TEST -> KPI -> NEXT",
+          "default_action_ceiling": "A2-A3; spend/publication remains gated"
+        },
+        {
+          "id": "sky-growth-products",
+          "capabilities": [
+            "experiences"
+          ],
+          "triggers": [
+            "tour/experience/package",
+            "wellness/F&B/event product",
+            "ancillary revenue offer",
+            "provider/partnership productization"
+          ],
+          "negative_triggers": [
+            "unverified provider commitment",
+            "guest booking mutation"
+          ],
+          "method": [
+            "define guest value",
+            "verify provider/current facts",
+            "design fulfillment and economics",
+            "create fallback",
+            "handoff conversion to TERE and operations to RICO"
+          ],
+          "output": "product concept -> fit -> dependencies/economics -> confirmation gates -> next",
+          "default_action_ceiling": "A2-A3"
+        }
+      ]
+    },
+    "SOBRESITO": {
+      "canonical_skill": "sobresito-systems",
+      "aliases": [
+        "sobresito-hotel-systems"
+      ],
+      "playbooks": [
+        {
+          "id": "sobresito-system-tools",
+          "capabilities": [
+            "tool_connections"
+          ],
+          "triggers": [
+            "connect tool",
+            "connector setup",
+            "permissions/integration mapping"
+          ],
+          "negative_triggers": [
+            "business policy choice",
+            "guest commercial decision"
+          ],
+          "method": [
+            "identify tool/version/scope",
+            "map entities/permissions/API/export/failure",
+            "prefer smallest integration",
+            "test in reversible mode",
+            "record recovery"
+          ],
+          "output": "CURRENT -> GAP -> SAFE CONNECTION PLAN -> TEST -> RESULT/ROLLBACK",
+          "default_action_ceiling": "A2-A4 depending connector and permission gate"
+        },
+        {
+          "id": "sobresito-assets-information",
+          "capabilities": [
+            "asset_search"
+          ],
+          "triggers": [
+            "find media/file/asset",
+            "resolve asset identity/source/rights",
+            "technical asset retrieval"
+          ],
+          "negative_triggers": [
+            "creative campaign direction",
+            "physical defect concealment"
+          ],
+          "method": [
+            "resolve entity/property",
+            "find canonical original",
+            "verify identity/rights/freshness",
+            "return governed asset reference",
+            "route creative choice to SKY"
+          ],
+          "output": "asset identity -> source/rights/freshness -> usable/not usable -> next",
+          "default_action_ceiling": "A1-A2"
+        },
+        {
+          "id": "sobresito-systems-reliability",
+          "capabilities": [
+            "system_health",
+            "connector_health",
+            "backup_recovery"
+          ],
+          "triggers": [
+            "system health",
+            "connector drift",
+            "outage",
+            "backup/restore",
+            "reliability/security"
+          ],
+          "negative_triggers": [
+            "domain truth decision without domain owner"
+          ],
+          "method": [
+            "resolve authority and dependency",
+            "inspect observed vs expected",
+            "stabilize first",
+            "test recovery/rollback",
+            "leave observability/evidence"
+          ],
+          "output": "CURRENT -> RISK/GAP -> SAFE CHANGE -> TEST -> RESULT -> ROLLBACK -> NEXT",
+          "default_action_ceiling": "A2-A4; destructive/security permission changes gated"
+        },
+        {
+          "id": "sobresito-builder",
+          "capabilities": [
+            "builder_queue"
+          ],
+          "triggers": [
+            "code/build/migration implementation",
+            "Codex worker queue",
+            "repo/CI/deployment work"
+          ],
+          "negative_triggers": [
+            "business strategy or policy decision"
+          ],
+          "method": [
+            "read AGENTS/contracts",
+            "inspect current implementation",
+            "one coherent branch/PR",
+            "tests proportional to risk",
+            "exact-target verification",
+            "reversible merge/deploy path"
+          ],
+          "output": "STATE -> CHANGE -> TESTS -> EVIDENCE -> ROLLBACK -> NEXT",
+          "default_action_ceiling": "A2-A4 under repository/runtime policy"
+        }
+      ]
+    }
+  }
+}
