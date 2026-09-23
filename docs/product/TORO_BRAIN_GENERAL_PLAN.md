@@ -1406,3 +1406,30 @@ Before TORO can claim generalized “new business -> optimized -> autonomous” 
 The New Business Readiness Gate remains authoritative for external onboarding.
 
 The Cognitive Operating Model defines **how TORO thinks and improves** once a scope is authorized; the readiness gate defines **when TORO is allowed to onboard/operate another real business**.
+
+
+### TORO People Wave 1 code foundation — 2026-09-23
+
+CURRENT:
+- DreamTeam code estate inventoried: 171 relevant source paths across UI, APIs, HR domain logic and security.
+- Canonical migration contract: `docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md`.
+- Machine-readable migration map: `data/toro_people_migration_map.json`.
+- DreamTeam module ownership split is explicit: People vs Comms vs Governance vs Identity vs Systems/Tools.
+- Self-service RLS verified for employee, attendance, shifts, leave requests/balances and payment receipts.
+- `employee_self_profile` / `update_employee_self_profile` bind org + auth.uid().
+- `submit_leave_request` blocks ordinary users from submitting for another employee.
+
+CODE:
+- Draft PR #48: `feat: add TORO People read-only self-service foundation`.
+- Base: PR #42 context branch, not main.
+- 6 files only, 0 commits behind its context base at creation.
+- Read-only scope: own profile, upcoming shifts, own leave requests/balances, recent attendance.
+- Explicit org_id + employee_id filters are added on top of RLS.
+- Mappers intentionally exclude salary, bank and arbitrary private-HR payloads.
+- Vercel preview build = SUCCESS.
+- No new table, no write endpoint, no navigation, no DreamTeam retirement.
+
+GATES:
+- PR #48 remains DRAFT until PR #42 context is validated/landed.
+- Official Vitest execution evidence is still required before merge.
+- Write workflows (profile update, leave submission) remain deferred until read-only parity is proven.
