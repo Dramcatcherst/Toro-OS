@@ -27,6 +27,8 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         tasks: probe(344, { fresh: true }),
         maintenanceEvents: probe(163, { fresh: true }),
         reservations: probe(33, { fresh: false }),
+        currentReservationsSafe: probe(0),
+        krossCurrentHealth: probe(0),
         stays: probe(0),
         rooms: probe(20),
         villas: probe(3),
@@ -57,6 +59,8 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         tasks: probe(1, { fresh: true }),
         maintenanceEvents: probe(1, { fresh: true }),
         reservations: probe(33, { fresh: false }),
+        currentReservationsSafe: probe(0),
+        krossCurrentHealth: probe(0),
         stays: probe(0),
         rooms: probe(20),
         villas: probe(3),
@@ -72,6 +76,54 @@ describe("evaluateSourceAwareCapabilityStates", () => {
     expect(result.states["comms.guest_messages"]).toBe("BLOCKED");
   });
 
+  it("enables live arrivals only when the safe reservation view and Kross health both pass", () => {
+    const result = evaluateSourceAwareCapabilityStates(
+      {
+        "guest.arrivals_departures": "BLOCKED",
+      },
+      {
+        executiveDecisions: probe(0),
+        projects: probe(0),
+        tasks: probe(0),
+        maintenanceEvents: probe(0),
+        reservations: probe(33, { fresh: false }),
+        currentReservationsSafe: probe(4),
+        krossCurrentHealth: probe(1),
+        stays: probe(0),
+        rooms: probe(20),
+        villas: probe(3),
+        experiences: probe(85),
+        bankTransactions: probe(0),
+      },
+    );
+
+    expect(result.states["guest.arrivals_departures"]).toBe("READ_ONLY");
+  });
+
+  it("keeps live arrivals blocked if the safe view has rows but Kross health is not current-safe", () => {
+    const result = evaluateSourceAwareCapabilityStates(
+      {
+        "guest.arrivals_departures": "BLOCKED",
+      },
+      {
+        executiveDecisions: probe(0),
+        projects: probe(0),
+        tasks: probe(0),
+        maintenanceEvents: probe(0),
+        reservations: probe(33, { fresh: false }),
+        currentReservationsSafe: probe(4),
+        krossCurrentHealth: probe(0),
+        stays: probe(0),
+        rooms: probe(20),
+        villas: probe(3),
+        experiences: probe(85),
+        bankTransactions: probe(0),
+      },
+    );
+
+    expect(result.states["guest.arrivals_departures"]).toBe("BLOCKED");
+  });
+
   it("fails closed when a source is unreadable", () => {
     const result = evaluateSourceAwareCapabilityStates(
       { "projects.status": "BLOCKED" },
@@ -81,6 +133,8 @@ describe("evaluateSourceAwareCapabilityStates", () => {
         tasks: probe(0, { readable: false }),
         maintenanceEvents: probe(0, { readable: false }),
         reservations: probe(0, { readable: false }),
+        currentReservationsSafe: probe(0, { readable: false }),
+        krossCurrentHealth: probe(0, { readable: false }),
         stays: probe(0, { readable: false }),
         rooms: probe(0, { readable: false }),
         villas: probe(0, { readable: false }),

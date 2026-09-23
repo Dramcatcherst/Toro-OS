@@ -13,6 +13,8 @@ export type ToroMenuSourceSnapshot = {
   tasks: ToroSourceProbe;
   maintenanceEvents: ToroSourceProbe;
   reservations: ToroSourceProbe;
+  currentReservationsSafe: ToroSourceProbe;
+  krossCurrentHealth: ToroSourceProbe;
   stays: ToroSourceProbe;
   rooms: ToroSourceProbe;
   villas: ToroSourceProbe;
@@ -97,9 +99,8 @@ export function evaluateSourceAwareCapabilityStates(
   enableRead(
     "guest.arrivals_departures",
     "Llegadas y salidas live",
-    usable(snapshot.reservations) &&
-      snapshot.reservations.fresh === true &&
-      usable(snapshot.stays),
+    usable(snapshot.currentReservationsSafe) &&
+      usable(snapshot.krossCurrentHealth),
   );
 
   // A snapshot is not live PMS authority, so quote remains blocked here.
