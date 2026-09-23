@@ -69,7 +69,7 @@ Twenty projects were visible in the connected Vercel inventory.
 | `ricosky` | **SEPARATE_EXPERIMENTAL_PREVIEW** | `dreamauro` | no production observed; preview READY |
 | `site0926` | **ARCHIVE_CANDIDATE_HOLD** | failed production target, no current custom domain observed, no runtime log counts in 24h sample | recover purpose/source before archive |
 | `dreamcatcher-hotel-santa-teresa-v100` | **ARCHIVE_CANDIDATE_HOLD** | old V100 generation; no current custom domain observed; no runtime log counts in 24h sample | production READY but dependency audit required |
-| `site-production-v1` | **ACTIVE_SEPARATE_BUSINESS_SOURCE_UNKNOWN** | Git metadata absent / CLI-origin deployment | current domains `lajuliaguatape.com` + `www.lajuliaguatape.com`; production READY |
+| `site-production-v1` | **INCUBATOR_WITH_LIVE_DEPLOYMENT** | Git metadata absent / CLI-origin deployment | current domains `lajuliaguatape.com` + `www.lajuliaguatape.com`; production READY; business lifecycle remains INCUBATOR/inactive per Plan General |
 | `dreamcatcher-public-home-p0-20260818` | **ARCHIVE_CANDIDATE_HOLD** | historical Dreamcatcher domain owner; current domain now resolves to vnext; no runtime log counts in 24h sample | preserve until dependency/env audit |
 | `dreamcatcher-public-home-p0-20260817` | **ARCHIVE_CANDIDATE_HOLD** | older public-home generation; no current custom domain observed; no runtime log counts in 24h sample | preserve until dependency/env audit |
 | `dreamcatcher-los50s-preview-p0` | **LEGACY_PREVIEW_HOLD** | `dreamcatcher-website-vnext` | latest BLOCKED; no production observed |
@@ -192,14 +192,18 @@ Two deployment surfaces may be justified by access/exposure boundaries, but this
 
 ### La Julia Guatapé
 
-- Classification: **ACTIVE SEPARATE BUSINESS/PROJECT**
+- Business/project lifecycle: **INCUBATOR / inactive** per the canonical Plan General.
+- Technical web surface: **DEPLOYED / live**.
+- A live deployment does not activate the business.
+- Classification: **INCUBATOR_WITH_LIVE_DEPLOYMENT**
 - Domain: `lajuliaguatape.com`, `www.lajuliaguatape.com`
 - Vercel: `site-production-v1`
 - Project ID: `prj_0EUpbahThy3oOBMLquDYwq9FDo7H`
 - Production deployment: `dpl_9pcpsAo8e7JWoVnwbYaUGkDPpYpb`
 - Deployment source: CLI; canonical Git source remains unknown.
 - Public positioning: daytime finca / rural coworking / experiences in El Roble, Guatapé; not individual lodging.
-- Scope rule: separate from Dreamcatcher truth unless an explicit shared-service contract is created.
+- Scope rule: keep isolated from Dreamcatcher truth unless an explicit shared-service contract is created.
+- Activation rule: only an explicit portfolio/business trigger may change INCUBATOR -> ACTIVE.
 - Alignment issue: `Dramcatcherst/Toro-OS#39`.
 
 Do not create a new La Julia repository until TORO proves that the original canonical source cannot be recovered.
