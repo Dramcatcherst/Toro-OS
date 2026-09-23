@@ -18,6 +18,12 @@ const maintenanceNavigationItem: NavItem = {
   href: "/toro/operacion/mantenimiento",
 };
 
+const revenueNavigationItem: NavItem = {
+  label: "Revenue",
+  availability: "available",
+  href: "/toro/revenue",
+};
+
 const founderNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
   { label: "Decisiones", availability: "available", href: "/toro/decisiones" },
@@ -25,6 +31,7 @@ const founderNavigation: NavItem[] = [
   { label: "Hotel", availability: "available", href: "/toro/hotel" },
   { label: "Huéspedes", availability: "coming-soon" },
   { label: "Dinero", availability: "coming-soon" },
+  revenueNavigationItem,
   { label: "Proyectos", availability: "available", href: "/toro/proyectos" },
   { label: "Equipo", availability: "coming-soon" },
   { label: "Conocimiento", availability: "available", href: "/toro/conocimiento" },
@@ -54,6 +61,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
   FINANZAS: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Dinero", availability: "coming-soon" },
+    revenueNavigationItem,
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
   ],

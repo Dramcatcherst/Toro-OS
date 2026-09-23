@@ -11,6 +11,7 @@ const founderDesktopLinks = [
   ["Decisiones", "/toro/decisiones"],
   ["Mantenimiento", "/toro/operacion/mantenimiento"],
   ["Hotel", "/toro/hotel"],
+  ["Revenue", "/toro/revenue"],
   ["Proyectos", "/toro/proyectos"],
   ["Conocimiento", "/toro/conocimiento"],
   ["Sistemas", "/toro/sistemas"],
@@ -26,7 +27,7 @@ describe("desktop navigation", () => {
     for (const [label, href] of founderDesktopLinks) {
       expect(navigation.getByRole("link", { name: label })).toHaveAttribute("href", href);
     }
-    expect(navigation.getAllByRole("link")).toHaveLength(7);
+    expect(navigation.getAllByRole("link")).toHaveLength(8);
 
     const unavailableGuests = navigation.getByText("Huéspedes").closest("[aria-disabled='true']");
     expect(unavailableGuests).toBeInTheDocument();

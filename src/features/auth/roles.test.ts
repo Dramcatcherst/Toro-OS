@@ -56,6 +56,7 @@ describe("getRoleNavigation", () => {
       "/toro/proyectos",
       "/toro/conocimiento",
       "/toro/sistemas",
+      "/toro/revenue",
     ].includes(href))).toBe(true);
   });
 
@@ -97,7 +98,7 @@ describe("getRoleNavigation", () => {
 
   it("gives founder the full executive navigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
-      "Inicio", "Decisiones", "Mantenimiento", "Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas",
+      "Inicio", "Decisiones", "Mantenimiento", "Hotel", "Huéspedes", "Dinero", "Revenue", "Proyectos", "Equipo", "Conocimiento", "Sistemas",
     ]);
   });
 
