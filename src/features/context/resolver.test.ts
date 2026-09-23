@@ -17,7 +17,13 @@ const ORG_B = "00000000-0000-4000-8000-0000000000bb";
 type Fixture = {
   roleRows?: unknown;
   roleError?: { message: string } | null;
-  employeeRowsByOrg?: Record<string, Array<{ id: string }>>;
+  employeeRowsByOrg?: Record<string, Array<{
+    id: string;
+    preferred_name?: string | null;
+    position_id?: string | null;
+    work_area?: string | null;
+    positions?: { code?: string | null; name?: string | null } | null;
+  }>>;
   employeeError?: boolean;
 };
 
@@ -105,7 +111,15 @@ describe("resolveToroContext", () => {
     createServerSupabaseClientMock.mockResolvedValue(
       buildClient({
         roleRows: [{ org_id: ORG_A, roles: { code: "GERENCIA" } }],
-        employeeRowsByOrg: { [ORG_A]: [{ id: "employee-a" }] },
+        employeeRowsByOrg: {
+          [ORG_A]: [{
+            id: "employee-a",
+            preferred_name: "Alex",
+            position_id: "position-a",
+            work_area: "Recepción",
+            positions: { code: "RECEPTION", name: "Recepción" },
+          }],
+        },
       }),
     );
 
@@ -118,6 +132,11 @@ describe("resolveToroContext", () => {
         status: "active",
         roles: ["GERENCIA"],
         employeeId: "employee-a",
+        employeePreferredName: "Alex",
+        positionId: "position-a",
+        positionCode: "RECEPTION",
+        positionName: "Recepción",
+        workArea: "Recepción",
         source: "legacy_user_roles",
       },
       allowedDataScopes: ["work_private", "work_org", "shared", "system"],

@@ -51,6 +51,11 @@ export type ToroResolvedMembership = {
   status: ToroMembershipStatus;
   roles: ToroCanonicalRole[];
   employeeId: string | null;
+  employeePreferredName?: string | null;
+  positionId?: string | null;
+  positionCode?: string | null;
+  positionName?: string | null;
+  workArea?: string | null;
   source: "organization_memberships" | "legacy_user_roles";
 };
 
