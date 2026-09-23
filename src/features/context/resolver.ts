@@ -70,14 +70,23 @@ function displayNameFromUser(user: {
     : user.email ?? "Usuario TORO";
 }
 
-async function resolveEmployeeId(
+type ResolvedEmployeeContext = {
+  id: string;
+  preferredName: string | null;
+  positionId: string | null;
+  positionCode: string | null;
+  positionName: string | null;
+  workArea: string | null;
+};
+
+async function resolveEmployeeContext(
   supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
   userId: string,
   orgId: string,
-): Promise<string | null | undefined> {
+): Promise<ResolvedEmployeeContext | null | undefined> {
   const { data, error } = await supabase
     .from("employees")
-    .select("id")
+    .select("id, preferred_name, position_id, work_area, positions(code, name)")
     .eq("user_id", userId)
     .eq("org_id", orgId)
     .is("deleted_at", null)
@@ -86,8 +95,33 @@ async function resolveEmployeeId(
   if (error) return undefined;
   if (!Array.isArray(data) || data.length === 0) return null;
 
-  const id = data[0]?.id;
-  return typeof id === "string" && id ? id : null;
+  const row = data[0] as {
+    id?: unknown;
+    preferred_name?: unknown;
+    position_id?: unknown;
+    work_area?: unknown;
+    positions?: unknown;
+  };
+
+  if (typeof row.id !== "string" || !row.id) return undefined;
+
+  const relation = Array.isArray(row.positions) ? row.positions[0] : row.positions;
+  const position =
+    relation && typeof relation === "object"
+      ? (relation as { code?: unknown; name?: unknown })
+      : null;
+
+  const cleanText = (value: unknown) =>
+    typeof value === "string" && value.trim() ? value.trim() : null;
+
+  return {
+    id: row.id,
+    preferredName: cleanText(row.preferred_name),
+    positionId: cleanText(row.position_id),
+    positionCode: cleanText(position?.code),
+    positionName: cleanText(position?.name),
+    workArea: cleanText(row.work_area),
+  };
 }
 
 /**
@@ -197,16 +231,21 @@ export const resolveToroContext: ResolveToroContext = async (
   const roles = rolesByOrg.get(orgId);
   if (!roles?.length) return null;
 
-  const employeeId = await resolveEmployeeId(supabase, user.id, orgId);
-  if (employeeId === undefined) return null;
+  const employee = await resolveEmployeeContext(supabase, user.id, orgId);
+  if (employee === undefined) return null;
 
   const membership: ToroResolvedMembership = {
     orgId,
     membershipId: null,
-    membershipType: employeeId ? "employee" : null,
+    membershipType: employee ? "employee" : null,
     status: "active",
     roles,
-    employeeId,
+    employeeId: employee?.id ?? null,
+    employeePreferredName: employee?.preferredName ?? null,
+    positionId: employee?.positionId ?? null,
+    positionCode: employee?.positionCode ?? null,
+    positionName: employee?.positionName ?? null,
+    workArea: employee?.workArea ?? null,
     source: "legacy_user_roles",
   };
 
