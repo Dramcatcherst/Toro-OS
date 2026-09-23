@@ -152,7 +152,12 @@ export default async function BrainPage() {
     <main className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroTopline}>
-          <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
+          <div className="flex items-center gap-3">
+            <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
+            <Link href="/experience-lab" className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-100 hover:border-cyan-300/40">
+              Experience Lab
+            </Link>
+          </div>
           <div className={styles.badges}>
             <span className={styles.synthetic}><Sparkles aria-hidden="true" /> {projection.synthetic ? "synthetic" : "canonical"}</span>
             <span><ShieldCheck aria-hidden="true" /> read only</span>
