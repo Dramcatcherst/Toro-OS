@@ -30,7 +30,7 @@ const employeeNavigation: NavItem[] = [
   { label: "Horario", availability: "coming-soon" },
   { label: "Solicitudes", availability: "coming-soon" },
   { label: "Mensajes", availability: "coming-soon" },
-  { label: "Mi perfil", availability: "coming-soon" },
+  { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
 
 const peopleAdminNavigation: NavItem[] = [
