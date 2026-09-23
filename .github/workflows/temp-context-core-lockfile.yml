@@ -64,3 +64,4 @@ jobs:
           git add package.json package-lock.json
           git commit -m "chore: lock context-core dependency graph [context-lockfile]"
           git push origin HEAD:feat/context-core-extraction-20260923
+# trigger: context-core validation
