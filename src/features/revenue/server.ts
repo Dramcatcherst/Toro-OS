@@ -51,7 +51,11 @@ export type RevenueDirectoryData =
       source: "Supabase · get_agency_rate_lookup";
     }
   | {
-      kind: "forbidden" | "error";
+      kind: "forbidden";
+      detail: string;
+    }
+  | {
+      kind: "error";
       detail: string;
     };
 
