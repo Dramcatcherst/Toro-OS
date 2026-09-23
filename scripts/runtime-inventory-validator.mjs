@@ -201,6 +201,21 @@ export function validateRuntimeInventory(manifest, playbookManifest) {
     if (!isKnown(evaluation.last_run_at) || Number.isNaN(Date.parse(evaluation.last_run_at))) {
       errors.push("VERIFIED requires valid evaluation.last_run_at");
     }
+    if (!Array.isArray(manifest?.loaded_playbooks) || manifest.loaded_playbooks.length === 0) {
+      errors.push("VERIFIED requires at least one loaded canonical playbook");
+    }
+    if (!Array.isArray(manifest?.workflow_authority) || manifest.workflow_authority.length === 0) {
+      errors.push("VERIFIED requires at least one workflow authority");
+    }
+    if (!Array.isArray(manifest?.source_authorities) || manifest.source_authorities.length === 0) {
+      errors.push("VERIFIED requires at least one source authority");
+    }
+    if (!isKnown(manifest?.fallback?.mode) || !isKnown(manifest?.fallback?.reference)) {
+      errors.push("VERIFIED requires fallback mode/reference");
+    }
+    if (!isKnown(manifest?.rollback?.reference)) {
+      errors.push("VERIFIED requires rollback reference");
+    }
     if (!Array.isArray(manifest?.evidence_refs) || manifest.evidence_refs.length === 0) {
       errors.push("VERIFIED requires evidence_refs");
     }
