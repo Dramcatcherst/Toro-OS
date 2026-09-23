@@ -65,6 +65,7 @@ describe("getRoleNavigation", () => {
           "/toro/mi-perfil",
           "/toro/mi-asistencia",
           "/toro/mi-horario",
+          "/toro/horarios",
           "/toro/asistencia",
           "/toro/solicitudes",
         ].includes(href)),
@@ -80,6 +81,7 @@ describe("getRoleNavigation", () => {
       "Dinero",
       "Proyectos",
       "Equipo",
+      "Horarios",
       "Conocimiento",
       "Sistemas",
     ]) {
@@ -153,6 +155,25 @@ describe("getRoleNavigation", () => {
     ).toMatchObject({ availability: "coming-soon" });
   });
 
+  it.each([
+    "FOUNDER",
+    "ADMIN",
+    "RRHH",
+    "GERENCIA",
+    "JEFE_DEPARTAMENTO",
+    "AUDITOR",
+  ] as const)(
+    "enables read-only team schedule navigation for %s",
+    (role) => {
+      expect(
+        getRoleNavigation(role).find((item) => item.label === "Horarios"),
+      ).toMatchObject({
+        availability: "available",
+        href: "/toro/horarios",
+      });
+    },
+  );
+
   it.each(["ADMIN", "RRHH", "AUDITOR"] as const)(
     "enables read-only attendance review navigation for %s",
     (role) => {
@@ -176,5 +197,12 @@ describe("getRoleNavigation", () => {
     const labels = getRoleNavigation("FINANZAS").map((item) => item.label);
     expect(labels).toContain("Dinero");
     expect(labels).not.toContain("Huéspedes");
+  });
+
+  it("does not expose team Horarios to FINANZAS without schedule RLS", () => {
+    const navigation = getRoleNavigation("FINANZAS");
+    expect(
+      navigation.find((item) => item.label === "Horarios"),
+    ).toBeUndefined();
   });
 });
