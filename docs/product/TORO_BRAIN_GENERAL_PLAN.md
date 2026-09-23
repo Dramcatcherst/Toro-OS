@@ -1168,7 +1168,7 @@ Verified/rebaselined 2026-09-23:
 - legacy history contains Google Admin Bridge/OIDC/auth-pilot work, so env/OIDC/integration inventory is mandatory before archival or deletion.
 
 Canonical consolidation tracker:
-- issue #69 — Vercel estate consolidation.
+- issue #33 — GitHub + Vercel delivery-governance master lane.
 
 Rules:
 - no legacy project deletion;
