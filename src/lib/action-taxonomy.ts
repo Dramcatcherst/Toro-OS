@@ -1,0 +1,241 @@
+import type { RiskLevel } from "./toro-types";
+
+export type ToroActionDomain =
+  | "TORO Comms"
+  | "TORO Revenue"
+  | "TORO Finance"
+  | "TORO Growth"
+  | "TORO Builder"
+  | "TORO Operations"
+  | "TORO People"
+  | "TORO Governance"
+  | "TORO Tools"
+  | "TORO Systems";
+
+export type ToroActionIntentId =
+  | "guest_inquiry"
+  | "availability_quote"
+  | "reservation_change"
+  | "guest_payment"
+  | "guest_invoice"
+  | "supplier_invoice"
+  | "refund_or_chargeback"
+  | "social_publication"
+  | "website_change"
+  | "seo_content"
+  | "paid_campaign"
+  | "maintenance_incident"
+  | "purchase_request"
+  | "employee_onboarding"
+  | "attendance_or_payroll_exception"
+  | "legal_or_insurance"
+  | "access_or_secret_change"
+  | "new_app_or_connector";
+
+export type ToroActionIntentDefinition = {
+  id: ToroActionIntentId;
+  label: string;
+  domains: readonly ToroActionDomain[];
+  defaultRisk: RiskLevel;
+  examples: {
+    es: readonly string[];
+    en: readonly string[];
+  };
+};
+
+export const TORO_ACTION_TAXONOMY = [
+  {
+    id: "guest_inquiry",
+    label: "Guest inquiry",
+    domains: ["TORO Comms"],
+    defaultRisk: "Low",
+    examples: {
+      es: ["consulta de huésped", "mensaje de un huésped"],
+      en: ["guest inquiry", "guest question"],
+    },
+  },
+  {
+    id: "availability_quote",
+    label: "Availability quote",
+    domains: ["TORO Revenue", "TORO Comms"],
+    defaultRisk: "Low",
+    examples: {
+      es: ["cotiza disponibilidad", "precio y disponibilidad"],
+      en: ["availability quote", "check availability"],
+    },
+  },
+  {
+    id: "reservation_change",
+    label: "Reservation change",
+    domains: ["TORO Revenue", "TORO Comms"],
+    defaultRisk: "High",
+    examples: {
+      es: ["cambiar una reserva", "modificar una reserva"],
+      en: ["change a reservation", "modify booking"],
+    },
+  },
+  {
+    id: "guest_payment",
+    label: "Guest payment",
+    domains: ["TORO Finance", "TORO Revenue"],
+    defaultRisk: "Critical",
+    examples: {
+      es: ["pago de un huésped", "registrar pago de reserva"],
+      en: ["guest payment", "collect guest payment"],
+    },
+  },
+  {
+    id: "guest_invoice",
+    label: "Guest invoice",
+    domains: ["TORO Finance"],
+    defaultRisk: "High",
+    examples: {
+      es: ["factura para un huésped", "facturar hospedaje"],
+      en: ["invoice for the hotel guest", "guest invoice"],
+    },
+  },
+  {
+    id: "supplier_invoice",
+    label: "Supplier invoice",
+    domains: ["TORO Finance"],
+    defaultRisk: "High",
+    examples: {
+      es: ["factura de un proveedor", "cuenta por pagar proveedor"],
+      en: ["supplier invoice", "vendor bill"],
+    },
+  },
+  {
+    id: "refund_or_chargeback",
+    label: "Refund or chargeback",
+    domains: ["TORO Finance", "TORO Revenue"],
+    defaultRisk: "Critical",
+    examples: {
+      es: ["reembolso de reserva", "contracargo"],
+      en: ["refund guest", "chargeback"],
+    },
+  },
+  {
+    id: "social_publication",
+    label: "Social publication",
+    domains: ["TORO Growth"],
+    defaultRisk: "High",
+    examples: {
+      es: ["publicar un reel en Instagram", "publicar en redes sociales"],
+      en: ["social media post", "publish a reel"],
+    },
+  },
+  {
+    id: "website_change",
+    label: "Website change",
+    domains: ["TORO Builder", "TORO Growth"],
+    defaultRisk: "High",
+    examples: {
+      es: ["cambiar el home de la página web", "editar la página web"],
+      en: ["website change", "update the homepage"],
+    },
+  },
+  {
+    id: "seo_content",
+    label: "SEO content",
+    domains: ["TORO Growth"],
+    defaultRisk: "Medium",
+    examples: {
+      es: ["artículo SEO", "contenido para Google"],
+      en: ["SEO article", "organic search content"],
+    },
+  },
+  {
+    id: "paid_campaign",
+    label: "Paid campaign",
+    domains: ["TORO Growth", "TORO Finance"],
+    defaultRisk: "High",
+    examples: {
+      es: ["campaña de Google Ads", "campaña de Meta Ads"],
+      en: ["paid campaign", "Google Ads campaign"],
+    },
+  },
+  {
+    id: "maintenance_incident",
+    label: "Maintenance incident",
+    domains: ["TORO Operations"],
+    defaultRisk: "High",
+    examples: {
+      es: ["equipo no funciona", "avería de mantenimiento"],
+      en: ["maintenance incident", "equipment failure"],
+    },
+  },
+  {
+    id: "purchase_request",
+    label: "Purchase request",
+    domains: ["TORO Operations", "TORO Finance"],
+    defaultRisk: "High",
+    examples: {
+      es: ["solicitud de compra", "comprar equipo para el hotel"],
+      en: ["purchase request", "buy hotel equipment"],
+    },
+  },
+  {
+    id: "employee_onboarding",
+    label: "Employee onboarding",
+    domains: ["TORO People", "TORO Systems"],
+    defaultRisk: "High",
+    examples: {
+      es: ["ingresar nuevo empleado", "crear usuario para empleado"],
+      en: ["employee onboarding", "invite new employee"],
+    },
+  },
+  {
+    id: "attendance_or_payroll_exception",
+    label: "Attendance or payroll exception",
+    domains: ["TORO People", "TORO Finance"],
+    defaultRisk: "High",
+    examples: {
+      es: ["corregir una marca del reloj", "problema de planilla"],
+      en: ["attendance correction", "payroll exception"],
+    },
+  },
+  {
+    id: "legal_or_insurance",
+    label: "Legal or insurance",
+    domains: ["TORO Governance", "TORO Finance"],
+    defaultRisk: "Critical",
+    examples: {
+      es: ["renovar la póliza", "contrato legal"],
+      en: ["insurance renewal", "legal document"],
+    },
+  },
+  {
+    id: "access_or_secret_change",
+    label: "Access or secret change",
+    domains: ["TORO Systems", "TORO Governance"],
+    defaultRisk: "Critical",
+    examples: {
+      es: ["rotar un secreto", "dar acceso a una aplicación"],
+      en: ["revoke user access", "rotate a secret"],
+    },
+  },
+  {
+    id: "new_app_or_connector",
+    label: "New app or connector",
+    domains: ["TORO Tools", "TORO Systems"],
+    defaultRisk: "High",
+    examples: {
+      es: ["conectar una nueva aplicación", "nueva integración"],
+      en: ["new app integration", "add a connector"],
+    },
+  },
+] as const satisfies readonly ToroActionIntentDefinition[];
+
+const BY_ID = new Map<ToroActionIntentId, ToroActionIntentDefinition>(
+  TORO_ACTION_TAXONOMY.map((definition) => [definition.id, definition]),
+);
+
+export function getToroActionIntent(
+  id: ToroActionIntentId,
+): ToroActionIntentDefinition {
+  const definition = BY_ID.get(id);
+  if (!definition) {
+    throw new Error("Unknown TORO action intent.");
+  }
+  return definition;
+}
