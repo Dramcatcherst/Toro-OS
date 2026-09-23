@@ -62,10 +62,10 @@ describe("resolveCurrentToroReadOnlyMenu", () => {
       "Falta verdad live de reservas/estancias del PMS.",
     );
     expect(view?.capabilityAlternatives["hospitality.quote"]).toEqual({
-      label: "Abrir Kross oficial",
-      href: "https://dreamcatcherhotel.kross.travel/",
+      label: "Preparar búsqueda en Kross",
+      href: "/booking-assist",
       note:
-        "Kross confirma las tarifas y disponibilidad vigentes. TORO no importa ni interpreta ese resultado automáticamente.",
+        "TORO prepara fechas y ocupación; Kross confirma tarifas, disponibilidad y reserva final.",
       external: true,
     });
   });
