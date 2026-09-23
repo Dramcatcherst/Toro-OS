@@ -211,7 +211,7 @@ agent_skill_system:
     tere_compact_context_key: wespeak_tere_compact_context_packet_2026_09_v1
     tere_compact_context_status: CONFIG_RECONCILED_RUNTIME_UNVERIFIED
     tere_journey_key: tere_guest_journey_contract_2026_09_v1
-    runtime_consumption: UNVERIFIED
+    runtime_consumption: ACTIVE_RUNTIME_V4_UNVERIFIED
   principle: smallest_capable_agent_organization
   entity_separation:
     agent_not_skill: true
@@ -626,6 +626,21 @@ cognitive_proving_ground:
       - stale_snapshot_as_today
     first_live_proof: "one service_date: fresh Kross entitlement/charges + kitchen final reviewed served report -> breakfast_orders -> derived reconciliation -> human review"
     expand_only_after_single_day_pass: true
+
+tere_wespeak_runtime_gate:
+  rebaselined_on: "2026-09-23"
+  runbook: docs/runbooks/TORO_TERE_WESPEAK_V4_RUNTIME_ACCEPTANCE_GATE.md
+  evidence: docs/evidence/TERE_WESPEAK_RUNTIME_REBASELINE_2026-09-23.md
+  evaluator: src/features/tere/runtime-acceptance.ts
+  expected_v4_hash: 4df90ab2ae494826f5850bb413c28f6d
+  runtime_active: verified
+  pre_v4_activity: verified
+  post_v4_activity: not_observed
+  runtime_version_hash: unverified
+  v4_consumption: unverified
+  channel_continuity: unverified
+  qa_mode: isolated_synthetic_only
+  real_guest_contact_for_config_proof: forbidden
 
 tere_runtime_config_consolidation:
   version: TERE-OPERATING-VOICE-v4
