@@ -1,4 +1,4 @@
-name: TEMP Remaining npm Audit Detail
+name: TEMP Non-Forced npm Audit Remediation
 
 on:
   push:
@@ -6,10 +6,11 @@ on:
       - security/next-16-3-6-20260922
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  audit:
+  remediate:
+    if: ${{ !contains(github.event.head_commit.message, '[audit-lockfile]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
@@ -23,37 +24,40 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Install exact graph
+      - name: Non-forced lockfile remediation
+        run: npm audit fix --package-lock-only
+
+      - name: Install exact remediated graph
         run: npm ci
 
-      - name: Print exact remaining advisories
+      - name: Require zero known vulnerabilities
         shell: bash
         run: |
-          set +e
           npm audit --json > /tmp/npm-audit.json
-          set -e
           node - <<'NODE'
           const fs = require("fs");
           const report = JSON.parse(fs.readFileSync("/tmp/npm-audit.json", "utf8"));
-          console.log("AUDIT_COUNTS=" + JSON.stringify(report.metadata?.vulnerabilities ?? {}));
-          for (const [name, v] of Object.entries(report.vulnerabilities ?? {})) {
-            const via = (v.via ?? []).map((x) => typeof x === "string" ? x : {
-              source: x.source,
-              name: x.name,
-              severity: x.severity,
-              title: x.title,
-              range: x.range,
-              url: x.url
-            });
-            console.log("AUDIT_ITEM=" + JSON.stringify({
-              name,
-              severity: v.severity,
-              isDirect: v.isDirect,
-              range: v.range,
-              nodes: v.nodes,
-              via,
-              effects: v.effects,
-              fixAvailable: v.fixAvailable
-            }));
-          }
+          const counts = report.metadata?.vulnerabilities ?? {};
+          console.log("AUDIT_COUNTS=" + JSON.stringify(counts));
+          const total = counts.total ?? Object.values(counts).reduce((a,b)=>a+Number(b||0),0);
+          if (total !== 0) process.exit(1);
           NODE
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Commit remediated lockfile
+        shell: bash
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "No dependency changes generated."
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: remediate npm audit findings [audit-lockfile]"
+          git push origin HEAD:security/next-16-3-6-20260922
