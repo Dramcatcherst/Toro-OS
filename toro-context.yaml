@@ -789,6 +789,7 @@ customer_experience_rules:
 
 progressive_onboarding:
   canonical_spec: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
+  role_journey_manifest: data/toro_onboarding_journeys_v2.json
   implementation_status: specified_not_runtime_verified
   value_before_setup: true
   optional_steps_skippable: true
@@ -806,6 +807,10 @@ progressive_onboarding:
   current_employee_onboarding_progress_rows_observed_2026_09_23: 0
   modular_activation: true
   one_brain_selected_capabilities: true
+  position_specific_journey_overrides_generic_employee: true
+  first_value_target_interactions: 2
+  onboarding_choices_per_turn_max: 3
+  do_not_reask_verified_context: true
 
 product_proof_focus:
   effective_date: "2026-09-23"
