@@ -13,14 +13,17 @@ export type VercelRuntimeConfig = {
   branchAlias: string;
 };
 
-export function resolveVercelRuntimeConfig(env: {
+export function resolveVercelRuntimeConfig(env?: {
   VERCEL_PROJECT_ID?: string;
   VERCEL_TEAM_ID?: string;
-} = process.env): VercelRuntimeConfig {
+}): VercelRuntimeConfig {
+  const source = env ?? process.env;
+
   return {
     projectId:
-      env.VERCEL_PROJECT_ID?.trim() || CANONICAL_VERCEL_RUNTIME.projectId,
-    teamId: env.VERCEL_TEAM_ID?.trim() || CANONICAL_VERCEL_RUNTIME.teamId,
+      source.VERCEL_PROJECT_ID?.trim() || CANONICAL_VERCEL_RUNTIME.projectId,
+    teamId:
+      source.VERCEL_TEAM_ID?.trim() || CANONICAL_VERCEL_RUNTIME.teamId,
     productionAlias: CANONICAL_VERCEL_RUNTIME.productionAlias,
     branchAlias: CANONICAL_VERCEL_RUNTIME.branchAlias,
   };
