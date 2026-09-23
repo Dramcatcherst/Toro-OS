@@ -7,6 +7,8 @@
 **Machine-readable profiles:** data/toro_conversational_menu_profiles_v1.json  
 **Role message experience:** docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md  
 **Message pack:** data/toro_role_message_pack_v1.json  
+**Role toolbox:** docs/product/TORO_ROLE_TOOLBOX_V1.md  
+**Toolbox manifest:** data/toro_role_toolbox_v1.json  
 **Runtime state:** SPECIFIED / NOT YET RUNTIME-VERIFIED
 
 ---

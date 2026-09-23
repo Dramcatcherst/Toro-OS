@@ -841,6 +841,15 @@ Initial menu profiles cover:
 - guest/prospect lifecycle.
 
 
+
+### Role toolbox
+
+Canonical:
+- docs/product/TORO_ROLE_TOOLBOX_V1.md
+- data/toro_role_toolbox_v1.json
+
+Role menus must route to generic TORO capability keys rather than vendor-specific buttons. Tool state is explicit: READY / READ_ONLY / CONNECT / REQUEST_ACCESS / DEGRADED / HIDDEN / BLOCKED. This allows the same UX to survive connector substitution and prevents dead menu options.
+
 # 17. Immediate execution queue
 
 ## P0
