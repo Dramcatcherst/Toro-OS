@@ -1,0 +1,63 @@
+{
+  "contract_version": "TORO-RUNTIME-INVENTORY-v1",
+  "runtime_id": "toro-portal-vercel-production",
+  "runtime_type": "vercel_portal",
+  "environment": "production",
+  "verification_state": "OBSERVED",
+  "observed_at": "2026-09-23T14:41:45.165Z",
+  "runtime_version": "dpl_69A87RsV3QDbfV1syUTwWSuw6vWj",
+  "runtime_build_ref": "f37c4c22cbeb9d72c95c0ddc9dc268dff9a8414e",
+  "agent": "TORO",
+  "canonical_skill": "toro-brain",
+  "skill_version": "UNKNOWN",
+  "config_version": "UNKNOWN",
+  "config_hash": "UNKNOWN",
+  "loaded_playbooks": [],
+  "model": {
+    "provider": "UNKNOWN",
+    "model_id": "UNKNOWN",
+    "version": "UNKNOWN"
+  },
+  "tool_permissions": [],
+  "workflow_authority": [],
+  "source_authorities": [
+    {
+      "domain": "deployment_state",
+      "system": "Vercel",
+      "freshness_state": "fresh",
+      "verified": true
+    },
+    {
+      "domain": "code_revision",
+      "system": "GitHub",
+      "freshness_state": "fresh",
+      "verified": true
+    }
+  ],
+  "evaluation": {
+    "suite_id": "TORO-AGENT-EVAL-V1-20260923",
+    "last_run_at": null,
+    "cases_run": 0,
+    "cases_passed": 0,
+    "critical_failures": 0,
+    "runtime_verified": false
+  },
+  "evidence_refs": [
+    "Vercel project prj_nxerFw9ciNews6tUMAah3GAlAJzs",
+    "Vercel deployment dpl_69A87RsV3QDbfV1syUTwWSuw6vWj",
+    "GitHub Dramcatcherst/Toro-OS@f37c4c22cbeb9d72c95c0ddc9dc268dff9a8414e"
+  ],
+  "fallback": {
+    "mode": "previous_ready_production_deployment",
+    "reference": "dpl_V67BAAbXVryKh8M8M7VTbUSyzSYH"
+  },
+  "rollback": {
+    "reference": "Vercel rollback candidate / previous production deployment; no rollback executed by this observation"
+  },
+  "secrets_present": false,
+  "observation_notes": [
+    "Vercel directly proves deployment/build identity and READY production state.",
+    "This observation does not prove that toro-brain skill, TORO profile, playbooks or model configuration are loaded in the application runtime.",
+    "No runtime request, mutation, restart, secret read or permission change was performed."
+  ]
+}
