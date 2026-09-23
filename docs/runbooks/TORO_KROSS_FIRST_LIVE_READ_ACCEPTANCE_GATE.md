@@ -217,3 +217,21 @@ Still required:
 6. evidence that no PMS write occurred.
 
 No credential, API entitlement or live browser/session is fabricated by this implementation.
+
+
+## Provider-request status — 2026-09-23
+
+Confirmed from Kross ticket **KB-305650/26**:
+- Kross reported on 2026-09-18 that they had contacted Dreamcatcher's local provider and were waiting for that provider's response.
+- No live read credential/transport, API documentation or pricing package has yet been evidenced in TORO.
+- A detailed Dreamcatcher follow-up asking for read-only methods, documentation, scopes, legal terms and costs exists as a Gmail draft but has **not been sent**.
+
+Operational next step before TORO can claim "waiting on provider only":
+- authorized human sends/reopens the prepared Kross follow-up;
+- then TORO monitors for provider/Kross response and validates the returned transport against this acceptance gate.
+
+Do not:
+- send the draft automatically;
+- assume the local provider has approved access;
+- infer API entitlement from the existence of the ticket;
+- activate any billable Kross service without written approval.
