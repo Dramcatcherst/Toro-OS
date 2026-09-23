@@ -67,19 +67,19 @@ Twenty projects were visible in the connected Vercel inventory.
 | `dream-team-public` | **ACTIVE_CHILD_PRODUCTION** | `dream-team` | production READY, same SHA `947e8490...` |
 | `mau-dc-site` | **ACTIVE_CHILD_REFERENCE** | `Toro-OS---Dreamcatcher-Hotel` | production READY, `main`, SHA `80768324...` |
 | `ricosky` | **SEPARATE_EXPERIMENTAL_PREVIEW** | `dreamauro` | no production observed; preview READY |
-| `site0926` | **LEGACY_HOLD** | Git metadata absent in fetched deployments | latest preview READY; observed production ERROR |
-| `dreamcatcher-hotel-santa-teresa-v100` | **LEGACY_HOLD** | repo association historically evident; latest deployment metadata incomplete | production READY |
+| `site0926` | **ARCHIVE_CANDIDATE_HOLD** | failed production target, no current custom domain observed, no runtime log counts in 24h sample | recover purpose/source before archive |
+| `dreamcatcher-hotel-santa-teresa-v100` | **ARCHIVE_CANDIDATE_HOLD** | old V100 generation; no current custom domain observed; no runtime log counts in 24h sample | production READY but dependency audit required |
 | `site-production-v1` | **ACTIVE_SEPARATE_BUSINESS_SOURCE_UNKNOWN** | Git metadata absent / CLI-origin deployment | current domains `lajuliaguatape.com` + `www.lajuliaguatape.com`; production READY |
-| `dreamcatcher-public-home-p0-20260818` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
-| `dreamcatcher-public-home-p0-20260817` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
+| `dreamcatcher-public-home-p0-20260818` | **ARCHIVE_CANDIDATE_HOLD** | historical Dreamcatcher domain owner; current domain now resolves to vnext; no runtime log counts in 24h sample | preserve until dependency/env audit |
+| `dreamcatcher-public-home-p0-20260817` | **ARCHIVE_CANDIDATE_HOLD** | older public-home generation; no current custom domain observed; no runtime log counts in 24h sample | preserve until dependency/env audit |
 | `dreamcatcher-los50s-preview-p0` | **LEGACY_PREVIEW_HOLD** | `dreamcatcher-website-vnext` | latest BLOCKED; no production observed |
 | `agoversion-issue17-20260816` | **LEGACY_PREVIEW_HOLD** | `agoversion-v100` | preview READY; historical production ERROR |
-| `agoversion-v100-release-candidate` | **LEGACY_HOLD** | Git metadata absent | production READY |
-| `dist` | **LEGACY_HOLD** | Git metadata absent | production READY |
-| `agoversion-v100` | **LEGACY_HOLD** | `agoversion-v100` appears in deployment history; latest metadata incomplete | production READY |
-| `.preview-wow-f5edf00` | **LEGACY_PREVIEW_HOLD** | Git metadata absent | production READY despite preview-style name |
-| `dreamcatcher-coopemedicos` | **LEGACY_HOLD** | Git metadata absent | production READY |
-| `encoding-probe` | **RETIRE_CANDIDATE_HOLD** | Git metadata absent | production READY despite probe purpose |
+| `agoversion-v100-release-candidate` | **ARCHIVE_CANDIDATE_HOLD** | historical release candidate; no current custom domain observed; no runtime log counts in 24h sample | dependency audit before archive |
+| `dist` | **ARCHIVE_CANDIDATE_HOLD** | generic historical deployment; no current custom domain observed; no runtime log counts in 24h sample | determine provenance before archive |
+| `agoversion-v100` | **ARCHIVE_CANDIDATE_HOLD** | former Dreamcatcher production generation; current domain now resolves to vnext; no runtime log counts in 24h sample | compare/source audit before archive |
+| `.preview-wow-f5edf00` | **ARCHIVE_CANDIDATE_HOLD** | preview-style historical project; no current custom domain observed; no runtime log counts in 24h sample | likely redundant, verify dependencies first |
+| `dreamcatcher-coopemedicos` | **ARCHIVE_CANDIDATE_HOLD** | campaign/special-purpose name; no current custom domain observed; no runtime log counts in 24h sample | preserve until campaign/dependency audit |
+| `encoding-probe` | **ARCHIVE_CANDIDATE_HOLD** | probe-purpose project; only Vercel aliases observed; no runtime log counts in 24h sample | high-priority archive candidate after dependency check |
 
 Important: a Vercel `production` target does **not** prove current business traffic, custom-domain ownership, or business necessity. Legacy projects remain on hold until traffic/domain/dependency checks are complete.
 
@@ -121,6 +121,22 @@ Operational follow-up:
 - La Julia portfolio alignment: `Dramcatcherst/Toro-OS#39`
 
 Runtime health becomes a **TORO Systems** responsibility: project existence alone is insufficient; TORO should monitor production errors, failing builds, domain drift, deployment-source drift and repeated 4xx/5xx patterns.
+
+### Legacy runtime-activity sample
+
+A 24-hour Vercel production runtime-log aggregation returned **no status-code counts** for these ten historical projects:
+- `dreamcatcher-hotel-santa-teresa-v100`
+- `dreamcatcher-public-home-p0-20260818`
+- `dreamcatcher-public-home-p0-20260817`
+- `agoversion-v100-release-candidate`
+- `dist`
+- `agoversion-v100`
+- `.preview-wow-f5edf00`
+- `dreamcatcher-coopemedicos`
+- `encoding-probe`
+- `site0926`
+
+Interpretation: no runtime activity was observed through this Vercel runtime-log source in that window. This is **not equivalent to zero HTTP traffic**, especially for fully static responses. The result is sufficient to raise archive priority, but not sufficient to authorize archive/delete without checking domains, static analytics if available, env dependencies, webhooks and external references.
 
 ## 5. Canonical delivery mappings
 
