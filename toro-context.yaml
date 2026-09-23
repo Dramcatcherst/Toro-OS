@@ -354,6 +354,39 @@ cognitive_proving_ground:
     target_delta_test_persisted_new_round: false
     rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
   no_new_project_or_task_for_proof: true
+  people_pilot_prepared:
+    value_stream: people_identity_access
+    status: PREPARED_BLOCKED_BY_PHASE1_MAIN_INTEGRATION
+    owner_hold: NO_EMPLOYEE_CONTACT_OR_ONBOARDING_UNTIL_LAUNCH_DECISION
+    production_baseline:
+      organization_memberships_exists: false
+      active_role_users: 5
+      active_role_orgs: 1
+      active_employees: 12
+      active_linked_employees: 4
+      active_unlinked_employees: 8
+      membership_candidates_employee: 4
+      membership_candidates_other_unclassified: 1
+      real_multi_org_users: 0
+    phase1:
+      pr: 15
+      state: DRAFT_DIVERGED_FROM_MAIN
+      context_pr: 42
+      context_pr_state: MERGED_INTO_PHASE1_NOT_MAIN
+      reviewed_head: d3035efe65463043313a61b733fab51ff57b2f7c
+      main_has_context_types: true
+      main_has_resolver_implementation: false
+      resolver_fixture_tests: 9
+      legacy_session_adapter_tests: 8
+      targeted_fixture_tests_total: 17
+      vercel_status: success
+    next_proof: "reconcile Phase1-main, then hosted synthetic identity isolation; no employees"
+    prohibit:
+      - employee_invites
+      - name_based_identity_linking
+      - staff_credentials_as_fixtures
+      - production_membership_migration_before_isolated_validation
+      - second_identity_system
   next_pilot_prepared:
     value_stream: breakfast_fnb
     status: PREPARED_BLOCKED_BY_LIVE_SOURCE
