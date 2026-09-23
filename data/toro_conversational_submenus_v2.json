@@ -1,0 +1,452 @@
+{
+  "version": "2026.09.23-v2",
+  "status": "specified_not_runtime_verified",
+  "rules": {
+    "max_visible_suggestions": 3,
+    "max_submenu_items": 6,
+    "numbers_are_active_menu_scoped": true,
+    "execution_rechecks_authority": true,
+    "stale_menu_numbers_must_not_execute": true,
+    "free_text_always_allowed": true,
+    "after_success_offer_continuation": true,
+    "after_block_offer_safe_alternative": true
+  },
+  "submenus": {
+    "owner_money": [
+      {
+        "key": "due_today",
+        "emoji": "💸",
+        "label": "Pagos de hoy",
+        "aliases": [
+          "pagos de hoy",
+          "vencen hoy"
+        ],
+        "capability": "finance.obligations"
+      },
+      {
+        "key": "collections",
+        "emoji": "💳",
+        "label": "Cobros pendientes",
+        "aliases": [
+          "cobros",
+          "por cobrar"
+        ],
+        "capability": "finance.collections"
+      },
+      {
+        "key": "cash_need",
+        "emoji": "📊",
+        "label": "Cuánto necesitamos",
+        "aliases": [
+          "caja",
+          "necesidad de caja"
+        ],
+        "capability": "finance.exceptions"
+      },
+      {
+        "key": "differences",
+        "emoji": "⚠️",
+        "label": "Diferencias por revisar",
+        "aliases": [
+          "diferencias",
+          "revisar diferencias"
+        ],
+        "capability": "finance.exceptions"
+      },
+      {
+        "key": "monthly_report",
+        "emoji": "📈",
+        "label": "Reporte del mes",
+        "aliases": [
+          "mes",
+          "reporte mensual"
+        ],
+        "capability": "finance.export_reports"
+      }
+    ],
+    "reception_quote": [
+      {
+        "key": "new_quote",
+        "emoji": "🆕",
+        "label": "Nueva cotización",
+        "aliases": [
+          "nueva",
+          "cotizar"
+        ],
+        "capability": "hospitality.quote"
+      },
+      {
+        "key": "continue_quote",
+        "emoji": "🔁",
+        "label": "Seguir cotización",
+        "aliases": [
+          "seguir",
+          "continuar cotización"
+        ],
+        "capability": "guest.followup"
+      },
+      {
+        "key": "recommend_room",
+        "emoji": "🏡",
+        "label": "Recomendar habitación",
+        "aliases": [
+          "recomendar",
+          "habitación"
+        ],
+        "capability": "hospitality.recommend"
+      },
+      {
+        "key": "live_availability",
+        "emoji": "📅",
+        "label": "Disponibilidad live",
+        "aliases": [
+          "disponibilidad",
+          "fechas"
+        ],
+        "capability": "pms.live_availability_price"
+      },
+      {
+        "key": "send_options",
+        "emoji": "📤",
+        "label": "Preparar opciones para enviar",
+        "aliases": [
+          "enviar opciones",
+          "mensaje"
+        ],
+        "capability": "comms.guest_messages"
+      }
+    ],
+    "reception_guest_messages": [
+      {
+        "key": "needs_reply",
+        "emoji": "💬",
+        "label": "Necesitan respuesta",
+        "aliases": [
+          "responder",
+          "pendientes"
+        ],
+        "capability": "comms.guest_messages"
+      },
+      {
+        "key": "followups",
+        "emoji": "🔁",
+        "label": "Seguimientos",
+        "aliases": [
+          "seguimientos",
+          "follow up"
+        ],
+        "capability": "guest.followup"
+      },
+      {
+        "key": "complaints",
+        "emoji": "🆘",
+        "label": "Problemas / quejas",
+        "aliases": [
+          "problemas",
+          "quejas"
+        ],
+        "capability": "guest.issue_handoff"
+      },
+      {
+        "key": "reviews",
+        "emoji": "⭐",
+        "label": "Reviews / post-estadía",
+        "aliases": [
+          "reviews",
+          "reseñas"
+        ],
+        "capability": "guest.followup_reviews"
+      }
+    ],
+    "housekeeping_issue": [
+      {
+        "key": "maintenance",
+        "emoji": "🔧",
+        "label": "Mantenimiento",
+        "aliases": [
+          "mantenimiento",
+          "falla"
+        ],
+        "capability": "maintenance.report"
+      },
+      {
+        "key": "missing_supply",
+        "emoji": "🧴",
+        "label": "Falta un insumo",
+        "aliases": [
+          "insumo",
+          "falta"
+        ],
+        "capability": "inventory.report_missing"
+      },
+      {
+        "key": "damage",
+        "emoji": "⚠️",
+        "label": "Daño / objeto roto",
+        "aliases": [
+          "daño",
+          "roto"
+        ],
+        "capability": "maintenance.report"
+      },
+      {
+        "key": "not_ready",
+        "emoji": "⛔",
+        "label": "No puede quedar lista",
+        "aliases": [
+          "no lista",
+          "bloqueada"
+        ],
+        "capability": "housekeeping.complete"
+      },
+      {
+        "key": "other",
+        "emoji": "📷",
+        "label": "Otro / mandar foto",
+        "aliases": [
+          "otro",
+          "foto"
+        ],
+        "capability": "evidence.photo"
+      }
+    ],
+    "maintenance_close": [
+      {
+        "key": "photo",
+        "emoji": "📷",
+        "label": "Agregar foto / video",
+        "aliases": [
+          "foto",
+          "video"
+        ],
+        "capability": "evidence.photo_video"
+      },
+      {
+        "key": "close",
+        "emoji": "✅",
+        "label": "Cerrar con evidencia",
+        "aliases": [
+          "cerrar",
+          "listo"
+        ],
+        "capability": "maintenance.close_with_evidence"
+      },
+      {
+        "key": "needs_material",
+        "emoji": "📦",
+        "label": "Falta material",
+        "aliases": [
+          "material",
+          "repuesto"
+        ],
+        "capability": "inventory.request_material"
+      },
+      {
+        "key": "escalate",
+        "emoji": "⚠️",
+        "label": "Escalar problema",
+        "aliases": [
+          "escalar",
+          "ayuda"
+        ],
+        "capability": "comms.request_help"
+      }
+    ],
+    "guest_prospect_quote": [
+      {
+        "key": "dates",
+        "emoji": "📅",
+        "label": "Dar fechas",
+        "aliases": [
+          "fechas",
+          "cuándo"
+        ],
+        "capability": "hospitality.search_stay"
+      },
+      {
+        "key": "people",
+        "emoji": "👥",
+        "label": "Personas / grupo",
+        "aliases": [
+          "personas",
+          "grupo"
+        ],
+        "capability": "hospitality.search_stay"
+      },
+      {
+        "key": "budget",
+        "emoji": "💵",
+        "label": "Presupuesto",
+        "aliases": [
+          "presupuesto",
+          "precio"
+        ],
+        "capability": "hospitality.quote"
+      },
+      {
+        "key": "recommend",
+        "emoji": "✨",
+        "label": "Que Tere me recomiende",
+        "aliases": [
+          "recomiéndame",
+          "recomendar"
+        ],
+        "capability": "hospitality.recommend"
+      }
+    ],
+    "guest_reserved_help": [
+      {
+        "key": "resolve_now",
+        "emoji": "🆘",
+        "label": "Resolver ahora",
+        "aliases": [
+          "resolver",
+          "urgente"
+        ],
+        "capability": "guest.request_help"
+      },
+      {
+        "key": "maintenance",
+        "emoji": "🔧",
+        "label": "Mantenimiento",
+        "aliases": [
+          "mantenimiento",
+          "falla"
+        ],
+        "capability": "guest.request_help"
+      },
+      {
+        "key": "cleaning",
+        "emoji": "🧹",
+        "label": "Limpieza",
+        "aliases": [
+          "limpieza",
+          "aseo"
+        ],
+        "capability": "guest.request_help"
+      },
+      {
+        "key": "reception",
+        "emoji": "💬",
+        "label": "Hablar con recepción",
+        "aliases": [
+          "recepción",
+          "persona"
+        ],
+        "capability": "guest.request_help"
+      }
+    ],
+    "employee_requests": [
+      {
+        "key": "leave",
+        "emoji": "🏖️",
+        "label": "Vacaciones / permiso",
+        "aliases": [
+          "vacaciones",
+          "permiso"
+        ],
+        "capability": "people.my_requests"
+      },
+      {
+        "key": "schedule_change",
+        "emoji": "🗓️",
+        "label": "Cambio de horario",
+        "aliases": [
+          "cambio horario",
+          "turno"
+        ],
+        "capability": "people.my_requests"
+      },
+      {
+        "key": "correction",
+        "emoji": "⏱️",
+        "label": "Corregir marca / asistencia",
+        "aliases": [
+          "marca",
+          "asistencia"
+        ],
+        "capability": "people.my_requests"
+      },
+      {
+        "key": "help",
+        "emoji": "💬",
+        "label": "Otra solicitud",
+        "aliases": [
+          "otra",
+          "ayuda"
+        ],
+        "capability": "comms.request_help"
+      }
+    ]
+  },
+  "continuations": {
+    "generic_success": [
+      {
+        "label": "Ver resultado",
+        "emoji": "✅",
+        "intent": "show_result"
+      },
+      {
+        "label": "Seguir con lo próximo",
+        "emoji": "➡️",
+        "intent": "next_best_action"
+      },
+      {
+        "label": "Inicio",
+        "emoji": "🏠",
+        "intent": "home"
+      }
+    ],
+    "generic_blocked": [
+      {
+        "label": "Ver qué falta",
+        "emoji": "🔎",
+        "intent": "show_gap"
+      },
+      {
+        "label": "Hacer lo que sí se puede",
+        "emoji": "🛠️",
+        "intent": "safe_alternative"
+      },
+      {
+        "label": "Pedir ayuda",
+        "emoji": "💬",
+        "intent": "request_help"
+      }
+    ],
+    "guest_quote_ready": [
+      {
+        "label": "Ver mensaje",
+        "emoji": "💬",
+        "intent": "preview_message"
+      },
+      {
+        "label": "Cambiar una opción",
+        "emoji": "✏️",
+        "intent": "adjust_options"
+      },
+      {
+        "label": "Preparar envío",
+        "emoji": "📤",
+        "intent": "prepare_send"
+      }
+    ],
+    "room_ready": [
+      {
+        "label": "Siguiente habitación",
+        "emoji": "➡️",
+        "intent": "next_room"
+      },
+      {
+        "label": "Reportar algo",
+        "emoji": "⚠️",
+        "intent": "report_issue"
+      },
+      {
+        "label": "Inicio",
+        "emoji": "🏠",
+        "intent": "home"
+      }
+    ]
+  }
+}
