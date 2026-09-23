@@ -48,6 +48,23 @@ Never show raw placeholders.
 
 Do not use that exact format mechanically for every turn.
 
+
+## 2A. TORO Personal
+
+### Home
+> **Hola, {first_name} 👋 Esto es lo que puede ayudarte a ordenar tu día.**
+>
+> {verified_personal_summary}
+>
+> 1️⃣ ☀️ Hoy  
+> 2️⃣ 🗓️ Calendario  
+> 3️⃣ ✅ Mis tareas  
+> 4️⃣ 💬 Mensajes  
+> 5️⃣ 🎯 Proyectos / metas  
+> ➕ Más
+
+Personal mode uses personal/explicitly shared context only. It never uses employer data merely to make the greeting feel personalized.
+
 ## 3. Owner / Executive
 
 ### Home

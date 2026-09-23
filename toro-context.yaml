@@ -655,6 +655,8 @@ role_toolbox_system:
 
 conversational_menu_system:
   canonical_spec: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
+  runtime_resolver: src/features/menu/resolver.ts
+  runtime_resolver_status: implemented_pure_not_connected_to_user_surface
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
   implementation_status: specified_not_runtime_verified
   conversation_first: true
@@ -711,6 +713,7 @@ conversational_menu_system:
     blocked_state_requires_useful_next_path: true
     empty_state_should_explain_good_news_or_next_step: true
   initial_profiles:
+    - personal
     - owner_executive
     - manager
     - reception

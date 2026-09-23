@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.23-v1.1",
+  "version": "2026.09.23-v1.2",
   "status": "specified_not_runtime_verified",
   "rules": {
     "conversation_first": true,
@@ -48,6 +48,76 @@
     "ui_control_capability_prefix": "ui."
   },
   "profiles": [
+    {
+      "id": "personal",
+      "context_mode": "personal",
+      "role_codes": [],
+      "position_keywords": [],
+      "primary": [
+        {
+          "key": "today",
+          "emoji": "☀️",
+          "label": "Hoy",
+          "aliases": [
+            "hoy",
+            "mi día",
+            "mi dia"
+          ],
+          "capability": "personal.today"
+        },
+        {
+          "key": "calendar",
+          "emoji": "🗓️",
+          "label": "Calendario",
+          "aliases": [
+            "calendario",
+            "agenda"
+          ],
+          "capability": "personal.calendar"
+        },
+        {
+          "key": "tasks",
+          "emoji": "✅",
+          "label": "Mis tareas",
+          "aliases": [
+            "tareas",
+            "pendientes"
+          ],
+          "capability": "personal.tasks"
+        },
+        {
+          "key": "messages",
+          "emoji": "💬",
+          "label": "Mensajes",
+          "aliases": [
+            "mensajes",
+            "inbox"
+          ],
+          "capability": "personal.messages"
+        },
+        {
+          "key": "projects_goals",
+          "emoji": "🎯",
+          "label": "Proyectos / metas",
+          "aliases": [
+            "proyectos",
+            "metas",
+            "objetivos"
+          ],
+          "capability": "personal.projects_goals"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
+            "más",
+            "mas"
+          ],
+          "capability": "ui.more"
+        }
+      ]
+    },
     {
       "id": "owner_executive",
       "role_codes": [
