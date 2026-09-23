@@ -1710,3 +1710,73 @@ Rules:
 - app_metadata.toro_role may select a functional experience only while an active organization context exists;
 - FOUNDER still requires privileged ADMIN/GERENCIA membership in the active organization;
 - data/actions remain governed by TORO context + RLS/RPC/policy.
+
+
+### Execution update — People + Portal — 2026-09-23
+
+#### HECHO — developer validation fabric
+- canonical TORO Brain CI now validates every pull request, including stacked PRs;
+- workflow runs `npm test -> lint -> build`;
+- `workflow_dispatch` available;
+- stale runs cancel through concurrency;
+- CI improvement merged to `main` via PR #85;
+- Phase 1 inherited the same workflow.
+
+This resolves a repeated systemic validation gap rather than adding branch-specific CI hacks.
+
+#### HECHO — TORO People self-service server Wave 1
+PR #84 merged into Phase 1.
+
+Verified:
+- authenticated/read-only employee self-service model;
+- canonical TORO context required;
+- own employment projection;
+- own profile through governed `employee_self_profile` RPC;
+- own shifts;
+- own leave requests/balances;
+- own attendance;
+- auth+org+employee defensive identity check;
+- salary/bank/arbitrary HR JSON excluded from public self model;
+- Vitest PASS;
+- lint PASS;
+- build PASS;
+- Vercel PASS.
+
+No production schema/write action was introduced.
+
+#### HECHO — Portal session/context convergence
+PR #86 merged into Phase 1.
+
+Verified:
+- Portal session consumes `resolveToroContext({mode:'organization'})`;
+- no global unscoped `user_roles` authorization inside session resolver;
+- unscoped `app_metadata.role_codes` no longer grants organization access;
+- canonical organization roles can enter Portal:
+  ADMIN, RRHH, GERENCIA, JEFE_DEPARTAMENTO, AUDITOR, EMPLEADO;
+- CONTABILIDAD maps to FINANZAS experience;
+- FOUNDER still requires active ADMIN/GERENCIA in the selected organization;
+- functional experience roles remain UX/routing, not data authorization;
+- regression tests + lint + build + Vercel passed before merge.
+
+#### NEXT — first People Portal surface
+Draft PR #87:
+`feat: add read-only TORO People Mi perfil surface`
+
+Scope:
+- `/toro/mi-perfil`;
+- employment summary;
+- upcoming shifts;
+- leave balance/request summary;
+- recent attendance;
+- safe unavailable/error states;
+- no editing/writes/payroll/bank data.
+
+Status:
+- Vercel preview PASS;
+- canonical CI validation in progress at this update.
+
+After PR #87 passes:
+1. merge read-only `Mi perfil`;
+2. perform representative employee hosted/mobile QA when a safe employee identity is available;
+3. add leave-request creation as a separately gated write workflow;
+4. do not retire DreamTeam UI until self-service parity + pilot evidence exists.
