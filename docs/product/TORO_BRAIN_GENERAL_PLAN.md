@@ -460,6 +460,38 @@ Configured-unverified channel/runtime.
 
 # 13. Repository/project disposition
 
+## Canonical portfolio hierarchy — verified 2026-09-22
+
+TORO Brain is the only portfolio root and owns the General Plan.
+
+Active hierarchy:
+- TORO Brain · Portafolio General
+  - TORO OS · Sistema Operativo y Ejecución
+  - Dreamcatcher Hotel · Proyecto Madre
+    - Dreamcatcher · Datos e Integraciones
+    - Dreamcatcher · Operación Hotelera
+    - Dreamcatcher · Revenue, Reservas y Guest Experience
+    - Dreamcatcher · Web, Marca, SEO y Reputación
+    - Dreamcatcher · Finanzas y Control
+    - Construcción / DIEX · Desarrollo y cierre documental
+  - Propiedades, Construcción y Corporativo
+    - Cabuya · Compra, pagos y regularización
+
+Current audit:
+- 11 active projects;
+- 0 active orphan projects;
+- 0 active duplicate canonical_module_key;
+- 0 active projects without active tasks or active children;
+- Santa Toro = HOLD/inactive;
+- RicoSky, La Julia, Aprende AI and Dream Shares = INCUBATOR/inactive;
+- historical absorbed projects = MERGED/inactive;
+- Media/Brand is a workstream inside Dreamcatcher Web/Marca/SEO/Reputación, not a separate active project.
+
+Technical project keys are retained for compatibility and do not redefine architecture:
+- toro_os_portfolio_master = TORO Brain portfolio root;
+- toro_executive_control = TORO OS operating/execution module;
+- business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
