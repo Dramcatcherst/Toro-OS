@@ -78,6 +78,7 @@ export default async function OnboardingPage() {
       firstName={view.firstName}
       businessName={view.businessName}
       journey={view.journey}
+      firstValueTargets={view.firstValueTargets}
     />
   );
 }
