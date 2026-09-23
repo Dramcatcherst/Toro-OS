@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.23-v1.1",
+  "version": "2026.09.23-v2",
   "status": "specified_not_runtime_verified",
   "placeholders_rule": "omit_optional_line_if_value_unavailable_never_show_raw_placeholder",
   "profiles": {
@@ -7,7 +7,12 @@
       "opening": "Buen día, {first_name}. Ya separé lo importante de lo que puede esperar.",
       "quiet": "Todo lo crítico está tranquilo por ahora.",
       "success": "Listo. Eso ya quedó encaminado.",
-      "blocked": "No lo movería todavía. Falta {material_gap}."
+      "blocked": "No lo movería todavía. Falta {material_gap}.",
+      "suggested_replies": [
+        "Ver lo urgente",
+        "Decisiones",
+        "Dinero"
+      ]
     },
     "manager": {
       "opening": "Buenos días, {first_name}. Te ordené el hotel por lo que puede afectar servicio hoy.",
@@ -23,17 +28,32 @@
         "qué le recomiendo a esta pareja",
         "problema en la 26",
         "mándame el mensaje de check-in"
+      ],
+      "suggested_replies": [
+        "Ver llegadas",
+        "Responder huéspedes",
+        "Cotizar"
       ]
     },
     "housekeeping": {
       "opening": "Buen día, {first_name} ☀️ Te ordené el trabajo por prioridad.",
       "success": "¡Listo! ✅",
-      "blocked": "No la cierro todavía. Falta {missing_ready_condition}."
+      "blocked": "No la cierro todavía. Falta {missing_ready_condition}.",
+      "suggested_replies": [
+        "Qué hago ahora",
+        "Marcar listo",
+        "Reportar problema"
+      ]
     },
     "maintenance": {
       "opening": "Buen día, {first_name} 🔧 Primero va lo que puede afectar una llegada o la operación.",
       "success": "Quedó cerrado con evidencia. ✅",
-      "blocked": "Parece resuelto, pero todavía no lo marco como listo. Necesito {required_proof}."
+      "blocked": "Parece resuelto, pero todavía no lo marco como listo. Necesito {required_proof}.",
+      "suggested_replies": [
+        "Ver prioridad",
+        "Cerrar con foto",
+        "Pedir material"
+      ]
     },
     "department_lead": {
       "opening": "Hola, {first_name}. Este es el estado de tu equipo sin el ruido.",
@@ -67,11 +87,21 @@
     },
     "guest_prospect": {
       "opening": "¡Hola! Soy Tere 😊 Cuéntame qué estás buscando y te lo hago fácil.",
-      "free_text_invite": "También puedes escribirme directo, como si estuvieras hablando con recepción."
+      "free_text_invite": "También puedes escribirme directo, como si estuvieras hablando con recepción.",
+      "suggested_replies": [
+        "Buscar alojamiento",
+        "Cotizar",
+        "Otra pregunta"
+      ]
     },
     "guest_reserved": {
       "opening": "Hola, {guest_first_name} 👋 Ya tengo tu estadía en contexto.",
-      "problem": "Entendido. Me enfoco en resolver esto primero."
+      "problem": "Entendido. Me enfoco en resolver esto primero.",
+      "suggested_replies": [
+        "Mi llegada",
+        "Experiencias",
+        "Necesito ayuda"
+      ]
     },
     "personal": {
       "opening": "Hola, {first_name} 👋 Esto es lo que puede ayudarte a ordenar tu día.",
@@ -86,6 +116,35 @@
       "Hacerlo de otra forma",
       "Pedir ayuda"
     ],
-    "navigation_hint": "Puedes responder con el número, la palabra o escribir lo que necesitas."
+    "navigation_hint": "Puedes responder con el número, la palabra o escribir lo que necesitas.",
+    "continuation_hint": "Puedes responder con un número, una palabra o seguir escribiendo normal."
+  },
+  "rules": {
+    "suggested_replies_max": 3,
+    "suggested_reply_words_max": 4,
+    "free_text_always_allowed": true,
+    "use_name_selectively": true,
+    "never_reask_verified_fact": true,
+    "context_energy": [
+      "welcome_warm",
+      "normal_calm",
+      "success_positive",
+      "serious_low_decoration"
+    ]
+  },
+  "onboarding": {
+    "goal_question": "¿Qué quieres que TORO te ayude a mejorar primero?",
+    "goal_options": [
+      "Clientes y ventas",
+      "Operación y equipo",
+      "Control y dinero"
+    ],
+    "free_text_invite": "O dime con tus palabras qué te quita más tiempo.",
+    "optional_controls": [
+      "saltar",
+      "atrás",
+      "continuar",
+      "inicio"
+    ]
   }
 }
