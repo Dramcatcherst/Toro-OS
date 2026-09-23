@@ -202,17 +202,29 @@ async function loadProfileSummary(
       ]),
     ]);
 
-    return [
-      nowProjects === null
-        ? null
-        : { label: "Proyectos NOW", value: String(nowProjects), detail: "activos ahora" },
-      blockedProjects === null
-        ? null
-        : { label: "Proyectos bloqueados", value: String(blockedProjects), detail: "necesitan desbloqueo" },
-      executingDecisions === null
-        ? null
-        : { label: "Decisiones en ejecución", value: String(executingDecisions), detail: "seguimiento abierto" },
-    ].filter((item): item is ToroProfileSummaryItem => item !== null);
+    const items: ToroProfileSummaryItem[] = [];
+    if (nowProjects !== null) {
+      items.push({
+        label: "Proyectos NOW",
+        value: String(nowProjects),
+        detail: "activos ahora",
+      });
+    }
+    if (blockedProjects !== null) {
+      items.push({
+        label: "Proyectos bloqueados",
+        value: String(blockedProjects),
+        detail: "necesitan desbloqueo",
+      });
+    }
+    if (executingDecisions !== null) {
+      items.push({
+        label: "Decisiones en ejecución",
+        value: String(executingDecisions),
+        detail: "seguimiento abierto",
+      });
+    }
+    return items;
   }
 
   if (profileId === "reception") {
@@ -228,17 +240,29 @@ async function loadProfileSummary(
       ]),
     ]);
 
-    return [
-      rooms === null
-        ? null
-        : { label: "Habitaciones", value: String(rooms), detail: "catálogo activo" },
-      villas === null
-        ? null
-        : { label: "Villas", value: String(villas), detail: "catálogo activo" },
-      experiences === null
-        ? null
-        : { label: "Experiencias", value: String(experiences), detail: "opciones activas" },
-    ].filter((item): item is ToroProfileSummaryItem => item !== null);
+    const items: ToroProfileSummaryItem[] = [];
+    if (rooms !== null) {
+      items.push({
+        label: "Habitaciones",
+        value: String(rooms),
+        detail: "catálogo activo",
+      });
+    }
+    if (villas !== null) {
+      items.push({
+        label: "Villas",
+        value: String(villas),
+        detail: "catálogo activo",
+      });
+    }
+    if (experiences !== null) {
+      items.push({
+        label: "Experiencias",
+        value: String(experiences),
+        detail: "opciones activas",
+      });
+    }
+    return items;
   }
 
   return [];
