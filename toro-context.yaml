@@ -613,7 +613,7 @@ cognitive_proving_ground:
     expand_only_after_single_day_pass: true
 
 tere_runtime_config_consolidation:
-  version: TERE-OPERATING-VOICE-v2
+  version: TERE-OPERATING-VOICE-v4
   applied_on: "2026-09-23"
   source: private.tere_configuration
   identity_key: tere-identity-short-core
@@ -622,7 +622,9 @@ tere_runtime_config_consolidation:
   legacy_personality_packs_superseded: 6
   rollback_snapshot: docs/evidence/TERE_RUNTIME_CONFIG_PRECONSOLIDATION_2026-09-23.json
   evidence: docs/evidence/TERE_RUNTIME_CONFIG_CONSOLIDATION_2026-09-23.md
-  config_state: APPLIED
+  conversational_navigation_evidence: docs/evidence/TERE_CONVERSATIONAL_NAVIGATION_V4_APPLIED_2026-09-23.md
+  active_content_md5: 4df90ab2ae494826f5850bb413c28f6d
+  config_state: APPLIED_V4
   runtime_consumption: UNVERIFIED
   no_runtime_success_inference: true
 
