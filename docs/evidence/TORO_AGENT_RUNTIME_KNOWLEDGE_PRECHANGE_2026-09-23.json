@@ -1,0 +1,243 @@
+{
+  "captured_at": "2026-09-23",
+  "project_id": "abtyrbqlqbsastmridzp",
+  "purpose": "Rollback snapshot before agent/TERE knowledge reconciliation.",
+  "rows": [
+    {
+      "knowledge_key": "toro_agent_architecture_v1",
+      "content_es": "TORO Brain es la identidad única y coordinador; TORO es un alias operativo conservado. Dreamcatcher mantiene cinco directores especialistas: SOBRESITO, FIONA, RICO, TERE y SKY. CODEX no es agente de negocio: es ejecutor técnico bajo TORO/SOBRESITO y permanece archivado como agente. Regla de crecimiento: skill antes que agente; workflow antes que agente; capability antes que agente; subagente solo por especialización/volumen/frontera real de permisos o contexto. No crear sistemas de memoria, mensajes, tareas o approvals por agente.\nContrato local de skills actualizado el 23/09/2026; toro-brain es canónico y toro-manager alias. No acredita adopción runtime.",
+      "structured_content": {
+        "status": "DESIGN_CANONICAL",
+        "version": "TORO-AGENT-ARCHITECTURE-v1",
+        "executor": {
+          "name": "CODEX",
+          "role": "technical executor/tool under TORO+SOBRESITO",
+          "rule": "never becomes independent business authority or user-facing persona",
+          "disposition": "not an active business agent",
+          "current_record_status": "ARCHIVED"
+        },
+        "creation_rule": [
+          "skill before agent",
+          "workflow before agent",
+          "capability before agent",
+          "subagent only when specialization, volume, permission boundary or context isolation justifies it",
+          "new agent requires owner, scope, permissions, tools, memory scope, handoff, metrics and retirement criteria",
+          "no separate database/task/approval/message/memory system per agent"
+        ],
+        "productization": {
+          "core": "TORO visible identity + generic functional roles",
+          "naming_rule": "TERE/RICO/FIONA/SKY/SOBRESITO are Dreamcatcher-configured personalities, not mandatory names for every customer",
+          "vertical_pack": "specialist profiles suggested/configured per industry",
+          "hospitality_pack": [
+            "Guest/Revenue specialist",
+            "Operations specialist",
+            "Finance/Admin specialist",
+            "Growth specialist",
+            "Systems specialist"
+          ]
+        },
+        "simplification": [
+          "do not add more top-level directors unless a persistent domain cannot fit existing director boundaries",
+          "research is a capability/subsystem, not another agent",
+          "points is a People capability, not an agent",
+          "memory is governance/data capability, not an agent",
+          "portal/mobile/calendar are surfaces, not agents",
+          "browser/openclaw/codex are executors/infrastructure, not business brains"
+        ],
+        "active_directors": [
+          {
+            "name": "TORO",
+            "role": "orchestrator/executive brain",
+            "universal_core": true
+          },
+          {
+            "name": "SOBRESITO",
+            "role": "systems/data/integrations/security",
+            "dreamcatcher_profile": true
+          },
+          {
+            "name": "FIONA",
+            "role": "finance/admin/HR/compliance",
+            "dreamcatcher_profile": true
+          },
+          {
+            "name": "RICO",
+            "role": "operations/quality",
+            "dreamcatcher_profile": true
+          },
+          {
+            "name": "TERE",
+            "role": "guest/revenue/concierge",
+            "dreamcatcher_profile": true
+          },
+          {
+            "name": "SKY",
+            "role": "growth/brand/marketing",
+            "dreamcatcher_profile": true
+          }
+        ],
+        "visible_identity": "TORO Brain",
+        "local_skill_alignment_20260923": {
+          "skills": {
+            "SKY": "sky-growth",
+            "RICO": "rico-operations",
+            "TERE": "tere-revenue",
+            "TORO": "toro-brain",
+            "FIONA": "fiona-finance",
+            "SOBRESITO": "sobresito-systems"
+          },
+          "status": "APPLIED_LOCAL_CONTRACT",
+          "receipt": "output/toro-os-organizacion-2026-09-19/TORO_BRAIN_SKILLS_50_20260923.md",
+          "revision": "TORO-BRAIN-SKILLS-20260923",
+          "legacy_alias": "toro-manager",
+          "canonical_skill": "toro-brain",
+          "runtime_adoption": "NOT_VERIFIED",
+          "permissions_changed": false,
+          "airtable_contract_records_updated": 6
+        }
+      },
+      "last_verified": "2026-09-22",
+      "source_system": "TORO OS",
+      "source_table": "Airtable agents + Plan General",
+      "source_record_id": "AGENT-ARCH-v1"
+    },
+    {
+      "knowledge_key": "wespeak_tere_compact_context_packet_2026_09_v1",
+      "content_es": "Paquete listo para aplicar cuando exista acceso admin a WeSpeak. Mantener cargado solo lo estable y conductual; consultar dinámicamente lo transaccional/variable. Capa estable: personalidad Tere, brand voice, horarios canónicos, ubicación/accesos estables, políticas guest-safe, reglas de escalamiento, Santa Toro separada + owner hold y la regla corta de que TICOS está ACTIVA para nacionales elegibles. Capa dinámica: Kross live para disponibilidad/tarifa/reserva/saldo/habitación/inclusiones y términos exactos de TICOS; catálogo vigente para menú/experiencias; señales current para clima/mareas. Journey: cinco templates master/eventos y respuestas por intención, no mensajes diarios genéricos. No cargar snapshots Kross viejos, texto promocional legacy completo, precios variables de yoga ni room-service no verificado.",
+      "structured_content": {
+        "escalate": [
+          "refund/charge dispute",
+          "economic exception",
+          "upgrade exception",
+          "uncertain availability",
+          "medical/safety/emergency",
+          "sensitive complaint",
+          "nonstandard commitment"
+        ],
+        "do_not_load": [
+          "old Kross snapshots",
+          "legacy 2:30 check-in",
+          "old Sep-Oct promo scripts as authority",
+          "fixed yoga price/schedule",
+          "room-service promise",
+          "full SOP/manual prose when a compact rule exists",
+          "internal system names in guest copy"
+        ],
+        "always_loaded": [
+          "TERE personality/tone compact",
+          "brand no-fake-luxury + dream sparingly",
+          "check-in 15:00",
+          "check-out 11:00",
+          "reception hours",
+          "parking/access stable guidance",
+          "guest-safe policies",
+          "Santa Toro separate + owner hold",
+          "TICOS active for eligible nationals; exact terms fetched/verified dynamically",
+          "escalation boundaries",
+          "one useful CTA at a time"
+        ],
+        "token_strategy": {
+          "rule": "stable facts as short bullets; dynamic facts retrieved only for the current intent",
+          "avoid_duplicate_context": true,
+          "max_initial_room_photos": 1,
+          "max_extra_room_photos_on_request": 4
+        },
+        "deployment_gate": "authorized WeSpeak admin access + runtime redirect/link verification; no blind push",
+        "fetch_on_demand": {
+          "Kross_live": [
+            "availability",
+            "rate",
+            "reservation status",
+            "assigned room/unit",
+            "balance/payment status",
+            "breakfast inclusion",
+            "restrictions"
+          ],
+          "live_signals": [
+            "weather",
+            "tides",
+            "local/current conditions"
+          ],
+          "catalog_current": [
+            "menu items",
+            "breakfast availability",
+            "experiences",
+            "yoga/wellness verification"
+          ]
+        },
+        "journey_templates": [
+          "master_01_your_dream_is_booked",
+          "master_02_prepare_your_dream",
+          "master_03_your_dream_is_ready",
+          "master_04_before_you_wake_up_feedback",
+          "master_05_catch_the_dream_again_sky"
+        ]
+      },
+      "last_verified": "2026-09-18",
+      "source_system": "TORO Autopilot",
+      "source_table": "TERE/WeSpeak",
+      "source_record_id": "2026-09-14"
+    },
+    {
+      "knowledge_key": "tere_guest_journey_contract_2026_09_v1",
+      "content_es": "TERE opera el ciclo del huésped con mensajes breves, contexto dinámico y una sola siguiente acción útil. Check-in canónico 15:00; check-out 11:00. Kross live manda en disponibilidad, reserva, tarifa, inclusión de desayuno, habitación y saldo. Santa Toro permanece separada y en owner hold. El antiguo sprint/proyecto Sep–Oct no se reactiva como iniciativa separada, pero la promoción TICOS sí está ACTIVA: ofrecerla únicamente cuando sea relevante para un huésped nacional elegible y con términos live consistentes con Kross. Breakfast adicional usa menú vigente solo cuando disponibilidad del día esté confirmada; room service no se promete mientras siga needs_verification. Yoga/wellness se presenta como solicitud concierge hasta verificación. La encuesta privada nunca condiciona la invitación pública a review.",
+      "structured_content": {
+        "stages": [
+          {
+            "goal": "confirmar estancia y próximos pasos",
+            "stage": "confirmation",
+            "template": "master_01_your_dream_is_booked"
+          },
+          {
+            "goal": "llegada, parqueo, portal, intención de viaje",
+            "stage": "prearrival",
+            "template": "master_02_prepare_your_dream"
+          },
+          {
+            "goal": "entregar acceso solo cuando room/code estén verificados",
+            "stage": "access_ready",
+            "template": "master_03_your_dream_is_ready"
+          },
+          {
+            "goal": "resolver intención y ofrecer solo extras pertinentes/confirmados",
+            "mode": "intent-driven, not blast",
+            "stage": "in_stay"
+          },
+          {
+            "goal": "salida + extensión directa + encuesta privada",
+            "stage": "precheckout",
+            "template": "master_04_before_you_wake_up_feedback"
+          },
+          {
+            "goal": "review neutral + próxima reserva directa elegible",
+            "stage": "postcheckout",
+            "template": "master_05_catch_the_dream_again_sky"
+          }
+        ],
+        "hard_rules": [
+          "checkin=15:00",
+          "checkout=11:00",
+          "Kross live for transactional truth",
+          "TICOS active; offer only when eligible/relevant and terms verified",
+          "Sep-Oct sprint/project remains archived",
+          "Santa Toro separate + owner hold",
+          "no room-service promise unless current verified",
+          "no fixed yoga schedule/price without verification",
+          "private feedback never gates public review",
+          "one useful CTA at a time"
+        ],
+        "human_gate": "refunds, exceptions, price overrides, upgrades, uncertain availability, sensitive complaints and nonstandard commitments",
+        "ticos_rule": {
+          "active": true,
+          "targeting": "eligible national + booking intent",
+          "terms_authority": "Kross live"
+        },
+        "automation_style": "event/intent driven; avoid generic daily blasts unless context makes message useful"
+      },
+      "last_verified": "2026-09-18",
+      "source_system": "TORO Autopilot",
+      "source_table": "guest journey",
+      "source_record_id": "2026-09-14"
+    }
+  ]
+}
