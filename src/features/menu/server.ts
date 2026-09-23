@@ -63,6 +63,30 @@ async function probeCount(
   };
 }
 
+async function probeFilteredCount(
+  supabase: SupabaseServerClient,
+  schema: string,
+  table: string,
+  orgId: string,
+  filters: Array<{ column: string; value: string | boolean }>,
+): Promise<ToroSourceProbe> {
+  let query = supabase
+    .schema(schema)
+    .from(table)
+    .select("id", { count: "exact", head: true })
+    .eq("org_id", orgId);
+
+  for (const filter of filters) {
+    query = query.eq(filter.column, filter.value);
+  }
+
+  const { count, error } = await query;
+  return {
+    readable: !error,
+    rows: error ? 0 : count ?? 0,
+  };
+}
+
 async function probeLatest(
   supabase: SupabaseServerClient,
   schema: string,
@@ -119,6 +143,8 @@ async function loadMenuSourceSnapshot(
     tasks,
     maintenanceEvents,
     reservations,
+    currentReservationsSafe,
+    krossCurrentHealth,
     stays,
     rooms,
     villas,
@@ -130,6 +156,11 @@ async function loadMenuSourceSnapshot(
     probeLatest(supabase, "operations", "tasks", orgId, "updated_at", 24),
     probeLatest(supabase, "facilities", "maintenance_events", orgId, "updated_at", 168),
     probeLatest(supabase, "operations", "reservations", orgId, "snapshot_as_of", 6),
+    probeCount(supabase, "operations", "current_reservations_safe", orgId),
+    probeFilteredCount(supabase, "integrations", "kross_snapshot_health", orgId, [
+      { column: "live_required", value: true },
+      { column: "safe_for_current_state", value: true },
+    ]),
     probeCount(supabase, "operations", "stays", orgId),
     probeCount(supabase, "core", "rooms", orgId),
     probeCount(supabase, "core", "villas", orgId),
@@ -143,6 +174,8 @@ async function loadMenuSourceSnapshot(
     tasks,
     maintenanceEvents,
     reservations,
+    currentReservationsSafe,
+    krossCurrentHealth,
     stays,
     rooms,
     villas,
