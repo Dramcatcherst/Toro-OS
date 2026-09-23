@@ -80,6 +80,7 @@ describe("getRoleNavigation", () => {
       "Dinero",
       "Proyectos",
       "Equipo",
+      "Mensajes",
       "Conocimiento",
       "Sistemas",
     ]) {
