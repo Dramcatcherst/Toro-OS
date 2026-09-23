@@ -59,7 +59,12 @@ describe("getRoleNavigation", () => {
     );
 
     expect(
-      enabledHrefs.every((href) => ["/toro", "/toro/decisiones", "/toro/mi-perfil"].includes(href)),
+      enabledHrefs.every((href) => [
+          "/toro",
+          "/toro/decisiones",
+          "/toro/mi-perfil",
+          "/toro/solicitudes",
+        ].includes(href)),
     ).toBe(true);
   });
 
@@ -109,6 +114,14 @@ describe("getRoleNavigation", () => {
     ).toMatchObject({
       availability: "available",
       href: "/toro/mi-perfil",
+    });
+    expect(
+      getRoleNavigation("EMPLEADO").find(
+        (item) => item.label === "Solicitudes",
+      ),
+    ).toMatchObject({
+      availability: "available",
+      href: "/toro/solicitudes",
     });
   });
 
