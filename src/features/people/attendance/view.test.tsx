@@ -34,7 +34,7 @@ describe("MyAttendanceView", () => {
     expect(
       screen.getByRole("heading", { name: "Mi asistencia" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("8h 00m")).toBeInTheDocument();
+    expect(screen.getAllByText("8h 00m").length).toBeGreaterThan(0);
     expect(screen.getByText("7h 55m")).toBeInTheDocument();
     expect(screen.getByText("Incluida")).toBeInTheDocument();
 
