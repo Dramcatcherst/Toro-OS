@@ -933,16 +933,50 @@ Example scenarios:
 
 # 11. Performance contract for Stage B
 
-Initial prototype targets:
-- focused projection only;
-- initial node count intentionally bounded;
-- no entire-enterprise graph;
-- heavy visualization lazy-loaded;
-- mobile fallback available;
-- no 3D dependency;
-- no realtime dependency for first prototype.
+These are provisional prototype budgets, not production SLAs.
 
-Measure before setting hard production budgets.
+## 11.1 Brain projection envelope
+- initial focused projection: **max 40 nodes**;
+- initial edges: **max 80 edges**;
+- recent event slice: **max 40 events**;
+- one explicit expansion request: **max 50 additional nodes**;
+- initial Brain projection payload target: **<= 250 KiB uncompressed JSON**;
+- never fetch/render the entire enterprise graph as the default response.
+
+If more information exists:
+- paginate;
+- expand on demand;
+- aggregate;
+- or move it to list/search/detail views.
+
+## 11.2 Loading strategy
+- application shell renders without waiting for heavy graph code;
+- graph visualization lazy-loads;
+- no 3D dependency;
+- no realtime dependency for the first prototype;
+- mobile has a non-graph primary path;
+- long lists virtualize when needed;
+- activity updates batch/coalesce where safe.
+
+## 11.3 Public surface web-vitals target
+For TORO Public / “Watch TORO Work”, target current Core Web Vitals “good” thresholds at the 75th percentile for mobile and desktop:
+- LCP <= 2.5 s;
+- INP <= 200 ms;
+- CLS <= 0.1.
+
+Reference: https://web.dev/articles/vitals
+
+## 11.4 Internal Brain measurement
+Stage B preview must record:
+- projection payload size;
+- node/edge count;
+- route/server response timing;
+- graph mount/render timing;
+- interaction responsiveness;
+- browser memory trend during an extended session;
+- mobile usability with graph disabled/fallback.
+
+Hard production latency and bundle-size SLAs are set only after Stage B measurement on representative devices/networks.
 
 ---
 
