@@ -252,3 +252,18 @@ project_governance:
     - consumers
     - done_criteria
     - retirement_or_convergence_criteria
+
+real_ai_principle:
+  rule_id: TORO-REAL-AI-80-20-R1
+  plan_document: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  plan_section: Real-first AI principle
+  machine_definition: operations.knowledge_items/biblia_release_2026_09_22_v4
+  machine_field: structured_content.real_ai_80_20_v1
+  interpretation: authenticity_heuristic_not_numeric_quota
+  material_real_claims_require_evidence: true
+  synthetic_results_must_be_labeled: true
+  commercial_photos_preserve_reality: true
+  artificial_image_quota: false
+  automation_percentage_cap: false
+  review_uses_existing_work_items: true
+  new_runtime_enforcement: false
