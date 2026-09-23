@@ -1293,3 +1293,19 @@ Current migration rule:
 4. Refactor current Phase 1 `getToroSession()` to consume `resolveToroContext()` only after parity tests prove existing Founder/role behavior is preserved.
 5. Add context switcher contract/UI after resolver parity.
 
+
+
+### Employee identity reconciliation update — 2026-09-23
+
+CURRENT:
+- 8 active employees remain without TORO user linkage.
+- All 8 have confirmed clock mapping + department + position + work area.
+- 7 are matched to active Airtable employment profiles with employee portal enabled.
+- All 7 matched profiles have historical-data status PARTIAL.
+- 1 requires employment-profile reconciliation.
+
+NEXT:
+- treat 7 as invite candidates after human identity/email verification;
+- reconcile the remaining 1 profile;
+- create no account or employee-user link automatically;
+- onboarding must use the future organization_memberships + role model once approved.
