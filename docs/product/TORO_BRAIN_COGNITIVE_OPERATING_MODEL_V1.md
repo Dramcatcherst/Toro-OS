@@ -1,6 +1,6 @@
 # TORO Brain — Cognitive Operating Model v1
 
-**Status:** PROPOSED CANONICAL SPEC  
+**Status:** CURRENT CANONICAL SPEC  
 **Date:** 2026-09-22  
 **Master:** TORO Brain General Plan  
 **Scope:** How TORO understands, develops, optimizes, automates and progressively operates an authorized business  
