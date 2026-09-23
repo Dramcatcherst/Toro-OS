@@ -781,6 +781,31 @@ It is whether TORO can:
 If every customer requires extensive custom engineering, TORO is functioning as a high-end implementation/consulting system rather than a scalable product. Product Proof must measure and reduce that dependency.
 
 
+
+## Customer simplicity, omnichannel lifecycle and modular adoption — 2026-09-23
+
+Canonical contracts:
+- docs/product/TORO_COMMS_V1.md
+- docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
+- docs/product/TORO_USER_PORTAL_V1.md
+
+Product decisions:
+- first-contact communication must feel simple and outcome-led;
+- normal customers/users do not see TORO's internal machinery unless useful;
+- users are explicitly invited to ask for needs/functions they do not see, without TORO fabricating capability;
+- TORO Comms is the omnichannel fabric;
+- TERE is the hospitality customer/guest-facing intelligence across inquiry, quote, follow-up, stay/service, payment communication, post-stay and reputation touchpoints;
+- WeSpeak is a runtime/channel surface, not a parallel brain or source of truth;
+- WhatsApp, Instagram, Facebook/Messenger, email, website and approved review surfaces should converge into one governed customer lifecycle;
+- finance/revenue/operations retain factual/action authority even when TERE is the speaking interface;
+- onboarding is progressive, skippable where optional, restartable and non-blocking;
+- restarting onboarding does not delete canonical identity/business state;
+- businesses may activate selected TORO capabilities first and expand later while remaining one TORO.
+
+Commercial principle:
+> **Start with the outcome the customer needs now; let TORO grow with the business without forcing the customer to adopt everything at once.**
+
+
 # 17. Immediate execution queue
 
 ## P0
