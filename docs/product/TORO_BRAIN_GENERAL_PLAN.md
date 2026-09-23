@@ -1677,3 +1677,36 @@ NEXT:
 3. then build TORO People employee self-service UI on the shared TORO Portal shell;
 4. add leave-request creation only after read model/UI parity;
 5. pilot with one non-owner employee before broader DreamTeam retirement.
+
+
+### Portal role model — canonical permission vs experience
+
+TORO Brain now distinguishes two concepts:
+
+1. **Canonical organization role**
+   - ADMIN
+   - RRHH
+   - GERENCIA
+   - JEFE_DEPARTAMENTO
+   - CONTABILIDAD
+   - AUDITOR
+   - EMPLEADO
+
+These are organization-scoped permission facts and must come from the active TORO context/membership.
+
+2. **Functional experience role**
+   - FOUNDER
+   - RECEPCION
+   - OPERACIONES
+   - FINANZAS
+   - GROWTH
+   - SYSTEMS
+
+These may select navigation/routing/UX but do not independently grant organization data access.
+
+Rules:
+- navigation is never authorization;
+- app_metadata.role_codes is not accepted as organization authorization because it is not organization-scoped;
+- app_metadata.toro_role may select a functional experience only while an active organization context exists;
+- FOUNDER still requires privileged ADMIN/GERENCIA membership in the active organization;
+- data/actions remain governed by TORO context + RLS/RPC/policy.
