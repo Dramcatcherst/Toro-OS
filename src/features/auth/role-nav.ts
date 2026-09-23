@@ -85,6 +85,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
     { label: "Mi asistencia", availability: "available", href: "/toro/mi-asistencia" },
     { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
+    { label: "Mensajes", availability: "available", href: "/toro/mensajes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   OPERACIONES: [
@@ -95,6 +96,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
     { label: "Mi asistencia", availability: "available", href: "/toro/mi-asistencia" },
     { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
+    { label: "Mensajes", availability: "available", href: "/toro/mensajes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   FINANZAS: [
@@ -105,6 +107,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
     { label: "Mi asistencia", availability: "available", href: "/toro/mi-asistencia" },
     { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
+    { label: "Mensajes", availability: "available", href: "/toro/mensajes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   GROWTH: [
@@ -115,6 +118,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
     { label: "Mi asistencia", availability: "available", href: "/toro/mi-asistencia" },
     { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
+    { label: "Mensajes", availability: "available", href: "/toro/mensajes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   SYSTEMS: [
@@ -125,6 +129,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
     { label: "Mi asistencia", availability: "available", href: "/toro/mi-asistencia" },
     { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
+    { label: "Mensajes", availability: "available", href: "/toro/mensajes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
 };
