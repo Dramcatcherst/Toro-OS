@@ -1,14 +1,15 @@
-# START HERE — TORO OS
+# START HERE — TORO Brain
 
 **Status:** CURRENT product orientation  
 **Date:** 2026-09-22  
-**Product:** TORO OS
+**Master product:** TORO Brain
+**Operating layer:** TORO OS
 
 ## Read this first
 
-TORO OS is not a dashboard, chatbot, hotel app, or collection of agents.
+TORO Brain is not a dashboard, chatbot, hotel app, or collection of agents.
 
-TORO OS is a continuously improving **AI Business Operating System** whose first real proving ground is Dreamcatcher Hotel.
+TORO Brain is the continuously improving **master intelligence and orchestration layer** for people, businesses and portfolios. TORO OS is its operating/execution layer inside a specific business/workspace. Dreamcatcher Hotel is the first real proving ground.
 
 The product is built **inside-out**:
 
@@ -47,7 +48,7 @@ Dreamcatcher remains the reference implementation and test environment until the
 5. The current execution plan relevant to the task
 6. Domain-specific technical contracts and tests
 
-Historical TORO documents are evidence and context. They do not override the current product constitution.
+Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO Brain constitution.
 
 ## Canonical authority model
 
@@ -71,9 +72,18 @@ No tool becomes authoritative merely because TORO can connect to it.
 - Durable memory requires purpose, provenance, sensitivity, confidence, retention and verification state.
 - See `docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md` before creating or naming a subsystem, user-memory model or personal/work context.
 
+## Product hierarchy
+
+- **TORO Brain:** master intelligence, memory, governance and orchestration.
+- **TORO OS:** operating/execution layer for a business/workspace.
+- **TORO subsystems:** internal capabilities such as TORO People, TORO Comms and TORO Tools.
+- **OpenClaw/WeSpeak/WhatsApp/Portal:** runtimes or surfaces, never competing brains.
+
+A principal may govern multiple organizations, businesses, projects and client/ally scopes. Cross-scope reasoning is policy-controlled; external clients and personal data remain isolated by default.
+
 ## Brand rule
 
-TORO OS uses the approved **blue bull** identity.
+TORO Brain/TORO uses the approved **blue bull** identity.
 
 Current verified source artwork:
 - Repository: `Dramcatcherst/toro-os-v88-new`
