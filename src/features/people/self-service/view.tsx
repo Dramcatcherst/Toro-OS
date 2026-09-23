@@ -233,7 +233,13 @@ export function PeopleSelfServiceView({
           </div>
           {profile?.personalEmail ? (
             <p className="text-xs text-neutral-500">
-              Contacto registrado: {profile.personalEmail}
+              Contacto registrado:{" "}
+              <a
+                href={`mailto:${profile.personalEmail}`}
+                className="font-medium text-neutral-700 underline underline-offset-2"
+              >
+                {profile.personalEmail}
+              </a>
             </p>
           ) : null}
         </div>
