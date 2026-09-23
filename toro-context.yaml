@@ -800,7 +800,12 @@ customer_experience_rules:
 progressive_onboarding:
   canonical_spec: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   role_journey_manifest: data/toro_onboarding_journeys_v2.json
-  implementation_status: specified_not_runtime_verified
+  route: /onboarding
+  restart_entry_from_my_toro: true
+  implementation_status: role_aware_restartable_ui_runtime_verified_pending
+  progress_persistence: intentionally_not_implemented_yet
+  restart_scope: presentation_session_only
+  restart_preserves_canonical_state: true
   value_before_setup: true
   optional_steps_skippable: true
   resumable: true
