@@ -35,14 +35,14 @@ External systems and independent products do not need the TORO prefix merely bec
 | TORO Comms | direct/team communication, channels, notifications, handoffs and message-to-action | team_messages, notifications, WhatsApp/OpenClaw, WeSpeak |
 | TORO Guests | guest context, concierge, lifecycle, governed messaging, CRM-light | TERE flows, guest_message_templates, guests/stays |
 | TORO Operations | maintenance, housekeeping, laundry, inspections, incidents, inventory handoffs | RICO flows, facilities.*, operations.tasks |
-| TORO Finance | finance analysis, invoices, obligations, reconciliation and accounting support | FIONA flows, finance.*, Alegra connector |
-| TORO Revenue | pricing, agencies, rate plans, channel/revenue analysis | revenue.*, Kross authority bridges |
+| TORO Finance | finance analysis, invoices, obligations, reconciliation, accounting support and finance-side performance semantics (cash, accounting result, margin scope) | FIONA flows, finance.*, Alegra connector |
+| TORO Revenue | pricing, agencies, rate plans, production, occupancy/ADR/RevPAR and channel/revenue analysis | revenue.*, Kross authority bridges |
 | TORO Growth | campaigns, marketing, SEO, reputation, partnerships and ancillary revenue | SKY flows, content/market intelligence |
 | TORO Projects | projects, milestones, blockers, portfolio and execution plans | operations.projects/tasks, executive_portfolio |
 | TORO Knowledge | governed knowledge, SOPs, business facts, learning rules and provenance | DreamTeam Knowledge OS, Notion, Airtable residual knowledge |
 | TORO Tools | connector catalog, tool activation, OAuth, scopes, health and cost | Tool Hub / Connector Center |
 | TORO Agents | agent registry, skills, routing, memory scope, tool access and autonomy ceilings | agents, agent_* tables, OpenClaw bindings |
-| TORO Data | canonical model, imports, quality, conflicts, provenance and freshness | integrations.*, source registries |
+| TORO Data | canonical model, imports, metric contracts, data quality, conflicts, provenance and freshness | integrations.*, source registries |
 | TORO Governance | rules, approvals, audit, security, privacy, retention and recovery | governance rules, approval_requests, audit_logs |
 | TORO Assets | files, media, physical assets, rights, inventory and evidence | Dropbox, media_assets, assets.*, inventory |
 | TORO Research | market/destination research, external signals, providers and recommendations | local_*, market intelligence, web research |
@@ -52,6 +52,12 @@ External systems and independent products do not need the TORO prefix merely bec
 | TORO Exchange | optional marketplace/exchange layer when validated as part of TORO | RicoSky / dreamauro experimental marketplace |
 
 This registry is conceptual. It does not require one application, repository or database per subsystem.
+
+### Cross-subsystem capability: Performance Intelligence
+
+`TORO Performance Intelligence` is **not** an additional subsystem. It is a governed capability shared by TORO Revenue, TORO Finance and TORO Data, surfaced through executive control. The canonical contract is `docs/product/TORO_PERFORMANCE_INTELLIGENCE_V1.md`.
+
+Rule: dashboards, spreadsheets and WhatsApp answers are views over the shared metric contract. None becomes a separate source of truth.
 
 ## 3. Existing product classification
 

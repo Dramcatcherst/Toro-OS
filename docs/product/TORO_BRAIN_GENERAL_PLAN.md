@@ -641,10 +641,11 @@ critical runtimes are observable and audited.
 - Growth;
 - Assets;
 - Research;
-- owner dashboards.
+- owner dashboards;
+- **Performance Intelligence** as a cross-subsystem capability governed by `docs/product/TORO_PERFORMANCE_INTELLIGENCE_V1.md`: one metric contract across Revenue, Finance, Data, Portal and WhatsApp. It is not a new subsystem or parallel dashboard authority.
 
 Exit:
-owner manages Dreamcatcher through exceptions and decisions rather than apps/tables.
+owner manages Dreamcatcher through exceptions and decisions rather than apps/tables, with metric state, cutoff, provenance and quality visible when material.
 
 ## Phase 5 — Portfolio sandbox
 **Priority: later**
@@ -714,6 +715,7 @@ Do not prioritize now.
 13. Personal TORO pilot.
 14. Cross-channel Portal/WhatsApp continuity.
 15. Website/channel repository consolidation.
+16. Reconcile Dreamcatcher Performance Intelligence through the existing `occ_sep_oct_daily_revenue_dashboard_20260825` execution item: validate inventory denominator, source scope, metric states and original-file parity before any standalone dashboard retirement. Do not create a second performance project.
 
 ---
 

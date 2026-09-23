@@ -121,12 +121,15 @@ Blocks:
 4. Projects
 5. Team exceptions
 6. Money exceptions
-7. Systems health
-8. Growth opportunities
-9. Quick actions
-10. Ask TORO
+7. Business performance
+8. Systems health
+9. Growth opportunities
+10. Quick actions
+11. Ask TORO
 
-The executive home is exception-oriented, not a full dashboard of every metric.
+**Business performance** is a compact Performance Intelligence surface, not a second dashboard authority. It may show 3–5 decision-relevant KPIs plus exceptions; each metric resolves the shared metric contract, state, cutoff and quality from `TORO_PERFORMANCE_INTELLIGENCE_V1.md`.
+
+The executive home is exception-oriented, not a full dashboard of every metric. Detailed trends open progressively.
 
 ## 8. Universal TORO assistant
 
