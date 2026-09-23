@@ -653,10 +653,16 @@ runtime_inventory:
     openclaw_whatsapp_tere:
       expected_agent: TERE
       expected_skill: tere-revenue
+      expected_config_version: TERE-CONFIG-BUNDLE-v2-20260923
+      expected_config_hash: sha256:08ceb3b3bd402818d5c6a3f015ce17618df4cb8b7172b8b7eb3151d01361b457
+      config_fingerprint_evidence: docs/evidence/TERE_ACTIVE_CONFIG_FINGERPRINT_2026-09-23.md
       state: UNVERIFIED
     wespeak_tere:
       expected_agent: TERE
       expected_skill: tere-revenue
+      expected_config_version: TERE-CONFIG-BUNDLE-v2-20260923
+      expected_config_hash: sha256:08ceb3b3bd402818d5c6a3f015ce17618df4cb8b7172b8b7eb3151d01361b457
+      config_fingerprint_evidence: docs/evidence/TERE_ACTIVE_CONFIG_FINGERPRINT_2026-09-23.md
       state: UNVERIFIED
     toro_portal:
       expected_agent: TORO
