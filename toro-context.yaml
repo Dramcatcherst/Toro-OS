@@ -69,6 +69,7 @@ scope_graph:
   principal_can_control_multiple_scopes: true
   entity_types:
     - person
+    - portfolio
     - organization
     - business
     - workspace
