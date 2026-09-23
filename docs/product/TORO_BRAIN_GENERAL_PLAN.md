@@ -1473,3 +1473,26 @@ GATES:
 - PR #48 remains DRAFT until PR #42 context is validated/landed.
 - Official Vitest execution evidence is still required before merge.
 - Write workflows (profile update, leave submission) remain deferred until read-only parity is proven.
+
+
+### TORO Comms Wave 1 code foundation — 2026-09-23
+
+CURRENT:
+- Draft PR #51: `feat: add TORO Comms read-only inbox foundation`.
+- Base: PR #42 context branch.
+- Reuses existing `team_messages` + `team_message_read_states`; no duplicate chat database.
+- Read-only organization inbox with unread calculation.
+- Safe attachment projection excludes storage paths/raw JSON.
+- Unknown/future channels remain `other` rather than being silently treated as general.
+- Personal inbox projection is intentionally narrower than privileged RLS:
+  - own-sent DMs;
+  - DMs addressed to current linked employee;
+  - unrelated privileged cross-user DMs are excluded.
+- Cross-user privileged DM review belongs in a separate explicit/audited governance/HR surface.
+- Vercel preview build = SUCCESS.
+
+GATES:
+- PR #51 remains DRAFT until PR #42 lands and official tests execute.
+- No message send/write/read-state mutation yet.
+- No communication channel/binding tables yet.
+- OpenClaw bindings remain blocked by live runtime audit.
