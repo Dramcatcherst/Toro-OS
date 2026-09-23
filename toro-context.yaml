@@ -518,6 +518,10 @@ cognitive_proving_ground:
       current_round_pending_checks: 21
       current_round_pass_checks: 0
       current_round_fail_checks: 0
+      active_maintenance_employees: 2
+      linked_maintenance_users: 0
+      field_identity_gate: blocked_until_reviewed_user_employee_link
+      employee_contact_or_invites_authorized: false
     target_delta_test_returned_round: MNT-DAILY-P0-P1-20260924
     target_delta_test_persisted_new_round: false
     rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
