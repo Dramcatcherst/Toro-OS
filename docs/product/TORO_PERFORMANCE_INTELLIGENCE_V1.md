@@ -455,6 +455,45 @@ Default view should be compact and exception-oriented:
 
 Progressive disclosure opens details; the owner home remains exception-oriented.
 
+### Demand & Growth drivers
+
+Performance Intelligence separates **outcomes** from **drivers**.
+
+Outcome examples:
+- accommodation production;
+- occupancy;
+- ADR;
+- RevPAR;
+- verified cash/accounting result where governed.
+
+Driver examples:
+- pickup/pace by need date;
+- verified acquisition-source mix;
+- booking-engine starts and completions;
+- qualified website/search demand;
+- Search Console query/page visibility;
+- Google Business Profile / Hotel Center health signals;
+- campaign/referral signals when instrumented.
+
+Rules:
+- demand signals explain outcomes; they are not revenue or cash;
+- future need-date windows are `ON_THE_BOOKS` snapshots unless an explicit forecast model exists;
+- capture channel and acquisition source are distinct;
+- booking-engine labels do not prove all direct acquisition;
+- public Google listing observations do not substitute authenticated console state;
+- TORO Growth/Revenue connector workstreams remain the executors; Performance Intelligence consumes verified outputs instead of opening duplicate audits.
+
+### Executive readiness gate
+
+A metric shown as an owner headline must be decision-ready for its declared use.
+
+- **GREEN** — source authority, grain, time/currency scope, freshness and material reconciliation pass.
+- **YELLOW** — useful for a bounded decision with a visible limitation.
+- **RED** — materially unsafe as a confident KPI; show it in Attention with the blocker, not as a headline number.
+- **GRAY** — not measured, not live, or not yet assessed.
+
+The quality label describes **metric readiness**, not financial-audit certification.
+
 ### WhatsApp
 
 Examples:
