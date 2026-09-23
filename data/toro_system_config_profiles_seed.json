@@ -1,0 +1,168 @@
+{
+  "version": "2026-09-22-v1",
+  "master": "TORO Brain",
+  "profiles": [
+    {
+      "key": "openclaw_company_shared",
+      "system": "OpenClaw",
+      "owner": "TORO Systems",
+      "purpose": "Shared company/team WhatsApp and channel gateway",
+      "trust_boundary": "organization_shared",
+      "required": [
+        {
+          "path": "gateway.bind",
+          "expected": "loopback",
+          "rationale": "Keep Gateway local; expose privately through Tailscale Serve/approved transport."
+        },
+        {
+          "path": "gateway.auth.mode",
+          "expected": "token_or_identity_aware_private_auth",
+          "rationale": "Gateway auth required."
+        },
+        {
+          "path": "session.dmScope",
+          "expected": "per-channel-peer_or_per-account-channel-peer",
+          "rationale": "Prevent cross-user DM context leakage."
+        },
+        {
+          "path": "session.groupScope",
+          "expected": "per-group",
+          "rationale": "Keep group contexts isolated."
+        },
+        {
+          "path": "channels.whatsapp.groupPolicy",
+          "expected": "allowlist",
+          "rationale": "Only authorized group senders may trigger."
+        },
+        {
+          "path": "channels.whatsapp.groups",
+          "expected": "explicit_approved_groups_or_reviewed_wildcard",
+          "rationale": "Map admitted groups intentionally."
+        },
+        {
+          "path": "channels.whatsapp.groups.*.requireMention",
+          "expected": true,
+          "rationale": "Default team-group activation should require mention."
+        },
+        {
+          "path": "tools.exec.security",
+          "expected": "deny",
+          "rationale": "Shared messaging ingress must not inherit shell execution."
+        },
+        {
+          "path": "tools.elevated.enabled",
+          "expected": false,
+          "rationale": "No elevated host control for shared users."
+        },
+        {
+          "path": "tools.sessions.visibility",
+          "expected": "agent",
+          "rationale": "Limit cross-session visibility."
+        },
+        {
+          "path": "tools.agentToAgent.enabled",
+          "expected": false,
+          "rationale": "Enable only with explicit use case."
+        }
+      ],
+      "audit_commands": [
+        "openclaw doctor",
+        "openclaw health",
+        "openclaw status --deep",
+        "openclaw channels list --all --json",
+        "openclaw channels status --probe --json",
+        "openclaw channels capabilities --channel whatsapp --json",
+        "openclaw security audit --json",
+        "openclaw security audit --deep --json"
+      ],
+      "required_tests": [
+        "dm_isolation",
+        "group_allowlist",
+        "mention_gate",
+        "unknown_sender_denial",
+        "message_replay_idempotency",
+        "toro_identity_resolution",
+        "organization_permission_denial",
+        "human_escalation",
+        "gateway_restart_recovery",
+        "backup_restore_evidence"
+      ],
+      "forbidden": [
+        "open_dm_policy_without_explicit_approval",
+        "shared_dmScope_main",
+        "organization_admin_access_to_personal_vault",
+        "unrestricted_exec",
+        "elevated_shared_messaging",
+        "raw_secret_logging",
+        "cross_client_session_sharing"
+      ]
+    },
+    {
+      "key": "openclaw_personal_owner",
+      "system": "OpenClaw",
+      "owner": "TORO Systems",
+      "purpose": "Principal-owned personal runtime",
+      "trust_boundary": "single_principal",
+      "required": [
+        {
+          "path": "gateway.bind",
+          "expected": "loopback",
+          "rationale": "Prefer private local/Tailscale access."
+        },
+        {
+          "path": "gateway.auth",
+          "expected": "enabled",
+          "rationale": "Authenticated Gateway."
+        },
+        {
+          "path": "backup",
+          "expected": "recent_verified",
+          "rationale": "Protect durable personal state."
+        },
+        {
+          "path": "security_audit",
+          "expected": "deep_pass_or_documented_findings",
+          "rationale": "High-powered owner runtime still requires audit."
+        }
+      ],
+      "notes": [
+        "More powerful tools may be allowed than company-shared profile.",
+        "Do not reuse this unrestricted profile as employee/guest shared ingress."
+      ]
+    },
+    {
+      "key": "openclaw_guest_channel",
+      "system": "OpenClaw",
+      "owner": "TORO Comms",
+      "purpose": "External guest/lead ingress",
+      "trust_boundary": "external_untrusted",
+      "required": [
+        {
+          "path": "dm_policy",
+          "expected": "pairing_allowlist_or_explicit_guest_flow",
+          "rationale": "No unrestricted trust."
+        },
+        {
+          "path": "tool_profile",
+          "expected": "guest_safe",
+          "rationale": "No HR/finance/system tools."
+        },
+        {
+          "path": "knowledge_scope",
+          "expected": "public_guest_safe",
+          "rationale": "Only governed guest-safe knowledge."
+        },
+        {
+          "path": "booking_authority",
+          "expected": "Kross",
+          "rationale": "No invented price/availability/reservation truth."
+        },
+        {
+          "path": "human_escalation",
+          "expected": "enabled",
+          "rationale": "Ambiguous/high-risk issues route to people."
+        }
+      ]
+    }
+  ]
+}
