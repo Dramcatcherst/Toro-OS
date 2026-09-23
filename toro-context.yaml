@@ -656,11 +656,15 @@ role_toolbox_system:
 conversational_menu_system:
   canonical_spec: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   runtime_resolver: src/features/menu/resolver.ts
-  runtime_resolver_status: implemented_pure_not_connected_to_user_surface
+  runtime_resolver_status: implemented_pure_with_conservative_phrase_resolution_not_connected_to_user_surface
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
+  structured_submenus: data/toro_conversational_submenus_v2.json
   implementation_status: specified_not_runtime_verified
   conversation_first: true
   free_text_always_allowed: true
+  next_best_action_suggestions: true
+  max_suggested_replies: 3
+  workflow_local_continuation_words: true
   accepts:
     - number
     - keyword
