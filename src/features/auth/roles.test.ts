@@ -67,6 +67,7 @@ describe("getRoleNavigation", () => {
           "/toro/mi-horario",
           "/toro/asistencia",
           "/toro/solicitudes",
+          "/toro/mensajes",
         ].includes(href)),
     ).toBe(true);
   });
@@ -142,6 +143,12 @@ describe("getRoleNavigation", () => {
       availability: "available",
       href: "/toro/mi-horario",
     });
+    expect(
+      getRoleNavigation("EMPLEADO").find((item) => item.label === "Mensajes"),
+    ).toMatchObject({
+      availability: "available",
+      href: "/toro/mensajes",
+    });
   });
 
   it("keeps payroll and restricted attendance review away from department leads", () => {
@@ -162,6 +169,31 @@ describe("getRoleNavigation", () => {
       ).toMatchObject({
         availability: "available",
         href: "/toro/asistencia",
+      });
+    },
+  );
+
+  it.each([
+    "FOUNDER",
+    "ADMIN",
+    "RRHH",
+    "GERENCIA",
+    "JEFE_DEPARTAMENTO",
+    "AUDITOR",
+    "EMPLEADO",
+    "RECEPCION",
+    "OPERACIONES",
+    "FINANZAS",
+    "GROWTH",
+    "SYSTEMS",
+  ] as const)(
+    "enables the Comms inbox for organization-facing roles: %s",
+    (role) => {
+      expect(
+        getRoleNavigation(role).find((item) => item.label === "Mensajes"),
+      ).toMatchObject({
+        availability: "available",
+        href: "/toro/mensajes",
       });
     },
   );
