@@ -1,0 +1,960 @@
+{
+  "version": "2026.09.23-v1",
+  "status": "specified_not_runtime_verified",
+  "rules": {
+    "conversation_first": true,
+    "primary_item_target": [
+      4,
+      6
+    ],
+    "max_depth_default": 2,
+    "numbers_are_session_scoped": true,
+    "visible_menu_never_grants_permission": true,
+    "suggested_actions_max": 3,
+    "shortcuts": {
+      "home": [
+        "0",
+        "menu",
+        "menú",
+        "inicio"
+      ],
+      "back": [
+        "9",
+        "atras",
+        "atrás"
+      ],
+      "more": [
+        "+",
+        "mas",
+        "más"
+      ],
+      "help": [
+        "ayuda"
+      ]
+    },
+    "personalization_sources": [
+      "verified_identity",
+      "active_context",
+      "role",
+      "position",
+      "current_shift",
+      "open_work",
+      "recent_workflow",
+      "permitted_preferences",
+      "usage_favorites"
+    ],
+    "personalization_never_expands_authority": true
+  },
+  "profiles": [
+    {
+      "id": "owner_executive",
+      "role_codes": [
+        "ADMIN",
+        "GERENCIA"
+      ],
+      "position_keywords": [
+        "Gerente General"
+      ],
+      "primary": [
+        [
+          "today",
+          "☀️",
+          "Hoy",
+          [
+            "hoy",
+            "resumen",
+            "qué pasa hoy"
+          ]
+        ],
+        [
+          "decisions",
+          "✅",
+          "Decisiones",
+          [
+            "decisiones",
+            "aprobar",
+            "aprobaciones"
+          ]
+        ],
+        [
+          "money",
+          "💰",
+          "Dinero",
+          [
+            "dinero",
+            "pagos",
+            "caja"
+          ]
+        ],
+        [
+          "operations",
+          "🏨",
+          "Hotel / Operación",
+          [
+            "hotel",
+            "operación",
+            "incidentes"
+          ]
+        ],
+        [
+          "projects",
+          "📂",
+          "Proyectos",
+          [
+            "proyectos",
+            "avances",
+            "bloqueos"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "manager",
+      "role_codes": [
+        "GERENCIA",
+        "JEFE_DEPARTAMENTO"
+      ],
+      "position_keywords": [
+        "Gerente Administrativa",
+        "Recepción + Líder Operativa"
+      ],
+      "primary": [
+        [
+          "hotel_today",
+          "☀️",
+          "Hotel hoy",
+          [
+            "hotel hoy",
+            "operación"
+          ]
+        ],
+        [
+          "guests",
+          "🛎️",
+          "Huéspedes",
+          [
+            "huéspedes",
+            "clientes"
+          ]
+        ],
+        [
+          "rooms",
+          "🛏️",
+          "Habitaciones",
+          [
+            "habitaciones",
+            "rooms"
+          ]
+        ],
+        [
+          "team",
+          "👥",
+          "Equipo",
+          [
+            "equipo",
+            "personal"
+          ]
+        ],
+        [
+          "pending",
+          "⚠️",
+          "Pendientes",
+          [
+            "pendientes",
+            "problemas"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "reception",
+      "role_codes": [
+        "EMPLEADO",
+        "JEFE_DEPARTAMENTO"
+      ],
+      "position_keywords": [
+        "Recepción"
+      ],
+      "primary": [
+        [
+          "arrivals",
+          "🛎️",
+          "Llegadas y salidas",
+          [
+            "llegadas",
+            "salidas",
+            "checkin",
+            "checkout"
+          ]
+        ],
+        [
+          "guest_messages",
+          "💬",
+          "Huéspedes / mensajes",
+          [
+            "mensajes",
+            "huéspedes",
+            "whatsapp"
+          ]
+        ],
+        [
+          "quote_sell",
+          "💵",
+          "Cotizar / vender",
+          [
+            "cotizar",
+            "vender",
+            "precio"
+          ]
+        ],
+        [
+          "rooms_villas",
+          "🛏️",
+          "Habitaciones y villas",
+          [
+            "habitaciones",
+            "villas"
+          ]
+        ],
+        [
+          "experiences",
+          "✨",
+          "Experiencias",
+          [
+            "experiencias",
+            "tours",
+            "actividades"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "housekeeping",
+      "role_codes": [
+        "EMPLEADO",
+        "JEFE_DEPARTAMENTO"
+      ],
+      "position_keywords": [
+        "Aseo"
+      ],
+      "primary": [
+        [
+          "my_rooms",
+          "🧹",
+          "Mis habitaciones",
+          [
+            "habitaciones",
+            "mis habitaciones"
+          ]
+        ],
+        [
+          "next",
+          "🎯",
+          "Qué hago ahora",
+          [
+            "siguiente",
+            "qué hago",
+            "prioridad"
+          ]
+        ],
+        [
+          "mark_ready",
+          "✅",
+          "Marcar listo",
+          [
+            "listo",
+            "terminé",
+            "cerrar"
+          ]
+        ],
+        [
+          "report_issue",
+          "⚠️",
+          "Reportar problema",
+          [
+            "problema",
+            "reportar",
+            "falla"
+          ]
+        ],
+        [
+          "how_to",
+          "📚",
+          "Cómo se hace",
+          [
+            "cómo",
+            "sop",
+            "instrucciones"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "maintenance",
+      "role_codes": [
+        "EMPLEADO",
+        "JEFE_DEPARTAMENTO"
+      ],
+      "position_keywords": [
+        "Mantenimiento"
+      ],
+      "primary": [
+        [
+          "priorities",
+          "🔧",
+          "Prioridades",
+          [
+            "prioridades",
+            "urgente"
+          ]
+        ],
+        [
+          "tasks",
+          "🧰",
+          "Mis tareas",
+          [
+            "tareas",
+            "mis tareas"
+          ]
+        ],
+        [
+          "report_failure",
+          "⚠️",
+          "Reportar falla",
+          [
+            "falla",
+            "problema",
+            "reportar"
+          ]
+        ],
+        [
+          "materials",
+          "📦",
+          "Materiales / repuestos",
+          [
+            "materiales",
+            "repuestos",
+            "inventario"
+          ]
+        ],
+        [
+          "close_evidence",
+          "✅",
+          "Cerrar con evidencia",
+          [
+            "cerrar",
+            "foto",
+            "evidencia"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "department_lead",
+      "role_codes": [
+        "JEFE_DEPARTAMENTO"
+      ],
+      "position_keywords": [],
+      "primary": [
+        [
+          "team_today",
+          "🎯",
+          "Equipo hoy",
+          [
+            "equipo hoy",
+            "cobertura"
+          ]
+        ],
+        [
+          "shifts",
+          "🗓️",
+          "Cobertura y turnos",
+          [
+            "turnos",
+            "horario",
+            "cobertura"
+          ]
+        ],
+        [
+          "incidents",
+          "⚠️",
+          "Incidentes",
+          [
+            "incidentes",
+            "problemas"
+          ]
+        ],
+        [
+          "review_approve",
+          "✅",
+          "Aprobar / revisar",
+          [
+            "aprobar",
+            "revisar"
+          ]
+        ],
+        [
+          "handoffs",
+          "🔄",
+          "Handoffs",
+          [
+            "handoffs",
+            "entregas"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "finance",
+      "role_codes": [
+        "CONTABILIDAD",
+        "GERENCIA",
+        "ADMIN"
+      ],
+      "position_keywords": [],
+      "primary": [
+        [
+          "obligations",
+          "💰",
+          "Pagos y obligaciones",
+          [
+            "pagos",
+            "obligaciones",
+            "vencimientos"
+          ]
+        ],
+        [
+          "collections",
+          "💳",
+          "Cobros pendientes",
+          [
+            "cobros",
+            "pendientes"
+          ]
+        ],
+        [
+          "reconcile",
+          "🔄",
+          "Conciliar",
+          [
+            "conciliar",
+            "reconciliación"
+          ]
+        ],
+        [
+          "invoices",
+          "🧾",
+          "Facturas / comprobantes",
+          [
+            "facturas",
+            "comprobantes"
+          ]
+        ],
+        [
+          "reports",
+          "📊",
+          "Reportes",
+          [
+            "reportes",
+            "informe"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "hr_people",
+      "role_codes": [
+        "RRHH",
+        "ADMIN",
+        "GERENCIA"
+      ],
+      "position_keywords": [],
+      "primary": [
+        [
+          "attendance",
+          "⏱️",
+          "Asistencia",
+          [
+            "asistencia",
+            "marcas"
+          ]
+        ],
+        [
+          "schedule",
+          "🗓️",
+          "Horarios",
+          [
+            "horarios",
+            "turnos"
+          ]
+        ],
+        [
+          "requests",
+          "🙋",
+          "Solicitudes",
+          [
+            "solicitudes",
+            "permisos"
+          ]
+        ],
+        [
+          "people",
+          "👥",
+          "Colaboradores",
+          [
+            "colaboradores",
+            "empleados"
+          ]
+        ],
+        [
+          "payroll",
+          "💵",
+          "Planilla",
+          [
+            "planilla",
+            "nómina"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "growth",
+      "role_codes": [
+        "ADMIN",
+        "GERENCIA"
+      ],
+      "position_keywords": [],
+      "feature_flag": "growth",
+      "primary": [
+        [
+          "reviews",
+          "⭐",
+          "Reviews",
+          [
+            "reviews",
+            "reseñas"
+          ]
+        ],
+        [
+          "leads",
+          "💬",
+          "Inbox / leads",
+          [
+            "leads",
+            "inbox",
+            "mensajes"
+          ]
+        ],
+        [
+          "campaigns",
+          "📣",
+          "Campañas",
+          [
+            "campañas",
+            "ads"
+          ]
+        ],
+        [
+          "opportunities",
+          "📈",
+          "Oportunidades",
+          [
+            "oportunidades",
+            "crecimiento"
+          ]
+        ],
+        [
+          "content",
+          "🎨",
+          "Contenido",
+          [
+            "contenido",
+            "posts"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "systems",
+      "role_codes": [
+        "ADMIN"
+      ],
+      "position_keywords": [],
+      "feature_flag": "systems",
+      "primary": [
+        [
+          "health",
+          "⚙️",
+          "Salud de sistemas",
+          [
+            "salud",
+            "sistemas",
+            "estado"
+          ]
+        ],
+        [
+          "incidents",
+          "🚨",
+          "Incidentes",
+          [
+            "incidentes",
+            "caídas"
+          ]
+        ],
+        [
+          "integrations",
+          "🔌",
+          "Integraciones",
+          [
+            "integraciones",
+            "conectores"
+          ]
+        ],
+        [
+          "deployments",
+          "🚀",
+          "Deployments",
+          [
+            "deploy",
+            "deployments"
+          ]
+        ],
+        [
+          "security_backup",
+          "🛡️",
+          "Seguridad / backups",
+          [
+            "seguridad",
+            "backups"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "auditor",
+      "role_codes": [
+        "AUDITOR"
+      ],
+      "position_keywords": [],
+      "primary": [
+        [
+          "changes",
+          "🧾",
+          "Cambios",
+          [
+            "cambios",
+            "historial"
+          ]
+        ],
+        [
+          "evidence",
+          "📁",
+          "Evidencia",
+          [
+            "evidencia",
+            "pruebas"
+          ]
+        ],
+        [
+          "approvals",
+          "✅",
+          "Aprobaciones",
+          [
+            "aprobaciones",
+            "decisiones"
+          ]
+        ],
+        [
+          "sources",
+          "🔗",
+          "Fuentes",
+          [
+            "fuentes",
+            "origen"
+          ]
+        ],
+        [
+          "export",
+          "📤",
+          "Exportar",
+          [
+            "exportar",
+            "descargar"
+          ]
+        ],
+        [
+          "search",
+          "🔎",
+          "Buscar",
+          [
+            "buscar"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "employee_general",
+      "role_codes": [
+        "EMPLEADO"
+      ],
+      "position_keywords": [],
+      "fallback": true,
+      "primary": [
+        [
+          "my_day",
+          "☀️",
+          "Mi día",
+          [
+            "mi día",
+            "hoy"
+          ]
+        ],
+        [
+          "tasks",
+          "✅",
+          "Mis tareas",
+          [
+            "tareas"
+          ]
+        ],
+        [
+          "schedule",
+          "🗓️",
+          "Mi horario",
+          [
+            "horario",
+            "turno"
+          ]
+        ],
+        [
+          "requests",
+          "🙋",
+          "Solicitudes",
+          [
+            "solicitudes",
+            "pedir"
+          ]
+        ],
+        [
+          "messages",
+          "💬",
+          "Mensajes",
+          [
+            "mensajes"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "guest_prospect",
+      "external_audience": "guest_or_prospect",
+      "lifecycle": [
+        "unknown",
+        "inquiry",
+        "consideration"
+      ],
+      "primary": [
+        [
+          "find_stay",
+          "🏡",
+          "Buscar alojamiento",
+          [
+            "alojamiento",
+            "habitación",
+            "villa"
+          ]
+        ],
+        [
+          "quote",
+          "💵",
+          "Cotizar",
+          [
+            "cotizar",
+            "precio"
+          ]
+        ],
+        [
+          "experiences",
+          "✨",
+          "Qué hacer en Santa Teresa",
+          [
+            "qué hacer",
+            "experiencias",
+            "tours"
+          ]
+        ],
+        [
+          "about",
+          "📍",
+          "Conocer Dreamcatcher",
+          [
+            "hotel",
+            "dreamcatcher",
+            "ubicación"
+          ]
+        ],
+        [
+          "other",
+          "💬",
+          "Preguntar otra cosa",
+          [
+            "otra",
+            "pregunta"
+          ]
+        ]
+      ]
+    },
+    {
+      "id": "guest_reserved",
+      "external_audience": "guest",
+      "lifecycle": [
+        "booked",
+        "pre_arrival",
+        "in_stay"
+      ],
+      "primary": [
+        [
+          "arrival",
+          "🧳",
+          "Mi llegada",
+          [
+            "llegada",
+            "checkin"
+          ]
+        ],
+        [
+          "stay",
+          "🏡",
+          "Mi habitación / villa",
+          [
+            "habitación",
+            "villa"
+          ]
+        ],
+        [
+          "experiences",
+          "✨",
+          "Experiencias",
+          [
+            "experiencias",
+            "tours"
+          ]
+        ],
+        [
+          "extras",
+          "🍳",
+          "Desayuno / extras",
+          [
+            "desayuno",
+            "extras"
+          ]
+        ],
+        [
+          "help",
+          "🆘",
+          "Necesito ayuda",
+          [
+            "ayuda",
+            "problema"
+          ]
+        ],
+        [
+          "more",
+          "➕",
+          "Más",
+          [
+            "más"
+          ]
+        ]
+      ]
+    }
+  ]
+}
