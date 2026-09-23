@@ -18,17 +18,16 @@ Before substantive work:
 6. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
 7. Identify the source of authority for every material fact or write.
 8. Map the request into the TORO Brain General Plan: scope, subsystem, CURRENT/TARGET/NEXT/FUTURE, priority and dependencies.
-9. Resolve the canonical project destination before creating any project-like identity: check the Plan General, `operations.projects`, `parent_project_key`, `canonical_module_key` and existing tasks.
-10. Inspect existing implementation before creating a second system.
-11. Define verification and rollback before risky changes.
-12. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking private scope-specific data?
-13. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
+9. Inspect existing implementation before creating a second system.
+10. Define verification and rollback before risky changes.
+11. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
+12. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
 
 ## Product architecture
 
-TORO Brain is the master intelligence/memory/governance/orchestration layer. TORO OS is its business execution layer.
+TORO Brain is the sole master intelligence/memory/governance/orchestration product and visible brand. Operating/execution capabilities live inside TORO Brain. `TORO OS` is a technical legacy alias only where old keys or components still depend on it.
 
 TORO Brain is built inside-out:
 
@@ -39,21 +38,6 @@ WhatsApp and TORO Portal are surfaces over the same governed TORO Brain. They ar
 Dreamcatcher is the first proving ground. Do not hard-code hotel assumptions into universal core modules unless they are explicitly scoped to the Dreamcatcher implementation.
 
 Do not onboard external businesses until the readiness gate in `docs/product/NEW_BUSINESS_READINESS_GATE.md` permits it.
-
-## Project identity gate — P0
-
-TORO Brain may orchestrate many scopes, but within one organization there must be at most one active project per `canonical_module_key`.
-
-Before creating any project, subproject, repo-backed initiative, app, dashboard, agent backlog or planning lane:
-- resolve the existing canonical project/module in the Plan General and `operations.projects`;
-- if a canonical home exists, create a task, milestone, workstream, capability, branch/PR, document or deliverable inside it;
-- chats, prompts, agents, subagents, Git branches/PRs, Airtable bases, Vercel projects, dashboards, Superpowers plans and documents are implementation surfaces, not projects;
-- if the destination is uncertain, do not create a new project; record the ambiguity inside the nearest canonical module;
-- materially separate businesses, properties, external products or legal scopes may have their own project identity, but must remain children of `toro_os_portfolio_master` with owner, authority, consumers, done criteria and retirement/convergence criteria.
-
-Historical absorbed projects remain `MERGED/inactive`. A new chat or implementation surface never reactivates them.
-
-Machine contract: `toro_no_parallel_projects_rule_v1` / `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`.
 
 ## Source authority
 
@@ -69,15 +53,19 @@ Never silently resolve a source conflict. Record the conflict, authority, freshn
 
 ## Brand
 
-Official TORO identity uses the approved blue bull.
+Official identity is **TORO Brain** only.
 
-Verified current source artwork:
-- `Dramcatcherst/toro-os-v88-new/public/assets/toro-azul-logo.jpg`
-- registry entry `BRAND-005`
-- approved V2 derived pack `public/assets/toro-blue-pack/`
-- V1 pack is deprecated.
+Canonical visual metaphor:
+- blue bull = the business / living organization;
+- integrated brain + microchip/circuit = biological intelligence + AI/computation coordinating the whole.
 
-Do not generate, redraw, recolor or substitute another bull for official product identity.
+Current masters:
+- `/TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
+  - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
+- `/TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+  - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
+
+Legacy blue-bull artwork remains provenance/reference only. Do not generate, redraw, recolor or substitute another bull for official product identity. Do not use bullfighting/violent imagery. Do not present TORO OS as a parallel public-facing product; preserve old TORO OS names only when technically required for compatibility.
 
 ## Work quality
 
@@ -144,6 +132,8 @@ Do not solve repeated systemic problems by making prompts longer forever.
 
 `docs/product/TORO_BRAIN_GENERAL_PLAN.md` is the sole canonical Plan General.
 
+Historical documents whose titles contain words such as `Master Brain`, `Master Plan`, `Control Board`, `Engine`, `System`, or `Dashboard` do **not** become current authority by name. Resolve them through `toro-context.yaml`, the canonical General Plan, `operations.projects`, and current contracts before acting. A historical/merged document is evidence only unless explicitly reactivated through the canonical project/module.
+
 All new material work must:
 - map to a scope;
 - map to an existing TORO subsystem or justify why one cannot own it;
@@ -154,6 +144,21 @@ All new material work must:
 Domain plans and implementation plans are subordinate. They may not become parallel master plans.
 
 If a new request is reusable, preserve the immediate business solution and separately extract the reusable TORO capability/skill/profile without leaking private scope data.
+
+## Project identity gate — P0
+
+TORO Brain may orchestrate many scopes, but within one organization there must be at most one active project per `canonical_module_key`.
+
+Before creating any project, subproject, repo-backed initiative, app, dashboard, agent backlog or planning lane:
+- resolve the existing canonical project/module in the Plan General and `operations.projects`;
+- if a canonical home exists, create a task, milestone, workstream, capability, branch/PR, document or deliverable inside it;
+- chats, prompts, agents, subagents, Git branches/PRs, Airtable bases, Vercel projects, dashboards, Superpowers plans and documents are implementation surfaces, not projects;
+- if the destination is uncertain, do not create a new project; record the ambiguity inside the nearest canonical module;
+- materially separate businesses, properties, external products or legal scopes may have their own project identity, but must remain children of `toro_os_portfolio_master` with owner, authority, consumers, done criteria and retirement/convergence criteria.
+
+Historical absorbed projects remain `MERGED/inactive`. A new chat or implementation surface never reactivates them.
+
+Machine contract: `toro_no_parallel_projects_rule_v1` / `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`.
 
 ## Real-first AI review
 

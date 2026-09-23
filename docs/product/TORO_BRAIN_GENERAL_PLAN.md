@@ -3,7 +3,7 @@
 **Status:** CURRENT MASTER PLAN
 **Date:** 2026-09-22
 **Master product:** TORO Brain
-**Operating layer:** TORO OS
+**Visible brand/product:** TORO Brain
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
@@ -26,9 +26,9 @@ TORO Brain should eventually allow one Principal to operate a complex portfolio 
 - one evidence/audit model;
 - reusable skills learned without leaking private scope data.
 
-TORO OS is the business operating/execution layer powered by TORO Brain.
+The operating/execution layer is an internal capability of TORO Brain, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
 
-Normal users experience **one TORO**.
+Normal users experience **one TORO Brain**.
 
 ---
 
@@ -47,8 +47,8 @@ Master brain:
 - system auditing;
 - proactive improvement.
 
-## TORO OS
-Execution layer inside a business/workspace:
+## TORO Brain operating/execution layer
+Execution capabilities inside a business/workspace:
 - dashboards;
 - workflows;
 - tasks;
@@ -88,6 +88,21 @@ Internal routing, not separate systems:
 - TORO FIONA
 - TORO SKY
 - TORO SOBRESITO
+
+---
+
+
+## Brand identity canon — owner approved 2026-09-22
+
+- **Only visible brand/product:** TORO Brain.
+- **Bull metaphor:** the bull represents the business as a large, powerful living organization.
+- **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
+- **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
+- **Do not use:** bullfighting/violence imagery, a generic replacement bull, or TORO OS as a parallel visible brand/product/brain.
+- **Current full-logo master:** `1001725196.png`, 1536×1536, SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`.
+- **Current symbol-only master:** `1001725217.png`, 1536×1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
+- Previous logo hashes remain lineage/history, not current masters.
+- Professional closeout still requires: vector master, small-size/favicons, monochrome/reverse variants, typography/license specification, clear-space/min-size rules, durable rights evidence, trademark/domain checks and governed permanent-file storage.
 
 ---
 
@@ -404,7 +419,7 @@ Points only from evidenced events:
 - validated improvement;
 - service recovery;
 - training completion;
-- special coverage.
+- special coverage;
 - process improvement.
 
 No points from:
@@ -430,7 +445,7 @@ Every event:
 Canonical product architecture/code/contracts.
 
 ## Supabase
-Canonical TORO-owned runtime data, identity, permissions, workflow state and audit.
+Canonical TORO-owned runtime data, identity, permissions, operational state and audit.
 
 ## Airtable
 Transitional/reference estate while dependencies are removed.
@@ -459,6 +474,38 @@ Configured-unverified channel/runtime.
 ---
 
 # 13. Repository/project disposition
+
+## Canonical portfolio hierarchy — verified 2026-09-22
+
+TORO Brain is the only portfolio root and owns the General Plan.
+
+Active hierarchy:
+- TORO Brain · Portafolio General
+  - TORO Brain · Sistema Operativo y Ejecución
+  - Dreamcatcher Hotel · Proyecto Madre
+    - Dreamcatcher · Datos e Integraciones
+    - Dreamcatcher · Operación Hotelera
+    - Dreamcatcher · Revenue, Reservas y Guest Experience
+    - Dreamcatcher · Web, Marca, SEO y Reputación
+    - Dreamcatcher · Finanzas y Control
+    - Construcción / DIEX · Desarrollo y cierre documental
+  - Propiedades, Construcción y Corporativo
+    - Cabuya · Compra, pagos y regularización
+
+Current audit:
+- 11 active projects;
+- 0 active orphan projects;
+- 0 active duplicate canonical_module_key;
+- 0 active projects without active tasks or active children;
+- Santa Toro = HOLD/inactive;
+- RicoSky, La Julia, Aprende AI and Dream Shares = INCUBATOR/inactive;
+- historical absorbed projects = MERGED/inactive;
+- Media/Brand is a workstream inside Dreamcatcher Web/Marca/SEO/Reputación, not a separate active project.
+
+Technical project keys are retained for compatibility and do not redefine architecture:
+- toro_os_portfolio_master = TORO Brain portfolio root;
+- toro_executive_control = TORO Brain operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
+- business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
 
 ## Canonical
 - Dramcatcherst/Toro-OS
@@ -682,12 +729,12 @@ Do not prioritize now.
 
 This file is the **only canonical Plan General** for TORO Brain.
 
-Aliases such as:
-- Plan General
-- Total Brain
-- TORO master plan
+Naming rule:
+- **TORO Brain** is the only name for the master brain and owner of this Plan General.
+- **Plan General** and **TORO master plan** refer to this same document.
+- No alternative master-brain name or alias is valid; all master-brain references resolve to **TORO Brain**.
 
-all resolve here unless the user explicitly creates a different external product plan.
+A different external product may have its own plan only when it is explicitly a separate governed product/scope.
 
 ## Every material request follows this process
 
@@ -703,7 +750,7 @@ all resolve here unless the user explicitly creates a different external product
 
 2. **Identify owner subsystem**
    - existing TORO subsystem first;
-   - create no new subsystem unless an existing one cannot own it;
+   - create no new subsystem unless an existing one cannot own the capability cleanly.
 
 3. **Classify status**
    - CURRENT;
@@ -865,6 +912,90 @@ When two plans conflict:
 4. domain spec wins for local implementation detail if consistent with 1–3;
 5. historical documents become reference only.
 
+---
+
+# 21. Executive brain mindset
+
+TORO Brain is not a task manager with AI attached. It is the coordinating brain of a company.
+
+Its job is to understand each issue at two levels at the same time:
+
+1. **Specific level**
+   - facts;
+   - root cause;
+   - owner;
+   - next action;
+   - evidence;
+   - completion criteria;
+   - local risk and dependency.
+
+2. **General level**
+   - which objective it affects;
+   - where it belongs in the General Plan;
+   - what other systems, people, projects or metrics it touches;
+   - whether it should be reused, standardized, automated, delegated, merged or removed;
+   - what the company should learn from it.
+
+TORO must continuously connect the specific back to the whole and the whole back to the specific.
+
+## Executive capability model
+
+TORO should progressively embody the combined operating capabilities expected from a strong:
+
+- CEO;
+- general manager;
+- operator;
+- strategist;
+- financial controller;
+- people leader;
+- commercial leader;
+- service leader;
+- technology leader;
+- risk/compliance manager;
+- analyst;
+- project/program manager.
+
+This does **not** mean creating separate brains for each discipline. These are coordinated capabilities of the same TORO Brain, with specialists, skills, workflows and tools underneath where useful.
+
+The purpose is coordinated company performance, not organizational complexity.
+
+## Planning doctrine
+
+TORO should be practical and execution-oriented, but should not confuse speed with rushing.
+
+When up-front planning and organization materially reduce rework, risk or fragmentation, TORO should invest enough effort to:
+
+1. understand the problem;
+2. map dependencies;
+3. place it correctly in the General Plan;
+4. choose the owner and source of truth;
+5. define the desired result;
+6. define the smallest coherent execution path;
+7. only then scale execution.
+
+The rule is:
+
+> **Plan well enough to execute broadly and repeatedly without losing coherence.**
+
+Perfection is not required. Closure, consistency and learning are.
+
+## 80/20 execution heuristic
+
+The 80/20 principle is a heuristic for finding leverage, not a rigid percentage.
+
+TORO should prefer:
+- the few actions with the highest impact;
+- execution over endless ideation;
+- persistence on worthwhile initiatives over constant project creation;
+- finishing and integrating before multiplying;
+- evidence over activity volume.
+
+Useful operating bias when appropriate:
+- roughly **80% execution / 20% exploration and design**;
+- roughly **80% disciplined persistence / 20% new ideas**.
+
+These ratios are directional, never mandatory.
+
 ## Real-first AI principle — TORO-REAL-AI-80-20-R1
 
 Owner direction: **80% real / 20% AI, well applied**. Reality first; AI amplifies it.
@@ -901,3 +1032,560 @@ For each material deliverable, record within its existing work item: real source
 ### Implementation state
 
 This section records an owner direction and review contract. It does not establish runtime enforcement, a worker lock, a production release or successful real-user testing. The existing governance PR remains the integration path; no independent merge, migration, permission expansion or production promotion is authorized by this documentation.
+
+## Core operating loop
+
+Every material initiative should move through:
+
+**UNDERSTAND → PLACE → PRIORITIZE → PLAN → EXECUTE → VERIFY → LEARN → INTEGRATE → IMPROVE**
+
+Where:
+- **UNDERSTAND** = determine reality and intent;
+- **PLACE** = connect it to the correct company/portfolio/project/capability;
+- **PRIORITIZE** = compare impact, urgency, effort, risk and dependencies;
+- **PLAN** = create a coherent path before scaling;
+- **EXECUTE** = take the smallest useful reversible action;
+- **VERIFY** = require evidence before claiming completion;
+- **LEARN** = capture what changed and why;
+- **INTEGRATE** = update the relevant rule, workflow, source, metric or architecture;
+- **IMPROVE** = make the next cycle better.
+
+## Completion doctrine
+
+TORO should not optimize for starting.
+
+It should optimize for:
+- closing loops;
+- reaching a usable end state;
+- maintaining consistency;
+- resolving dependencies;
+- avoiding abandoned partial systems;
+- making improvements durable.
+
+A task or initiative is not complete because it was discussed, planned, coded or delegated. It is complete when its agreed acceptance criteria are met and evidence exists.
+
+## Coordination doctrine
+
+TORO Brain must coordinate, not merely observe, the major dimensions of a company:
+
+- strategy;
+- finance and cash;
+- operations;
+- people;
+- sales and revenue;
+- marketing and brand;
+- customer/guest experience;
+- assets and maintenance;
+- projects;
+- data and knowledge;
+- technology and integrations;
+- security;
+- legal/compliance/risk;
+- suppliers and procurement;
+- communication;
+- analytics and reporting;
+- innovation;
+- continuous improvement.
+
+Each dimension may have specialists, but TORO Brain preserves the integrated view.
+
+## Generalization doctrine
+
+Every meaningful request should be evaluated twice:
+
+1. What does this specific business or situation need now?
+2. What reusable capability, rule, workflow, skill, template or product feature can TORO learn from it?
+
+Generalization must not override local reality. Generic capabilities are created only when they improve reuse without losing necessary business-specific context.
+
+## Continuous improvement doctrine
+
+TORO should become better through operation.
+
+Every substantive cycle asks:
+- what worked;
+- what failed;
+- what changed;
+- what should be standardized;
+- what should be automated;
+- what should be simplified;
+- what should be removed;
+- what should be measured next;
+- what became reusable;
+- what should change in the General Plan or Biblia.
+
+The objective is not a perfect static brain.
+
+The objective is a brain that becomes **more coherent, more capable, more efficient and easier to operate over time**.
+
+
+
+---
+
+# 22. Visual Brain and product experience
+
+Canonical domain specification:
+- `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`
+
+## Product rule
+
+TORO Brain must be visually understandable without becoming a decorative dashboard.
+
+The visual layer is a projection of canonical TORO state:
+- scope graph;
+- entities and relationships;
+- workflows;
+- events;
+- approvals;
+- evidence;
+- goals/projects;
+- connector/system health;
+- verification state.
+
+It must not create:
+- a second brain;
+- a shadow source of truth;
+- a second permission system;
+- a separate task/approval engine;
+- a graph database by default;
+- a new subsystem merely for visualization.
+
+Normal users continue to experience one TORO.
+
+## Experience model
+
+Primary surfaces:
+- TORO Public;
+- TORO Portal;
+- universal command surface;
+- role-specific operational views;
+- Presentation Mode.
+
+Core views:
+- Brain;
+- Today / Executive Home;
+- Focus;
+- Timeline;
+- Workflows;
+- Systems;
+- Goals & Projects;
+- Evidence;
+- Command;
+- Configuration.
+
+The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
+
+## Event Spine
+
+Live visual activity must be backed by normalized canonical events.
+
+Required flow:
+
+`intent -> scope -> context -> authority -> risk -> permission -> action -> evidence -> verification -> event -> visual projection`
+
+Fake “thinking” animation is prohibited.
+
+TORO may show:
+- systems consulted;
+- workflow/action state;
+- approvals;
+- evidence;
+- verified result.
+
+TORO must not expose hidden chain-of-thought.
+
+## Public product demonstration
+
+“Watch TORO Work” is an approved TARGET capability.
+
+Public demonstrations use only:
+- synthetic fixtures;
+- approved anonymized aggregates;
+- public reference data.
+
+Dreamcatcher private operational data is not a default public demo source.
+
+## Technology direction
+
+Preferred target:
+- canonical repository: `Dramcatcherst/Toro-OS`;
+- Next.js / React / TypeScript;
+- Vercel;
+- Supabase/Postgres;
+- operational graph UI in 2D/2.5D first;
+- Figma as design-system/design source;
+- optional richer motion/3D only after the operational model works.
+
+AI design/code tools may accelerate delivery but do not become architecture authority.
+
+## CURRENT architecture drift verified 2026-09-22
+
+### GitHub
+- `Dramcatcherst/Toro-OS` = canonical product repository.
+- `toro-os-v88-new` = legacy/reference.
+- legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
+
+### Vercel
+- `toro-pr11-preview` is deploying the canonical `Toro-OS` repository.
+- `toro-os-v03` still has deployments from legacy `toro-os-v88-new`.
+- This is configuration/runtime drift requiring a controlled migration.
+- Do not repoint/delete production without inventory, parity verification and rollback.
+
+### Supabase
+Read-only schema audit now verifies `abtyrbqlqbsastmridzp` as the current canonical TORO structured runtime data plane for the Dreamcatcher reference implementation.
+
+Verified domain families include:
+- public identity/people/governance foundations;
+- `operations.projects`, `operations.tasks`, `operations.executive_decisions`, `operations.obligations`;
+- `integrations.source_authority_rules`, `integrations.domain_governance`, `integrations.external_dependency_registry`, `integrations.data_conflicts`, import/migration evidence;
+- Finance metrics/evidence;
+- Revenue structures;
+- Assets/inventory;
+- guest/reservation/knowledge/web-growth structures.
+
+Specialist external systems retain domain authority where this Plan General says so.
+
+`fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation. Useful patterns may be generalized, but it is not a second TORO Brain database.
+
+Rules:
+- do not create a third “brain DB”;
+- reuse strong typed domain tables;
+- use permission-filtered read models/projections for Visual Brain;
+- do not add generic graph DDL merely to render a graph;
+- add only the thinnest cross-entity relationship/event layer when measured use requires it.
+
+### Visual Brain implementation status — verified 2026-09-23
+
+**Stage A — COMPLETED**
+- canonical projection/event/permission/semantic contracts merged;
+- TypeScript Brain contract surface merged;
+- Supabase/domain mapping completed;
+- issue #32 closed.
+
+**Stage B — COMPLETED**
+- synthetic read-only `/brain` prototype merged to canonical `main`;
+- 10-node / 10-edge / 5-event focused scenario;
+- approval gate, evidence, source authority, freshness, verification and mobile/list fallback present;
+- lint/build/CI passed;
+- Vercel production-target deployment READY;
+- protected deployment visually inspected in a real browser with no detected overlap, clipping, missing sections or desktop overflow;
+- issue #40 closed.
+
+**Stage C — BLOCKED_BY_IDENTITY**
+- real private data must not be connected until canonical server-side context/authorization exists on `main`;
+- current `main` has context types but not the complete server-side resolver/Auth foundation;
+- PR #42 contains the context resolver on top of Phase 1 but remains draft and is not based directly on `main`;
+- Phase 1 PR #15 remains draft/diverged and must be reconciled safely before its auth foundation can become canonical;
+- PR #16 already contains useful read-only Projects, Knowledge, Hotel, Systems/connector-health and safe Kross projection work; Stage C must extract/reuse those capabilities instead of rebuilding them.
+
+### Current runtime security baseline — verified 2026-09-23
+- canonical `main` uses Next.js **16.3.6** and matching `eslint-config-next`;
+- security patch PR #47 merged after CI + Vercel preview;
+- `npm audit` reached **0 known vulnerabilities** using non-forced lockfile remediation;
+- production-target Vercel deployment is READY.
+
+## NEXT
+
+1. Reconcile the Phase 1 identity/auth integration path; do not bypass its hosted/security gates.
+2. Promote a canonical server-side `resolveToroContext()` + membership/isolation contract onto the eventual `main` integration path.
+3. Produce a Stage C extraction map from PR #16 for Projects, Knowledge, Systems health, Hotel/Kross-safe reads and API authorization so those capabilities are reused rather than rebuilt.
+4. Connect the Visual Brain to real **read-only** Dreamcatcher state only after server-side context/permission filtering is canonical and tested.
+5. Establish the shared TORO design system/Figma semantic tokens without changing product authority.
+6. Continue Vercel legacy/canonical runtime migration audit and preserve rollback until parity is proven.
+7. Normalize Event Spine adapters after static/read-only real-state projection is verified.
+8. Add governed actions only after approval/evidence/verification flows are canonical.
+9. Build public “Watch TORO Work” from synthetic/public-safe fixtures after private product behavior is stable.
+10. Keep richer 3D/presentation work deferred until operational usability is proven.
+
+## FUTURE
+
+- richer Rive-style explanatory motion;
+- optional Three.js/WebGPU Presentation Mode;
+- portfolio-scale visual comparison;
+- generalized external-business onboarding after the readiness gate.
+
+The operating priority remains:
+
+> **correct brain first, visible brain second, spectacular brain third.**
+
+
+---
+
+# 21. Canonical project hierarchy — audited 2026-09-22
+
+TORO Brain owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
+
+## ACTIVE — 11
+
+```text
+TORO Brain · Portafolio General [PORTFOLIO]
+├── TORO OS · Sistema Operativo y Ejecución [MODULE]
+├── Dreamcatcher Hotel · Proyecto Madre [MASTER]
+│   ├── Dreamcatcher · Datos e Integraciones [MODULE]
+│   ├── Dreamcatcher · Operación Hotelera [MODULE]
+│   ├── Dreamcatcher · Revenue, Reservas y Guest Experience [MODULE]
+│   ├── Dreamcatcher · Web, Marca, SEO y Reputación [MODULE]
+│   ├── Dreamcatcher · Finanzas y Control [MODULE]
+│   └── Construcción / DIEX · Desarrollo y cierre documental [PROJECT]
+└── Propiedades, Construcción y Corporativo [PORTFOLIO_LANE]
+    └── Cabuya · Compra, pagos y regularización [PROJECT]
+```
+
+## PRESERVED BUT INACTIVE
+
+- HOLD: Santa Toro Closeout.
+- INCUBATOR: Aprende AI / Maufertoro; Dream Shares; La Julia Guatapé; RicoSky Marketplace.
+- MERGED/HISTORICAL: 25 historical project identities retained for provenance only; no new backlog.
+
+## Project-type rule
+
+- `PORTFOLIO`: only TORO Brain root.
+- `MASTER`: primary business/tenant program containing modules.
+- `MODULE`: durable domain inside a business or TORO OS execution layer.
+- `PROJECT`: finite, materially distinct outcome with its own lifecycle/done criteria.
+- `PORTFOLIO_LANE`: real cross-scope portfolio lane.
+- `HOLD` / `INCUBATOR`: inactive by default until explicit trigger.
+- `LEGACY_MERGED`: historical/inactive; never receives new backlog.
+- Workstreams, campaigns, dashboards, apps, engines, audits and execution plans are **not projects by default**.
+
+## Verified invariants
+
+- active duplicate `canonical_module_key`: **0**
+- active projects missing canonical module: **0**
+- active projects with invalid parent: **0**
+- active tasks on inactive/merged projects: **0**
+- terminal tasks with `active=true`: **0**
+
+Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
+
+
+---
+
+# 21. Progress log — 2026-09-23 context integration
+
+## CURRENT verified progress
+
+### TORO Brain context resolver
+Branch:
+`feat/toro-brain-context-on-phase1-v2-20260923`
+
+Draft PR:
+`#42 — feat: integrate TORO Brain context resolver on current Phase 1`
+
+Superseded:
+`#38` closed after Phase 1 advanced 77 commits beyond its branch point; #42 was re-extracted cleanly from the current Phase 1 HEAD.
+
+Verified:
+- branch is based on the current Phase 1 Auth implementation and is maintained at 0 commits behind at the latest alignment check;
+- personal context no longer requires an organization role;
+- organization context remains fail-closed;
+- one active organization can be inferred during transition;
+- multiple organizations require explicit context choice;
+- invalid requested organization returns no context;
+- organization roles never unlock personal User Vault scope;
+- personal context remains available when the organization-role store is unavailable; enterprise access fails closed;
+- a transitional legacy-session adapter scopes Phase 1 roles to the active organization and blocks cross-organization legacy-role elevation;
+- transitional membership provenance is marked `legacy_user_roles`;
+- strict TypeScript typecheck passed in isolated validation;
+- Vercel preview build for the branch reached READY.
+
+Verification update:
+- clean integration is now PR #42; superseded PR #38 is closed;
+- latest verified context branch head built successfully in Vercel after fixing a TypeScript issue;
+- strict isolated TypeScript validation passed;
+- isolated behavior harness passed 8/8 critical context/legacy-role cases;
+- resolver Vitest suite has still not run through the repository's official GitHub Actions path because current CI triggers only on PRs to `main`;
+- existing `getToroSession()` remains intentionally unchanged until parity tests run;
+- no production Supabase schema/write change has been made;
+- no real multi-organization user has been tested.
+
+### Membership foundation
+Draft SQL exists on the context integration branch and is deliberately auto-rollback/non-production.
+
+Read-only production evidence:
+- 5 organization membership candidates from active user-role relations;
+- 4 map to currently linked employee records;
+- 1 is non-employee and has ADMIN role metadata only;
+- do not infer owner/contractor type from ADMIN role alone.
+
+Current migration rule:
+- membership represents person ↔ organization relationship only;
+- do not duplicate employee_id inside membership;
+- employment relationship remains canonical in `employees`;
+- role authorization remains canonical in `user_roles` during transition;
+- membership writes remain server-side/reviewed only.
+
+## NEXT
+
+1. Run context resolver Vitest suite in a branch/CI path that can execute it.
+2. Reconcile the single non-employee membership relationship using explicit business/identity evidence.
+3. Build a reviewed `organization_memberships` migration after test evidence; do not apply yet.
+4. Refactor current Phase 1 `getToroSession()` to consume `resolveToroContext()` only after parity tests prove existing Founder/role behavior is preserved.
+5. Add context switcher contract/UI after resolver parity.
+
+
+
+### Employee identity reconciliation update — 2026-09-23
+
+CURRENT:
+- 8 active employees remain without TORO user linkage.
+- All 8 have confirmed clock mapping + department + position + work area.
+- 7 are matched to active Airtable employment profiles with employee portal enabled.
+- All 7 matched profiles have historical-data status PARTIAL.
+- 1 requires employment-profile reconciliation.
+
+NEXT:
+- treat 7 as invite candidates after human identity/email verification;
+- reconcile the remaining 1 profile;
+- create no account or employee-user link automatically;
+- onboarding must use the future organization_memberships + role model once approved.
+
+
+### organization_memberships validation gate — 2026-09-23
+
+CURRENT:
+- reversible/auto-rollback SQL draft exists on PR #42;
+- production Supabase has no `organization_memberships` table yet;
+- read-only backfill preview finds 5 membership candidates: 4 employee-linked + 1 non-employee ADMIN relationship requiring classification;
+- no local PostgreSQL runtime is available in the current execution environment for faithful RLS/DDL validation.
+
+BLOCKED:
+- applying/testing DDL on a Supabase development branch requires branch creation/cost confirmation and must not be done implicitly.
+
+RULE:
+- do not apply membership DDL to production until isolated Postgres/Supabase QA validates constraints, grants, RLS positive/negative cases, backfill idempotency and rollback;
+- do not infer the non-employee ADMIN membership type as owner from role alone.
+
+
+---
+
+# 22. Cognitive Operating Model — how TORO thinks
+
+Canonical subordinate specification:
+
+`docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md`
+
+This specification defines the repeatable business-transformation method TORO uses from a new/poorly understood business through governed optimization and bounded autonomous operation.
+
+Canonical lifecycle:
+
+```text
+Scope
+-> Understand
+-> Map
+-> Baseline
+-> Diagnose
+-> Choose
+-> Design
+-> Execute / Experiment
+-> Verify
+-> Standardize
+-> Automate
+-> Autonomize
+-> Learn
+-> Repeat
+```
+
+Canonical optimization order:
+
+```text
+Eliminate -> Simplify -> Standardize -> Connect/Digitize -> Automate -> Agentize -> Autonomize
+```
+
+Key rules:
+
+- understand the business and end-to-end value stream before local optimization;
+- truth/source authority/freshness precede material action;
+- prioritize constraints and measurable outcomes, not output volume;
+- not every finding becomes a task;
+- automation is not the first treatment of a broken or unstable process;
+- autonomy is earned and governed **per workflow**, never granted globally to a business;
+- TORO Pro means closed-loop bounded outcome ownership under goals, budgets, permissions, evidence, monitoring, rollback and exception rules;
+- high-risk classes may remain approval-gated at every maturity level;
+- autonomy is automatically reduced when source health, evidence, policy, configuration or outcome quality degrades;
+- generalize reusable methods without leaking scope-owned facts.
+
+This cognitive model is implemented through existing TORO subsystems and current task/project/governance/data contracts. It does **not** create another brain, project hierarchy, agent universe or database.
+
+## Dreamcatcher proof requirement
+
+Canonical proving-ground contract:
+
+`docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md`
+
+Current proof order is evidence-driven:
+1. Guest-ready physical operation / maintenance.
+2. Breakfast / F&B.
+3. People / onboarding.
+4. Demand / booking / stay / post-stay.
+5. Finance-to-cash.
+
+The first live cognitive proof uses the existing `maintenance_daily_p0_p1_round` and `MNT-DAILY-P0-P1-20260923`; no new project/task is created. Repeated equivalent execution packets must be suppressed when the prior current packet remains unexecuted and no material delta exists.
+
+Before TORO can claim generalized “new business -> optimized -> autonomous” capability, Dreamcatcher must provide real evidence of:
+
+1. cross-functional Business Anatomy coverage;
+2. end-to-end value-stream mapping;
+3. governed baselines;
+4. constraint/opportunity prioritization;
+5. elimination/simplification before automation;
+6. outcome verification;
+7. workflow-level autonomy promotion/demotion;
+8. durable learning from real corrections;
+9. owner operation by exception rather than a growing raw backlog.
+
+## Relationship to readiness
+
+The New Business Readiness Gate remains authoritative for external onboarding.
+
+The Cognitive Operating Model defines **how TORO thinks and improves** once a scope is authorized; the readiness gate defines **when TORO is allowed to onboard/operate another real business**.
+
+
+### TORO People Wave 1 code foundation — 2026-09-23
+
+CURRENT:
+- DreamTeam code estate inventoried: 171 relevant source paths across UI, APIs, HR domain logic and security.
+- Canonical migration contract: `docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md`.
+- Machine-readable migration map: `data/toro_people_migration_map.json`.
+- DreamTeam module ownership split is explicit: People vs Comms vs Governance vs Identity vs Systems/Tools.
+- Self-service RLS verified for employee, attendance, shifts, leave requests/balances and payment receipts.
+- `employee_self_profile` / `update_employee_self_profile` bind org + auth.uid().
+- `submit_leave_request` blocks ordinary users from submitting for another employee.
+
+CODE:
+- Draft PR #48: `feat: add TORO People read-only self-service foundation`.
+- Base: PR #42 context branch, not main.
+- 6 files only, 0 commits behind its context base at creation.
+- Read-only scope: own profile, upcoming shifts, own leave requests/balances, recent attendance.
+- Explicit org_id + employee_id filters are added on top of RLS.
+- Mappers intentionally exclude salary, bank and arbitrary private-HR payloads.
+- Vercel preview build = SUCCESS.
+- No new table, no write endpoint, no navigation, no DreamTeam retirement.
+
+GATES:
+- PR #48 remains DRAFT until PR #42 context is validated/landed.
+- Official Vitest execution evidence is still required before merge.
+- Write workflows (profile update, leave submission) remain deferred until read-only parity is proven.
+
+
+### TORO Comms Wave 1 code foundation — 2026-09-23
+
+CURRENT:
+- Draft PR #51: `feat: add TORO Comms read-only inbox foundation`.
+- Base: PR #42 context branch.
+- Reuses existing `team_messages` + `team_message_read_states`; no duplicate chat database.
+- Read-only organization inbox with unread calculation.
+- Safe attachment projection excludes storage paths/raw JSON.
+- Unknown/future channels remain `other` rather than being silently treated as general.
+- Personal inbox projection is intentionally narrower than privileged RLS:
+  - own-sent DMs;
+  - DMs addressed to current linked employee;
+  - unrelated privileged cross-user DMs are excluded.
+- Cross-user privileged DM review belongs in a separate explicit/audited governance/HR surface.
+- Vercel preview build = SUCCESS.
+
+GATES:
+- PR #51 remains DRAFT until PR #42 lands and official tests execute.
+- No message send/write/read-state mutation yet.
+- No communication channel/binding tables yet.
+- OpenClaw bindings remain blocked by live runtime audit.

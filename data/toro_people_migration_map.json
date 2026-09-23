@@ -1,0 +1,212 @@
+{
+  "version": "2026-09-23-v1",
+  "source_repo": "Dramcatcherst/dream-team",
+  "canonical_repo": "Dramcatcherst/Toro-OS",
+  "modules": [
+    {
+      "slug": "empleados",
+      "owner": "TORO People",
+      "wave": 2,
+      "risk": "medium",
+      "reuse": [
+        "domain_queries",
+        "employee_center_patterns"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "asistencia",
+      "owner": "TORO People",
+      "wave": 3,
+      "risk": "high",
+      "reuse": [
+        "attendance_logic",
+        "time_clock",
+        "incident_resolution",
+        "attendance_editor"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "horarios",
+      "owner": "TORO People",
+      "wave": 4,
+      "risk": "medium",
+      "reuse": [
+        "schedule_engine",
+        "coverage_logic",
+        "schedule_center_patterns"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "vacaciones",
+      "owner": "TORO People",
+      "wave": 1,
+      "risk": "medium",
+      "reuse": [
+        "leave_workflow",
+        "leave_center_patterns"
+      ],
+      "gaps": [
+        "direct_tests"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "planilla",
+      "owner": "TORO People + TORO Finance",
+      "wave": 7,
+      "risk": "critical",
+      "reuse": [
+        "payroll_logic",
+        "payroll_review",
+        "exports"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "prestamos",
+      "owner": "TORO People + TORO Finance",
+      "wave": 8,
+      "risk": "critical",
+      "reuse": [
+        "loan_domain"
+      ],
+      "gaps": [
+        "direct_tests"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "liquidaciones",
+      "owner": "TORO People + TORO Governance + TORO Finance",
+      "wave": 8,
+      "risk": "critical",
+      "reuse": [
+        "settlement_scenarios",
+        "legal_hold"
+      ],
+      "gaps": [
+        "direct_tests"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    },
+    {
+      "slug": "reportes",
+      "owner": "Shared Reporting + TORO People",
+      "wave": 3,
+      "risk": "medium",
+      "reuse": [
+        "report_contracts",
+        "export_security"
+      ],
+      "retire": [
+        "standalone_reporting_navigation"
+      ]
+    },
+    {
+      "slug": "aprobaciones",
+      "owner": "TORO Governance",
+      "wave": 6,
+      "risk": "high",
+      "reuse": [
+        "approval_data"
+      ],
+      "retire": [
+        "people_specific_approval_ui"
+      ]
+    },
+    {
+      "slug": "auditoria",
+      "owner": "TORO Governance",
+      "wave": 6,
+      "risk": "high",
+      "reuse": [
+        "audit_logs",
+        "audit_view"
+      ],
+      "retire": [
+        "people_specific_audit_ui"
+      ]
+    },
+    {
+      "slug": "equipo",
+      "owner": "TORO Comms",
+      "wave": 5,
+      "risk": "high",
+      "reuse": [
+        "team_messages",
+        "attachments",
+        "read_states"
+      ],
+      "retire": [
+        "DreamTeam TeamChat"
+      ]
+    },
+    {
+      "slug": "configuracion",
+      "owner": "split",
+      "wave": 6,
+      "risk": "critical",
+      "split_to": [
+        "TORO Identity",
+        "TORO People",
+        "TORO Governance",
+        "TORO Tools",
+        "TORO Systems"
+      ],
+      "retire": [
+        "monolithic_configuration_center"
+      ]
+    },
+    {
+      "slug": "mi-portal",
+      "owner": "TORO People",
+      "wave": 1,
+      "risk": "medium",
+      "reuse": [
+        "self_profile",
+        "own_schedule",
+        "own_requests"
+      ],
+      "retire": [
+        "legacy_module_route"
+      ]
+    }
+  ],
+  "api_ownership": {
+    "auth": "TORO Identity",
+    "admin/accounts": "TORO Identity",
+    "admin/invitations": "TORO Identity",
+    "admin/roles": "TORO Identity + TORO Governance",
+    "admin/sessions": "TORO Identity",
+    "employees": "TORO People",
+    "attendance": "TORO People",
+    "schedules": "TORO People",
+    "leave-requests": "TORO People",
+    "time-imports": "TORO People",
+    "payroll": "TORO People + TORO Finance",
+    "loans": "TORO People + TORO Finance",
+    "settlements": "TORO People + TORO Governance + TORO Finance",
+    "portal": "TORO People",
+    "chat": "TORO Comms",
+    "reports": "Shared Reporting",
+    "health": "TORO Systems",
+    "integrations": "TORO Tools + TORO Systems + TORO Data"
+  }
+}
