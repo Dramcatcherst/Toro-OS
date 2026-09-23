@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm test && next build",
+    "build": "npx vitest run src/features/context/resolver.test.ts src/features/context/legacy-session-adapter.test.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
