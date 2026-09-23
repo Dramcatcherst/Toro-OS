@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 
 const profileLabels: Record<string, string> = {
@@ -122,6 +123,13 @@ export default async function MyToroPage({
             </div>
           </div>
         </header>
+
+        {menu?.items.length ? (
+          <MyToroCommandBar
+            menu={menu}
+            focusableCapabilities={view.focusableCapabilities}
+          />
+        ) : null}
 
         {view.profileSummary.length ? (
           <section className="mt-5 grid gap-3 md:grid-cols-3" aria-label="Resumen del contexto actual">
