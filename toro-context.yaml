@@ -66,6 +66,7 @@ scope_graph:
   cross_scope_requires_policy: true
 
 canonical_product_specs:
+  general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   brain_constitution: docs/product/TORO_BRAIN_CONSTITUTION.md
   brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
