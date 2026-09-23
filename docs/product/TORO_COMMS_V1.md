@@ -197,6 +197,20 @@ TORO may observe permitted group context for continuity, but should only persist
 
 Every direct conversation is isolated by human identity and channel/account.
 
+### Personal inbox is narrower than privileged RLS
+
+The current DreamTeam/Supabase policies intentionally allow ADMIN/RRHH/GERENCIA to inspect some DMs for governed HR/management workflows.
+
+That broader authorization must **not** automatically populate a person's normal TORO inbox.
+
+Normal `Mi inbox` projection shows only:
+- DMs sent by the current user;
+- DMs addressed to the current user's linked employee identity.
+
+Cross-user privileged message review, if retained, belongs in a separate explicit/audited HR or governance surface with purpose, authorization and evidence.
+
+Database permission is a ceiling, not a reason to expose every permitted record in every UI.
+
 DM must resolve:
 - authenticated/linked user when possible;
 - personal vs organization context;
