@@ -159,3 +159,43 @@ Rollback:
 - `supabase/drafts/rollback_kross_reservation_scope_identity_20260923.sql`.
 
 No reservation row was changed by this migration.
+
+
+## Email/ticket evidence update — 2026-09-23
+
+Observed from the Dreamcatcher/Kross support correspondence for ticket **KB-305650/26**:
+
+### Confirmed
+On 2026-09-18, Kross support stated that they had been in contact with Dreamcatcher's local provider and were waiting for that provider to respond.
+
+This confirms:
+- the API/read-access request reached Kross;
+- Kross involved the local provider;
+- no actual API credential, documentation package or approved live read transport was delivered in that message.
+
+### Current owner-side action state
+A detailed follow-up reply was prepared on 2026-09-23 asking Kross to confirm:
+1. activation status and whether anything is pending from Dreamcatcher or the local provider;
+2. read-only methods for reservations/current stays and arrivals/departures;
+3. read-only methods for live rates and availability;
+4. whether Kross offers API, webhook, scheduled export or another official read-only transport;
+5. documentation and required scopes/credentials;
+6. updated legal terms;
+7. setup, recurring and other charges before activation.
+
+That follow-up is currently **DRAFT / NOT SENT**.
+
+Therefore the blocker must not be summarized only as "provider response pending."
+
+The accurate state is:
+
+> **Kross/provider side remains unresolved, and Dreamcatcher still has one explicit human action pending: send/reopen the prepared follow-up.**
+
+### Safety
+The prepared follow-up explicitly states:
+- first phase is read-only;
+- no write capability is requested;
+- no billable API/module/service may be activated without written approval;
+- Kross remains transactional authority.
+
+No email was sent as part of this TORO update.
