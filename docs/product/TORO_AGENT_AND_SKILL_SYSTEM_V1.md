@@ -582,3 +582,18 @@ At this revision:
 - legacy L-level fields remain preserved for migration/history, not execution authority.
 
 Any runtime adapter must expose or derive an A-level per workflow before it may claim autonomous execution.
+
+
+## TERE / WeSpeak V4 runtime gate — 2026-09-23
+
+WeSpeak runtime activity is independently evidenced, but TERE V4 consumption is not yet verified.
+
+Canonical gate:
+- `docs/runbooks/TORO_TERE_WESPEAK_V4_RUNTIME_ACCEPTANCE_GATE.md`
+
+Evaluator:
+- `src/features/tere/runtime-acceptance.ts`
+
+Required evidence includes runtime identity/version, post-V4 timestamp, matching V4 config hash, isolated scenario suite, channel continuity and no unauthorized external action.
+
+Older WeSpeak conversations/alerts may demonstrate runtime activity but cannot prove current V4 consumption.
