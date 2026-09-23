@@ -172,7 +172,7 @@ export const visualBrainDemo: BrainProjection = {
       authoritySystem: "TORO Governance",
       capabilities: {
         ...observeOnly,
-        canApprove: true,
+        canApprove: false,
         actionCeiling: "execute_with_approval",
         approvalRequirement: "Owner approval",
       },
@@ -206,7 +206,7 @@ export const visualBrainDemo: BrainProjection = {
     { id: "edge:finance-alegra", source: "node:toro-finance", target: "node:alegra", relation: "reads_from", verification: "partially_verified", freshness: "aging" },
     { id: "edge:kross-revenue", source: "node:kross", target: "node:revenue", relation: "produces", verification: "verified", freshness: "current" },
     { id: "edge:alegra-cash", source: "node:alegra", target: "node:cash", relation: "produces", verification: "partially_verified", freshness: "aging" },
-    { id: "edge:evidence-cash", source: "node:bank-evidence", target: "node:cash", relation: "evidenced_by", verification: "verified", freshness: "current" },
+    { id: "edge:cash-evidence", source: "node:cash", target: "node:bank-evidence", relation: "evidenced_by", verification: "verified", freshness: "current" },
     { id: "edge:construction-cash", source: "node:construction", target: "node:cash", relation: "depends_on", verification: "partially_verified", freshness: "aging" },
     { id: "edge:cash-decision", source: "node:cash", target: "node:decision", relation: "triggered_by", verification: "partially_verified", freshness: "aging" },
     { id: "edge:decision-approval", source: "node:decision", target: "node:capex-approval", relation: "requires_approval_from", verification: "unverified", freshness: "current" },
