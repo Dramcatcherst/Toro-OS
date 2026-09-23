@@ -779,7 +779,7 @@ Public marketing changes may move faster than high-risk operational execution, b
 
 ---
 
-## 22. CURRENT estate findings — 2026-09-22
+## 22. CURRENT estate findings — reverified 2026-09-23
 
 ### GitHub
 
@@ -796,21 +796,28 @@ Decision:
 ### Vercel
 
 Verified:
-- Vercel project `toro-pr11-preview` deploys the canonical `Dramcatcherst/Toro-OS` repository.
-- Vercel project `toro-os-v03` still deploys `Dramcatcherst/toro-os-v88-new`.
+- `toro-pr11-preview` / `prj_nxerFw9ciNews6tUMAah3GAlAJzs` deploys the canonical `Dramcatcherst/Toro-OS` repository from `main` and is the **canonical active runtime**.
+- `toro-os-v03` / `prj_nzsVpQZree5WuErakMPKIyiK6gsA` deploys legacy `Dramcatcherst/toro-os-v88-new` from `master` and is classified **legacy / rollback / reference**.
+- canonical runtime has current production-target deployments on 2026-09-23;
+- legacy Vercel project last updated 2026-09-08; latest inspected legacy production deployment is from 2026-08-23;
+- inspected production aliases on both are Vercel-hosted aliases; no custom non-Vercel domain was observed in those deployment alias responses;
+- inspected legacy production deployment had no runtime logs in the last 24h, but this is evidence only and not proof of zero use;
+- legacy history includes Google Admin Bridge/OIDC/auth-pilot work.
 
 Interpretation:
-- Vercel estate currently contains canonical-preview activity plus a legacy production/runtime lineage.
-- This is architectural drift, not permission to delete or repoint production.
+- only one runtime is product-canonical;
+- the legacy project remains a governed rollback/reference asset until unique env/OIDC/integration dependencies are inventoried and either ported or explicitly retired.
 
 Required migration:
-1. inventory domains/environment variables/functions/cron/OIDC/redirects;
-2. compare canonical vs legacy runtime capabilities;
-3. reproduce needed capability on a canonical preview;
-4. verify security and workflows;
-5. plan reversible cutover;
-6. retain rollback evidence;
-7. only then retire or reclassify legacy Vercel projects.
+1. inventory environment-variable names/scopes through an authorized Vercel configuration path;
+2. inventory OIDC/trust, callbacks/redirects, functions/crons and integration bindings;
+3. compare legacy unique capability against canonical `Toro-OS`;
+4. port still-required capability through canonical PRs;
+5. prove canonical parity and rollback;
+6. archive/reclassify legacy;
+7. delete only after explicit evidence and approval.
+
+Tracker: issue #33.
 
 ### Supabase
 
@@ -878,24 +885,46 @@ Exit:
 visual model is understandable before realtime complexity.
 
 ### Stage C — Canonical read-only integration
-**BLOCKED_BY_IDENTITY / NEXT**
+**CODE PREPARED / BLOCKED_BY_AUTHENTICATED_QA**
 
-- read canonical entities;
-- read system health;
-- read projects/decisions/tasks/obligations;
-- read domain-owned metrics/evidence;
-- permission-filtered graph;
-- reuse validated read-only capabilities from existing Phase 1/PR #16 work where compatible.
+Canonical `main` now contains:
+- server-side context resolver + personal/work isolation;
+- Supabase SSR runtime foundation;
+- internal login and non-PII context diagnostic;
+- first permission-scoped canonical read adapter;
+- RLS-audited Projects + Source Governance + Kross Health sources;
+- opaque projection refs and field minimization;
+- canonical read -> shared BrainProjection mapper;
+- focused real projection under the Stage B node/edge budget;
+- feature-gated canonical mode in the existing server projection provider.
 
-Hard gate:
-- canonical server-side context/authorization must exist on the final integration path before private real data is projected;
-- PR #42 currently contains the context resolver on the Phase 1 branch, not canonical `main`;
-- do not recreate that resolver inside Visual Brain.
+Activation requirements:
+- an existing authorized TORO credential/session must complete hosted QA;
+- context must resolve the intended organization;
+- anonymous/wrong-org/revoked cases must fail closed;
+- only then may `TORO_BRAIN_CANONICAL_READ_ENABLED=true` be introduced in a controlled environment.
+
+Default/failure behavior:
+- flag absent/off -> synthetic-only;
+- unresolved context -> synthetic-only;
+- context choice/denial -> synthetic-only;
+- canonical source failure -> synthetic-only;
+- external writes remain disabled.
+
+Excluded from Stage C v1:
+- Finance;
+- guests;
+- employees;
+- payments;
+- private/free-text project fields;
+- service-role bypass.
+
+Tracker: issue #50.
 
 No external writes.
 
 Exit:
-Brain represents verified real state for an authorized internal user.
+Brain represents verified real state for an authorized internal user and still fails closed to synthetic mode for every unauthorized/degraded path.
 
 ### Stage D — Event Spine + realtime
 **TARGET**

@@ -1157,10 +1157,24 @@ AI design/code tools may accelerate delivery but do not become architecture auth
 - legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
 
 ### Vercel
-- `toro-pr11-preview` is deploying the canonical `Toro-OS` repository.
-- `toro-os-v03` still has deployments from legacy `toro-os-v88-new`.
-- This is configuration/runtime drift requiring a controlled migration.
-- Do not repoint/delete production without inventory, parity verification and rollback.
+Verified/rebaselined 2026-09-23:
+- `toro-pr11-preview` / `prj_nxerFw9ciNews6tUMAah3GAlAJzs` = **CANONICAL ACTIVE RUNTIME**;
+- it deploys `Dramcatcherst/Toro-OS` from `main` and continues receiving current production-target deployments;
+- `toro-os-v03` / `prj_nzsVpQZree5WuErakMPKIyiK6gsA` = **LEGACY / ROLLBACK / REFERENCE — DO NOT DELETE YET**;
+- legacy deploys `Dramcatcherst/toro-os-v88-new` from `master`;
+- legacy project last updated 2026-09-08; latest inspected legacy production deployment is from 2026-08-23;
+- inspected production aliases on both projects are Vercel-hosted aliases only; no custom non-Vercel domain was observed in those deployment alias responses;
+- the inspected legacy production deployment returned no runtime logs in the last 24h, but this is not sufficient proof of zero usage;
+- legacy history contains Google Admin Bridge/OIDC/auth-pilot work, so env/OIDC/integration inventory is mandatory before archival or deletion.
+
+Canonical consolidation tracker:
+- issue #33 — GitHub + Vercel delivery-governance master lane.
+
+Rules:
+- no legacy project deletion;
+- no routing/domain/env/OIDC mutation until parity and rollback are proven;
+- unknown Vercel configuration remains **UNKNOWN**, not assumed absent;
+- required unique legacy capability must be ported through canonical `Toro-OS` PRs rather than preserving a second active product brain.
 
 ### Supabase
 Read-only schema audit now verifies `abtyrbqlqbsastmridzp` as the current canonical TORO structured runtime data plane for the Dreamcatcher reference implementation.
@@ -1202,12 +1216,36 @@ Rules:
 - protected deployment visually inspected in a real browser with no detected overlap, clipping, missing sections or desktop overflow;
 - issue #40 closed.
 
-**Stage C — BLOCKED_BY_IDENTITY**
-- real private data must not be connected until canonical server-side context/authorization exists on `main`;
-- current `main` has context types but not the complete server-side resolver/Auth foundation;
-- PR #42 contains the context resolver on top of Phase 1 but remains draft and is not based directly on `main`;
-- Phase 1 PR #15 remains draft/diverged and must be reconciled safely before its auth foundation can become canonical;
-- PR #16 already contains useful read-only Projects, Knowledge, Hotel, Systems/connector-health and safe Kross projection work; Stage C must extract/reuse those capabilities instead of rebuilding them.
+**Stage C — CODE PREPARED / BLOCKED_BY_AUTHENTICATED_QA**
+Completed on canonical `main`:
+- canonical server-side `resolveToroContext()` and personal/work isolation policy;
+- Supabase SSR server/client foundation;
+- permanent context/auth regression tests in CI;
+- internal `/login` surface and safe redirect guard;
+- non-PII `/api/brain/context` diagnostic;
+- permission-scoped canonical read adapter for Projects + Source Governance + Kross Health;
+- canonical-read -> shared `BrainProjection` mapper;
+- focused first real projection capped below Stage B visual budgets;
+- server projection provider can enter canonical read-only mode only behind `TORO_BRAIN_CANONICAL_READ_ENABLED=true`;
+- all unresolved/denied/source-failure paths fail closed to the existing synthetic projection;
+- Finance/guest/employee/payment/private free-text fields remain excluded.
+
+Verified controls:
+- unauthenticated context diagnostic returns fail-closed `401`;
+- Supabase RLS was audited for first-slice sources;
+- `integrations.kross_snapshot_health` is a `security_invoker=true`, `security_barrier=true` view over an RLS-protected registry;
+- Finance metrics/evidence remain deny-by-default and are not part of Stage C v1;
+- canonical UUIDs are replaced by opaque projection refs before leaving the adapter;
+- no service-role bypass is used.
+
+Current hard gate:
+- hosted QA needs an existing authorized TORO credential/session;
+- the QA browser currently has no saved authorized credential/session;
+- non-PII Supabase counts confirm authorized identity data exists, so the blocker is credential/session availability for hosted QA, not absence of users/memberships;
+- no user/password/reset/magic-link or permission mutation was created to bypass this gate.
+
+Tracker:
+- issue #50 — Visual Brain Stage C canonical read-only integration.
 
 ### Current runtime security baseline — verified 2026-09-23
 - canonical `main` uses Next.js **16.3.6** and matching `eslint-config-next`;
@@ -1217,12 +1255,12 @@ Rules:
 
 ## NEXT
 
-1. Reconcile the Phase 1 identity/auth integration path; do not bypass its hosted/security gates.
-2. Promote a canonical server-side `resolveToroContext()` + membership/isolation contract onto the eventual `main` integration path.
-3. Produce a Stage C extraction map from PR #16 for Projects, Knowledge, Systems health, Hotel/Kross-safe reads and API authorization so those capabilities are reused rather than rebuilt.
-4. Connect the Visual Brain to real **read-only** Dreamcatcher state only after server-side context/permission filtering is canonical and tested.
-5. Establish the shared TORO design system/Figma semantic tokens without changing product authority.
-6. Continue Vercel legacy/canonical runtime migration audit and preserve rollback until parity is proven.
+1. Complete hosted authenticated QA with an **existing authorized TORO user**; do not create/reset credentials merely to bypass the gate.
+2. Verify `/api/brain/context` resolves the intended organization and that anonymous/wrong-org/revoked paths fail closed.
+3. Only after that evidence, enable the canonical Visual Brain read path in a controlled environment and verify Projects + Source Governance + Kross Health before any broader data scope.
+4. Keep Finance/guest/employee/payment/private free-text domains excluded until their own permission/projection contracts are explicitly approved.
+5. Continue issue #69 Vercel consolidation: inventory env-variable scopes, OIDC/trust, callbacks, functions/crons and integration bindings before any legacy archival.
+6. Establish the shared TORO design system/Figma semantic tokens without changing product authority.
 7. Normalize Event Spine adapters after static/read-only real-state projection is verified.
 8. Add governed actions only after approval/evidence/verification flows are canonical.
 9. Build public “Watch TORO Work” from synthetic/public-safe fixtures after private product behavior is stable.
