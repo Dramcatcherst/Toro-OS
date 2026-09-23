@@ -4,8 +4,9 @@
 **Date:** 2026-09-23  
 **Master product:** TORO Brain  
 **Owners:** TORO Identity + TORO People + TORO Tools + TORO Comms + TORO User Portal  
+**Role journey manifest:** data/toro_onboarding_journeys_v2.json  
 **Commercial rule:** one TORO, modular activation, progressive setup  
-**Implementation status:** SPECIFIED / NOT YET RUNTIME-VERIFIED
+**Implementation status:** ROLE JOURNEYS SPECIFIED / NOT YET PRODUCTION-RUNTIME-VERIFIED
 
 ---
 
@@ -187,6 +188,36 @@ It should never re-ask a fact already verified merely to complete a wizard.
 
 Desired feeling:
 **“TORO ya entiende bastante; solo me pregunta lo que de verdad falta.”**
+
+## 5B. Role-specific micro-onboarding
+
+Do not give every person the same onboarding script.
+
+The canonical journey manifest is:
+- data/toro_onboarding_journeys_v2.json
+
+Current archetypes:
+- owner/admin;
+- manager/lead;
+- reception;
+- housekeeping;
+- maintenance;
+- office specialist;
+- general employee;
+- guest/prospect first contact.
+
+Position-specific journeys override generic employee onboarding.
+
+Each journey should:
+- acknowledge verified role/context without making the user repeat it;
+- take the person to a useful role-specific action in 1–2 turns where practical;
+- expose at most 3 first choices;
+- allow free text;
+- teach navigation through use rather than a product tour;
+- reveal secondary tools only after first value;
+- finish by showing the user's most useful shortcuts.
+
+Guest/prospect first contact is not an account-setup wizard. TERE starts by helping the person with the trip/request.
 
 ## 6. Business/admin onboarding path
 
