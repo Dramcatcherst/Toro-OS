@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveToroMenu, resolveToroMenuIntent } from "./resolver";
+import { prioritizeToroMenuByAvailability, resolveToroMenu, resolveToroMenuIntent } from "./resolver";
 
 const ready = (...capabilities: string[]) =>
   Object.fromEntries(capabilities.map((key) => [key, "READY" as const]));
@@ -124,6 +124,31 @@ describe("resolveToroMenu", () => {
 
     expect(withoutMore?.items.some((item) => item.key === "more")).toBe(false);
     expect(withMore?.items.some((item) => item.key === "more")).toBe(true);
+  });
+
+  it("puts readable options before blocked options while preserving relative order", () => {
+    const menu = resolveToroMenu({
+      mode: "organization",
+      roles: ["EMPLEADO"],
+      positionCode: "RECEPTION",
+      capabilityStates: {
+        "guest.arrivals_departures": "BLOCKED",
+        "comms.guest_messages": "BLOCKED",
+        "hospitality.quote": "BLOCKED",
+        "catalog.rooms_villas": "READ_ONLY",
+        "catalog.experiences": "READ_ONLY",
+      },
+    })!;
+
+    const ordered = prioritizeToroMenuByAvailability(menu);
+
+    expect(ordered.items.map((item) => [item.index, item.key, item.state])).toEqual([
+      [1, "rooms_villas", "READ_ONLY"],
+      [2, "experiences", "READ_ONLY"],
+      [3, "arrivals", "BLOCKED"],
+      [4, "guest_messages", "BLOCKED"],
+      [5, "quote_sell", "BLOCKED"],
+    ]);
   });
 
   it("returns null when no authorized internal profile can be resolved", () => {
