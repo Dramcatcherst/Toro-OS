@@ -235,3 +235,47 @@ Do not:
 - assume the local provider has approved access;
 - infer API entitlement from the existence of the ticket;
 - activate any billable Kross service without written approval.
+
+
+## Transport adapter contract
+
+Prepared in the canonical repo:
+- `src/features/kross/transport-adapter.ts`.
+
+Purpose:
+- accept one authorized vendor payload/export row;
+- apply a configuration-only field map;
+- produce the transport-neutral `KrossReservationCandidate`;
+- then pass that candidate into the existing reservation normalizer.
+
+The adapter deliberately does **not** embed guessed Kross vendor field names.
+
+Required mapping keys:
+- external reservation identity;
+- check-in;
+- check-out;
+- status.
+
+Optional mappings:
+- reservation key;
+- room id / room code;
+- total guests;
+- adults;
+- children;
+- channel;
+- breakfast included.
+
+Rules:
+- nested values may be addressed by dot-path configuration;
+- missing required mapped values fail closed;
+- invalid guest counts are not silently coerced;
+- invalid booleans are surfaced as adapter issues;
+- organization/property scope comes from TORO context/config, not from an untrusted vendor row;
+- adapter output alone does not make a row live/verified;
+- `source_is_live=true` remains controlled only by transport evidence in the normalizer.
+
+First real transport acceptance sequence:
+
+`official payload/export -> field-map config -> adapter -> normalizer -> mirror/import run -> safe view -> acceptance evaluator -> Reception read`
+
+No separate reservation schema, mirror or ingestion universe should be created for a specific Kross transport.
