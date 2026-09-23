@@ -176,3 +176,44 @@ Do not:
 - change prices, promotions, reservations or restrictions;
 - copy unnecessary guest/private/payment data;
 - use email notifications as reservation authority.
+
+
+## Internal implementation readiness — 2026-09-23
+
+Prepared in the canonical repo:
+- transport-neutral reservation normalizer:
+  - `src/features/kross/normalize-reservation.ts`;
+- executable 12-check acceptance evaluator:
+  - `src/features/kross/acceptance.ts`;
+- CI coverage for both;
+- Kross-specific scoped reservation identity guard in Supabase:
+  - unique on `(org_id, property_id, external_reservation_id)` when `source_system='Kross'`;
+- rollback source:
+  - `supabase/drafts/rollback_kross_reservation_scope_identity_20260923.sql`.
+
+Identity rule:
+- Kross dedupe identity is `org_id + property_id + external_reservation_id`;
+- `source_record_id` is secondary source evidence and new normalized rows namespace it by property;
+- the current 33 legacy snapshots were checked and contain 33 distinct scoped external reservation identities.
+
+Normalizer live-evidence rule:
+`source_is_live=true` and `data_quality_status='verified'` only when the caller provides explicit evidence that:
+- the transport was authorized;
+- the read came directly from Kross authority;
+- the transport is read-only;
+- source/observed timestamps are valid and not future;
+- source reference and checksum/hash exist.
+
+This code does not know or invent vendor field names. A transport adapter must map the authorized Kross response/export into the transport-neutral candidate contract.
+
+### Remaining blocker after internal preparation
+
+Still required:
+1. authorized real Kross transport/export/browser artifact;
+2. exact transport-to-candidate mapping;
+3. first real governed import run;
+4. repeat/idempotency proof against that real payload;
+5. Reception RLS proof on the resulting safe projection;
+6. evidence that no PMS write occurred.
+
+No credential, API entitlement or live browser/session is fabricated by this implementation.
