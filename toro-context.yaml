@@ -113,6 +113,7 @@ canonical_product_specs:
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   product_proof_and_commercialization: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
+  product_proof_workflow_board: docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
   progressive_onboarding: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
@@ -719,6 +720,19 @@ product_proof_focus:
     - whatsapp
     - dashboards
   proof_workflows_required: 12
+  workflow_board:
+    required_verified_workflows: 12
+    canonical_spec: docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
+    states:
+      - NOT_STARTED
+      - STRUCTURAL
+      - PREPARED
+      - RUNNING
+      - VERIFIED
+      - MEASURED
+      - REUSABLE
+    no_parallel_projects_for_count: true
+    reuse_existing_pilots_first: true
   proof_loop: "trigger -> scope -> authority -> context -> decision -> permission -> action -> evidence -> verification -> outcome -> metric -> learning"
   core_metrics:
     - owner_administrative_hours
