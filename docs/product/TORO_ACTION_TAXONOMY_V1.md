@@ -94,6 +94,28 @@ Rules:
 - explicit structured action type may be trusted only from an already-governed upstream process;
 - no action may inherit authority from a phrase.
 
+## 5.1 Deterministic semantic classifier
+
+Canonical helper:
+`classifyToroActionIntentText(request)`
+
+Possible results:
+- `matched`
+- `ambiguous`
+- `unclassified`
+
+Rules:
+- it only maps text to a semantic action ID;
+- it never returns an execution system or source of truth;
+- ambiguous requests fail closed;
+- vague requests fail closed;
+- returned evidence uses static taxonomy phrases, not the arbitrary input text;
+- the result still passes through Context + Tools + Governance before any preparation or execution.
+
+It is safe to use as a routing hint, never as permission.
+
+---
+
 ## 6. What was intentionally NOT copied from legacy
 
 Not imported as canonical truth:
