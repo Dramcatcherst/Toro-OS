@@ -26,6 +26,24 @@ Official references:
 - Treat channel logs as potentially private.
 - Store only minimal evidence/result summaries.
 
+## Gate 0 — Workstation capacity
+
+If the Gateway runs on an authorized Windows workstation, run the canonical TORO Systems advisory probe before resource-intensive local audit/build work:
+
+```powershell
+pwsh -NoProfile -File scripts/pc-health.ps1 -Json
+```
+
+Interpretation:
+- `HEALTHY` -> proceed with one controlled heavy task at a time;
+- `CAUTION` -> reduce concurrency and prefer cloud/connector execution where practical;
+- `STOP_HEAVY_WORK` -> do not start additional heavy local work;
+- `DIAGNOSTIC_ERROR` -> local capacity is unknown.
+
+This gate measures workstation capacity only. It does **not** prove OpenClaw version, gateway binding, Tailscale, auth, session isolation, WhatsApp policies, tool permissions, security audit or backup correctness.
+
+Canonical runbook: `docs/runbooks/TORO_WORKSTATION_HEALTH.md`.
+
 ## Gate 1 — Gateway/channel inventory
 
 Run on the authorized OpenClaw host:
