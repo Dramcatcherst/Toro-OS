@@ -97,6 +97,7 @@ canonical_product_specs:
   brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
   cognitive_operating_model: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
+  dreamcatcher_cognitive_proof: docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
   openclaw_runtime_audit: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
@@ -315,6 +316,31 @@ cognitive_operating_model:
   high_risk_can_remain_human_gated_at_A6: true
   not_every_finding_becomes_task: true
   research_stops_when_more_evidence_will_not_materially_change_next_safe_action: true
+
+cognitive_proving_ground:
+  business: Dreamcatcher Hotel
+  spec: docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md
+  proof_order:
+    - guest_ready_maintenance
+    - breakfast_fnb
+    - people_onboarding
+    - guest_journey
+    - finance_to_cash
+  current_pilot:
+    value_stream: guest_ready_maintenance
+    existing_task_key: maintenance_daily_p0_p1_round
+    current_round_key: MNT-DAILY-P0-P1-20260923
+    autonomy_state: A2_A3
+    human_physical_execution_required: true
+    baseline:
+      observed_equivalent_daily_rounds: 3
+      checks_per_round: 21
+      prepared_checks_total: 63
+      pass_results: 0
+      fail_results: 0
+    no_delta_rollover_suppression: true
+    rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
+  no_new_project_or_task_for_proof: true
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
