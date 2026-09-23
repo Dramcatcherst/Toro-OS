@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   LockKeyhole,
   LogIn,
+  RotateCcw,
   ShieldCheck,
   Sparkles,
   UserRound,
@@ -120,6 +121,12 @@ export default async function MyToroPage({
               <div className="mt-1 text-xs text-slate-500">
                 {membership?.positionName ?? membership?.positionCode ?? "Puesto no vinculado"}
               </div>
+              <Link
+                href="/onboarding"
+                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-200 hover:text-white"
+              >
+                <RotateCcw className="h-3.5 w-3.5" /> Rehacer onboarding
+              </Link>
             </div>
           </div>
         </header>
