@@ -427,7 +427,7 @@ export async function loadAuthorizedBrainProjection(
       mediaSafe.degraded ||
       assignmentSafe.degraded ||
       roomSafe.degraded
-        ? "One or more canonical sources unavailable; projection is partial."
+        ? "One or more canonical source unavailable; projection is partial."
         : slice.degradedReason,
   };
 }
