@@ -199,3 +199,22 @@ The prepared follow-up explicitly states:
 - Kross remains transactional authority.
 
 No email was sent as part of this TORO update.
+
+
+## Adapter-preparation update — 2026-09-23
+
+Internal preparation now also includes:
+- configurable transport adapter contract:
+  - `src/features/kross/transport-adapter.ts`;
+- CI tests with synthetic payloads;
+- required/optional field-map validation;
+- nested field-path resolution;
+- explicit invalid number/boolean handling.
+
+This reduces the remaining implementation step after Kross/local-provider delivery to:
+1. verify the transport is authorized/read-only;
+2. configure the official field map from real documentation/payload;
+3. run one governed read;
+4. pass the existing normalizer/acceptance gate.
+
+No Kross vendor field names were guessed or hard-coded.
