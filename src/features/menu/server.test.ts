@@ -61,6 +61,13 @@ describe("resolveCurrentToroReadOnlyMenu", () => {
     expect(view?.capabilityNotes["guest.arrivals_departures"]).toBe(
       "Falta verdad live de reservas/estancias del PMS.",
     );
+    expect(view?.capabilityAlternatives["hospitality.quote"]).toEqual({
+      label: "Abrir Kross oficial",
+      href: "https://dreamcatcherhotel.kross.travel/",
+      note:
+        "Kross confirma las tarifas y disponibilidad vigentes. TORO no importa ni interpreta ese resultado automáticamente.",
+      external: true,
+    });
   });
 
   it("does not choose an organization when explicit context choice is required", async () => {

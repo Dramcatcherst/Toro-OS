@@ -1058,6 +1058,13 @@ kross_live_read_gate:
   quote_gate:
     status: blocked
     reason: live_price_availability_authority_not_verified
+  public_booking_handoff:
+    url: https://dreamcatcherhotel.kross.travel/
+    role: official_confirmation_surface
+    allowed_when_quote_blocked: true
+    automated_price_or_availability_ingestion: false
+    public_page_is_not_structured_source_authority: true
+    no_scraping_claim_as_live_truth: true
   safe_view_contract:
     source_is_live_required: true
     max_sync_age_hours: 6
