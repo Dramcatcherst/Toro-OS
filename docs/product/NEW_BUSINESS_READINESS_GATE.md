@@ -107,7 +107,7 @@ PASS requires:
 - regression checks protect stable rules;
 - value and failure metrics can be reviewed over time.
 
-## Gate I — Portability
+## Gate I — Portability and scope graph
 
 PASS requires:
 - no hard-coded Dreamcatcher assumption in the universal core;
@@ -115,6 +115,9 @@ PASS requires:
 - company identity, people, permissions, systems, knowledge and workflows can be configured independently;
 - user membership is distinct from role assignment;
 - one user can belong to at least two isolated organizations in the sandbox without duplicate identity;
+- a principal can govern at least two business/project scopes through one TORO Brain without flattening them into one tenant;
+- scope relationships and isolation modes are explicit;
+- portfolio-authorized aggregate reasoning works without exposing client-isolated/private payloads;
 - a new employee/person can be onboarded without creating a subsystem-specific account;
 - personal User Vault data survives organization offboarding and remains private;
 - the second sandbox tenant completes core setup and workflows successfully;
@@ -175,3 +178,20 @@ The product owner must be told explicitly when:
 - New Business Ready becomes justified.
 
 No readiness transition should happen silently.
+
+
+## Gate L — Systems audit readiness
+
+This gate becomes mandatory before broad autonomous execution.
+
+PASS requires:
+- critical runtimes/connectors have expected configuration profiles;
+- observed live configuration can be collected without exposing secrets;
+- drift findings have severity/owner/next action;
+- health checks are current;
+- backup/recovery posture is known;
+- security/permission boundaries are tested;
+- a configured system is never treated as verified without live evidence;
+- OpenClaw passes the TORO OpenClaw runtime audit before it is treated as confirmed-active for shared/team execution.
+
+This gate does not block early internal read-only proof work, but it blocks broad automation/autonomy on unaudited systems.
