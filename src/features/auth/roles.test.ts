@@ -106,6 +106,7 @@ describe("getRoleNavigation", () => {
     expect(getRoleNavigation("EMPLEADO").map((item) => item.label)).toEqual([
       "Inicio",
       "Mi trabajo",
+      "Mi asistencia",
       "Horario",
       "Solicitudes",
       "Mensajes",
