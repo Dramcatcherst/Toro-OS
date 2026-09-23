@@ -6,7 +6,7 @@ import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
-import { resolveToroMenu } from "./resolver";
+import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
 import {
   evaluateSourceAwareCapabilityStates,
   type ToroMenuSourceSnapshot,
@@ -525,7 +525,7 @@ export async function resolveCurrentToroReadOnlyMenu(
     // readable when source probing itself is unavailable.
   }
 
-  const menu = resolveToroMenu({
+  const resolvedMenu = resolveToroMenu({
     mode: "organization",
     roles: membership.roles,
     positionCode: membership.positionCode,
@@ -533,6 +533,9 @@ export async function resolveCurrentToroReadOnlyMenu(
     capabilityStates,
     hasSecondaryOptions: false,
   });
+  const menu = resolvedMenu
+    ? prioritizeToroMenuByAvailability(resolvedMenu)
+    : null;
 
   const focusableCapabilities =
     menu?.items
