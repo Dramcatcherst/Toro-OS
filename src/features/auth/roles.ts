@@ -1,6 +1,11 @@
 export type ToroRole =
   | "FOUNDER"
+  | "ADMIN"
+  | "RRHH"
   | "GERENCIA"
+  | "JEFE_DEPARTAMENTO"
+  | "AUDITOR"
+  | "EMPLEADO"
   | "RECEPCION"
   | "OPERACIONES"
   | "FINANZAS"
@@ -9,7 +14,12 @@ export type ToroRole =
 
 const TORO_ROLES = new Set<ToroRole>([
   "FOUNDER",
+  "ADMIN",
+  "RRHH",
   "GERENCIA",
+  "JEFE_DEPARTAMENTO",
+  "AUDITOR",
+  "EMPLEADO",
   "RECEPCION",
   "OPERACIONES",
   "FINANZAS",
@@ -32,8 +42,13 @@ export function resolveToroRole(profile: ToroRoleProfile): ToroRole | null {
     (profile.systemRoleCodes ?? []).map((value) => value.trim().toUpperCase()),
   );
 
+  if (roleCodes.has("ADMIN")) return "ADMIN";
+  if (roleCodes.has("RRHH")) return "RRHH";
   if (roleCodes.has("GERENCIA")) return "GERENCIA";
   if (roleCodes.has("CONTABILIDAD")) return "FINANZAS";
+  if (roleCodes.has("AUDITOR")) return "AUDITOR";
+  if (roleCodes.has("JEFE_DEPARTAMENTO")) return "JEFE_DEPARTAMENTO";
+  if (roleCodes.has("EMPLEADO")) return "EMPLEADO";
 
   return null;
 }
