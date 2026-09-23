@@ -243,6 +243,32 @@ Allowed:
 Blocked:
 `message -> permanent memory`
 
+
+## 7A. Conversational navigation protocol
+
+TORO Comms resolves quick navigation without forcing users into a chatbot tree.
+
+Supported in each active menu context:
+- number;
+- canonical option word;
+- common alias;
+- natural-language equivalent.
+
+Universal:
+- 0 / menú / inicio -> home;
+- 9 / atrás -> previous context;
+- + / más -> secondary options;
+- ayuda -> contextual help.
+
+Menu numbers are valid only inside the current menu/session state. Consequential actions must never execute from a stale numeric shortcut after material context changes.
+
+After a useful response, suggest 1–3 likely next actions. Do not repeat the entire menu unnecessarily.
+
+Where buttons/quick replies exist, use them. Where they do not, render compact numbered choices.
+
+Canonical role/lifecycle profiles:
+- data/toro_conversational_menu_profiles_v1.json
+
 ## 8. Personal/work firewall
 
 TORO Comms must consume the canonical `ToroResolvedContext`.
