@@ -1,7 +1,7 @@
 # TORO Brain — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-22
+**Date:** 2026-09-23
 **Master product:** TORO Brain
 **Visible brand/product:** TORO Brain
 **Reference implementation:** Dreamcatcher Hotel
@@ -702,6 +702,84 @@ Only after readiness gates.
 Do not prioritize now.
 
 ---
+
+# 16A. Product Proof and commercialization focus — effective 2026-09-23
+
+Canonical strategy:
+- `docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md`
+
+TORO remains in **INTERNAL PROOF**. External onboarding is still blocked by the New Business Readiness Gate.
+
+The immediate product strategy is now **proof, compression and repeatability** rather than horizontal feature expansion.
+
+## Current product thesis
+
+TORO Brain is the governed intelligence and control layer that learns how a business works, connects existing systems, resolves authority/context, detects problems and opportunities, coordinates execution, verifies outcomes and progressively reduces owner cognitive load.
+
+TORO does **not** depend on generic LLM access, agent count, connector count, WhatsApp, MCP or dashboards as its primary differentiation. Those are interchangeable infrastructure layers.
+
+TORO-owned value must concentrate in:
+- business context and operating model;
+- source authority;
+- identity/scope/permissions;
+- workflow definitions;
+- evidence and verified outcomes;
+- reusable domain skills without private-data leakage;
+- continuous improvement;
+- measurable reduction in owner/manual coordination.
+
+## Initial commercial wedge
+
+Do not commercialize initially as "TORO for every business."
+
+First wedge:
+**owner-operated independent hotels and small hotel groups**, with Dreamcatcher as proving ground.
+
+Remain PMS-agnostic and integrate existing specialist systems before attempting to replace them.
+
+## Product Proof milestone
+
+The existing requirement for 12 representative end-to-end workflows becomes a central product milestone.
+
+Each must prove:
+
+`trigger -> scope -> authority -> context -> decision -> permission -> action -> evidence -> verification -> outcome -> metric -> learning`
+
+Priority outcome metrics:
+- owner administrative hours;
+- workflows completed without owner intervention;
+- handoff/error reduction;
+- SLA/resolution time;
+- measurable revenue/recovery where attributable;
+- human override/error/rollback rates;
+- onboarding hours;
+- percent of setup reusable without customer-specific engineering.
+
+## Productization rule
+
+During Product Proof, new features receive current priority only when they materially help:
+1. close a proof workflow;
+2. improve security/privacy/source authority;
+3. improve portability/second-tenant readiness;
+4. reduce onboarding/custom engineering;
+5. prove measurable ROI;
+6. improve the single governed WhatsApp/Portal/Visual Brain experience.
+
+Otherwise record them as FUTURE.
+
+Do not prioritize robotics, broad multi-industry expansion, marketplace, proprietary PMS/accounting replacement, new databases, additional agent proliferation or parallel workflow/dashboard engines during this phase unless a proven blocker requires them.
+
+## Commercial test
+
+The critical scalability test is not feature count.
+
+It is whether TORO can:
+- operate Dreamcatcher with measurable reductions in owner intervention;
+- reproduce the same core in a clean second isolated business;
+- do so without founder-dependent reconstruction.
+
+If every customer requires extensive custom engineering, TORO is functioning as a high-end implementation/consulting system rather than a scalable product. Product Proof must measure and reduce that dependency.
+
 
 # 17. Immediate execution queue
 

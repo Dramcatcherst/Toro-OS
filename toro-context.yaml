@@ -112,6 +112,7 @@ canonical_product_specs:
   action_taxonomy: docs/product/TORO_ACTION_TAXONOMY_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
+  product_proof_and_commercialization: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
@@ -618,6 +619,78 @@ tere_runtime_config_consolidation:
   config_state: APPLIED
   runtime_consumption: UNVERIFIED
   no_runtime_success_inference: true
+
+
+product_proof_focus:
+  effective_date: "2026-09-23"
+  status: active_inside_internal_proof
+  external_onboarding_remains_blocked: true
+  canonical_spec: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
+  immediate_strategy:
+    - proof
+    - compression
+    - repeatability
+  first_commercial_wedge: owner_operated_independent_hotels_and_small_hotel_groups
+  pms_agnostic: true
+  differentiation_owned_by_toro:
+    - business_context_and_operating_model
+    - source_authority
+    - identity_scope_permissions
+    - workflow_definitions
+    - evidence_and_verified_outcomes
+    - reusable_domain_skills_without_private_data_leakage
+    - continuous_improvement
+    - measurable_owner_dependency_reduction
+  infrastructure_not_primary_moat:
+    - llm_access
+    - generic_agents
+    - connector_count
+    - mcp
+    - whatsapp
+    - dashboards
+  proof_workflows_required: 12
+  proof_loop: "trigger -> scope -> authority -> context -> decision -> permission -> action -> evidence -> verification -> outcome -> metric -> learning"
+  core_metrics:
+    - owner_administrative_hours
+    - workflows_without_owner_intervention
+    - handoff_loss_and_error_rate
+    - sla_and_resolution_time
+    - attributable_revenue_or_recovery
+    - human_override_error_and_rollback_rate
+    - onboarding_hours_per_business
+    - reusable_configuration_percent
+    - customer_specific_engineering_percent
+  repeatability_target:
+    reusable_without_customer_specific_engineering_long_term: ">=80%"
+    maturity_goal: ">=90%"
+  current_priority_gate:
+    allowed_if_materially_improves:
+      - proof_workflow_completion
+      - security_privacy_source_authority
+      - portability_second_tenant
+      - onboarding_reduction
+      - measurable_roi
+      - single_governed_user_experience
+  defer_unless_blocking:
+    - robotics
+    - broad_multi_industry_expansion
+    - marketplace
+    - proprietary_pms_replacement
+    - proprietary_accounting_replacement
+    - new_database_without_measured_need
+    - agent_proliferation
+    - parallel_dashboard_or_workflow_engines
+  commercial_readiness_test:
+    - dreamcatcher_measurable_operating_proof
+    - twelve_end_to_end_workflows_verified
+    - isolation_and_privacy_proven
+    - critical_connector_recovery_proven
+    - measurable_roi_baseline
+    - second_business_sandbox
+    - repeatable_onboarding
+    - reduced_customer_specific_engineering
+    - whatsapp_portal_visual_brain_same_governed_engine
+    - support_rollback_offboarding_evidence_procedures
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
