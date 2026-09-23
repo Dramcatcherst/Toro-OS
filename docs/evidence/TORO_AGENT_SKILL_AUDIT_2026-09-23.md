@@ -46,7 +46,7 @@ No catalog entry is currently classified as `runtime_verified` or `measured`; th
 
 Current ChatGPT `skills` surface returned **no TORO/TERE/RICO/FIONA/SKY/SOBRESITO custom skill URIs**. This proves only that custom TORO skills are not exposed through this current ChatGPT skill surface; it does not prove absence from Mauricio's local Codex/OpenClaw environment.
 
-Notion Custom Agent search is unavailable on the connected plan (Business-plan gate), so Notion agent inventory is not a verified runtime source in this audit.
+Notion saved Skills search returned 0 active Skills (the workspace can create Skills). Notion Custom Agent search is unavailable on the connected plan (Business-plan gate), so Notion agent inventory is not a verified runtime source in this audit.
 
 ## Profile audit after changes
 
