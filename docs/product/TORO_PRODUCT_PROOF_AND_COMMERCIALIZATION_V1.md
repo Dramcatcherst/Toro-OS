@@ -262,6 +262,28 @@ These are customer-facing outcomes, not new canonical subsystems.
 
 ---
 
+
+## 9A. Commercial adoption — start small, grow inside one TORO
+
+Commercially, TORO should be sellable in **selected capability bundles** without fragmenting the architecture.
+
+A customer may begin with customer communication only, operations only, or another high-value scope and expand later.
+
+Hospitality example:
+1. **Communicate** — TERE + omnichannel Comms + follow-up/reviews/quotes;
+2. **Operate** — tasks, handoffs, housekeeping/readiness, maintenance, employee self-service;
+3. **Control** — owner exceptions, finance/obligations, approvals, systems/evidence;
+4. **Grow** — revenue, upsell, campaigns, retention and opportunity detection.
+
+Rules:
+- these are commercial activation bundles, not separate products/brains;
+- all use the same TORO identity, context, permissions and audit;
+- activating a new bundle should not require rebuilding onboarding;
+- modules can be hidden/disabled cleanly until needed;
+- the first sale should solve one painful outcome before selling the whole architecture.
+
+This supports land-and-expand without creating parallel systems.
+
 ## 10. Visual Brain commercial requirement
 
 Visual Brain is a strategic differentiator only if it shows real governed activity.
