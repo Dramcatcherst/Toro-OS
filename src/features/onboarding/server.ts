@@ -4,6 +4,7 @@ import onboardingManifest from "../../../data/toro_onboarding_journeys_v2.json";
 
 import { resolveToroContext } from "@/features/context/resolver";
 import { resolveToroMenu } from "@/features/menu/resolver";
+import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type OnboardingChoice = {
@@ -28,11 +29,19 @@ export type ToroOnboardingJourney = {
   steps: ToroOnboardingStep[];
 };
 
+export type ToroOnboardingFirstValueTarget = {
+  key: string;
+  capability: string;
+  label: string;
+  href: string;
+};
+
 export type ToroOnboardingView = {
   firstName: string;
   businessName: string;
   profileId: string | null;
   journey: ToroOnboardingJourney | null;
+  firstValueTargets: ToroOnboardingFirstValueTarget[];
   state: "resolved" | "context_choice_required";
 };
 
@@ -94,6 +103,7 @@ export async function resolveCurrentOnboarding(): Promise<ToroOnboardingView | n
       businessName: "tu negocio",
       profileId: null,
       journey: null,
+      firstValueTargets: [],
       state: "context_choice_required",
     };
   }
@@ -113,20 +123,64 @@ export async function resolveCurrentOnboarding(): Promise<ToroOnboardingView | n
   const rawJourney = journeyKey ? manifest.journeys[journeyKey] : null;
   const businessName = await resolveBusinessName(context.orgId);
 
+  let firstValueTargets: ToroOnboardingFirstValueTarget[] = [];
+  const adaptedJourney: ToroOnboardingJourney | null =
+    journeyKey && rawJourney
+      ? {
+          key: journeyKey,
+          purpose: rawJourney.purpose,
+          steps: rawJourney.steps.map((step) => ({
+            ...step,
+            choices: step.choices ? [...step.choices] : undefined,
+          })),
+        }
+      : null;
+
+  try {
+    const currentMenu = await resolveCurrentToroReadOnlyMenu();
+    const readableItems =
+      currentMenu?.menu?.items.filter((item) => item.state === "READ_ONLY") ?? [];
+
+    const focusable = new Set(currentMenu?.focusableCapabilities ?? []);
+    const onboardingItems = [...readableItems].sort((a, b) => {
+      const aFocus = focusable.has(a.capability) ? 1 : 0;
+      const bFocus = focusable.has(b.capability) ? 1 : 0;
+      return bFocus - aFocus;
+    });
+
+    if (adaptedJourney?.steps[0] && onboardingItems.length > 0) {
+      adaptedJourney.steps[0] = {
+        ...adaptedJourney.steps[0],
+        choices: onboardingItems.slice(0, 3).map((item) => ({
+          key: item.key,
+          emoji: item.emoji,
+          label: item.label,
+        })),
+      };
+    }
+
+    firstValueTargets = onboardingItems
+      .filter((item) => focusable.has(item.capability))
+      .slice(0, 3)
+      .map((item) => ({
+        key: item.key,
+        capability: item.capability,
+        label: item.label,
+        href: `/my-toro?focus=${encodeURIComponent(item.capability)}`,
+      }));
+  } catch {
+    // Onboarding still works from its role manifest if the source-aware menu
+    // cannot be resolved. No target is suggested rather than inventing one.
+  }
+
   return {
     firstName: firstName(
       membership.employeePreferredName ?? context.displayName,
     ),
     businessName,
     profileId,
-    journey:
-      journeyKey && rawJourney
-        ? {
-            key: journeyKey,
-            purpose: rawJourney.purpose,
-            steps: rawJourney.steps,
-          }
-        : null,
+    journey: adaptedJourney,
+    firstValueTargets,
     state: "resolved",
   };
 }

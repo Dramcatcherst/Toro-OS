@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.23-v2",
+  "version": "2026.09.23-v3",
   "status": "specified_not_runtime_verified",
   "principles": {
     "value_before_setup": true,
@@ -9,7 +9,9 @@
     "optional_steps_skippable": true,
     "onboarding_does_not_block_normal_product": true,
     "role_specific_shortcuts_after_first_value": true,
-    "restart_preserves_canonical_state": true
+    "restart_preserves_canonical_state": true,
+    "resolved_context_is_not_reasked": true,
+    "first_choices_follow_current_capability_readiness": true
   },
   "shared_controls": {
     "home": [
@@ -67,53 +69,9 @@
           "free_text": "O dime con tus palabras qué te quita más tiempo."
         },
         {
-          "key": "context_confirm",
-          "message": "Ya tengo {business_name} como contexto. Solo te preguntaré lo que falte para el objetivo que elegiste.",
-          "prompt": "¿Quieres usar ese negocio ahora?",
-          "choices": [
-            {
-              "key": "yes",
-              "emoji": "✅",
-              "label": "Sí, continuar"
-            },
-            {
-              "key": "switch",
-              "emoji": "🔄",
-              "label": "Cambiar contexto"
-            },
-            {
-              "key": "personal",
-              "emoji": "👤",
-              "label": "Ir a Personal"
-            }
-          ]
-        },
-        {
-          "key": "minimum_connection",
-          "message": "Para darte valor primero, conectamos únicamente lo necesario para este objetivo.",
-          "prompt": "¿Cómo prefieres seguir?",
-          "choices": [
-            {
-              "key": "use_connected",
-              "emoji": "🔌",
-              "label": "Usar lo conectado"
-            },
-            {
-              "key": "connect_needed",
-              "emoji": "➕",
-              "label": "Conectar lo necesario"
-            },
-            {
-              "key": "demo_first",
-              "emoji": "▶️",
-              "label": "Ver ejemplo primero"
-            }
-          ]
-        },
-        {
           "key": "first_value",
-          "message": "Perfecto. TORO prepara el primer resultado y después te muestra solo 2–3 siguientes pasos útiles.",
-          "prompt": "Después puedes seguir por número, palabra o escribiendo normal.",
+          "message": "Perfecto. TORO usa primero lo que ya está conectado y verificado para darte un resultado útil; si falta algo importante, te lo pide después.",
+          "prompt": "Puedes entrar directo a Mi TORO o seguir con la primera lectura disponible.",
           "completion": "first_useful_outcome_attempted"
         }
       ],

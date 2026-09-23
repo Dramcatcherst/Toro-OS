@@ -826,6 +826,9 @@ progressive_onboarding:
   first_value_target_interactions: 2
   onboarding_choices_per_turn_max: 3
   do_not_reask_verified_context: true
+  first_choices_follow_source_readiness: true
+  completion_offers_only_verified_read_targets: true
+  no_matching_first_value_behavior: return_to_my_toro_without_fabrication
 
 product_proof_focus:
   effective_date: "2026-09-23"
