@@ -1,0 +1,220 @@
+{
+  "version": "2026.09.23-v1",
+  "status": "specified_not_runtime_verified",
+  "availability_states": [
+    "READY",
+    "READ_ONLY",
+    "CONNECT",
+    "REQUEST_ACCESS",
+    "DEGRADED",
+    "HIDDEN",
+    "BLOCKED"
+  ],
+  "rules": {
+    "jobs_not_vendor_names": true,
+    "menu_visibility_never_grants_permission": true,
+    "execution_rechecks_authority": true,
+    "position_profile_overrides_generic_employee": true,
+    "dead_buttons_forbidden": true
+  },
+  "profiles": {
+    "owner_executive": {
+      "capabilities": [
+        "executive.brief",
+        "executive.decisions",
+        "executive.delegate",
+        "projects.status",
+        "finance.exceptions",
+        "operations.exceptions",
+        "people.exceptions",
+        "systems.health",
+        "growth.opportunities",
+        "search.cross_scope"
+      ]
+    },
+    "manager": {
+      "capabilities": [
+        "operations.hotel_today",
+        "guest.arrivals_departures",
+        "operations.room_readiness",
+        "guest.service_issues",
+        "people.coverage",
+        "people.handoffs",
+        "operations.approvals",
+        "operations.assign",
+        "reports.manager"
+      ]
+    },
+    "reception": {
+      "capabilities": [
+        "guest.search",
+        "guest.arrivals_departures",
+        "comms.guest_messages",
+        "hospitality.recommend",
+        "hospitality.quote",
+        "catalog.rooms_villas",
+        "pms.live_availability_price",
+        "catalog.experiences",
+        "guest.lifecycle_messages",
+        "guest.issue_handoff",
+        "finance.payment_status_read",
+        "guest.followup_reviews"
+      ]
+    },
+    "housekeeping": {
+      "capabilities": [
+        "housekeeping.assigned_units",
+        "housekeeping.priority",
+        "housekeeping.guidance",
+        "housekeeping.complete",
+        "evidence.photo",
+        "maintenance.report",
+        "inventory.report_missing",
+        "laundry.handoff",
+        "people.extra_tasks",
+        "people.my_schedule",
+        "comms.request_help"
+      ]
+    },
+    "maintenance": {
+      "capabilities": [
+        "maintenance.priorities",
+        "maintenance.my_tasks",
+        "maintenance.report",
+        "evidence.photo_video",
+        "maintenance.preventive_round",
+        "inventory.request_material",
+        "inventory.stock_read",
+        "facilities.utilities",
+        "knowledge.sop",
+        "maintenance.close_with_evidence",
+        "maintenance.recurrence_history"
+      ]
+    },
+    "department_lead": {
+      "capabilities": [
+        "people.team_workload",
+        "people.coverage",
+        "people.schedule",
+        "operations.exceptions",
+        "operations.approvals",
+        "operations.handoffs",
+        "operations.assign",
+        "knowledge.sop",
+        "people.recognition_propose",
+        "reports.department"
+      ]
+    },
+    "finance": {
+      "capabilities": [
+        "finance.obligations",
+        "finance.payment_status",
+        "finance.collections",
+        "finance.invoices_receipts",
+        "finance.reconcile",
+        "finance.bank_evidence",
+        "finance.accounting_evidence",
+        "finance.payroll_interface",
+        "finance.exceptions",
+        "finance.export_reports",
+        "finance.prepare_approval"
+      ]
+    },
+    "hr_people": {
+      "capabilities": [
+        "people.attendance",
+        "people.schedule",
+        "people.leave_requests",
+        "people.employee_records",
+        "people.employment_context",
+        "people.payroll_operations",
+        "people.advances_loans",
+        "people.documents",
+        "people.onboarding_training",
+        "people.recognition",
+        "people.exceptions",
+        "people.reports"
+      ]
+    },
+    "growth": {
+      "capabilities": [
+        "growth.reviews",
+        "growth.lead_inbox",
+        "growth.content_prepare",
+        "growth.campaign_plan",
+        "growth.seo_web",
+        "growth.performance",
+        "growth.offers",
+        "growth.partnerships",
+        "growth.ancillary_revenue",
+        "growth.retention_referral",
+        "growth.experiments"
+      ]
+    },
+    "systems": {
+      "capabilities": [
+        "systems.connector_health",
+        "systems.incidents",
+        "data.freshness",
+        "systems.github",
+        "systems.vercel",
+        "systems.supabase",
+        "systems.runtime_health",
+        "systems.backup_recovery",
+        "systems.deployments",
+        "systems.access_requests",
+        "systems.security_audit",
+        "systems.config_drift",
+        "systems.recovery_evidence"
+      ]
+    },
+    "auditor": {
+      "capabilities": [
+        "audit.logs",
+        "audit.evidence",
+        "audit.approvals",
+        "audit.source_authority",
+        "audit.versions_changes",
+        "audit.export",
+        "audit.search_readonly",
+        "audit.provenance_freshness"
+      ]
+    },
+    "employee_general": {
+      "capabilities": [
+        "people.my_day",
+        "operations.my_tasks",
+        "people.my_schedule",
+        "people.my_requests",
+        "comms.messages",
+        "knowledge.how_to",
+        "identity.my_profile",
+        "people.my_recognition",
+        "comms.request_help"
+      ]
+    },
+    "guest_prospect": {
+      "capabilities": [
+        "hospitality.search_stay",
+        "hospitality.quote",
+        "hospitality.compare",
+        "catalog.experiences",
+        "guest.hotel_info",
+        "guest.ask",
+        "guest.followup"
+      ]
+    },
+    "guest_reserved": {
+      "capabilities": [
+        "guest.arrival",
+        "guest.stay_details",
+        "guest.room_villa",
+        "catalog.experiences",
+        "catalog.breakfast_extras",
+        "guest.transport_recommendations",
+        "guest.request_help",
+        "guest.departure_extension"
+      ]
+    }
+  }
+}
