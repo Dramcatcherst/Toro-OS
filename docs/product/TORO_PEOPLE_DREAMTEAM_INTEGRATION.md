@@ -261,3 +261,13 @@ They are real active employee identities, not incomplete junk records. Before in
 Do not invite or auto-link until the missing/discordant employment profile is resolved.
 
 No account should be created solely because an employee is active or has a clock ID.
+
+
+## 12. Code migration contract
+
+Detailed implementation ownership, cutover waves and retirement rules are defined in:
+
+- `docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md`
+- `data/toro_people_migration_map.json`
+
+This code migration contract is subordinate to the TORO Brain General Plan and supersedes any approach that would permanently embed DreamTeam as a second app inside TORO.
