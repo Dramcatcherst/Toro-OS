@@ -1821,3 +1821,82 @@ RULE:
 NEXT:
 - produce a dependency vulnerability triage after current People/Portal PR gates finish;
 - patch only through tested PRs with tests/lint/build and preview evidence.
+
+
+### People Portal execution update — 2026-09-23
+
+#### HECHO — Mi perfil
+PR #87 merged into the Phase 1 integration line.
+
+Verified:
+- route `/toro/mi-perfil`;
+- read-only own employment summary;
+- upcoming shifts;
+- leave balance/request summary;
+- recent own attendance;
+- own contact email through the governed self-profile projection;
+- safe unavailable/identity-mismatch/error states;
+- navigation only to existing route;
+- no salary/bank/other-employee projection;
+- Vitest PASS;
+- lint PASS;
+- build PASS;
+- Vercel PASS.
+
+Merge commit:
+`22637e1165aaed8eabdf70e8602ef4d5a0b828e7`
+
+#### HECHO — Solicitudes
+PR #88 merged into the Phase 1 integration line.
+
+Verified:
+- route `/toro/solicitudes`;
+- employee may create own leave/vacation request;
+- browser never supplies employeeId;
+- TORO context supplies org + employee;
+- existing `submit_leave_request` RPC rechecks current employee/authorization;
+- request creation uses `pending_manager`, does not autoapprove;
+- overlap/date/type/reason rules reused;
+- DB audit trigger reused;
+- notification creation reused;
+- no balance deduction/override;
+- no payroll mutation;
+- no schema migration;
+- Mi perfil pending counter corrected for `pending_manager` / `pending_hr`;
+- Vitest PASS;
+- lint PASS;
+- build PASS;
+- Vercel PASS.
+
+Merge commit:
+`9de9ef79157ac4de23e090ee5c54f29d81f19399`
+
+#### CURRENT People Portal capability
+A linked employee can now, within the Phase 1 integration line:
+1. enter the shared TORO Portal through the canonical scoped session;
+2. view their own governed People snapshot;
+3. review shifts / leave summary / recent attendance;
+4. submit their own leave request into the existing governed HR workflow.
+
+This is the first DreamTeam daily workflow slice absorbed into TORO without a second login or duplicate database.
+
+#### Important remaining gate
+This is code/preview verified, not representative-user adoption proof.
+
+Before declaring DreamTeam self-service replaced:
+- use a deliberately approved employee pilot identity;
+- verify hosted login/session on mobile;
+- verify real RLS behavior;
+- submit one explicitly authorized test/real request, not a hidden synthetic production mutation;
+- confirm manager/RRHH sees the resulting workflow correctly;
+- verify rollback and support path.
+
+#### NEXT TORO People sequence
+1. representative employee hosted/mobile pilot;
+2. employee directory/onboarding after organization_memberships production decision;
+3. attendance/incidents/time-import convergence;
+4. scheduling convergence;
+5. TORO Comms convergence for team chat/DMs;
+6. shared Governance split for approvals/audit;
+7. payroll only after People identity/self-service stability;
+8. loans/settlements last.
