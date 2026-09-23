@@ -124,7 +124,7 @@ export async function resolveCurrentOnboarding(): Promise<ToroOnboardingView | n
   const businessName = await resolveBusinessName(context.orgId);
 
   let firstValueTargets: ToroOnboardingFirstValueTarget[] = [];
-  let adaptedJourney: ToroOnboardingJourney | null =
+  const adaptedJourney: ToroOnboardingJourney | null =
     journeyKey && rawJourney
       ? {
           key: journeyKey,
