@@ -1,10 +1,11 @@
 product:
-  id: toro-os
-  name: TORO OS
-  category: AI Business Operating System
-  context_version: "2026.09.22-engine-first"
+  id: toro-brain
+  name: TORO Brain
+  category: AI Portfolio and Business Operating Brain
+  context_version: "2026.09.22-brain-master"
   status: internal_proof
   external_business_onboarding: blocked
+  operating_layer: TORO OS
 
 north_star: "Deep inside. Simple outside."
 
@@ -35,9 +36,38 @@ interfaces:
   eventual_primary:
     - whatsapp
     - toro_portal
-  rule: "Interfaces expose the governed engine; they do not own shadow truth."
+  rule: "Interfaces expose TORO Brain; they do not own shadow truth."
+
+scope_graph:
+  model: relationship_graph
+  principal_can_control_multiple_scopes: true
+  entity_types:
+    - person
+    - portfolio
+    - organization
+    - business
+    - workspace
+    - property
+    - project
+    - product
+    - client
+    - partner
+    - supplier
+    - asset
+    - agent
+  isolation_modes:
+    - private
+    - portfolio
+    - shared_project
+    - client_isolated
+    - public_reference
+  default_personal_isolation: private
+  default_external_client_isolation: client_isolated
+  cross_scope_requires_policy: true
 
 canonical_product_specs:
+  brain_constitution: docs/product/TORO_BRAIN_CONSTITUTION.md
+  brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   subsystem_registry: docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md
   subsystem_alignment_audit: docs/product/TORO_SUBSYSTEM_ALIGNMENT_AUDIT_2026-09-22.md
   identity_user_vault: docs/product/TORO_IDENTITY_USER_VAULT_V1.md
@@ -73,6 +103,9 @@ agent_rules:
   never_claim_unverified_execution: true
 
 product_rules:
+  one_master_brain: true
+  master_brain_name: TORO Brain
+  toro_os_is_execution_layer: true
   user_complexity_should_decrease_as_capability_grows: true
   one_visible_toro_for_normal_users: true
   specialist_agents_hidden_by_default: true
@@ -100,6 +133,37 @@ subsystem_architecture:
   employee_learning_owners: TORO People + TORO Knowledge
   physical_map_owners: TORO Operations + TORO Assets
   automation_owners: TORO Core + TORO Tools + TORO Agents
+
+system_auditing:
+  proactive_configuration_audits: true
+  compare_expected_vs_observed: true
+  record_drift_risk_owner_evidence: true
+  configured_does_not_mean_verified: true
+  initial_priority:
+    - openclaw
+    - supabase
+    - github
+    - vercel
+    - kross
+    - alegra
+    - wespeak
+    - dropbox
+    - airtable
+
+future_workforce:
+  status: future_horizon
+  current_priority: false
+  owners:
+    - TORO People
+    - TORO Knowledge
+    - TORO Agents
+    - TORO Governance
+  worker_types:
+    - human
+    - ai_agent
+    - software_agent
+    - robot
+  authorization_after_training_is_explicit: true
 
 user_vault:
   model: logical_user_isolation_in_canonical_supabase
