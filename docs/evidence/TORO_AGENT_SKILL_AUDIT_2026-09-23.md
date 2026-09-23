@@ -1,0 +1,131 @@
+# TORO Brain — Agent & Skill Audit — 2026-09-23
+
+**Scope:** canonical TORO agent registry, business profiles, policies, contexts, historical hospitality skills, current capability catalog and current ChatGPT-visible skill surface.  
+**Plan:** `docs/product/TORO_BRAIN_GENERAL_PLAN.md`  
+**Canonical agent/skill contract:** `docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md`
+
+## Executive result
+
+### HECHO
+- Airtable canonical registry contains 7 agent records: 6 ACTIVE (TORO, TERE, RICO, FIONA, SKY, SOBRESITO) + CODEX ARCHIVED.
+- Before this pass TORO and TERE had deep behavior profiles while RICO/FIONA/SKY/SOBRESITO had only 66–82 characters of instruction text.
+- This pass applied differentiated V2 profile contracts to all six active agents.
+- TERE profile was cleaned so mutable staffing/pricing/policy facts are no longer embedded as persona truth; dynamic facts must resolve from current authority.
+- GitHub now contains `TORO_AGENT_AND_SKILL_SYSTEM_V1.md`.
+- `toro-context.yaml` now indexes the agent/skill contract and canonical skill aliases.
+- Airtable now contains policy `POLICY-TORO-AGENT-SKILL-SYSTEM-V1`.
+- Four durable learning rules were added for profile truth, entity separation, skill maturity/triggers and accountable handoffs.
+- Existing Agent Steward issue #30 remains the work item; no parallel issue/project was created.
+
+### SKILL/CAPABILITY INVENTORY
+Historical 2026-08-09 hospitality skill design defined six skill packages:
+1. `toro-os-hospitality`
+2. `tere-guest-sales`
+3. `rico-hotel-operations`
+4. `fiona-hotel-finance`
+5. `sky-experiences-growth`
+6. `sobresito-hotel-systems`
+
+Current canonical contract names:
+1. `toro-brain`
+2. `tere-revenue`
+3. `rico-operations`
+4. `fiona-finance`
+5. `sky-growth`
+6. `sobresito-systems`
+
+Historical names remain aliases/reference. Alias does not create another skill.
+
+The repository capability catalog currently contains **54 capabilities**:
+- 19 `implemented_foundation`
+- 19 `partial`
+- 15 `specified`
+- 1 `planned`
+
+No catalog entry is currently classified as `runtime_verified` or `measured`; therefore status must not be interpreted as end-to-end proof.
+
+Current ChatGPT `skills` surface returned **no TORO/TERE/RICO/FIONA/SKY/SOBRESITO custom skill URIs**. This proves only that custom TORO skills are not exposed through this current ChatGPT skill surface; it does not prove absence from Mauricio's local Codex/OpenClaw environment.
+
+Notion Custom Agent search is unavailable on the connected plan (Business-plan gate), so Notion agent inventory is not a verified runtime source in this audit.
+
+## Profile audit after changes
+
+| Agent | Distinctive lens | Canonical skill | Profile state |
+|---|---|---|---|
+| TORO | second-order whole-business reasoning | `toro-brain` | APPLIED_CONFIG |
+| TERE | guest fit sensing / low-friction conversion | `tere-revenue` | APPLIED_CONFIG |
+| RICO | pre-failure operational detection | `rico-operations` | APPLIED_CONFIG |
+| FIONA | reconciliation without self-deception | `fiona-finance` | APPLIED_CONFIG |
+| SKY | commercial productization of context | `sky-growth` | APPLIED_CONFIG |
+| SOBRESITO | reversible/observable systems engineering | `sobresito-systems` | APPLIED_CONFIG |
+| CODEX | governed technical implementation tool | n/a as durable persona | ARCHIVED_AGENT_RECORD / TOOL_ROLE |
+
+`APPLIED_CONFIG` does not mean runtime parity.
+
+## 20 improvements applied
+
+1. Distinct voice fingerprint.
+2. One signature framing question per agent.
+3. One unique superpower per agent.
+4. One signature value-add move per agent.
+5. Explicit anti-pattern / never behavior.
+6. Single primary owner + support/route discipline.
+7. Canonical skill names with migration aliases.
+8. Positive and negative skill triggers.
+9. Skill evidence maturity states.
+10. Output/done/failure contract.
+11. Minimum context budget; no volatile truth in profiles.
+12. Freshness gate for dynamic facts.
+13. Explicit contradiction protocol.
+14. Correct abstention counts as successful behavior.
+15. Standard accountable handoff envelope.
+16. Consequential-action preflight (authority, permission, freshness, idempotency, rollback, evidence).
+17. Outcome-based KPIs instead of activity metrics.
+18. Governed learning promotion from correction to measured rule.
+19. Merge/retire discipline with dependency and rollback proof.
+20. Agent Steward optimization loop with self-permission/self-approval recursion blocked.
+
+## Important ownership corrections
+
+- SKY owns demand/brand/content/growth/product opportunity; TERE owns guest conversion/service.
+- SOBRESITO owns systems architecture/reliability; CODEX is an implementation tool under TORO/SOBRESITO, not business authority.
+- RICO owns physical/operational readiness; TERE communicates guest impact.
+- FIONA owns finance/admin evidence/reconciliation; TERE communicates guest-facing payment/refund matters only within policy.
+- TORO owns cross-domain trade-offs, portfolio orchestration and final routing, not every specialist task.
+
+## Remaining gaps
+
+### BLOCKED / UNVERIFIED
+1. Direct runtime installation/version/hash for the six canonical skill contracts.
+2. Runtime consumption of updated Airtable profiles.
+3. FIONA and SOBRESITO local skill installation evidence in the current accessible sources.
+4. End-to-end evaluation matrix with positive + negative triggers for all six.
+5. Outcome telemetry for skill quality, cost, rework and correct abstention.
+6. Agent Steward runtime remains `documented_not_deployed`.
+7. OpenClaw runtime agent/skill inventory still requires direct host audit.
+8. Dropbox connector remained unavailable in this ChatGPT session during related source audits.
+9. Notion Custom Agent inventory is unavailable on the connected Notion plan.
+
+## Next verification order
+
+1. Read local/runtime skill inventory from the actual Codex/OpenClaw host.
+2. Resolve exact canonical skill name, version and checksum for each specialist.
+3. Run 10-case evaluation per agent/skill:
+   happy path, missing data, conflict, unauthorized action, handoff, wrong-agent trigger, urgent case, privacy/isolation, runtime/tool failure, correction/learning.
+4. Record results without expanding autonomy.
+5. Reconcile aliases and retire duplicated local skills only after dependency proof.
+6. Enable Agent Steward observation only after server-enforced scope/budget and independent evaluation exist.
+7. Promote from config to runtime-verified only with direct evidence.
+
+## Evidence created in this pass
+
+- GitHub commit adding canonical spec: `6987f2a25443189237285978ff127e78c4f05f8f`
+- GitHub commit registering spec/context: `e75e3a255deffedc340c2a3a787b579d28b8940a`
+- Airtable policy: `POLICY-TORO-AGENT-SKILL-SYSTEM-V1`
+- Airtable learning rules:
+  - `agent_profiles_durable_behavior_only_v1`
+  - `agent_skill_workflow_tool_runtime_separation_v1`
+  - `skill_trigger_negative_trigger_maturity_v1`
+  - `agent_distinctiveness_and_handoff_envelope_v1`
+
+No production runtime activation, permission expansion, external publication, payment/reservation mutation or new agent/project was performed by this audit.
