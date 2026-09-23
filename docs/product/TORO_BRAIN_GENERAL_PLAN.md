@@ -490,7 +490,13 @@ Active hierarchy:
     - Dreamcatcher · Finanzas y Control
     - Construcción / DIEX · Desarrollo y cierre documental
   - Propiedades, Construcción y Corporativo
-    - Cabuya · Compra, pagos y regularización
+    - Cabuya / Mal País · Pomas y Poemas · compra, pagos, pozo y regularización
+    - Casa Toro / Casa Santiago · Pomas y Poemas · inmueble separado
+    - Blue Dreams / Arroyo Negro · Santiago · sociedad/propiedad separadas
+    - Vista Alegre / Callaha · deuda, rentas y servicios separados
+    - Rancho Estrellas Azules · entidad y propiedad por consolidar
+    - Sociedades y representación · participaciones, personerías y relaciones property↔entity
+    - Otros derechos/referencias · Lote Santiago histórico, Ikiru, Surfing El Peñón
 
 Current audit:
 - 11 active projects;
@@ -506,6 +512,11 @@ Technical project keys are retained for compatibility and do not redefine archit
 - toro_os_portfolio_master = TORO Brain portfolio root;
 - toro_executive_control = TORO Brain operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
 - business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
+
+## Property/corporate portfolio canon
+- `docs/portfolio/TORO_PROPERTY_CORPORATE_PORTFOLIO_CANON_2026-09-23.md`
+- Effective correction 2026-09-23: Cabuya is associated with Pomas y Poemas, not Santa Teresa Blue Dreams; Pomas may relate to multiple physical properties and must not be used as a synonym for Casa Toro.
+- Physical property, legal entity, project/right and managed external property remain distinct objects.
 
 ## Canonical
 - Dramcatcherst/Toro-OS
@@ -1444,7 +1455,13 @@ TORO Brain · Portafolio General [PORTFOLIO]
 │   ├── Dreamcatcher · Finanzas y Control [MODULE]
 │   └── Construcción / DIEX · Desarrollo y cierre documental [PROJECT]
 └── Propiedades, Construcción y Corporativo [PORTFOLIO_LANE]
-    └── Cabuya · Compra, pagos y regularización [PROJECT]
+    ├── Cabuya / Mal País · Pomas y Poemas [PROJECT]
+    ├── Casa Toro / Casa Santiago · Pomas y Poemas [PROJECT]
+    ├── Blue Dreams / Arroyo Negro · Santiago [PROJECT]
+    ├── Vista Alegre / Callaha [PROJECT]
+    ├── Rancho Estrellas Azules [PROJECT]
+    ├── Sociedades y representación [PROJECT]
+    └── Otros derechos/referencias [REFERENCE]
 ```
 
 ## PRESERVED BUT INACTIVE
