@@ -23,8 +23,6 @@ general_plan_governance:
     - Plan General
     - plan general
     - TORO master plan
-  deprecated_names:
-    - Total Brain
   no_parallel_master_plans: true
   all_new_initiatives_must_map_to_general_plan: true
   all_subsystems_must_be_children_of_general_plan: true
