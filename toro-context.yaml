@@ -632,6 +632,9 @@ tere_wespeak_runtime_gate:
   runbook: docs/runbooks/TORO_TERE_WESPEAK_V4_RUNTIME_ACCEPTANCE_GATE.md
   evidence: docs/evidence/TERE_WESPEAK_RUNTIME_REBASELINE_2026-09-23.md
   evaluator: src/features/tere/runtime-acceptance.ts
+  qa_packet: data/tere_v4_runtime_qa_cases_v1.json
+  qa_packet_case_count: 5
+  qa_packet_ci_guarded: true
   expected_v4_hash: 4df90ab2ae494826f5850bb413c28f6d
   runtime_active: verified
   pre_v4_activity: verified
@@ -640,6 +643,17 @@ tere_wespeak_runtime_gate:
   v4_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
+  pre_v4_alert_baseline:
+    evidence: docs/evidence/TERE_WESPEAK_ALERT_BASELINE_2026-09-23.md
+    window: "2026-09-14..2026-09-23"
+    total_alerts: 83
+    requires_advisor: 50
+    in_stay_problem: 15
+    payment_information: 7
+    reservation_intent: 5
+    reservation_change_or_cancel: 4
+    max_stay_exceeded: 2
+    use: human_escalation_workload_baseline_not_v4_quality_evidence
   real_guest_contact_for_config_proof: forbidden
 
 tere_runtime_config_consolidation:
