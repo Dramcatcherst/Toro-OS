@@ -6,6 +6,11 @@ import { getToroSession } from "@/features/auth/session";
 import { listMyDecisions } from "@/features/decisions/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+import {
+  buildMaintenanceExecutiveSignals,
+  parseMaintenanceRoundPayload,
+  type MaintenanceExecutiveSignals,
+} from "./maintenance-round";
 import type {
   ExecutiveException,
   ExecutiveHomeData,
@@ -135,7 +140,7 @@ export async function loadExecutiveHome(): Promise<ExecutiveHomeData> {
   const supabase = await createServerSupabaseClient();
   const operations = supabase.schema("operations");
 
-  const [decisions, taskResult, projectResult] = await Promise.all([
+  const [decisions, taskResult, projectResult, maintenanceResult] = await Promise.all([
     listMyDecisions({ limit: 5 }),
     operations
       .from("tasks")
@@ -153,6 +158,7 @@ export async function loadExecutiveHome(): Promise<ExecutiveHomeData> {
       .in("status", ["Blocked", "In Progress"])
       .order("updated_at", { ascending: false })
       .limit(6),
+    supabase.rpc("get_current_maintenance_round"),
   ]);
 
   const failedSources: string[] = [];
@@ -200,10 +206,47 @@ export async function loadExecutiveHome(): Promise<ExecutiveHomeData> {
     });
   }
 
+  let maintenance: MaintenanceExecutiveSignals = {
+    exceptions: [],
+    delegatedActions: [],
+  };
+
+  if (maintenanceResult.error) {
+    failedSources.push("mantenimiento");
+    maintenance = {
+      exceptions: [{
+        id: "maintenance-round-unavailable",
+        title: "No se pudo verificar la ronda de mantenimiento",
+        domain: "Operación hotelera",
+        source: "Supabase · get_current_maintenance_round",
+        freshness: null,
+      }],
+      delegatedActions: [],
+    };
+  } else {
+    try {
+      maintenance = buildMaintenanceExecutiveSignals(
+        parseMaintenanceRoundPayload(maintenanceResult.data),
+      );
+    } catch {
+      failedSources.push("mantenimiento");
+      maintenance = {
+        exceptions: [{
+          id: "maintenance-round-unavailable",
+          title: "La ronda de mantenimiento devolvió datos no válidos",
+          domain: "Operación hotelera",
+          source: "Supabase · get_current_maintenance_round",
+          freshness: null,
+        }],
+        delegatedActions: [],
+      };
+    }
+  }
+
   return {
     decisions,
-    exceptions,
-    delegatedActions: [],
+    exceptions: [...exceptions, ...maintenance.exceptions],
+    delegatedActions: maintenance.delegatedActions,
     projects,
     systemHealth: healthForOperationalSources({ failedSources, freshness }),
   };
