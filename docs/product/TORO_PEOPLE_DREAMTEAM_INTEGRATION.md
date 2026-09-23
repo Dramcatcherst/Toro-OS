@@ -202,3 +202,29 @@ DreamTeam integration is complete only when:
 - RLS remains at least as restrictive as before;
 - rollback is documented and tested;
 - the old app can be turned off without losing data or function.
+
+
+## 10. Future workforce horizon
+
+**FUTURE — not a current implementation priority.**
+
+TORO People should eventually support workforce identities beyond human employees while preserving a common role/training/evidence model.
+
+Future worker types:
+- human;
+- AI agent;
+- software agent;
+- robotic/physical worker.
+
+Future shared lifecycle:
+`role definition -> SOP/knowledge -> training -> simulation -> evaluation -> permission certification -> supervised work -> evidence -> continuous improvement`
+
+Ownership:
+- TORO People: workforce identity, role, assignment and performance boundaries;
+- TORO Knowledge: training material, SOPs and competencies;
+- TORO Agents: AI/software worker configuration;
+- TORO Governance: permissions, safety, certification and audit.
+
+Training never grants authority automatically.
+
+DreamTeam/TORO People work today should preserve this future possibility without building robot-specific complexity now.
