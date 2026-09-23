@@ -104,6 +104,7 @@ canonical_product_specs:
   subsystem_alignment_audit: docs/product/TORO_SUBSYSTEM_ALIGNMENT_AUDIT_2026-09-22.md
   identity_user_vault: docs/product/TORO_IDENTITY_USER_VAULT_V1.md
   people_integration: docs/product/TORO_PEOPLE_DREAMTEAM_INTEGRATION.md
+  people_code_migration: docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md
   communications: docs/product/TORO_COMMS_V1.md
   tools: docs/product/TORO_TOOLS_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
