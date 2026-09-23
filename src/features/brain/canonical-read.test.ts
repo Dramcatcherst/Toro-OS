@@ -14,6 +14,11 @@ function buildSlice() {
   return projectCanonicalBrainReadSlice({
     orgId: ORG_ID,
     generatedAt: "2026-09-23T11:00:00.000Z",
+    organization: {
+      id: ORG_ID,
+      name: "Dreamcatcher Hotel",
+      status: "active",
+    },
     projects: [
       {
         id: PROJECT_ID,
@@ -68,6 +73,12 @@ function buildSlice() {
 describe("projectCanonicalBrainReadSlice", () => {
   it("projects only bounded safe fields for the first Stage C slice", () => {
     const slice = buildSlice();
+
+    expect(slice.organization).toEqual({
+      ref: expect.stringMatching(/^organization:[a-f0-9]{20}$/),
+      label: "Dreamcatcher Hotel",
+      status: "active",
+    });
 
     expect(slice.projects[0]).toEqual({
       ref: expect.stringMatching(/^project:[a-f0-9]{20}$/),
