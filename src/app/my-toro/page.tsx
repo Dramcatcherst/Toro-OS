@@ -128,6 +128,7 @@ export default async function MyToroPage({
           <MyToroCommandBar
             menu={menu}
             focusableCapabilities={view.focusableCapabilities}
+            currentFocus={view.focus?.capability ?? null}
           />
         ) : null}
 

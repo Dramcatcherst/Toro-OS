@@ -153,6 +153,32 @@ export function resolveToroMenu(
   };
 }
 
+
+const MENU_STATE_PRIORITY: Record<ToroResolvedMenuItem["state"], number> = {
+  READY: 0,
+  READ_ONLY: 0,
+  DEGRADED: 1,
+  CONNECT: 2,
+  REQUEST_ACCESS: 2,
+  BLOCKED: 3,
+  HIDDEN: 4,
+  UI: 5,
+};
+
+export function prioritizeToroMenuByAvailability(
+  menu: ToroResolvedMenu,
+): ToroResolvedMenu {
+  const items = [...menu.items]
+    .sort((a, b) => {
+      const priorityDelta =
+        MENU_STATE_PRIORITY[a.state] - MENU_STATE_PRIORITY[b.state];
+      return priorityDelta !== 0 ? priorityDelta : a.index - b.index;
+    })
+    .map((item, index) => ({ ...item, index: index + 1 }));
+
+  return { ...menu, items };
+}
+
 const HOME = new Set(["0", "menu", "menú", "inicio"]);
 const BACK = new Set(["9", "atras", "atrás"]);
 const MORE = new Set(["+", "mas", "más"]);
