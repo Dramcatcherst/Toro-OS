@@ -5,6 +5,19 @@
 **Canonical contract:** `docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md`  
 **Static coverage evidence:** `docs/evidence/TORO_AGENT_EVAL_CONTRACT_COVERAGE_2026-09-23.md`
 
+## 0. Runtime inventory prerequisite
+
+Before executing a runtime case, produce or obtain a manifest conforming to:
+
+- `docs/product/TORO_RUNTIME_INVENTORY_CONTRACT_V1.md`
+- `data/toro_runtime_inventory_contract_v1.json`
+
+Validate it with:
+
+`node scripts/runtime-inventory-validator.mjs <manifest.json>`
+
+A runtime may be tested while OBSERVED/UNVERIFIED, but it cannot be promoted to RUNTIME_VERIFIED until the inventory contract reaches VERIFIED. Preserve the exact manifest alongside the raw evaluation outputs.
+
 ## 1. Purpose
 
 Turn the current 60-case contract suite into runtime evidence without changing permissions, contacting real guests, publishing content, modifying reservations/payments or treating configuration as deployment.

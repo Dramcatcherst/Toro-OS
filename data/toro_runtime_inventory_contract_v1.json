@@ -1,0 +1,139 @@
+{
+  "contract_version": "TORO-RUNTIME-INVENTORY-v1",
+  "date": "2026-09-23",
+  "authority": [
+    "docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md",
+    "docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md",
+    "docs/runbooks/TORO_AGENT_RUNTIME_EVAL_V1.md"
+  ],
+  "purpose": "A secret-free evidence manifest proving which TORO agent/skill/profile/playbooks/config and workflow authority an actual runtime is using.",
+  "verification_states": {
+    "UNVERIFIED": "Declared/configured/expected but identity or runtime evidence is incomplete.",
+    "OBSERVED": "Read-only runtime inventory was directly observed, but full identity/hash/evaluation gates are incomplete.",
+    "VERIFIED": "Runtime identity, canonical skill/profile config, A-level authorities and 10/10 agent evaluation are proven with evidence."
+  },
+  "required_fields": [
+    "contract_version",
+    "runtime_id",
+    "runtime_type",
+    "environment",
+    "verification_state",
+    "observed_at",
+    "runtime_version",
+    "runtime_build_ref",
+    "agent",
+    "canonical_skill",
+    "skill_version",
+    "config_version",
+    "config_hash",
+    "loaded_playbooks",
+    "model",
+    "tool_permissions",
+    "workflow_authority",
+    "source_authorities",
+    "evaluation",
+    "evidence_refs",
+    "fallback",
+    "rollback",
+    "secrets_present"
+  ],
+  "canonical_agents": {
+    "TORO": "toro-brain",
+    "TERE": "tere-revenue",
+    "RICO": "rico-operations",
+    "FIONA": "fiona-finance",
+    "SKY": "sky-growth",
+    "SOBRESITO": "sobresito-systems"
+  },
+  "a_levels": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "legacy_l_levels_allowed_as_runtime_autonomy": false,
+  "config_hash_format": "sha256:<64 lowercase/uppercase hex chars>",
+  "verified_gate": {
+    "known_runtime_version": true,
+    "known_runtime_build_ref": true,
+    "known_skill_version": true,
+    "known_config_version": true,
+    "valid_config_hash": true,
+    "eval_suite": "TORO-AGENT-EVAL-V1-20260923",
+    "cases_run_per_agent": 10,
+    "cases_passed_per_agent": 10,
+    "critical_failures": 0,
+    "runtime_verified_flag": true,
+    "evidence_refs_required": true,
+    "declared_workflow_authorities_verified": true,
+    "secrets_present": false
+  },
+  "prohibited_inventory_fields": [
+    "password",
+    "passwd",
+    "secret",
+    "token",
+    "api_key",
+    "private_key",
+    "cookie",
+    "session_cookie",
+    "mfa",
+    "pin",
+    "recovery_code",
+    "access_key",
+    "client_secret"
+  ],
+  "status_truth": [
+    "A configuration record is not runtime evidence.",
+    "A deployed app is not proof that the intended skill/profile is loaded.",
+    "A successful single conversation is not runtime verification.",
+    "VERIFIED cannot be inferred from documentation, Airtable, Supabase config, PR, deployment or model self-report alone.",
+    "Unknown version/hash keeps the runtime below VERIFIED."
+  ],
+  "expected_observation_targets": [
+    {
+      "target_key": "codex_builder_runtime",
+      "purpose": "SOBRESITO-governed technical implementation runtime",
+      "expected_agent": "SOBRESITO",
+      "expected_skill": "sobresito-systems",
+      "verification_state": "UNVERIFIED",
+      "existence_or_current_version_proven_by_this_contract": false
+    },
+    {
+      "target_key": "openclaw_whatsapp_toro",
+      "purpose": "TORO owner/staff conversational runtime where configured",
+      "expected_agent": "TORO",
+      "expected_skill": "toro-brain",
+      "verification_state": "UNVERIFIED",
+      "existence_or_current_version_proven_by_this_contract": false
+    },
+    {
+      "target_key": "openclaw_whatsapp_tere",
+      "purpose": "TERE guest/reception conversational runtime where configured",
+      "expected_agent": "TERE",
+      "expected_skill": "tere-revenue",
+      "verification_state": "UNVERIFIED",
+      "existence_or_current_version_proven_by_this_contract": false
+    },
+    {
+      "target_key": "wespeak_tere",
+      "purpose": "Dreamcatcher guest-facing TERE runtime",
+      "expected_agent": "TERE",
+      "expected_skill": "tere-revenue",
+      "verification_state": "UNVERIFIED",
+      "existence_or_current_version_proven_by_this_contract": false
+    },
+    {
+      "target_key": "toro_portal",
+      "purpose": "TORO Portal runtime",
+      "expected_agent": "TORO",
+      "expected_skill": "toro-brain",
+      "verification_state": "UNVERIFIED",
+      "existence_or_current_version_proven_by_this_contract": false
+    }
+  ],
+  "no_new_registry_rule": "Runtime manifests may be stored as evidence/knowledge using existing governed structures. Do not create a parallel runtime database merely for this contract."
+}

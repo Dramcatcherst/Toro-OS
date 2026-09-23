@@ -580,3 +580,50 @@ At this revision:
 - legacy L-level fields remain preserved for migration/history, not execution authority.
 
 Any runtime adapter must expose or derive an A-level per workflow before it may claim autonomous execution.
+
+
+## 17. Runtime inventory and proof
+
+Canonical runtime identity contract:
+
+`docs/product/TORO_RUNTIME_INVENTORY_CONTRACT_V1.md`
+
+Machine contract:
+
+`data/toro_runtime_inventory_contract_v1.json`
+
+Validator:
+
+`scripts/runtime-inventory-validator.mjs`
+
+Runtime truth uses three states:
+
+- `UNVERIFIED` — configured/expected/declared, direct evidence incomplete;
+- `OBSERVED` — directly inspected read-only, but version/hash/eval gates incomplete;
+- `VERIFIED` — identity/config/playbooks/A-levels/recovery + 10/10 agent evaluation proven.
+
+### 17.1 Three-part proof
+
+A runtime claim needs three different forms of evidence:
+
+1. **Inventory manifest** — what version/config/skill/playbooks/tools/authority is actually loaded.
+2. **Behavior evaluation** — how that exact runtime behaves on the canonical 10 cases for its agent.
+3. **Operational evidence** — when relevant, whether the actual bounded workflow completed correctly in the target system.
+
+A good conversation without inventory is not runtime identity proof.
+
+A correct hash without evaluation is not behavior proof.
+
+A passing synthetic evaluation does not prove a production workflow side effect.
+
+### 17.2 Steward relationship
+
+Current:
+- `OBSERVE_STATIC_CI` is verified.
+
+Next target:
+- `OBSERVE_RUNTIME_READONLY`.
+
+The Steward may only claim read-only runtime observation when a supported adapter can produce a secret-free manifest with authentic runtime identity. It must not infer runtime state from Supabase/Airtable configuration alone.
+
+No runtime write, restart, promotion, permission change or agent lifecycle mutation is granted by this contract.
