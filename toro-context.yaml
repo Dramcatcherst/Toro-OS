@@ -69,7 +69,6 @@ scope_graph:
   principal_can_control_multiple_scopes: true
   entity_types:
     - person
-    - portfolio
     - organization
     - business
     - workspace
@@ -319,3 +318,65 @@ readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
   current_stage: internal_proof
   notify_owner_on_stage_change: true
+
+# Declarative index into the existing General Plan and work items, not runtime activation.
+initiative_bindings:
+  visual_commerce_dreamcatcher:
+    updated_on: "2026-09-23"
+    kind: capability_with_business_pilot
+    general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    cognitive_model: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
+    portfolio_project_key: toro_os_portfolio_master
+    reusable_core_project_key: toro_executive_control
+    capability_owner: TORO Assets
+    agent_contract_owner: TORO Agents
+    business_pilot:
+      business: Dreamcatcher Hotel
+      existing_parent_project_name: Dreamcatcher Hotel · Proyecto Madre
+      existing_module_project_name: Dreamcatcher · Web, Marca, SEO y Reputación
+      delivery_owner: TORO Channels
+      project_identity_authority: operations.projects
+      live_project_binding: unverified_tool_blocked
+      rule: Resolve the existing row and canonical key before any task/project write; never create a replacement project from a display name.
+    existing_work_items:
+      capability_and_agent_contract: https://github.com/Dramcatcherst/Toro-OS/issues/30
+      authenticated_evidence_dependency: https://github.com/Dramcatcherst/Toro-OS/issues/3
+      original_files_dependency: https://github.com/Dramcatcherst/Toro-OS/issues/6
+      gallery_delivery: https://github.com/Dramcatcherst/Toro-OS/issues/28
+      preparation_implementation: https://github.com/Dramcatcherst/Toro-OS/pull/43
+      website_implementation: https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/74
+    division_of_work:
+      - Knowledge and Research understand the business and test the applicability of sourced practices.
+      - Assets owns identity, coverage, faithful style, conservative derivatives and original-file lineage.
+      - Governance reviews rights, privacy, fidelity and destination-specific approval separately from editing.
+      - Operations fixes physical defects and requests new photographs; marketing edits do not conceal them.
+      - Channels uses the existing website and publishing path; Growth measures outcomes without treating clicks as reservations.
+      - Agents and Systems reuse the existing orchestration, authorization, budget, evidence and recovery controls.
+    no_parallel_project: true
+    no_parallel_catalog_or_publisher: true
+    private_facts_are_not_reusable_training_data: true
+    preserve_global_identity_and_security_priorities: true
+    maturity_at_registration:
+      direction: documented
+      preflight: implemented_and_ci_tested_in_draft_pr
+      trusted_server_integration: pending
+      original_photo_end_to_end_pilot: pending
+      agent_runtime_inventory: not_audited
+      publication_by_this_change: none
+    evidence_checkpoint:
+      preflight_commit: f28d210a013cbbb44b7bd5ebc5de39b62676d33b
+      github_ci_run: 35824501271
+      ci_result: success
+      scope: Pure preparation helper and repository CI; not an edited photo or a live publishing workflow.
+    authorization:
+      this_registration_grants_execution: false
+      this_registration_grants_publication: false
+      this_registration_activates_agents: false
+      helper_output_ceiling: preparation_draft_for_human_review
+      preserve_existing_channel_approvals: true
+    next_acceptance_gates:
+      - Resolve one authorized original with exact unit identity, revision, checksum, rights and privacy evidence through issue 6.
+      - Build trusted server-side evidence through issue 3; never accept clearance supplied by a client or model output.
+      - Independently review PR 43 and recheck its exact current commit; null or unknown integration status is not a confirmed conflict.
+      - Prepare one conservative derivative, compare before/after, obtain exact derivative/channel approval and verify the intended destination.
+      - Record the result and reusable learning in the existing work items; do not duplicate backlog or claim runtime completion from documentation.
