@@ -5,19 +5,22 @@ import type { ToroResolvedContext } from "./types";
 export type ToroLegacyRoleInput = {
   context: ToroResolvedContext;
   explicitToroRole?: string | null;
-  metadataRoleCodes?: string[] | null;
 };
 
 /**
- * Transitional adapter for the current Phase 1 navigation/session role.
+ * Transitional adapter for the current Portal navigation/session role.
  *
- * Critical rule: role resolution is scoped to the active organization context.
- * Roles from another organization must never elevate this context.
+ * Critical rules:
+ * - organization authorization comes only from the active scoped membership;
+ * - roles from another organization must never elevate this context;
+ * - app_metadata.role_codes is intentionally ignored because it is not
+ *   organization-scoped;
+ * - app_metadata.toro_role may select a functional experience (for example
+ *   RECEPCION) only while an active organization membership exists.
  */
 export function resolveLegacySessionRole({
   context,
   explicitToroRole,
-  metadataRoleCodes = [],
 }: ToroLegacyRoleInput): ToroRole | null {
   if (
     context.mode !== "organization" ||
@@ -32,7 +35,7 @@ export function resolveLegacySessionRole({
   const membershipRoleCodes = context.membership.roles;
   const role = resolveToroRole({
     explicitToroRole,
-    systemRoleCodes: [...(metadataRoleCodes ?? []), ...membershipRoleCodes],
+    systemRoleCodes: membershipRoleCodes,
   });
 
   if (!role) return null;
