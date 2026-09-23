@@ -3,7 +3,8 @@
 **Status:** TARGET ARCHITECTURE — subordinate to the TORO Brain General Plan  
 **Date:** 2026-09-22  
 **Master product:** TORO Brain  
-**Operating layer:** TORO OS  
+**Visible product:** TORO Brain  
+**Legacy technical alias:** TORO OS  
 **Canonical repository:** `Dramcatcherst/Toro-OS`  
 **Reference implementation:** Dreamcatcher Hotel  
 **Current readiness:** INTERNAL PROOF
