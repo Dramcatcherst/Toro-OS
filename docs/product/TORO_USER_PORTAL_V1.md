@@ -232,6 +232,25 @@ Each card shows:
 - health;
 - manage/request access.
 
+
+## 10A. Role toolbox
+
+Canonical:
+- docs/product/TORO_ROLE_TOOLBOX_V1.md
+- data/toro_role_toolbox_v1.json
+
+The user sees jobs/capabilities rather than connector brands.
+
+Capability state may be READY, READ_ONLY, CONNECT, REQUEST_ACCESS, DEGRADED, HIDDEN or BLOCKED.
+
+There are no dead tool buttons:
+- CONNECT -> offer connection flow;
+- REQUEST_ACCESS -> offer governed access request;
+- DEGRADED -> show safe fallback/stale-state behavior;
+- HIDDEN -> do not clutter the interface.
+
+Position-specific toolboxes (Reception, Aseo, Mantenimiento) override the generic employee experience where relevant.
+
 ## 11. What TORO knows about me
 
 User-facing memory control.
