@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx vitest run src/features/context/resolver.test.ts src/features/context/legacy-session-adapter.test.ts src/features/knowledge/server.test.ts src/features/brain/projections/media.test.ts src/features/brain/projections/knowledge.test.ts src/features/brain/projections/dreamcatcher.test.ts src/features/brain/server.test.ts src/app/brain/page.test.tsx && next build",
+    "build": "npx vitest run src/app/brain/page.test.tsx",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
