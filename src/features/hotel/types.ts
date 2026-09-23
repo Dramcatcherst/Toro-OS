@@ -11,6 +11,15 @@ export type HotelRoomItem = {
   lastReviewed: string | null;
   freshness: string;
   room360Key: string;
+  operationalGate: {
+    status: "BLOCKED" | "REVIEW_REQUIRED" | "HUMAN_QA_REQUIRED" | "UNKNOWN";
+    reason: string;
+    p0BlockerCount: number;
+    p1AttentionCount: number;
+    recentUnresolvedEvidenceCount: number;
+    openTaskSummary: string | null;
+    calculatedAtCr: string | null;
+  };
 };
 
 export type HotelSourceState = {
