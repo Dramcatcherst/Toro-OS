@@ -1,5 +1,5 @@
 {
-  "version": "2026.09.23-v1",
+  "version": "2026.09.23-v1.1",
   "status": "specified_not_runtime_verified",
   "rules": {
     "conversation_first": true,
@@ -43,7 +43,9 @@
       "permitted_preferences",
       "usage_favorites"
     ],
-    "personalization_never_expands_authority": true
+    "personalization_never_expands_authority": true,
+    "menu_option_requires_capability_key": true,
+    "ui_control_capability_prefix": "ui."
   },
   "profiles": [
     {
@@ -56,64 +58,70 @@
         "Gerente General"
       ],
       "primary": [
-        [
-          "today",
-          "☀️",
-          "Hoy",
-          [
+        {
+          "key": "today",
+          "emoji": "☀️",
+          "label": "Hoy",
+          "aliases": [
             "hoy",
             "resumen",
             "qué pasa hoy"
-          ]
-        ],
-        [
-          "decisions",
-          "✅",
-          "Decisiones",
-          [
+          ],
+          "capability": "executive.brief"
+        },
+        {
+          "key": "decisions",
+          "emoji": "✅",
+          "label": "Decisiones",
+          "aliases": [
             "decisiones",
             "aprobar",
             "aprobaciones"
-          ]
-        ],
-        [
-          "money",
-          "💰",
-          "Dinero",
-          [
+          ],
+          "capability": "executive.decisions"
+        },
+        {
+          "key": "money",
+          "emoji": "💰",
+          "label": "Dinero",
+          "aliases": [
             "dinero",
             "pagos",
             "caja"
-          ]
-        ],
-        [
-          "operations",
-          "🏨",
-          "Hotel / Operación",
-          [
+          ],
+          "capability": "finance.exceptions"
+        },
+        {
+          "key": "operations",
+          "emoji": "🏨",
+          "label": "Hotel / Operación",
+          "aliases": [
             "hotel",
             "operación",
             "incidentes"
-          ]
-        ],
-        [
-          "projects",
-          "📂",
-          "Proyectos",
-          [
+          ],
+          "capability": "operations.exceptions"
+        },
+        {
+          "key": "projects",
+          "emoji": "📂",
+          "label": "Proyectos",
+          "aliases": [
             "proyectos",
             "avances",
             "bloqueos"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "projects.status"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -127,59 +135,65 @@
         "Recepción + Líder Operativa"
       ],
       "primary": [
-        [
-          "hotel_today",
-          "☀️",
-          "Hotel hoy",
-          [
+        {
+          "key": "hotel_today",
+          "emoji": "☀️",
+          "label": "Hotel hoy",
+          "aliases": [
             "hotel hoy",
             "operación"
-          ]
-        ],
-        [
-          "guests",
-          "🛎️",
-          "Huéspedes",
-          [
+          ],
+          "capability": "operations.hotel_today"
+        },
+        {
+          "key": "guests",
+          "emoji": "🛎️",
+          "label": "Huéspedes",
+          "aliases": [
             "huéspedes",
             "clientes"
-          ]
-        ],
-        [
-          "rooms",
-          "🛏️",
-          "Habitaciones",
-          [
+          ],
+          "capability": "guest.service_issues"
+        },
+        {
+          "key": "rooms",
+          "emoji": "🛏️",
+          "label": "Habitaciones",
+          "aliases": [
             "habitaciones",
             "rooms"
-          ]
-        ],
-        [
-          "team",
-          "👥",
-          "Equipo",
-          [
+          ],
+          "capability": "operations.room_readiness"
+        },
+        {
+          "key": "team",
+          "emoji": "👥",
+          "label": "Equipo",
+          "aliases": [
             "equipo",
             "personal"
-          ]
-        ],
-        [
-          "pending",
-          "⚠️",
-          "Pendientes",
-          [
+          ],
+          "capability": "people.coverage"
+        },
+        {
+          "key": "pending",
+          "emoji": "⚠️",
+          "label": "Pendientes",
+          "aliases": [
             "pendientes",
             "problemas"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "operations.exceptions"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -192,64 +206,70 @@
         "Recepción"
       ],
       "primary": [
-        [
-          "arrivals",
-          "🛎️",
-          "Llegadas y salidas",
-          [
+        {
+          "key": "arrivals",
+          "emoji": "🛎️",
+          "label": "Llegadas y salidas",
+          "aliases": [
             "llegadas",
             "salidas",
             "checkin",
             "checkout"
-          ]
-        ],
-        [
-          "guest_messages",
-          "💬",
-          "Huéspedes / mensajes",
-          [
+          ],
+          "capability": "guest.arrivals_departures"
+        },
+        {
+          "key": "guest_messages",
+          "emoji": "💬",
+          "label": "Huéspedes / mensajes",
+          "aliases": [
             "mensajes",
             "huéspedes",
             "whatsapp"
-          ]
-        ],
-        [
-          "quote_sell",
-          "💵",
-          "Cotizar / vender",
-          [
+          ],
+          "capability": "comms.guest_messages"
+        },
+        {
+          "key": "quote_sell",
+          "emoji": "💵",
+          "label": "Cotizar / vender",
+          "aliases": [
             "cotizar",
             "vender",
             "precio"
-          ]
-        ],
-        [
-          "rooms_villas",
-          "🛏️",
-          "Habitaciones y villas",
-          [
+          ],
+          "capability": "hospitality.quote"
+        },
+        {
+          "key": "rooms_villas",
+          "emoji": "🛏️",
+          "label": "Habitaciones y villas",
+          "aliases": [
             "habitaciones",
             "villas"
-          ]
-        ],
-        [
-          "experiences",
-          "✨",
-          "Experiencias",
-          [
+          ],
+          "capability": "catalog.rooms_villas"
+        },
+        {
+          "key": "experiences",
+          "emoji": "✨",
+          "label": "Experiencias",
+          "aliases": [
             "experiencias",
             "tours",
             "actividades"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "catalog.experiences"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -262,63 +282,69 @@
         "Aseo"
       ],
       "primary": [
-        [
-          "my_rooms",
-          "🧹",
-          "Mis habitaciones",
-          [
+        {
+          "key": "my_rooms",
+          "emoji": "🧹",
+          "label": "Mis habitaciones",
+          "aliases": [
             "habitaciones",
             "mis habitaciones"
-          ]
-        ],
-        [
-          "next",
-          "🎯",
-          "Qué hago ahora",
-          [
+          ],
+          "capability": "housekeeping.assigned_units"
+        },
+        {
+          "key": "next",
+          "emoji": "🎯",
+          "label": "Qué hago ahora",
+          "aliases": [
             "siguiente",
             "qué hago",
             "prioridad"
-          ]
-        ],
-        [
-          "mark_ready",
-          "✅",
-          "Marcar listo",
-          [
+          ],
+          "capability": "housekeeping.priority"
+        },
+        {
+          "key": "mark_ready",
+          "emoji": "✅",
+          "label": "Marcar listo",
+          "aliases": [
             "listo",
             "terminé",
             "cerrar"
-          ]
-        ],
-        [
-          "report_issue",
-          "⚠️",
-          "Reportar problema",
-          [
+          ],
+          "capability": "housekeeping.complete"
+        },
+        {
+          "key": "report_issue",
+          "emoji": "⚠️",
+          "label": "Reportar problema",
+          "aliases": [
             "problema",
             "reportar",
             "falla"
-          ]
-        ],
-        [
-          "how_to",
-          "📚",
-          "Cómo se hace",
-          [
+          ],
+          "capability": "maintenance.report"
+        },
+        {
+          "key": "how_to",
+          "emoji": "📚",
+          "label": "Cómo se hace",
+          "aliases": [
             "cómo",
             "sop",
             "instrucciones"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "housekeeping.guidance"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -331,62 +357,68 @@
         "Mantenimiento"
       ],
       "primary": [
-        [
-          "priorities",
-          "🔧",
-          "Prioridades",
-          [
+        {
+          "key": "priorities",
+          "emoji": "🔧",
+          "label": "Prioridades",
+          "aliases": [
             "prioridades",
             "urgente"
-          ]
-        ],
-        [
-          "tasks",
-          "🧰",
-          "Mis tareas",
-          [
+          ],
+          "capability": "maintenance.priorities"
+        },
+        {
+          "key": "tasks",
+          "emoji": "🧰",
+          "label": "Mis tareas",
+          "aliases": [
             "tareas",
             "mis tareas"
-          ]
-        ],
-        [
-          "report_failure",
-          "⚠️",
-          "Reportar falla",
-          [
+          ],
+          "capability": "maintenance.my_tasks"
+        },
+        {
+          "key": "report_failure",
+          "emoji": "⚠️",
+          "label": "Reportar falla",
+          "aliases": [
             "falla",
             "problema",
             "reportar"
-          ]
-        ],
-        [
-          "materials",
-          "📦",
-          "Materiales / repuestos",
-          [
+          ],
+          "capability": "maintenance.report"
+        },
+        {
+          "key": "materials",
+          "emoji": "📦",
+          "label": "Materiales / repuestos",
+          "aliases": [
             "materiales",
             "repuestos",
             "inventario"
-          ]
-        ],
-        [
-          "close_evidence",
-          "✅",
-          "Cerrar con evidencia",
-          [
+          ],
+          "capability": "inventory.request_material"
+        },
+        {
+          "key": "close_evidence",
+          "emoji": "✅",
+          "label": "Cerrar con evidencia",
+          "aliases": [
             "cerrar",
             "foto",
             "evidencia"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "maintenance.close_with_evidence"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -396,60 +428,66 @@
       ],
       "position_keywords": [],
       "primary": [
-        [
-          "team_today",
-          "🎯",
-          "Equipo hoy",
-          [
+        {
+          "key": "team_today",
+          "emoji": "🎯",
+          "label": "Equipo hoy",
+          "aliases": [
             "equipo hoy",
             "cobertura"
-          ]
-        ],
-        [
-          "shifts",
-          "🗓️",
-          "Cobertura y turnos",
-          [
+          ],
+          "capability": "people.team_workload"
+        },
+        {
+          "key": "shifts",
+          "emoji": "🗓️",
+          "label": "Cobertura y turnos",
+          "aliases": [
             "turnos",
             "horario",
             "cobertura"
-          ]
-        ],
-        [
-          "incidents",
-          "⚠️",
-          "Incidentes",
-          [
+          ],
+          "capability": "people.coverage"
+        },
+        {
+          "key": "incidents",
+          "emoji": "⚠️",
+          "label": "Incidentes",
+          "aliases": [
             "incidentes",
             "problemas"
-          ]
-        ],
-        [
-          "review_approve",
-          "✅",
-          "Aprobar / revisar",
-          [
+          ],
+          "capability": "operations.exceptions"
+        },
+        {
+          "key": "review_approve",
+          "emoji": "✅",
+          "label": "Aprobar / revisar",
+          "aliases": [
             "aprobar",
             "revisar"
-          ]
-        ],
-        [
-          "handoffs",
-          "🔄",
-          "Handoffs",
-          [
+          ],
+          "capability": "operations.approvals"
+        },
+        {
+          "key": "handoffs",
+          "emoji": "🔄",
+          "label": "Handoffs",
+          "aliases": [
             "handoffs",
             "entregas"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "operations.handoffs"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -461,60 +499,66 @@
       ],
       "position_keywords": [],
       "primary": [
-        [
-          "obligations",
-          "💰",
-          "Pagos y obligaciones",
-          [
+        {
+          "key": "obligations",
+          "emoji": "💰",
+          "label": "Pagos y obligaciones",
+          "aliases": [
             "pagos",
             "obligaciones",
             "vencimientos"
-          ]
-        ],
-        [
-          "collections",
-          "💳",
-          "Cobros pendientes",
-          [
+          ],
+          "capability": "finance.obligations"
+        },
+        {
+          "key": "collections",
+          "emoji": "💳",
+          "label": "Cobros pendientes",
+          "aliases": [
             "cobros",
             "pendientes"
-          ]
-        ],
-        [
-          "reconcile",
-          "🔄",
-          "Conciliar",
-          [
+          ],
+          "capability": "finance.collections"
+        },
+        {
+          "key": "reconcile",
+          "emoji": "🔄",
+          "label": "Conciliar",
+          "aliases": [
             "conciliar",
             "reconciliación"
-          ]
-        ],
-        [
-          "invoices",
-          "🧾",
-          "Facturas / comprobantes",
-          [
+          ],
+          "capability": "finance.reconcile"
+        },
+        {
+          "key": "invoices",
+          "emoji": "🧾",
+          "label": "Facturas / comprobantes",
+          "aliases": [
             "facturas",
             "comprobantes"
-          ]
-        ],
-        [
-          "reports",
-          "📊",
-          "Reportes",
-          [
+          ],
+          "capability": "finance.invoices_receipts"
+        },
+        {
+          "key": "reports",
+          "emoji": "📊",
+          "label": "Reportes",
+          "aliases": [
             "reportes",
             "informe"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "finance.export_reports"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -526,59 +570,65 @@
       ],
       "position_keywords": [],
       "primary": [
-        [
-          "attendance",
-          "⏱️",
-          "Asistencia",
-          [
+        {
+          "key": "attendance",
+          "emoji": "⏱️",
+          "label": "Asistencia",
+          "aliases": [
             "asistencia",
             "marcas"
-          ]
-        ],
-        [
-          "schedule",
-          "🗓️",
-          "Horarios",
-          [
+          ],
+          "capability": "people.attendance"
+        },
+        {
+          "key": "schedule",
+          "emoji": "🗓️",
+          "label": "Horarios",
+          "aliases": [
             "horarios",
             "turnos"
-          ]
-        ],
-        [
-          "requests",
-          "🙋",
-          "Solicitudes",
-          [
+          ],
+          "capability": "people.schedule"
+        },
+        {
+          "key": "requests",
+          "emoji": "🙋",
+          "label": "Solicitudes",
+          "aliases": [
             "solicitudes",
             "permisos"
-          ]
-        ],
-        [
-          "people",
-          "👥",
-          "Colaboradores",
-          [
+          ],
+          "capability": "people.leave_requests"
+        },
+        {
+          "key": "people",
+          "emoji": "👥",
+          "label": "Colaboradores",
+          "aliases": [
             "colaboradores",
             "empleados"
-          ]
-        ],
-        [
-          "payroll",
-          "💵",
-          "Planilla",
-          [
+          ],
+          "capability": "people.employee_records"
+        },
+        {
+          "key": "payroll",
+          "emoji": "💵",
+          "label": "Planilla",
+          "aliases": [
             "planilla",
             "nómina"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "people.payroll_operations"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -590,60 +640,66 @@
       "position_keywords": [],
       "feature_flag": "growth",
       "primary": [
-        [
-          "reviews",
-          "⭐",
-          "Reviews",
-          [
+        {
+          "key": "reviews",
+          "emoji": "⭐",
+          "label": "Reviews",
+          "aliases": [
             "reviews",
             "reseñas"
-          ]
-        ],
-        [
-          "leads",
-          "💬",
-          "Inbox / leads",
-          [
+          ],
+          "capability": "growth.reviews"
+        },
+        {
+          "key": "leads",
+          "emoji": "💬",
+          "label": "Inbox / leads",
+          "aliases": [
             "leads",
             "inbox",
             "mensajes"
-          ]
-        ],
-        [
-          "campaigns",
-          "📣",
-          "Campañas",
-          [
+          ],
+          "capability": "growth.lead_inbox"
+        },
+        {
+          "key": "campaigns",
+          "emoji": "📣",
+          "label": "Campañas",
+          "aliases": [
             "campañas",
             "ads"
-          ]
-        ],
-        [
-          "opportunities",
-          "📈",
-          "Oportunidades",
-          [
+          ],
+          "capability": "growth.campaign_plan"
+        },
+        {
+          "key": "opportunities",
+          "emoji": "📈",
+          "label": "Oportunidades",
+          "aliases": [
             "oportunidades",
             "crecimiento"
-          ]
-        ],
-        [
-          "content",
-          "🎨",
-          "Contenido",
-          [
+          ],
+          "capability": "growth.opportunities"
+        },
+        {
+          "key": "content",
+          "emoji": "🎨",
+          "label": "Contenido",
+          "aliases": [
             "contenido",
             "posts"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "growth.content_prepare"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -654,60 +710,66 @@
       "position_keywords": [],
       "feature_flag": "systems",
       "primary": [
-        [
-          "health",
-          "⚙️",
-          "Salud de sistemas",
-          [
+        {
+          "key": "health",
+          "emoji": "⚙️",
+          "label": "Salud de sistemas",
+          "aliases": [
             "salud",
             "sistemas",
             "estado"
-          ]
-        ],
-        [
-          "incidents",
-          "🚨",
-          "Incidentes",
-          [
+          ],
+          "capability": "systems.connector_health"
+        },
+        {
+          "key": "incidents",
+          "emoji": "🚨",
+          "label": "Incidentes",
+          "aliases": [
             "incidentes",
             "caídas"
-          ]
-        ],
-        [
-          "integrations",
-          "🔌",
-          "Integraciones",
-          [
+          ],
+          "capability": "systems.incidents"
+        },
+        {
+          "key": "integrations",
+          "emoji": "🔌",
+          "label": "Integraciones",
+          "aliases": [
             "integraciones",
             "conectores"
-          ]
-        ],
-        [
-          "deployments",
-          "🚀",
-          "Deployments",
-          [
+          ],
+          "capability": "systems.connector_health"
+        },
+        {
+          "key": "deployments",
+          "emoji": "🚀",
+          "label": "Deployments",
+          "aliases": [
             "deploy",
             "deployments"
-          ]
-        ],
-        [
-          "security_backup",
-          "🛡️",
-          "Seguridad / backups",
-          [
+          ],
+          "capability": "systems.deployments"
+        },
+        {
+          "key": "security_backup",
+          "emoji": "🛡️",
+          "label": "Seguridad / backups",
+          "aliases": [
             "seguridad",
             "backups"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "systems.backup_recovery"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -717,59 +779,65 @@
       ],
       "position_keywords": [],
       "primary": [
-        [
-          "changes",
-          "🧾",
-          "Cambios",
-          [
+        {
+          "key": "changes",
+          "emoji": "🧾",
+          "label": "Cambios",
+          "aliases": [
             "cambios",
             "historial"
-          ]
-        ],
-        [
-          "evidence",
-          "📁",
-          "Evidencia",
-          [
+          ],
+          "capability": "audit.versions_changes"
+        },
+        {
+          "key": "evidence",
+          "emoji": "📁",
+          "label": "Evidencia",
+          "aliases": [
             "evidencia",
             "pruebas"
-          ]
-        ],
-        [
-          "approvals",
-          "✅",
-          "Aprobaciones",
-          [
+          ],
+          "capability": "audit.evidence"
+        },
+        {
+          "key": "approvals",
+          "emoji": "✅",
+          "label": "Aprobaciones",
+          "aliases": [
             "aprobaciones",
             "decisiones"
-          ]
-        ],
-        [
-          "sources",
-          "🔗",
-          "Fuentes",
-          [
+          ],
+          "capability": "audit.approvals"
+        },
+        {
+          "key": "sources",
+          "emoji": "🔗",
+          "label": "Fuentes",
+          "aliases": [
             "fuentes",
             "origen"
-          ]
-        ],
-        [
-          "export",
-          "📤",
-          "Exportar",
-          [
+          ],
+          "capability": "audit.source_authority"
+        },
+        {
+          "key": "export",
+          "emoji": "📤",
+          "label": "Exportar",
+          "aliases": [
             "exportar",
             "descargar"
-          ]
-        ],
-        [
-          "search",
-          "🔎",
-          "Buscar",
-          [
+          ],
+          "capability": "audit.export"
+        },
+        {
+          "key": "search",
+          "emoji": "🔎",
+          "label": "Buscar",
+          "aliases": [
             "buscar"
-          ]
-        ]
+          ],
+          "capability": "audit.search_readonly"
+        }
       ]
     },
     {
@@ -780,57 +848,63 @@
       "position_keywords": [],
       "fallback": true,
       "primary": [
-        [
-          "my_day",
-          "☀️",
-          "Mi día",
-          [
+        {
+          "key": "my_day",
+          "emoji": "☀️",
+          "label": "Mi día",
+          "aliases": [
             "mi día",
             "hoy"
-          ]
-        ],
-        [
-          "tasks",
-          "✅",
-          "Mis tareas",
-          [
+          ],
+          "capability": "people.my_day"
+        },
+        {
+          "key": "tasks",
+          "emoji": "✅",
+          "label": "Mis tareas",
+          "aliases": [
             "tareas"
-          ]
-        ],
-        [
-          "schedule",
-          "🗓️",
-          "Mi horario",
-          [
+          ],
+          "capability": "operations.my_tasks"
+        },
+        {
+          "key": "schedule",
+          "emoji": "🗓️",
+          "label": "Mi horario",
+          "aliases": [
             "horario",
             "turno"
-          ]
-        ],
-        [
-          "requests",
-          "🙋",
-          "Solicitudes",
-          [
+          ],
+          "capability": "people.my_schedule"
+        },
+        {
+          "key": "requests",
+          "emoji": "🙋",
+          "label": "Solicitudes",
+          "aliases": [
             "solicitudes",
             "pedir"
-          ]
-        ],
-        [
-          "messages",
-          "💬",
-          "Mensajes",
-          [
+          ],
+          "capability": "people.my_requests"
+        },
+        {
+          "key": "messages",
+          "emoji": "💬",
+          "label": "Mensajes",
+          "aliases": [
             "mensajes"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "comms.messages"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     },
     {
@@ -842,54 +916,59 @@
         "consideration"
       ],
       "primary": [
-        [
-          "find_stay",
-          "🏡",
-          "Buscar alojamiento",
-          [
+        {
+          "key": "find_stay",
+          "emoji": "🏡",
+          "label": "Buscar alojamiento",
+          "aliases": [
             "alojamiento",
             "habitación",
             "villa"
-          ]
-        ],
-        [
-          "quote",
-          "💵",
-          "Cotizar",
-          [
+          ],
+          "capability": "hospitality.search_stay"
+        },
+        {
+          "key": "quote",
+          "emoji": "💵",
+          "label": "Cotizar",
+          "aliases": [
             "cotizar",
             "precio"
-          ]
-        ],
-        [
-          "experiences",
-          "✨",
-          "Qué hacer en Santa Teresa",
-          [
+          ],
+          "capability": "hospitality.quote"
+        },
+        {
+          "key": "experiences",
+          "emoji": "✨",
+          "label": "Qué hacer en Santa Teresa",
+          "aliases": [
             "qué hacer",
             "experiencias",
             "tours"
-          ]
-        ],
-        [
-          "about",
-          "📍",
-          "Conocer Dreamcatcher",
-          [
+          ],
+          "capability": "catalog.experiences"
+        },
+        {
+          "key": "about",
+          "emoji": "📍",
+          "label": "Conocer Dreamcatcher",
+          "aliases": [
             "hotel",
             "dreamcatcher",
             "ubicación"
-          ]
-        ],
-        [
-          "other",
-          "💬",
-          "Preguntar otra cosa",
-          [
+          ],
+          "capability": "guest.hotel_info"
+        },
+        {
+          "key": "other",
+          "emoji": "💬",
+          "label": "Preguntar otra cosa",
+          "aliases": [
             "otra",
             "pregunta"
-          ]
-        ]
+          ],
+          "capability": "guest.ask"
+        }
       ]
     },
     {
@@ -901,59 +980,65 @@
         "in_stay"
       ],
       "primary": [
-        [
-          "arrival",
-          "🧳",
-          "Mi llegada",
-          [
+        {
+          "key": "arrival",
+          "emoji": "🧳",
+          "label": "Mi llegada",
+          "aliases": [
             "llegada",
             "checkin"
-          ]
-        ],
-        [
-          "stay",
-          "🏡",
-          "Mi habitación / villa",
-          [
+          ],
+          "capability": "guest.arrival"
+        },
+        {
+          "key": "stay",
+          "emoji": "🏡",
+          "label": "Mi habitación / villa",
+          "aliases": [
             "habitación",
             "villa"
-          ]
-        ],
-        [
-          "experiences",
-          "✨",
-          "Experiencias",
-          [
+          ],
+          "capability": "guest.stay_details"
+        },
+        {
+          "key": "experiences",
+          "emoji": "✨",
+          "label": "Experiencias",
+          "aliases": [
             "experiencias",
             "tours"
-          ]
-        ],
-        [
-          "extras",
-          "🍳",
-          "Desayuno / extras",
-          [
+          ],
+          "capability": "catalog.experiences"
+        },
+        {
+          "key": "extras",
+          "emoji": "🍳",
+          "label": "Desayuno / extras",
+          "aliases": [
             "desayuno",
             "extras"
-          ]
-        ],
-        [
-          "help",
-          "🆘",
-          "Necesito ayuda",
-          [
+          ],
+          "capability": "catalog.breakfast_extras"
+        },
+        {
+          "key": "help",
+          "emoji": "🆘",
+          "label": "Necesito ayuda",
+          "aliases": [
             "ayuda",
             "problema"
-          ]
-        ],
-        [
-          "more",
-          "➕",
-          "Más",
-          [
+          ],
+          "capability": "guest.request_help"
+        },
+        {
+          "key": "more",
+          "emoji": "➕",
+          "label": "Más",
+          "aliases": [
             "más"
-          ]
-        ]
+          ],
+          "capability": "ui.more"
+        }
       ]
     }
   ]
