@@ -74,3 +74,24 @@ export function countUnreadMessages(
     return Number.isFinite(created) && created > cutoff;
   }).length;
 }
+
+
+/**
+ * The database RLS intentionally lets privileged roles inspect some DMs for
+ * governed HR/management workflows. A personal inbox must be narrower:
+ * only DMs sent by the current user or addressed to their linked employee.
+ * Privileged cross-user DM review belongs in a separate audited surface.
+ */
+export function filterPersonalInboxMessages(
+  messages: ToroCommsMessage[],
+  currentEmployeeId: string | null,
+): ToroCommsMessage[] {
+  return messages.filter((message) => {
+    if (message.channel !== "dm") return true;
+    if (message.isMine) return true;
+    return Boolean(
+      currentEmployeeId &&
+        message.recipientEmployeeId === currentEmployeeId,
+    );
+  });
+}
