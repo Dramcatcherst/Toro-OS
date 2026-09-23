@@ -519,11 +519,20 @@ cognitive_proving_ground:
       status: BLOCKED_FAIL_CLOSED_LIVE_PMS
       reservation_rows: 33
       live_reservation_rows: 0
+      current_reservations_safe_rows: 0
       stay_rows: 0
       latest_reservation_snapshot: "2026-09-21T09:28:30.675Z"
+      import_runs_rows: 6
+      import_staging_batches_rows: 14
+      kross_snapshot_registry_rows: 11
+      kross_import_runs_rows: 0
+      import_schema_missing: false
+      governed_health_view: integrations.kross_snapshot_health
+      safe_current_reservations_view: operations.current_reservations_safe
       gate_task: kross_readonly_reservation_mirror_2026_09
+      blocker: authorized_real_kross_transport_first_verified_run_dedupe_freshness
       autonomy: A1_A2_ONLY_UNTIL_LIVE_AUTHORITY
-      rule: "No second mirror; snapshot truth cannot be described as current hotel state."
+      rule: "No second mirror; snapshot truth cannot be described as current hotel state. Promote arrivals/departures only when current_reservations_safe has rows and governed Kross health is current-safe."
     finance_to_cash:
       status: BLOCKED_FAIL_CLOSED_CURRENT_BANK_EVIDENCE
       bank_transaction_rows: 1839
@@ -927,6 +936,30 @@ product_proof_focus:
     - reduced_customer_specific_engineering
     - whatsapp_portal_visual_brain_same_governed_engine
     - support_rollback_offboarding_evidence_procedures
+
+
+kross_live_read_gate:
+  rebaselined_on: "2026-09-23"
+  canonical_task: kross_readonly_reservation_mirror_2026_09
+  transport_state: blocked_not_verified_live
+  schema_state: present
+  source_is_live_rows: 0
+  current_reservations_safe_rows: 0
+  kross_import_runs: 0
+  first_verified_scheduled_run: false
+  direct_pms_writes: false
+  second_mirror_forbidden: true
+  arrivals_departures_read_gate:
+    - authenticated_context
+    - operations.current_reservations_safe_rows_gt_0
+    - integrations.kross_snapshot_health_live_required_safe_current_gt_0
+  quote_gate:
+    status: blocked
+    reason: live_price_availability_authority_not_verified
+  safe_view_contract:
+    source_is_live_required: true
+    max_sync_age_hours: 6
+    current_or_recent_checkout_required: true
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md
