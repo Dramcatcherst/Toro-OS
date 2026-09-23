@@ -68,6 +68,20 @@ function selectProfile(input: ToroMenuResolutionInput): {
     return { profile: getProfile("guest_prospect"), reason: `guest_lifecycle:${lifecycle}` };
   }
 
+  const positionCode = normalize(input.positionCode ?? "").replaceAll("-", "_");
+  const profileByPositionCode: Record<string, string> = {
+    general_manager: "owner_executive",
+    admin_manager: "manager",
+    reception_ops_lead: "manager",
+    maintenance: "maintenance",
+    housekeeping: "housekeeping",
+    reception: "reception",
+  };
+  if (positionCode && profileByPositionCode[positionCode]) {
+    const profileId = profileByPositionCode[positionCode];
+    return { profile: getProfile(profileId), reason: `position_code:${positionCode}` };
+  }
+
   const position = normalize(input.positionName ?? "");
   if (position) {
     if (position.includes("gerente general")) {
