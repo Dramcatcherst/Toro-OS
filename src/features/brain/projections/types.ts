@@ -1,0 +1,20 @@
+export type SafeMediaProjectionRow = {
+  id: string;
+  orgId: string;
+  assetKey: string;
+  assetType: string;
+  title: string | null;
+  publicUrl: string | null;
+  subjectType: string | null;
+  subjectKey: string | null;
+  rightsStatus: string | null;
+  rightsVerified: boolean;
+  publicSafe: boolean;
+  verifiedStatus: string;
+  requiresHumanVerification: boolean;
+  riskLevel: string;
+  sourceSystem: string | null;
+  lastVerified: string | null;
+  nextReview: string | null;
+  updatedAt: string;
+};
