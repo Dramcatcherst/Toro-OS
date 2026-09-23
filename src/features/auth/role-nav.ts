@@ -28,7 +28,7 @@ const employeeNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
   { label: "Mi trabajo", availability: "coming-soon" },
   { label: "Horario", availability: "coming-soon" },
-  { label: "Solicitudes", availability: "coming-soon" },
+  { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Mensajes", availability: "coming-soon" },
   { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
@@ -38,7 +38,7 @@ const peopleAdminNavigation: NavItem[] = [
   { label: "Personas", availability: "coming-soon" },
   { label: "Asistencia", availability: "coming-soon" },
   { label: "Horarios", availability: "coming-soon" },
-  { label: "Solicitudes", availability: "coming-soon" },
+  { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Planilla", availability: "coming-soon" },
   { label: "Auditoría", availability: "coming-soon" },
   { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
@@ -50,7 +50,7 @@ const departmentLeadNavigation: NavItem[] = [
   { label: "Cobertura", availability: "coming-soon" },
   { label: "Asistencia", availability: "coming-soon" },
   { label: "Horarios", availability: "coming-soon" },
-  { label: "Solicitudes", availability: "coming-soon" },
+  { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
 
@@ -75,6 +75,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Huéspedes", availability: "coming-soon" },
     { label: "Hotel", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+    { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   OPERACIONES: [
@@ -82,6 +83,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Hotel", availability: "coming-soon" },
     { label: "Equipo", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+    { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   FINANZAS: [
@@ -89,6 +91,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Dinero", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+    { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   GROWTH: [
@@ -96,6 +99,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Huéspedes", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+    { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   SYSTEMS: [
@@ -103,6 +107,7 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Sistemas", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
+    { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
     { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
 };
