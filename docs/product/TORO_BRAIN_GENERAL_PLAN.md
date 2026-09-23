@@ -1269,8 +1269,13 @@ Verified:
 - strict TypeScript typecheck passed in isolated validation;
 - Vercel preview build for the branch reached READY.
 
-Not yet verified:
-- resolver Vitest suite has not run in GitHub CI because the existing workflow only triggers on PRs to `main`;
+Verification update:
+- clean integration is now PR #42; superseded PR #38 is closed;
+- latest verified context branch head built successfully in Vercel after fixing a TypeScript issue;
+- strict isolated TypeScript validation passed;
+- isolated behavior harness passed 8/8 critical context/legacy-role cases;
+- resolver Vitest suite has still not run through the repository's official GitHub Actions path because current CI triggers only on PRs to `main`;
+- existing `getToroSession()` remains intentionally unchanged until parity tests run;
 - no production Supabase schema/write change has been made;
 - no real multi-organization user has been tested.
 
@@ -1314,3 +1319,19 @@ NEXT:
 - reconcile the remaining 1 profile;
 - create no account or employee-user link automatically;
 - onboarding must use the future organization_memberships + role model once approved.
+
+
+### organization_memberships validation gate — 2026-09-23
+
+CURRENT:
+- reversible/auto-rollback SQL draft exists on PR #42;
+- production Supabase has no `organization_memberships` table yet;
+- read-only backfill preview finds 5 membership candidates: 4 employee-linked + 1 non-employee ADMIN relationship requiring classification;
+- no local PostgreSQL runtime is available in the current execution environment for faithful RLS/DDL validation.
+
+BLOCKED:
+- applying/testing DDL on a Supabase development branch requires branch creation/cost confirmation and must not be done implicitly.
+
+RULE:
+- do not apply membership DDL to production until isolated Postgres/Supabase QA validates constraints, grants, RLS positive/negative cases, backfill idempotency and rollback;
+- do not infer the non-employee ADMIN membership type as owner from role alone.
