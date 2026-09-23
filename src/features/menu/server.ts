@@ -757,10 +757,8 @@ export type ToroCapabilitySafeAlternative = {
   label: string;
   href: string;
   note: string;
-  external: true;
+  external: boolean;
 };
-
-const OFFICIAL_KROSS_BOOKING_URL = "https://dreamcatcherhotel.kross.travel/";
 
 function buildSafeAlternatives(
   menu: ToroResolvedMenu | null,
@@ -779,7 +777,7 @@ function buildSafeAlternatives(
       href: "/booking-assist",
       note:
         "TORO prepara fechas y ocupación; Kross confirma tarifas, disponibilidad y reserva final.",
-      external: true,
+      external: false,
     };
   }
 
