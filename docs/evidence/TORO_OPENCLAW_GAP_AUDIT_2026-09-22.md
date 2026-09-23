@@ -158,3 +158,39 @@ Current state remains `configured_unverified` until live evidence proves:
 - idempotency;
 - TORO identity/authority integration.
 
+
+
+## Canonical TORO guardrails already defined
+
+Supabase `private.tere_configuration` currently contains two active CRITICAL runtime guardrails relevant to OpenClaw/TERE:
+
+1. `tere-openclaw-demo-disclosure-once-20260921`
+   - demo disclosure once per isolated conversation;
+   - no repeated disclaimer after the initial disclosure;
+   - disclosure state should survive reconnect/replay-safe retry/restart;
+   - no duplicate outbound disclosure or side effects;
+   - no demo label in real mode.
+
+2. `tere-presend-truth-gate-20260918`
+   - Kross remains authority for live availability/rates/reservation/payment facts;
+   - exact date resolution in America/Costa_Rica;
+   - canonical TORO facts override stale conversational copy;
+   - promotions require current eligibility;
+   - sensitive reservation/payment/refund/identity/in-stay actions remain human-gated;
+   - guest sessions remain isolated;
+   - guest-safe context only;
+   - source freshness/consistency/unsupported-claim check before send.
+
+### Audit interpretation
+
+**Policy state:** DEFINED / ACTIVE in canonical TORO data.
+
+**Runtime-consumption state:** UNVERIFIED.
+
+OpenClaw must not be marked compliant merely because these guardrails exist in Supabase. The live runtime audit must prove that:
+- the host fetches/uses the current canonical configuration;
+- reconnect/replay preserves the once-per-session disclosure semantics;
+- pre-send truth gate is applied before outbound messages;
+- stale/failed config fetch fails safely;
+- guest isolation matches the policy;
+- no local prompt/config silently overrides the canonical guardrails.
