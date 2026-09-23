@@ -60,7 +60,7 @@ export const TORO_ACTION_TAXONOMY = [
     domains: ["TORO Revenue", "TORO Comms"],
     defaultRisk: "Low",
     examples: {
-      es: ["cotiza disponibilidad", "precio y disponibilidad"],
+      es: ["cotiza disponibilidad", "cotizar disponibilidad", "consultar disponibilidad", "precio y disponibilidad"],
       en: ["availability quote", "check availability"],
     },
   },
