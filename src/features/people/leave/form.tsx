@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 import { PEOPLE_LEAVE_TYPES, type PeopleLeaveType } from "./validation";
