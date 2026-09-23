@@ -50,11 +50,12 @@ async function probeCount(
   schema: string,
   table: string,
   orgId: string,
+  countColumn = "id",
 ): Promise<ToroSourceProbe> {
   const { count, error } = await supabase
     .schema(schema)
     .from(table)
-    .select("id", { count: "exact", head: true })
+    .select(countColumn, { count: "exact", head: true })
     .eq("org_id", orgId);
 
   return {
@@ -94,8 +95,9 @@ async function probeLatest(
   orgId: string,
   latestColumn: string,
   freshnessHours?: number,
+  countColumn = "id",
 ): Promise<ToroSourceProbe> {
-  const base = await probeCount(supabase, schema, table, orgId);
+  const base = await probeCount(supabase, schema, table, orgId, countColumn);
   if (!base.readable || base.rows === 0) return base;
 
   const { data, error } = await supabase
@@ -156,7 +158,15 @@ async function loadMenuSourceSnapshot(
     probeLatest(supabase, "operations", "projects", orgId, "updated_at", 24),
     probeLatest(supabase, "operations", "tasks", orgId, "updated_at", 24),
     probeLatest(supabase, "facilities", "maintenance_events", orgId, "updated_at", 168),
-    probeLatest(supabase, "facilities", "inspection_field_capture_v", orgId, "updated_at", 24),
+    probeLatest(
+      supabase,
+      "facilities",
+      "inspection_field_capture_v",
+      orgId,
+      "updated_at",
+      24,
+      "check_id",
+    ),
     probeLatest(supabase, "operations", "reservations", orgId, "snapshot_as_of", 6),
     probeCount(supabase, "operations", "current_reservations_safe", orgId),
     probeFilteredCount(supabase, "integrations", "kross_snapshot_health", orgId, [
