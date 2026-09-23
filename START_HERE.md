@@ -26,7 +26,7 @@ The product is built **inside-out**:
 
 ## Current scope
 
-- Prove TORO OS deeply inside Dreamcatcher.
+- Prove TORO Brain deeply inside Dreamcatcher through the TORO OS execution layer.
 - Remove fragmented or contradictory sources of truth.
 - Strengthen the internal engine, connector fabric, agent orchestration, governance, evidence and learning loops.
 - Keep WhatsApp and Portal work as late-stage product surfaces and validation tools, not as architectural foundations.
@@ -43,10 +43,13 @@ Dreamcatcher remains the reference implementation and test environment until the
 
 1. `START_HERE.md`
 2. `toro-context.yaml`
-3. `docs/product/TORO_OS_CONSTITUTION.md`
-4. `docs/product/NEW_BUSINESS_READINESS_GATE.md`
-5. The current execution plan relevant to the task
-6. Domain-specific technical contracts and tests
+3. `docs/product/TORO_BRAIN_GENERAL_PLAN.md`
+4. `docs/product/TORO_BRAIN_CONSTITUTION.md`
+5. `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`
+6. `docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md`
+7. `docs/product/NEW_BUSINESS_READINESS_GATE.md`
+8. The current execution plan relevant to the task
+9. Domain-specific technical contracts and tests
 
 Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO Brain constitution.
 
