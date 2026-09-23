@@ -33,11 +33,11 @@ It understands:
 
 It coordinates the whole portfolio while respecting isolation boundaries.
 
-### TORO OS
+### TORO Brain operating/execution capabilities
 
-TORO OS is the operating/execution layer used inside a specific business/workspace.
+TORO Brain runs each business/workspace through the same product identity.
 
-It exposes the work of TORO Brain through:
+Its execution capabilities are exposed through:
 - TORO Portal;
 - WhatsApp/OpenClaw;
 - role-specific workspaces;
@@ -46,11 +46,11 @@ It exposes the work of TORO Brain through:
 - dashboards;
 - automations.
 
-TORO OS is not a second brain. It is an execution surface/runtime of TORO Brain.
+`TORO OS` is a technical legacy alias only where older keys, repository names or integrations still require it. It must not appear as a competing public product, brand or brain.
 
 ### TORO subsystems
 
-Subsystems such as TORO People, TORO Comms, TORO Finance and TORO Tools are internal capabilities of TORO Brain/TORO OS, not standalone products.
+Subsystems such as TORO People, TORO Comms, TORO Finance and TORO Tools are internal capabilities of TORO Brain, not standalone products.
 
 ## 2. Final target
 
