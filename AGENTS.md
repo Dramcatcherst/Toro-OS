@@ -27,7 +27,7 @@ If a historical document conflicts with the current constitution or context cont
 
 ## Product architecture
 
-TORO Brain is the master intelligence/memory/governance/orchestration layer. TORO OS is its business execution layer.
+TORO Brain is the sole master intelligence/memory/governance/orchestration product and visible brand. Operating/execution capabilities live inside TORO Brain. `TORO OS` is a technical legacy alias only where old keys or components still depend on it.
 
 TORO Brain is built inside-out:
 
@@ -53,15 +53,19 @@ Never silently resolve a source conflict. Record the conflict, authority, freshn
 
 ## Brand
 
-Official TORO identity uses the approved blue bull.
+Official identity is **TORO Brain** only.
 
-Verified current source artwork:
-- `Dramcatcherst/toro-os-v88-new/public/assets/toro-azul-logo.jpg`
-- registry entry `BRAND-005`
-- approved V2 derived pack `public/assets/toro-blue-pack/`
-- V1 pack is deprecated.
+Canonical visual metaphor:
+- blue bull = the business / living organization;
+- integrated brain + microchip/circuit = biological intelligence + AI/computation coordinating the whole.
 
-Do not generate, redraw, recolor or substitute another bull for official product identity.
+Current masters:
+- `/TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
+  - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
+- `/TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+  - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
+
+Legacy blue-bull artwork remains provenance/reference only. Do not generate, redraw, recolor or substitute another bull for official product identity. Do not use bullfighting/violent imagery. Do not present TORO OS as a parallel public-facing product; preserve old TORO OS names only when technically required for compatibility.
 
 ## Work quality
 
