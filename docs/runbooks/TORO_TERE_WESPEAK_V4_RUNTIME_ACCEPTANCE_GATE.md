@@ -138,3 +138,38 @@ Each remains separately governed.
 Direct identifiable post-V4 WeSpeak QA/runtime evidence is not currently available to TORO.
 
 Do not infer V4 consumption from older WeSpeak alerts.
+
+
+## Evidence packet intake
+
+Prepared artifacts:
+- `data/tere_v4_runtime_evidence_template_v1.json`;
+- `src/features/tere/runtime-evidence.ts`.
+
+Purpose:
+- capture one isolated post-V4 runtime test in a single machine-readable packet;
+- validate runtime identity/version/hash/timestamp/safety flags;
+- require all five canonical scenario keys exactly once;
+- convert the evidence packet directly into `TereRuntimeAcceptanceInput`;
+- then run `evaluateTereRuntimeAcceptance`.
+
+The shipped template is **not evidence** and is expected to fail acceptance until populated from an actual isolated runtime QA.
+
+Required evidence fields:
+- runtime identified boolean;
+- runtime name;
+- runtime version;
+- observed config hash;
+- tested_at;
+- isolated context boolean;
+- real guest contacted boolean;
+- sensitive external send occurred boolean;
+- unauthorized action occurred boolean;
+- channel continuity verified boolean;
+- five scenario pass/fail results with notes.
+
+Do not:
+- mark template defaults as observed runtime state;
+- invent a runtime version/hash;
+- use a real guest merely to fill the packet;
+- bypass the canonical evaluator.

@@ -644,6 +644,9 @@ tere_wespeak_runtime_gate:
   runbook: docs/runbooks/TORO_TERE_WESPEAK_V4_RUNTIME_ACCEPTANCE_GATE.md
   evidence: docs/evidence/TERE_WESPEAK_RUNTIME_REBASELINE_2026-09-23.md
   evaluator: src/features/tere/runtime-acceptance.ts
+  evidence_packet_validator: src/features/tere/runtime-evidence.ts
+  evidence_packet_template: data/tere_v4_runtime_evidence_template_v1.json
+  evidence_packet_template_is_runtime_evidence: false
   qa_packet: data/tere_v4_runtime_qa_cases_v1.json
   qa_packet_case_count: 5
   qa_packet_ci_guarded: true
@@ -655,6 +658,7 @@ tere_wespeak_runtime_gate:
   v4_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
+  evidence_intake_state: implemented_ci_pending_merge
   pre_v4_alert_baseline:
     evidence: docs/evidence/TERE_WESPEAK_ALERT_BASELINE_2026-09-23.md
     window: "2026-09-14..2026-09-23"

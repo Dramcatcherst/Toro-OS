@@ -49,3 +49,21 @@ Evaluator:
 - `src/features/tere/runtime-acceptance.ts`
 
 No real guest should be used merely to prove prompt/config consumption.
+
+
+## Evidence-intake preparation — 2026-09-23
+
+Added internally:
+- machine-readable runtime evidence template;
+- evidence packet validator;
+- CI tests that prove:
+  - the blank template is structurally valid but acceptance-blocked;
+  - a complete synthetic fixture can flow into the canonical acceptance evaluator;
+  - duplicate/missing scenario evidence fails closed.
+
+This does **not** change runtime-consumption status.
+
+Current state remains:
+- WeSpeak runtime active: VERIFIED;
+- post-V4 activity/hash: UNVERIFIED;
+- V4 consumption: UNVERIFIED.
