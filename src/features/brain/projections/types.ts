@@ -18,3 +18,21 @@ export type SafeMediaProjectionRow = {
   nextReview: string | null;
   updatedAt: string;
 };
+
+
+export type AuthorizedKnowledgeProjection = {
+  id: string;
+  orgId: string;
+  knowledgeKey: string;
+  title: string;
+  visibility: string;
+  verifiedStatus: string;
+  riskLevel: string;
+  requiresHumanVerification: boolean;
+  lastVerified: string | null;
+  nextReview: string | null;
+  sourceSystem: string | null;
+  sourceAsOf: string | null;
+  projectionUpdatedAt: string | null;
+  projectionStatus: string | null;
+};
