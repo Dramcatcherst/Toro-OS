@@ -107,6 +107,7 @@ canonical_product_specs:
   communications: docs/product/TORO_COMMS_V1.md
   tools: docs/product/TORO_TOOLS_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
+  visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
 
 canonical_sources:
   product_constitution: github
