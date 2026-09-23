@@ -703,8 +703,6 @@ Do not prioritize now.
 
 ---
 
----
-
 # 16A. Product Proof and commercialization focus — effective 2026-09-23
 
 Canonical strategy:
