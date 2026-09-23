@@ -499,19 +499,34 @@ The visual layer consumes projections of canonical data.
 
 ### 11.1 Initial graph model
 
-Prefer PostgreSQL tables/views first:
-- `scope_entities`
-- `scope_relationships`
-- `brain_node_projection`
-- `brain_edge_projection`
-- `activity_events`
-- `workflow_runs`
-- `action_runs`
-- `evidence_refs`
+Physical graph storage must follow the existing `TORO_SCOPE_GRAPH_V1.md` contract.
 
-Exact names must be reconciled with existing schemas before migration.
+Current rule:
+- reuse strong typed domain tables first;
+- do not create generic Scope Graph tables merely to render the Brain;
+- prefer read models/views/projections over duplicated operational truth;
+- defer a generic `brain.scopes` / relationship registry until the portability or second-scope pilot proves it necessary;
+- if a cross-entity relationship registry becomes necessary, prefer a thin relationship/index layer over flattening all domain entities into one universal table.
 
-Do not create duplicates if equivalent canonical tables already exist.
+The first Visual Brain prototype should therefore compose permission-filtered projections from existing canonical sources such as:
+- organizations;
+- properties;
+- users/memberships;
+- employees/people;
+- projects/goals when canonical;
+- systems/connectors;
+- approvals/audit/evidence;
+- domain facts.
+
+Event/workflow contracts may be introduced when required, but exact physical tables for:
+- normalized activity events;
+- workflow/action runs;
+- evidence references;
+- graph node/edge projections
+
+must be reconciled with existing domain schemas and execution contracts before any DDL.
+
+Do not create duplicates if equivalent canonical tables, logs or projections already exist.
 
 ### 11.2 Graph database decision
 
