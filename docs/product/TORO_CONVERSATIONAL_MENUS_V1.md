@@ -735,3 +735,32 @@ It does **not** prove:
 - real-user adoption.
 
 Promotion to a production surface requires role/identity context, permission filtering, session/menu-state persistence, channel rendering and real-user QA.
+
+
+## 16B. Authenticated source-aware menu
+
+Route:
+- `/my-toro`
+
+Current behavior:
+- resolves the authenticated TORO context;
+- reads linked employee preferred name and canonical position code/name;
+- selects the role/position menu automatically;
+- starts every capability blocked;
+- promotes only supported reads to `READ_ONLY` after source-specific RLS and freshness probes pass;
+- fails closed when source probing errors, is empty where data is required, or is stale for a time-sensitive workflow.
+
+Initial source-aware promotions:
+- owner/executive decisions, projects and operational exceptions when current;
+- room/villa catalog reads;
+- experiences catalog reads;
+- maintenance priority/task reads when current;
+- manager hotel-today read when current.
+
+Intentionally blocked until stronger authority exists:
+- live arrivals/departures when reservation/stay authority is stale or incomplete;
+- live quote/availability;
+- omnichannel guest inbox;
+- current cash/finance when bank evidence is stale.
+
+This is a read-only product proof surface. Visibility never grants execution authority.
