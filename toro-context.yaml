@@ -2,7 +2,7 @@ product:
   id: toro-brain
   name: TORO Brain
   category: AI Portfolio and Business Operating Brain
-  context_version: "2026.09.22-brain-master"
+  context_version: "2026.09.22-brain-cognitive-v1"
   status: internal_proof
   external_business_onboarding: blocked
   visible_brand: TORO Brain
@@ -96,6 +96,7 @@ canonical_product_specs:
   brain_constitution: docs/product/TORO_BRAIN_CONSTITUTION.md
   brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
+  cognitive_operating_model: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
   openclaw_runtime_audit: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
@@ -134,6 +135,13 @@ agent_rules:
   preserve_evidence: true
   prefer_reversible_changes: true
   never_claim_unverified_execution: true
+  follow_cognitive_operating_model: true
+  understand_before_optimize: true
+  whole_value_stream_before_local_optimization: true
+  outcomes_over_outputs: true
+  eliminate_simplify_standardize_before_automate: true
+  autonomy_is_per_workflow_not_global: true
+  fail_closed_on_material_truth_freshness_gap: true
 
 product_rules:
   one_master_brain: true
@@ -266,6 +274,45 @@ brand:
     - durable_rights_evidence
     - trademark_and_domain_clearance
     - governed_external_backup
+
+cognitive_operating_model:
+  spec: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
+  loop:
+    - scope
+    - understand
+    - map
+    - baseline
+    - diagnose
+    - choose
+    - design
+    - execute_experiment
+    - verify
+    - standardize
+    - automate
+    - autonomize
+    - learn
+    - repeat
+  optimization_order:
+    - eliminate
+    - simplify
+    - standardize
+    - connect_digitize
+    - automate
+    - agentize
+    - autonomize
+  autonomy_levels:
+    A0: observe
+    A1: explain
+    A2: recommend
+    A3: prepare
+    A4: execute_with_approval
+    A5: bounded_autonomy
+    A6: closed_loop_pro
+  autonomy_promotion_requires_evidence: true
+  autonomy_auto_demotion_on_drift_or_quality_failure: true
+  high_risk_can_remain_human_gated_at_A6: true
+  not_every_finding_becomes_task: true
+  research_stops_when_more_evidence_will_not_materially_change_next_safe_action: true
 
 readiness:
   gate_document: docs/product/NEW_BUSINESS_READINESS_GATE.md

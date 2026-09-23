@@ -1335,3 +1335,74 @@ BLOCKED:
 RULE:
 - do not apply membership DDL to production until isolated Postgres/Supabase QA validates constraints, grants, RLS positive/negative cases, backfill idempotency and rollback;
 - do not infer the non-employee ADMIN membership type as owner from role alone.
+
+
+---
+
+# 22. Cognitive Operating Model — how TORO thinks
+
+Canonical subordinate specification:
+
+`docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md`
+
+This specification defines the repeatable business-transformation method TORO uses from a new/poorly understood business through governed optimization and bounded autonomous operation.
+
+Canonical lifecycle:
+
+```text
+Scope
+-> Understand
+-> Map
+-> Baseline
+-> Diagnose
+-> Choose
+-> Design
+-> Execute / Experiment
+-> Verify
+-> Standardize
+-> Automate
+-> Autonomize
+-> Learn
+-> Repeat
+```
+
+Canonical optimization order:
+
+```text
+Eliminate -> Simplify -> Standardize -> Connect/Digitize -> Automate -> Agentize -> Autonomize
+```
+
+Key rules:
+
+- understand the business and end-to-end value stream before local optimization;
+- truth/source authority/freshness precede material action;
+- prioritize constraints and measurable outcomes, not output volume;
+- not every finding becomes a task;
+- automation is not the first treatment for a broken or unstable process;
+- autonomy is earned and governed **per workflow**, never granted globally to a business;
+- TORO Pro means closed-loop bounded outcome ownership under goals, budgets, permissions, evidence, monitoring, rollback and exception rules;
+- high-risk classes may remain approval-gated at every maturity level;
+- autonomy is automatically reduced when source health, evidence, policy, configuration or outcome quality degrades;
+- generalize reusable methods without leaking scope-owned facts.
+
+This cognitive model is implemented through existing TORO subsystems and current task/project/governance/data contracts. It does **not** create another brain, project hierarchy, agent universe or database.
+
+## Dreamcatcher proof requirement
+
+Before TORO can claim generalized “new business -> optimized -> autonomous” capability, Dreamcatcher must provide real evidence of:
+
+1. cross-functional Business Anatomy coverage;
+2. end-to-end value-stream mapping;
+3. governed baselines;
+4. constraint/opportunity prioritization;
+5. elimination/simplification before automation;
+6. outcome verification;
+7. workflow-level autonomy promotion/demotion;
+8. durable learning from real corrections;
+9. owner operation by exception rather than a growing raw backlog.
+
+## Relationship to readiness
+
+The New Business Readiness Gate remains authoritative for external onboarding.
+
+The Cognitive Operating Model defines **how TORO thinks and improves** once a scope is authorized; the readiness gate defines **when TORO is allowed to onboard/operate another real business**.
