@@ -7,11 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run src/lib/action-taxonomy.test.ts src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts && npm run test:workstation-health && npm run test:agent-eval && npm run test:agent-steward",
+    "test": "vitest run src/lib/action-taxonomy.test.ts src/lib/vercel-runtime.test.ts src/features/context/resolver.test.ts src/features/auth/safe-next.test.ts src/app/api/brain/context/route.test.ts src/features/brain/canonical-read.test.ts src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts && npm run test:workstation-health && npm run test:agent-eval && npm run test:agent-steward && npm run test:menu-profiles",
     "health:pc": "pwsh -NoProfile -File scripts/pc-health.ps1",
     "test:workstation-health": "node --test tests/pc-health-classifier.test.mjs",
     "test:agent-eval": "node --test tests/agent-eval-validator.test.mjs && node scripts/agent-eval-validator.mjs",
-    "test:agent-steward": "node --test tests/agent-steward-static-audit.test.mjs && node scripts/agent-steward-static-audit.mjs"
+    "test:agent-steward": "node --test tests/agent-steward-static-audit.test.mjs && node scripts/agent-steward-static-audit.mjs",
+    "test:menu-profiles": "node --test tests/menu-profile-static-audit.test.mjs && node scripts/menu-profile-static-audit.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.7.0",
