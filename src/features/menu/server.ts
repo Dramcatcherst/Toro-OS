@@ -6,6 +6,7 @@ import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
+import { buildExecutiveBriefItems } from "./executive-brief";
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
@@ -396,73 +397,14 @@ async function loadCapabilityFocus(
       return null;
     }
 
-    const decisionItems = (decisionsResult.data ?? [])
-      .filter((raw) => {
-        const row = raw as unknown as Record<string, unknown>;
-        const status = (cleanText(row.status) ?? "").toLowerCase();
-        return !["processed", "respondida", "superseded"].includes(status);
-      })
-      .slice(0, 2)
-      .map((raw) => {
-        const row = raw as unknown as Record<string, unknown>;
-        return {
-          title: cleanText(row.decision_title) ?? "Decisión",
-          meta: ["Decisión", cleanText(row.status), cleanText(row.priority)]
-            .filter(Boolean)
-            .join(" · "),
-          detail: cleanText(row.next_action) ?? undefined,
-        };
-      });
-
-    const projectItems = (projectsResult.data ?? [])
-      .slice(0, 2)
-      .map((raw) => {
-        const row = raw as unknown as Record<string, unknown>;
-        const completion = cleanNumber(row.completion_pct);
-        return {
-          title: cleanText(row.project_name) ?? "Proyecto",
-          meta: [
-            "Proyecto",
-            cleanText(row.status),
-            cleanText(row.priority),
-            completion === null ? null : `${completion}%`,
-          ]
-            .filter(Boolean)
-            .join(" · "),
-          detail: cleanText(row.next_action) ?? undefined,
-        };
-      });
-
-    const taskItems = (tasksResult.data ?? [])
-      .filter((raw) => {
-        const row = raw as unknown as Record<string, unknown>;
-        const status = (cleanText(row.status) ?? "").toLowerCase();
-        const priority = (cleanText(row.priority) ?? "").toLowerCase();
-        return status === "in_progress" ||
-          (status === "blocked" && ["critical", "p0"].includes(priority));
-      })
-      .slice(0, 3)
-      .map((raw) => {
-        const row = raw as unknown as Record<string, unknown>;
-        const due = cleanText(row.due_date);
-        return {
-          title: cleanText(row.task_name) ?? "Tarea",
-          meta: [
-            "Tarea",
-            cleanText(row.status),
-            cleanText(row.priority),
-            due ? `vence ${due}` : null,
-          ]
-            .filter(Boolean)
-            .join(" · "),
-          detail: cleanText(row.next_action) ?? undefined,
-        };
-      });
-
     return {
       capability,
       label,
-      items: [...decisionItems, ...projectItems, ...taskItems].slice(0, 7),
+      items: buildExecutiveBriefItems({
+        decisions: (decisionsResult.data ?? []) as unknown as Record<string, unknown>[],
+        projects: (projectsResult.data ?? []) as unknown as Record<string, unknown>[],
+        tasks: (tasksResult.data ?? []) as unknown as Record<string, unknown>[],
+      }),
     };
   }
 
