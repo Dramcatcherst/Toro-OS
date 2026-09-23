@@ -160,6 +160,12 @@ Its purpose is to close the gap between:
 
 ## 7. The 12 workflow proof set
 
+Canonical execution board:
+- docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
+
+The board maps each proof to existing pilots/data/contracts first. It must not create duplicate projects merely to satisfy the workflow count.
+
+
 The readiness-gate requirement for representative workflows becomes a core product milestone.
 
 Initial target set:
