@@ -233,8 +233,21 @@ describe("loadToroCommsInbox", () => {
       data: {
         messages: [],
         lastReadAt: null,
-        notificationsEnabled: true,
+        notificationsEnabled: false,
         unreadCount: 0,
+      },
+    });
+  });
+
+  it("defaults notifications to disabled when no read-state exists", async () => {
+    const mock = client({ readState: null });
+    createServerSupabaseClientMock.mockResolvedValue(mock.client);
+
+    await expect(loadToroCommsInbox(context())).resolves.toMatchObject({
+      status: "ready",
+      data: {
+        lastReadAt: null,
+        notificationsEnabled: false,
       },
     });
   });

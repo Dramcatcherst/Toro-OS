@@ -16,7 +16,8 @@ describe.each([
 
     expect(navigation.getByRole("link", { name: "Inicio" })).toHaveAttribute("href", "/toro");
     expect(navigation.getByRole("link", { name: "Decisiones" })).toHaveAttribute("href", "/toro/decisiones");
-    expect(navigation.getAllByRole("link")).toHaveLength(2);
+    expect(navigation.getByRole("link", { name: "Mensajes" })).toHaveAttribute("href", "/toro/mensajes");
+    expect(navigation.getAllByRole("link")).toHaveLength(3);
 
     const unavailableHotel = navigation.getByText("Hotel").closest("[aria-disabled='true']");
     expect(unavailableHotel).toBeInTheDocument();

@@ -63,7 +63,7 @@ export async function loadToroCommsInbox(
   const notificationsEnabled =
     typeof readStateResult.data?.notifications_enabled === "boolean"
       ? readStateResult.data.notifications_enabled
-      : true;
+      : false;
 
   return {
     status: "ready",
