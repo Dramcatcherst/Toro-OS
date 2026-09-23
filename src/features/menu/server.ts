@@ -50,11 +50,12 @@ async function probeCount(
   schema: string,
   table: string,
   orgId: string,
+  countColumn = "id",
 ): Promise<ToroSourceProbe> {
   const { count, error } = await supabase
     .schema(schema)
     .from(table)
-    .select("id", { count: "exact", head: true })
+    .select(countColumn, { count: "exact", head: true })
     .eq("org_id", orgId);
 
   return {
@@ -94,8 +95,9 @@ async function probeLatest(
   orgId: string,
   latestColumn: string,
   freshnessHours?: number,
+  countColumn = "id",
 ): Promise<ToroSourceProbe> {
-  const base = await probeCount(supabase, schema, table, orgId);
+  const base = await probeCount(supabase, schema, table, orgId, countColumn);
   if (!base.readable || base.rows === 0) return base;
 
   const { data, error } = await supabase
@@ -142,6 +144,7 @@ async function loadMenuSourceSnapshot(
     projects,
     tasks,
     maintenanceEvents,
+    inspectionFieldCapture,
     reservations,
     currentReservationsSafe,
     krossCurrentHealth,
@@ -155,6 +158,15 @@ async function loadMenuSourceSnapshot(
     probeLatest(supabase, "operations", "projects", orgId, "updated_at", 24),
     probeLatest(supabase, "operations", "tasks", orgId, "updated_at", 24),
     probeLatest(supabase, "facilities", "maintenance_events", orgId, "updated_at", 168),
+    probeLatest(
+      supabase,
+      "facilities",
+      "inspection_field_capture_v",
+      orgId,
+      "updated_at",
+      24,
+      "check_id",
+    ),
     probeLatest(supabase, "operations", "reservations", orgId, "snapshot_as_of", 6),
     probeCount(supabase, "operations", "current_reservations_safe", orgId),
     probeFilteredCount(supabase, "integrations", "kross_snapshot_health", orgId, [
@@ -173,6 +185,7 @@ async function loadMenuSourceSnapshot(
     projects,
     tasks,
     maintenanceEvents,
+    inspectionFieldCapture,
     reservations,
     currentReservationsSafe,
     krossCurrentHealth,
@@ -320,6 +333,7 @@ const FOCUSABLE_CAPABILITIES = new Set([
   "executive.decisions",
   "catalog.rooms_villas",
   "catalog.experiences",
+  "maintenance.priorities",
 ]);
 
 function cleanText(value: unknown) {
@@ -459,6 +473,68 @@ async function loadCapabilityFocus(
     };
   }
 
+  if (capability === "maintenance.priorities") {
+    const { data: roundData, error: roundError } = await supabase
+      .schema("facilities")
+      .from("inspection_rounds")
+      .select("round_key, zone_label, status, created_at")
+      .eq("org_id", orgId)
+      .like("round_key", "MNT-DAILY-P0-P1-%")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (roundError || !Array.isArray(roundData) || !roundData.length) {
+      return null;
+    }
+
+    const round = roundData[0] as unknown as Record<string, unknown>;
+    const roundKey = cleanText(round.round_key);
+    if (!roundKey) return null;
+
+    const { data, error } = await supabase
+      .schema("facilities")
+      .from("inspection_field_capture_v")
+      .select("check_order, area_label, check_text, result_status, requires_supervisor_review, closure_ready")
+      .eq("org_id", orgId)
+      .eq("round_key", roundKey)
+      .order("check_order", { ascending: true })
+      .limit(12);
+
+    if (error || !Array.isArray(data)) return null;
+
+    const pending = data.filter((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      return cleanText(row.result_status) === "pending";
+    });
+
+    const displayRows = pending.length ? pending : data;
+
+    return {
+      capability,
+      label,
+      items: displayRows.map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const area = cleanText(row.area_label);
+        const status = cleanText(row.result_status) ?? "pending";
+        const supervisor = row.requires_supervisor_review === true;
+        return {
+          title: cleanText(row.check_text) ?? "Check de mantenimiento",
+          meta: [
+            area,
+            status === "pending" ? "Pendiente" : status,
+            supervisor ? "Revisión supervisor" : null,
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          detail:
+            row.closure_ready === true
+              ? "Listo para cierre según evidencia registrada."
+              : undefined,
+        };
+      }),
+    };
+  }
+
   if (capability === "catalog.experiences") {
     const { data, error } = await supabase
       .schema("catalog")
@@ -504,7 +580,7 @@ function capabilityNote(
     "operations.exceptions": "Excepciones operativas recientes disponibles.",
     "catalog.rooms_villas": "Catálogo interno de habitaciones y villas disponible.",
     "catalog.experiences": "Catálogo de experiencias disponible.",
-    "maintenance.priorities": "Prioridades recientes de mantenimiento disponibles.",
+    "maintenance.priorities": "Ronda diaria y checks de mantenimiento disponibles.",
     "maintenance.my_tasks": "Tareas recientes de mantenimiento disponibles.",
     "operations.hotel_today": "Lectura operativa actual disponible.",
   };
