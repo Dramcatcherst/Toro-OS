@@ -1,0 +1,32 @@
+name: TORO Multimodal Stage C Tests
+
+on:
+  pull_request:
+    branches:
+      - feat/toro-os-phase-1-executive-shell-20260914
+    paths:
+      - "src/features/brain/**"
+      - "src/lib/brain-contracts.ts"
+      - "src/app/brain/**"
+      - "src/features/context/**"
+      - "src/features/knowledge/**"
+      - ".github/workflows/multimodal-stage-c-tests.yml"
+
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Unit and integration tests
+        run: npm test
