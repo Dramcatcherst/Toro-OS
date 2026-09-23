@@ -12,14 +12,16 @@ Before substantive work:
 
 1. Read `START_HERE.md`.
 2. Read `toro-context.yaml`.
-3. Read `docs/product/TORO_BRAIN_CONSTITUTION.md`.
-4. Read `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md` when scope/portfolio/product boundaries matter.
-5. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
-6. Identify the source of authority for every material fact or write.
-7. Inspect existing implementation before creating a second system.
-8. Define verification and rollback before risky changes.
-9. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
-10. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
+3. Read `docs/product/TORO_BRAIN_GENERAL_PLAN.md`.
+4. Read `docs/product/TORO_BRAIN_CONSTITUTION.md`.
+5. Read `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md` when scope/portfolio/product boundaries matter.
+6. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
+7. Identify the source of authority for every material fact or write.
+8. Map the request into the TORO Brain General Plan: scope, subsystem, CURRENT/TARGET/NEXT/FUTURE, priority and dependencies.
+9. Inspect existing implementation before creating a second system.
+10. Define verification and rollback before risky changes.
+11. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
+12. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
 
@@ -120,3 +122,19 @@ When the same error or confusion occurs twice:
 5. measure whether the recurrence stops.
 
 Do not solve repeated systemic problems by making prompts longer forever.
+
+
+## General Plan rule
+
+`docs/product/TORO_BRAIN_GENERAL_PLAN.md` is the sole canonical Plan General.
+
+All new material work must:
+- map to a scope;
+- map to an existing TORO subsystem or justify why one cannot own it;
+- classify itself as CURRENT, TARGET, NEXT or FUTURE;
+- check for duplicate projects/plans/implementations;
+- update the Plan General when the program direction materially changes.
+
+Domain plans and implementation plans are subordinate. They may not become parallel master plans.
+
+If a new request is reusable, preserve the immediate business solution and separately extract the reusable TORO capability/skill/profile without leaking private scope data.
