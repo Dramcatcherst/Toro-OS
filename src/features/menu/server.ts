@@ -329,6 +329,7 @@ export type ToroCapabilityFocus = {
 };
 
 const FOCUSABLE_CAPABILITIES = new Set([
+  "executive.brief",
   "projects.status",
   "executive.decisions",
   "catalog.rooms_villas",
@@ -352,6 +353,118 @@ async function loadCapabilityFocus(
 ): Promise<ToroCapabilityFocus | null> {
   if (!context.orgId || !FOCUSABLE_CAPABILITIES.has(capability)) return null;
   const orgId = context.orgId;
+
+  if (capability === "executive.brief") {
+    const recentCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+    const [decisionsResult, projectsResult, tasksResult] = await Promise.all([
+      supabase
+        .schema("operations")
+        .from("executive_decisions")
+        .select("decision_title, status, priority, next_action, updated_at")
+        .eq("org_id", orgId)
+        .gte("updated_at", recentCutoff)
+        .order("updated_at", { ascending: false })
+        .limit(8),
+      supabase
+        .schema("operations")
+        .from("projects")
+        .select("project_name, status, priority, next_action, completion_pct, updated_at")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .in("status", ["NOW", "BLOCKED"])
+        .gte("updated_at", recentCutoff)
+        .order("updated_at", { ascending: false })
+        .limit(6),
+      supabase
+        .schema("operations")
+        .from("tasks")
+        .select("task_name, status, priority, next_action, due_date, updated_at")
+        .eq("org_id", orgId)
+        .eq("active", true)
+        .in("status", ["in_progress", "blocked"])
+        .gte("updated_at", recentCutoff)
+        .order("updated_at", { ascending: false })
+        .limit(12),
+    ]);
+
+    if (
+      decisionsResult.error ||
+      projectsResult.error ||
+      tasksResult.error
+    ) {
+      return null;
+    }
+
+    const decisionItems = (decisionsResult.data ?? [])
+      .filter((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const status = (cleanText(row.status) ?? "").toLowerCase();
+        return !["processed", "respondida", "superseded"].includes(status);
+      })
+      .slice(0, 2)
+      .map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        return {
+          title: cleanText(row.decision_title) ?? "Decisión",
+          meta: ["Decisión", cleanText(row.status), cleanText(row.priority)]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.next_action) ?? undefined,
+        };
+      });
+
+    const projectItems = (projectsResult.data ?? [])
+      .slice(0, 2)
+      .map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const completion = cleanNumber(row.completion_pct);
+        return {
+          title: cleanText(row.project_name) ?? "Proyecto",
+          meta: [
+            "Proyecto",
+            cleanText(row.status),
+            cleanText(row.priority),
+            completion === null ? null : `${completion}%`,
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.next_action) ?? undefined,
+        };
+      });
+
+    const taskItems = (tasksResult.data ?? [])
+      .filter((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const status = (cleanText(row.status) ?? "").toLowerCase();
+        const priority = (cleanText(row.priority) ?? "").toLowerCase();
+        return status === "in_progress" ||
+          (status === "blocked" && ["critical", "p0"].includes(priority));
+      })
+      .slice(0, 3)
+      .map((raw) => {
+        const row = raw as unknown as Record<string, unknown>;
+        const due = cleanText(row.due_date);
+        return {
+          title: cleanText(row.task_name) ?? "Tarea",
+          meta: [
+            "Tarea",
+            cleanText(row.status),
+            cleanText(row.priority),
+            due ? `vence ${due}` : null,
+          ]
+            .filter(Boolean)
+            .join(" · "),
+          detail: cleanText(row.next_action) ?? undefined,
+        };
+      });
+
+    return {
+      capability,
+      label,
+      items: [...decisionItems, ...projectItems, ...taskItems].slice(0, 7),
+    };
+  }
 
   if (capability === "projects.status") {
     const { data, error } = await supabase
@@ -574,7 +687,7 @@ function capabilityNote(
   state: ToroMenuAvailabilityState | "UI",
 ): string {
   const readNotes: Record<string, string> = {
-    "executive.brief": "Resumen interno actualizado disponible.",
+    "executive.brief": "Resumen de decisiones, proyectos y excepciones recientes disponible.",
     "executive.decisions": "Decisiones internas recientes disponibles.",
     "projects.status": "Proyectos internos actualizados disponibles.",
     "operations.exceptions": "Excepciones operativas recientes disponibles.",
