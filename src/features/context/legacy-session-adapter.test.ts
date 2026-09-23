@@ -82,6 +82,30 @@ describe("resolveLegacySessionRole", () => {
     ).toBe("FINANZAS");
   });
 
+  it("maps canonical employee and People roles from the active organization", () => {
+    expect(resolveLegacySessionRole({ context: orgContext(["EMPLEADO"]) })).toBe(
+      "EMPLEADO",
+    );
+    expect(resolveLegacySessionRole({ context: orgContext(["RRHH"]) })).toBe(
+      "RRHH",
+    );
+    expect(
+      resolveLegacySessionRole({ context: orgContext(["JEFE_DEPARTAMENTO"]) }),
+    ).toBe("JEFE_DEPARTAMENTO");
+    expect(resolveLegacySessionRole({ context: orgContext(["AUDITOR"]) })).toBe(
+      "AUDITOR",
+    );
+  });
+
+  it("allows an explicit functional experience only inside active membership", () => {
+    expect(
+      resolveLegacySessionRole({
+        context: orgContext(["EMPLEADO"]),
+        explicitToroRole: "OPERACIONES",
+      }),
+    ).toBe("OPERACIONES");
+  });
+
   it("returns null for personal context", () => {
     const personal: ToroResolvedContext = {
       ...orgContext(["GERENCIA"]),
