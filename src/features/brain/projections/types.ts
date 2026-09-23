@@ -36,3 +36,14 @@ export type AuthorizedKnowledgeProjection = {
   projectionUpdatedAt: string | null;
   projectionStatus: string | null;
 };
+
+
+export type SafeMediaAssignment = {
+  id: string;
+  assetId: string;
+  targetType: "room" | "knowledge" | "asset";
+  targetKey: string;
+  mediaRole: string;
+  verifiedStatus: string;
+  requiresHumanVerification: boolean;
+};
