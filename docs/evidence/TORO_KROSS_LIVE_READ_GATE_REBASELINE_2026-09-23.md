@@ -130,3 +130,32 @@ Rollback source:
 - `supabase/drafts/rollback_current_reservations_safe_pre_20260923.sql`.
 
 This migration is a read-safety hardening only. It changes no reservation rows and creates no PMS write path.
+
+
+## Idempotency hardening after rebaseline
+
+Applied production migration:
+- `kross_reservation_scope_identity_guard_20260923`.
+
+Result:
+- unique partial index:
+  - `operations.reservations_kross_scope_external_uq`;
+- key:
+  - `(org_id, property_id, external_reservation_id)`;
+- applies when:
+  - `source_system='Kross'`;
+  - `external_reservation_id is not null`.
+
+Pre-application verification:
+- existing reservation rows with external identity: 33;
+- distinct scoped Kross identities: 33;
+- duplicate groups under the new key: 0.
+
+Post-application verification:
+- index present;
+- duplicate groups: 0.
+
+Rollback:
+- `supabase/drafts/rollback_kross_reservation_scope_identity_20260923.sql`.
+
+No reservation row was changed by this migration.

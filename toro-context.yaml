@@ -944,10 +944,23 @@ product_proof_focus:
 
 kross_live_read_gate:
   rebaselined_on: "2026-09-23"
+  normalizer: src/features/kross/normalize-reservation.ts
+  acceptance_evaluator: src/features/kross/acceptance.ts
+  internal_normalization_state: implemented_ci_verified
+  scoped_identity_guard:
+    migration: kross_reservation_scope_identity_guard_20260923
+    index: operations.reservations_kross_scope_external_uq
+    key:
+      - org_id
+      - property_id
+      - external_reservation_id
+    duplicate_groups_after_apply: 0
+    rollback: supabase/drafts/rollback_kross_reservation_scope_identity_20260923.sql
   acceptance_runbook: docs/runbooks/TORO_KROSS_FIRST_LIVE_READ_ACCEPTANCE_GATE.md
   evidence: docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md
   canonical_task: kross_readonly_reservation_mirror_2026_09
-  transport_state: blocked_not_verified_live
+  transport_state: blocked_external_transport_not_available_to_toro
+  external_transport_request_state: provider_response_pending
   schema_state: present
   source_is_live_rows: 0
   current_reservations_safe_rows: 0
