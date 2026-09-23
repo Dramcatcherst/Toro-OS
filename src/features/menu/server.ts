@@ -458,12 +458,55 @@ async function loadCapabilityFocus(
   return null;
 }
 
+
+function capabilityNote(
+  capability: string,
+  state: ToroMenuAvailabilityState | "UI",
+): string {
+  const readNotes: Record<string, string> = {
+    "executive.brief": "Resumen interno actualizado disponible.",
+    "executive.decisions": "Decisiones internas recientes disponibles.",
+    "projects.status": "Proyectos internos actualizados disponibles.",
+    "operations.exceptions": "Excepciones operativas recientes disponibles.",
+    "catalog.rooms_villas": "Catálogo interno de habitaciones y villas disponible.",
+    "catalog.experiences": "Catálogo de experiencias disponible.",
+    "maintenance.priorities": "Prioridades recientes de mantenimiento disponibles.",
+    "maintenance.my_tasks": "Tareas recientes de mantenimiento disponibles.",
+    "operations.hotel_today": "Lectura operativa actual disponible.",
+  };
+
+  const blockedNotes: Record<string, string> = {
+    "finance.exceptions": "Falta evidencia bancaria suficientemente actual.",
+    "guest.arrivals_departures": "Falta verdad live de reservas/estancias del PMS.",
+    "comms.guest_messages": "La bandeja omnicanal live todavía no está verificada.",
+    "hospitality.quote": "Cotizar exige precio y disponibilidad live del PMS.",
+    "finance.payment_status": "Falta estado financiero actual y autorizado.",
+    "finance.collections": "Falta estado de cobro actual y autorizado.",
+  };
+
+  if (state === "READ_ONLY" || state === "READY") {
+    return readNotes[capability] ?? "Lectura disponible con fuente autorizada.";
+  }
+
+  if (state === "BLOCKED") {
+    return blockedNotes[capability] ?? "Todavía falta una fuente o permiso verificable.";
+  }
+
+  if (state === "CONNECT") return "Falta conectar la herramienta necesaria.";
+  if (state === "REQUEST_ACCESS") return "Falta permiso para usar esta función.";
+  if (state === "DEGRADED") return "La fuente existe, pero su estado requiere revisión.";
+  if (state === "UI") return "Navegación disponible.";
+
+  return "Todavía no disponible en este contexto.";
+}
+
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
   menu: ToroResolvedMenu | null;
   sourceReadiness: ToroSourceReadiness | null;
   profileSummary: ToroProfileSummaryItem[];
+  capabilityNotes: Record<string, string>;
   focusableCapabilities: string[];
   focus: ToroCapabilityFocus | null;
   state: "resolved" | "context_choice_required" | "no_menu";
@@ -483,6 +526,7 @@ export async function resolveCurrentToroReadOnlyMenu(
       menu: null,
       sourceReadiness: null,
       profileSummary: [],
+      capabilityNotes: {},
       focusableCapabilities: [],
       focus: null,
       state: "context_choice_required",
@@ -565,6 +609,13 @@ export async function resolveCurrentToroReadOnlyMenu(
     }
   }
 
+  const capabilityNotes = Object.fromEntries(
+    (menu?.items ?? []).map((item) => [
+      item.capability,
+      capabilityNote(item.capability, item.state),
+    ]),
+  );
+
   return {
     context,
     preferredDisplayName:
@@ -572,6 +623,7 @@ export async function resolveCurrentToroReadOnlyMenu(
     menu,
     sourceReadiness,
     profileSummary,
+    capabilityNotes,
     focusableCapabilities,
     focus,
     state: menu ? "resolved" : "no_menu",

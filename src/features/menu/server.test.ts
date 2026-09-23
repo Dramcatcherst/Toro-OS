@@ -55,6 +55,12 @@ describe("resolveCurrentToroReadOnlyMenu", () => {
     expect(
       view?.menu?.items.find((item) => item.capability === "guest.arrivals_departures")?.state,
     ).toBe("BLOCKED");
+    expect(view?.capabilityNotes["hospitality.quote"]).toBe(
+      "Cotizar exige precio y disponibilidad live del PMS.",
+    );
+    expect(view?.capabilityNotes["guest.arrivals_departures"]).toBe(
+      "Falta verdad live de reservas/estancias del PMS.",
+    );
   });
 
   it("does not choose an organization when explicit context choice is required", async () => {
