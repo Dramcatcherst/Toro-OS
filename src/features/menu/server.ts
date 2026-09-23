@@ -318,6 +318,8 @@ export type ToroCapabilityFocus = {
 const FOCUSABLE_CAPABILITIES = new Set([
   "projects.status",
   "executive.decisions",
+  "operations.exceptions",
+  "maintenance.priorities",
   "catalog.rooms_villas",
   "catalog.experiences",
 ]);
@@ -330,6 +332,111 @@ function cleanNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+async function loadMaintenanceProofFocus(
+  context: ToroResolvedContext,
+  capability: string,
+  label: string,
+  supabase: SupabaseServerClient,
+): Promise<ToroCapabilityFocus | null> {
+  if (!context.orgId) return null;
+
+  const { data: queueData, error: queueError } = await supabase
+    .schema("facilities")
+    .from("maintenance_closure_queue")
+    .select(
+      "id,event_key,title,property_area,room_unit,status,priority,closure_status,closure_action,closure_rank,closure_instruction,recommended_action,closure_evidence_ref,verified_closed_at",
+    )
+    .eq("org_id", context.orgId)
+    .is("verified_closed_at", null)
+    .order("closure_rank", { ascending: true })
+    .order("occurred_at", { ascending: false })
+    .limit(8);
+
+  if (queueError || !Array.isArray(queueData)) return null;
+
+  const eventIds = queueData
+    .map((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      return cleanText(row.id);
+    })
+    .filter((value): value is string => Boolean(value));
+
+  const checkByEvent = new Map<
+    string,
+    {
+      checkText: string | null;
+      passCriteria: string | null;
+      requiresSupervisor: boolean;
+      resultStatus: string | null;
+    }
+  >();
+
+  if (eventIds.length) {
+    const { data: checkData, error: checkError } = await supabase
+      .schema("facilities")
+      .from("inspection_checks")
+      .select(
+        "target_event_id,check_text,pass_criteria,requires_supervisor_review,result_status,updated_at",
+      )
+      .in("target_event_id", eventIds)
+      .order("updated_at", { ascending: false });
+
+    if (!checkError && Array.isArray(checkData)) {
+      for (const raw of checkData) {
+        const row = raw as unknown as Record<string, unknown>;
+        const eventId = cleanText(row.target_event_id);
+        if (!eventId || checkByEvent.has(eventId)) continue;
+        checkByEvent.set(eventId, {
+          checkText: cleanText(row.check_text),
+          passCriteria: cleanText(row.pass_criteria),
+          requiresSupervisor: row.requires_supervisor_review === true,
+          resultStatus: cleanText(row.result_status),
+        });
+      }
+    }
+  }
+
+  return {
+    capability,
+    label,
+    items: queueData.map((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      const eventId = cleanText(row.id);
+      const closureAction = cleanText(row.closure_action);
+      const check = eventId ? checkByEvent.get(eventId) : undefined;
+      const room = cleanText(row.room_unit);
+      const priority = cleanText(row.priority);
+      const statusLabel =
+        closureAction === "verify_resolution"
+          ? "Listo para verificar"
+          : "Pendiente de revisar";
+
+      const meta = [
+        statusLabel,
+        priority,
+        room ? `Unidad ${room}` : cleanText(row.property_area),
+        check?.requiresSupervisor ? "Requiere supervisor" : null,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+
+      const detail =
+        closureAction === "verify_resolution"
+          ? check?.passCriteria ??
+            cleanText(row.closure_instruction) ??
+            cleanText(row.recommended_action)
+          : cleanText(row.recommended_action) ??
+            cleanText(row.closure_instruction);
+
+      return {
+        title: cleanText(row.title) ?? "Incidencia de mantenimiento",
+        meta,
+        detail: detail ?? undefined,
+      };
+    }),
+  };
+}
+
 async function loadCapabilityFocus(
   context: ToroResolvedContext,
   capability: string,
@@ -338,6 +445,18 @@ async function loadCapabilityFocus(
 ): Promise<ToroCapabilityFocus | null> {
   if (!context.orgId || !FOCUSABLE_CAPABILITIES.has(capability)) return null;
   const orgId = context.orgId;
+
+  if (
+    capability === "operations.exceptions" ||
+    capability === "maintenance.priorities"
+  ) {
+    return loadMaintenanceProofFocus(
+      context,
+      capability,
+      label,
+      supabase,
+    );
+  }
 
   if (capability === "projects.status") {
     const { data, error } = await supabase
