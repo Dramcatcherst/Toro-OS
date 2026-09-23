@@ -591,17 +591,28 @@ Remaining:
 - eliminate remaining historical naming/config contradictions.
 
 ## Phase 1 — Identity + authenticated core
-**Priority: P0**
+**Priority: P0 · IN PROGRESS**
 
-- resolve Phase 1 PR #15 path;
-- organization memberships;
-- employee/user reconciliation;
-- canonical context resolver;
-- User Vault RLS foundation;
-- Personal vs Work context.
+CURRENT verified 23/09/2026:
+- coherent Supabase SSR/Auth + `resolveToroContext()` foundation is integrated in `main`;
+- Personal vs Organization policy is implemented and fixture-tested;
+- Visual Brain Stage C canonical read/projection is permission-scoped, read-only and fail-closed;
+- lower canonical-read tests verify invalid context rejection before Supabase access and explicit active-`org_id` scoping;
+- canonical membership home is `identity.organization_memberships`;
+- membership schema/backfill/RLS/rollback draft passed disposable PostgreSQL 16 validation plus production read-only preflight;
+- production `identity` schema/membership table remain intentionally **unapplied**;
+- resolver still uses active/non-revoked `user_roles` as transitional relationship evidence;
+- employees remain HOLD for onboarding/contact.
+
+Remaining:
+- protected hosted Founder/restricted/revocation/logout/session/mobile-desktop QA;
+- explicit reviewed decision before any membership production DDL;
+- after membership cutover, persistent membership/context parity;
+- User Vault RLS foundation, still empty until privacy gates pass;
+- employee/user reconciliation may continue read-only, but no employee onboarding before launch decision.
 
 Exit:
-one user securely moves between Personal and business context.
+one user securely moves between Personal and business context with hosted evidence, persistent governed membership and no cross-scope leakage.
 
 ## Phase 2 — Dreamcatcher operating core
 **Priority: P0/P1**
@@ -695,23 +706,23 @@ Do not prioritize now.
 # 17. Immediate execution queue
 
 ## P0
-1. Resolve Phase 1 PR #15 architecture/integration path.
-2. Build identity reconciliation workflow for 8 active unlinked employees.
-3. Prepare organization_memberships migration/tests.
-4. Implement/merge `resolveToroContext()`.
-5. Connect authorized host access for OpenClaw audit.
-6. Run OpenClaw live audit without changing configuration.
+1. Complete hosted synthetic Identity/Context QA through an approved protected access path; do not weaken Vercel Deployment Protection.
+2. Review the validated `identity.organization_memberships` draft for an explicit production-DDL decision; do not apply automatically.
+3. Continue read-only identity reconciliation for the 8 active unlinked employees and the single non-employee membership candidate; no name-based linking, invites or employee contact.
+4. Connect authorized host access for the OpenClaw live audit.
+5. Run the OpenClaw audit read-only before any configuration change.
+6. Prove one real Dreamcatcher Cognitive Proof outcome from the existing maintenance field packet; do not generate substitute paperwork.
 
 ## P1
-7. Design TORO People shell over existing DreamTeam capabilities.
-8. Bind TORO Comms to 2-3 controlled internal groups.
-9. Message -> task/incident/handoff.
-10. Build TORO Tools user/company catalog UI.
-11. Start system-audit dashboard.
+7. After live Kross authority exists, prove one service date end-to-end for Breakfast/F&B before expanding to a week.
+8. Continue Visual Brain Stage C with the existing permission-scoped canonical projection; no second data path or graph database.
+9. Prepare the empty User Vault RLS foundation only after membership/context gates are closed; no personal data ingestion.
+10. Design TORO People shell over existing DreamTeam capabilities without employee rollout.
+11. Continue system-audit / connector-health convergence.
 
 ## P2
 12. Recognition & Points spec/rules.
-13. Personal TORO pilot.
+13. Personal TORO pilot after hosted identity/privacy gates.
 14. Cross-channel Portal/WhatsApp continuity.
 15. Website/channel repository consolidation.
 
