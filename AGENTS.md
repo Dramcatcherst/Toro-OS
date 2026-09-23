@@ -18,10 +18,11 @@ Before substantive work:
 6. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
 7. Identify the source of authority for every material fact or write.
 8. Map the request into the TORO Brain General Plan: scope, subsystem, CURRENT/TARGET/NEXT/FUTURE, priority and dependencies.
-9. Inspect existing implementation before creating a second system.
-10. Define verification and rollback before risky changes.
-11. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
-12. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
+9. Resolve the canonical project destination before creating any project-like identity: check the Plan General, `operations.projects`, `parent_project_key`, `canonical_module_key` and existing tasks.
+10. Inspect existing implementation before creating a second system.
+11. Define verification and rollback before risky changes.
+12. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
+13. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
 
@@ -38,6 +39,21 @@ WhatsApp and TORO Portal are surfaces over the same governed TORO Brain. They ar
 Dreamcatcher is the first proving ground. Do not hard-code hotel assumptions into universal core modules unless they are explicitly scoped to the Dreamcatcher implementation.
 
 Do not onboard external businesses until the readiness gate in `docs/product/NEW_BUSINESS_READINESS_GATE.md` permits it.
+
+## Project identity gate — P0
+
+TORO Brain may orchestrate many scopes, but within one organization there must be at most one active project per `canonical_module_key`.
+
+Before creating any project, subproject, repo-backed initiative, app, dashboard, agent backlog or planning lane:
+- resolve the existing canonical project/module in the Plan General and `operations.projects`;
+- if a canonical home exists, create a task, milestone, workstream, capability, branch/PR, document or deliverable inside it;
+- chats, prompts, agents, subagents, Git branches/PRs, Airtable bases, Vercel projects, dashboards, Superpowers plans and documents are implementation surfaces, not projects;
+- if the destination is uncertain, do not create a new project; record the ambiguity inside the nearest canonical module;
+- materially separate businesses, properties, external products or legal scopes may have their own project identity, but must remain children of `toro_os_portfolio_master` with owner, authority, consumers, done criteria and retirement/convergence criteria.
+
+Historical absorbed projects remain `MERGED/inactive`. A new chat or implementation surface never reactivates them.
+
+Machine contract: `toro_no_parallel_projects_rule_v1` / `POLICY-TORO-NO-PARALLEL-PROJECTS-V1`.
 
 ## Source authority
 
