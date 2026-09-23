@@ -199,6 +199,27 @@ describe("resolveToroContext", () => {
     expect(context?.canUsePersonalVault).toBe(false);
   });
 
+  it("keeps personal context available when organization-role lookup fails", async () => {
+    createServerSupabaseClientMock.mockResolvedValue(
+      buildClient({
+        roleRows: null,
+        roleError: { message: "synthetic role failure" },
+      }),
+    );
+
+    await expect(
+      resolveToroContext({ mode: "personal" }),
+    ).resolves.toMatchObject({
+      mode: "personal",
+      orgId: null,
+      availableOrgIds: [],
+      allowedDataScopes: ["personal", "shared", "system"],
+      canUsePersonalVault: true,
+      canUseOrganizationData: false,
+      requiresContextChoice: false,
+    });
+  });
+
   it("fails closed when role membership data cannot be read", async () => {
     createServerSupabaseClientMock.mockResolvedValue(
       buildClient({
