@@ -130,8 +130,8 @@ export default async function Home() {
               <Zap className="h-6 w-6" />
             </div>
             <div>
-              <div className="text-lg font-black tracking-[0.18em] text-white">TORO OS</div>
-              <div className="text-xs text-slate-400">Autonomous foundation v0.3</div>
+              <div className="text-lg font-black tracking-[0.18em] text-white">TORO BRAIN</div>
+              <div className="text-xs text-slate-400">Business operating brain</div>
             </div>
           </div>
           <nav className="space-y-1">
@@ -152,7 +152,7 @@ export default async function Home() {
             <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-300">{airtableBase.name} / {airtableBase.blueprintTable}</p>
-                <h1 className="mt-1 text-2xl font-black text-white md:text-4xl">TORO OS AI business operator command</h1>
+                <h1 className="mt-1 text-2xl font-black text-white md:text-4xl">TORO Brain command center</h1>
               </div>
               <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
                 <div className="border border-cyan-300/15 bg-black/35 px-3 py-2">
@@ -187,7 +187,7 @@ export default async function Home() {
                       </Pill>
                     </div>
                     <h2 className="max-w-4xl text-3xl font-black leading-tight text-white md:text-5xl">Run the business from one approval-gated operating brain.</h2>
-                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">TORO OS reads the business, weighs source authority, prepares decisions, stages content and builder work, and stops before any risky external action without approval.</p>
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">TORO Brain reads the business, weighs source authority, prepares decisions, stages work, and stops before any risky external action without approval.</p>
                     <div className="mt-6 grid gap-3 md:grid-cols-3">
                       <ExecutiveStat label="Mode" value={blueprintFeed.mode === "live" ? "LIVE" : "MOCK"} detail="Blueprint authority source for this session." tone={blueprintFeed.mode === "live" ? "border-emerald-400/25 bg-emerald-400/8" : "border-amber-300/25 bg-amber-300/8"} />
                       <ExecutiveStat label="High-risk modules" value={highRiskModules} detail="Surfaces that require tighter human control." tone="border-red-400/20 bg-red-400/7" />
@@ -391,7 +391,7 @@ export default async function Home() {
                       <span className="text-slate-400">{airtableBase.name} / {airtableBase.blueprintTable}</span>
                     </div>
                     <p className="mt-3">
-                      TORO OS is pulling the build authority from the Airtable blueprint table when credentials are available, and falls back to the mirrored repo records when they are not.
+                      TORO Brain reads the governed blueprint projection from Airtable when credentials are available and falls back to mirrored repository records when they are not. Airtable is a transition/control surface, not the product brain.
                     </p>
                     {blueprintFeed.error ? <p className="mt-2 text-amber-200">{blueprintFeed.error}</p> : null}
                   </div>
@@ -541,7 +541,7 @@ export default async function Home() {
             <OperationalConsole initialApprovals={approvalLedger.approvals} />
 
             <footer className="border-t border-cyan-400/10 py-6 text-xs text-slate-500">
-              TORO OS v0.3 SAFE foundation. Direct writes to Kross, Alegra, WhatsApp, social channels, reservations, prices, availability, invoices, payments and media deletion are not implemented.
+              TORO Brain internal-proof foundation. Direct writes to Kross, Alegra, WhatsApp, social channels, reservations, prices, availability, invoices, payments and media deletion remain approval-gated or unimplemented unless explicitly verified.
             </footer>
           </div>
         </div>
