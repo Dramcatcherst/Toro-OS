@@ -29,7 +29,7 @@ const profileLabels: Record<string, string> = {
 
 function statusLabel(state: string) {
   if (state === "READ_ONLY") return "Solo lectura";
-  if (state === "BLOCKED") return "Requiere fuente/permiso";
+  if (state === "BLOCKED") return "Por activar";
   return state;
 }
 
@@ -103,7 +103,7 @@ export default async function MyToroPage() {
                 {view.preferredDisplayName}, esto es lo más útil para tu contexto.
               </h1>
               <p className="mt-4 text-sm leading-6 text-slate-400 md:text-base">
-                TORO resolvió tu experiencia desde tu sesión, roles y puesto. Esta primera vista no ejecuta acciones externas.
+                TORO resolvió tu experiencia desde tu sesión, roles y puesto. Esta vista demuestra personalización real; las capacidades todavía no se consideran operativas hasta probar su fuente y permiso.
               </p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-black/25 px-4 py-3 text-sm">
@@ -144,7 +144,7 @@ export default async function MyToroPage() {
                           "rounded-full border px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]",
                           item.state === "READ_ONLY"
                             ? "border-cyan-300/20 bg-cyan-300/10 text-cyan-100"
-                            : "border-amber-300/20 bg-amber-300/10 text-amber-100",
+                            : "border-slate-600 bg-slate-800/70 text-slate-300",
                         ].join(" ")}
                       >
                         {statusLabel(item.state)}
