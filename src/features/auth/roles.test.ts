@@ -64,6 +64,7 @@ describe("getRoleNavigation", () => {
           "/toro/decisiones",
           "/toro/mi-perfil",
           "/toro/mi-asistencia",
+          "/toro/asistencia",
           "/toro/solicitudes",
         ].includes(href)),
     ).toBe(true);
@@ -134,13 +135,27 @@ describe("getRoleNavigation", () => {
     });
   });
 
-  it("keeps payroll away from department leads", () => {
-    const labels = getRoleNavigation("JEFE_DEPARTAMENTO").map(
-      (item) => item.label,
-    );
+  it("keeps payroll and restricted attendance review away from department leads", () => {
+    const navigation = getRoleNavigation("JEFE_DEPARTAMENTO");
+    const labels = navigation.map((item) => item.label);
     expect(labels).not.toContain("Planilla");
     expect(labels).toContain("Equipo");
+    expect(
+      navigation.find((item) => item.label === "Asistencia"),
+    ).toMatchObject({ availability: "coming-soon" });
   });
+
+  it.each(["ADMIN", "RRHH", "AUDITOR"] as const)(
+    "enables read-only attendance review navigation for %s",
+    (role) => {
+      expect(
+        getRoleNavigation(role).find((item) => item.label === "Asistencia"),
+      ).toMatchObject({
+        availability: "available",
+        href: "/toro/asistencia",
+      });
+    },
+  );
 
   it("does not expose finance or systems navigation to reception", () => {
     const labels = getRoleNavigation("RECEPCION").map((item) => item.label);
