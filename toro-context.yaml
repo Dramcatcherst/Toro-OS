@@ -378,6 +378,8 @@ cognitive_proving_ground:
     owner_hold: NO_EMPLOYEE_CONTACT_OR_ONBOARDING_UNTIL_LAUNCH_DECISION
     production_baseline:
       organization_memberships_exists: false
+      canonical_membership_table: identity.organization_memberships
+      legacy_public_membership_draft_canonical: false
       active_role_users: 5
       active_role_orgs: 1
       active_employees: 12
@@ -408,13 +410,19 @@ cognitive_proving_ground:
       vercel_status: success
       deployment_protection_probe: login_required_before_application
       organization_memberships_exists: false
+      membership_isolated_validation: PASS_PRODUCTION_UNAPPLIED
+      membership_validation_pr: 67
+      membership_merge_commit: 4b6da23b6fa2545db6ab3c6218c52f84f227704a
+      membership_sql_run: 35858881529
+      membership_app_ci_run: 35858881721
+      membership_validation_evidence: docs/evidence/TORO_IDENTITY_MEMBERSHIP_ISOLATED_VALIDATION_2026-09-23.md
       verification_evidence: docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md
-    next_proof: "approved protected hosted synthetic identity isolation + membership/RLS isolated validation; no employees"
+    next_proof: "approved protected hosted synthetic identity isolation + explicit reviewed membership production-DDL decision; no employees"
     prohibit:
       - employee_invites
       - name_based_identity_linking
       - staff_credentials_as_fixtures
-      - production_membership_migration_before_isolated_validation
+      - production_membership_migration_without_explicit_reviewed_approval
       - second_identity_system
   next_pilot_prepared:
     value_stream: breakfast_fnb
