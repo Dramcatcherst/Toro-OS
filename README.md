@@ -1,6 +1,6 @@
-# TORO Brain — repository / TORO OS execution layer
+# TORO Brain — canonical product repository
 
-TORO Brain is the master intelligence, memory, governance and orchestration product. TORO OS is the operating/execution layer implemented in this repository for business workspaces.
+TORO Brain is the master intelligence, memory, governance, orchestration and execution product. Business workflows, approvals, dashboards and actions are capabilities inside TORO Brain. `TORO OS` remains only as a technical legacy alias where existing repository names, keys or integrations still depend on it.
 
 Current canonical product references are `START_HERE.md`, `toro-context.yaml`, `docs/product/TORO_BRAIN_CONSTITUTION.md` and `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`. Historical `TORO OS - Master Brain` Airtable records remain migration/reference evidence, not master product authority.
 
