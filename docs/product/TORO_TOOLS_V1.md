@@ -299,6 +299,29 @@ Possible decisions:
 - UNAVAILABLE;
 - DEGRADED.
 
+## 10.1 Semantic action taxonomy
+
+Canonical semantic action IDs and bilingual classification fixtures live in:
+- `docs/product/TORO_ACTION_TAXONOMY_V1.md`
+- `src/lib/action-taxonomy.ts`
+
+The taxonomy classifies **what kind of business action is being requested**.
+
+It does not define:
+- execution system;
+- source authority;
+- connector status;
+- agent ownership;
+- permission;
+- approval;
+- autonomy.
+
+Those remain runtime decisions under the permission equation above.
+
+This explicitly supersedes the old legacy `system-action-router` as an authority engine while preserving useful semantic intent evidence.
+
+---
+
 ## 11. Tool activation flow
 
 ### Personal
