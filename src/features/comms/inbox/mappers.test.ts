@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { countUnreadMessages, mapTeamMessages } from "./mappers";
+import {
+  countUnreadMessages,
+  filterPersonalInboxMessages,
+  mapTeamMessages,
+} from "./mappers";
 
 describe("TORO Comms inbox mappers", () => {
   it("does not expose attachment storage paths or arbitrary attachment payload", () => {
@@ -58,6 +62,68 @@ describe("TORO Comms inbox mappers", () => {
         "user-1",
       )[0]?.channel,
     ).toBe("other");
+  });
+
+  it("drops privileged cross-user DMs from the personal inbox projection", () => {
+    const messages = mapTeamMessages(
+      [
+        {
+          id: "mine",
+          channel: "dm",
+          body: "mine",
+          created_at: "2026-09-23T06:00:00Z",
+          sender_user_id: "user-1",
+          attachment_data: {
+            direct_to_employee_id: "employee-2",
+          },
+        },
+        {
+          id: "to-me",
+          channel: "dm",
+          body: "to me",
+          created_at: "2026-09-23T05:30:00Z",
+          sender_user_id: "user-2",
+          attachment_data: {
+            direct_to_employee_id: "employee-1",
+          },
+        },
+        {
+          id: "other-people",
+          channel: "dm",
+          body: "not my inbox",
+          created_at: "2026-09-23T05:00:00Z",
+          sender_user_id: "user-2",
+          attachment_data: {
+            direct_to_employee_id: "employee-3",
+          },
+        },
+      ],
+      "user-1",
+    );
+
+    expect(
+      filterPersonalInboxMessages(messages, "employee-1").map(
+        (message) => message.id,
+      ),
+    ).toEqual(["mine", "to-me"]);
+  });
+
+  it("shows no received DMs to an org member without an employee link", () => {
+    const messages = mapTeamMessages(
+      [{
+        id: "other-people",
+        channel: "dm",
+        body: "not my inbox",
+        created_at: "2026-09-23T05:00:00Z",
+        sender_user_id: "user-2",
+        attachment_data: {
+          direct_to_employee_id: "employee-3",
+        },
+      }],
+      "user-1",
+    );
+
+    expect(filterPersonalInboxMessages(messages, null)).toEqual([]);
   });
 
   it("counts only messages after last read that are not mine", () => {
