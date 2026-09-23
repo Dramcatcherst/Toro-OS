@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { readVercelDeployments } from "@/lib/server/read-only-connectors";
+import { resolveVercelRuntimeConfig } from "@/lib/vercel-runtime";
 
 export async function GET() {
-  const projectId = process.env.VERCEL_PROJECT_ID ?? "prj_nzsVpQZree5WuErakMPKIyiK6gsA";
-  const teamId = process.env.VERCEL_TEAM_ID ?? "team_zUbLBlOtoQBHDfGMYpDlg0XO";
+  const runtime = resolveVercelRuntimeConfig();
+  const { projectId, teamId } = runtime;
   const liveRead = await readVercelDeployments({ projectId, teamId });
 
   return NextResponse.json({
@@ -13,8 +14,8 @@ export async function GET() {
     configured: Boolean(process.env.VERCEL_TOKEN && process.env.VERCEL_PROJECT_ID),
     projectId,
     teamId,
-    previewUrl: "https://toro-os-v03-gklbiqzri-dreamcatcher-s-projects.vercel.app",
-    productionAlias: "https://toro-os-v03.vercel.app",
+    previewUrl: runtime.branchAlias,
+    productionAlias: runtime.productionAlias,
     liveRead,
     nextAction: "Use Vercel connector or REST token to read deployment status and runtime logs.",
   });
