@@ -753,6 +753,39 @@ function capabilityNote(
   return "Todavía no disponible en este contexto.";
 }
 
+export type ToroCapabilitySafeAlternative = {
+  label: string;
+  href: string;
+  note: string;
+  external: true;
+};
+
+const OFFICIAL_KROSS_BOOKING_URL = "https://dreamcatcherhotel.kross.travel/";
+
+function buildSafeAlternatives(
+  menu: ToroResolvedMenu | null,
+): Record<string, ToroCapabilitySafeAlternative> {
+  const alternatives: Record<string, ToroCapabilitySafeAlternative> = {};
+
+  const quote = menu?.items.find(
+    (item) =>
+      item.capability === "hospitality.quote" &&
+      item.state === "BLOCKED",
+  );
+
+  if (quote) {
+    alternatives["hospitality.quote"] = {
+      label: "Abrir Kross oficial",
+      href: OFFICIAL_KROSS_BOOKING_URL,
+      note:
+        "Kross confirma las tarifas y disponibilidad vigentes. TORO no importa ni interpreta ese resultado automáticamente.",
+      external: true,
+    };
+  }
+
+  return alternatives;
+}
+
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
@@ -760,6 +793,7 @@ export type ToroRealMenuView = {
   sourceReadiness: ToroSourceReadiness | null;
   profileSummary: ToroProfileSummaryItem[];
   capabilityNotes: Record<string, string>;
+  capabilityAlternatives: Record<string, ToroCapabilitySafeAlternative>;
   focusableCapabilities: string[];
   availableSubmenus: Record<string, ToroResolvedMenu>;
   focus: ToroCapabilityFocus | null;
@@ -781,6 +815,7 @@ export async function resolveCurrentToroReadOnlyMenu(
       sourceReadiness: null,
       profileSummary: [],
       capabilityNotes: {},
+      capabilityAlternatives: {},
       focusableCapabilities: [],
       availableSubmenus: {},
       focus: null,
@@ -875,6 +910,7 @@ export async function resolveCurrentToroReadOnlyMenu(
       capabilityNote(item.capability, item.state),
     ]),
   );
+  const capabilityAlternatives = buildSafeAlternatives(menu);
 
   return {
     context,
@@ -884,6 +920,7 @@ export async function resolveCurrentToroReadOnlyMenu(
     sourceReadiness,
     profileSummary,
     capabilityNotes,
+    capabilityAlternatives,
     focusableCapabilities,
     availableSubmenus,
     focus,
