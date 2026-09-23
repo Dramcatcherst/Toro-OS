@@ -45,7 +45,8 @@
   "evidence_refs": [
     "Vercel project prj_nxerFw9ciNews6tUMAah3GAlAJzs",
     "Vercel deployment dpl_69A87RsV3QDbfV1syUTwWSuw6vWj",
-    "GitHub Dramcatcherst/Toro-OS@f37c4c22cbeb9d72c95c0ddc9dc268dff9a8414e"
+    "GitHub Dramcatcherst/Toro-OS@f37c4c22cbeb9d72c95c0ddc9dc268dff9a8414e",
+    "Vercel Agent Runs production/7d: 0 projects observed (workflow-world dataSource, real confidence)"
   ],
   "fallback": {
     "mode": "previous_ready_production_deployment",
@@ -58,6 +59,7 @@
   "observation_notes": [
     "Vercel directly proves deployment/build identity and READY production state.",
     "This observation does not prove that toro-brain skill, TORO profile, playbooks or model configuration are loaded in the application runtime.",
-    "No runtime request, mutation, restart, secret read or permission change was performed."
+    "No runtime request, mutation, restart, secret read or permission change was performed.",
+    "Vercel Agent Runs observability returned no production agent-run projects for the team over 7d; this does not prove absence of AI logic, only absence of that telemetry."
   ]
 }
