@@ -41,7 +41,7 @@ const peopleAdminNavigation: NavItem[] = [
   { label: "Solicitudes", availability: "coming-soon" },
   { label: "Planilla", availability: "coming-soon" },
   { label: "Auditoría", availability: "coming-soon" },
-  { label: "Mi perfil", availability: "coming-soon" },
+  { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
 
 const departmentLeadNavigation: NavItem[] = [
@@ -51,7 +51,7 @@ const departmentLeadNavigation: NavItem[] = [
   { label: "Asistencia", availability: "coming-soon" },
   { label: "Horarios", availability: "coming-soon" },
   { label: "Solicitudes", availability: "coming-soon" },
-  { label: "Mi perfil", availability: "coming-soon" },
+  { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
 
 const auditNavigation: NavItem[] = [
@@ -75,35 +75,35 @@ const navigationByRole: Record<ToroRole, NavItem[]> = {
     { label: "Huéspedes", availability: "coming-soon" },
     { label: "Hotel", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
-    { label: "Mi perfil", availability: "coming-soon" },
+    { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   OPERACIONES: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Hotel", availability: "coming-soon" },
     { label: "Equipo", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
-    { label: "Mi perfil", availability: "coming-soon" },
+    { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   FINANZAS: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Dinero", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
-    { label: "Mi perfil", availability: "coming-soon" },
+    { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   GROWTH: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Huéspedes", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
-    { label: "Mi perfil", availability: "coming-soon" },
+    { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
   SYSTEMS: [
     { label: "Inicio", availability: "available", href: "/toro" },
     { label: "Sistemas", availability: "coming-soon" },
     { label: "Proyectos", availability: "coming-soon" },
     { label: "Conocimiento", availability: "coming-soon" },
-    { label: "Mi perfil", availability: "coming-soon" },
+    { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
   ],
 };
 
