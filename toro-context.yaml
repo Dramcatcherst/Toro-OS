@@ -339,6 +339,19 @@ cognitive_proving_ground:
       pass_results: 0
       fail_results: 0
     no_delta_rollover_suppression: true
+    backend_guard_state: VERIFIED_APPLIED
+    backend_function: facilities.create_daily_maintenance_round(date)
+    applied_migrations:
+      - "20260923083250 maintenance_daily_round_no_delta_guard_20260923"
+      - "20260923083643 maintenance_daily_round_material_delta_guard_20260923"
+    function_pre_md5: "080aca2d53cc87f637ac2ddb9a5e75c9"
+    function_post_md5: "b014163a2ecb65e2a6211ea19164b2fa"
+    rollback_source: docs/evidence/maintenance_daily_round_prechange_20260923.sql
+    verification_evidence: docs/evidence/TORO_MAINTENANCE_COGNITIVE_GUARD_VERIFICATION_2026-09-23.md
+    no_delta_test_returned_round: MNT-DAILY-P0-P1-20260923
+    no_delta_test_persisted_new_round: false
+    target_delta_test_returned_round: MNT-DAILY-P0-P1-20260924
+    target_delta_test_persisted_new_round: false
     rule: "If the current logical field packet remains fully pending and scope/risk/evidence/checks have no material delta, do not create another equivalent packet."
   no_new_project_or_task_for_proof: true
 
