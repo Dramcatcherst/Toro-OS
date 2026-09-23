@@ -1,8 +1,8 @@
-# TORO OS v0.3 SAFE
+# TORO Brain — repository / TORO OS execution layer
 
-TORO OS is an AI business operator foundation. It models the `TORO OS - Master Brain` Airtable base into TypeScript contracts, safe mock data, connector scaffolds, approval gates and operational UI.
+TORO Brain is the master intelligence, memory, governance and orchestration product. TORO OS is the operating/execution layer implemented in this repository for business workspaces.
 
-Product name is TORO OS only.
+Current canonical product references are `START_HERE.md`, `toro-context.yaml`, `docs/product/TORO_BRAIN_CONSTITUTION.md` and `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`. Historical `TORO OS - Master Brain` Airtable records remain migration/reference evidence, not master product authority.
 
 ## Preview
 
