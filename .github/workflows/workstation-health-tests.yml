@@ -1,0 +1,53 @@
+name: Workstation health tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - package.json
+      - package-lock.json
+      - scripts/pc-health-classifier.mjs
+      - scripts/pc-health.ps1
+      - tests/pc-health-classifier.test.mjs
+      - tests/pc-health-powershell-smoke.ps1
+      - docs/runbooks/TORO_WORKSTATION_HEALTH.md
+      - .github/workflows/workstation-health-tests.yml
+  push:
+    branches:
+      - main
+    paths:
+      - package.json
+      - package-lock.json
+      - scripts/pc-health-classifier.mjs
+      - scripts/pc-health.ps1
+      - tests/pc-health-classifier.test.mjs
+      - tests/pc-health-powershell-smoke.ps1
+      - docs/runbooks/TORO_WORKSTATION_HEALTH.md
+      - .github/workflows/workstation-health-tests.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  classifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run test:workstation-health
+
+  windows-smoke:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - shell: pwsh
+        run: ./tests/pc-health-powershell-smoke.ps1
