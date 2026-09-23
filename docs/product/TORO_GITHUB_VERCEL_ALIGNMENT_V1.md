@@ -62,14 +62,14 @@ Twenty projects were visible in the connected Vercel inventory.
 |---|---|---|---|
 | `toro-pr11-preview` | **ACTIVE_CANONICAL_GOVERNANCE** | `Toro-OS` | production READY on `main`, SHA `a125d1d8...` |
 | `toro-os-v03` | **ACTIVE_RUNTIME_PRODUCTION** | `toro-os-v88-new` | production READY, `master`, SHA `ae07afa9...` |
-| `dreamcatcher-website-vnext-media-p0` | **ACTIVE_PREVIEW** | `dreamcatcher-website-vnext` | no production deployment observed; preview READY |
+| `dreamcatcher-website-vnext-media-p0` | **ACTIVE_CANONICAL_WEBSITE_PRODUCTION** | `dreamcatcher-website-vnext` | `dreamcatcherhotel.com` currently resolves here; production READY, deployment `dpl_2kpr9aTkLmPUyt9FUM6EksPHNFuE`, SHA `75a7e427...` |
 | `dream-team` | **ACTIVE_CHILD_PRODUCTION** | `dream-team` | production READY, SHA `947e8490...` |
 | `dream-team-public` | **ACTIVE_CHILD_PRODUCTION** | `dream-team` | production READY, same SHA `947e8490...` |
 | `mau-dc-site` | **ACTIVE_CHILD_REFERENCE** | `Toro-OS---Dreamcatcher-Hotel` | production READY, `main`, SHA `80768324...` |
 | `ricosky` | **SEPARATE_EXPERIMENTAL_PREVIEW** | `dreamauro` | no production observed; preview READY |
 | `site0926` | **LEGACY_HOLD** | Git metadata absent in fetched deployments | latest preview READY; observed production ERROR |
 | `dreamcatcher-hotel-santa-teresa-v100` | **LEGACY_HOLD** | repo association historically evident; latest deployment metadata incomplete | production READY |
-| `site-production-v1` | **LEGACY_HOLD** | Git metadata absent | production READY |
+| `site-production-v1` | **ACTIVE_SEPARATE_BUSINESS_SOURCE_UNKNOWN** | Git metadata absent / CLI-origin deployment | current domains `lajuliaguatape.com` + `www.lajuliaguatape.com`; production READY |
 | `dreamcatcher-public-home-p0-20260818` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
 | `dreamcatcher-public-home-p0-20260817` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
 | `dreamcatcher-los50s-preview-p0` | **LEGACY_PREVIEW_HOLD** | `dreamcatcher-website-vnext` | latest BLOCKED; no production observed |
@@ -82,6 +82,21 @@ Twenty projects were visible in the connected Vercel inventory.
 | `encoding-probe` | **RETIRE_CANDIDATE_HOLD** | Git metadata absent | production READY despite probe purpose |
 
 Important: a Vercel `production` target does **not** prove current business traffic, custom-domain ownership, or business necessity. Legacy projects remain on hold until traffic/domain/dependency checks are complete.
+
+## 4.1 Current custom-domain findings
+
+Current domain resolution was checked directly through Vercel deployment lookup:
+
+| Domain | Current Vercel project | State | Interpretation |
+|---|---|---|---|
+| `dreamcatcherhotel.com` | `dreamcatcher-website-vnext-media-p0` | READY / production | canonical public Dreamcatcher website |
+| `www.dreamcatcherhotel.com` | `dreamcatcher-website-vnext-media-p0` | READY / production | same canonical public website |
+| `lajuliaguatape.com` | `site-production-v1` | READY / production | separate active business/project; not Dreamcatcher legacy |
+| `www.lajuliaguatape.com` | `site-production-v1` | READY / production | same separate business/project |
+
+Historical deployments of `agoversion-v100` and `dreamcatcher-public-home-p0-20260818` contain old Dreamcatcher domain aliases in their deployment history. Current domain lookup resolves Dreamcatcher to the vnext project, so those historical alias records are evidence of previous production ownership, not current authority.
+
+Inspected production deployments for TORO Brain, TORO runtime, DreamTeam and several legacy/probe projects exposed only `vercel.app` aliases in the retrieved deployment metadata.
 
 ## 5. Canonical delivery mappings
 
@@ -111,11 +126,14 @@ No migration should occur until tests, environment parity, domains, auth, rollba
 ### Dreamcatcher website
 
 - Canonical code: `Dramcatcherst/dreamcatcher-website-vnext`
-- Current governed preview: `dreamcatcher-website-vnext-media-p0`
-- Latest observed preview branch: `ToroOS/gallery-experience-20260922`
-- Latest observed preview SHA: `8eccdf33109818ccd9c291be22790865bcde8cbe`
+- Current production Vercel project: `dreamcatcher-website-vnext-media-p0`
+- Current public domains: `dreamcatcherhotel.com`, `www.dreamcatcherhotel.com`
+- Current domain-resolution deployment: `dpl_2kpr9aTkLmPUyt9FUM6EksPHNFuE`
+- Production state: `READY`
+- Production source observed: repo `dreamcatcher-website-vnext`, branch `codex/r51-tropical-day-night`, SHA `75a7e42754964331d811b70cba04c3a824b87b40`
+- Newer gallery work is separately previewed from branch `ToroOS/gallery-experience-20260922`, SHA `8eccdf33109818ccd9c291be22790865bcde8cbe`
 
-Older website generations become comparison/evidence sources only unless a specific dependency proves otherwise.
+Therefore the vnext line is not merely a preview candidate: it is the **current canonical public website production path**. Older website generations become comparison/evidence sources only unless a specific dependency proves otherwise.
 
 ### DreamTeam / TORO People
 
@@ -221,12 +239,12 @@ Rules:
 ## 11. Current gaps
 
 ### P0
-- inspect custom domains for every project;
 - establish real traffic/usage or explicit non-use for each legacy Vercel production target;
 - document why both `dream-team` and `dream-team-public` are needed;
-- confirm canonical production path for Dreamcatcher website, not only current vnext preview;
 - map secrets/env dependencies without exposing secret values;
-- map external integrations/webhooks that reference legacy deployment URLs.
+- map external integrations/webhooks that reference legacy deployment URLs;
+- identify the canonical source repository/owner for `site-production-v1` / La Julia Guatapé;
+- map La Julia Guatapé into the correct TORO scope as a separate active business/project rather than Dreamcatcher legacy.
 
 ### P1
 - decide `Toro-OS` vs `toro-os-v88-new` long-term runtime repository boundary;
