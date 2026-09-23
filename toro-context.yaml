@@ -261,7 +261,10 @@ delivery_fabric:
       domain: lajuliaguatape.com
       vercel_project: site-production-v1
       source_repo: unknown_recover_before_create
-      relationship: separate_portfolio_business_or_project
+      business_lifecycle: incubator_inactive
+      technical_surface: deployed_live
+      activation_requires_explicit_trigger: true
+      relationship: incubator_with_live_deployment
       alignment_issue: Dramcatcherst/Toro-OS#39
   material_initiative_traceability:
     - scope
