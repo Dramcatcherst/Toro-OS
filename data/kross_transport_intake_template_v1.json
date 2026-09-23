@@ -1,0 +1,32 @@
+{
+  "version": "2026.09.23-v1",
+  "status": "template_not_provider_evidence",
+  "providerName": "Kross Booking / local provider",
+  "ticketReference": "KB-305650/26",
+  "transportKind": "other",
+  "readOnlyConfirmed": false,
+  "authorizedByProvider": false,
+  "billableActivationRequired": null,
+  "setupFee": null,
+  "recurringFee": null,
+  "otherFees": null,
+  "documentationReference": null,
+  "credentialScopeSummary": null,
+  "reservationsSupported": false,
+  "currentStaysSupported": false,
+  "arrivalsDeparturesSupported": false,
+  "liveRatesSupported": false,
+  "liveAvailabilitySupported": false,
+  "webhookEvents": [],
+  "exportFrequencyMinutes": null,
+  "sourceTimestampAvailable": false,
+  "externalReservationIdentityAvailable": false,
+  "fieldMapReady": false,
+  "approvedForFirstRead": false,
+  "instructions": [
+    "Populate only from written provider/Kross evidence.",
+    "Do not infer API entitlement from a ticket, form submission or historical export.",
+    "Do not set approvedForFirstRead=true without explicit human approval after costs/scopes are known.",
+    "This file is a template and must never be treated as runtime evidence."
+  ]
+}

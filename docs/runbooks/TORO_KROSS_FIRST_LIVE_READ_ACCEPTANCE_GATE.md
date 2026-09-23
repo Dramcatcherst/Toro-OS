@@ -279,3 +279,32 @@ First real transport acceptance sequence:
 `official payload/export -> field-map config -> adapter -> normalizer -> mirror/import run -> safe view -> acceptance evaluator -> Reception read`
 
 No separate reservation schema, mirror or ingestion universe should be created for a specific Kross transport.
+
+
+## Transport intake gate — 2026-09-23
+
+Before a provider/Kross response is converted into a first-read execution plan, TORO must complete:
+- `data/kross_transport_intake_template_v1.json`;
+- validate it with `src/features/kross/transport-intake.ts`.
+
+The intake separates:
+1. reservation/current-stay/arrival-departure read preparation;
+2. live rate/availability read preparation.
+
+These are not interchangeable.
+
+Required before first authorized reservation read:
+- named provider/transport;
+- ticket/reference;
+- written provider authorization;
+- explicit read-only confirmation;
+- source timestamp/freshness evidence;
+- stable external reservation identity;
+- official/documented field map;
+- known billing status;
+- documented fees when billable;
+- explicit human approval for first read.
+
+If any of those are missing, the first read remains blocked.
+
+The template itself is not provider evidence and must never be used to set `source_is_live=true`.
