@@ -29,7 +29,14 @@ function query(result: QueryResult) {
   return chain;
 }
 
-function supabaseWith(taskResult: QueryResult, projectResult: QueryResult) {
+function supabaseWith(
+  taskResult: QueryResult,
+  projectResult: QueryResult,
+  maintenanceResult: { data: unknown; error: { message?: string } | null } = {
+    data: { round: null, checks: [] },
+    error: null,
+  },
+) {
   const taskQuery = query(taskResult);
   const projectQuery = query(projectResult);
   const from = vi.fn((table: string) => {
@@ -41,7 +48,13 @@ function supabaseWith(taskResult: QueryResult, projectResult: QueryResult) {
     if (name !== "operations") throw new Error(`unexpected schema:${name}`);
     return { from };
   });
-  return { schema, from, taskQuery, projectQuery };
+  const rpc = vi.fn(async (name: string) => {
+    if (name !== "get_current_maintenance_round") {
+      throw new Error(`unexpected rpc:${name}`);
+    }
+    return maintenanceResult;
+  });
+  return { schema, from, rpc, taskQuery, projectQuery };
 }
 
 const session = {
@@ -137,6 +150,69 @@ describe("loadExecutiveHome operational signals", () => {
     expect(client.projectQuery.eq).toHaveBeenCalledWith("active", true);
     expect(client.projectQuery.in).toHaveBeenCalledWith("status", ["Blocked", "In Progress"]);
     expect(client.projectQuery.limit).toHaveBeenCalledWith(6);
+  });
+
+
+  it("adds maintenance signals without replacing existing task exceptions", async () => {
+    const fresh = new Date().toISOString();
+    const client = supabaseWith(
+      {
+        data: [{
+          id: "00000000-0000-0000-0000-000000000031",
+          task_name: "Bloqueo operativo existente",
+          category: "operations",
+          area: "Hotel",
+          priority: "high",
+          status: "blocked",
+          updated_at: fresh,
+        }],
+        error: null,
+      },
+      { data: [], error: null },
+      {
+        data: {
+          round: {
+            round_key: "MNT-DAILY-P0-P1-20260923",
+            round_name: "Ronda diaria mantenimiento · P0/P1 · 23/09/2026",
+            round_status: "ready",
+            total_checks: 21,
+            required_checks: 21,
+            pass_checks: 0,
+            fail_checks: 0,
+            not_reviewed_checks: 0,
+            pending_checks: 21,
+            closure_ready_passes: 0,
+            last_check_updated_at: fresh,
+          },
+          checks: [{
+            check_id: "00000000-0000-0000-0000-000000000041",
+            check_order: 10,
+            block_label: "P0 · Agua/Humedad",
+            area_label: "#22",
+            result_status: "pending",
+            requires_supervisor_review: true,
+            supervisor_confirmed: false,
+            captured_at: null,
+          }],
+        },
+        error: null,
+      },
+    );
+    createServerSupabaseClient.mockResolvedValue(client);
+
+    const data = await loadExecutiveHome();
+
+    expect(data.exceptions.map((item) => item.title)).toEqual([
+      "Bloqueo operativo existente",
+      "1 P0 de mantenimiento pendientes de verificación",
+    ]);
+    expect(data.delegatedActions).toEqual([
+      expect.objectContaining({
+        title: "Ronda P0/P1 de mantenimiento",
+        nextStep: "0/21 revisados · 0 FAIL · 21 pendientes",
+      }),
+    ]);
+    expect(client.rpc).toHaveBeenCalledWith("get_current_maintenance_round");
   });
 
   it("keeps fresh successful operational sources as connected but explicitly partial coverage", async () => {
