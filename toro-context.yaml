@@ -1007,8 +1007,13 @@ kross_live_read_gate:
   transport_adapter: src/features/kross/transport-adapter.ts
   transport_adapter_mode: configurable_field_map_no_vendor_field_guessing
   acceptance_evaluator: src/features/kross/acceptance.ts
+  transport_intake_evaluator: src/features/kross/transport-intake.ts
+  transport_intake_template: data/kross_transport_intake_template_v1.json
+  transport_intake_template_is_provider_evidence: false
+  transport_intake_requires_known_billing_before_first_read: true
+  reservation_and_rate_availability_gates_are_separate: true
   internal_normalization_state: implemented_ci_verified
-  transport_adapter_state: implemented_ci_pending_merge
+  transport_adapter_state: implemented_in_main_ci_guarded
   scoped_identity_guard:
     migration: kross_reservation_scope_identity_guard_20260923
     index: operations.reservations_kross_scope_external_uq
@@ -1022,7 +1027,7 @@ kross_live_read_gate:
   evidence: docs/evidence/TORO_KROSS_LIVE_READ_GATE_REBASELINE_2026-09-23.md
   canonical_task: kross_readonly_reservation_mirror_2026_09
   transport_state: blocked_external_transport_not_available_to_toro
-  external_transport_request_state: followup_draft_not_sent_provider_local_contact_confirmed
+  external_transport_request_state: followup_draft_not_sent_no_new_provider_response_observed_2026_09_23
   provider_contact_evidence:
     kross_ticket: KB-305650/26
     kross_message_date: "2026-09-18"
