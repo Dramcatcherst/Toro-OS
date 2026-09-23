@@ -1,13 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import type { ToroResolvedContext } from "./types";
+import type { ToroCanonicalRole, ToroResolvedContext } from "./types";
 import { resolveLegacySessionRole } from "./legacy-session-adapter";
 
 const ORG_A = "00000000-0000-4000-8000-0000000000aa";
 
-function orgContext(
-  roles: ToroResolvedContext["membership"] extends infer _T ? any[] : never,
-): ToroResolvedContext {
+function orgContext(roles: ToroCanonicalRole[]): ToroResolvedContext {
   return {
     userId: "user-a",
     email: "synthetic@example.invalid",
