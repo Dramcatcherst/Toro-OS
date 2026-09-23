@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Activity,
   AlertTriangle,
@@ -149,7 +150,7 @@ export default function BrainPage() {
     <main className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroTopline}>
-          <a href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</a>
+          <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
           <div className={styles.badges}>
             <span className={styles.synthetic}><Sparkles aria-hidden="true" /> synthetic</span>
             <span><ShieldCheck aria-hidden="true" /> read only</span>
