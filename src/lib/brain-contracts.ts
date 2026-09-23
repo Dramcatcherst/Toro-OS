@@ -36,6 +36,7 @@ export type BrainNodeKind =
   | "risk"
   | "incident"
   | "asset"
+  | "media"
   | "knowledge"
   | "evidence"
   | "customer"
@@ -182,6 +183,22 @@ export type BrainSourceSummary = {
   authoritative?: boolean;
 };
 
+
+export type BrainMediaType =
+  | "image"
+  | "video"
+  | "audio"
+  | "document"
+  | "diagram"
+  | "other";
+
+export type BrainMediaSummary = {
+  mediaType: BrainMediaType;
+  provenanceState: "verified" | "partial" | "unknown" | "conflicted";
+  rightsState: "cleared" | "restricted" | "unknown" | "expired";
+  aiDisclosure?: "original" | "edited" | "ai_modified" | "ai_generated" | "unknown";
+};
+
 export type BrainProjectionContext = {
   mode: "personal" | "organization";
   scopeRef: string;
@@ -215,6 +232,7 @@ export type BrainNode = {
     value: string | number;
     unit?: string;
   };
+  media?: BrainMediaSummary;
 };
 
 export type BrainEdge = {
