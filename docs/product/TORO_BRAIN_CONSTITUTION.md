@@ -10,9 +10,9 @@ TORO Brain is a continuously improving AI operating brain for people, businesses
 
 It understands how each authorized scope actually works, builds a governed model of that scope, connects the systems and evidence that already exist, coordinates specialized intelligence, executes permitted work, verifies outcomes, learns from corrections and reduces complexity for humans.
 
-TORO Brain is the master intelligence layer.
+TORO Brain is the master intelligence, operating and execution product. Its workflow, approval, automation and action capabilities operate inside the same product identity.
 
-TORO OS is the operating/execution layer through which TORO Brain runs a specific business/workspace.
+`TORO OS` is retained only as a technical legacy alias where existing keys, repository names or integrations still depend on it.
 
 Dreamcatcher Hotel is the first real proving ground. It is not the boundary of the product.
 
@@ -191,11 +191,11 @@ A configured system is not a verified system.
 
 ## 10. Naming doctrine
 
-Master product:
+Master product / visible brand:
 - **TORO Brain**
 
-Operating layer:
-- **TORO OS**
+Legacy technical alias:
+- **TORO OS** — compatibility only; not a second product, brand or brain
 
 Internal capabilities/subsystems:
 - `TORO <Name>`
@@ -216,7 +216,7 @@ Specialist personas:
 - TORO SKY
 - TORO SOBRESITO
 
-Normal users experience one TORO.
+Normal users experience one TORO Brain.
 
 ## 11. Dreamcatcher rule
 
