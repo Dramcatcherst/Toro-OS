@@ -101,3 +101,13 @@ Not observed:
 Therefore TORO Portal is **OBSERVED**, not VERIFIED.
 
 No runtime mutation, restart, deployment, secret read or permission change occurred.
+
+
+### Agent-run telemetry check
+
+A read-only Vercel Agent Runs query for the team, production environment, last 7 days returned **0 projects**.
+
+Interpretation:
+- no Vercel Agent Runs telemetry is currently available to prove TORO Portal agent/model execution;
+- this does not prove that the application contains no AI logic;
+- it confirms that deployment readiness alone cannot satisfy the agent-runtime verification contract.
