@@ -33,7 +33,22 @@ function supabaseWith(
   taskResult: QueryResult,
   projectResult: QueryResult,
   maintenanceResult: { data: unknown; error: { message?: string } | null } = {
-    data: { round: null, checks: [] },
+    data: {
+      round: {
+        round_key: "MNT-TEST-NEUTRAL",
+        round_name: "Ronda neutral de prueba",
+        round_status: "ready",
+        total_checks: 0,
+        required_checks: 0,
+        pass_checks: 0,
+        fail_checks: 0,
+        not_reviewed_checks: 0,
+        pending_checks: 0,
+        closure_ready_passes: 0,
+        last_check_updated_at: null,
+      },
+      checks: [],
+    },
     error: null,
   },
 ) {
