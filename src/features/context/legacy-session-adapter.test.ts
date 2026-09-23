@@ -49,12 +49,12 @@ describe("resolveLegacySessionRole", () => {
     ).toBe("FOUNDER");
   });
 
-  it("does not infer founder from ADMIN alone", () => {
+  it("maps ADMIN to ADMIN and never infers FOUNDER", () => {
     expect(
       resolveLegacySessionRole({
         context: orgContext(["ADMIN"]),
       }),
-    ).toBeNull();
+    ).toBe("ADMIN");
   });
 
   it("denies founder metadata without ADMIN/GERENCIA in the active organization", () => {
