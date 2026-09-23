@@ -12,6 +12,7 @@ export type ToroMenuSourceSnapshot = {
   projects: ToroSourceProbe;
   tasks: ToroSourceProbe;
   maintenanceEvents: ToroSourceProbe;
+  inspectionFieldCapture: ToroSourceProbe;
   reservations: ToroSourceProbe;
   currentReservationsSafe: ToroSourceProbe;
   krossCurrentHealth: ToroSourceProbe;
@@ -119,7 +120,7 @@ export function evaluateSourceAwareCapabilityStates(
   enableRead(
     "maintenance.priorities",
     "Prioridades de mantenimiento",
-    current(snapshot.maintenanceEvents),
+    current(snapshot.inspectionFieldCapture) || current(snapshot.maintenanceEvents),
   );
   enableRead(
     "maintenance.my_tasks",
