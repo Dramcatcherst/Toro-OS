@@ -404,7 +404,7 @@ Points only from evidenced events:
 - validated improvement;
 - service recovery;
 - training completion;
-- special coverage;
+- special coverage.
 - process improvement.
 
 No points from:
@@ -703,7 +703,7 @@ all resolve here unless the user explicitly creates a different external product
 
 2. **Identify owner subsystem**
    - existing TORO subsystem first;
-   - create no new subsystem unless an existing one cannot own the capability cleanly.
+   - create no new subsystem unless an existing one cannot own it;
 
 3. **Classify status**
    - CURRENT;
@@ -865,3 +865,39 @@ When two plans conflict:
 4. domain spec wins for local implementation detail if consistent with 1–3;
 5. historical documents become reference only.
 
+## Real-first AI principle — TORO-REAL-AI-80-20-R1
+
+Owner direction: **80% real / 20% AI, well applied**. Reality first; AI amplifies it.
+
+This is a cross-domain authenticity heuristic, not a quota of truthful data, human labor, file counts, AI authorship or automation. All material claims presented as real require appropriate evidence. Unknowns remain unknown; estimates, forecasts, proposals and simulations are labeled separately. A highly automated workflow or entirely AI-assisted draft is permitted when its sources, authority, outcome and safeguards are verified. No artificial content must be added merely to meet 20%.
+
+Commercial photographs must faithfully represent the actual product, correct unit and real conditions, with provenance, rights and privacy checks. AI may assist selection, order, compression, subtitles and approved conservative adjustments; it must not invent rooms, views, amenities or testimonials, conceal real defects or replace skies. Clearly labeled conceptual illustrations are not product evidence.
+
+Keep this distinct from **80% execution / 20% exploration** and the Dreamcatcher brand expression **80% reality / 20% magic**. If a specific experiment needs a numeric ratio, define its denominator, time window, method and exceptions before measuring it. Never invent a detected AI percentage.
+
+The existing machine rule is `operations.knowledge_items/biblia_release_2026_09_22_v4`, field `structured_content.real_ai_80_20_v1`. This section is its versioned program contract, not a second operational store. References in `AGENTS.md` and `toro-context.yaml` resolve to this rule ID. Preserve newer main-branch brand, cognitive-model and scope decisions when integrating this older governance branch; copying its entire plan over main is prohibited.
+
+### Application to existing work
+
+| Domain / functional owner | Real foundation and permitted AI contribution | Acceptance boundary |
+|---|---|---|
+| Web/design — Channels/Growth | Real identity and authorized photos; clearer centered composition, palettes, manual sliders and less wasted scroll. | Important product facts and booking controls remain discoverable. |
+| Media/video — Assets | Authorized originals; faithful derivatives, selection, formats and captions. | Correct entity, provenance, rights, privacy and reviewed before/after. |
+| Content/brand — Growth/Channels | Actual voice, history and testimonials; writing and translation assistance. | No fabricated guests, reviews, awards or stories. |
+| TERE/service — Guests/Comms | Actual guest need and current authorized information; personalization and comparison. | No inferred availability, price, policy or booking confirmation. |
+| Revenue/sales — Revenue | Verified product, costs and constraints; scenario recommendations. | A scenario is not an approved tariff or authorization to change inventory. |
+| Finance/performance — Finance/Data | Source records, periods and definitions; anomaly review and labeled forecasts. | Observed, projected, provisional and reconciled results remain distinct. |
+| Operations/maintenance — Operations | Physical work, inspection and responsible person; prioritization and instructions. | Generated text never proves cleaning, repair or physical completion. |
+| People/training — People | Actual role and observable competencies; adapted practice and feedback. | Simulation is not certification or a permission grant. |
+| Research/decisions — Research/Governance | Relevant sources and business context; synthesis and alternatives. | Synthetic personas and simulated experts are not recruited participants. |
+| Software/integrations — Systems/Builder | Existing systems and contracts; tested incremental implementation. | Reuse before rebuilding; one executor per result and shared resource. |
+| Product demonstration — Channels/Governance | Verified capability and activity; explanatory visuals and labeled fixtures. | No fake live activity or unauthorized private data in public demos. |
+| Strategy/improvement — Brain/Projects | Real goals, constraints and outcomes; bounded experiments. | Measure usefulness and closure, not volume of ideas. |
+
+### Acceptance checks, not new tasks
+
+For each material deliverable, record within its existing work item: real source/base; useful AI contribution; risk of confusing synthetic and real; permissions and proportional verification; existing executor; outcome metric. Reuse current source, media, release and review gates. Do not create twelve tasks, another policy database or another agent for this matrix.
+
+### Implementation state
+
+This section records an owner direction and review contract. It does not establish runtime enforcement, a worker lock, a production release or successful real-user testing. The existing governance PR remains the integration path; no independent merge, migration, permission expansion or production promotion is authorized by this documentation.
