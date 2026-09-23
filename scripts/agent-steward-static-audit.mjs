@@ -76,6 +76,11 @@ export function auditAgentSkillArchitecture({
     }
 
     for (const playbook of contract.playbooks ?? []) {
+      if (/\bL[0-5]\b/i.test(String(playbook.default_action_ceiling ?? ""))) {
+        errors.push(
+          `legacy autonomy label in canonical playbook ${playbook.id}: ${playbook.default_action_ceiling}`,
+        );
+      }
       for (const capability of playbook.capabilities ?? []) {
         const list = playbookAssignments.get(capability) ?? [];
         list.push({ agent, playbook: playbook.id });
@@ -189,6 +194,9 @@ export function auditAgentSkillArchitecture({
   }
   if (errors.some((e) => e.includes("eval suite missing canonical agent"))) {
     recommendations.push("RESTORE_EVAL_COVERAGE_BEFORE_PROMOTION");
+  }
+  if (errors.some((e) => e.includes("legacy autonomy label in canonical playbook"))) {
+    recommendations.push("MIGRATE_PLAYBOOK_TO_CANONICAL_A0_A6_AUTONOMY");
   }
   if (!errors.length) recommendations.push("NO_CHANGE");
 
