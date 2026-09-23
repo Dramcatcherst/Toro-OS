@@ -230,6 +230,121 @@ const BY_ID = new Map<ToroActionIntentId, ToroActionIntentDefinition>(
   TORO_ACTION_TAXONOMY.map((definition) => [definition.id, definition]),
 );
 
+const INTENT_AMBIGUITY_MARGIN = 0.03;
+
+export type ToroActionIntentClassification =
+  | {
+      status: "matched";
+      id: ToroActionIntentId;
+      matchedPhrase: string;
+      confidence: number;
+    }
+  | {
+      status: "ambiguous";
+      candidates: ToroActionIntentId[];
+    }
+  | {
+      status: "unclassified";
+    };
+
+function normalizeIntentText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function intentPhraseScore(normalizedRequest: string, normalizedPhrase: string) {
+  if (!normalizedRequest || !normalizedPhrase) return 0;
+
+  if (normalizedRequest.includes(normalizedPhrase)) {
+    const phraseLengthBoost = Math.min(0.04, normalizedPhrase.length / 1000);
+    return Math.min(0.99, 0.95 + phraseLengthBoost);
+  }
+
+  const requestTokens = new Set(normalizedRequest.split(" "));
+  const phraseTokens = normalizedPhrase.split(" ").filter(Boolean);
+  if (phraseTokens.length < 2) return 0;
+  if (!phraseTokens.every((token) => requestTokens.has(token))) return 0;
+
+  return Math.min(0.94, 0.68 + phraseTokens.length * 0.04);
+}
+
+export function classifyToroActionIntentText(
+  request: string,
+): ToroActionIntentClassification {
+  const normalizedRequest = normalizeIntentText(request);
+  if (!normalizedRequest) return { status: "unclassified" };
+
+  const strongest = new Map<
+    ToroActionIntentId,
+    {
+      id: ToroActionIntentId;
+      matchedPhrase: string;
+      confidence: number;
+      phraseTokenCount: number;
+    }
+  >();
+
+  for (const definition of TORO_ACTION_TAXONOMY) {
+    for (const phrase of [...definition.examples.es, ...definition.examples.en]) {
+      const normalizedPhrase = normalizeIntentText(phrase);
+      const confidence = intentPhraseScore(normalizedRequest, normalizedPhrase);
+      if (confidence <= 0) continue;
+
+      const candidate = {
+        id: definition.id,
+        matchedPhrase: phrase,
+        confidence,
+        phraseTokenCount: normalizedPhrase.split(" ").filter(Boolean).length,
+      };
+      const current = strongest.get(definition.id);
+
+      if (
+        !current ||
+        candidate.confidence > current.confidence ||
+        (candidate.confidence === current.confidence &&
+          candidate.phraseTokenCount > current.phraseTokenCount)
+      ) {
+        strongest.set(definition.id, candidate);
+      }
+    }
+  }
+
+  const matches = [...strongest.values()].sort(
+    (left, right) =>
+      right.confidence - left.confidence ||
+      right.phraseTokenCount - left.phraseTokenCount ||
+      left.id.localeCompare(right.id),
+  );
+
+  if (matches.length === 0) return { status: "unclassified" };
+
+  const best = matches[0];
+  const competing = matches[1];
+
+  if (
+    competing &&
+    best.id !== competing.id &&
+    best.confidence - competing.confidence <= INTENT_AMBIGUITY_MARGIN
+  ) {
+    return {
+      status: "ambiguous",
+      candidates: [best.id, competing.id].sort(),
+    };
+  }
+
+  return {
+    status: "matched",
+    id: best.id,
+    matchedPhrase: best.matchedPhrase,
+    confidence: best.confidence,
+  };
+}
+
 export function getToroActionIntent(
   id: ToroActionIntentId,
 ): ToroActionIntentDefinition {
