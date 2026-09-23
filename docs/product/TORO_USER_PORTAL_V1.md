@@ -1,7 +1,7 @@
 # TORO User Portal v1 — Personal + Work Experience
 
 **Status:** CURRENT PRODUCT SPEC
-**Date:** 2026-09-22
+**Date:** 2026-09-23
 **Depends on:** TORO Identity, TORO User Vault, TORO People, TORO Comms, TORO Tools
 
 ## 1. Product rule
@@ -344,19 +344,32 @@ TORO:
 2. personal reminder stores minimal reference;
 3. employer does not get access to personal reminder context beyond the work task already owned by the company.
 
-## 16. First-run onboarding
+## 16. Progressive onboarding
 
-Ask only what is needed.
+Canonical specification:
+- docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
 
-1. Identity/account.
-2. Personal or invited organization.
-3. Role/membership if organization.
-4. Communication preference.
-5. Optional personal assistant activation.
-6. Optional tool connections.
-7. Clear privacy explanation.
+The first-run experience is **progressive, restartable and non-blocking**.
 
-Do not ask users to configure agents, databases, models or prompts.
+Default flow:
+1. minimum identity/context;
+2. ask what the user wants to accomplish;
+3. create one useful outcome as early as safely possible;
+4. optional personalization;
+5. suggest only the tools/capabilities required for the chosen goal;
+6. let the user skip/resume optional setup;
+7. expand TORO later without repeating the whole onboarding.
+
+Required product behavior:
+- **Restart onboarding** is always available to the authorized user;
+- restart resets onboarding presentation/progress, not canonical account/business data;
+- completion never permanently hides onboarding;
+- optional incomplete setup does not block normal use;
+- a newly activated capability may show a short module introduction without restarting global onboarding;
+- normal users never configure agents, prompts, models, databases or schemas.
+
+Current production note:
+public.employee_onboarding_progress is for employee learning/training and currently has 0 rows. It must not be used as the general TORO user-onboarding state.
 
 ## 17. Admin onboarding
 
