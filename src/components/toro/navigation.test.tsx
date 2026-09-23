@@ -26,7 +26,7 @@ describe("desktop navigation", () => {
     for (const [label, href] of founderDesktopLinks) {
       expect(navigation.getByRole("link", { name: label })).toHaveAttribute("href", href);
     }
-    expect(navigation.getAllByRole("link")).toHaveLength(6);
+    expect(navigation.getAllByRole("link")).toHaveLength(7);
 
     const unavailableGuests = navigation.getByText("Huéspedes").closest("[aria-disabled='true']");
     expect(unavailableGuests).toBeInTheDocument();
