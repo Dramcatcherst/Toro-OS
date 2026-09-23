@@ -1,0 +1,251 @@
+# TORO GitHub + Vercel Alignment V1
+
+Status: **canonical delivery-governance contract**  
+Owner: **TORO Brain**  
+Parent: `docs/product/TORO_BRAIN_GENERAL_PLAN.md`  
+Audit date: 2026-09-22/23, Costa Rica
+
+## 1. Governing rule
+
+Every material initiative — existing, in progress, or new — must map to the single **TORO Brain General Plan** before becoming a repository, branch, durable subsystem, Vercel project, production deployment, or permanent parallel workflow.
+
+GitHub and Vercel are execution infrastructure under TORO Brain. They do not own a second brain, second architecture authority, or parallel Plan General.
+
+## 2. Authority model
+
+| Layer | Canonical authority |
+|---|---|
+| TORO Brain | portfolio intelligence, priorities, governance, Plan General |
+| GitHub | product constitution, code, architecture, contracts, PR/change history |
+| Vercel | deployment state, previews, production runtime evidence, logs/observability |
+| Supabase | TORO-owned canonical structured runtime data |
+| Domain systems | specialist transactional truth in their own domain |
+
+Rules:
+- deployed != verified;
+- production != adopted;
+- repository != automatically canonical;
+- preview != production;
+- connected != integrated;
+- historical != deletable.
+
+## 3. GitHub inventory observed
+
+Connected GitHub owner: `Dramcatcherst`.
+
+| Repository | Classification | Evidence / role | Decision |
+|---|---|---|---|
+| `Dramcatcherst/Toro-OS` | **CANONICAL** | current Plan General, constitution, subsystem/context specs; active Sep 23 | sole governance/product authority |
+| `Dramcatcherst/toro-os-v88-new` | **ACTIVE_RUNTIME_IMPLEMENTATION** | Vercel `toro-os-v03` production uses this repo, `master`, SHA `ae07afa...` | keep active; migration decision required later |
+| `Dramcatcherst/Toro-OS---Dreamcatcher-Hotel` | **ACTIVE_CHILD_REFERENCE** | Dreamcatcher proving-ground architecture; `mau-dc-site` deploys it | subordinate to TORO Brain |
+| `Dramcatcherst/dreamcatcher-website-vnext` | **ACTIVE_CHILD_CANONICAL_WEBSITE** | newest active website line; current gallery preview deploys from it | one canonical Dreamcatcher website implementation |
+| `Dramcatcherst/dream-team` | **ACTIVE_CHILD** | two live Vercel projects deploy same repo | destination is TORO People |
+| `Dramcatcherst/dreamauro` | **SEPARATE_EXPERIMENTAL_PRODUCT** | RicoSky V3.6 / marketplace; preview deployed as `ricosky` | keep isolated unless TORO Exchange integration is approved |
+| `Dramcatcherst/ai-for-dreamers` | **SEPARATE_PRODUCT_POWERED_BY_TORO** | explicitly defined relationship in canonical context | do not absorb automatically |
+| `Dramcatcherst/dreamcatcher-el-sueno-de-mama` | **ARCHIVED_CAMPAIGN** | GitHub repository already archived | preserve history |
+| `Dramcatcherst/dc-king` | **LEGACY_HOLD** | older Dreamcatcher generation, last observed Jun 20 | dependency/domain audit before archive decision |
+| `Dramcatcherst/dreamcatcher-santa-teresa-next` | **LEGACY_HOLD** | isolated bootstrap Jul 25; superseded by vnext line | compare/retain evidence before archive |
+| `Dramcatcherst/dreamcatcher-hotel-santa-teresa-v100` | **LEGACY_HOLD** | older V100 line; Vercel production still exists | do not archive until traffic/domain audit |
+| `Dramcatcherst/agoversion-v100` | **LEGACY_HOLD** | older Aug website/release line; multiple Vercel derivatives remain | consolidate evidence first |
+| `Dramcatcherst/SITE0926` | **LEGACY_HOLD** | Sep 4 catalog experiment; Vercel project has failed production target | inspect purpose/dependencies |
+
+No repository deletion is authorized by this classification.
+
+## 4. Vercel inventory observed
+
+Connected team: **Dreamcatcher's projects**  
+Team ID: `team_zUbLBlOtoQBHDfGMYpDlg0XO`.
+
+Twenty projects were visible in the connected Vercel inventory.
+
+| Vercel project | Classification | Git origin observed | Latest production evidence / state |
+|---|---|---|---|
+| `toro-pr11-preview` | **ACTIVE_CANONICAL_GOVERNANCE** | `Toro-OS` | production READY on `main`, SHA `a125d1d8...` |
+| `toro-os-v03` | **ACTIVE_RUNTIME_PRODUCTION** | `toro-os-v88-new` | production READY, `master`, SHA `ae07afa9...` |
+| `dreamcatcher-website-vnext-media-p0` | **ACTIVE_PREVIEW** | `dreamcatcher-website-vnext` | no production deployment observed; preview READY |
+| `dream-team` | **ACTIVE_CHILD_PRODUCTION** | `dream-team` | production READY, SHA `947e8490...` |
+| `dream-team-public` | **ACTIVE_CHILD_PRODUCTION** | `dream-team` | production READY, same SHA `947e8490...` |
+| `mau-dc-site` | **ACTIVE_CHILD_REFERENCE** | `Toro-OS---Dreamcatcher-Hotel` | production READY, `main`, SHA `80768324...` |
+| `ricosky` | **SEPARATE_EXPERIMENTAL_PREVIEW** | `dreamauro` | no production observed; preview READY |
+| `site0926` | **LEGACY_HOLD** | Git metadata absent in fetched deployments | latest preview READY; observed production ERROR |
+| `dreamcatcher-hotel-santa-teresa-v100` | **LEGACY_HOLD** | repo association historically evident; latest deployment metadata incomplete | production READY |
+| `site-production-v1` | **LEGACY_HOLD** | Git metadata absent | production READY |
+| `dreamcatcher-public-home-p0-20260818` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
+| `dreamcatcher-public-home-p0-20260817` | **LEGACY_HOLD** | Git metadata absent | historical production READY |
+| `dreamcatcher-los50s-preview-p0` | **LEGACY_PREVIEW_HOLD** | `dreamcatcher-website-vnext` | latest BLOCKED; no production observed |
+| `agoversion-issue17-20260816` | **LEGACY_PREVIEW_HOLD** | `agoversion-v100` | preview READY; historical production ERROR |
+| `agoversion-v100-release-candidate` | **LEGACY_HOLD** | Git metadata absent | production READY |
+| `dist` | **LEGACY_HOLD** | Git metadata absent | production READY |
+| `agoversion-v100` | **LEGACY_HOLD** | `agoversion-v100` appears in deployment history; latest metadata incomplete | production READY |
+| `.preview-wow-f5edf00` | **LEGACY_PREVIEW_HOLD** | Git metadata absent | production READY despite preview-style name |
+| `dreamcatcher-coopemedicos` | **LEGACY_HOLD** | Git metadata absent | production READY |
+| `encoding-probe` | **RETIRE_CANDIDATE_HOLD** | Git metadata absent | production READY despite probe purpose |
+
+Important: a Vercel `production` target does **not** prove current business traffic, custom-domain ownership, or business necessity. Legacy projects remain on hold until traffic/domain/dependency checks are complete.
+
+## 5. Canonical delivery mappings
+
+### TORO Brain product/governance
+
+- Canonical GitHub: `Dramcatcherst/Toro-OS`
+- Plan: `docs/product/TORO_BRAIN_GENERAL_PLAN.md`
+- Context: `toro-context.yaml`
+- Vercel evidence surface: `toro-pr11-preview`
+- Role: constitution, product architecture, Plan General and reusable contracts.
+
+### TORO runtime
+
+- Runtime GitHub today: `Dramcatcherst/toro-os-v88-new`
+- Vercel: `toro-os-v03`
+- Production branch observed: `master`
+- Production SHA observed: `ae07afa930de537a671315b73d8276e3c245e41a`
+
+This is an **implementation child**, not a competing master product.
+
+Long-term decision remains open:
+1. keep governance/runtime split deliberately; or
+2. migrate runtime into `Toro-OS`.
+
+No migration should occur until tests, environment parity, domains, auth, rollback and production verification are explicit.
+
+### Dreamcatcher website
+
+- Canonical code: `Dramcatcherst/dreamcatcher-website-vnext`
+- Current governed preview: `dreamcatcher-website-vnext-media-p0`
+- Latest observed preview branch: `ToroOS/gallery-experience-20260922`
+- Latest observed preview SHA: `8eccdf33109818ccd9c291be22790865bcde8cbe`
+
+Older website generations become comparison/evidence sources only unless a specific dependency proves otherwise.
+
+### DreamTeam / TORO People
+
+- Code: `Dramcatcherst/dream-team`
+- Vercel projects: `dream-team`, `dream-team-public`
+- Both observed at SHA `947e8490fc6788a2de5b4d18eaaf83c8f657e04e`
+
+Two deployment surfaces may be justified by access/exposure boundaries, but this must be documented. Do not create a third DreamTeam product.
+
+### Dreamcatcher proving-ground architecture
+
+- Repo: `Dramcatcherst/Toro-OS---Dreamcatcher-Hotel`
+- Vercel evidence: `mau-dc-site`
+- Role: reference implementation / Dreamcatcher-specific integration work.
+- Governance: always subordinate to the TORO Brain General Plan.
+
+## 6. Required initiative traceability
+
+Every material initiative must record:
+
+1. scope;
+2. TORO subsystem;
+3. Plan General item and horizon: CURRENT / TARGET / NEXT / FUTURE;
+4. canonical repository;
+5. issue/task;
+6. branch + PR;
+7. Vercel project if deployed;
+8. exact deployment/commit evidence;
+9. verification state: PROPOSED / IMPLEMENTED / DEPLOYED / VERIFIED / ADOPTED;
+10. rollback or retirement path;
+11. owner;
+12. next action.
+
+Missing traceability means **not fully integrated**.
+
+## 7. Creation rules
+
+### New GitHub repository
+
+Default: **do not create one**.
+
+A new repo is justified only when:
+- there is a true separate product/deployable/security boundary;
+- an existing canonical repo cannot house the work cleanly;
+- authority, owner and lifecycle are documented;
+- Plan General mapping exists;
+- duplicate scan passes.
+
+Prefer branch/package/module in a canonical repo.
+
+### New Vercel project
+
+Default: **use the canonical project's PR/preview deployment**.
+
+Create a new Vercel project only for a real deployment boundary:
+- distinct production domain;
+- security/access boundary;
+- independent lifecycle/scaling;
+- special framework/runtime requirement;
+- deliberate public/private split.
+
+Every new Vercel project must declare its GitHub repo and Plan General parent.
+
+## 8. Release path
+
+`TORO request -> scope -> Plan General -> subsystem -> issue -> canonical repo -> branch -> PR -> tests -> Vercel preview -> verification -> production gate -> production -> readback -> Plan General/state update`
+
+A production record must preserve:
+- repo;
+- branch;
+- commit SHA;
+- Vercel project/deployment;
+- checks/tests;
+- owner;
+- rollback candidate;
+- verification evidence.
+
+## 9. Cleanup policy
+
+No destructive cleanup is authorized by this contract.
+
+Legacy lifecycle:
+
+`inventory -> domain check -> traffic check -> dependency check -> data/env/secret dependency check -> source comparison -> archive candidate -> human gate if material -> archive -> verification`
+
+Rules:
+- archive before delete;
+- retain rollback evidence;
+- never detach an unknown domain blindly;
+- never remove a project merely because its name looks old;
+- production targets with unknown traffic remain `LEGACY_HOLD`.
+
+## 10. Ownership
+
+- **TORO Brain** — Plan General and portfolio authority.
+- **TORO Systems** — connector health, Vercel runtime, incidents, observability, backup/restore.
+- **TORO Builder** — GitHub issues/branches/PRs, CI, preview verification, release evidence.
+- **TORO Channels** — Dreamcatcher web/channel surfaces.
+- **TORO People** — DreamTeam scope.
+- **TORO Governance** — permissions, action ceilings, destructive-change gates.
+- **TORO Assets** — source/media/evidence when deployment depends on files/assets.
+
+## 11. Current gaps
+
+### P0
+- inspect custom domains for every project;
+- establish real traffic/usage or explicit non-use for each legacy Vercel production target;
+- document why both `dream-team` and `dream-team-public` are needed;
+- confirm canonical production path for Dreamcatcher website, not only current vnext preview;
+- map secrets/env dependencies without exposing secret values;
+- map external integrations/webhooks that reference legacy deployment URLs.
+
+### P1
+- decide `Toro-OS` vs `toro-os-v88-new` long-term runtime repository boundary;
+- normalize legacy Vercel naming;
+- archive confirmed dead previews/probes;
+- classify historical website source differences before archiving repos;
+- map DreamTeam visibly into TORO People while preserving working deployment boundaries.
+
+### P2
+- automate GitHub/Vercel drift detection;
+- TORO Systems dashboard: repo -> PR -> deployment -> runtime health;
+- block new unmapped repos/projects by policy/check;
+- detect permanent previews that should be ordinary PR previews;
+- auto-open reconciliation tasks when observed state diverges from Plan General.
+
+## 12. Definition of aligned
+
+GitHub + Vercel are aligned when TORO can answer for every active initiative:
+
+**Why does it exist? Who owns it? Which Plan General item does it serve? Which repo is canonical? What is deployed, from which commit, in which environment? Is it verified? What supersedes it? How is it rolled back or retired?**
+
+Anything that cannot answer those questions from evidence remains **NOT_FULLY_ALIGNED**.
