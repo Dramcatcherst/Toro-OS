@@ -98,6 +98,30 @@ Historical deployments of `agoversion-v100` and `dreamcatcher-public-home-p0-202
 
 Inspected production deployments for TORO Brain, TORO runtime, DreamTeam and several legacy/probe projects exposed only `vercel.app` aliases in the retrieved deployment metadata.
 
+## 4.2 Runtime health findings
+
+Observed through Vercel runtime data during this audit:
+
+| Surface | Window | Result |
+|---|---|---|
+| TORO Brain governance | 7 days | no runtime error groups returned |
+| TORO runtime | 7 days | no runtime error groups returned |
+| Dreamcatcher website | 7 days | no runtime error groups returned |
+| DreamTeam protected | 7 days | no runtime error groups returned |
+| DreamTeam public | 7 days | 11 `attendance_manual_edit_rejected` warnings on 2026-09-16 caused by duplicate-key conflict on `attendance_exceptions_day_type_idx` |
+| La Julia Guatapé | 24h | no runtime error groups returned |
+
+Traffic/activity evidence from grouped production runtime logs:
+- Dreamcatcher website, last 24h: 1,941 HTTP 200; 341 HTTP 304; 111 HTTP 307; 4 HTTP 400; 1 HTTP 410.
+- La Julia, last 24h: 296 HTTP 200; 58 HTTP 304; 35 HTTP 404.
+- A narrow La Julia 404 sample was mostly automated `/wp-admin/install.php` probes plus one `/es/en` request; this requires route review but does not by itself prove a broken public journey.
+
+Operational follow-up:
+- DreamTeam: `Dramcatcherst/dream-team#34`
+- La Julia portfolio alignment: `Dramcatcherst/Toro-OS#39`
+
+Runtime health becomes a **TORO Systems** responsibility: project existence alone is insufficient; TORO should monitor production errors, failing builds, domain drift, deployment-source drift and repeated 4xx/5xx patterns.
+
 ## 5. Canonical delivery mappings
 
 ### TORO Brain product/governance
@@ -149,6 +173,20 @@ Two deployment surfaces may be justified by access/exposure boundaries, but this
 - Vercel evidence: `mau-dc-site`
 - Role: reference implementation / Dreamcatcher-specific integration work.
 - Governance: always subordinate to the TORO Brain General Plan.
+
+### La Julia Guatapé
+
+- Classification: **ACTIVE SEPARATE BUSINESS/PROJECT**
+- Domain: `lajuliaguatape.com`, `www.lajuliaguatape.com`
+- Vercel: `site-production-v1`
+- Project ID: `prj_0EUpbahThy3oOBMLquDYwq9FDo7H`
+- Production deployment: `dpl_9pcpsAo8e7JWoVnwbYaUGkDPpYpb`
+- Deployment source: CLI; canonical Git source remains unknown.
+- Public positioning: daytime finca / rural coworking / experiences in El Roble, Guatapé; not individual lodging.
+- Scope rule: separate from Dreamcatcher truth unless an explicit shared-service contract is created.
+- Alignment issue: `Dramcatcherst/Toro-OS#39`.
+
+Do not create a new La Julia repository until TORO proves that the original canonical source cannot be recovered.
 
 ## 6. Required initiative traceability
 
