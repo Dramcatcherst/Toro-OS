@@ -503,6 +503,7 @@ async function loadCapabilityFocus(
       .select("project_name, status, priority, next_action, completion_pct")
       .eq("org_id", orgId)
       .eq("active", true)
+      .in("status", ["NOW", "BLOCKED"])
       .order("updated_at", { ascending: false })
       .limit(8);
 
@@ -533,6 +534,7 @@ async function loadCapabilityFocus(
       .from("executive_decisions")
       .select("decision_title, status, priority, next_action")
       .eq("org_id", orgId)
+      .eq("status", "En ejecución")
       .order("updated_at", { ascending: false })
       .limit(8);
 
