@@ -632,6 +632,9 @@ tere_wespeak_runtime_gate:
   runbook: docs/runbooks/TORO_TERE_WESPEAK_V4_RUNTIME_ACCEPTANCE_GATE.md
   evidence: docs/evidence/TERE_WESPEAK_RUNTIME_REBASELINE_2026-09-23.md
   evaluator: src/features/tere/runtime-acceptance.ts
+  qa_packet: data/tere_v4_runtime_qa_cases_v1.json
+  qa_packet_case_count: 5
+  qa_packet_ci_guarded: true
   expected_v4_hash: 4df90ab2ae494826f5850bb413c28f6d
   runtime_active: verified
   pre_v4_activity: verified
