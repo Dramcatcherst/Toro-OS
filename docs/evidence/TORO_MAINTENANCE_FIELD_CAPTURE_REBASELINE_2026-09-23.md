@@ -59,3 +59,26 @@ A real maintenance user must:
 6. measure field usability.
 
 Until then workflows 4 and 5 remain RUNNING, not VERIFIED.
+
+
+## Identity gate
+
+Observed current maintenance roster:
+- 2 active Maintenance employees;
+- both have canonical position code `MAINTENANCE`;
+- both currently have `user_id = null`.
+
+No employee names, private identifiers or credentials are stored in this public evidence file.
+
+Interpretation:
+- the read-only Maintenance experience can be built and CI-verified;
+- real employee field use cannot be authenticated yet;
+- PASS/FAIL capture must not be enabled merely by identifying a position;
+- do not create credentials, invite staff or link identities automatically.
+
+Required next identity proof:
+1. explicit reviewed employee-access decision;
+2. canonical user ↔ employee link;
+3. synthetic/protected hosted isolation QA;
+4. successful login resolving `positionCode=MAINTENANCE`;
+5. only then consider one bounded field-capture write.
