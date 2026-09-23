@@ -6,7 +6,7 @@
 **Owners:** TORO Identity + TORO People + TORO Tools + TORO Comms + TORO User Portal  
 **Role journey manifest:** data/toro_onboarding_journeys_v2.json  
 **Commercial rule:** one TORO, modular activation, progressive setup  
-**Implementation status:** ROLE JOURNEYS SPECIFIED / NOT YET PRODUCTION-RUNTIME-VERIFIED
+**Implementation status:** ROLE-AWARE RESTARTABLE UI IMPLEMENTED / PERSISTENT PROGRESS NOT YET IMPLEMENTED
 
 ---
 
@@ -313,6 +313,31 @@ Restarting onboarding must **not** automatically:
 - remove audit history.
 
 A reset should normally affect only onboarding presentation/progress.
+
+---
+
+## 8A. Current restartable UI implementation — 2026-09-23
+
+Implemented surface:
+- `/onboarding`;
+- authenticated identity and organization context;
+- role/position-specific journey selection;
+- preferred-name personalization;
+- organization-name read when permitted;
+- number, button and free-text replies;
+- `atrás`, `saltar`, `continuar`, `inicio`;
+- visible **Rehacer onboarding** entry from `/my-toro`;
+- in-session restart that does not mutate canonical account/business state.
+
+Current intentional limitation:
+- general onboarding progress/completion is **not persisted yet**;
+- reopening `/onboarding` starts a fresh presentation session;
+- this avoids reusing `employee_onboarding_progress`, which belongs to employee learning/training;
+- no identity, role, membership, connector, billing, memory or business data is changed by restart.
+
+This means the previously identified testing problem is removed: completing or partially testing onboarding cannot permanently hide the experience from the user.
+
+Persistent cross-channel progress remains TARGET and must land only in the canonical identity/user-experience model.
 
 ---
 
