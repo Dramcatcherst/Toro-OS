@@ -161,7 +161,8 @@ const MENU_STATE_PRIORITY: Record<ToroResolvedMenuItem["state"], number> = {
   CONNECT: 2,
   REQUEST_ACCESS: 2,
   BLOCKED: 3,
-  UI: 4,
+  HIDDEN: 4,
+  UI: 5,
 };
 
 export function prioritizeToroMenuByAvailability(
