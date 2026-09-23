@@ -374,7 +374,7 @@ cognitive_proving_ground:
       rule: "PMS production, accounting, settlement and bank cash remain separate semantic lanes; historical volume is not current cash."
   people_pilot_prepared:
     value_stream: people_identity_access
-    status: PREPARED_BLOCKED_BY_PHASE1_MAIN_INTEGRATION
+    status: CODE_IN_MAIN_CI_VERIFIED_HOSTED_QA_BLOCKED_BY_DEPLOYMENT_PROTECTION
     owner_hold: NO_EMPLOYEE_CONTACT_OR_ONBOARDING_UNTIL_LAUNCH_DECISION
     production_baseline:
       organization_memberships_exists: false
@@ -390,15 +390,26 @@ cognitive_proving_ground:
       pr: 15
       state: DRAFT_DIVERGED_FROM_MAIN
       context_pr: 42
-      context_pr_state: MERGED_INTO_PHASE1_NOT_MAIN
-      reviewed_head: d3035efe65463043313a61b733fab51ff57b2f7c
+      context_pr_state: HISTORICAL_SOURCE_CORE_NOW_IN_MAIN
+      reviewed_head: 280f8e17e8427718bd82a02a55fe0f96a79df049
       main_has_context_types: true
-      main_has_resolver_implementation: false
+      main_has_resolver_implementation: true
       resolver_fixture_tests: 9
       legacy_session_adapter_tests: 8
       targeted_fixture_tests_total: 17
       vercel_status: success
-    next_proof: "reconcile Phase1-main, then hosted synthetic identity isolation; no employees"
+    current_main:
+      head: 280f8e17e8427718bd82a02a55fe0f96a79df049
+      context_core: integrated
+      auth_surface: integrated
+      canonical_brain_read_adapter: integrated
+      github_actions_run: 35856973260
+      ci_status: success
+      vercel_status: success
+      deployment_protection_probe: login_required_before_application
+      organization_memberships_exists: false
+      verification_evidence: docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md
+    next_proof: "approved protected hosted synthetic identity isolation + membership/RLS isolated validation; no employees"
     prohibit:
       - employee_invites
       - name_based_identity_linking
