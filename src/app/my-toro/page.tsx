@@ -221,12 +221,11 @@ export default async function MyToroPage({
                       <div className="text-2xl">{item.emoji}</div>
                       <div className="min-w-0 flex-1">
                         <div className="font-semibold text-white">{item.label}</div>
-                        <div className="mt-1 text-xs text-slate-500">
-                          {focusable
-                            ? "Toca para consultar"
-                            : item.state === "READ_ONLY"
-                              ? "Lectura disponible"
-                              : "Todavía no disponible"}
+                        <div className="mt-1 text-xs leading-5 text-slate-500">
+                          {view.capabilityNotes[item.capability] ??
+                            (focusable
+                              ? "Toca para consultar"
+                              : "Todavía no disponible")}
                         </div>
                       </div>
                       <span
