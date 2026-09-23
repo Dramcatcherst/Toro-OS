@@ -5,7 +5,12 @@ import { resolveToroRole, type ToroRole } from "./roles";
 
 const toroRoles: ToroRole[] = [
   "FOUNDER",
+  "ADMIN",
+  "RRHH",
   "GERENCIA",
+  "JEFE_DEPARTAMENTO",
+  "AUDITOR",
+  "EMPLEADO",
   "RECEPCION",
   "OPERACIONES",
   "FINANZAS",
@@ -14,22 +19,35 @@ const toroRoles: ToroRole[] = [
 ];
 
 describe("resolveToroRole", () => {
-  it("uses an explicit canonical TORO role for the founder", () => {
+  it("uses an explicit TORO experience role for the founder", () => {
     expect(
       resolveToroRole({ explicitToroRole: "FOUNDER", systemRoleCodes: ["ADMIN"] }),
     ).toBe("FOUNDER");
   });
 
-  it("maps known system roles conservatively", () => {
+  it("maps canonical organization roles conservatively", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["ADMIN"] })).toBe("ADMIN");
+    expect(resolveToroRole({ systemRoleCodes: ["RRHH"] })).toBe("RRHH");
     expect(resolveToroRole({ systemRoleCodes: ["GERENCIA"] })).toBe("GERENCIA");
     expect(resolveToroRole({ systemRoleCodes: ["CONTABILIDAD"] })).toBe("FINANZAS");
+    expect(resolveToroRole({ systemRoleCodes: ["AUDITOR"] })).toBe("AUDITOR");
+    expect(resolveToroRole({ systemRoleCodes: ["JEFE_DEPARTAMENTO"] })).toBe(
+      "JEFE_DEPARTAMENTO",
+    );
+    expect(resolveToroRole({ systemRoleCodes: ["EMPLEADO"] })).toBe("EMPLEADO");
   });
 
-  it("does not infer founder privileges from ADMIN alone", () => {
-    expect(resolveToroRole({ systemRoleCodes: ["ADMIN"] })).toBeNull();
+  it("never infers founder privileges from ADMIN alone", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["ADMIN"] })).toBe("ADMIN");
   });
 
-  it("fails closed for unknown explicit roles", () => {
+  it("preserves explicit functional experience roles only when recognized", () => {
+    expect(
+      resolveToroRole({
+        explicitToroRole: "RECEPCION",
+        systemRoleCodes: ["EMPLEADO"],
+      }),
+    ).toBe("RECEPCION");
     expect(resolveToroRole({ explicitToroRole: "SUPERUSER" })).toBeNull();
   });
 });
@@ -40,20 +58,30 @@ describe("getRoleNavigation", () => {
       item.href ? [item.href] : [],
     );
 
-    expect(enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href))).toBe(true);
+    expect(
+      enabledHrefs.every((href) => ["/toro", "/toro/decisiones"].includes(href)),
+    ).toBe(true);
   });
 
   it("keeps future founder modules visible without an actionable destination", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
-    for (const label of ["Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas"]) {
+    for (const label of [
+      "Hotel",
+      "Huéspedes",
+      "Dinero",
+      "Proyectos",
+      "Equipo",
+      "Conocimiento",
+      "Sistemas",
+    ]) {
       const item = navigation.find((candidate) => candidate.label === label);
       expect(item).toMatchObject({ label, availability: "coming-soon" });
       expect(item?.href).toBeUndefined();
     }
   });
 
-  it("gives founder the full executive navigation", () => {
+  it("gives founder the current executive navigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
       "Inicio",
       "Decisiones",
@@ -65,6 +93,25 @@ describe("getRoleNavigation", () => {
       "Conocimiento",
       "Sistemas",
     ]);
+  });
+
+  it("gives an employee a self-service-oriented future navigation", () => {
+    expect(getRoleNavigation("EMPLEADO").map((item) => item.label)).toEqual([
+      "Inicio",
+      "Mi trabajo",
+      "Horario",
+      "Solicitudes",
+      "Mensajes",
+      "Mi perfil",
+    ]);
+  });
+
+  it("keeps payroll away from department leads", () => {
+    const labels = getRoleNavigation("JEFE_DEPARTAMENTO").map(
+      (item) => item.label,
+    );
+    expect(labels).not.toContain("Planilla");
+    expect(labels).toContain("Equipo");
   });
 
   it("does not expose finance or systems navigation to reception", () => {
