@@ -295,15 +295,31 @@ Verified 2026-09-23:
 - 12 employees are active: 4 linked to user identity and 8 unlinked;
 - current real data contains 0 multi-organization users, so multi-org isolation cannot be claimed from production evidence.
 
-**PHASE 1 IMPLEMENTATION STATE**
-- PR #42 integrated `resolveToroContext()`, isolation policy and the legacy-session adapter into the existing Phase 1 branch;
-- Phase 1 head used for this review: `d3035efe65463043313a61b733fab51ff57b2f7c`;
-- main currently contains the context type contract but not the resolver implementation;
-- Phase 1 PR #15 remains DRAFT and diverged from current main; it must be reconciled/extracted rather than bypassed;
-- 9 synthetic resolver tests cover personal/no-role, single org, multi-org choice, explicit org, unauthorized org denial, ADMIN no personal-vault access, personal fallback during role-store failure, organization fail-closed on role read failure and employee relationship read failure;
-- 8 legacy-session adapter tests cover Founder constraints, active-org role mapping, personal-context denial and cross-org membership mismatch;
-- total observed targeted fixture tests: 17;
-- Vercel status for Phase 1 head is success; this does not substitute for hosted authenticated isolation E2E.
+**CURRENT MAIN IMPLEMENTATION STATE — 2026-09-23**
+- `resolveToroContext()`, context policy and Supabase SSR auth foundation are now in current `main`;
+- current reviewed main head: `280f8e17e8427718bd82a02a55fe0f96a79df049`;
+- login/auth verification surface and non-PII `/api/brain/context` diagnostic are in main;
+- current main also includes the permission-scoped Visual Brain canonical read adapter `stage-c-read-v1`;
+- GitHub Actions run `35856973260` passed npm install, tests, lint and build;
+- Vercel status for current main is success;
+- earlier auth/context main deployment `dpl_8dQG9Xh8QEbVrJLmA8rcc5JBwvGt` was READY / target production;
+- anonymous runtime verification of `/api/brain/context` is intercepted by Vercel Deployment Protection with `login_required` before application execution;
+- `organization_memberships` still does not exist in production;
+- production continues to use active/non-revoked `user_roles` as transitional organization relationship evidence;
+- 5 production users currently have active org roles, but current real data contains no multi-org user, so multi-org behavior remains synthetic-test-only.
+
+**VISUAL BRAIN READ FOUNDATION**
+- the first canonical read slice requires active organization context and filters by `org_id`;
+- raw canonical UUIDs are replaced by stable hashed projection refs;
+- owner names, notes, next actions, raw source IDs and other free-text/private fields are excluded;
+- finance, guests, payments and employees are intentionally outside this first slice;
+- this is Stage C read infrastructure, not proof of a finished Visual Brain.
+
+**CURRENT VS3 STATE**
+`CODE_IN_MAIN_CI_VERIFIED_HOSTED_QA_BLOCKED_BY_DEPLOYMENT_PROTECTION`
+
+Evidence:
+`docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md`
 
 **OWNER HOLD**
 Employees are not to be contacted, invited or onboarded for this proof yet.
@@ -322,13 +338,15 @@ Existing owner:
 - existing Phase 1/Tenant/Identity work.
 
 **NEXT proof**
-1. reconcile/extract the Phase 1 identity/context lane onto the current main integration path;
+1. obtain an approved protected hosted QA path without weakening Vercel protection;
 2. use synthetic/fictitious identities (or Mauricio where explicitly appropriate), not employees;
-3. prove personal vs organization isolation;
+3. prove personal vs organization isolation in the hosted runtime;
 4. prove allowed + denied organization access;
 5. prove explicit multi-org context choice with synthetic organizations;
-6. prove Founder/role mapping uses the active organization only;
-7. prove persistent flow/session context before any real onboarding launch.
+6. prove revocation/logout/session/cookie behavior;
+7. prove mobile + desktop behavior;
+8. validate `organization_memberships` + RLS in isolation before any production DDL;
+9. prove persistent flow/session context before any real onboarding launch.
 
 Real employee onboarding remains outside this proof until a later explicit launch decision.
 
