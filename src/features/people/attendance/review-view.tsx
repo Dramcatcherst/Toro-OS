@@ -218,54 +218,63 @@ export function AttendanceReviewView({
         </div>
       </section>
 
-      <section
-        aria-labelledby="imports-heading"
-        className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm"
-      >
-        <h2 id="imports-heading" className="text-xl font-semibold">
-          Últimas importaciones del reloj
-        </h2>
-        <p className="mt-1 text-sm text-neutral-600">
-          Metadatos mínimos. No se muestra el archivo, hash ni payload crudo.
-        </p>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
-          {state.data.recentImports.map((item) => (
-            <article
-              key={item.id}
-              className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4"
-            >
-              <p className="font-medium text-neutral-950">
-                {formatDate(item.periodFrom)} – {formatDate(item.periodTo)}
+      {state.data.canViewImports ? (
+        <section
+          aria-labelledby="imports-heading"
+          className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm"
+        >
+          <h2 id="imports-heading" className="text-xl font-semibold">
+            Últimas importaciones del reloj
+          </h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Metadatos mínimos. No se muestra el archivo, hash ni payload crudo.
+          </p>
+          <div className="mt-4 grid gap-3 md:grid-cols-2">
+            {state.data.recentImports.map((item) => (
+              <article
+                key={item.id}
+                className="rounded-2xl border border-neutral-100 bg-neutral-50 p-4"
+              >
+                <p className="font-medium text-neutral-950">
+                  {formatDate(item.periodFrom)} – {formatDate(item.periodTo)}
+                </p>
+                <dl className="mt-2 grid grid-cols-3 gap-2 text-xs text-neutral-600">
+                  <div>
+                    <dt>Filas</dt>
+                    <dd className="font-semibold text-neutral-900">
+                      {item.rawRowCount}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Aceptadas</dt>
+                    <dd className="font-semibold text-neutral-900">
+                      {item.acceptedPunchCount}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Duplicadas</dt>
+                    <dd className="font-semibold text-neutral-900">
+                      {item.duplicateCount}
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+            {!state.data.recentImports.length ? (
+              <p className="rounded-2xl bg-neutral-50 p-4 text-sm text-neutral-600">
+                No hay importaciones recientes registradas.
               </p>
-              <dl className="mt-2 grid grid-cols-3 gap-2 text-xs text-neutral-600">
-                <div>
-                  <dt>Filas</dt>
-                  <dd className="font-semibold text-neutral-900">
-                    {item.rawRowCount}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Aceptadas</dt>
-                  <dd className="font-semibold text-neutral-900">
-                    {item.acceptedPunchCount}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Duplicadas</dt>
-                  <dd className="font-semibold text-neutral-900">
-                    {item.duplicateCount}
-                  </dd>
-                </div>
-              </dl>
-            </article>
-          ))}
-          {!state.data.recentImports.length ? (
-            <p className="rounded-2xl bg-neutral-50 p-4 text-sm text-neutral-600">
-              No hay imports recientes visibles.
-            </p>
-          ) : null}
-        </div>
-      </section>
+            ) : null}
+          </div>
+        </section>
+      ) : (
+        <section
+          aria-label="Visibilidad de importaciones"
+          className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-600"
+        >
+          Las importaciones del reloj no forman parte de tu vista autorizada.
+        </section>
+      )}
 
       <p className="px-1 text-xs leading-5 text-neutral-500">
         Corregir asistencia, resolver identidades, reemplazar imports o decidir

@@ -43,6 +43,7 @@ export type AttendanceImportSummary = {
 
 export type AttendanceReviewData = {
   roles: ToroCanonicalRole[];
+  canViewImports: boolean;
   days: AttendanceReviewDay[];
   openExceptions: AttendanceReviewException[];
   recentImports: AttendanceImportSummary[];
