@@ -10,7 +10,7 @@
 **Message pack:** data/toro_role_message_pack_v1.json  
 **Role toolbox:** docs/product/TORO_ROLE_TOOLBOX_V1.md  
 **Toolbox manifest:** data/toro_role_toolbox_v1.json  
-**Runtime state:** SPECIFIED / NOT YET RUNTIME-VERIFIED
+**Runtime state:** SYNTHETIC EXPERIENCE LAB CONNECTED / NOT PRODUCTION-VERIFIED
 
 ---
 
@@ -707,3 +707,29 @@ Conversational Menus V1 is ready when:
 - serious contexts suppress decorative emotion;
 - user can return with menú/atrás/más predictably;
 - menu usage can personalize ordering without changing authority.
+
+
+---
+
+## 16A. Synthetic Experience Lab
+
+Current safe integration:
+- route: `/experience-lab`;
+- personas: Owner, Reception, TERE Prospect, TERE In-Stay;
+- uses the real menu resolver and structured submenu definitions;
+- supports number, keyword and conservative natural-language phrase resolution;
+- local/synthetic responses only;
+- no private business data;
+- no external sends, reservation changes, money movement or other production writes.
+
+This proves the interaction contract can be exercised in a real UI surface.
+
+It does **not** prove:
+- WhatsApp/WeSpeak runtime consumption;
+- production identity/session continuity;
+- live capability availability;
+- live source authority;
+- production action execution;
+- real-user adoption.
+
+Promotion to a production surface requires role/identity context, permission filtering, session/menu-state persistence, channel rendering and real-user QA.
