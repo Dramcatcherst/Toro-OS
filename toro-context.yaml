@@ -113,6 +113,7 @@ canonical_product_specs:
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   product_proof_and_commercialization: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
+  progressive_onboarding: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
@@ -620,6 +621,75 @@ tere_runtime_config_consolidation:
   runtime_consumption: UNVERIFIED
   no_runtime_success_inference: true
 
+
+
+customer_experience_rules:
+  simple_first_contact: true
+  outcome_before_architecture: true
+  max_initial_choices_when_useful: 3
+  ask_one_material_question_at_a_time_when_possible: true
+  invite_unseen_requests: true
+  unsupported_request_behavior:
+    - state_limitation_plainly
+    - offer_closest_safe_path
+    - register_capability_signal
+    - never_fake_capability_or_execution
+  omnichannel_customer_lifecycle:
+    owner: TORO Comms
+    hospitality_speaking_specialist: TERE
+    runtimes_are_not_truth_owners: true
+    channels:
+      - whatsapp
+      - instagram_direct
+      - facebook_messenger
+      - email
+      - website
+      - approved_review_surfaces
+    lifecycle:
+      - inquiry
+      - qualification
+      - recommendation
+      - quote
+      - follow_up
+      - reservation_or_purchase_assistance
+      - pre_service
+      - in_service
+      - complaint_or_recovery
+      - upsell
+      - payment_reminder_or_collection_communication
+      - post_service
+      - review_request_or_response
+      - retention_return_referral
+    authority_boundaries:
+      live_price_availability: PMS_or_revenue_authority
+      payment_collection_truth: TORO_FIONA_or_finance_authority
+      fulfillment: TORO_RICO_or_operations
+      campaign_reputation_strategy: TORO_SKY_or_growth
+  wespeak:
+    role: active_guest_communication_runtime
+    brain: false
+    source_of_truth: false
+  cross_channel_deduplication_required: true
+
+progressive_onboarding:
+  canonical_spec: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
+  implementation_status: specified_not_runtime_verified
+  value_before_setup: true
+  optional_steps_skippable: true
+  resumable: true
+  restartable: true
+  completion_is_permanent_lock: false
+  restart_preserves:
+    - identity
+    - organization_membership
+    - permissions
+    - business_data
+    - tool_connections_unless_explicitly_disconnected
+    - audit_history
+  employee_onboarding_progress_is_general_user_onboarding_state: false
+  current_employee_onboarding_progress_rows_observed_2026_09_23: 0
+  modular_activation: true
+  one_brain_selected_capabilities: true
 
 product_proof_focus:
   effective_date: "2026-09-23"

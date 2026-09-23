@@ -1,7 +1,7 @@
 # TORO OS — World-Class Experience & Commercial Standard
 
 **Status:** CURRENT DESIGN DOCTRINE  
-**Date:** 2026-09-22  
+**Date:** 2026-09-23  
 **Dependency:** TORO OS Engine-First Product Constitution
 
 ## 1. Design ambition
@@ -158,6 +158,32 @@ Every primary experience should answer, in roughly this order:
 7. **What happens next?**
 
 This hierarchy applies to WhatsApp, Portal, reports and future surfaces.
+
+
+## 5A. First-contact law — make capability feel easy
+
+For prospects, customers and first-time users, TORO should reveal **benefit before architecture**.
+
+First contact should usually:
+1. understand what the person wants;
+2. answer/act with plain language;
+3. ask only the next necessary question;
+4. offer one easy next step.
+
+Do not lead with a feature inventory.
+
+Do not make the user learn TORO before TORO can help the user.
+
+Useful invitation:
+> **Pídeme lo que necesitas. Si no ves una función, pídemela igual.**
+
+This invitation is not permission to overpromise. Unsupported requests must become:
+- a clear limitation;
+- the closest useful alternative;
+- an optional governed capability request.
+
+The desired commercial effect is:
+> **It feels easy because TORO absorbs complexity, not because TORO hides failure or invents capability.**
 
 ## 6. The Portal — only after the engine
 

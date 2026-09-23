@@ -1,9 +1,9 @@
 # TORO Comms v1 — Communication & Coordination Contract
 
 **Status:** CURRENT PRODUCT SPEC
-**Date:** 2026-09-22
+**Date:** 2026-09-23
 **Subsystem:** TORO Comms
-**Primary surfaces:** WhatsApp/OpenClaw, WeSpeak, TORO Portal
+**Primary surfaces:** WhatsApp/OpenClaw, WeSpeak, Instagram, Facebook/Messenger, email, website, review surfaces, TORO Portal
 **Canonical runtime truth:** Supabase
 **External channel rule:** channels transport conversation; they do not own business truth.
 
@@ -35,6 +35,27 @@ Specialist routing stays internal:
 - TORO SOBRESITO — systems, integrations and technical incidents.
 
 A user should not need to choose an agent before asking for help.
+
+
+## 2A. First-contact simplicity
+
+When TORO or TERE speaks with a customer/prospect for the first time, the experience must feel simpler than the machinery behind it.
+
+Default:
+- answer the immediate need first;
+- use plain language;
+- do not explain agents, modules, APIs, data models or orchestration;
+- ask only one material question at a time when possible;
+- offer one easy next step;
+- show no more than 1–3 choices when choices help.
+
+Preferred feeling:
+**“Dime qué necesitas; yo te ayudo a resolverlo.”**
+
+TORO/TERE may invite creative requests:
+**“Si no ves lo que necesitas, pídemelo igual.”**
+
+If the capability does not exist, TORO must say so simply, offer the nearest safe path and register the request as product signal. It must never fake a capability or completed action.
 
 ## 3. Current verified foundation
 
@@ -110,6 +131,72 @@ Historical evidence from older TORO repositories does not prove the current Open
 | Social Lead | social inbox/lead | TORO TERE + TORO Growth | lead/handoff |
 | Emergency | urgent safety/operational escalation | TORO Core + human | immediate escalation + minimal log |
 | Systems | connector/access/deployment issue | TORO SOBRESITO | systems incident/task |
+
+
+## 5A. Customer communication = one lifecycle, many channels
+
+For the hospitality proving ground, TORO Comms owns the governed omnichannel communication fabric while **TORO TERE** owns guest/customer-facing judgment, sales fit and relationship continuity.
+
+WeSpeak is a runtime/channel surface. It does not become the owner of customer truth, lifecycle state, pricing, permissions or TERE identity.
+
+Target customer-facing channels:
+- WhatsApp;
+- Instagram Direct;
+- Facebook/Messenger;
+- email;
+- website chat/forms;
+- approved review/reputation surfaces;
+- future channels only when a real workflow justifies them.
+
+The customer should experience one continuous relationship even when the transport changes.
+
+Canonical flow:
+
+message/contact -> identity/customer context -> lifecycle stage -> intent -> authority -> action/workflow -> response -> follow-up -> evidence -> next stage
+
+Do not create one lead, task or customer history per channel.
+
+### Customer lifecycle coverage
+
+TORO Comms + TERE should be able to coordinate, according to permissions and authoritative sources:
+- first inquiry;
+- qualification;
+- recommendation;
+- quotation;
+- reservation/purchase assistance;
+- unanswered-lead follow-up;
+- pre-arrival/pre-service messages;
+- in-stay/in-service assistance;
+- complaints/service recovery;
+- upsell/cross-sell;
+- payment reminders and collections communication;
+- post-stay/post-purchase follow-up;
+- review request;
+- review-response preparation/publication where authorized;
+- retention/return/referral;
+- reactivation campaigns where consent/policy allows.
+
+### Ownership boundaries
+
+- **TERE:** customer-facing reasoning, tone, fit, conversation and next-step conversion in hospitality.
+- **TORO Comms:** channel normalization, routing, continuity, delivery, follow-up state and deduplication.
+- **TORO Revenue / live PMS authority:** price, availability, booking truth.
+- **TORO FIONA / finance authority:** amount due, payment status, invoices and collection truth.
+- **TORO Growth/SKY:** campaigns, reputation strategy, retention and growth experiments.
+- **TORO Operations/RICO:** physical/service fulfillment and operational proof.
+
+The speaking agent may be TERE while the underlying fact/action authority belongs to another subsystem.
+
+### Follow-up and automation rule
+
+Automated messages must be triggered from canonical lifecycle/workflow state, not from isolated channel timers when that would create duplicate or contradictory communication.
+
+Before sending a follow-up:
+- resolve whether the customer already replied elsewhere;
+- resolve whether the underlying need is already closed;
+- resolve whether payment/reservation state changed;
+- avoid duplicate cross-channel pressure;
+- respect consent, quiet periods and escalation rules.
 
 ## 6. Internal rooms
 
