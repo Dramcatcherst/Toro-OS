@@ -1187,3 +1187,53 @@ Rule:
 The operating priority remains:
 
 > **correct brain first, visible brain second, spectacular brain third.**
+
+
+---
+
+# 21. Canonical project hierarchy — audited 2026-09-22
+
+TORO Brain owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
+
+## ACTIVE — 11
+
+```text
+TORO Brain · Portafolio General [PORTFOLIO]
+├── TORO OS · Sistema Operativo y Ejecución [MODULE]
+├── Dreamcatcher Hotel · Proyecto Madre [MASTER]
+│   ├── Dreamcatcher · Datos e Integraciones [MODULE]
+│   ├── Dreamcatcher · Operación Hotelera [MODULE]
+│   ├── Dreamcatcher · Revenue, Reservas y Guest Experience [MODULE]
+│   ├── Dreamcatcher · Web, Marca, SEO y Reputación [MODULE]
+│   ├── Dreamcatcher · Finanzas y Control [MODULE]
+│   └── Construcción / DIEX · Desarrollo y cierre documental [PROJECT]
+└── Propiedades, Construcción y Corporativo [PORTFOLIO_LANE]
+    └── Cabuya · Compra, pagos y regularización [PROJECT]
+```
+
+## PRESERVED BUT INACTIVE
+
+- HOLD: Santa Toro Closeout.
+- INCUBATOR: Aprende AI / Maufertoro; Dream Shares; La Julia Guatapé; RicoSky Marketplace.
+- MERGED/HISTORICAL: 25 historical project identities retained for provenance only; no new backlog.
+
+## Project-type rule
+
+- `PORTFOLIO`: only TORO Brain root.
+- `MASTER`: primary business/tenant program containing modules.
+- `MODULE`: durable domain inside a business or TORO OS execution layer.
+- `PROJECT`: finite, materially distinct outcome with its own lifecycle/done criteria.
+- `PORTFOLIO_LANE`: real cross-scope portfolio lane.
+- `HOLD` / `INCUBATOR`: inactive by default until explicit trigger.
+- `LEGACY_MERGED`: historical/inactive; never receives new backlog.
+- Workstreams, campaigns, dashboards, apps, engines, audits and execution plans are **not projects by default**.
+
+## Verified invariants
+
+- active duplicate `canonical_module_key`: **0**
+- active projects missing canonical module: **0**
+- active projects with invalid parent: **0**
+- active tasks on inactive/merged projects: **0**
+- terminal tasks with `active=true`: **0**
+
+Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
