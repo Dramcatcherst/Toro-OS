@@ -20,8 +20,12 @@ export async function loadAttendanceReview(
   }
 
   const supabase = await createServerSupabaseClient();
+  const roles = context.membership?.roles ?? [];
+  const canViewImports = roles.some((role) =>
+    ["ADMIN", "RRHH"].includes(role),
+  );
 
-  const [daysResult, exceptionsResult, importsResult] = await Promise.all([
+  const [daysResult, exceptionsResult] = await Promise.all([
     supabase
       .from("attendance_days")
       .select(
@@ -41,21 +45,24 @@ export async function loadAttendanceReview(
       .is("deleted_at", null)
       .order("created_at", { ascending: false })
       .limit(100),
-    supabase
-      .from("time_imports")
-      .select(
-        "id,period_from,period_to,raw_row_count,accepted_punch_count,duplicate_count,imported_at,status",
-      )
-      .eq("org_id", scope.orgId)
-      .is("deleted_at", null)
-      .order("imported_at", { ascending: false })
-      .limit(10),
   ]);
+
+  const importsResult = canViewImports
+    ? await supabase
+        .from("time_imports")
+        .select(
+          "id,period_from,period_to,raw_row_count,accepted_punch_count,duplicate_count,imported_at,status",
+        )
+        .eq("org_id", scope.orgId)
+        .is("deleted_at", null)
+        .order("imported_at", { ascending: false })
+        .limit(10)
+    : { data: [], error: null };
 
   const failedSources = [
     daysResult.error ? "attendance_days" : null,
     exceptionsResult.error ? "attendance_exceptions" : null,
-    importsResult.error ? "time_imports" : null,
+    canViewImports && importsResult.error ? "time_imports" : null,
   ].filter((value): value is string => Boolean(value));
 
   if (failedSources.length) {
@@ -69,7 +76,8 @@ export async function loadAttendanceReview(
   return {
     status: "ready",
     data: {
-      roles: context.membership?.roles ?? [],
+      roles,
+      canViewImports,
       days: mapAttendanceReviewDays(daysResult.data),
       openExceptions: mapAttendanceReviewExceptions(exceptionsResult.data),
       recentImports: mapAttendanceImports(importsResult.data),
