@@ -25,6 +25,36 @@ Before substantive work:
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
 
+
+## Delivery governance
+
+Normal TORO work is **branch-first and PR-first**.
+
+Required default path:
+
+`current main -> task branch -> smallest coherent change -> tests/lint/build -> Vercel preview when applicable -> evidence -> pull request -> merge -> production verification`
+
+Rules:
+- do not commit normal feature, documentation, configuration or governance work directly to canonical `main`;
+- do not force-push `main`;
+- do not delete or rewrite canonical branch history;
+- do not bypass CI or preview verification merely because a change appears low risk;
+- do not merge a stale/diverged branch by overwriting concurrent work; reconcile against current `main` first;
+- if another TORO lane advances `main`, inspect the delta and rebase/re-extract without discarding the other lane;
+- one issue/PR lane should own one coherent responsibility; if an issue duplicates an existing master lane, consolidate and close the duplicate;
+- a failed gate is evidence to fix the change, not a reason to weaken the gate;
+- direct-to-`main` writes are reserved for an explicitly authorized emergency/break-glass path and must record reason, evidence, verification and rollback immediately afterward.
+
+Merge readiness requires:
+- branch is current enough to merge without losing concurrent canonical work;
+- relevant tests pass;
+- lint/build pass where applicable;
+- required runtime/preview evidence passes where applicable;
+- source authority and privacy/security boundaries remain valid;
+- rollback or revert path is known for material changes.
+
+This behavioral rule is the prerequisite for repository-enforced branch protection/rulesets. Once GitHub enforcement is available, the technical rule should match this contract rather than replacing it.
+
 ## Product architecture
 
 TORO Brain is the sole master intelligence/memory/governance/orchestration product and visible brand. Operating/execution capabilities live inside TORO Brain. `TORO OS` is a technical legacy alias only where old keys or components still depend on it.
