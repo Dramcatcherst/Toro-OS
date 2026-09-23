@@ -3,6 +3,7 @@ export type ToroRole =
   | "GERENCIA"
   | "RECEPCION"
   | "OPERACIONES"
+  | "CAMPO"
   | "FINANZAS"
   | "GROWTH"
   | "SYSTEMS";
@@ -12,6 +13,7 @@ const TORO_ROLES = new Set<ToroRole>([
   "GERENCIA",
   "RECEPCION",
   "OPERACIONES",
+  "CAMPO",
   "FINANZAS",
   "GROWTH",
   "SYSTEMS",

@@ -8,6 +8,7 @@ const toroRoles: ToroRole[] = [
   "GERENCIA",
   "RECEPCION",
   "OPERACIONES",
+  "CAMPO",
   "FINANZAS",
   "GROWTH",
   "SYSTEMS",
@@ -18,9 +19,17 @@ describe("resolveToroRole", () => {
     expect(resolveToroRole({ explicitToroRole: "FOUNDER", systemRoleCodes: ["ADMIN"] })).toBe("FOUNDER");
   });
 
+  it("uses the explicit limited field role without broadening system privileges", () => {
+    expect(resolveToroRole({ explicitToroRole: "CAMPO", systemRoleCodes: ["EMPLEADO"] })).toBe("CAMPO");
+  });
+
   it("maps known system roles conservatively", () => {
     expect(resolveToroRole({ systemRoleCodes: ["GERENCIA"] })).toBe("GERENCIA");
     expect(resolveToroRole({ systemRoleCodes: ["CONTABILIDAD"] })).toBe("FINANZAS");
+  });
+
+  it("does not infer field access from EMPLEADO alone", () => {
+    expect(resolveToroRole({ systemRoleCodes: ["EMPLEADO"] })).toBeNull();
   });
 
   it("does not infer founder privileges from ADMIN alone", () => {
@@ -38,6 +47,7 @@ describe("getRoleNavigation", () => {
     expect(enabledHrefs.every((href) => [
       "/toro",
       "/toro/decisiones",
+      "/toro/operacion/mantenimiento",
       "/toro/hotel",
       "/toro/proyectos",
       "/toro/conocimiento",
@@ -48,6 +58,11 @@ describe("getRoleNavigation", () => {
   it("exposes implemented founder modules and keeps the rest non-actionable", () => {
     const navigation = getRoleNavigation("FOUNDER");
 
+    expect(navigation.find((item) => item.label === "Mantenimiento")).toEqual({
+      label: "Mantenimiento",
+      availability: "available",
+      href: "/toro/operacion/mantenimiento",
+    });
     expect(navigation.find((item) => item.label === "Hotel")).toEqual({
       label: "Hotel",
       availability: "available",
@@ -78,7 +93,14 @@ describe("getRoleNavigation", () => {
 
   it("gives founder the full executive navigation", () => {
     expect(getRoleNavigation("FOUNDER").map((item) => item.label)).toEqual([
-      "Inicio", "Decisiones", "Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas",
+      "Inicio", "Decisiones", "Mantenimiento", "Hotel", "Huéspedes", "Dinero", "Proyectos", "Equipo", "Conocimiento", "Sistemas",
+    ]);
+  });
+
+  it("keeps CAMPO limited to Inicio and Mantenimiento", () => {
+    expect(getRoleNavigation("CAMPO")).toEqual([
+      { label: "Inicio", availability: "available", href: "/toro" },
+      { label: "Mantenimiento", availability: "available", href: "/toro/operacion/mantenimiento" },
     ]);
   });
 
@@ -94,7 +116,12 @@ describe("getRoleNavigation", () => {
     expect(labels).not.toContain("Sistemas");
   });
 
-  it("exposes Hotel to operations", () => {
+  it("exposes Hotel and Maintenance to operations", () => {
+    expect(getRoleNavigation("OPERACIONES").find((item) => item.label === "Mantenimiento")).toEqual({
+      label: "Mantenimiento",
+      availability: "available",
+      href: "/toro/operacion/mantenimiento",
+    });
     expect(getRoleNavigation("OPERACIONES").find((item) => item.label === "Hotel")).toEqual({
       label: "Hotel",
       availability: "available",

@@ -9,6 +9,7 @@ import { MobileNav } from "./mobile-nav";
 const founderDesktopLinks = [
   ["Inicio", "/toro"],
   ["Decisiones", "/toro/decisiones"],
+  ["Mantenimiento", "/toro/operacion/mantenimiento"],
   ["Hotel", "/toro/hotel"],
   ["Proyectos", "/toro/proyectos"],
   ["Conocimiento", "/toro/conocimiento"],
