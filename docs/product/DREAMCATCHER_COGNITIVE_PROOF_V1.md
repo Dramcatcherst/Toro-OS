@@ -132,8 +132,21 @@ Proof completes only when:
 - human field minutes / verified closure;
 - guest-ready risk items remaining.
 
+**BACKEND GUARD — VERIFIED_APPLIED 2026-09-23**
+- `facilities.create_daily_maintenance_round(date)` now suppresses duplicate no-delta rollover.
+- applied migrations:
+  - `20260923083250 maintenance_daily_round_no_delta_guard_20260923`;
+  - `20260923083643 maintenance_daily_round_material_delta_guard_20260923`.
+- no-delta rollback-only test for 24/09 returned the existing `MNT-DAILY-P0-P1-20260923` and persisted no 24/09 round.
+- linked-target-delta rollback-only test returned a new logical `MNT-DAILY-P0-P1-20260924`, proving material changes bypass suppression; rollback persisted no 24/09 round.
+- final function MD5: `b014163a2ecb65e2a6211ea19164b2fa`.
+- original rollback definition is preserved in `docs/evidence/maintenance_daily_round_prechange_20260923.sql`.
+- verification evidence: `docs/evidence/TORO_MAINTENANCE_COGNITIVE_GUARD_VERIFICATION_2026-09-23.md`.
+- this proves elimination/simplification of duplicate output; it does **not** prove field execution.
+
 **Autonomy state**
 - current: A2/A3 for TORO reasoning/preparation;
+- backend duplicate-output suppression: verified automatic guard;
 - physical work: human execution;
 - verified state changes may progress toward A4/A5 only after evidence and policy tests.
 
