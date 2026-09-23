@@ -104,12 +104,12 @@ async function probeLatest(
 
 async function loadMenuSourceSnapshot(
   context: ToroResolvedContext,
+  supabase: SupabaseServerClient,
 ): Promise<ToroMenuSourceSnapshot> {
   if (!context.orgId) {
     throw new Error("Organization context required for source-aware menu");
   }
 
-  const supabase = await createServerSupabaseClient();
   const orgId = context.orgId;
 
   const [
@@ -151,11 +151,105 @@ async function loadMenuSourceSnapshot(
 }
 
 
+
+type ToroProfileSummaryItem = {
+  label: string;
+  value: string;
+  detail?: string;
+};
+
+async function countFiltered(
+  supabase: SupabaseServerClient,
+  schema: string,
+  table: string,
+  orgId: string,
+  filters: Array<{ column: string; value: string | boolean }>,
+): Promise<number | null> {
+  let query = supabase
+    .schema(schema)
+    .from(table)
+    .select("id", { count: "exact", head: true })
+    .eq("org_id", orgId);
+
+  for (const filter of filters) {
+    query = query.eq(filter.column, filter.value);
+  }
+
+  const { count, error } = await query;
+  return error ? null : count ?? 0;
+}
+
+async function loadProfileSummary(
+  context: ToroResolvedContext,
+  profileId: string | null | undefined,
+  supabase: SupabaseServerClient,
+): Promise<ToroProfileSummaryItem[]> {
+  if (!context.orgId || !profileId) return [];
+  const orgId = context.orgId;
+
+  if (profileId === "owner_executive") {
+    const [nowProjects, blockedProjects, executingDecisions] = await Promise.all([
+      countFiltered(supabase, "operations", "projects", orgId, [
+        { column: "active", value: true },
+        { column: "status", value: "NOW" },
+      ]),
+      countFiltered(supabase, "operations", "projects", orgId, [
+        { column: "active", value: true },
+        { column: "status", value: "BLOCKED" },
+      ]),
+      countFiltered(supabase, "operations", "executive_decisions", orgId, [
+        { column: "status", value: "En ejecución" },
+      ]),
+    ]);
+
+    return [
+      nowProjects === null
+        ? null
+        : { label: "Proyectos NOW", value: String(nowProjects), detail: "activos ahora" },
+      blockedProjects === null
+        ? null
+        : { label: "Proyectos bloqueados", value: String(blockedProjects), detail: "necesitan desbloqueo" },
+      executingDecisions === null
+        ? null
+        : { label: "Decisiones en ejecución", value: String(executingDecisions), detail: "seguimiento abierto" },
+    ].filter((item): item is ToroProfileSummaryItem => item !== null);
+  }
+
+  if (profileId === "reception") {
+    const [rooms, villas, experiences] = await Promise.all([
+      countFiltered(supabase, "core", "rooms", orgId, [
+        { column: "active", value: true },
+      ]),
+      countFiltered(supabase, "core", "villas", orgId, [
+        { column: "active", value: true },
+      ]),
+      countFiltered(supabase, "catalog", "experiences", orgId, [
+        { column: "status", value: "active" },
+      ]),
+    ]);
+
+    return [
+      rooms === null
+        ? null
+        : { label: "Habitaciones", value: String(rooms), detail: "catálogo activo" },
+      villas === null
+        ? null
+        : { label: "Villas", value: String(villas), detail: "catálogo activo" },
+      experiences === null
+        ? null
+        : { label: "Experiencias", value: String(experiences), detail: "opciones activas" },
+    ].filter((item): item is ToroProfileSummaryItem => item !== null);
+  }
+
+  return [];
+}
+
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
   menu: ToroResolvedMenu | null;
   sourceReadiness: ToroSourceReadiness | null;
+  profileSummary: ToroProfileSummaryItem[];
   state: "resolved" | "context_choice_required" | "no_menu";
 };
 
@@ -170,6 +264,7 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
       preferredDisplayName: context.displayName,
       menu: null,
       sourceReadiness: null,
+      profileSummary: [],
       state: "context_choice_required",
     };
   }
@@ -188,16 +283,22 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
   const baseline = buildConservativeCapabilityStates(discoveryMenu?.profileId);
 
   let capabilityStates = baseline;
+  let profileSummary: ToroProfileSummaryItem[] = [];
   let sourceReadiness: ToroSourceReadiness = {
     readyReads: [],
     blockedReads: ["Fuentes de esta vista"],
   };
 
   try {
-    const snapshot = await loadMenuSourceSnapshot(context);
+    const supabase = await createServerSupabaseClient();
+    const [snapshot, summary] = await Promise.all([
+      loadMenuSourceSnapshot(context, supabase),
+      loadProfileSummary(context, discoveryMenu?.profileId, supabase),
+    ]);
     const evaluated = evaluateSourceAwareCapabilityStates(baseline, snapshot);
     capabilityStates = evaluated.states;
     sourceReadiness = evaluated.readiness;
+    profileSummary = summary;
   } catch {
     // Fail closed: identity can still resolve, but no capability becomes
     // readable when source probing itself is unavailable.
@@ -218,6 +319,7 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
       membership.employeePreferredName ?? context.displayName,
     menu,
     sourceReadiness,
+    profileSummary,
     state: menu ? "resolved" : "no_menu",
   };
 }
