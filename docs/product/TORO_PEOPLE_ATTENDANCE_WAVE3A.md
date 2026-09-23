@@ -81,7 +81,19 @@ JEFE_DEPARTAMENTO is intentionally excluded from exception/import review because
 Sources:
 - `attendance_days`;
 - open `attendance_exceptions`;
-- recent `time_imports`.
+- recent `time_imports` only when the active role is authorized for that source.
+
+### Import visibility boundary
+
+Current RLS differs by source:
+- `attendance_days`: ADMIN/RRHH, GERENCIA/AUDITOR, CONTABILIDAD and applicable management/self policies;
+- `attendance_exceptions`: ADMIN/RRHH plus GERENCIA/CONTABILIDAD/AUDITOR read;
+- `time_imports`: ADMIN/RRHH only.
+
+TORO therefore:
+- queries `time_imports` only for ADMIN/RRHH;
+- does not use an empty RLS result to imply "there are no imports" to another role;
+- shows an explicit non-visibility message instead of false zero-data semantics.
 
 Explicitly not queried:
 - `raw_punches`;
