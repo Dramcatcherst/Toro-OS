@@ -127,3 +127,8 @@ After this server read model is accepted:
 4. add controlled profile edit via the existing self-profile boundary;
 5. run representative employee mobile QA;
 6. only then begin replacing DreamTeam self-service UI.
+
+
+## Stacked PR CI
+
+Phase 1 now inherits the canonical TORO Brain CI workflow that validates every pull request, including stacked feature PRs. Wave 1 must use that runner as the authoritative Vitest/Lint/Build gate before merge.
