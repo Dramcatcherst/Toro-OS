@@ -117,6 +117,8 @@ canonical_product_specs:
   progressive_onboarding: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   conversational_menus: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   conversational_menu_profiles: data/toro_conversational_menu_profiles_v1.json
+  role_message_experience: docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md
+  role_message_pack: data/toro_role_message_pack_v1.json
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
@@ -676,6 +678,14 @@ conversational_menu_system:
   menu_visibility_never_grants_permission: true
   personalization_never_expands_authority: true
   stale_numeric_shortcut_must_not_execute_consequential_action: true
+  role_message_pack:
+    canonical_spec: docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md
+    manifest: data/toro_role_message_pack_v1.json
+    raw_placeholders_never_user_visible: true
+    optional_unknown_lines_are_omitted: true
+    success_must_distinguish_prepared_executed_verified: true
+    blocked_state_requires_useful_next_path: true
+    empty_state_should_explain_good_news_or_next_step: true
   initial_profiles:
     - owner_executive
     - manager
