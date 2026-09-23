@@ -304,7 +304,7 @@ Verified 2026-09-23:
 - Vercel status for current main is success;
 - earlier auth/context main deployment `dpl_8dQG9Xh8QEbVrJLmA8rcc5JBwvGt` was READY / target production;
 - anonymous runtime verification of `/api/brain/context` is intercepted by Vercel Deployment Protection with `login_required` before application execution;
-- `organization_memberships` still does not exist in production;
+- production `identity.organization_memberships` still does not exist;
 - production continues to use active/non-revoked `user_roles` as transitional organization relationship evidence;
 - 5 production users currently have active org roles, but current real data contains no multi-org user, so multi-org behavior remains synthetic-test-only.
 
@@ -319,7 +319,17 @@ Verified 2026-09-23:
 `CODE_IN_MAIN_CI_VERIFIED_HOSTED_QA_BLOCKED_BY_DEPLOYMENT_PROTECTION`
 
 Evidence:
-`docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md`
+- `docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md`
+- `docs/evidence/TORO_IDENTITY_MEMBERSHIP_ISOLATED_VALIDATION_2026-09-23.md`
+
+**MEMBERSHIP GATE — ISOLATED PASS / PRODUCTION UNAPPLIED**
+- canonical target: `identity.organization_memberships`;
+- PR #67 / merge `4b6da23b6fa2545db6ab3c6218c52f84f227704a`;
+- isolated PostgreSQL run `35858881529`: PASS;
+- application CI run `35858881721`: PASS;
+- production preflight: PASS;
+- production identity schema/table: still absent;
+- employee onboarding: still HOLD.
 
 **OWNER HOLD**
 Employees are not to be contacted, invited or onboarded for this proof yet.
@@ -328,7 +338,7 @@ Do not:
 - invite the 8 unlinked employees;
 - auto-link by name;
 - repurpose staff credentials as QA fixtures;
-- apply the membership draft to production before isolated validation;
+- apply the membership draft to production without an explicit reviewed production-DDL decision; isolated validation has passed, but production remains unchanged;
 - claim multi-org isolation proven from current real users;
 - create another identity/account system.
 
@@ -345,8 +355,9 @@ Existing owner:
 5. prove explicit multi-org context choice with synthetic organizations;
 6. prove revocation/logout/session/cookie behavior;
 7. prove mobile + desktop behavior;
-8. validate `organization_memberships` + RLS in isolation before any production DDL;
-9. prove persistent flow/session context before any real onboarding launch.
+8. isolated `identity.organization_memberships` + RLS validation is **PASS**; retain production DDL as a separate explicit high-risk gate;
+9. after any approved membership cutover, prove persistent membership/context parity and rollback;
+10. prove persistent flow/session context before any real onboarding launch.
 
 Real employee onboarding remains outside this proof until a later explicit launch decision.
 
