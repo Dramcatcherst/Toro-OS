@@ -233,6 +233,22 @@ Every non-UI capability must exist in the corresponding role toolbox profile. CI
 
 These are default starting points. Runtime rendering must filter them by current permission and enabled capability.
 
+
+### 8.0 Personal
+
+Opening:
+> **Hola, {first_name} 👋 Esto es lo que puede ayudarte a ordenar tu día.**
+
+Primary:
+1. ☀️ **Hoy**
+2. 🗓️ **Calendario**
+3. ✅ **Mis tareas**
+4. 💬 **Mensajes**
+5. 🎯 **Proyectos / metas**
+6. ➕ **Más**
+
+Personal mode never silently injects employer data. Organization summaries appear only through an explicit allowed transition/overlay.
+
 ### 8.1 Owner / Executive
 
 Opening:
