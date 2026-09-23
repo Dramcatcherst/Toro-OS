@@ -79,14 +79,28 @@ describe("loadHotelDirectory", () => {
         ],
         error: null,
       });
-      const from = vi.fn((table: string) => {
-        if (table !== "rooms") throw new Error(`unexpected table:${table}`);
-        return roomQuery;
+      const gateQuery = query({
+        data: [
+          {
+            room_id: "00000000-0000-0000-0000-000000000025",
+            gate_status: "HUMAN_QA_REQUIRED",
+            gate_reason: "Fresh housekeeping QA and human reception release are required.",
+            p0_blocker_count: 0,
+            p1_attention_count: 0,
+            recent_unresolved_evidence_count: 0,
+            open_task_summary: null,
+            calculated_at_cr: "2026-09-19T12:02:05.000Z",
+          },
+        ],
+        error: null,
       });
-      const schema = vi.fn((name: string) => {
-        if (name !== "core") throw new Error(`unexpected schema:${name}`);
-        return { from };
-      });
+      const schema = vi.fn((name: string) => ({
+        from: (table: string) => {
+          if (name === "core" && table === "rooms") return roomQuery;
+          if (name === "operations" && table === "room_operational_gate") return gateQuery;
+          throw new Error(`unexpected source:${name}.${table}`);
+        },
+      }));
       createServerSupabaseClient.mockResolvedValue({ schema });
 
       const data = await loadHotelDirectory();
@@ -103,6 +117,15 @@ describe("loadHotelDirectory", () => {
           lastReviewed: "2026-09-14",
           freshness: "2026-09-14T09:59:49.828Z",
           room360Key: "DC-ROOM-25",
+          operationalGate: {
+            status: "HUMAN_QA_REQUIRED",
+            reason: "Fresh housekeeping QA and human reception release are required.",
+            p0BlockerCount: 0,
+            p1AttentionCount: 0,
+            recentUnresolvedEvidenceCount: 0,
+            openTaskSummary: null,
+            calculatedAtCr: "2026-09-19T12:02:05.000Z",
+          },
         },
       ]);
       expect(JSON.stringify(data)).not.toContain("must-not-leak");

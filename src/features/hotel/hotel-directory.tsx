@@ -94,6 +94,22 @@ export function HotelDirectory({ data }: HotelDirectoryProps) {
                 </span>
               </div>
 
+              <div className="mt-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Gate operativo</p>
+                  <span className="rounded-full bg-white px-2 py-1 text-xs font-semibold text-neutral-700">
+                    {room.operationalGate.status}
+                  </span>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-neutral-600">{room.operationalGate.reason}</p>
+                {room.operationalGate.openTaskSummary ? (
+                  <p className="mt-2 text-xs font-medium text-neutral-800">{room.operationalGate.openTaskSummary}</p>
+                ) : null}
+                <p className="mt-2 text-[11px] leading-4 text-neutral-500">
+                  P0: {room.operationalGate.p0BlockerCount} · P1: {room.operationalGate.p1AttentionCount} · evidencia reciente: {room.operationalGate.recentUnresolvedEvidenceCount}
+                </p>
+              </div>
+
               <div className="mt-3 grid gap-1 text-sm text-neutral-600">
                 {room.maxCapacity !== null ? <p>Capacidad: {room.maxCapacity}</p> : null}
                 {room.kitchenType ? <p>Cocina: {room.kitchenType}</p> : null}
@@ -104,7 +120,7 @@ export function HotelDirectory({ data }: HotelDirectoryProps) {
                 href={`/toro/habitaciones/${room.room360Key}`}
                 className="mt-4 inline-flex min-h-11 items-center rounded-xl border border-neutral-300 px-3 py-2 text-sm font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900"
               >
-                Abrir ficha 360 de habitación {room.roomNumber}
+                Revisar ficha 360 · liberación humana
               </Link>
             </article>
           ))}
