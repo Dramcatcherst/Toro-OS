@@ -109,6 +109,8 @@ export const resolveToroContext: ResolveToroContext = async (
 
   if (userError || !user) return null;
 
+  const mode = request.mode ?? "organization";
+
   const { data: roleRows, error: roleError } = await supabase
     .from("user_roles")
     .select("org_id, roles(code)")
@@ -116,13 +118,33 @@ export const resolveToroContext: ResolveToroContext = async (
     .eq("status", "active")
     .is("revoked_at", null);
 
+  // Personal TORO depends on authenticated identity, not on organization
+  // membership availability. A role-store outage may hide the org switcher,
+  // but must not leak org data or unnecessarily deny the private assistant.
+  if (mode === "personal" && roleError) {
+    const policy = deriveToroContextPolicy({ mode: "personal" });
+    return {
+      userId: user.id,
+      email: user.email ?? null,
+      displayName: displayNameFromUser(user),
+      mode,
+      orgId: null,
+      membership: null,
+      availableOrgIds: [],
+      allowedDataScopes: policy.allowedDataScopes,
+      allowedTools: [],
+      canUsePersonalVault: policy.canUsePersonalVault,
+      canUseOrganizationData: policy.canUseOrganizationData,
+      requiresContextChoice: false,
+    };
+  }
+
   if (roleError) return null;
 
   const rolesByOrg = parseRoleRows(roleRows);
   if (!rolesByOrg) return null;
 
   const availableOrgIds = [...rolesByOrg.keys()].sort();
-  const mode = request.mode ?? "organization";
 
   if (mode === "personal") {
     const policy = deriveToroContextPolicy({ mode: "personal" });
