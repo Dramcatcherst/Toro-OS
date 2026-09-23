@@ -13,12 +13,14 @@ import {
 import { useRouter } from "next/navigation";
 
 import type {
+  ToroOnboardingFirstValueTarget,
   ToroOnboardingJourney,
   ToroOnboardingStep,
 } from "./server";
 
 type Answer = {
   stepKey: string;
+  choiceKey?: string;
   label: string;
 };
 
@@ -48,15 +50,25 @@ export function GuidedOnboarding({
   firstName,
   businessName,
   journey,
+  firstValueTargets,
 }: {
   firstName: string;
   businessName: string;
   journey: ToroOnboardingJourney;
+  firstValueTargets: ToroOnboardingFirstValueTarget[];
 }) {
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [input, setInput] = useState("");
+
+  const selectedChoiceKeys = new Set(
+    answers.map((answer) => answer.choiceKey).filter(Boolean),
+  );
+  const orderedFirstValueTargets = [
+    ...firstValueTargets.filter((target) => selectedChoiceKeys.has(target.key)),
+    ...firstValueTargets.filter((target) => !selectedChoiceKeys.has(target.key)),
+  ].slice(0, 3);
 
   const complete = stepIndex >= journey.steps.length;
   const step: ToroOnboardingStep | null = complete
@@ -70,11 +82,11 @@ export function GuidedOnboarding({
     return [];
   }, [journey.key, step]);
 
-  function advance(label?: string) {
+  function advance(label?: string, choiceKey?: string) {
     if (step && label) {
       setAnswers((current) => [
         ...current,
-        { stepKey: step.key, label },
+        { stepKey: step.key, choiceKey, label },
       ]);
     }
     setInput("");
@@ -128,7 +140,7 @@ export function GuidedOnboarding({
       numeric >= 1 &&
       numeric <= choices.length
     ) {
-      advance(choices[numeric - 1].label);
+      advance(choices[numeric - 1].label, choices[numeric - 1].key);
       return;
     }
 
@@ -188,9 +200,38 @@ export function GuidedOnboarding({
                 Ya tienes lo necesario para empezar.
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                No necesitas completar más configuración para explorar Mi TORO.
-                Puedes volver a esta guía cuando quieras.
+                No necesitas completar más configuración para empezar. TORO te deja primero lo que ya puede consultar con fuente y permiso.
               </p>
+
+              {orderedFirstValueTargets.length ? (
+                <div className="mt-5">
+                  <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                    Puedes empezar ahora con
+                  </div>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                    {orderedFirstValueTargets.map((target, index) => (
+                      <button
+                        key={target.capability}
+                        type="button"
+                        onClick={() => router.push(target.href)}
+                        className={[
+                          "rounded-2xl border p-4 text-left transition",
+                          index === 0
+                            ? "border-cyan-300/30 bg-cyan-300/[0.08] hover:border-cyan-300/50"
+                            : "border-slate-800 bg-black/25 hover:border-slate-700",
+                        ].join(" ")}
+                      >
+                        <div className="text-sm font-semibold text-white">{target.label}</div>
+                        <div className="mt-1 text-xs text-slate-500">Lectura disponible</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-5 rounded-2xl border border-slate-800 bg-black/25 p-4 text-sm leading-6 text-slate-400">
+                  TORO ya conoce tu contexto, pero todavía no hay una lectura específica que pueda abrir aquí con suficiente evidencia. Puedes entrar a Mi TORO y ver qué está disponible.
+                </div>
+              )}
 
               {answers.length ? (
                 <div className="mt-5 rounded-2xl border border-slate-800 bg-black/25 p-4">
@@ -249,7 +290,7 @@ export function GuidedOnboarding({
                     <button
                       key={choice.key}
                       type="button"
-                      onClick={() => advance(choice.label)}
+                      onClick={() => advance(choice.label, choice.key)}
                       className="rounded-2xl border border-slate-800 bg-black/25 p-4 text-left transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.05]"
                     >
                       <div className="text-xl">{choice.emoji ?? "➡️"}</div>
