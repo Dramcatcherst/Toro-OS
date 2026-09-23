@@ -798,6 +798,23 @@ A different external product may have its own plan only when it is explicitly a 
 10. **Verify**
     Do not mark complete without evidence.
 
+## Evidence ingestion and historical extraction rule
+
+When TORO receives a document, invoice, statement, receipt, report or other evidence, it must inspect the **complete source**, not only the headline/current-period fields.
+
+Rules:
+- one evidence document may support many structured facts and many historical periods;
+- extract current-period facts and every historical period explicitly present in tables, charts or detail sections;
+- preserve one source/evidence identity and link all derived period records back to it;
+- distinguish direct current-period evidence from historical values reproduced inside a newer source;
+- do not request one document per month when a newer authoritative document already contains sufficient history;
+- never infer missing consumption, demand, payment or ownership from unrelated amounts;
+- document ≠ invoice ≠ payment ≠ consumption ≠ measurement;
+- deduplicate by canonical entity/service + period + evidence authority;
+- corrections from fresher/more authoritative evidence supersede derived history without deleting provenance.
+
+Reference proof: Dreamcatcher NISE 800984 August 2026 invoice supplied March-August 2026 consumption/demand history from one source PDF.
+
 ## No parallel-plan rule
 
 A document may be:
