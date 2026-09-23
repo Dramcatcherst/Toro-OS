@@ -95,7 +95,9 @@ Canonical actions:
 
 Do not grant "full access" when one capability is enough.
 
-## 5. Risk levels
+## 5. Legacy action/risk levels
+
+> **Compatibility note — 2026-09-23:** L0–L5 below are historical tool action/risk classes, not the current workflow-autonomy ladder. Canonical autonomy is A0–A6 in `docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md` and `TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md`. Do not map L-number to A-number directly.
 
 ### L0 — observe
 Search/read public or authorized non-sensitive information.
@@ -118,6 +120,16 @@ Requires explicit approval and evidence.
 
 ### L5 — prohibited/unsupported
 Action TORO is not allowed to perform in the current product state.
+
+### Canonical interpretation
+
+- L0 may correspond to A0 or A1 depending whether TORO only reads or also explains.
+- L1 is normally A3 preparation; a recommendation alone is A2.
+- L2/L3 actions require A4 approval or a specifically earned A5 bounded workflow.
+- L4 stays approval-gated unless policy explicitly permits a narrower bounded action; many L4 classes may remain A4 indefinitely.
+- L5 is unavailable regardless of autonomy level.
+
+Effective authority is always the intersection of identity/scope, role permissions, workflow policy, connector permissions, A-level, action-risk gate, source freshness and runtime support.
 
 ## 6. Catalog categories
 

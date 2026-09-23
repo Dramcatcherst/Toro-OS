@@ -97,6 +97,7 @@ canonical_product_specs:
   brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
   cognitive_operating_model: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
+  autonomy_action_model: docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md
   dreamcatcher_cognitive_proof: docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
@@ -452,6 +453,15 @@ cognitive_operating_model:
     A4: execute_with_approval
     A5: bounded_autonomy
     A6: closed_loop_pro
+  legacy_autonomy_compatibility:
+    autonomy_policy_migration: data/toro_autonomy_policy_migration_v1.json
+    historical_L_levels_are_action_risk_classes: true
+    historical_agents_autonomy_ceiling_is_compatibility_metadata: true
+    numeric_L_to_A_mapping_allowed: false
+    effective_authority_is_per_workflow: true
+    most_restrictive_gate_wins: true
+    global_A5_A6_agent_grants: false
+    canonical_spec: docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md
   autonomy_promotion_requires_evidence: true
   autonomy_auto_demotion_on_drift_or_quality_failure: true
   high_risk_can_remain_human_gated_at_A6: true

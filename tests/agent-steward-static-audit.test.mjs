@@ -133,3 +133,27 @@ test("evaluation suite must still cover the six canonical agents", () => {
   assert.ok(result.errors.some((e) => e.includes("eval suite missing canonical agent SKY")));
   assert.ok(result.recommendations.includes("RESTORE_EVAL_COVERAGE_BEFORE_PROMOTION"));
 });
+
+
+test("legacy L-level in playbook fails", () => {
+  const brokenPlaybooks = structuredClone(playbooks);
+  brokenPlaybooks.agents.TERE.playbooks[0].default_action_ceiling = "L2";
+
+  const result = auditAgentSkillArchitecture({
+    catalog,
+    ownership,
+    playbooks: brokenPlaybooks,
+    externalPolicy,
+    evalSuite,
+  });
+
+  assert.equal(result.status, "FAIL");
+  assert.ok(
+    result.errors.some((e) =>
+      e.includes("legacy autonomy label in canonical playbook tere-guest-lifecycle"),
+    ),
+  );
+  assert.ok(
+    result.recommendations.includes("MIGRATE_PLAYBOOK_TO_CANONICAL_A0_A6_AUTONOMY"),
+  );
+});

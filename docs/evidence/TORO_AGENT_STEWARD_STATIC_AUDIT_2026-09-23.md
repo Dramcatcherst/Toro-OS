@@ -52,14 +52,27 @@ Not granted:
 
 ## Verification status
 
-**PENDING CURRENT PR #79 CI.**
+**VERIFIED / MERGED**
 
-Do not interpret this evidence file as a PASS until the exact PR head has:
-- repository tests PASS;
-- Steward tests PASS;
-- lint PASS;
-- build PASS;
-- workstation health PASS where triggered;
-- Vercel preview Ready where triggered.
+PR #79 was merged to canonical `main`.
 
-After merge, record the exact merge commit and sync the existing Supabase architecture knowledge row. Do not create another agent registry.
+- merge commit: `936794ee0f0b903078c7d9b8213aab2de649c926`
+- TORO OS CI: PASS
+- repository tests: PASS
+- static Steward tests: PASS
+- lint: PASS
+- build: PASS
+- workstation health: PASS
+- Vercel preview: Ready
+- mergeability before merge: true
+
+Observed canonical static result:
+- 6 canonical parent skills;
+- 17 internal playbooks;
+- 54/54 capabilities covered;
+- 0 orphan capabilities;
+- 0 duplicate playbook assignments;
+- 0 new agents required by the current map;
+- 0 platform skills imported into the canonical TORO registry.
+
+This validates only `OBSERVE_STATIC_CI`. It does not grant runtime inventory, runtime mutation, skill promotion or autonomous agent lifecycle control.
