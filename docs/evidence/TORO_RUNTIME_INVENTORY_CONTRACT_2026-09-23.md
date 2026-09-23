@@ -45,7 +45,7 @@ No actual target is promoted by this contract.
 | OpenClaw owner/staff TORO | TORO / `toro-brain` | UNVERIFIED |
 | OpenClaw TERE | TERE / `tere-revenue` | UNVERIFIED |
 | WeSpeak TERE | TERE / `tere-revenue` | UNVERIFIED |
-| TORO Portal | TORO / `toro-brain` | UNVERIFIED |
+| TORO Portal | TORO / `toro-brain` | OBSERVED — Vercel deployment/code identity only; skill/config/playbooks/eval unknown |
 
 These entries are observation targets, not existence/version claims.
 
@@ -68,3 +68,36 @@ These entries are observation targets, not existence/version claims.
 6. Promote to VERIFIED only after both inventory and behavior gates pass.
 
 No new runtime database, secret store or agent registry is justified by this contract.
+
+
+## First direct observation
+
+Vercel read-only inspection produced the first actual runtime manifest:
+
+`docs/evidence/runtime-manifests/toro_portal_observed_2026-09-23.json`
+
+Observed:
+- Vercel team: Dreamcatcher's projects;
+- project: `toro-pr11-preview`;
+- project id: `prj_nxerFw9ciNews6tUMAah3GAlAJzs`;
+- production deployment: `dpl_69A87RsV3QDbfV1syUTwWSuw6vWj`;
+- deployment state: READY;
+- framework: Next.js;
+- source: Git;
+- branch: `main`;
+- GitHub commit: `f37c4c22cbeb9d72c95c0ddc9dc268dff9a8414e`;
+- previous READY production rollback candidate observed: `dpl_V67BAAbXVryKh8M8M7VTbUSyzSYH`.
+
+Not observed:
+- loaded `toro-brain` skill version;
+- profile/config version;
+- config hash;
+- loaded playbooks;
+- model identity/config;
+- tool permission inventory;
+- workflow A-level inventory;
+- 10-case TORO runtime evaluation.
+
+Therefore TORO Portal is **OBSERVED**, not VERIFIED.
+
+No runtime mutation, restart, deployment, secret read or permission change occurred.
