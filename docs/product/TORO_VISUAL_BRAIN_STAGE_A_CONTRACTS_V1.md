@@ -96,7 +96,66 @@ Supabase `fpihshyoobzctnlerfjp` contains useful patterns to generalize:
 
 These are design inputs for TORO Data. The F&B project itself is not the master Brain database.
 
-## 3.3 Existing code contracts
+## 3.3 Verified canonical domain sources for Stage B
+
+Read-only inspection of the canonical Supabase project confirms the following reusable sources.
+
+### Projects / execution
+- `operations.projects` — canonical project registry, hierarchy, canonical module key, owner/agent, priority, status, next action and completion;
+- `operations.tasks` — project-linked work, assignee/owner, status, priority, due dates, blockers and related operational entities;
+- `operations.executive_decisions` — canonical human decision ledger with project linkage, recommendation, next action, evidence and processing state;
+- `operations.obligations` — recurring obligations, due/review dates, owners, privacy class, verification, evidence and canonical references;
+- `operations.admin_modules` — module-to-canonical-destination and role mapping.
+
+### Authority / data quality / dependencies
+- `integrations.source_authority_rules` — official/supporting/forbidden sources, reading rules, approval requirements and authority level;
+- `integrations.domain_governance` — data owner, freshness expectation, quality target/current score, criticality and review cadence;
+- `integrations.external_dependency_registry` — source dependency, consumer, status, evidence, replacement destination and decommission blocker;
+- `integrations.data_conflicts` — canonical/source conflicts and resolution state;
+- `integrations.import_runs` — source-as-of, checksum, freshness SLA, validation and approval state.
+
+### Metrics / evidence
+- `finance.monthly_metrics` — verified finance/commercial metric source candidate for Finance-owned KPI projections;
+- `finance.evidence_documents` — verified accounting/tax evidence registry with backup and source references;
+- `finance.period_evidence` — evidence coverage and freshness/review state by period.
+
+### Assets / revenue
+- `assets.physical_assets` — physical asset facts, location, condition, maintenance requirement, source and verification;
+- `revenue.rate_plans` and related revenue tables — Revenue-owned reference data; live PMS authority remains external where defined.
+
+### Current gap
+No table name matching a generic TORO-wide `goals`, `objectives` or `kpis` registry was found in the canonical database.
+
+Therefore:
+- `goal` remains a valid target node kind but is not treated as CURRENT canonical data until an owning source exists;
+- `kpi` may be projected from domain-owned metric sources such as Finance only when the owning domain contract defines the metric;
+- the Visual Brain must not create a generic goals/KPI store merely to populate the UI.
+
+## 3.4 Vercel migration inventory — verified/unknown split
+
+### VERIFIED
+- canonical repository deployments are visible in Vercel project `toro-pr11-preview`;
+- legacy runtime lineage remains visible in `toro-os-v03`, sourced from `toro-os-v88-new`;
+- current canonical code's read-only Vercel connector can target a project/team through `VERCEL_PROJECT_ID` and `VERCEL_TEAM_ID`;
+- current connector health fallback still points at the legacy `toro-os-v03` project, which is consistent with monitoring the current legacy runtime until cutover;
+- `VERCEL_TOKEN` is required for live deployment reads;
+- `BLOB_READ_WRITE_TOKEN` changes approval-ledger persistence from non-durable cookie fallback to Vercel Blob;
+- preview/auth plans require Supabase public URL/publishable configuration and prohibit service-role exposure in browser contexts.
+
+### UNKNOWN / must be verified before cutover
+The currently available Vercel connector does not expose enough configuration to verify:
+- custom domains and aliases;
+- exact production domain routing;
+- environment-variable values or per-environment scoping;
+- OIDC configuration;
+- redirect/callback registrations;
+- cron jobs;
+- function/runtime settings not inferable from code;
+- deployment protection settings.
+
+No production cutover is allowed until these are inventoried through an authorized Vercel/project configuration path.
+
+## 3.5 Existing code contracts
 
 Reuse and extend:
 - `RiskLevel`
@@ -786,15 +845,57 @@ Produces:
 - health/freshness;
 - drift/incident events.
 
-## 9.4 Projects adapter
+## 9.4 Projects / decisions / obligations adapter
 
-Consumes canonical project/goal/task sources when verified.
+CURRENT canonical inputs:
+- `operations.projects`;
+- `operations.tasks`;
+- `operations.executive_decisions`;
+- `operations.obligations`.
 
-Produces project/goal/task nodes and dependencies.
+Produces:
+- project/task/decision/approval-adjacent nodes;
+- parent/child project relationships;
+- task-to-project relationships;
+- blocker/dependency summaries where explicitly evidenced;
+- owner/agent responsibility summaries;
+- completion and next-action projections.
+
+`goal` nodes are not emitted from generic project text unless a governed goal source or explicit goal mapping exists.
 
 Do not hard-code transitional Airtable fields into universal Brain types.
 
-## 9.5 Domain adapters
+## 9.5 Authority / data-quality adapter
+
+CURRENT canonical inputs:
+- `integrations.source_authority_rules`;
+- `integrations.domain_governance`;
+- `integrations.external_dependency_registry`;
+- `integrations.data_conflicts`;
+- `integrations.import_runs`.
+
+Produces:
+- authority/source summaries;
+- freshness/quality state;
+- dependency/drift/conflict indicators;
+- safe system/data-governance events.
+
+## 9.6 Evidence / metrics adapter
+
+CURRENT canonical inputs include:
+- `finance.evidence_documents`;
+- `finance.period_evidence`;
+- `finance.monthly_metrics`;
+- domain-specific evidence fields where governed.
+
+Produces:
+- evidence references;
+- verification/freshness summaries;
+- Finance-owned KPI projections when explicitly defined by the Finance domain.
+
+No generic KPI truth store is implied.
+
+## 9.7 Domain adapters
 
 Dreamcatcher-specific adapters may expose:
 - hotel/property facts;
