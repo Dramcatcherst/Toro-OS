@@ -682,12 +682,12 @@ Do not prioritize now.
 
 This file is the **only canonical Plan General** for TORO Brain.
 
-Aliases such as:
-- Plan General
-- Total Brain
-- TORO master plan
+Naming rule:
+- **TORO Brain** is the only name for the master brain and owner of this Plan General.
+- **Plan General** and **TORO master plan** refer to this same document.
+- **Total Brain is deprecated and must not be used as an alias, project, subsystem, plan, app, database, agent, or control plane.**
 
-all resolve here unless the user explicitly creates a different external product plan.
+A different external product may have its own plan only when it is explicitly a separate governed product/scope.
 
 ## Every material request follows this process
 
