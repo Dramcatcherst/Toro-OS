@@ -107,6 +107,7 @@ canonical_product_specs:
   tools: docs/product/TORO_TOOLS_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
+  visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
 
 canonical_sources:
   product_constitution: github

@@ -817,6 +817,25 @@ Rule:
 
 ---
 
+## 22.1 Stage A contract authority
+
+The canonical Stage A implementation contract is:
+
+- `docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md`
+- TypeScript contract surface: `src/lib/brain-contracts.ts`
+
+It defines:
+- Brain Projection Contract;
+- Event Spine normalization;
+- server-side permission/redaction requirements;
+- visual semantic states;
+- minimal read-only Brain API boundary;
+- synthetic fixture rules.
+
+Stage B must consume these contracts rather than inventing a second vocabulary.
+
+---
+
 ## 23. Implementation stages
 
 ### Stage A — Contracts first
