@@ -492,10 +492,28 @@ cognitive_proving_ground:
     current_round_key: MNT-DAILY-P0-P1-20260923
     autonomy_state: A2_A3
     human_physical_execution_required: true
+    current_blocker: physical_field_evidence_not_system_design
+    reported_resolved_is_not_verified_closed: true
+    verify_resolution_queue_precedes_new_open_review: true
     baseline:
       observed_equivalent_daily_rounds: 3
       checks_per_round: 21
       prepared_checks_total: 63
+      current_round_key: MNT-DAILY-P0-P1-20260923
+      current_round_checks: 21
+      current_round_pending: 21
+      current_round_pass: 0
+      current_round_fail: 0
+      current_round_with_evidence: 0
+      current_round_captured: 0
+      current_round_supervisor_required: 3
+      current_round_supervisor_confirmed: 0
+      closure_queue_reported_resolved: 12
+      closure_queue_open_or_unknown: 9
+      closure_queue_verified_closed: 0
+      first_field_proof_candidate: task-maint-room2-toilet-20260915
+      first_field_proof_check: p1-room2-toilet
+      field_proof_evidence: docs/evidence/TORO_MAINTENANCE_FIELD_PROOF_REBASELINE_2026-09-23.md
       pass_results: 0
       fail_results: 0
     no_delta_rollover_suppression: true

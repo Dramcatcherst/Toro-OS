@@ -7,6 +7,11 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
+import {
+  formatMaintenanceProofItems,
+  type MaintenanceProofCheckRow,
+  type MaintenanceProofQueueRow,
+} from "./maintenance-proof";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
   evaluateSourceAwareCapabilityStates,
@@ -318,6 +323,8 @@ export type ToroCapabilityFocus = {
 const FOCUSABLE_CAPABILITIES = new Set([
   "projects.status",
   "executive.decisions",
+  "operations.exceptions",
+  "maintenance.priorities",
   "catalog.rooms_villas",
   "catalog.experiences",
 ]);
@@ -330,6 +337,61 @@ function cleanNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
+async function loadMaintenanceProofFocus(
+  context: ToroResolvedContext,
+  capability: string,
+  label: string,
+  supabase: SupabaseServerClient,
+): Promise<ToroCapabilityFocus | null> {
+  if (!context.orgId) return null;
+
+  const { data: queueData, error: queueError } = await supabase
+    .schema("facilities")
+    .from("maintenance_closure_queue")
+    .select(
+      "id,event_key,title,property_area,room_unit,status,priority,closure_status,closure_action,closure_rank,closure_instruction,recommended_action,closure_evidence_ref,verified_closed_at",
+    )
+    .eq("org_id", context.orgId)
+    .is("verified_closed_at", null)
+    .order("closure_rank", { ascending: true })
+    .order("occurred_at", { ascending: false })
+    .limit(8);
+
+  if (queueError || !Array.isArray(queueData)) return null;
+
+  const eventIds = queueData
+    .map((raw) => {
+      const row = raw as unknown as Record<string, unknown>;
+      return cleanText(row.id);
+    })
+    .filter((value): value is string => Boolean(value));
+
+  let checkData: unknown[] = [];
+  if (eventIds.length) {
+    const checkResult = await supabase
+      .schema("facilities")
+      .from("inspection_checks")
+      .select(
+        "target_event_id,check_text,pass_criteria,requires_supervisor_review,result_status,updated_at",
+      )
+      .in("target_event_id", eventIds)
+      .order("updated_at", { ascending: false });
+
+    if (!checkResult.error && Array.isArray(checkResult.data)) {
+      checkData = checkResult.data;
+    }
+  }
+
+  return {
+    capability,
+    label,
+    items: formatMaintenanceProofItems(
+      queueData as unknown as MaintenanceProofQueueRow[],
+      checkData as unknown as MaintenanceProofCheckRow[],
+    ),
+  };
+}
+
 async function loadCapabilityFocus(
   context: ToroResolvedContext,
   capability: string,
@@ -338,6 +400,18 @@ async function loadCapabilityFocus(
 ): Promise<ToroCapabilityFocus | null> {
   if (!context.orgId || !FOCUSABLE_CAPABILITIES.has(capability)) return null;
   const orgId = context.orgId;
+
+  if (
+    capability === "operations.exceptions" ||
+    capability === "maintenance.priorities"
+  ) {
+    return loadMaintenanceProofFocus(
+      context,
+      capability,
+      label,
+      supabase,
+    );
+  }
 
   if (capability === "projects.status") {
     const { data, error } = await supabase
