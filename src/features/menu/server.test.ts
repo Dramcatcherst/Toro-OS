@@ -54,7 +54,7 @@ describe("resolveCurrentToroReadOnlyMenu", () => {
     ).toBe("BLOCKED");
     expect(
       view?.menu?.items.find((item) => item.capability === "guest.arrivals_departures")?.state,
-    ).toBe("READ_ONLY");
+    ).toBe("BLOCKED");
   });
 
   it("does not choose an organization when explicit context choice is required", async () => {
