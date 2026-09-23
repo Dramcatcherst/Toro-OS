@@ -33,6 +33,8 @@ test("static steward audit passes current canonical architecture", () => {
 
   assert.deepEqual(result.errors, []);
   assert.equal(result.status, "PASS");
+  assert.equal(result.disposition, "NO_CHANGE");
+  assert.deepEqual(result.recommendations, ["NO_CHANGE"]);
   assert.equal(result.summary.capabilities, 54);
   assert.equal(result.summary.playbooks, 17);
   assert.equal(result.summary.canonicalAgents, 6);
@@ -61,6 +63,7 @@ test("orphan capability fails closed", () => {
 
   assert.equal(result.status, "FAIL");
   assert.ok(result.errors.some((e) => e.includes("ownership missing capability maintenance_tasks")));
+  assert.ok(result.recommendations.includes("MAP_EXISTING_CAPABILITY_OWNER_BEFORE_NEW_AGENT"));
 });
 
 test("duplicate capability across playbooks fails", () => {
@@ -77,6 +80,7 @@ test("duplicate capability across playbooks fails", () => {
 
   assert.equal(result.status, "FAIL");
   assert.ok(result.errors.some((e) => e.includes("capability assigned to multiple playbooks: maintenance_tasks")));
+  assert.ok(result.recommendations.includes("MERGE_OR_SELECT_SINGLE_PRIMARY_PLAYBOOK"));
 });
 
 test("alias collision fails", () => {
@@ -93,6 +97,7 @@ test("alias collision fails", () => {
 
   assert.equal(result.status, "FAIL");
   assert.ok(result.errors.some((e) => e.includes("skill/alias collision: tere-revenue")));
+  assert.ok(result.recommendations.includes("RESOLVE_ALIAS_COLLISION_PRESERVE_CANONICAL_IDENTITY"));
 });
 
 test("importing platform skills into canonical registry fails policy", () => {
@@ -109,6 +114,7 @@ test("importing platform skills into canonical registry fails policy", () => {
 
   assert.equal(result.status, "FAIL");
   assert.ok(result.errors.some((e) => e.includes("external platform skills imported into canonical TORO registry")));
+  assert.ok(result.recommendations.includes("REMOVE_PROVIDER_SKILL_FROM_CANONICAL_REGISTRY_USE_ADAPTER_POLICY"));
 });
 
 test("evaluation suite must still cover the six canonical agents", () => {
@@ -125,4 +131,5 @@ test("evaluation suite must still cover the six canonical agents", () => {
 
   assert.equal(result.status, "FAIL");
   assert.ok(result.errors.some((e) => e.includes("eval suite missing canonical agent SKY")));
+  assert.ok(result.recommendations.includes("RESTORE_EVAL_COVERAGE_BEFORE_PROMOTION"));
 });
