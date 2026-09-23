@@ -119,6 +119,8 @@ canonical_product_specs:
   conversational_menu_profiles: data/toro_conversational_menu_profiles_v1.json
   role_message_experience: docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md
   role_message_pack: data/toro_role_message_pack_v1.json
+  role_toolbox: docs/product/TORO_ROLE_TOOLBOX_V1.md
+  role_toolbox_profiles: data/toro_role_toolbox_v1.json
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
@@ -630,6 +632,26 @@ tere_runtime_config_consolidation:
 
 
 
+
+
+role_toolbox_system:
+  canonical_spec: docs/product/TORO_ROLE_TOOLBOX_V1.md
+  profile_manifest: data/toro_role_toolbox_v1.json
+  implementation_status: specified_not_runtime_verified
+  present_jobs_not_vendor_integrations: true
+  availability_states:
+    - READY
+    - READ_ONLY
+    - CONNECT
+    - REQUEST_ACCESS
+    - DEGRADED
+    - HIDDEN
+    - BLOCKED
+  dead_buttons_forbidden: true
+  menu_visibility_never_grants_permission: true
+  execution_rechecks_effective_authority: true
+  position_specific_profiles_override_generic_employee: true
+  connector_substitution_should_not_redesign_user_menu: true
 
 conversational_menu_system:
   canonical_spec: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
