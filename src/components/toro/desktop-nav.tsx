@@ -5,7 +5,7 @@ import type { NavItem } from "@/features/auth/role-nav";
 export function DesktopNav({ items }: { items: NavItem[] }) {
   return (
     <nav aria-label="Navegación principal" className="hidden w-64 shrink-0 border-r border-black/10 bg-white p-4 md:block">
-      <div className="mb-6 text-lg font-semibold">TORO OS</div>
+      <div className="mb-6 text-lg font-semibold">TORO Brain</div>
       <ul className="space-y-1">
         {items.map((item) => (
           <li key={item.label}>
