@@ -10,9 +10,11 @@ import type { ToroResolvedMenu } from "./types";
 export function MyToroCommandBar({
   menu,
   focusableCapabilities,
+  currentFocus,
 }: {
   menu: ToroResolvedMenu;
   focusableCapabilities: string[];
+  currentFocus?: string | null;
 }) {
   const router = useRouter();
   const [input, setInput] = useState("");
@@ -22,7 +24,9 @@ export function MyToroCommandBar({
     [focusableCapabilities],
   );
 
-  const suggestions = menu.items.slice(0, 3);
+  const suggestions = menu.items
+    .filter((item) => item.capability !== currentFocus)
+    .slice(0, currentFocus ? 2 : 3);
 
   function navigateToCapability(capability: string) {
     router.push(`/my-toro?focus=${encodeURIComponent(capability)}`);
@@ -31,6 +35,29 @@ export function MyToroCommandBar({
   function handleValue(raw: string) {
     const value = raw.trim();
     if (!value) return;
+
+    const normalized = value.toLowerCase();
+    if (
+      currentFocus &&
+      ["continuar", "siguiente", "seguir"].includes(normalized)
+    ) {
+      const ordered = menu.items.filter((item) =>
+        focusable.has(item.capability),
+      );
+      const currentIndex = ordered.findIndex(
+        (item) => item.capability === currentFocus,
+      );
+      const next =
+        currentIndex >= 0 ? ordered[currentIndex + 1] ?? ordered[0] : ordered[0];
+
+      if (next && next.capability !== currentFocus) {
+        setFeedback(null);
+        navigateToCapability(next.capability);
+      } else {
+        setFeedback("No hay otra lectura disponible ahora. Puedes volver al inicio.");
+      }
+      return;
+    }
 
     const resolution = resolveToroMenuIntent(menu, value);
 
@@ -104,8 +131,17 @@ export function MyToroCommandBar({
         </button>
       </form>
 
-      {suggestions.length ? (
+      {suggestions.length || currentFocus ? (
         <div className="mt-3 flex flex-wrap gap-2">
+          {currentFocus ? (
+            <button
+              type="button"
+              onClick={() => handleValue("inicio")}
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
+            >
+              🏠 Inicio
+            </button>
+          ) : null}
           {suggestions.map((item) => (
             <button
               key={item.key}
@@ -120,6 +156,15 @@ export function MyToroCommandBar({
               ) : null}
             </button>
           ))}
+          {currentFocus && focusableCapabilities.length > 1 ? (
+            <button
+              type="button"
+              onClick={() => handleValue("continuar")}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:text-white"
+            >
+              ➡️ Continuar
+            </button>
+          ) : null}
         </div>
       ) : null}
 
