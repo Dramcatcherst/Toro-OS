@@ -1023,3 +1023,152 @@ The objective is not a perfect static brain.
 
 The objective is a brain that becomes **more coherent, more capable, more efficient and easier to operate over time**.
 
+
+
+---
+
+# 22. Visual Brain and product experience
+
+Canonical domain specification:
+- `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`
+
+## Product rule
+
+TORO Brain must be visually understandable without becoming a decorative dashboard.
+
+The visual layer is a projection of canonical TORO state:
+- scope graph;
+- entities and relationships;
+- workflows;
+- events;
+- approvals;
+- evidence;
+- goals/projects;
+- connector/system health;
+- verification state.
+
+It must not create:
+- a second brain;
+- a shadow source of truth;
+- a second permission system;
+- a separate task/approval engine;
+- a graph database by default;
+- a new subsystem merely for visualization.
+
+Normal users continue to experience one TORO.
+
+## Experience model
+
+Primary surfaces:
+- TORO Public;
+- TORO Portal;
+- universal command surface;
+- role-specific operational views;
+- Presentation Mode.
+
+Core views:
+- Brain;
+- Today / Executive Home;
+- Focus;
+- Timeline;
+- Workflows;
+- Systems;
+- Goals & Projects;
+- Evidence;
+- Command;
+- Configuration.
+
+The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
+
+## Event Spine
+
+Live visual activity must be backed by normalized canonical events.
+
+Required flow:
+
+`intent -> scope -> context -> authority -> risk -> permission -> action -> evidence -> verification -> event -> visual projection`
+
+Fake “thinking” animation is prohibited.
+
+TORO may show:
+- systems consulted;
+- workflow/action state;
+- approvals;
+- evidence;
+- verified result.
+
+TORO must not expose hidden chain-of-thought.
+
+## Public product demonstration
+
+“Watch TORO Work” is an approved TARGET capability.
+
+Public demonstrations use only:
+- synthetic fixtures;
+- approved anonymized aggregates;
+- public reference data.
+
+Dreamcatcher private operational data is not a default public demo source.
+
+## Technology direction
+
+Preferred target:
+- canonical repository: `Dramcatcherst/Toro-OS`;
+- Next.js / React / TypeScript;
+- Vercel;
+- Supabase/Postgres;
+- operational graph UI in 2D/2.5D first;
+- Figma as design-system/design source;
+- optional richer motion/3D only after the operational model works.
+
+AI design/code tools may accelerate delivery but do not become architecture authority.
+
+## CURRENT architecture drift verified 2026-09-22
+
+### GitHub
+- `Dramcatcherst/Toro-OS` = canonical product repository.
+- `toro-os-v88-new` = legacy/reference.
+- legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
+
+### Vercel
+- `toro-pr11-preview` is deploying the canonical `Toro-OS` repository.
+- `toro-os-v03` still has deployments from legacy `toro-os-v88-new`.
+- This is configuration/runtime drift requiring a controlled migration.
+- Do not repoint/delete production without inventory, parity verification and rollback.
+
+### Supabase
+Visible inspected projects are currently domain-specialized:
+- DreamTeam/People/attendance/payroll/security;
+- Kross/F&B operational reporting/import data.
+
+A unified canonical Scope Graph/Event Spine is not yet evidenced by the inspected public table inventory.
+
+Rule:
+- do not create a third “brain DB” automatically;
+- first map existing schemas;
+- select/reconcile the canonical TORO runtime data plane;
+- then add graph/event projections without duplicating domain truth.
+
+## NEXT
+
+1. Map existing Supabase schemas against TORO Scope Graph, Identity, People, Operations and Event Spine requirements.
+2. Define canonical graph/entity/event contracts before adding visual runtime tables.
+3. Build a synthetic read-only Brain prototype inside `Dramcatcherst/Toro-OS`.
+4. Establish the shared TORO design system and semantic component states.
+5. Audit Vercel legacy/canonical projects, domains, environment variables, functions and rollback dependencies.
+6. Keep legacy production untouched until canonical preview achieves parity for required behavior.
+7. Connect real read-only Dreamcatcher state only after permission/filtering contracts exist.
+8. Add realtime normalized events after static/read-only truth is verified.
+9. Add governed actions only after approval/evidence flows are enforced.
+10. Build public “Watch TORO Work” after private operational truth and demo-data isolation are proven.
+
+## FUTURE
+
+- richer Rive-style explanatory motion;
+- optional Three.js/WebGPU Presentation Mode;
+- portfolio-scale visual comparison;
+- generalized external-business onboarding after the readiness gate.
+
+The operating priority remains:
+
+> **correct brain first, visible brain second, spectacular brain third.**
