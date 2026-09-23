@@ -228,3 +228,36 @@ Ownership:
 Training never grants authority automatically.
 
 DreamTeam/TORO People work today should preserve this future possibility without building robot-specific complexity now.
+
+
+## 11. Identity onboarding classification — 2026-09-23
+
+Read-only reconciliation of the 8 active employee records without `user_id` found:
+
+- all 8 have confirmed punch/clock identity mapping;
+- all 8 have department;
+- all 8 have position;
+- all 8 have work area;
+- 2 already have restricted private HR profiles in Supabase;
+- 7 match Airtable `hr_employment_profiles`;
+- those 7 are status `ACTIVO`;
+- those 7 have `employee_portal_enabled = true`;
+- those 7 have historical-data state `PARCIAL`;
+- 1 active employee does not match a current Airtable employment-profile record by confirmed clock identity and requires profile reconciliation before invitation.
+
+### Safe disposition
+
+**7 records:** `invite_candidate_after_identity_review`
+
+They are real active employee identities, not incomplete junk records. Before invitation:
+1. verify intended personal/work email through approved onboarding;
+2. ensure no existing Auth identity belongs to the same person;
+3. confirm membership/role;
+4. invite through supported Auth flow;
+5. link employee ↔ user only after successful identity verification.
+
+**1 record:** `employment_profile_reconciliation_required`
+
+Do not invite or auto-link until the missing/discordant employment profile is resolved.
+
+No account should be created solely because an employee is active or has a clock ID.
