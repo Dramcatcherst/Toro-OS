@@ -105,6 +105,7 @@ canonical_product_specs:
   communications: docs/product/TORO_COMMS_V1.md
   tools: docs/product/TORO_TOOLS_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
+  performance_intelligence: docs/product/TORO_PERFORMANCE_INTELLIGENCE_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
 
 canonical_sources:
@@ -141,6 +142,9 @@ product_rules:
   one_visible_toro_for_normal_users: true
   specialist_agents_hidden_by_default: true
   no_duplicate_source_of_truth: true
+  dashboards_are_views_not_truth: true
+  metric_state_cutoff_provenance_required: true
+  performance_intelligence_is_cross_subsystem_capability: true
   connected_does_not_mean_integrated: true
   integrated_does_not_mean_automated: true
   automated_does_not_mean_verified: true
