@@ -17,28 +17,16 @@ type ToolboxManifest = {
 
 const manifest = toolboxManifest as ToolboxManifest;
 
-const LIVE_OR_ACTION_GATED = new Set([
-  "pms.live_availability_price",
-  "hospitality.quote",
-  "finance.payment_status",
-  "finance.collections",
-  "finance.reconcile",
-  "finance.prepare_approval",
-  "people.payroll_operations",
-  "operations.approvals",
-  "operations.assign",
-  "maintenance.close_with_evidence",
-  "housekeeping.complete",
-]);
-
 function buildConservativeCapabilityStates() {
   const states: Record<string, ToroMenuAvailabilityState> = {};
 
+  // This surface proves identity/role/position routing only. Visibility is
+  // discoverability, not evidence that an underlying read or write path is
+  // operational. Capabilities stay BLOCKED until a source-aware capability
+  // resolver proves freshness, permission and runtime availability.
   for (const profile of Object.values(manifest.profiles ?? {})) {
     for (const capability of profile.capabilities ?? []) {
-      states[capability] = LIVE_OR_ACTION_GATED.has(capability)
-        ? "BLOCKED"
-        : "READ_ONLY";
+      states[capability] = "BLOCKED";
     }
   }
 
@@ -73,7 +61,7 @@ export async function resolveCurrentToroReadOnlyMenu(): Promise<ToroRealMenuView
     positionCode: membership.positionCode,
     positionName: membership.positionName,
     capabilityStates: buildConservativeCapabilityStates(),
-    hasSecondaryOptions: true,
+    hasSecondaryOptions: false,
   });
 
   return {
