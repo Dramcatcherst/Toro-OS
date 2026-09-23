@@ -113,6 +113,7 @@ describe("loadAttendanceReview", () => {
       status: "ready",
       data: {
         roles: ["RRHH"],
+        canViewImports: true,
         days: [],
         openExceptions: [],
         recentImports: [],
@@ -125,6 +126,29 @@ describe("loadAttendanceReview", () => {
     expect(c.from).not.toHaveBeenCalledWith("raw_punches");
     expect(c.from).not.toHaveBeenCalledWith("attendance_blocks");
   });
+
+  it.each(["GERENCIA", "AUDITOR", "CONTABILIDAD"] as const)(
+    "does not query time_imports for roles without import visibility: %s",
+    async (role) => {
+      const c = client();
+      createServerSupabaseClientMock.mockResolvedValue(c);
+
+      await expect(
+        loadAttendanceReview(reviewContext([role])),
+      ).resolves.toMatchObject({
+        status: "ready",
+        data: {
+          roles: [role],
+          canViewImports: false,
+          recentImports: [],
+        },
+      });
+
+      expect(c.from).toHaveBeenCalledWith("attendance_days");
+      expect(c.from).toHaveBeenCalledWith("attendance_exceptions");
+      expect(c.from).not.toHaveBeenCalledWith("time_imports");
+    },
+  );
 
   it("queries only open exceptions for the active organization", async () => {
     const c = client();
