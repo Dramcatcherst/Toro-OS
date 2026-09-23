@@ -10,7 +10,7 @@
 **Message pack:** data/toro_role_message_pack_v1.json  
 **Role toolbox:** docs/product/TORO_ROLE_TOOLBOX_V1.md  
 **Toolbox manifest:** data/toro_role_toolbox_v1.json  
-**Runtime state:** SYNTHETIC EXPERIENCE LAB CONNECTED / NOT PRODUCTION-VERIFIED
+**Runtime state:** AUTHENTICATED READ-ONLY SURFACE INTEGRATED + CI-VERIFIED / EXTERNAL ACTIONS AND REAL-USER ADOPTION UNVERIFIED
 
 ---
 
@@ -764,3 +764,28 @@ Intentionally blocked until stronger authority exists:
 - current cash/finance when bank evidence is stale.
 
 This is a read-only product proof surface. Visibility never grants execution authority.
+
+
+## 16C. Current authenticated conversational integration — 2026-09-23
+
+`/my-toro` now uses the canonical conversational resolver in an authenticated, role/position-specific, source-aware read-only surface.
+
+Implemented and CI-verified:
+- canonical identity/session context;
+- stable position-code routing;
+- availability ordering;
+- number/keyword/conservative natural-language navigation;
+- read-only focus views for supported capabilities;
+- next-step suggestions that adapt to the active focus;
+- source/freshness gating before a capability becomes readable;
+- plain-language readiness explanations;
+- default post-login entry to `/my-toro`.
+
+Still unverified / intentionally not enabled:
+- external writes/actions from My TORO;
+- WhatsApp/WeSpeak consumption of this same runtime resolver;
+- persistent conversational session state across channels;
+- real-user adoption/usability metrics;
+- production execution of blocked workflows.
+
+Do not downgrade this surface back to “synthetic-only,” and do not upgrade it to “production action verified” without direct execution evidence.

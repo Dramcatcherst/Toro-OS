@@ -637,7 +637,7 @@ tere_runtime_config_consolidation:
 role_toolbox_system:
   canonical_spec: docs/product/TORO_ROLE_TOOLBOX_V1.md
   profile_manifest: data/toro_role_toolbox_v1.json
-  implementation_status: specified_not_runtime_verified
+  implementation_status: authenticated_read_only_runtime_integrated_real_user_adoption_unverified
   present_jobs_not_vendor_integrations: true
   availability_states:
     - READY
@@ -661,6 +661,10 @@ conversational_menu_system:
   experience_lab_external_writes: false
   authenticated_menu_route: /my-toro
   authenticated_menu_mode: source_aware_read_only
+  authenticated_command_bar: true
+  authenticated_focus_views: true
+  authenticated_menu_ci_verified: true
+  external_action_execution_from_my_toro: false
   capability_default_state: BLOCKED
   capability_read_promotion_requires:
     - authenticated_context
@@ -669,7 +673,7 @@ conversational_menu_system:
     - required_rows_present
     - freshness_when_time_sensitive
   source_probe_failure_behavior: fail_closed
-  runtime_resolver_status: connected_to_synthetic_experience_lab_not_production_surface
+  runtime_resolver_status: authenticated_source_aware_read_only_surface_integrated_ci_verified
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
   structured_submenus: data/toro_conversational_submenus_v2.json
   implementation_status: specified_not_runtime_verified
@@ -802,7 +806,7 @@ progressive_onboarding:
   role_journey_manifest: data/toro_onboarding_journeys_v2.json
   route: /onboarding
   restart_entry_from_my_toro: true
-  implementation_status: role_aware_restartable_ui_runtime_verified_pending
+  implementation_status: role_aware_restartable_surface_integrated_ci_verified_user_adoption_unverified
   progress_persistence: intentionally_not_implemented_yet
   restart_scope: presentation_session_only
   restart_preserves_canonical_state: true
@@ -828,6 +832,7 @@ progressive_onboarding:
   do_not_reask_verified_context: true
   first_choices_follow_source_readiness: true
   completion_offers_only_verified_read_targets: true
+  first_value_handoff_ci_verified: true
   no_matching_first_value_behavior: return_to_my_toro_without_fabrication
 
 product_proof_focus:

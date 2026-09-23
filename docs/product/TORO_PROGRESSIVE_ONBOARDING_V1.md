@@ -6,7 +6,7 @@
 **Owners:** TORO Identity + TORO People + TORO Tools + TORO Comms + TORO User Portal  
 **Role journey manifest:** data/toro_onboarding_journeys_v2.json  
 **Commercial rule:** one TORO, modular activation, progressive setup  
-**Implementation status:** ROLE-AWARE RESTARTABLE UI IMPLEMENTED / PERSISTENT PROGRESS NOT YET IMPLEMENTED
+**Implementation status:** ROLE-AWARE RESTARTABLE SURFACE INTEGRATED + CI-VERIFIED / PERSISTENT CROSS-CHANNEL PROGRESS NOT YET IMPLEMENTED
 
 ---
 
