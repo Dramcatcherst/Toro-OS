@@ -465,3 +465,87 @@ A blind reviewer should distinguish the six agents primarily by:
 A superficial vocabulary or emoji difference is insufficient.
 
 Runtime evaluation should include at least one blind-distinctiveness sample per agent after the core 60-case suite is operational. A failure means refine decision lens/format first, not add more persona decoration.
+
+
+## 14. Canonical skill playbooks
+
+The six canonical skills remain the durable parent contracts. Current capability scope is organized into **17 internal playbooks covering all 54 catalog capabilities**.
+
+Canonical manifest:
+
+`data/toro_canonical_skill_playbooks_v1.json`
+
+Current coverage:
+
+| Parent skill | Internal playbooks |
+|---|---:|
+| TORO / `toro-brain` | 6 |
+| TERE / `tere-revenue` | 1 |
+| RICO / `rico-operations` | 2 |
+| FIONA / `fiona-finance` | 2 |
+| SKY / `sky-growth` | 2 |
+| SOBRESITO / `sobresito-systems` | 4 |
+| **Total** | **17** |
+
+Every catalog capability is assigned to exactly one internal playbook. Support agents remain collaborators through the capability ownership map; they do not create duplicate primary ownership.
+
+### 14.1 Split gate
+
+An internal playbook does **not** become another TORO skill just because it has a name.
+
+Split a new canonical subskill only when repeated evidence shows one or more of:
+
+- materially distinct trigger/negative-trigger behavior;
+- a context/input contract that should not be loaded with its parent;
+- an independent permission/security boundary;
+- a distinct evaluator/acceptance contract;
+- a reusable method used by multiple agents/runtimes;
+- persistent false routing or context-budget degradation in the parent skill.
+
+Until then, the playbook stays inside the parent skill.
+
+## 15. Agent Steward — first implemented observation layer
+
+The first implemented Steward capability is **static architecture observation in repository CI**.
+
+Files:
+- `scripts/agent-steward-static-audit.mjs`
+- `tests/agent-steward-static-audit.test.mjs`
+
+State:
+
+`OBSERVE_STATIC_CI`
+
+It checks:
+
+- all catalog capabilities have an ownership record;
+- no ownership record references an unknown capability;
+- all 54 capabilities are assigned to exactly one playbook;
+- playbook owner and canonical skill agree with the ownership map;
+- six expected canonical agent skills exist;
+- canonical names and aliases do not collide;
+- the current map requests no unreviewed new agents;
+- external platform skills have not been copied into the canonical TORO registry;
+- the 60-case evaluation suite still contains all six canonical agents.
+
+It intentionally does **not**:
+
+- query or alter OpenClaw/WeSpeak runtime;
+- create or retire an agent;
+- modify permissions, budgets or autonomy;
+- promote a skill;
+- edit production data;
+- decide that a runtime is healthy;
+- evaluate its own promotion criteria.
+
+A failing static audit blocks architectural promotion in CI but is not itself a production control plane.
+
+### 15.1 Next Steward maturity
+
+1. `OBSERVE_STATIC_CI` — repository contract drift. **Implemented in this lane, pending merge/CI at time of authoring.**
+2. `OBSERVE_RUNTIME_READONLY` — read exact runtime inventories/versions without mutation.
+3. `RECOMMEND` — propose reuse/add-skill/workflow/merge/retire with evidence.
+4. `PREPARE_CANDIDATE` — create isolated candidate changes and evaluations.
+5. Any automatic promotion/rollback remains bounded by server-enforced policy, independent evaluation and human authorization where required.
+
+Do not skip directly from static CI observation to autonomous runtime management.
