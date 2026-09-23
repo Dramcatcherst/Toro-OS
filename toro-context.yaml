@@ -659,6 +659,16 @@ conversational_menu_system:
   experience_lab_route: /experience-lab
   experience_lab_data: synthetic_only
   experience_lab_external_writes: false
+  authenticated_menu_route: /my-toro
+  authenticated_menu_mode: source_aware_read_only
+  capability_default_state: BLOCKED
+  capability_read_promotion_requires:
+    - authenticated_context
+    - role_or_position_fit
+    - rls_read_success
+    - required_rows_present
+    - freshness_when_time_sensitive
+  source_probe_failure_behavior: fail_closed
   runtime_resolver_status: connected_to_synthetic_experience_lab_not_production_surface
   profile_manifest: data/toro_conversational_menu_profiles_v1.json
   structured_submenus: data/toro_conversational_submenus_v2.json
