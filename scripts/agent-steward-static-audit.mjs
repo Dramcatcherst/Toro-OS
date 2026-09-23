@@ -171,10 +171,33 @@ export function auditAgentSkillArchitecture({
     (ownership.capabilities ?? []).map((item) => item.capability_family),
   );
 
+  const recommendations = [];
+  if (errors.some((e) => e.startsWith("ownership missing capability"))) {
+    recommendations.push("MAP_EXISTING_CAPABILITY_OWNER_BEFORE_NEW_AGENT");
+  }
+  if (errors.some((e) => e.includes("assigned to multiple playbooks"))) {
+    recommendations.push("MERGE_OR_SELECT_SINGLE_PRIMARY_PLAYBOOK");
+  }
+  if (errors.some((e) => e.includes("skill/alias collision"))) {
+    recommendations.push("RESOLVE_ALIAS_COLLISION_PRESERVE_CANONICAL_IDENTITY");
+  }
+  if (errors.some((e) => e.includes("current map requests new agents"))) {
+    recommendations.push("REVIEW_AGENT_CANDIDATE_AGAINST_SKILL_WORKFLOW_REUSE_GATE");
+  }
+  if (errors.some((e) => e.includes("external platform skills imported"))) {
+    recommendations.push("REMOVE_PROVIDER_SKILL_FROM_CANONICAL_REGISTRY_USE_ADAPTER_POLICY");
+  }
+  if (errors.some((e) => e.includes("eval suite missing canonical agent"))) {
+    recommendations.push("RESTORE_EVAL_COVERAGE_BEFORE_PROMOTION");
+  }
+  if (!errors.length) recommendations.push("NO_CHANGE");
+
   return {
     status: errors.length ? "FAIL" : "PASS",
+    disposition: errors.length ? "REVIEW_REQUIRED" : "NO_CHANGE",
     errors,
     warnings,
+    recommendations: unique(recommendations),
     summary: {
       capabilities: catalog.length,
       capabilityFamilies: families.length,
