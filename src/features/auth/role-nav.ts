@@ -20,6 +20,7 @@ const founderNavigation: NavItem[] = [
   { label: "Dinero", availability: "coming-soon" },
   { label: "Proyectos", availability: "coming-soon" },
   { label: "Equipo", availability: "coming-soon" },
+  { label: "Horarios", availability: "available", href: "/toro/horarios" },
   { label: "Conocimiento", availability: "coming-soon" },
   { label: "Sistemas", availability: "coming-soon" },
 ];
@@ -39,7 +40,7 @@ const peopleAdminNavigation: NavItem[] = [
   { label: "Personas", availability: "coming-soon" },
   { label: "Asistencia", availability: "available", href: "/toro/asistencia" },
   { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
-  { label: "Horarios", availability: "coming-soon" },
+  { label: "Horarios", availability: "available", href: "/toro/horarios" },
   { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Planilla", availability: "coming-soon" },
   { label: "Auditoría", availability: "coming-soon" },
@@ -52,7 +53,7 @@ const departmentLeadNavigation: NavItem[] = [
   { label: "Cobertura", availability: "coming-soon" },
   { label: "Asistencia", availability: "coming-soon" },
   { label: "Mi horario", availability: "available", href: "/toro/mi-horario" },
-  { label: "Horarios", availability: "coming-soon" },
+  { label: "Horarios", availability: "available", href: "/toro/horarios" },
   { label: "Solicitudes", availability: "available", href: "/toro/solicitudes" },
   { label: "Mi perfil", availability: "available", href: "/toro/mi-perfil" },
 ];
@@ -60,6 +61,7 @@ const departmentLeadNavigation: NavItem[] = [
 const auditNavigation: NavItem[] = [
   { label: "Inicio", availability: "available", href: "/toro" },
   { label: "Asistencia", availability: "available", href: "/toro/asistencia" },
+  { label: "Horarios", availability: "available", href: "/toro/horarios" },
   { label: "Planilla", availability: "coming-soon" },
   { label: "Aprobaciones", availability: "coming-soon" },
   { label: "Auditoría", availability: "coming-soon" },
