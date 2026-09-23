@@ -1237,3 +1237,59 @@ TORO Brain · Portafolio General [PORTFOLIO]
 - terminal tasks with `active=true`: **0**
 
 Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
+
+
+---
+
+# 21. Progress log — 2026-09-23 context integration
+
+## CURRENT verified progress
+
+### TORO Brain context resolver
+Branch:
+`feat/toro-brain-context-on-phase1-20260922`
+
+Draft PR:
+`#38 — feat: add TORO Brain personal/work context resolver`
+
+Verified:
+- branch is based on the existing Phase 1 Auth implementation;
+- personal context no longer requires an organization role;
+- organization context remains fail-closed;
+- one active organization can be inferred during transition;
+- multiple organizations require explicit context choice;
+- invalid requested organization returns no context;
+- organization roles never unlock personal User Vault scope;
+- transitional membership provenance is marked `legacy_user_roles`;
+- strict TypeScript typecheck passed in isolated validation;
+- Vercel preview build for the branch reached READY.
+
+Not yet verified:
+- resolver Vitest suite has not run in GitHub CI because the existing workflow only triggers on PRs to `main`;
+- no production Supabase schema/write change has been made;
+- no real multi-organization user has been tested.
+
+### Membership foundation
+Draft SQL exists on the context integration branch and is deliberately auto-rollback/non-production.
+
+Read-only production evidence:
+- 5 organization membership candidates from active user-role relations;
+- 4 map to currently linked employee records;
+- 1 is non-employee and has ADMIN role metadata only;
+- do not infer owner/contractor type from ADMIN role alone.
+
+Current migration rule:
+- membership represents person ↔ organization relationship only;
+- do not duplicate employee_id inside membership;
+- employment relationship remains canonical in `employees`;
+- role authorization remains canonical in `user_roles` during transition;
+- membership writes remain server-side/reviewed only.
+
+## NEXT
+
+1. Run context resolver Vitest suite in a branch/CI path that can execute it.
+2. Reconcile the single non-employee membership relationship using explicit business/identity evidence.
+3. Build a reviewed `organization_memberships` migration after test evidence; do not apply yet.
+4. Refactor current Phase 1 `getToroSession()` to consume `resolveToroContext()` only after parity tests prove existing Founder/role behavior is preserved.
+5. Add context switcher contract/UI after resolver parity.
+
