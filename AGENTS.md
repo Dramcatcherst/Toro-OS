@@ -128,6 +128,8 @@ Do not solve repeated systemic problems by making prompts longer forever.
 
 `docs/product/TORO_BRAIN_GENERAL_PLAN.md` is the sole canonical Plan General.
 
+Historical documents whose titles contain words such as `Master Brain`, `Master Plan`, `Control Board`, `Engine`, `System`, or `Dashboard` do **not** become current authority by name. Resolve them through `toro-context.yaml`, the canonical General Plan, `operations.projects`, and current contracts before acting. A historical/merged document is evidence only unless explicitly reactivated through the canonical project/module.
+
 All new material work must:
 - map to a scope;
 - map to an existing TORO subsystem or justify why one cannot own it;
