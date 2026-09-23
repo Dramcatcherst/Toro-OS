@@ -549,3 +549,34 @@ A failing static audit blocks architectural promotion in CI but is not itself a 
 5. Any automatic promotion/rollback remains bounded by server-enforced policy, independent evaluation and human authorization where required.
 
 Do not skip directly from static CI observation to autonomous runtime management.
+
+
+## 16. Autonomy compatibility and workflow authority
+
+Canonical autonomy for agents/skills/playbooks is defined in:
+
+`docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md`
+
+Rules:
+
+- A0–A6 is the only current workflow-autonomy ladder.
+- Historical Airtable `agents.autonomy_ceiling = L1/L2/L3` is compatibility metadata only.
+- Historical TORO Tools L0–L5 labels describe action/risk classes, not autonomy.
+- Never infer `L2 -> A2`, `L3 -> A3`, or any other numeric equivalence.
+- Effective authority is per workflow/action and uses the most restrictive applicable identity, role, agent policy, connector permission, workflow A-level, risk gate, source freshness and runtime capability.
+- Parent-agent identity never grants global A5/A6.
+- A5/A6 promotion requires direct workflow evidence and can be automatically demoted.
+- High-risk classes may remain A4 approval-gated indefinitely.
+- Playbook `default_action_ceiling` values are design envelopes, not proof that runtime execution has earned that level.
+
+### 16.1 Current program state
+
+At this revision:
+
+- static Agent Steward = `OBSERVE_STATIC_CI`;
+- six canonical skills = runtime evaluation pending;
+- no global A5/A6 grant exists;
+- runtime-tested 60-case suite = 0/60;
+- legacy L-level fields remain preserved for migration/history, not execution authority.
+
+Any runtime adapter must expose or derive an A-level per workflow before it may claim autonomous execution.
