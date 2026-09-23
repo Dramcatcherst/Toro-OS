@@ -10,6 +10,7 @@ import {
   Clock3,
   Database,
   FileCheck2,
+  FileImage,
   FolderKanban,
   Gauge,
   GitBranch,
@@ -18,8 +19,11 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import type { BrainNode } from "@/lib/brain-contracts";
+
+import { loadAuthorizedBrainProjection } from "@/features/brain/server";
+import type { BrainNode, BrainProjection } from "@/lib/brain-contracts";
 import { visualBrainDemo, visualBrainDemoLayout } from "@/lib/brain-fixtures";
+
 import styles from "./brain.module.css";
 
 const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
@@ -28,9 +32,12 @@ const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
   connector: Database,
   kpi: Gauge,
   evidence: FileCheck2,
+  media: FileImage,
   project: FolderKanban,
   approval: LockKeyhole,
   decision: Brain,
+  knowledge: Brain,
+  asset: Building2,
 };
 
 const riskClass = {
@@ -55,9 +62,50 @@ const verificationLabel = {
   not_applicable: "n/a",
 };
 
-function NodeCard({ node }: { node: BrainNode }) {
+type Point = { x: number; y: number };
+
+function focusNodes(nodes: BrainNode[]) {
+  const priority: Partial<Record<BrainNode["kind"], number>> = {
+    knowledge: 0,
+    media: 1,
+    asset: 2,
+    incident: 3,
+    task: 4,
+    evidence: 5,
+  };
+
+  return [...nodes]
+    .sort((a, b) => {
+      const left = priority[a.kind] ?? 10;
+      const right = priority[b.kind] ?? 10;
+      return left - right || a.id.localeCompare(b.id);
+    })
+    .slice(0, 12);
+}
+
+function createProjectionLayout(nodes: BrainNode[]): Record<string, Point> {
+  const columns = 4;
+  const xPositions = [14, 38, 62, 86];
+  const rows = Math.max(1, Math.ceil(nodes.length / columns));
+  const yStep = rows === 1 ? 0 : 70 / (rows - 1);
+
+  return Object.fromEntries(
+    nodes.map((node, index) => {
+      const row = Math.floor(index / columns);
+      const column = index % columns;
+      return [
+        node.id,
+        {
+          x: xPositions[column],
+          y: rows === 1 ? 50 : 15 + row * yStep,
+        },
+      ];
+    }),
+  );
+}
+
+function NodeCard({ node, point }: { node: BrainNode; point: Point | undefined }) {
   const Icon = nodeIcons[node.kind] ?? Activity;
-  const point = visualBrainDemoLayout[node.id];
 
   if (!point) return null;
 
@@ -66,19 +114,27 @@ function NodeCard({ node }: { node: BrainNode }) {
       className={[
         styles.node,
         riskClass[node.risk],
-        node.activity && ["reading", "analyzing", "executing", "verifying"].includes(node.activity) ? styles.nodeActive : "",
+        node.activity &&
+        ["reading", "analyzing", "executing", "verifying"].includes(node.activity)
+          ? styles.nodeActive
+          : "",
       ].join(" ")}
       style={{ left: `${point.x}%`, top: `${point.y}%` }}
-      aria-label={`${node.label}. ${node.status}. Risk ${node.risk}. ${verificationLabel[node.verification]} verification.`}
+      aria-label={`${node.label}. ${node.status}. Risk ${node.risk}. ${verificationLabel[node.verification]} verification. Freshness ${freshnessLabel[node.freshness]}.`}
     >
       <div className={styles.nodeHead}>
-        <span className={styles.nodeIcon}><Icon aria-hidden="true" /></span>
+        <span className={styles.nodeIcon}>
+          <Icon aria-hidden="true" />
+        </span>
         <span className={styles.nodeKind}>{node.kind}</span>
       </div>
       <h3>{node.label}</h3>
       {node.metric ? (
         <div className={styles.metric}>
-          <strong>{node.metric.value}{node.metric.unit}</strong>
+          <strong>
+            {node.metric.value}
+            {node.metric.unit}
+          </strong>
           <span>{node.metric.label}</span>
         </div>
       ) : null}
@@ -92,35 +148,80 @@ function NodeCard({ node }: { node: BrainNode }) {
   );
 }
 
-function Graph() {
-  const points = visualBrainDemoLayout;
+function Graph({ projection }: { projection: BrainProjection }) {
+  const graphNodes = focusNodes(projection.nodes);
+  const visibleNodeIds = new Set(graphNodes.map((node) => node.id));
+  const graphEdges = projection.edges.filter(
+    (edge) => visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target),
+  );
+  const points = projection.synthetic
+    ? visualBrainDemoLayout
+    : createProjectionLayout(graphNodes);
 
   return (
     <div className={styles.graphFrame}>
       <div className={styles.graphHeader}>
         <div>
-          <span className={styles.eyebrow}>Business anatomy · synthetic scenario</span>
-          <h2>TORO sees the operation as connected evidence, not separate apps.</h2>
+          <span className={styles.eyebrow}>
+            {projection.synthetic
+              ? "Business anatomy · synthetic scenario"
+              : "Business anatomy · real read-only"}
+          </span>
+          <h2>
+            {projection.synthetic
+              ? "TORO sees the operation as connected evidence, not separate apps."
+              : "TORO shows only the authorized business neighborhood resolved for this context."}
+          </h2>
         </div>
         <div className={styles.graphLegend}>
-          <span><i className={styles.legendActive} /> active</span>
-          <span><i className={styles.legendRisk} /> needs attention</span>
-          <span><i className={styles.legendGate} /> approval gate</span>
+          <span>
+            <i className={styles.legendActive} /> active
+          </span>
+          <span>
+            <i className={styles.legendRisk} /> needs attention
+          </span>
+          <span>
+            <i className={styles.legendGate} /> verification / approval gate
+          </span>
         </div>
       </div>
 
-      <div className={styles.graphCanvas} role="img" aria-label="Synthetic Dreamcatcher business graph showing TORO Finance reading Kross, Alegra and bank evidence, detecting a cash coverage issue and preparing an approval-gated decision.">
-        <svg className={styles.edges} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <div
+        className={styles.graphCanvas}
+        role="img"
+        aria-label={
+          projection.synthetic
+            ? "Synthetic Dreamcatcher business graph."
+            : "Authorized real read-only Dreamcatcher business graph."
+        }
+      >
+        <svg
+          className={styles.edges}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
           <defs>
-            <marker id="arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
+            <marker
+              id="arrow"
+              markerWidth="5"
+              markerHeight="5"
+              refX="4.5"
+              refY="2.5"
+              orient="auto"
+            >
               <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHead} />
             </marker>
           </defs>
-          {visualBrainDemo.edges.map((edge) => {
+          {graphEdges.map((edge) => {
             const source = points[edge.source];
             const target = points[edge.target];
             if (!source || !target) return null;
-            const isAttention = edge.freshness === "aging" || edge.verification === "partially_verified";
+            const isAttention =
+              edge.freshness === "aging" ||
+              edge.freshness === "stale" ||
+              edge.verification === "partially_verified";
+
             return (
               <line
                 key={edge.id}
@@ -135,56 +236,38 @@ function Graph() {
           })}
         </svg>
 
-        {visualBrainDemo.nodes.map((node) => <NodeCard key={node.id} node={node} />)}
+        {graphNodes.map((node) => (
+          <NodeCard key={node.id} node={node} point={points[node.id]} />
+        ))}
       </div>
     </div>
   );
 }
 
-export default function BrainPage() {
-  const pendingApproval = visualBrainDemo.nodes.find((node) => node.kind === "approval");
-  const cashNode = visualBrainDemo.nodes.find((node) => node.id === "node:cash");
-  const revenueNode = visualBrainDemo.nodes.find((node) => node.id === "node:revenue");
+function ProjectionSummary({ projection }: { projection: BrainProjection }) {
+  if (projection.synthetic) {
+    const pendingApproval = projection.nodes.find((node) => node.kind === "approval");
+    const cashNode = projection.nodes.find((node) => node.id === "node:cash");
+    const revenueNode = projection.nodes.find((node) => node.id === "node:revenue");
 
-  return (
-    <main className={styles.page}>
-      <header className={styles.hero}>
-        <div className={styles.heroTopline}>
-          <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
-          <div className={styles.badges}>
-            <span className={styles.synthetic}><Sparkles aria-hidden="true" /> synthetic</span>
-            <span><ShieldCheck aria-hidden="true" /> read only</span>
-            <span>contract {visualBrainDemo.contractVersion}</span>
-          </div>
-        </div>
-
-        <div className={styles.heroGrid}>
-          <div>
-            <p className={styles.eyebrow}>Dreamcatcher Hotel · reference simulation</p>
-            <h1>See what the business is doing, what TORO sees, and where a human decision is required.</h1>
-            <p className={styles.lead}>
-              This is a contract-driven prototype. Every node, edge and activity state represents a defined TORO concept. No live guest, employee, payment or production data is used here.
-            </p>
-          </div>
-          <div className={styles.heroStats}>
-            <div><span>Visible nodes</span><strong>{visualBrainDemo.nodes.length}</strong><small>bounded focus view</small></div>
-            <div><span>Recent events</span><strong>{visualBrainDemo.recentEvents?.length ?? 0}</strong><small>one correlation chain</small></div>
-            <div><span>Approval gates</span><strong>1</strong><small>external change blocked</small></div>
-          </div>
-        </div>
-      </header>
-
+    return (
       <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
         <div>
           <CircleDollarSign aria-hidden="true" />
           <span>Reservations</span>
-          <strong>{revenueNode?.metric?.value}{revenueNode?.metric?.unit}</strong>
+          <strong>
+            {revenueNode?.metric?.value}
+            {revenueNode?.metric?.unit}
+          </strong>
           <small>booked value trend</small>
         </div>
         <div className={styles.signalRisk}>
           <AlertTriangle aria-hidden="true" />
           <span>Cash coverage</span>
-          <strong>{cashNode?.metric?.value}{cashNode?.metric?.unit}</strong>
+          <strong>
+            {cashNode?.metric?.value}
+            {cashNode?.metric?.unit}
+          </strong>
           <small>timing gap detected</small>
         </div>
         <div>
@@ -194,50 +277,193 @@ export default function BrainPage() {
           <small>owner approval required</small>
         </div>
       </section>
+    );
+  }
+
+  return (
+    <section className={styles.signalStrip} aria-label="Real projection summary">
+      <div>
+        <Brain aria-hidden="true" />
+        <span>Visible nodes</span>
+        <strong>{projection.nodes.length}</strong>
+        <small>authorized read-only state</small>
+      </div>
+      <div>
+        <GitBranch aria-hidden="true" />
+        <span>Verified links</span>
+        <strong>{projection.edges.length}</strong>
+        <small>candidate links omitted</small>
+      </div>
+      <div className={projection.partial ? styles.signalRisk : undefined}>
+        <AlertTriangle aria-hidden="true" />
+        <span>Coverage</span>
+        <strong>{projection.partial ? "Partial" : "Current"}</strong>
+        <small>{projection.degradedReason ?? "No degraded source reported."}</small>
+      </div>
+    </section>
+  );
+}
+
+function ActivityPanel({ projection }: { projection: BrainProjection }) {
+  if (projection.synthetic) {
+    return (
+      <aside className={styles.activityPanel}>
+        <div className={styles.panelHead}>
+          <div>
+            <span className={styles.eyebrow}>Watch TORO work</span>
+            <h2>One trace, from source to approval.</h2>
+          </div>
+          <span className={styles.correlation}>demo:cash-gap:1</span>
+        </div>
+
+        <ol className={styles.timeline}>
+          {projection.recentEvents?.map((event, index) => (
+            <li key={event.eventId}>
+              <div className={styles.timelineRail}>
+                <span>{index + 1}</span>
+              </div>
+              <div>
+                <div className={styles.timelineTop}>
+                  <strong>{event.eventType}</strong>
+                  <time>
+                    {new Date(event.occurredAt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                      timeZone: "America/Costa_Rica",
+                    })}
+                  </time>
+                </div>
+                <p>{event.summary}</p>
+                <div className={styles.eventMeta}>
+                  <span>{event.executionState}</span>
+                  <span>{event.verificationState}</span>
+                  <span>risk {event.risk.toLowerCase()}</span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div className={styles.gate}>
+          <LockKeyhole aria-hidden="true" />
+          <div>
+            <span>Human authority preserved</span>
+            <strong>No external action executed.</strong>
+            <p>TORO prepared a decision and stopped at the approval boundary.</p>
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
+  return (
+    <aside className={styles.activityPanel}>
+      <div className={styles.panelHead}>
+        <div>
+          <span className={styles.eyebrow}>Observed activity</span>
+          <h2>Real events only. No simulated thinking.</h2>
+        </div>
+      </div>
+      {projection.recentEvents?.length ? (
+        <ol className={styles.timeline}>
+          {projection.recentEvents.map((event, index) => (
+            <li key={event.eventId}>
+              <div className={styles.timelineRail}>
+                <span>{index + 1}</span>
+              </div>
+              <div>
+                <div className={styles.timelineTop}>
+                  <strong>{event.eventType}</strong>
+                  <time>{event.occurredAt}</time>
+                </div>
+                <p>{event.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <div className={styles.gate}>
+          <ShieldCheck aria-hidden="true" />
+          <div>
+            <span>Read-only Stage C</span>
+            <strong>No live activity events in this projection.</strong>
+            <p>Event Spine activity will appear only when backed by observed events.</p>
+          </div>
+        </div>
+      )}
+    </aside>
+  );
+}
+
+export function BrainView({ projection }: { projection: BrainProjection }) {
+  return (
+    <main className={styles.page}>
+      <header className={styles.hero}>
+        <div className={styles.heroTopline}>
+          <Link href="/" className={styles.brand}>
+            <Brain aria-hidden="true" /> TORO Brain
+          </Link>
+          <div className={styles.badges}>
+            {projection.synthetic ? (
+              <span className={styles.synthetic}>
+                <Sparkles aria-hidden="true" /> synthetic
+              </span>
+            ) : (
+              <span>
+                <ShieldCheck aria-hidden="true" /> real · read only
+              </span>
+            )}
+            <span>
+              <ShieldCheck aria-hidden="true" /> read only
+            </span>
+            <span>contract {projection.contractVersion}</span>
+          </div>
+        </div>
+
+        <div className={styles.heroGrid}>
+          <div>
+            <p className={styles.eyebrow}>
+              {projection.synthetic
+                ? "Dreamcatcher Hotel · reference simulation"
+                : "Dreamcatcher Hotel · authorized internal projection"}
+            </p>
+            <h1>
+              {projection.synthetic
+                ? "See what the business is doing, what TORO sees, and where a human decision is required."
+                : "See the business neighborhood TORO can actually read in this authorized context."}
+            </h1>
+            <p className={styles.lead}>
+              {projection.synthetic
+                ? "This is a contract-driven prototype. No live guest, employee, payment or production data is used here."
+                : "This is a real read-only projection. Unverified, stale or unavailable relationships remain explicit instead of being filled with synthetic data."}
+            </p>
+          </div>
+          <div className={styles.heroStats}>
+            <div>
+              <span>Visible nodes</span>
+              <strong>{projection.nodes.length}</strong>
+              <small>authorized context</small>
+            </div>
+            <div>
+              <span>Visible links</span>
+              <strong>{projection.edges.length}</strong>
+              <small>verified projection</small>
+            </div>
+            <div>
+              <span>Projection</span>
+              <strong>{projection.partial ? "Partial" : "Current"}</strong>
+              <small>{projection.synthetic ? "simulation" : "real state"}</small>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <ProjectionSummary projection={projection} />
 
       <section className={styles.mainGrid}>
-        <Graph />
-
-        <aside className={styles.activityPanel}>
-          <div className={styles.panelHead}>
-            <div>
-              <span className={styles.eyebrow}>Watch TORO work</span>
-              <h2>One trace, from source to approval.</h2>
-            </div>
-            <span className={styles.correlation}>demo:cash-gap:1</span>
-          </div>
-
-          <ol className={styles.timeline}>
-            {visualBrainDemo.recentEvents?.map((event, index) => (
-              <li key={event.eventId}>
-                <div className={styles.timelineRail}>
-                  <span>{index + 1}</span>
-                </div>
-                <div>
-                  <div className={styles.timelineTop}>
-                    <strong>{event.eventType}</strong>
-                    <time>{new Date(event.occurredAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Costa_Rica" })}</time>
-                  </div>
-                  <p>{event.summary}</p>
-                  <div className={styles.eventMeta}>
-                    <span>{event.executionState}</span>
-                    <span>{event.verificationState}</span>
-                    <span>risk {event.risk.toLowerCase()}</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          <div className={styles.gate}>
-            <LockKeyhole aria-hidden="true" />
-            <div>
-              <span>Human authority preserved</span>
-              <strong>No external action executed.</strong>
-              <p>TORO prepared a decision and stopped at the approval boundary.</p>
-            </div>
-          </div>
-        </aside>
+        <Graph projection={projection} />
+        <ActivityPanel projection={projection} />
       </section>
 
       <section className={styles.lowerGrid}>
@@ -250,8 +476,8 @@ export default function BrainPage() {
             <Landmark aria-hidden="true" />
           </div>
           <div className={styles.sourceList}>
-            {visualBrainDemo.sources.map((source) => (
-              <div key={source.sourceSystem}>
+            {projection.sources.map((source) => (
+              <div key={`${source.sourceSystem}:${source.authoritySystem}`}>
                 <div>
                   <strong>{source.sourceSystem}</strong>
                   <span>authority: {source.authoritySystem}</span>
@@ -268,17 +494,57 @@ export default function BrainPage() {
         <div className={styles.panel}>
           <div className={styles.panelHead}>
             <div>
-              <span className={styles.eyebrow}>Decision evidence</span>
-              <h2>Why TORO stopped here</h2>
+              <span className={styles.eyebrow}>
+                {projection.synthetic ? "Decision evidence" : "Projection status"}
+              </span>
+              <h2>
+                {projection.synthetic
+                  ? "Why TORO stopped here"
+                  : "What remains incomplete"}
+              </h2>
             </div>
-            <GitBranch aria-hidden="true" />
+            {projection.synthetic ? (
+              <GitBranch aria-hidden="true" />
+            ) : (
+              <ShieldCheck aria-hidden="true" />
+            )}
           </div>
-          <div className={styles.decisionFlow}>
-            <div><CheckCircle2 aria-hidden="true" /><span>Kross signal</span><strong>current</strong></div>
-            <div><Clock3 aria-hidden="true" /><span>Alegra evidence</span><strong>aging</strong></div>
-            <div><AlertTriangle aria-hidden="true" /><span>Cash gap</span><strong>high attention</strong></div>
-            <div><LockKeyhole aria-hidden="true" /><span>CAPEX change</span><strong>approval required</strong></div>
-          </div>
+          {projection.synthetic ? (
+            <div className={styles.decisionFlow}>
+              <div>
+                <CheckCircle2 aria-hidden="true" />
+                <span>Kross signal</span>
+                <strong>current</strong>
+              </div>
+              <div>
+                <Clock3 aria-hidden="true" />
+                <span>Alegra evidence</span>
+                <strong>aging</strong>
+              </div>
+              <div>
+                <AlertTriangle aria-hidden="true" />
+                <span>Cash gap</span>
+                <strong>high attention</strong>
+              </div>
+              <div>
+                <LockKeyhole aria-hidden="true" />
+                <span>CAPEX change</span>
+                <strong>approval required</strong>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.gate}>
+              <AlertTriangle aria-hidden="true" />
+              <div>
+                <span>{projection.partial ? "Partial projection" : "Current projection"}</span>
+                <strong>
+                  {projection.degradedReason ??
+                    "No degraded source reported for this slice."}
+                </strong>
+                <p>Candidate and unauthorized relationships are not rendered as canonical links.</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -291,7 +557,7 @@ export default function BrainPage() {
           <Activity aria-hidden="true" />
         </div>
         <div className={styles.nodeList}>
-          {visualBrainDemo.nodes.map((node) => {
+          {projection.nodes.map((node) => {
             const Icon = nodeIcons[node.kind] ?? Activity;
             return (
               <article key={node.id}>
@@ -315,12 +581,22 @@ export default function BrainPage() {
       <footer className={styles.footer}>
         <div>
           <ShieldCheck aria-hidden="true" />
-          <span>Simulation only · no external writes · no private operational data</span>
+          <span>
+            {projection.synthetic
+              ? "Simulation only · no external writes · no private operational data"
+              : "Real read-only projection · no external writes"}
+          </span>
         </div>
         <div>
-          {visualBrainDemo.nodes.length} nodes · {visualBrainDemo.edges.length} edges · {visualBrainDemo.recentEvents?.length ?? 0} events
+          {projection.nodes.length} nodes · {projection.edges.length} edges ·{" "}
+          {projection.recentEvents?.length ?? 0} events
         </div>
       </footer>
     </main>
   );
+}
+
+export default async function BrainPage() {
+  const realProjection = await loadAuthorizedBrainProjection();
+  return <BrainView projection={realProjection ?? visualBrainDemo} />;
 }
