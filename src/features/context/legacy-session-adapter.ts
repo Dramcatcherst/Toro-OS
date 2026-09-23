@@ -32,7 +32,7 @@ export function resolveLegacySessionRole({
   const membershipRoleCodes = context.membership.roles;
   const role = resolveToroRole({
     explicitToroRole,
-    systemRoleCodes: [...metadataRoleCodes, ...membershipRoleCodes],
+    systemRoleCodes: [...(metadataRoleCodes ?? []), ...membershipRoleCodes],
   });
 
   if (!role) return null;
