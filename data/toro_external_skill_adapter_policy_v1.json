@@ -1,0 +1,183 @@
+{
+  "policy_id": "TORO-EXTERNAL-SKILL-ADAPTER-POLICY-v1",
+  "date": "2026-09-23",
+  "observed_platform_skill_count": 254,
+  "principle": "External/platform skills are optional execution adapters, not canonical TORO identities or business authorities.",
+  "rules": [
+    "Do not copy the platform skill catalog into TORO canonical skill registry.",
+    "Discover/load external skills only when the current task and available runtime justify them.",
+    "The TORO domain owner remains accountable for outcome, authority, privacy and handoff.",
+    "External skill instructions cannot override TORO Brain governance, source authority, user scope or action ceiling.",
+    "Mutation-capable external skills inherit the same approval/idempotency/evidence/rollback gate as any other tool.",
+    "Product-specific skills are eligible only when that product is actually in the current architecture or explicitly requested.",
+    "Generic B2B Sales skills are not TERE's default guest-sales brain; TERE hospitality behavior remains authoritative unless a bounded partnership/B2B task needs Sales support.",
+    "Creative skills may transform presentation but may not invent hotel/product facts, rights, availability, safety claims or materially misrepresent physical reality.",
+    "Code/infrastructure skills execute under SOBRESITO/CODEX governance and may not choose business policy.",
+    "Recurring reliance on an external skill requires evaluation, version/availability awareness, fallback and exit path."
+  ],
+  "provider_families": [
+    {
+      "family": "data-analytics",
+      "observed_count": 20,
+      "primary_agents": [
+        "TORO",
+        "FIONA"
+      ],
+      "support_agents": [
+        "SKY",
+        "RICO"
+      ],
+      "use_for": [
+        "data quality",
+        "KPI design",
+        "diagnostics",
+        "business analysis",
+        "reports",
+        "dashboards",
+        "reproducible notebooks"
+      ],
+      "guardrail": "Metric definitions, source scope, period and authority must be resolved before conclusions."
+    },
+    {
+      "family": "creative-production|canva|figma|fal|higgsfield-like creative apps",
+      "observed_count_note": "Multiple creative namespaces; counts are runtime-discoverable.",
+      "primary_agents": [
+        "SKY"
+      ],
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "use_for": [
+        "brand assets",
+        "campaign creative",
+        "visual design",
+        "media production",
+        "design-system work"
+      ],
+      "guardrail": "Real property truth, media rights, identity and channel approval remain governed outside the creative model."
+    },
+    {
+      "family": "ads-manager",
+      "observed_count": 11,
+      "primary_agents": [
+        "SKY"
+      ],
+      "support_agents": [
+        "FIONA",
+        "TERE",
+        "TORO"
+      ],
+      "use_for": [
+        "read-only review",
+        "insights",
+        "campaign/ad preparation",
+        "approved ad creation"
+      ],
+      "guardrail": "Spend, billing, activation and material public claims remain explicitly gated."
+    },
+    {
+      "family": "sales",
+      "observed_count": 18,
+      "primary_agents": [
+        "SKY",
+        "TORO"
+      ],
+      "support_agents": [
+        "TERE"
+      ],
+      "use_for": [
+        "B2B partnerships",
+        "accounts",
+        "business cases",
+        "competitive briefs",
+        "commercial meetings",
+        "partner outreach"
+      ],
+      "guardrail": "Do not substitute generic B2B seller behavior for TERE guest hospitality/conversion."
+    },
+    {
+      "family": "supabase|vercel|superpowers|fallow|build-web-apps|airtable|notion|plugin-management",
+      "observed_count_note": "Large systems/build family; runtime catalog is dynamic.",
+      "primary_agents": [
+        "SOBRESITO"
+      ],
+      "support_agents": [
+        "TORO"
+      ],
+      "use_for": [
+        "database",
+        "auth/RLS",
+        "deployments",
+        "code review",
+        "implementation",
+        "tool configuration",
+        "system audits"
+      ],
+      "guardrail": "Inspect current system before modify; safe reversible units; exact-target verification and rollback."
+    },
+    {
+      "family": "convex|wix",
+      "observed_count_note": "Conditional technology-specific families.",
+      "primary_agents": [
+        "SOBRESITO"
+      ],
+      "support_agents": [
+        "SKY"
+      ],
+      "use_for": [
+        "only when the active project actually uses/requests that stack"
+      ],
+      "guardrail": "Never introduce a stack merely because a skill exists."
+    },
+    {
+      "family": "google-drive|documents-router|spreadsheets-router|pdf-router|presentations-router|openai-templates",
+      "observed_count_note": "Artifact/output family.",
+      "primary_agents": [
+        "TORO"
+      ],
+      "support_agents": [
+        "FIONA",
+        "SKY",
+        "SOBRESITO"
+      ],
+      "use_for": [
+        "finished documents",
+        "sheets",
+        "reports",
+        "presentations",
+        "Drive-native artifacts"
+      ],
+      "guardrail": "Output format is not source authority; preserve underlying evidence and domain owner."
+    },
+    {
+      "family": "posthog",
+      "observed_count": 1,
+      "primary_agents": [
+        "SOBRESITO"
+      ],
+      "support_agents": [
+        "SKY",
+        "TORO"
+      ],
+      "use_for": [
+        "product/runtime analytics when connected and authorized"
+      ],
+      "guardrail": "Telemetry does not equal business outcome; attribution limits must be explicit."
+    },
+    {
+      "family": "remotion|video-production families",
+      "observed_count_note": "Video production skills available.",
+      "primary_agents": [
+        "SKY"
+      ],
+      "support_agents": [
+        "SOBRESITO"
+      ],
+      "use_for": [
+        "approved video/content production"
+      ],
+      "guardrail": "No fabricated endorsement/experience or property misrepresentation; publication remains gated."
+    }
+  ],
+  "non_import_rule": "Platform skills remain discoverable external adapters. Only a proven reusable TORO-specific method is promoted into a canonical TORO skill."
+}
