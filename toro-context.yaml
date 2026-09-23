@@ -110,6 +110,7 @@ canonical_product_specs:
   user_portal: docs/product/TORO_USER_PORTAL_V1.md
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
+  agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
 
 canonical_sources:
   product_constitution: github
@@ -269,7 +270,7 @@ brand:
   production_closeout_remaining:
     - vector_master
     - monochrome_and_reverse_variants
-    - favicon_and_small_size_simplification
+    - favicon_master_and_small_size_simplification
     - typography_and_license_spec
     - clear_space_and_minimum_size_rules
     - durable_rights_evidence
@@ -331,6 +332,9 @@ initiative_bindings:
     reusable_core_project_key: toro_executive_control
     capability_owner: TORO Assets
     agent_contract_owner: TORO Agents
+    supervisor_profile_id: toro-agent-steward
+    strategic_requirements_spec: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
+    strategic_requirements: M01-M10
     business_pilot:
       business: Dreamcatcher Hotel
       existing_parent_project_name: Dreamcatcher Hotel · Proyecto Madre
@@ -381,3 +385,46 @@ initiative_bindings:
       - Independently review PR 43 and recheck its exact current commit; null or unknown integration status is not a confirmed conflict.
       - Prepare one conservative derivative, compare before/after, obtain exact derivative/channel approval and verify the intended destination.
       - Record the result and reusable learning in the existing work items; do not duplicate backlog or claim runtime completion from documentation.
+
+# Design contract only. Runtime registration/activation requires the existing governed path.
+agent_lifecycle_supervision:
+  profile_id: toro-agent-steward
+  display_name: TORO Agent Steward
+  display_name_es: TORO Supervisor de Agentes
+  parent_subsystem: TORO Agents
+  master_brain: TORO Brain
+  general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  specification: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
+  existing_work_item: https://github.com/Dramcatcherst/Toro-OS/issues/30
+  pilot_binding: visual_commerce_dreamcatcher
+  lifecycle_requirements: M11-M20
+  status: documented_not_deployed
+  runtime_enabled: false
+  no_new_subsystem_project_registry_or_scheduler: true
+  routing_preference:
+    - eliminate_or_simplify
+    - reuse_existing
+    - add_skill
+    - configure_workflow
+    - propose_specialist_only_if_justified
+  demand_scaling_reuses_existing_roles: true
+  candidate_is_not_active_agent: true
+  default_output: evidenced_recommendation_or_candidate
+  current_autonomy_granted: none
+  target_automation:
+    triggers: authorized_events_and_risk_based_reviews
+    requires_existing_runtime_mapping: true
+    requires_server_enforced_scope_and_budget: true
+    requires_independent_evaluation: true
+    automatic_promotion_only_within_preapproved_change_policy: true
+    requires_rollback_and_stabilization_window: true
+    no_self_permission_or_budget_expansion: true
+    no_unbounded_recursive_agent_creation: true
+    no_self_approval_or_evaluator_redefinition: true
+    no_retirement_of_critical_guardians_for_low_usage_alone: true
+    respects_current_workflow_autonomy_gates: true
+  own_changes_reviewed_by:
+    - TORO Governance
+    - TORO Systems
+    - authorized_human_authority
+  runtime_state_and_production_effects_this_registration: none
