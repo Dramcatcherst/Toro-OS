@@ -21,7 +21,7 @@ Before substantive work:
 9. Resolve the canonical project destination before creating any project-like identity: check the Plan General, `operations.projects`, `parent_project_key`, `canonical_module_key` and existing tasks.
 10. Inspect existing implementation before creating a second system.
 11. Define verification and rollback before risky changes.
-12. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
+12. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking private scope-specific data?
 13. Run a system-audit scan when the task touches a connected system: expected config, observed config, drift, health, permissions and recovery.
 
 If a historical document conflicts with the current constitution or context contract, the current constitution wins unless the user explicitly supersedes it.
@@ -154,3 +154,11 @@ All new material work must:
 Domain plans and implementation plans are subordinate. They may not become parallel master plans.
 
 If a new request is reusable, preserve the immediate business solution and separately extract the reusable TORO capability/skill/profile without leaking private scope data.
+
+## Real-first AI review
+
+Apply `TORO-REAL-AI-80-20-R1` in the General Plan before accepting a material deliverable. Read the existing rule; do not create a second policy or task list.
+
+Within the existing work item, identify the real source/base, useful AI contribution, possible real/synthetic confusion, permissions and verification, existing executor and outcome metric. Real claims require evidence; simulations remain labeled. Faithful commercial photos are not subject to an artificial-image quota, and this heuristic does not cap safe automation at 20%.
+
+Preserve newer main-branch brand, cognitive-model, source and scope decisions during integration. A documented policy is not runtime enforcement, a worker lock or production approval.
