@@ -1,7 +1,7 @@
 # TORO — Kross First Live Read Acceptance Gate
 
 **Status:** CURRENT EXECUTION GATE  
-**Date:** 2026-09-23  
+**Date:** 2026-09-24  
 **Canonical task:** `kross_readonly_reservation_mirror_2026_09`  
 **Authority:** Kross remains transactional truth  
 **TORO mode:** read-only mirror only
@@ -376,3 +376,24 @@ UX copy must make clear:
 Do not create a second direct fallback when `capabilityAlternatives["hospitality.quote"]` already provides the governed booking-assist route.
 
 When structured live rate/availability authority later passes its own gate, this fallback may be demoted or retained as a manual verification escape hatch.
+
+
+## Provider status recheck — 2026-09-24
+
+Latest verified status:
+- no new Kross/provider reply after the 2026-09-18 ticket response;
+- no API/token/webhook/documentation email found outside the ticket;
+- correct follow-up draft remains unsent;
+- superseded duplicate draft is marked not to send;
+- public Kross booking handoff remains available through `/booking-assist`.
+
+First live read remains **BLOCKED**.
+
+The next external action is still:
+1. authorized human sends/reopens the prepared follow-up;
+2. provider/Kross returns written transport/billing/scope evidence;
+3. TORO populates the transport intake from that evidence;
+4. explicit first-read approval occurs only after costs/scopes are known;
+5. one governed read runs through the existing adapter/normalizer/acceptance path.
+
+Do not treat the public booking handoff as satisfying this gate.
