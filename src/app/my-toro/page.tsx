@@ -218,7 +218,6 @@ export default async function MyToroPage({
                   const focusable =
                     item.state === "READ_ONLY" &&
                     view.focusableCapabilities.includes(item.capability);
-                  const fallback = view.capabilityFallbacks[item.capability];
                   const card = (
                     <div className="flex items-start gap-3">
                       <div className="text-2xl">{item.emoji}</div>
@@ -230,16 +229,6 @@ export default async function MyToroPage({
                               ? "Toca para consultar"
                               : "Todavía no disponible")}
                         </div>
-                        {fallback ? (
-                          <a
-                            href={fallback.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-1.5 text-xs font-semibold text-cyan-100 hover:border-cyan-300/40"
-                          >
-                            {fallback.label} <ArrowRight className="h-3.5 w-3.5" />
-                          </a>
-                        ) : null}
                       </div>
                       <span
                         className={[
