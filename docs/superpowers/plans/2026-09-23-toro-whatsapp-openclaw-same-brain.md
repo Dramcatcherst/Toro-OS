@@ -25,8 +25,9 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - [x] Add an authenticated server executor using existing TORO context + Supabase RLS.
 - [x] Add `POST /api/brain/internal-work`.
 - [x] Add contract tests and register them in the canonical test suite.
-- [ ] CI green.
-- [ ] Merge after review/green checks.
+- [x] CI green: TORO Brain CI + Workstation Health.
+- [x] Merge PR #142 to `main` (`fb222134d9746e33b28e5160a88c583d7f81f4c8`).
+- [x] Vercel production-target deployment READY for the exact merge commit.
 - [ ] Verify one real authenticated test task in a controlled organization context; archive/delete only if test policy permits.
 
 ## Workstream B — channel identity and service authentication
@@ -41,6 +42,14 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 ## Workstream C — OpenClaw adapter
 
 **Must resume in the existing `toro-openclaw-integration` worktree when recovered.**
+
+Do not reimplement capabilities that current OpenClaw already provides. Target runtime strategy:
+- primary WhatsApp DM stays bound/routed to TORO;
+- secure multi-user DM isolation is enabled;
+- requester/sender tool restrictions are defense in depth;
+- TORO delegates coding jobs to native OpenClaw Codex/background task machinery;
+- optional ACP configured bindings are reserved for dedicated coding conversations;
+- TORO-specific plugin code owns only the bridge from channel requester -> canonical TORO identity/context/action contracts.
 
 - [ ] Load/report canonical Human Layer version/hash.
 - [ ] Resolve channel sender through TORO identity binding.
@@ -72,8 +81,12 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 
 ## Workstream F — Builder / Codex
 
-- [ ] “Dale esto a Codex” creates one canonical Builder task.
-- [ ] Trusted worker maps Builder task to isolated branch/session.
+- [ ] Enable/verify the OpenClaw native Codex runtime on the real Gateway.
+- [ ] Verify background task delivery / completion path on the real Gateway.
+- [ ] “Dale esto a Codex” creates one canonical Builder task, then delegates execution through OpenClaw.
+- [ ] Link canonical TORO task <-> OpenClaw runtime task/session <-> branch/PR evidence.
+- [ ] Keep primary TORO WhatsApp on TORO; use explicit temporary Codex bind only when the user asks to work directly in Codex.
+- [ ] Use persistent ACP binding only for a deliberately dedicated coding chat/group.
 - [ ] No raw shell exposure from WhatsApp.
 - [ ] Builder reports started / blocked / PR / preview / tests / done.
 - [ ] Production/deploy/secret/security actions remain approval-gated.
