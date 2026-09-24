@@ -1024,6 +1024,12 @@ kross_live_read_gate:
   acceptance_evaluator: src/features/kross/acceptance.ts
   transport_intake_evaluator: src/features/kross/transport-intake.ts
   transport_intake_template: data/kross_transport_intake_template_v1.json
+  provider_evidence_builder: src/features/kross/provider-evidence.ts
+  provider_evidence_template: data/kross_provider_evidence_template_v1.json
+  provider_evidence_positive_claim_requires_reference: true
+  provider_evidence_unknown_billing_stays_unknown: true
+  provider_evidence_template_is_provider_evidence: false
+  provider_evidence_free_text_auto_truth: false
   transport_intake_template_is_provider_evidence: false
   transport_intake_requires_known_billing_before_first_read: true
   reservation_and_rate_availability_gates_are_separate: true
