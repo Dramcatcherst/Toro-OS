@@ -785,33 +785,6 @@ function buildSafeAlternatives(
 }
 
 
-export type ToroCapabilityFallback = {
-  label: string;
-  href: string;
-  kind: "external_official_handoff";
-  note: string;
-};
-
-function capabilityFallback(
-  capability: string,
-  state: ToroMenuAvailabilityState | "UI",
-): ToroCapabilityFallback | null {
-  if (
-    state === "BLOCKED" &&
-    capability === "hospitality.quote"
-  ) {
-    return {
-      label: "Abrir motor oficial",
-      href: "https://dreamcatcherhotel.kross.travel/",
-      kind: "external_official_handoff",
-      note:
-        "Confirma fechas, precio y disponibilidad directamente en Kross. TORO no tratará ese resultado como una cotización propia hasta tener autoridad live estructurada.",
-    };
-  }
-
-  return null;
-}
-
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
@@ -935,15 +908,6 @@ export async function resolveCurrentToroReadOnlyMenu(
       item.capability,
       capabilityNote(item.capability, item.state),
     ]),
-  );
-
-  const capabilityFallbacks = Object.fromEntries(
-    (menu?.items ?? [])
-      .map((item) => [
-        item.capability,
-        capabilityFallback(item.capability, item.state),
-      ] as const)
-      .filter((entry): entry is [string, ToroCapabilityFallback] => Boolean(entry[1])),
   );
   const capabilityAlternatives = buildSafeAlternatives(menu);
 
