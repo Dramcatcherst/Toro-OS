@@ -1,7 +1,7 @@
 # TORO — Property & Corporate Portfolio Canon
 
 **Status:** CURRENT INTERNAL CANON — evidence-led, not a substitute for registry/legal/accounting review  
-**Date:** 2026-09-23  
+**Date:** 2026-09-24  
 **Owner:** TORO General Plan  
 **Scope:** Mauricio / Fernández Toro portfolio and related property/legal-entity relationships  
 **Document counterpart:** TORO Portafolio Patrimonial y Corporativo Maestro V3
@@ -201,3 +201,29 @@ Before migration:
 One original document stays in its authoritative archive. Other systems store references, normalized facts and provenance — not duplicate “truth” copies.
 
 This file is subordinate to the single TORO General Plan and is the canonical property/corporate mapping specification until superseded by a later evidence-backed revision.
+
+
+## 11. 2026-09-24 evidence update
+
+### Canonical naming correction
+- Official legal name verified from RTBF: **Pomas y Poemas Sociedad Anónima**, cédula 3-101-504801.
+- Do not use phonetic variants such as "Pomas y Poermas" as the legal name in records.
+- RTBF 2026: Luz Margoth Toro Ángel 60%, Mauricio Fernández Toro 20%, Ana Carolina Fernández Toro 20%.
+- Santa Teresa Blue Dreams SRL remains a different entity and its Rogerio/Andrea/John Camilo/Santiago/Carolina participation must never be propagated to Cabuya.
+
+### Original-source checks completed
+- Blue Dreams 2022 option: finca 254007-000, plan P-0048880-2022, 3,340 m2, Arroyo Negro de la Península S.A. -> Santa Teresa Blue Dreams SRL.
+- Pomas RTBF 2026 verified from Dropbox original.
+- Casa Toro municipal permit 078/2024 verified: Pomas y Poemas as registral owner in that permit, localization 236616, 373 m2 construction, CFIA 1110294.
+- DIEX 2026 municipal receipt verified: annual ZMT concession line CRC 888,841 plus 2026 T1/T2 real-estate tax lines; this is DIEX evidence and must not be attributed to Cabuya.
+- Cabuya pumping-test source CY-123 verified: requested by Pomas y Poemas S.A.; test performed 29 Jul 2026 on its Mal País property; 24 h at 0.20 l/s. This supports property/entity association but does not replace a current literal title certification.
+
+### Runtime/data status
+- Supabase public.properties currently contains only Dreamcatcher. No sensitive family portfolio migration is authorized until a reviewed property/right/entity schema, privacy classes, provenance and RLS tests exist.
+- Airtable remains the structured transitional registry; Dropbox remains original-document authority; GitHub is the architecture/canon authority.
+- Alegra direct connector was unavailable in the research session. No accounting mutation or unverified fiscal claim was made.
+- Superpowers is treated as an execution/design methodology inside the canonical repository, not as a parallel source of truth.
+
+### Document set
+- Internal master: TORO Portafolio Patrimonial y Corporativo Maestro V3.
+- External portfolio: sanitized property-only version; excludes private equity, debt, bank movements, acquisition prices and unresolved personal/family financing.
