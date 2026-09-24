@@ -70,11 +70,15 @@ A folder name, payer, project nickname or shareholder relationship does not prov
 - Keep title/concession, construction, financing and hotel operation as linked but distinct dimensions.
 
 ### Vista Alegre — Casa 18
-- Separate family property in Escazú/Bello Horizonte.
-- Related company: Callaha Internacional S.A.
+- Separate family property in Residencial Vista Alegre, Bello Horizonte / Escazú.
+- Related company: Callaha Internacional S.A., 3-101-358467.
+- Personería 26 Aug 2024: Luz Margoth Toro Ángel is President and judicial/extrajudicial representative.
 - RTBF 2026: Luz Margoth Toro Ángel 100%.
+- Property evidence: finca 394370; plan SJ-0034063-1992. RNPDIGITAL-777737-2025 certifies cadastral plan 1-34063-1992.
+- Historical physical description: approx. 295 m2 land and 250 m2 construction; 4 bedrooms / 4 bathrooms; one room described as potentially separable with private access. Re-verify physically before publication.
+- Historical BAC credit 200169475: originated 12 Sep 2011 with real guarantee and original principal USD 181,157; statement issued 1 Nov 2024 showed principal balance USD 86,657.65 after extraordinary payments. This is historical evidence, not a current balance.
+- Municipal Q3 2026 payment evidence: CRC 82,945.03 paid 20 Jul 2026.
 - Loans, rents, municipal tax and services remain outside Dreamcatcher OPEX.
-- Current finca/plan must be consolidated from registry evidence.
 
 ### Rancho Estrellas Azules
 - Separate family/operating scope with dedicated accounting, bank, municipal, insurance and personnel evidence.
@@ -84,9 +88,10 @@ A folder name, payer, project nickname or shareholder relationship does not prov
 - Do not infer Joe ownership from folder names or historical financial labels.
 
 ### Historical Lote Santiago
-- Historical estate register references a Margot-personal titled asset: finca 187635, approx. 3,690 m2, Santiago.
-- Must remain a distinct historical record until current registry status proves sale, segregation or identity with another asset.
-- Do not merge with finca 236616 or finca 254007 by name alone.
+- Historical estate register /SOCIEDADES/propiedades fernandez toro.xlsx references “Lote de Santiago”, approx. 3,690 m2 and finca reference 187635.
+- Current canonical status: HISTORICAL / TO VERIFY; no current literal certification was located in this review.
+- Must remain distinct until current registry status proves sale, segregation or identity with another asset.
+- Do not merge with finca 236616, finca 254007 or Cabuya finca 151446 by name alone.
 
 ### Santa Toro
 - Historical Dreamcatcher-managed property only.
@@ -98,9 +103,10 @@ A folder name, payer, project nickname or shareholder relationship does not prov
 - Historical ownership/participation and a denied concession application must not be represented as an active concession or asset.
 
 ### Ikiru
-- Financial/rental references exist.
+- Folder /REAL ESTATE/IKIRU exists and financial/rental references exist.
+- Current review found no literal certification, finca, cadastral plan or legal entity proving ownership.
 - Title/entity relationship remains unverified in the current property canon.
-- Keep as **REFERENCE / TO VERIFY** until source documents identify owner, finca and relationship.
+- Keep as **REFERENCE / TO VERIFY** and do not present as a confirmed family property or allocate its movements to Dreamcatcher by default.
 
 ### La Julia
 - Separate Colombia/Guatapé project/property context.
