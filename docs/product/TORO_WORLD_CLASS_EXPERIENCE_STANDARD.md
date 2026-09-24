@@ -1,12 +1,12 @@
-# TORO OS — World-Class Experience & Commercial Standard
+# TORO — World-Class Experience & Commercial Standard
 
 **Status:** CURRENT DESIGN DOCTRINE  
 **Date:** 2026-09-23  
-**Dependency:** TORO OS Engine-First Product Constitution
+**Dependency:** TORO Engine-First Product Constitution + TORO Design DNA
 
 ## 1. Design ambition
 
-TORO OS should be capable of world-class product design because its interface is not asked to expose the machinery of the business. Its job is to compress that machinery into clarity, confidence and action.
+TORO should be capable of world-class product design because its interface is not asked to expose the machinery of the business. Its job is to compress that machinery into clarity, confidence and action.
 
 The design target is not “futuristic dashboard”.
 
