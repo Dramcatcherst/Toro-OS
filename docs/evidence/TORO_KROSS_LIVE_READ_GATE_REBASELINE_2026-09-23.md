@@ -252,3 +252,21 @@ This is allowed for manual current confirmation by Reception/guest, but remains:
 - non-reservation truth for TORO.
 
 The fallback reduces customer friction while the structured transport remains blocked; it does not change the Kross acceptance gate.
+
+
+## Status recheck — 2026-09-24 10:48 Costa Rica
+
+Connected Gmail was rechecked without sending or modifying any external message.
+
+Observed:
+- no Kross/provider reply newer than the 2026-09-18 ticket response;
+- the current detailed follow-up remains **DRAFT / NOT SENT** in the existing Kross ticket thread;
+- the superseded duplicate draft remains marked **DO NOT SEND**;
+- no separate credential/token/webhook/documentation/package email was observed;
+- no evidence was found that changes provider authorization, billing status, read-only transport readiness, or live price/availability authority.
+
+Conclusion:
+
+> **The Kross external gate remains unchanged. The next external step is still the owner-side send/reopen of the prepared draft; until then, TORO must not claim live PMS read authority.**
+
+No email was sent by this recheck.

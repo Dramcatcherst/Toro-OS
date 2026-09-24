@@ -549,6 +549,9 @@ cognitive_proving_ground:
       safe_current_reservations_view: operations.current_reservations_safe
       gate_task: kross_readonly_reservation_mirror_2026_09
       blocker: authorized_real_kross_transport_first_verified_run_dedupe_freshness
+      kross_mailbox_rechecked_at_local: "2026-09-24 10:48 America/Costa_Rica"
+      provider_reply_newer_than_2026_09_18_observed: false
+      current_followup_draft_state: DRAFT_NOT_SENT
       autonomy: A1_A2_ONLY_UNTIL_LIVE_AUTHORITY
       rule: "No second mirror; snapshot truth cannot be described as current hotel state. Promote arrivals/departures only when current_reservations_safe has rows and governed Kross health is current-safe."
     finance_to_cash:
@@ -660,12 +663,13 @@ tere_wespeak_runtime_gate:
   post_v4_activity: historical_superseded_gate
   post_v5_activity: not_observed
   post_v5_mailbox_rechecked_on: "2026-09-24"
+  post_v5_mailbox_rechecked_at_local: "2026-09-24 10:48 America/Costa_Rica"
   runtime_version_hash: unverified
   v4_consumption: superseded_by_v5_target
   v5_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
-  evidence_intake_state: implemented_ci_pending_merge
+  evidence_intake_state: implemented_ci_verified_merged
   pre_v4_alert_baseline:
     evidence: docs/evidence/TERE_WESPEAK_ALERT_BASELINE_2026-09-23.md
     window: "2026-09-14..2026-09-23"
@@ -757,7 +761,7 @@ conversational_menu_system:
     - DEGRADED
   blocked_only_submenus_are_hidden: true
   submenu_numeric_scope_is_local: true
-  implementation_status: specified_not_runtime_verified
+  implementation_status: authenticated_source_aware_read_only_runtime_integrated_ci_verified_real_user_adoption_unverified
   conversation_first: true
   free_text_always_allowed: true
   next_best_action_suggestions: true
