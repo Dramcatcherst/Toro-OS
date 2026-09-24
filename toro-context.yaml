@@ -549,6 +549,18 @@ cognitive_proving_ground:
       safe_current_reservations_view: operations.current_reservations_safe
       gate_task: kross_readonly_reservation_mirror_2026_09
       blocker: authorized_real_kross_transport_first_verified_run_dedupe_freshness
+      provider_ticket:
+        reference: KB-305650/26
+        latest_provider_message_date: "2026-09-18"
+        latest_provider_message_id: 1a0b43a1f9e54069
+        latest_provider_state: local_provider_contacted_waiting_for_response
+        credentials_or_docs_delivered: false
+        canonical_followup_draft_id: r-7261868542753895563
+        canonical_followup_message_id: 1a0d0fac0577357e
+        canonical_followup_thread_id: 1a0b43a1f9e54069
+        canonical_followup_sent: false
+        older_draft_state: superseded_do_not_send
+        pending_human_action: send_or_reopen_canonical_followup
       autonomy: A1_A2_ONLY_UNTIL_LIVE_AUTHORITY
       rule: "No second mirror; snapshot truth cannot be described as current hotel state. Promote arrivals/departures only when current_reservations_safe has rows and governed Kross health is current-safe."
     finance_to_cash:

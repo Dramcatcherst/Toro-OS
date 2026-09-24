@@ -183,13 +183,23 @@ A detailed follow-up reply was prepared on 2026-09-23 asking Kross to confirm:
 6. updated legal terms;
 7. setup, recurring and other charges before activation.
 
-That follow-up is currently **DRAFT / NOT SENT**.
+Gmail verification on 2026-09-23:
+- latest Kross evidence message: 2026-09-18, message `1a0b43a1f9e54069`;
+- latest Kross statement: they had contacted Dreamcatcher's local provider and were waiting for that provider to respond;
+- canonical follow-up draft is now threaded to that 2026-09-18 message:
+  - draft id: `r-7261868542753895563`;
+  - draft message id: `1a0d0fac0577357e`;
+  - thread id: `1a0b43a1f9e54069`;
+- older draft on the 2026-09-17 thread was explicitly renamed **[SUPERSEDED — DO NOT SEND]** to prevent duplicate/incorrect follow-up;
+- no Kross/provider response newer than 2026-09-18 was found in the ticket search.
+
+The canonical follow-up remains **DRAFT / NOT SENT**.
 
 Therefore the blocker must not be summarized only as "provider response pending."
 
 The accurate state is:
 
-> **Kross/provider side remains unresolved, and Dreamcatcher still has one explicit human action pending: send/reopen the prepared follow-up.**
+> **Kross/provider side remains unresolved, the correct follow-up draft is prepared on the latest ticket thread, and Dreamcatcher still has one explicit human action pending: send/reopen the prepared follow-up.**
 
 ### Safety
 The prepared follow-up explicitly states:
