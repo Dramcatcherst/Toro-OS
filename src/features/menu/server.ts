@@ -784,6 +784,31 @@ function buildSafeAlternatives(
   return alternatives;
 }
 
+
+export type ToroSafeAlternative = {
+  label: string;
+  href: string;
+  note: string;
+};
+
+function safeAlternativeForCapability(
+  capability: string,
+  state: ToroMenuAvailabilityState | "UI",
+): ToroSafeAlternative | null {
+  if (state !== "BLOCKED") return null;
+
+  if (capability === "hospitality.quote") {
+    return {
+      label: "Buscar en Kross",
+      href: "/booking-assist",
+      note:
+        "TORO prepara fechas y ocupación; Kross confirma disponibilidad, precio, condiciones y reserva final.",
+    };
+  }
+
+  return null;
+}
+
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
@@ -907,6 +932,15 @@ export async function resolveCurrentToroReadOnlyMenu(
       item.capability,
       capabilityNote(item.capability, item.state),
     ]),
+  );
+
+  const safeAlternatives = Object.fromEntries(
+    (menu?.items ?? [])
+      .map((item) => [
+        item.capability,
+        safeAlternativeForCapability(item.capability, item.state),
+      ] as const)
+      .filter((entry): entry is readonly [string, ToroSafeAlternative] => entry[1] !== null),
   );
   const capabilityAlternatives = buildSafeAlternatives(menu);
 
