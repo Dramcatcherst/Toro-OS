@@ -128,6 +128,49 @@ Then run end-to-end scenarios:
 8. reconnect + continue;
 9. completed task -> one notification.
 
+## Workstream I — experience parity
+
+Reuse these existing canonical contracts; do not rewrite them inside OpenClaw:
+- `docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md`
+- `docs/product/TORO_CONVERSATIONAL_MENUS_V1.md`
+- `data/toro_conversational_menu_profiles_v1.json`
+- `data/toro_conversational_submenus_v2.json`
+- `docs/product/TORO_ROLE_MESSAGE_EXPERIENCE_V1.md`
+- `data/toro_role_message_pack_v1.json`
+- TORO Human Layer v1.5
+
+Acceptance:
+- [ ] Free text is primary; menus/numbers/buttons are optional shortcuts.
+- [ ] Every role gets a small contextual menu with suggested next replies rather than a generic command catalog.
+- [ ] `continuar`, `menú`, `atrás`, numbers and natural-language equivalents preserve safe context.
+- [ ] First contact follows progressive role onboarding, produces an early micro-win, and can pause/resume.
+- [ ] Owner, manager, employee and guest experiences remain differentiated without exposing internal agent complexity.
+- [ ] Human Layer/personality/version is identical across Portal and WhatsApp.
+- [ ] A user instruction that changes durable TORO behavior goes through the existing conversation-to-config/version/rollback process, never an OpenClaw-only prompt file.
+- [ ] Voice notes, images and documents enter the same message-to-action pipeline where the channel/runtime can safely process them.
+- [ ] Attachments used as maintenance evidence link to the same canonical task/event, not a chat-only copy.
+- [ ] Replies end with the smallest useful continuation when a next action exists.
+
+## Workstream J — proactive follow-up and reliability
+
+- [ ] Every inbound external message ID becomes a replay/idempotency key for consequential actions.
+- [ ] Canonical task/action links retain OpenClaw session/task references only as execution metadata.
+- [ ] Reconnect/restart does not duplicate writes or lose the active safe workflow.
+- [ ] Completion, blocker and approval-needed events can return to the originating WhatsApp conversation once.
+- [ ] Proactive messages respect role, notification preferences, quiet hours and deduplication.
+- [ ] Health state distinguishes configured / connected / operational / degraded / blocked.
+- [ ] Failures preserve last-good canonical state and produce an observable blocker rather than pretending success.
+- [ ] Rate/cost limits and concurrency prevent runaway agent/Codex work.
+- [ ] Runtime audit covers DM isolation, group access, sender policy, tool policy, security audit, logs/privacy, backup and recovery.
+
+## Workstream K — consolidation / no parallel systems
+
+- [ ] TORO Exchange experiments consume the same Identity/Comms/Tools contracts; they do not get a second WhatsApp brain.
+- [ ] TERE guest communication stays a specialist route of TORO and does not receive internal Builder/project permissions.
+- [ ] OpenClaw state is transport/session/runtime metadata only; durable business truth remains canonical TORO data.
+- [ ] Existing Human Layer, menu, onboarding, role-message, Identity and Comms tasks are referenced rather than duplicated.
+- [ ] No new project is opened for Companion/WhatsApp parity; `toro-runtime-health-whatsapp-reliability-2026-09` remains the execution home.
+
 ## Promotion rule
 
 Do not mark WhatsApp/OpenClaw “full TORO” until the real runtime executes the scenarios above with evidence. Code/spec/CI alone = implementation foundation, not live proof.
