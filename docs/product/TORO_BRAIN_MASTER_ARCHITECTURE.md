@@ -1,16 +1,16 @@
-# TORO Brain — Master Architecture
+# TORO — Master Architecture
 
 **Status:** CURRENT MASTER PRODUCT MODEL
 **Date:** 2026-09-22
-**Master product name:** TORO Brain
+**Master product name:** TORO
 **Repository:** `Dramcatcherst/Toro-OS`
 **Current proving ground:** Dreamcatcher Hotel
 
 ## 1. Product hierarchy
 
-### TORO Brain
+### TORO
 
-TORO Brain is the master intelligence, memory, governance and orchestration layer.
+TORO is the master intelligence, memory, governance and orchestration layer.
 
 It understands:
 - people;
@@ -33,9 +33,9 @@ It understands:
 
 It coordinates the whole portfolio while respecting isolation boundaries.
 
-### TORO Brain operating/execution capabilities
+### TORO operating/execution capabilities
 
-TORO Brain runs each business/workspace through the same product identity.
+TORO runs each business/workspace through the same product identity.
 
 Its execution capabilities are exposed through:
 - TORO Portal;
@@ -50,7 +50,7 @@ Its execution capabilities are exposed through:
 
 ### TORO subsystems
 
-Subsystems such as TORO People, TORO Comms, TORO Finance and TORO Tools are internal capabilities of TORO Brain, not standalone products.
+Subsystems such as TORO People, TORO Comms, TORO Finance and TORO Tools are internal capabilities of TORO, not standalone products.
 
 ## 2. Final target
 
@@ -59,7 +59,7 @@ The final product must support one human or owner controlling a complex portfoli
 Example:
 
 ```text
-TORO Brain
+TORO
 └── Principal: Mauricio
     ├── Personal
     │   └── TORO User Vault
@@ -97,7 +97,7 @@ The database must not assume every scope is a "client".
 
 ## 3. TORO Scope Graph
 
-TORO Brain needs a graph of entities and relationships rather than a flat client list.
+TORO needs a graph of entities and relationships rather than a flat client list.
 
 ### Entity types
 
@@ -136,7 +136,7 @@ The relationship determines permissions and cross-scope visibility.
 
 ## 4. Cross-scope intelligence
 
-TORO Brain may reason across scopes only when policy allows it.
+TORO may reason across scopes only when policy allows it.
 
 ### Safe examples
 
@@ -198,9 +198,9 @@ This requires two layers:
 
 Promotion from scope knowledge to reusable skill must be governed and testable.
 
-## 7. TORO Brain proactive loop
+## 7. TORO proactive loop
 
-TORO Brain continuously evaluates each authorized scope.
+TORO continuously evaluates each authorized scope.
 
 `Observe -> understand -> detect -> propose -> prioritize -> execute when allowed -> verify -> learn -> improve`
 
@@ -226,7 +226,7 @@ Proactivity does not override permissions.
 
 Every important connected system must have a governed configuration profile.
 
-TORO Brain must be able to answer:
+TORO must be able to answer:
 - Is it connected?
 - Is it configured correctly?
 - Is it secure?
@@ -322,7 +322,7 @@ This prevents useful ideas from remaining trapped in one conversation/business.
 
 ## 12. Version target
 
-TORO Brain should always maintain three views:
+TORO should always maintain three views:
 
 ### Current reality
 What is actually live and verified.
@@ -373,7 +373,7 @@ External companies testing TORO become isolated organizations/workspaces, even i
 
 **Not a current implementation priority.**
 
-Long-term TORO Brain may train and coordinate:
+Long-term TORO may train and coordinate:
 - human employees;
 - AI agents;
 - software agents;
@@ -394,7 +394,7 @@ A robot/AI worker must never receive permissions merely because it completed tra
 ## 16. Near-term priorities
 
 Do now:
-1. prove TORO Brain deeply with Dreamcatcher;
+1. prove TORO deeply with Dreamcatcher;
 2. finish identity/context;
 3. integrate DreamTeam into TORO People;
 4. audit OpenClaw;
@@ -413,7 +413,7 @@ Do later:
 
 There is one master brain:
 
-**TORO Brain.**
+**TORO.**
 
 OpenClaw, agents, portals, WhatsApp, Supabase and connected systems are runtimes, tools or surfaces. None of them becomes a competing brain.
 
