@@ -3,15 +3,19 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ArrowLeft, ArrowUpRight, CalendarDays, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-
+import type { BookingAssistPrefill } from "./booking-assist-prefill";
 import { buildOfficialKrossSearchUrl } from "./public-search-link";
 
-export function KrossBookingAssist() {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [currency, setCurrency] = useState<"USD" | "CRC">("USD");
+export function KrossBookingAssist({
+  initial,
+}: {
+  initial: BookingAssistPrefill;
+}) {
+  const [from, setFrom] = useState(initial.from);
+  const [to, setTo] = useState(initial.to);
+  const [adults, setAdults] = useState(initial.adults);
+  const [children, setChildren] = useState(initial.children);
+  const [currency, setCurrency] = useState<"USD" | "CRC">(initial.currency);
   const [submitted, setSubmitted] = useState(false);
 
   const result = useMemo(
@@ -61,6 +65,12 @@ export function KrossBookingAssist() {
             TORO prepara el enlace con fechas y ocupación. Kross sigue confirmando disponibilidad,
             tarifas, condiciones y la reserva final.
           </p>
+
+          {(initial.from || initial.to) ? (
+            <div className="mt-4 rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.05] px-4 py-3 text-sm leading-6 text-cyan-100/80">
+              Llegaste con datos preparados desde TORO. Revisa lo necesario y abre la búsqueda oficial.
+            </div>
+          ) : null}
 
           <form onSubmit={submit} className="mt-6 grid gap-4 md:grid-cols-2">
             <label className="space-y-2 text-sm">

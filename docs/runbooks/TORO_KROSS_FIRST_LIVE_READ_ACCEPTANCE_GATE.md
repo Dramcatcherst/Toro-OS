@@ -428,3 +428,35 @@ Rules:
 - no API key, token, secret or raw credential belongs in GitHub.
 
 This closes the translation gap after a provider response without weakening the existing acceptance gate.
+
+
+## Follow-up draft hardening — 2026-09-24
+
+Latest Gmail recheck:
+- no new Kross/provider reply after the 2026-09-18 ticket response;
+- canonical follow-up draft remains **UNSENT**;
+- duplicate/superseded draft remains marked not to send.
+
+The canonical draft was strengthened on 2026-09-24 to request, in one response:
+- exact read-only transport for reservations/current stays/arrivals/departures;
+- exact read-only transport for live rates/availability;
+- whether those are separate products/scopes/fees;
+- authentication method and read scopes;
+- stable external reservation identifier for dedupe;
+- source / last-modified timestamps needed for freshness;
+- cancellation/update identity semantics;
+- sample response/export schema or field list;
+- refresh frequency / rate limits;
+- prerequisites such as IP allow-listing/provider setup;
+- applicable legal/data-processing terms;
+- all setup/recurring/per-call/export charges.
+
+The draft explicitly prohibits billable activation/config changes without written approval.
+
+State:
+- draft prepared: YES;
+- draft sent: NO;
+- Kross transport authorized: NO;
+- first live read unlocked: NO.
+
+No agent may treat the draft update as provider evidence or as authorization to execute a live read.
