@@ -1,7 +1,7 @@
 # TORO OpenClaw Runtime Audit Runbook
 
 **Status:** REQUIRED BEFORE OPENCLAW = CONFIRMED_ACTIVE
-**Date:** 2026-09-22
+**Date:** 2026-09-24
 **Owner subsystem:** TORO Comms + TORO Systems + TORO Tools
 **Current canonical status:** configured/unverified
 
@@ -275,3 +275,46 @@ Store only:
 - evidence reference.
 
 Never store tokens, auth directories, QR data, passwords or raw private conversations.
+
+
+## Machine-readable runtime evidence packet — 2026-09-24
+
+Prepared artifacts:
+- `data/openclaw_runtime_evidence_template_v1.json`;
+- `src/features/openclaw/runtime-evidence.ts`.
+
+Purpose:
+- translate one direct sanitized host audit into a deterministic PASS/FAIL result;
+- require explicit evidence per gate;
+- prevent duplicate gate records from silently overriding each other;
+- preserve the current canonical dependency state as `CONFIGURED_UNVERIFIED` until all required gates pass.
+
+Required gate keys:
+- runtime_identity;
+- live_channel_probe;
+- channel_capabilities;
+- session_isolation;
+- group_access;
+- bindings_routing;
+- least_privilege_tools;
+- security_audit;
+- logs_privacy;
+- replay_idempotency;
+- toro_identity_authority;
+- human_escalation;
+- health_recovery;
+- backup_restore.
+
+Additional safety checks:
+- valid audit timestamp;
+- no raw secrets retained;
+- no real guest contacted merely for audit proof;
+- no production mutation caused by the audit.
+
+PASS result:
+- `CONFIRMED_ACTIVE`.
+
+Any failed/missing/unevidenced/duplicated gate:
+- `CONFIGURED_UNVERIFIED`.
+
+The template itself is not runtime evidence. Do not populate it from historical docs or owner recollection alone.
