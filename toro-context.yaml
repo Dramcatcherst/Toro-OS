@@ -1242,3 +1242,20 @@ agent_lifecycle_supervision:
     - TORO Systems
     - authorized_human_authority
   runtime_state_and_production_effects_this_registration: none
+
+
+openclaw_runtime_evidence:
+  rebaselined_on: "2026-09-24"
+  canonical_status: configured_unverified
+  evaluator: src/features/openclaw/runtime-evidence.ts
+  template: data/openclaw_runtime_evidence_template_v1.json
+  runbook: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
+  template_is_runtime_evidence: false
+  direct_host_access_from_current_toro_environment: false
+  confirmed_active_requires_all_gates: true
+  passing_gate_requires_explicit_evidence_reference: true
+  duplicate_gate_fails_closed: true
+  raw_secrets_in_evidence_forbidden: true
+  real_guest_contact_for_runtime_proof_forbidden: true
+  audit_production_mutation_forbidden: true
+  current_external_dependency_registry_status: needs_audit
