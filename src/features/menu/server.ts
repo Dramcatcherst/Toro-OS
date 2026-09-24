@@ -784,7 +784,6 @@ function buildSafeAlternatives(
   return alternatives;
 }
 
-
 export type ToroRealMenuView = {
   context: ToroResolvedContext;
   preferredDisplayName: string;
