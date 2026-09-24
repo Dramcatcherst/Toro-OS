@@ -657,9 +657,11 @@ tere_wespeak_runtime_gate:
   expected_current_target_version: TERE-OPERATING-VOICE-v5
   runtime_active: verified
   pre_v4_activity: verified
-  post_v4_activity: not_observed
+  post_v4_activity: historical_superseded_gate
+  post_v5_activity: not_observed
+  post_v5_mailbox_rechecked_on: "2026-09-24"
   runtime_version_hash: unverified
-  v4_consumption: unverified
+  v4_consumption: superseded_by_v5_target
   v5_consumption: unverified
   channel_continuity: unverified
   qa_mode: isolated_synthetic_only
@@ -676,6 +678,8 @@ tere_wespeak_runtime_gate:
     max_stay_exceeded: 2
     use: human_escalation_workload_baseline_not_v4_quality_evidence
   real_guest_contact_for_config_proof: forbidden
+  quote_without_live_truth_requires_official_kross_handoff: true
+  public_kross_handoff_is_not_toro_live_quote: true
 
 tere_runtime_config_consolidation:
   version: TERE-OPERATING-VOICE-v5

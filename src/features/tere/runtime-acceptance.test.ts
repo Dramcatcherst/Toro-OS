@@ -6,10 +6,10 @@ const passing = {
   runtimeIdentified: true,
   runtimeName: "WeSpeak",
   runtimeVersion: "qa-runtime-v1",
-  testedAt: "2026-09-23T17:00:00.000Z",
-  configAppliedAt: "2026-09-23T16:24:48.192315Z",
-  observedConfigHash: "4df90ab2ae494826f5850bb413c28f6d",
-  expectedConfigHash: "4df90ab2ae494826f5850bb413c28f6d",
+  testedAt: "2026-09-24T00:30:00.000Z",
+  configAppliedAt: "2026-09-23T23:03:36.614864Z",
+  observedConfigHash: "0cab1a8be477f9bc6f25ceaeb5df56c7",
+  expectedConfigHash: "0cab1a8be477f9bc6f25ceaeb5df56c7",
   isolatedTestContext: true,
   realGuestContacted: false,
   sensitiveExternalSendOccurred: false,
@@ -25,15 +25,15 @@ const passing = {
 };
 
 describe("evaluateTereRuntimeAcceptance", () => {
-  it("verifies V4 only when runtime identity, hash, timing and scenario suite pass", () => {
+  it("verifies the current config only when runtime identity, hash, timing and scenario suite pass", () => {
     const result = evaluateTereRuntimeAcceptance(passing);
 
     expect(result.passed).toBe(true);
     expect(result.blockers).toEqual([]);
-    expect(result.runtimeConsumptionState).toBe("VERIFIED_V4");
+    expect(result.runtimeConsumptionState).toBe("VERIFIED_CURRENT_CONFIG");
   });
 
-  it("keeps an active runtime unverified when observed activity predates V4", () => {
+  it("keeps an active runtime unverified when observed activity predates the current config", () => {
     const result = evaluateTereRuntimeAcceptance({
       ...passing,
       testedAt: "2026-09-20T21:07:49.000Z",
@@ -42,7 +42,7 @@ describe("evaluateTereRuntimeAcceptance", () => {
     expect(result.passed).toBe(false);
     expect(result.blockers).toContain("post_config_test");
     expect(result.runtimeConsumptionState).toBe(
-      "ACTIVE_RUNTIME_V4_UNVERIFIED",
+      "ACTIVE_RUNTIME_CURRENT_CONFIG_UNVERIFIED",
     );
   });
 

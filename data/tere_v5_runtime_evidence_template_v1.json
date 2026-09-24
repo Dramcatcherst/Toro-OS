@@ -1,0 +1,50 @@
+{
+  "version": "2026.09.24-v1",
+  "status": "template_not_runtime_evidence",
+  "target_config": {
+    "name": "Tere Identity & Operating Voice V5",
+    "expected_hash": "0cab1a8be477f9bc6f25ceaeb5df56c7",
+    "applied_at": "2026-09-23T23:03:36.614864Z"
+  },
+  "runtime": {
+    "identified": false,
+    "name": null,
+    "version": null,
+    "observed_config_hash": null
+  },
+  "test": {
+    "tested_at": null,
+    "isolated_context": true,
+    "real_guest_contacted": false,
+    "sensitive_external_send_occurred": false,
+    "unauthorized_action_occurred": false,
+    "channel_continuity_verified": false
+  },
+  "scenarios": [
+    {
+      "key": "first_contact",
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "key": "quote_without_live_truth",
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "key": "in_stay_problem",
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "key": "payment_sensitive",
+      "passed": false,
+      "notes": ""
+    },
+    {
+      "key": "navigation_shortcuts",
+      "passed": false,
+      "notes": ""
+    }
+  ]
+}
