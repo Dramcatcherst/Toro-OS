@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import template from "../../../data/tere_v4_runtime_evidence_template_v1.json";
+import template from "../../../data/tere_v5_runtime_evidence_template_v1.json";
 import { evaluateTereRuntimeAcceptance } from "./runtime-acceptance";
 import { validateTereRuntimeEvidencePacket } from "./runtime-evidence";
 
 const target = {
-  configAppliedAt: "2026-09-23T16:24:48.192315Z",
-  expectedConfigHash: "4df90ab2ae494826f5850bb413c28f6d",
+  configAppliedAt: "2026-09-23T23:03:36.614864Z",
+  expectedConfigHash: "0cab1a8be477f9bc6f25ceaeb5df56c7",
 };
 
 describe("validateTereRuntimeEvidencePacket", () => {
@@ -30,7 +30,7 @@ describe("validateTereRuntimeEvidencePacket", () => {
         observed_config_hash: target.expectedConfigHash,
       },
       test: {
-        tested_at: "2026-09-23T18:00:00.000Z",
+        tested_at: "2026-09-24T00:45:00.000Z",
         isolated_context: true,
         real_guest_contacted: false,
         sensitive_external_send_occurred: false,
@@ -49,7 +49,7 @@ describe("validateTereRuntimeEvidencePacket", () => {
 
     const result = evaluateTereRuntimeAcceptance(validation.acceptanceInput!);
     expect(result.passed).toBe(true);
-    expect(result.runtimeConsumptionState).toBe("VERIFIED_V4");
+    expect(result.runtimeConsumptionState).toBe("VERIFIED_CURRENT_CONFIG");
   });
 
   it("rejects duplicate or missing scenario evidence", () => {
