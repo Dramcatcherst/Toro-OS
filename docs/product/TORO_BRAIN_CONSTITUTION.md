@@ -1,4 +1,4 @@
-# TORO Brain — Product Constitution
+# TORO — Product Constitution
 
 **Status:** CURRENT
 **Approved:** 2026-09-22
@@ -6,11 +6,11 @@
 
 ## 1. Product definition
 
-TORO Brain is a continuously improving AI operating brain for people, businesses and portfolios.
+TORO is a continuously improving AI operating brain for people, businesses and portfolios.
 
 It understands how each authorized scope actually works, builds a governed model of that scope, connects the systems and evidence that already exist, coordinates specialized intelligence, executes permitted work, verifies outcomes, learns from corrections and reduces complexity for humans.
 
-TORO Brain is the master intelligence, operating and execution product. Its workflow, approval, automation and action capabilities operate inside the same product identity.
+TORO is the master intelligence, operating and execution product. Its workflow, approval, automation and action capabilities operate inside the same product identity.
 
 `TORO OS` is retained only as a technical legacy alias where existing keys, repository names or integrations still depend on it.
 
@@ -20,9 +20,9 @@ Dreamcatcher Hotel is the first real proving ground. It is not the boundary of t
 
 > **Deep inside. Simple outside.**
 
-TORO Brain absorbs internal complexity so the human experience becomes simpler.
+TORO absorbs internal complexity so the human experience becomes simpler.
 
-A working TORO Brain must know:
+A working TORO must know:
 
 - who/what the active scope is;
 - what is true;
@@ -38,7 +38,7 @@ A working TORO Brain must know:
 
 ## 3. Scope model
 
-TORO Brain does not assume one user = one company = one project.
+TORO does not assume one user = one company = one project.
 
 It supports a graph of:
 - principals;
@@ -61,7 +61,7 @@ Examples:
 - Atrapasueños may operate multiple businesses;
 - Dreamcatcher may contain several properties/products;
 - Mauricio may also own unrelated projects;
-- external client businesses remain isolated even when TORO Brain operates them.
+- external client businesses remain isolated even when TORO operates them.
 
 ## 4. Isolation doctrine
 
@@ -97,7 +97,7 @@ No subsystem may create a parallel identity universe.
 
 ## 6. Knowledge and learning doctrine
 
-TORO Brain separates:
+TORO separates:
 
 ### Scope knowledge
 Private facts, history, policy and context belonging to one person/business/project.
@@ -147,7 +147,7 @@ Repeatable onboarding, billing, support, templates and portable skills after rea
 
 ## 8. Proactivity doctrine
 
-TORO Brain should continuously detect:
+TORO should continuously detect:
 - repeated manual work;
 - missing/failing connectors;
 - configuration drift;
@@ -168,7 +168,7 @@ Proactivity never overrides privacy, scope or approval boundaries.
 
 ## 9. System-audit doctrine
 
-TORO Brain must be able to audit the systems it depends on.
+TORO must be able to audit the systems it depends on.
 
 For each system it should know:
 - expected configuration;
@@ -192,7 +192,7 @@ A configured system is not a verified system.
 ## 10. Naming doctrine
 
 Master product / visible brand:
-- **TORO Brain**
+- **TORO**
 
 Legacy technical alias:
 - **TORO OS** — compatibility only; not a second product, brand or brain
@@ -216,13 +216,13 @@ Specialist personas:
 - TORO SKY
 - TORO SOBRESITO
 
-Normal users experience one TORO Brain.
+Normal users experience one TORO.
 
 ## 11. Dreamcatcher rule
 
 Dreamcatcher is the first full proof environment.
 
-It may contain hotel-specific workflows and models, but those cannot become hard-coded assumptions in the universal TORO Brain core.
+It may contain hotel-specific workflows and models, but those cannot become hard-coded assumptions in the universal TORO core.
 
 External pilots remain blocked until the readiness gate passes.
 
@@ -244,7 +244,7 @@ The ideal experience:
 
 Not a near-term implementation priority.
 
-Long-term TORO Brain may help train and coordinate:
+Long-term TORO may help train and coordinate:
 - humans;
 - AI workers;
 - software agents;
@@ -278,7 +278,7 @@ Do not:
 
 ## 15. Product north star
 
-TORO Brain wins when a growing portfolio becomes:
+TORO wins when a growing portfolio becomes:
 - more understandable;
 - more measurable;
 - more resilient;
