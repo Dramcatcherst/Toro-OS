@@ -353,3 +353,20 @@ Not allowed:
 - claim a quote was produced by TORO merely because the user was handed off to Kross.
 
 This handoff is a user-experience fallback, not a substitute for the Kross live-read acceptance gate.
+
+
+## My TORO interim handoff — 2026-09-23
+
+While `hospitality.quote` remains blocked, the authenticated Reception menu may expose a user-initiated link to the official Dreamcatcher Kross booking engine:
+
+- `https://dreamcatcherhotel.kross.travel/`
+
+UX copy must make clear:
+- the user is opening Kross to confirm current dates/rates/availability;
+- TORO is not producing the live quote;
+- the handoff does not populate `source_is_live`;
+- the handoff does not unlock arrivals/departures;
+- no scraping or shadow reservation truth is created;
+- no write is made by TORO.
+
+When structured live rate/availability authority later passes its own gate, this fallback may be demoted or retained as a manual verification escape hatch.
