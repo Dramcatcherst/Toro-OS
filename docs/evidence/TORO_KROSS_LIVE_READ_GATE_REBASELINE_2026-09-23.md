@@ -218,3 +218,37 @@ This reduces the remaining implementation step after Kross/local-provider delive
 4. pass the existing normalizer/acceptance gate.
 
 No Kross vendor field names were guessed or hard-coded.
+
+
+## Status recheck — 2026-09-24
+
+Gmail evidence was rechecked for ticket **KB-305650/26** and broader Kross/API/provider terms.
+
+Observed:
+- no Kross/provider reply newer than the 2026-09-18 ticket response;
+- no separate email containing API credentials, token, webhook details, documentation package or approved read-only transport;
+- the current correct follow-up remains a Gmail draft in the Kross ticket thread;
+- an older duplicate draft is explicitly marked **SUPERSEDED — DO NOT SEND**;
+- the current draft asks for read-only reservations/stays, arrivals/departures, live rates/availability, official transport options, documentation/scopes, legal terms and all costs;
+- the current draft explicitly prohibits implicit billable activation and PMS/config changes without written approval.
+
+Therefore the current external gate is:
+
+> **Owner-side send/reopen action still pending; provider/Kross transport evidence still absent.**
+
+No email was sent by this recheck.
+
+### Interim commercial fallback
+
+The official public Kross handoff remains available:
+- route inside TORO: `/booking-assist`;
+- final authority: `https://dreamcatcherhotel.kross.travel/`.
+
+This is allowed for manual current confirmation by Reception/guest, but remains:
+- non-authoritative inside TORO;
+- non-ingested;
+- non-scraped;
+- non-live-source evidence;
+- non-reservation truth for TORO.
+
+The fallback reduces customer friction while the structured transport remains blocked; it does not change the Kross acceptance gate.
