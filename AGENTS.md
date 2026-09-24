@@ -4,7 +4,7 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# AGENTS.md — TORO Brain Product Contract
+# AGENTS.md — TORO Product Contract
 
 ## Mandatory preflight
 
@@ -17,7 +17,7 @@ Before substantive work:
 5. Read `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md` when scope/portfolio/product boundaries matter.
 6. Identify whether the task changes product core, Dreamcatcher reference implementation, infrastructure, data, integrations or presentation.
 7. Identify the source of authority for every material fact or write.
-8. Map the request into the TORO Brain General Plan: scope, subsystem, CURRENT/TARGET/NEXT/FUTURE, priority and dependencies.
+8. Map the request into the TORO General Plan: scope, subsystem, CURRENT/TARGET/NEXT/FUTURE, priority and dependencies.
 9. Inspect existing implementation before creating a second system.
 10. Define verification and rollback before risky changes.
 11. Run a generalization scan: could this become a reusable TORO capability/skill/profile without leaking scope-specific data?
@@ -57,13 +57,13 @@ This behavioral rule is the prerequisite for repository-enforced branch protecti
 
 ## Product architecture
 
-TORO Brain is the sole master intelligence/memory/governance/orchestration product and visible brand. Operating/execution capabilities live inside TORO Brain. `TORO OS` is a technical legacy alias only where old keys or components still depend on it.
+TORO is the sole master intelligence/memory/governance/orchestration product and visible brand. Operating/execution capabilities live inside TORO. `TORO OS` is a technical legacy alias only where old keys or components still depend on it.
 
-TORO Brain is built inside-out:
+TORO is built inside-out:
 
 `identity/scope graph -> truth -> connectors -> intelligence -> execution -> governance/resilience -> continuous learning -> experience -> portfolio intelligence -> commercial presentation`
 
-WhatsApp and TORO Portal are surfaces over the same governed TORO Brain. They are not independent databases or architectural foundations.
+WhatsApp and TORO Portal are surfaces over the same governed TORO. They are not independent databases or architectural foundations.
 
 Dreamcatcher is the first proving ground. Do not hard-code hotel assumptions into universal core modules unless they are explicitly scoped to the Dreamcatcher implementation.
 
@@ -83,16 +83,16 @@ Never silently resolve a source conflict. Record the conflict, authority, freshn
 
 ## Brand
 
-Official identity is **TORO Brain** only.
+Official identity is **TORO** only.
 
 Canonical visual metaphor:
 - blue bull = the business / living organization;
 - integrated brain + microchip/circuit = biological intelligence + AI/computation coordinating the whole.
 
 Current masters:
-- `/TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
+- `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
   - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- `/TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+- `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
   - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
 
 Legacy blue-bull artwork remains provenance/reference only. Do not generate, redraw, recolor or substitute another bull for official product identity. Do not use bullfighting/violent imagery. Do not present TORO OS as a parallel public-facing product; preserve old TORO OS names only when technically required for compatibility.
