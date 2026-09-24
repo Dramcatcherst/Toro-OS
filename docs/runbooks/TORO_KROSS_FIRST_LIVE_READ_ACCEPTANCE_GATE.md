@@ -357,16 +357,22 @@ This handoff is a user-experience fallback, not a substitute for the Kross live-
 
 ## My TORO interim handoff — 2026-09-23
 
-While `hospitality.quote` remains blocked, the authenticated Reception menu may expose a user-initiated link to the official Dreamcatcher Kross booking engine:
+While `hospitality.quote` remains blocked, My TORO must reuse the existing canonical safe alternative:
 
-- `https://dreamcatcherhotel.kross.travel/`
+- label: **Preparar búsqueda en Kross**;
+- route: `/booking-assist`;
+- final authority/handoff: Dreamcatcher's official Kross booking engine `https://dreamcatcherhotel.kross.travel/`.
+
+The booking-assist flow may prepare non-authoritative search inputs such as dates and occupancy, then hand the user to Kross for current rates, availability and reservation completion.
 
 UX copy must make clear:
-- the user is opening Kross to confirm current dates/rates/availability;
+- Kross confirms current dates/rates/availability;
 - TORO is not producing the live quote;
 - the handoff does not populate `source_is_live`;
 - the handoff does not unlock arrivals/departures;
 - no scraping or shadow reservation truth is created;
-- no write is made by TORO.
+- no PMS write is made by TORO.
+
+Do not create a second direct fallback when `capabilityAlternatives["hospitality.quote"]` already provides the governed booking-assist route.
 
 When structured live rate/availability authority later passes its own gate, this fallback may be demoted or retained as a manual verification escape hatch.
