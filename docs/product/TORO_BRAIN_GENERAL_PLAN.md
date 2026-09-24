@@ -1,9 +1,9 @@
-# TORO Brain — Plan General
+# TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
 **Date:** 2026-09-23
-**Master product:** TORO Brain
-**Visible brand/product:** TORO Brain
+**Master product:** TORO
+**Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
@@ -11,9 +11,9 @@
 
 # 1. Final direction
 
-TORO Brain is the master intelligence, memory, governance and orchestration layer for a person's work, businesses, projects and authorized external relationships.
+TORO is the master intelligence, memory, governance and orchestration layer for a person's work, businesses, projects and authorized external relationships.
 
-TORO Brain should eventually allow one Principal to operate a complex portfolio through:
+TORO should eventually allow one Principal to operate a complex portfolio through:
 
 - one TORO identity;
 - one personal TORO context;
@@ -26,15 +26,15 @@ TORO Brain should eventually allow one Principal to operate a complex portfolio 
 - one evidence/audit model;
 - reusable skills learned without leaking private scope data.
 
-The operating/execution layer is an internal capability of TORO Brain, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
+The operating/execution layer is an internal capability of TORO, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
 
-Normal users experience **one TORO Brain**.
+Normal users experience **one TORO**.
 
 ---
 
 # 2. Product hierarchy
 
-## TORO Brain
+## TORO
 Master brain:
 - identity;
 - scope graph;
@@ -47,7 +47,7 @@ Master brain:
 - system auditing;
 - proactive improvement.
 
-## TORO Brain operating/execution layer
+## TORO operating/execution layer
 Execution capabilities inside a business/workspace:
 - dashboards;
 - workflows;
@@ -94,7 +94,7 @@ Internal routing, not separate systems:
 
 ## Brand identity canon — owner approved 2026-09-22
 
-- **Only visible brand/product:** TORO Brain.
+- **Only visible brand/product:** TORO.
 - **Bull metaphor:** the bull represents the business as a large, powerful living organization.
 - **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
 - **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
@@ -108,7 +108,7 @@ Internal routing, not separate systems:
 
 # 3. Scope / portfolio architecture
 
-TORO Brain does not use a flat "client" model.
+TORO does not use a flat "client" model.
 
 Entity concepts:
 - Principal
@@ -157,7 +157,7 @@ Default:
 Conceptual target:
 
 ```text
-TORO Brain
+TORO
 └── Mauricio [Principal]
     ├── TORO Personal
     ├── Portfolio
@@ -275,7 +275,7 @@ Workflow logic should call generic capabilities rather than hard-code vendors wh
 
 Owner: **TORO Systems Auditor**
 
-TORO Brain must proactively verify important systems.
+TORO must proactively verify important systems.
 
 For each system:
 - expected configuration;
@@ -477,11 +477,11 @@ Configured-unverified channel/runtime.
 
 ## Canonical portfolio hierarchy — verified 2026-09-22
 
-TORO Brain is the only portfolio root and owns the General Plan.
+TORO is the only portfolio root and owns the General Plan.
 
 Active hierarchy:
-- TORO Brain · Portafolio General
-  - TORO Brain · Sistema Operativo y Ejecución
+- TORO · Portafolio General
+  - TORO · Sistema Operativo y Ejecución
   - Dreamcatcher Hotel · Proyecto Madre
     - Dreamcatcher · Datos e Integraciones
     - Dreamcatcher · Operación Hotelera
@@ -503,8 +503,8 @@ Current audit:
 - Media/Brand is a workstream inside Dreamcatcher Web/Marca/SEO/Reputación, not a separate active project.
 
 Technical project keys are retained for compatibility and do not redefine architecture:
-- toro_os_portfolio_master = TORO Brain portfolio root;
-- toro_executive_control = TORO Brain operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
+- toro_os_portfolio_master = TORO portfolio root;
+- toro_executive_control = TORO operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
 - business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
 
 ## Canonical
@@ -532,7 +532,7 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 # 14. Proactive improvement rule
 
-After every material task TORO Brain evaluates:
+After every material task TORO evaluates:
 
 1. Is this reusable?
 2. Should it become a TORO capability/skill?
@@ -574,7 +574,7 @@ Never present TARGET/FUTURE as CURRENT.
 ## Phase 0 — Brain alignment
 **Status: largely completed/documented**
 
-- TORO Brain master constitution
+- TORO master constitution
 - master architecture
 - subsystem registry
 - naming
@@ -714,7 +714,7 @@ The immediate product strategy is now **proof, compression and repeatability** r
 
 ## Current product thesis
 
-TORO Brain is the governed intelligence and control layer that learns how a business works, connects existing systems, resolves authority/context, detects problems and opportunities, coordinates execution, verifies outcomes and progressively reduces owner cognitive load.
+TORO is the governed intelligence and control layer that learns how a business works, connects existing systems, resolves authority/context, detects problems and opportunities, coordinates execution, verifies outcomes and progressively reduces owner cognitive load.
 
 TORO does **not** depend on generic LLM access, agent count, connector count, WhatsApp, MCP or dashboards as its primary differentiation. Those are interchangeable infrastructure layers.
 
@@ -877,7 +877,7 @@ Role menus must route to generic TORO capability keys rather than vendor-specifi
 
 # 18. Program north star
 
-> **TORO Brain should become more sophisticated internally while every person, business and project becomes easier to understand and operate externally.**
+> **TORO should become more sophisticated internally while every person, business and project becomes easier to understand and operate externally.**
 
 
 
@@ -885,12 +885,12 @@ Role menus must route to generic TORO capability keys rather than vendor-specifi
 
 # 19. General Plan integration protocol
 
-This file is the **only canonical Plan General** for TORO Brain.
+This file is the **only canonical Plan General** for TORO.
 
 Naming rule:
-- **TORO Brain** is the only name for the master brain and owner of this Plan General.
+- **TORO** is the only name for the master brain and owner of this Plan General.
 - **Plan General** and **TORO master plan** refer to this same document.
-- No alternative master-brain name or alias is valid; all master-brain references resolve to **TORO Brain**.
+- No alternative master-brain name or alias is valid; all master-brain references resolve to **TORO**.
 
 A different external product may have its own plan only when it is explicitly a separate governed product/scope.
 
@@ -973,7 +973,7 @@ Any execution plan that conflicts with this Plan General is subordinate and must
 
 ## Continuous improvement rule
 
-On each substantive pass, TORO Brain checks:
+On each substantive pass, TORO checks:
 
 - what changed;
 - what was learned;
@@ -993,7 +993,7 @@ Do not add low-value ideas merely to grow the plan.
 # 20. Plan governance
 
 ## Owner
-TORO Brain.
+TORO.
 
 ## Human authority
 Mauricio / authorized product owner retains final authority for:
@@ -1022,7 +1022,7 @@ Live systems and canonical evidence sources.
 When two plans conflict:
 
 1. verified live reality wins for CURRENT;
-2. TORO Brain Constitution wins for architecture/principles;
+2. TORO Constitution wins for architecture/principles;
 3. this General Plan wins for program direction/prioritization;
 4. domain spec wins for local implementation detail if consistent with 1–3;
 5. historical documents become reference only.
@@ -1031,7 +1031,7 @@ When two plans conflict:
 
 # 21. Executive brain mindset
 
-TORO Brain is not a task manager with AI attached. It is the coordinating brain of a company.
+TORO is not a task manager with AI attached. It is the coordinating brain of a company.
 
 Its job is to understand each issue at two levels at the same time:
 
@@ -1070,7 +1070,7 @@ TORO should progressively embody the combined operating capabilities expected fr
 - analyst;
 - project/program manager.
 
-This does **not** mean creating separate brains for each discipline. These are coordinated capabilities of the same TORO Brain, with specialists, skills, workflows and tools underneath where useful.
+This does **not** mean creating separate brains for each discipline. These are coordinated capabilities of the same TORO, with specialists, skills, workflows and tools underneath where useful.
 
 The purpose is coordinated company performance, not organizational complexity.
 
@@ -1144,7 +1144,7 @@ A task or initiative is not complete because it was discussed, planned, coded or
 
 ## Coordination doctrine
 
-TORO Brain must coordinate, not merely observe, the major dimensions of a company:
+TORO must coordinate, not merely observe, the major dimensions of a company:
 
 - strategy;
 - finance and cash;
@@ -1165,7 +1165,7 @@ TORO Brain must coordinate, not merely observe, the major dimensions of a compan
 - innovation;
 - continuous improvement.
 
-Each dimension may have specialists, but TORO Brain preserves the integrated view.
+Each dimension may have specialists, but TORO preserves the integrated view.
 
 ## Generalization doctrine
 
@@ -1207,7 +1207,7 @@ Canonical domain specification:
 
 ## Product rule
 
-TORO Brain must be visually understandable without becoming a decorative dashboard.
+TORO must be visually understandable without becoming a decorative dashboard.
 
 The visual layer is a projection of canonical TORO state:
 - scope graph;
@@ -1337,7 +1337,7 @@ Verified domain families include:
 
 Specialist external systems retain domain authority where this Plan General says so.
 
-`fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation. Useful patterns may be generalized, but it is not a second TORO Brain database.
+`fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation. Useful patterns may be generalized, but it is not a second TORO database.
 
 Rules:
 - do not create a third “brain DB”;
@@ -1429,12 +1429,12 @@ The operating priority remains:
 
 # 21. Canonical project hierarchy — audited 2026-09-22
 
-TORO Brain owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
+TORO owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
 
 ## ACTIVE — 11
 
 ```text
-TORO Brain · Portafolio General [PORTFOLIO]
+TORO · Portafolio General [PORTFOLIO]
 ├── TORO OS · Sistema Operativo y Ejecución [MODULE]
 ├── Dreamcatcher Hotel · Proyecto Madre [MASTER]
 │   ├── Dreamcatcher · Datos e Integraciones [MODULE]
@@ -1455,7 +1455,7 @@ TORO Brain · Portafolio General [PORTFOLIO]
 
 ## Project-type rule
 
-- `PORTFOLIO`: only TORO Brain root.
+- `PORTFOLIO`: only TORO root.
 - `MASTER`: primary business/tenant program containing modules.
 - `MODULE`: durable domain inside a business or TORO OS execution layer.
 - `PROJECT`: finite, materially distinct outcome with its own lifecycle/done criteria.
@@ -1481,12 +1481,12 @@ Historical names do not regain authority by title. Reuse/absorb before creating 
 
 ## CURRENT verified progress
 
-### TORO Brain context resolver
+### TORO context resolver
 Branch:
 `feat/toro-brain-context-on-phase1-v2-20260923`
 
 Draft PR:
-`#42 — feat: integrate TORO Brain context resolver on current Phase 1`
+`#42 — feat: integrate TORO context resolver on current Phase 1`
 
 Superseded:
 `#38` closed after Phase 1 advanced 77 commits beyond its branch point; #42 was re-extracted cleanly from the current Phase 1 HEAD.
@@ -1750,7 +1750,7 @@ NEXT:
 
 ### Portal role model — canonical permission vs experience
 
-TORO Brain now distinguishes two concepts:
+TORO now distinguishes two concepts:
 
 1. **Canonical organization role**
    - ADMIN
@@ -1784,7 +1784,7 @@ Rules:
 ### Execution update — People + Portal — 2026-09-23
 
 #### HECHO — developer validation fabric
-- canonical TORO Brain CI now validates every pull request, including stacked PRs;
+- canonical TORO CI now validates every pull request, including stacked PRs;
 - workflow runs `npm test -> lint -> build`;
 - `workflow_dispatch` available;
 - stale runs cancel through concurrency;
