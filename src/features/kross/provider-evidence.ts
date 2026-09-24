@@ -237,12 +237,28 @@ export function buildKrossTransportIntakeFromProviderEvidence(
 
   const intakeEvaluation = evaluateKrossTransportIntake(intake);
 
-  const evidenceClaims = Object.values(packet).filter(
-    (value): value is KrossEvidenceClaim<unknown> =>
-      Boolean(value) &&
-      typeof value === "object" &&
-      "evidenceReference" in value,
-  );
+  const evidenceClaims: Array<KrossEvidenceClaim<unknown>> = [
+    packet.providerName,
+    packet.ticketReference,
+    packet.transportKind,
+    packet.readOnlyConfirmed,
+    packet.authorizedByProvider,
+    packet.billableActivationRequired,
+    packet.setupFee,
+    packet.recurringFee,
+    packet.otherFees,
+    packet.documentationReference,
+    packet.credentialScopeSummary,
+    packet.reservationsSupported,
+    packet.currentStaysSupported,
+    packet.arrivalsDeparturesSupported,
+    packet.liveRatesSupported,
+    packet.liveAvailabilitySupported,
+    packet.sourceTimestampAvailable,
+    packet.externalReservationIdentityAvailable,
+    packet.fieldMapReady,
+    packet.approvedForFirstRead,
+  ];
 
   const explicitEvidenceCoverage =
     evidenceClaims.length === 0
