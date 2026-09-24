@@ -38,8 +38,8 @@ export type TereRuntimeAcceptanceResult = {
   checks: TereRuntimeAcceptanceCheck[];
   blockers: string[];
   runtimeConsumptionState:
-    | "VERIFIED_V4"
-    | "ACTIVE_RUNTIME_V4_UNVERIFIED"
+    | "VERIFIED_CURRENT_CONFIG"
+    | "ACTIVE_RUNTIME_CURRENT_CONFIG_UNVERIFIED"
     | "RUNTIME_UNVERIFIED";
 };
 
@@ -80,14 +80,14 @@ export function evaluateTereRuntimeAcceptance(
     {
       key: "post_config_test",
       passed: testAfterConfig,
-      detail: "Runtime QA occurred after the current TERE V4 configuration was applied.",
+      detail: "Runtime QA occurred after the current canonical TERE configuration was applied.",
     },
     {
       key: "config_hash",
       passed:
         Boolean(input.observedConfigHash) &&
         input.observedConfigHash === input.expectedConfigHash,
-      detail: "The runtime reports the same configuration hash as canonical TERE V4.",
+      detail: "The runtime reports the same configuration hash as the current canonical TERE configuration.",
     },
     {
       key: "isolated_context",
@@ -97,7 +97,7 @@ export function evaluateTereRuntimeAcceptance(
     {
       key: "scenario_suite",
       passed: allRequiredScenariosPass,
-      detail: "All five required TERE V4 behavior scenarios passed.",
+      detail: "All five required current TERE behavior scenarios passed.",
     },
     {
       key: "no_sensitive_send",
@@ -126,8 +126,8 @@ export function evaluateTereRuntimeAcceptance(
   if (input.runtimeIdentified) {
     runtimeConsumptionState =
       blockers.length === 0
-        ? "VERIFIED_V4"
-        : "ACTIVE_RUNTIME_V4_UNVERIFIED";
+        ? "VERIFIED_CURRENT_CONFIG"
+        : "ACTIVE_RUNTIME_CURRENT_CONFIG_UNVERIFIED";
   }
 
   return {
