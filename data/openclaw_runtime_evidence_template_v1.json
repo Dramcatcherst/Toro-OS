@@ -1,0 +1,119 @@
+{
+  "version": "2026.09.24-v1",
+  "status": "template_not_runtime_evidence",
+  "auditAt": null,
+  "profileKey": "openclaw_company_shared",
+  "runtimeVersion": null,
+  "channelAliases": [],
+  "rawSecretsIncluded": false,
+  "realGuestContactedForAudit": false,
+  "productionMutationOccurred": false,
+  "gates": [
+    {
+      "key": "runtime_identity",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "live_channel_probe",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "channel_capabilities",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "session_isolation",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "group_access",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "bindings_routing",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "least_privilege_tools",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "security_audit",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "logs_privacy",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "replay_idempotency",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "toro_identity_authority",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "human_escalation",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "health_recovery",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    },
+    {
+      "key": "backup_restore",
+      "passed": false,
+      "evidenceReference": null,
+      "findingIds": [],
+      "notes": ""
+    }
+  ],
+  "instructions": [
+    "Populate from a direct authorized OpenClaw host audit only.",
+    "Use sanitized aliases and finding IDs; never store tokens, QR data, passwords, auth files or raw private conversations.",
+    "Do not run security audit --fix automatically.",
+    "Do not change live routing/config merely to make this packet pass.",
+    "Every passing gate requires a unique explicit evidence reference.",
+    "The template itself is not runtime evidence."
+  ]
+}
