@@ -1,0 +1,92 @@
+{
+  "version": "2026.09.24-v1",
+  "status": "template_not_provider_evidence",
+  "observedAt": null,
+  "providerName": {
+    "value": "",
+    "evidenceReference": null
+  },
+  "ticketReference": {
+    "value": "KB-305650/26",
+    "evidenceReference": null
+  },
+  "transportKind": {
+    "value": "other",
+    "evidenceReference": null
+  },
+  "readOnlyConfirmed": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "authorizedByProvider": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "billableActivationRequired": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "setupFee": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "recurringFee": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "otherFees": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "documentationReference": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "credentialScopeSummary": {
+    "value": null,
+    "evidenceReference": null
+  },
+  "reservationsSupported": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "currentStaysSupported": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "arrivalsDeparturesSupported": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "liveRatesSupported": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "liveAvailabilitySupported": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "sourceTimestampAvailable": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "externalReservationIdentityAvailable": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "fieldMapReady": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "approvedForFirstRead": {
+    "value": false,
+    "evidenceReference": null
+  },
+  "instructions": [
+    "Populate only from written provider/Kross evidence or an explicitly authorized official payload/export.",
+    "Every true/known sensitive claim must include evidenceReference.",
+    "Do not infer API entitlement, read-only status, billing, scopes or live support from a ticket acknowledgement.",
+    "approvedForFirstRead remains false until costs/scopes are known and an authorized human explicitly approves the first read.",
+    "This template itself is not evidence and must never set source_is_live=true."
+  ]
+}
