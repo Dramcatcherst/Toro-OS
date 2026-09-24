@@ -92,16 +92,16 @@ Internal routing, not separate systems:
 ---
 
 
-## Brand identity canon — owner approved 2026-09-22
+## Brand identity canon — owner updated 2026-09-23
 
 - **Only visible brand/product:** TORO.
 - **Bull metaphor:** the bull represents the business as a large, powerful living organization.
 - **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
 - **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
 - **Do not use:** bullfighting/violence imagery, a generic replacement bull, or TORO OS as a parallel visible brand/product/brain.
-- **Current full-logo master:** `1001725196.png`, 1536×1536, SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`.
-- **Current symbol-only master:** `1001725217.png`, 1536×1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
-- Previous logo hashes remain lineage/history, not current masters.
+- **Current master:** `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`, 1536×1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
+- **Legacy wordmark:** the former `TORO BRAIN` text logo is archived and must not appear on new public surfaces.
+- Brain remains an internal architectural metaphor, not part of the visible brand name.
 - Professional closeout still requires: vector master, small-size/favicons, monochrome/reverse variants, typography/license specification, clear-space/min-size rules, durable rights evidence, trademark/domain checks and governed permanent-file storage.
 
 ---
