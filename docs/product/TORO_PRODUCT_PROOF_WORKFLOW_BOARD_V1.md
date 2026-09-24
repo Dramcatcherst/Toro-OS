@@ -38,7 +38,7 @@ Documentation/configuration alone never counts as VERIFIED.
 | 9 | Payment reminder / collection communication | FIONA + TERE + Comms | Finance authority model + new customer-lifecycle boundary | PREPARED / BLOCKED | Current authoritative amount/payment state and explicit collection policy/approval; customer-facing tone stays with TERE |
 | 10 | Finance reconciliation / cash exception | FIONA | Finance-to-cash pilot data, bank transactions/reconciliations/monthly metrics | PREPARED / BLOCKED | Current bank evidence and semantic reconciliation; historical volume is not current cash |
 | 11 | System/connector incident -> recovery evidence | SOBRESITO + Systems | Systems Auditor + connector-health contracts + OpenClaw audit runbook | PREPARED / BLOCKED | Direct authorized runtime audit/health evidence, then prove one degraded/recovery path |
-| 12 | Post-stay review/retention or revenue opportunity | SKY + TERE + Growth | Growth/reputation/TERE lifecycle contracts and Product Proof metrics | STRUCTURAL | Prove one attributable opportunity or post-stay/reputation workflow with consent, outcome and measurement |
+| 12 | Post-stay review/retention or revenue opportunity | SKY + TERE + Growth | Growth/reputation/TERE lifecycle contracts + consent/service-recovery-aware prepare-only adapter; evidence: docs/evidence/TORO_POST_STAY_OPPORTUNITY_PREPARE_2026-09-24.md | PREPARED / PREPARE-ONLY | Review/return drafts are CI-tested with consent, duplicate and unresolved-service guards. Next proof: one authorized post-stay event -> authorized send -> deduped outcome -> measured result without false attribution. |
 
 ## 3. Existing proof streams retained
 
