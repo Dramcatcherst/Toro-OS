@@ -1275,3 +1275,34 @@ daily_progress_report_2026_09_24:
     - tere_v5_post_config_runtime_evidence
     - owner_executive_brief_measured_use
   rule: repo_activity_is_not_business_outcome
+
+
+schedule_change_prepare_only:
+  updated_on: "2026-09-24"
+  product_proof_workflow: 3
+  owner: TORO People
+  state: PREPARED_PREPARE_ONLY
+  code: src/features/people/schedule-change.ts
+  tests: src/features/people/schedule-change.test.ts
+  evidence: docs/evidence/TORO_PEOPLE_SCHEDULE_CHANGE_PREPARE_2026-09-24.md
+  existing_tables_reused:
+    - public.shift_assignments
+    - public.schedule_change_requests
+    - public.shift_swap_requests
+    - public.employee_availability
+    - public.approval_requests
+  observed_rows:
+    shift_assignments: 271
+    schedule_change_requests: 0
+    shift_swap_requests: 0
+    employee_availability: 0
+    approval_requests: 1
+  database_write_enabled: false
+  shift_mutation_enabled: false
+  employee_rollout_enabled: false
+  approval_required: true
+  next_gate:
+    - authenticated_employee_identity_and_rls
+    - one_governed_request_insert
+    - manager_approval_evidence
+    - separate_approved_shift_mutation_proof
