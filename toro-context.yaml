@@ -1,25 +1,27 @@
 product:
   id: toro-brain
-  name: TORO Brain
+  name: TORO
+  visible_brand: TORO
   category: AI Portfolio and Business Operating Brain
   context_version: "2026.09.23-agent-skill-v1"
   status: internal_proof
   external_business_onboarding: blocked
-  visible_brand: TORO Brain
-  legacy_operating_alias: TORO OS
+  legacy_operating_aliases:
+    - TORO Brain
+    - TORO OS
 
 north_star: "Deep inside. Simple outside."
 
 general_plan_governance:
-  owner: TORO Brain
+  owner: TORO
   portfolio_root_project_key: toro_os_portfolio_master
   operating_layer_project_key: toro_executive_control
   legacy_key_meanings:
-    toro_os_portfolio_master: TORO Brain portfolio root
-    toro_executive_control: TORO Brain operating/execution module; TORO OS is a technical legacy alias only
+    toro_os_portfolio_master: TORO portfolio root
+    toro_executive_control: TORO operating/execution module; TORO OS is a technical legacy alias only
     business_truth_bible: Dreamcatcher Data & Integrations module; not the global Bible
   canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
-  canonical_name: TORO Brain General Plan
+  canonical_name: TORO General Plan
   aliases:
     - Plan General
     - plan general
@@ -62,7 +64,7 @@ interfaces:
   eventual_primary:
     - whatsapp
     - toro_portal
-  rule: "Interfaces expose TORO Brain; they do not own shadow truth."
+  rule: "Interfaces expose TORO; they do not own shadow truth."
 
 scope_graph:
   model: relationship_graph
@@ -299,7 +301,7 @@ agent_skill_system:
 
 product_rules:
   one_master_brain: true
-  master_brain_name: TORO Brain
+  master_brain_name: TORO
   toro_os_is_execution_layer: false
   toro_os_is_technical_legacy_alias_only: true
   user_complexity_should_decrease_as_capability_grows: true
@@ -384,8 +386,8 @@ user_vault:
   memory_promotion: "observed -> candidate -> confirmed_or_verified -> durable -> superseded_or_expired_or_deleted"
 
 brand:
-  canonical_name: TORO Brain
-  visible_brand: TORO Brain
+  canonical_name: TORO
+  visible_brand: TORO
   identity: blue_bull_brain_chip
   metaphor:
     bull: business_or_living_organization
@@ -395,11 +397,11 @@ brand:
   generic_replacement_bull_allowed: false
   bullfighting_or_violent_imagery_allowed: false
   current_master_logo:
-    library_path: /TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png
+    library_path: /TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png
     dimensions: 1536x1536
     sha256: 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98
   current_master_isotype:
-    library_path: /TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png
+    library_path: /TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png
     dimensions: 1536x1536
     sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
   legacy_source_artwork:
@@ -407,7 +409,7 @@ brand:
     asset: public/assets/toro-azul-logo.jpg
     registry_entry: BRAND-005
     status: historical_source_reference
-  brand_manifest: /TORO Brain/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
+  brand_manifest: /TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
   palette_approximation_from_current_master:
     deep_navy: "#020C1E"
     midnight: "#010511"
@@ -1174,7 +1176,7 @@ agent_lifecycle_supervision:
   display_name: TORO Agent Steward
   display_name_es: TORO Supervisor de Agentes
   parent_subsystem: TORO Agents
-  master_brain: TORO Brain
+  master_brain: TORO
   general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   specification: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   existing_work_item: https://github.com/Dramcatcherst/Toro-OS/issues/30
