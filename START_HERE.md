@@ -1,15 +1,15 @@
-# START HERE — TORO Brain
+# START HERE — TORO
 
 **Status:** CURRENT product orientation  
 **Date:** 2026-09-22  
-**Master product / visible brand:** TORO Brain
+**Master product / visible brand:** TORO
 **Legacy technical alias:** TORO OS
 
 ## Read this first
 
-TORO Brain is not a dashboard, chatbot, hotel app, or collection of agents.
+TORO is not a dashboard, chatbot, hotel app, or collection of agents.
 
-TORO Brain is the continuously improving **master intelligence and orchestration layer** for people, businesses and portfolios. Its operating/execution capabilities live inside the same TORO Brain product; `TORO OS` remains only as a technical legacy alias where renaming old keys or components could break compatibility. Dreamcatcher Hotel is the first real proving ground.
+TORO is the continuously improving **master intelligence and orchestration layer** for people, businesses and portfolios. Its operating/execution capabilities live inside the same TORO product; `TORO OS` remains only as a technical legacy alias where renaming old keys or components could break compatibility. Dreamcatcher Hotel is the first real proving ground.
 
 The product is built **inside-out**:
 
@@ -26,7 +26,7 @@ The product is built **inside-out**:
 
 ## Current scope
 
-- Prove TORO Brain deeply inside Dreamcatcher through its governed operating/execution capabilities.
+- Prove TORO deeply inside Dreamcatcher through its governed operating/execution capabilities.
 - Remove fragmented or contradictory sources of truth.
 - Strengthen the internal engine, connector fabric, agent orchestration, governance, evidence and learning loops.
 - Keep WhatsApp and Portal work as late-stage product surfaces and validation tools, not as architectural foundations.
@@ -51,7 +51,7 @@ Dreamcatcher remains the reference implementation and test environment until the
 8. The current execution plan relevant to the task
 9. Domain-specific technical contracts and tests
 
-Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO Brain constitution.
+Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO constitution.
 
 ## Canonical authority model
 
@@ -77,8 +77,8 @@ No tool becomes authoritative merely because TORO can connect to it.
 
 ## Product hierarchy
 
-- **TORO Brain:** master intelligence, memory, governance and orchestration.
-- **TORO Brain operating/execution layer:** workflows, tasks, approvals, automations and actions for a business/workspace.
+- **TORO:** master intelligence, memory, governance and orchestration.
+- **TORO operating/execution layer:** workflows, tasks, approvals, automations and actions for a business/workspace.
 - **TORO subsystems:** internal capabilities such as TORO People, TORO Comms and TORO Tools.
 - **OpenClaw/WeSpeak/WhatsApp/Portal:** runtimes or surfaces, never competing brains.
 
@@ -86,18 +86,18 @@ A principal may govern multiple organizations, businesses, projects and client/a
 
 ## Brand rule
 
-The only visible product/brand is **TORO Brain**.
+The only visible product/brand is **TORO**.
 
-The business is represented by the **blue bull**; TORO Brain is represented by the fused **brain + microchip/circuit** intelligence at its center. The two are one metaphor: biological intelligence + AI/computation coordinating a much larger living system.
+The business is represented by the **blue bull**; TORO is represented by the fused **brain + microchip/circuit** intelligence at its center. The two are one metaphor: biological intelligence + AI/computation coordinating a much larger living system.
 
 Current masters:
-- Full logo: `/TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
+- Full logo: `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
   - 1536×1536
   - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- Isotype: `/TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+- Isotype: `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
   - 1536×1536
   - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
-- Brand manifest: `/TORO Brain/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md`
+- Brand manifest: `/TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md`
 
 Legacy source artwork remains historical provenance only:
 - `Dramcatcherst/toro-os-v88-new/public/assets/toro-azul-logo.jpg`
