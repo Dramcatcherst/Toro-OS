@@ -158,3 +158,18 @@ No filing, domain purchase bundle or high-investment public launch should be jus
 ## 12. Dreamcatcher boundary
 
 Dreamcatcher is the first proving ground. Its hotel branding must not replace TORO product identity in universal product surfaces.
+
+
+## 13. Cross-product Design DNA
+
+The canonical cross-product visual and interaction contract is:
+`docs/product/TORO_DESIGN_DNA.md`.
+
+It defines the three presentation modes:
+- TORO Core
+- TORO Work
+- TORO Embedded
+
+These are modes of one TORO brand, not separate identities.
+
+Dreamcatcher remains a tenant brand with its own guest/public visual system. TORO components may power Dreamcatcher surfaces without replacing Dreamcatcher identity.
