@@ -104,6 +104,8 @@ canonical_product_specs:
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
   openclaw_runtime_audit: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
+  whatsapp_openclaw_same_brain: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
+  whatsapp_openclaw_execution_plan: docs/superpowers/plans/2026-09-23-toro-whatsapp-openclaw-same-brain.md
   subsystem_registry: docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md
   subsystem_alignment_audit: docs/product/TORO_SUBSYSTEM_ALIGNMENT_AUDIT_2026-09-22.md
   identity_user_vault: docs/product/TORO_IDENTITY_USER_VAULT_V1.md
