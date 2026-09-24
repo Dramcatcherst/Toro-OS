@@ -1311,3 +1311,31 @@ schedule_change_prepare_only:
     - one_governed_request_insert
     - manager_approval_evidence
     - separate_approved_shift_mutation_proof
+
+
+guest_service_recovery_prepare_only:
+  updated_on: "2026-09-24"
+  product_proof_workflow: 8
+  owners:
+    - TERE
+    - RICO
+    - TORO Comms
+  state: PREPARED_PREPARE_ONLY
+  code: src/features/guest/service-recovery.ts
+  tests: src/features/guest/service-recovery.test.ts
+  evidence: docs/evidence/TORO_GUEST_SERVICE_RECOVERY_PREPARE_2026-09-24.md
+  reuses:
+    - guest.issue_handoff
+    - POST /api/brain/internal-work
+    - operations.tasks
+  external_send_enabled: false
+  internal_write_executed_by_adapter: false
+  evidence_required_before_completion: true
+  duplicate_shadow_tasks_forbidden: true
+  real_guest_for_plumbing_proof: forbidden
+  next_gate:
+    - isolated_authorized_guest_event
+    - canonical_internal_work_write
+    - replay_idempotency_proof
+    - operational_evidence_and_closure
+    - authorized_guest_followup
