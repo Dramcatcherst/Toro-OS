@@ -1242,3 +1242,23 @@ agent_lifecycle_supervision:
     - TORO Systems
     - authorized_human_authority
   runtime_state_and_production_effects_this_registration: none
+
+
+daily_progress_report_2026_09_24:
+  report: docs/evidence/TORO_DAILY_PROGRESS_REPORT_2026-09-24.md
+  cutoff_local: "2026-09-24 10:48 America/Costa_Rica"
+  calendar_day_merged_commits_at_cutoff: 4
+  active_sprint_2026_09_23_to_2026_09_24_merged_prs: 95
+  product_proof:
+    running: 3
+    prepared_blocked: 6
+    structural: 3
+    verified: 0
+    measured: 0
+    reusable: 0
+  biggest_next_value:
+    - kross_authorized_live_read_first_governed_run
+    - maintenance_real_field_closure
+    - tere_v5_post_config_runtime_evidence
+    - owner_executive_brief_measured_use
+  rule: repo_activity_is_not_business_outcome
