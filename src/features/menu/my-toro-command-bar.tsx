@@ -224,8 +224,8 @@ export function MyToroCommandBar({
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <a
                 href={safeAlternative.href}
-                target="_blank"
-                rel="noreferrer"
+                target={safeAlternative.external ? "_blank" : undefined}
+                rel={safeAlternative.external ? "noreferrer" : undefined}
                 className="inline-flex items-center gap-2 self-start rounded-full border border-amber-200/25 bg-amber-200/10 px-3 py-2 text-xs font-semibold text-amber-50 hover:border-amber-200/45"
               >
                 {safeAlternative.label} <ArrowRight className="h-3.5 w-3.5" />

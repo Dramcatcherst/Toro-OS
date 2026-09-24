@@ -280,6 +280,32 @@ First real transport acceptance sequence:
 
 No separate reservation schema, mirror or ingestion universe should be created for a specific Kross transport.
 
+## Internal dry-run executor
+
+`src/features/kross/dry-run-executor.ts` is the prepared server-only execution seam for the same sequence. It is intentionally limited to an injected in-memory store and does not expose an endpoint, call Supabase, use credentials or call Kross/PMS.
+
+The dry-run contract proves:
+
+- official-shape payload -> configured field map -> existing adapter -> existing normalizer;
+- scoped identity upsert on `org_id + property_id + external_reservation_id`;
+- replay of the same `sourceReference + sourceHash` is a no-op;
+- a new source hash updates the same identity rather than creating a second mirror row;
+- cancellation is preserved as an explicit status and never represented as deletion;
+- missing external identity is rejected before mirror creation;
+- every result records `mode=dry_run`, `readOnly=true` and `pmsWriteCount=0`.
+
+Dry-run evidence does not count as a real Kross `import_run`, does not enter `current_reservations_safe`, and cannot set `source_is_live=true`. A future real executor must be separately authorized and satisfy this runbook's provider, billing, RLS, rollback and no-PMS-write gates.
+
+## Existing Website VNext adapter — reuse boundary
+
+The separate `Dramcatcherst/dreamcatcher-website-vnext` repository already contains the prepared normalized Kross availability adapter (`docs/KROSS_READ_ADAPTER.md`, `src/lib/kross/client.ts`). Its contract is disabled/preview-only and is not duplicated in TORO.
+
+The production status probe was rechecked on **2026-09-23**:
+
+`GET https://dreamcatcherhotel.com/api/booking/status` -> HTTP 200, `{"status":"ok","publicHandoff":"available","availabilityRead":"unavailable"}`.
+
+This confirms public handoff availability only; it does not prove live availability, a Kross transport, or a source-authority upgrade. TORO must reuse the Website VNext adapter when its own documented read gates activate.
+
 
 ## Transport intake gate — 2026-09-23
 
