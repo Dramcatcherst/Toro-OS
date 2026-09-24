@@ -490,7 +490,15 @@ Active hierarchy:
     - Dreamcatcher · Finanzas y Control
     - Construcción / DIEX · Desarrollo y cierre documental
   - Propiedades, Construcción y Corporativo
-    - Cabuya · Compra, pagos y regularización
+    - Portafolio Patrimonial y Corporativo · canon único de inmuebles, sociedades, derechos, obligaciones y evidencia
+    - Cabuya / Mal País · Pomas y Poemas · compra, pagos, pozo, segregaciones y regularización
+    - Casa Toro / Casa Santiago · Pomas y Poemas · inmueble separado, obra, pozo y cierre documental
+    - Blue Dreams / Arroyo Negro · Santa Teresa Blue Dreams · propiedad/sociedad separadas
+    - Vista Alegre / Callaha · propiedad, crédito, rentas y servicios separados
+    - Rancho Estrellas Azules · entidad + propiedades físicas por consolidar
+    - Sociedades y representación · RTBF, personerías y participaciones fechadas
+    - Referencias/derechos · Lote Santiago histórico, Ikiru, Surfing El Peñón
+    - Data room y valoración · evidencia por inmueble; no duplicar originales Dropbox
 
 Current audit:
 - 11 active projects;
