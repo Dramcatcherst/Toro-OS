@@ -118,6 +118,14 @@ These require:
 ### Builder / Codex
 WhatsApp must not expose raw host shell or unrestricted Codex execution.
 
+Prefer OpenClaw's **native capabilities** over custom transport reimplementation:
+- keep the primary owner/team WhatsApp conversation routed to TORO, not permanently replaced by Codex;
+- use native Codex conversation controls only for an explicit temporary "work directly with Codex" mode;
+- use OpenClaw background task / harness execution for delegated Builder work when TORO says "dale esto a Codex";
+- preserve the canonical TORO task/project as the business record even when OpenClaw owns runtime/session/task delivery;
+- use OpenClaw requester-scoped tool policy and DM isolation as defense in depth, never as a replacement for TORO identity/role authorization;
+- use configured persistent ACP bindings only for deliberately dedicated coding conversations/groups, not as the default owner TORO DM.
+
 Flow:
 
 ```
@@ -164,7 +172,15 @@ State should preserve:
 
 ## 9. Initial controlled-write slice
 
-Implemented in branch `toro-whatsapp-same-brain-intake-20260923`:
+**Merged to `main` and deployed to the canonical Vercel target on 2026-09-23.**
+- PR: #142
+- merge commit: `fb222134d9746e33b28e5160a88c583d7f81f4c8`
+- TORO Brain CI: PASS
+- Workstation Health: PASS
+- Vercel production-target deployment: READY
+- live OpenClaw consumption: **UNVERIFIED**
+
+Implemented through:
 
 `POST /api/brain/internal-work`
 
@@ -195,9 +211,11 @@ This slice is a shared execution primitive. It is **not yet proof that the live 
 4. Make OpenClaw call the same action/intake contract.
 5. Persist bounded cross-restart conversation state in TORO.
 6. Add action receipts and outbound completion notifications.
-7. Connect Builder queue to a trusted Codex worker with approval and verification gates.
-8. Run OpenClaw runtime/security/replay QA.
-9. Promote capabilities only after real end-to-end evidence.
+7. Reuse OpenClaw native Codex/ACP/background-task machinery for execution and completion delivery instead of inventing a second job runner.
+8. Keep the primary WhatsApp route on TORO; make Codex a delegated worker or explicit temporary bound mode.
+9. Configure sender-scoped OpenClaw tool restrictions and secure DM isolation as defense in depth.
+10. Run OpenClaw runtime/security/replay QA.
+11. Promote capabilities only after real end-to-end evidence.
 
 ## 11. Definition of done
 
