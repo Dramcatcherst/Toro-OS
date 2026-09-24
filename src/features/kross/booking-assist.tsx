@@ -3,17 +3,14 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ArrowLeft, ArrowUpRight, CalendarDays, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-
-import { parseBookingAssistPrefill } from "./booking-assist-prefill";
+import type { BookingAssistPrefill } from "./booking-assist-prefill";
 import { buildOfficialKrossSearchUrl } from "./public-search-link";
 
-export function KrossBookingAssist() {
-  const searchParams = useSearchParams();
-  const initial = useMemo(
-    () => parseBookingAssistPrefill(searchParams),
-    [searchParams],
-  );
+export function KrossBookingAssist({
+  initial,
+}: {
+  initial: BookingAssistPrefill;
+}) {
   const [from, setFrom] = useState(initial.from);
   const [to, setTo] = useState(initial.to);
   const [adults, setAdults] = useState(initial.adults);
