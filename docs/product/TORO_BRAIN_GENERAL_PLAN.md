@@ -218,6 +218,11 @@ Primary surfaces:
 - TORO Portal
 - email / future channels
 
+Canonical contracts:
+- `docs/product/TORO_COMMS_V1.md`
+- `docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md`
+- `docs/superpowers/plans/2026-09-23-toro-whatsapp-openclaw-same-brain.md`
+
 Rule:
 A conversation is not the work.
 
@@ -324,6 +329,15 @@ Canonical registry:
 - state = `needs_audit / configured_unverified`;
 - direct live config/session/log/health access unavailable;
 - WeSpeak remains separately confirmed active.
+
+Same-Brain execution delta — 2026-09-23:
+- PR #142 merged to `main` as `fb222134d9746e33b28e5160a88c583d7f81f4c8`;
+- TORO Brain CI and Workstation Health passed;
+- exact merge commit is READY on the canonical Vercel production target;
+- shared authenticated `POST /api/brain/internal-work` foundation now supports `task.create`, `maintenance.task`, `builder.task`, and `project.followup`;
+- `message_to_task` is now IMPLEMENTED_FOUNDATION, not operational WhatsApp proof;
+- primary WhatsApp route remains TORO; Codex is a delegated worker or explicit temporary bound mode, never another master assistant;
+- live OpenClaw consumption remains UNVERIFIED until the exact local `toro-openclaw-integration` runtime is recovered/audited and channel identity is securely bound.
 
 Public baseline reviewed:
 - latest published release as of 2026-09-22: 2026.9.5;
@@ -856,9 +870,10 @@ Role menus must route to generic TORO capability keys rather than vendor-specifi
 1. Complete hosted synthetic Identity/Context QA through an approved protected access path; do not weaken Vercel Deployment Protection.
 2. Review the validated `identity.organization_memberships` draft for an explicit production-DDL decision; do not apply automatically.
 3. Continue read-only identity reconciliation for the 8 active unlinked employees and the single non-employee membership candidate; no name-based linking, invites or employee contact.
-4. Connect authorized host access for the OpenClaw live audit.
-5. Run the OpenClaw audit read-only before any configuration change.
-6. Prove one real Dreamcatcher Cognitive Proof outcome from the existing maintenance field packet; do not generate substitute paperwork.
+4. Recover authorized access to the exact existing `toro-openclaw-integration` worktree/Gateway host; do not recreate it in another project.
+5. Run the OpenClaw audit read-only, verify WhatsApp session isolation + native Codex/ACP/background-task readiness, then implement secure TORO channel identity binding before enabling machine writes.
+6. Prove the Same-Brain end-to-end path from one authorized WhatsApp message -> one canonical task -> one observable result/reply with replay protection; then expand to maintenance/project/Builder scenarios.
+7. Prove one real Dreamcatcher Cognitive Proof outcome from the existing maintenance field packet; do not generate substitute paperwork.
 
 ## P1
 7. After live Kross authority exists, prove one service date end-to-end for Breakfast/F&B before expanding to a week.
