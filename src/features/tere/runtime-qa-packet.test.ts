@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import packet from "../../../data/tere_v4_runtime_qa_cases_v1.json";
+import packet from "../../../data/tere_v5_runtime_qa_cases_v1.json";
 
-describe("TERE V4 runtime QA packet", () => {
+describe("TERE V5 runtime QA packet", () => {
   it("keeps the canonical five scenario keys", () => {
     expect(packet.cases.map((item) => item.key)).toEqual([
       "first_contact",
@@ -29,9 +29,9 @@ describe("TERE V4 runtime QA packet", () => {
     expect(packet.rules.synthetic_identity_required).toBe(true);
   });
 
-  it("binds the packet to the canonical V4 hash", () => {
+  it("binds the packet to the canonical V5 hash", () => {
     expect(packet.target_config.expected_hash).toBe(
-      "4df90ab2ae494826f5850bb413c28f6d",
+      "0cab1a8be477f9bc6f25ceaeb5df56c7",
     );
   });
 });
