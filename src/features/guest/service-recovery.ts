@@ -44,7 +44,7 @@ export type GuestServiceRecoveryPrepareResult =
   | { ok: true; value: PreparedGuestServiceRecovery }
   | { ok: false; errors: string[] };
 
-const SOURCE_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9:_-]{7,127}$/;
+const SOURCE_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9:_-]{7,121}$/;
 
 function clean(value: string | null | undefined) {
   return typeof value === "string" ? value.trim() : "";
@@ -101,7 +101,7 @@ export function prepareGuestServiceRecovery(
 
   if (!SOURCE_KEY_RE.test(sourceEventKey)) {
     errors.push(
-      "sourceEventKey must be 8-128 characters using letters, numbers, :, _ or -.",
+      "sourceEventKey must be 8-122 characters using letters, numbers, :, _ or -.",
     );
   }
   if (summary.length < 3 || summary.length > 180) {
