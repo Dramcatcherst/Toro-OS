@@ -67,3 +67,26 @@ Current state remains:
 - WeSpeak runtime active: VERIFIED;
 - post-V4 activity/hash: UNVERIFIED;
 - V4 consumption: UNVERIFIED.
+
+
+## V5 rebaseline recheck — 2026-09-24 10:48 Costa Rica
+
+The canonical target is now **TERE-OPERATING-VOICE-v5** with hash:
+- `0cab1a8be477f9bc6f25ceaeb5df56c7`.
+
+Connected Gmail was rechecked after the V5 rebaseline.
+
+Observed:
+- no Gmail message matching WeSpeak was found after 2026-09-24 at the time of this recheck;
+- no post-V5 mailbox evidence was found that proves current TERE V5 runtime consumption;
+- historical WeSpeak activity remains valid evidence that the runtime has been active;
+- historical/pre-V5 activity is not accepted as V5 configuration-consumption proof.
+
+Current conclusion:
+- WeSpeak runtime active: **VERIFIED historically**
+- TERE V5 config applied: **VERIFIED in canonical config**
+- post-V5 runtime activity: **NOT OBSERVED**
+- V5 version/hash consumption by runtime: **UNVERIFIED**
+- cross-channel continuity: **UNVERIFIED**
+
+No real guest was contacted and no message was sent to produce this recheck.
