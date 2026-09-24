@@ -1,13 +1,13 @@
-# TORO Brain — Brand Identity Contract
+# TORO — Brand Identity Contract
 
 **Status:** CURRENT  
 **Date:** 2026-09-23  
-**Owner:** TORO Brain / Mauricio  
+**Owner:** TORO / Mauricio  
 **Scope:** Official product identity, source-of-truth rules, logo masters, derivatives and production gates
 
 ## 1. Canonical brand
 
-The only visible product/brand is **TORO Brain**.
+The only visible product/brand is **TORO**. `TORO Brain` and `TORO OS` are deprecated visible names retained only for historical/technical compatibility.
 
 `TORO OS` is a technical legacy alias only where older keys, repository names or integrations still require it. It must not be presented as a second product, brand, brain or master plan.
 
@@ -21,24 +21,24 @@ The brain and microchip are not separate product identities.
 
 ## 3. Current official masters
 
-### Full logo
+### Legacy wordmark (do not use on new public surfaces)
 - Asset key: `toro_brain_logo_master_v1`
-- Canonical library path: `/TORO Brain/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
+- Canonical library path: `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
 - Dimensions: 1536×1536
 - SHA-256: `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- Status: **CURRENT MASTER**
+- Status: **LEGACY — contains deprecated TORO BRAIN wordmark**
 
-### Isotype
-- Asset key: `toro_brain_isotype_v1`
-- Canonical library path: `/TORO Brain/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+### Current official master
+- Asset key: `toro_logo_master_v1`
+- Canonical library path: `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
 - Dimensions: 1536×1536
 - SHA-256: `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
 - Status: **CURRENT MASTER**
 
 ### Brand documents
-- `/TORO Brain/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md`
-- `/TORO Brain/Brand/TORO_BRAIN_BRAND_SYSTEM_v1.md`
-- `/TORO Brain/Brand/TORO_BRAIN_CLEARANCE_BRIEF_v1.md`
+- `/TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md`
+- `/TORO/Brand/TORO_BRAIN_BRAND_SYSTEM_v1.md`
+- `/TORO/Brand/TORO_BRAIN_CLEARANCE_BRIEF_v1.md`
 
 ## 4. Legacy provenance
 
@@ -158,4 +158,4 @@ No filing, domain purchase bundle or high-investment public launch should be jus
 
 ## 12. Dreamcatcher boundary
 
-Dreamcatcher is the first proving ground. Its hotel branding must not replace TORO Brain product identity in universal product surfaces.
+Dreamcatcher is the first proving ground. Its hotel branding must not replace TORO product identity in universal product surfaces.
