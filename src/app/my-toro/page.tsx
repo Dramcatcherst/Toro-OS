@@ -229,17 +229,17 @@ export default async function MyToroPage({
                               ? "Toca para consultar"
                               : "Todavía no disponible")}
                         </div>
-                        {view.safeAlternatives[item.capability] ? (
+                        {view.capabilityAlternatives[item.capability] ? (
                           <div className="mt-3">
                             <Link
-                              href={view.safeAlternatives[item.capability].href}
+                              href={view.capabilityAlternatives[item.capability].href}
                               className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-1.5 text-xs font-semibold text-cyan-100 hover:border-cyan-300/40 hover:text-white"
                             >
-                              {view.safeAlternatives[item.capability].label}
+                              {view.capabilityAlternatives[item.capability].label}
                               <ArrowRight className="h-3.5 w-3.5" />
                             </Link>
                             <div className="mt-1.5 text-[11px] leading-4 text-slate-600">
-                              {view.safeAlternatives[item.capability].note}
+                              {view.capabilityAlternatives[item.capability].note}
                             </div>
                           </div>
                         ) : null}
