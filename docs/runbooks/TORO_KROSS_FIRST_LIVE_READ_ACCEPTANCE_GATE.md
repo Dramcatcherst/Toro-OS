@@ -397,3 +397,34 @@ The next external action is still:
 5. one governed read runs through the existing adapter/normalizer/acceptance path.
 
 Do not treat the public booking handoff as satisfying this gate.
+
+
+## Provider evidence packet — 2026-09-24
+
+Canonical evidence adapter:
+- `src/features/kross/provider-evidence.ts`;
+- template: `data/kross_provider_evidence_template_v1.json`.
+
+Purpose:
+- convert written Kross/provider evidence into the existing `KrossTransportIntake`;
+- preserve an evidence reference for every sensitive positive or known claim;
+- fail closed when evidence is absent;
+- keep unknown billing as unknown;
+- keep live rate/availability support false unless explicitly evidenced;
+- keep provider authorization and read-only status false unless explicitly evidenced.
+
+Expected path:
+
+`provider response/document -> explicit claims + evidence references -> provider evidence packet -> evidence guard -> KrossTransportIntake -> existing intake evaluator -> explicit human approval -> first-read gate`
+
+Rules:
+- this adapter does not treat free-form email as truth automatically;
+- every positive claim that could unlock a capability requires `evidenceReference`;
+- populated documentation, scope and fee values require `evidenceReference`;
+- unknown billing may never be converted silently to free/no-cost;
+- `approvedForFirstRead=true` remains a separate explicit human authorization;
+- the template itself is not provider evidence;
+- the packet cannot set `source_is_live=true`;
+- no API key, token, secret or raw credential belongs in GitHub.
+
+This closes the translation gap after a provider response without weakening the existing acceptance gate.
