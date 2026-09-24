@@ -1,9 +1,9 @@
 # TORO Visual Brain Architecture v1
 
-**Status:** TARGET ARCHITECTURE — subordinate to the TORO Brain General Plan  
+**Status:** TARGET ARCHITECTURE — subordinate to the TORO General Plan  
 **Date:** 2026-09-22  
-**Master product:** TORO Brain  
-**Visible product:** TORO Brain  
+**Master product:** TORO  
+**Visible product:** TORO  
 **Legacy technical alias:** TORO OS  
 **Canonical repository:** `Dramcatcherst/Toro-OS`  
 **Reference implementation:** Dreamcatcher Hotel  
@@ -13,7 +13,7 @@
 
 ## 1. Purpose
 
-TORO Brain must not become a conventional dashboard with AI attached.
+TORO must not become a conventional dashboard with AI attached.
 
 The product experience should make a governed business model understandable at a glance and make real activity visible without exposing hidden model reasoning.
 
@@ -25,11 +25,11 @@ The visual system must answer five questions:
 4. What needs attention or approval?
 5. What changed because TORO acted?
 
-The experience is a representation of the canonical TORO Brain state. It is not a second source of truth.
+The experience is a representation of the canonical TORO state. It is not a second source of truth.
 
 Core principle:
 
-> **TORO Brain is visual by architecture, not by decoration.**
+> **TORO is visual by architecture, not by decoration.**
 
 Every visual state must be backed by a canonical entity, relationship, event, workflow, metric, approval, evidence item or health state.
 
@@ -77,7 +77,7 @@ No new `TORO Visual` subsystem is required unless future evidence shows these ow
 
 ## 3. Product surfaces
 
-TORO Brain should present one coherent product through several surfaces.
+TORO should present one coherent product through several surfaces.
 
 ### 3.1 TORO Public
 
@@ -474,7 +474,7 @@ Framework versions remain implementation details and must continue to follow sec
 
 ## 10. Repository architecture
 
-Do not create a second TORO Brain repository merely for the visual product.
+Do not create a second TORO repository merely for the visual product.
 
 Target inside the canonical estate:
 
@@ -785,7 +785,7 @@ Public marketing changes may move faster than high-risk operational execution, b
 ### GitHub
 
 Verified:
-- `Dramcatcherst/Toro-OS` declares itself the current canonical TORO Brain/TORO OS product repository.
+- `Dramcatcherst/Toro-OS` declares itself the current canonical TORO/TORO OS product repository.
 - `Dramcatcherst/toro-os-v88-new` is legacy/reference.
 - `Dramcatcherst/Toro-OS---Dreamcatcher-Hotel` is legacy hotel-specific reference.
 - `Dramcatcherst/dream-team` is a standalone legacy implementation whose destination is TORO People.
