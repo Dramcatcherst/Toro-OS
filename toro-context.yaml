@@ -1264,12 +1264,13 @@ agent_lifecycle_supervision:
 daily_progress_report_2026_09_24:
   report: docs/evidence/TORO_DAILY_PROGRESS_REPORT_2026-09-24.md
   cutoff_local: "2026-09-24 10:48 America/Costa_Rica"
-  calendar_day_merged_commits_at_cutoff: 4
-  active_sprint_2026_09_23_to_2026_09_24_merged_prs: 95
+  calendar_day_merged_commits_at_initial_cutoff: 4
+  calendar_day_merged_commits_latest_observed: 8
+  active_sprint_2026_09_23_to_2026_09_24_merged_prs: 99
   product_proof:
     running: 3
-    prepared_blocked: 6
-    structural: 3
+    prepared_blocked: 7
+    structural: 2
     verified: 0
     measured: 0
     reusable: 0

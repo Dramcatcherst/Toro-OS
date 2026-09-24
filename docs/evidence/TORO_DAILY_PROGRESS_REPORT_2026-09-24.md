@@ -2,7 +2,8 @@
 
 **Status:** CURRENT DAILY EXECUTIVE REPORT  
 **Local timezone:** America/Costa_Rica  
-**Cutoff:** 2026-09-24 10:48  
+**Initial cutoff:** 2026-09-24 10:48  
+**Post-cutoff update:** after PR #155 merge  
 **Scope:** canonical repository `Dramcatcherst/Toro-OS` + current Product Proof state  
 **Rule:** distinguish calendar-day progress from the broader 2026-09-23..2026-09-24 sprint.
 
@@ -28,12 +29,16 @@ However, TORO is still **INTERNAL PROOF**. No external-business readiness stage 
 
 ## 2. Calendar-day progress — 2026-09-24
 
-Strictly since midnight Costa Rica, the canonical repo shows **4 merged commits** at this cutoff:
+Strictly since midnight Costa Rica, the canonical repo showed **4 merged commits** at the initial cutoff. After the continued work in this session, the latest observed strict calendar-day count is **8 merged commits**:
 
 1. `a27b8596` — UX: show official Kross fallback on blocked quote card.
 2. `50d87245` — Kross: rebaseline provider gate on 2026-09-24.
 3. `d6105766` — Kross: add evidence-backed provider response intake.
 4. `28d81332` — TERE: rebaseline WeSpeak runtime acceptance to V5.
+5. `2cc33216` — Evidence: add 2026-09-24 TORO progress report.
+6. `9ddd22f6` — UX: allow safe prefilled Kross booking handoff.
+7. `21de55da` — Evidence: recheck Kross and TERE V5 runtime gates.
+8. `d5a030e7` — People: prepare schedule change workflow without writes.
 
 These four changes materially improve the commercial guest/reception path without falsely promoting live PMS authority.
 
@@ -48,7 +53,7 @@ These four changes materially improve the commercial guest/reception path withou
 
 ## 3. Active sprint progress — 2026-09-23..2026-09-24
 
-Repo-wide activity for the two-day sprint: **95 merged PRs**.
+Repo-wide activity for the two-day sprint at the latest observed update: **99 merged PRs**.
 
 High-level distribution:
 - UX / identity / menus: 20
@@ -179,15 +184,15 @@ Still NOT achieved:
   - Executive Brief
   - Maintenance issue -> proof
   - Room/area readiness
-- **PREPARED / BLOCKED:** 6 / 12
+- **PREPARED / BLOCKED:** 7 / 12
   - Employee self-service / identity
+  - Shift / schedule request or change — now PREPARED / PREPARE-ONLY
   - Omnichannel guest inquiry
   - Quote -> follow-up -> reservation
   - Payment / collection communication
   - Finance reconciliation
   - Systems incident / recovery
-- **STRUCTURAL:** 3 / 12
-  - Shift / schedule
+- **STRUCTURAL:** 2 / 12
   - In-stay request / service recovery
   - Review / retention / revenue opportunity
 - **VERIFIED end-to-end:** 0 / 12
@@ -289,3 +294,40 @@ Those four proofs would change commercial readiness more than another 30 interfa
 - booking-engine handoff != TORO live quote;
 - historical WeSpeak activity != V5 verified behavior;
 - 95 merged PRs != 95 completed business outcomes.
+
+
+---
+
+## 10. Post-cutoff workflow advancement
+
+After the initial report cutoff, Product Proof workflow #3 advanced:
+
+### Shift / schedule request or change
+- previous state: **STRUCTURAL**;
+- current state: **PREPARED / PREPARE-ONLY**;
+- existing tables reused: `shift_assignments`, `schedule_change_requests`, `shift_swap_requests`, `employee_availability`, `approval_requests`;
+- current shift assignments: 271;
+- schedule change requests: 0;
+- shift swap requests: 0;
+- prepare-only contract implemented and CI-tested;
+- no database write;
+- no shift mutation;
+- no employee rollout;
+- approval remains mandatory before any future mutation.
+
+Evidence:
+- `docs/evidence/TORO_PEOPLE_SCHEDULE_CHANGE_PREPARE_2026-09-24.md`.
+
+Also observed after the initial cutoff:
+- Kross official booking handoff gained safe prefill support;
+- Kross/TERE mailbox evidence was rechecked;
+- no newer Kross/provider response was observed;
+- no post-V5 WeSpeak mailbox evidence was observed.
+
+Updated Product Proof distribution:
+- RUNNING: 3 / 12
+- PREPARED / BLOCKED: 7 / 12
+- STRUCTURAL: 2 / 12
+- VERIFIED: 0 / 12
+- MEASURED: 0 / 12
+- REUSABLE: 0 / 12
