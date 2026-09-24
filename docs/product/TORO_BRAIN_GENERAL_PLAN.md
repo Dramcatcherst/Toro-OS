@@ -94,6 +94,41 @@ Internal routing, not separate systems:
 
 ## Brand identity canon — owner updated 2026-09-23
 
+### Cross-project visual artifact rule — effective 2026-09-24
+
+Canonical contract:
+- `docs/product/TORO_DESIGN_DNA.md`
+- Supabase `operations.knowledge_items/toro_visual_artifact_standard_v1`
+- Airtable governance rule `Visual artifacts must resolve the official business brand first`
+
+Every infographic, report, dashboard, PDF, deck, flyer, social graphic, portal screen and other designed artifact must first resolve the active business/project brand.
+
+The resolved visual context includes:
+- visible brand/name;
+- official current logo/master asset;
+- palette/tokens;
+- TORO Core / Work / Embedded mode when applicable;
+- tenant/business visual skin;
+- typography status;
+- imagery language;
+- status semantics;
+- audience/privacy;
+- co-branding rule.
+
+Business-specific rule:
+- TORO-owned artifacts use the current TORO identity and official bull master;
+- Dreamcatcher-owned guest/public artifacts use Dreamcatcher Sunset Jungle Boutique and Dreamcatcher logo identity;
+- other businesses/projects must use their governed brand profile when one exists;
+- missing/unresolved brand context makes the output DRAFT rather than silently falling back to generic TORO styling.
+
+Executive infographics additionally separate:
+`ownership/right -> physical/operational facts -> debt/financing -> insurance -> obligations -> next action`.
+
+Legal identifiers may be included in internal quick-reference artifacts when useful. Financial snapshots must carry their date and verification state; historical/reconstructed values must never be presented as current.
+
+After material review, visual defects and approved improvements feed a governed learning loop so subsequent artifacts improve without creating new unauthorized brand rules.
+
+
 - **Only visible brand/product:** TORO.
 - **Bull metaphor:** the bull represents the business as a large, powerful living organization.
 - **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
