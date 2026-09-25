@@ -17,6 +17,7 @@ export type ToroDashboardSection = {
   description: string;
   href: string;
   profiles: string[];
+  implemented: boolean;
 };
 
 const allProfiles = [
@@ -48,6 +49,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "PayFlow, caja, conciliación, impuestos y ahorro.",
     href: "/dashboard#money",
     profiles: ["owner_executive", "manager", "finance", "auditor"],
+    implemented: true,
   },
   {
     key: "studio",
@@ -55,6 +57,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Campañas, assets, drafts, approvals y performance.",
     href: "/dashboard#studio",
     profiles: ["owner_executive", "manager", "growth", "systems"],
+    implemented: true,
   },
   {
     key: "customers",
@@ -62,6 +65,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "TERE, leads, reservas, grupos y guest journey.",
     href: "/dashboard#customers",
     profiles: ["owner_executive", "manager", "reception", "growth"],
+    implemented: false,
   },
   {
     key: "operations",
@@ -69,6 +73,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Mantenimiento, housekeeping, incidentes y servicio.",
     href: "/dashboard#operations",
     profiles: ["owner_executive", "manager", "reception", "housekeeping", "maintenance", "department_lead"],
+    implemented: false,
   },
   {
     key: "people",
@@ -76,6 +81,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Turnos, vacaciones, onboarding y capacitación.",
     href: "/dashboard#people",
     profiles: ["owner_executive", "manager", "hr_people", "department_lead"],
+    implemented: false,
   },
   {
     key: "growth",
@@ -83,6 +89,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Marketing, SEO, demanda, canales y experimentos.",
     href: "/dashboard#growth",
     profiles: ["owner_executive", "manager", "growth"],
+    implemented: false,
   },
   {
     key: "legal_risk",
@@ -90,6 +97,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Seguros, permisos, compliance y evidencia.",
     href: "/dashboard#legal-risk",
     profiles: ["owner_executive", "manager", "finance", "hr_people", "auditor"],
+    implemented: false,
   },
   {
     key: "assets_spaces",
@@ -97,6 +105,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Habitaciones, villas, equipos, inventario y espacios.",
     href: "/dashboard#assets-spaces",
     profiles: ["owner_executive", "manager", "reception", "housekeeping", "maintenance", "systems"],
+    implemented: false,
   },
   {
     key: "projects",
@@ -104,6 +113,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Plan General, prioridades, decisiones y progreso.",
     href: "/dashboard#projects",
     profiles: ["owner_executive", "manager", "department_lead", "systems"],
+    implemented: false,
   },
   {
     key: "systems",
@@ -111,6 +121,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Conectores, datos, backups, seguridad y runtime.",
     href: "/",
     profiles: ["owner_executive", "systems"],
+    implemented: true,
   },
 ];
 
