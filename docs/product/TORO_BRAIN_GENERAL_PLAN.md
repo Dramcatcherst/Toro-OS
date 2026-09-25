@@ -146,8 +146,9 @@ TORO Studio reuses:
 
 Dreamcatcher Media/Brand remains a workstream inside Dreamcatcher Web/Marca/SEO/Reputación. TORO Studio is the reusable capability layer that can serve Dreamcatcher and future authorized organizations.
 
-Canonical subordinate contract:
-`operations.knowledge_items/toro_studio_v1`
+Canonical subordinate contracts:
+- `operations.knowledge_items/toro_studio_v1`
+- `docs/product/TORO_STUDIO_V1.md`
 
 Human specification:
 `TORO Studio — Creative & Media System` in Notion.
