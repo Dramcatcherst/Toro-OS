@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { loadDashboardMvpData } from "@/features/dashboard/server";
 import { resolveDashboardSections } from "@/features/dashboard/sections";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 
@@ -60,6 +61,9 @@ export default async function DashboardPage() {
 
   const profileId = view.menu?.profileId ?? null;
   const sections = resolveDashboardSections(profileId);
+  const dashboardData = view.context.orgId
+    ? await loadDashboardMvpData(view.context.orgId)
+    : null;
   const capabilityStates = new Map(
     (view.menu?.items ?? []).map((item) => [item.capability, item.state]),
   );
@@ -125,13 +129,25 @@ export default async function DashboardPage() {
                   <CircleDollarSign className="h-5 w-5 text-emerald-300" />
                   <h2 className="text-2xl font-black text-white">Dinero</h2>
                 </div>
-                <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-amber-100">PayFlow</span>
+                <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-amber-100">
+                  {dashboardData?.money.available
+                    ? `${dashboardData.money.p0Count ?? "—"} P0`
+                    : "Sin lectura"}
+                </span>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                Pagos P0, semana, forecast 90 días, comprobantes, conciliación y ahorro vivirán aquí. Google Calendar sigue siendo la proyección temporal, no la fuente de verdad.
+                {dashboardData?.money.available
+                  ? `PayFlow canónico: ${dashboardData.money.p0Count ?? "—"} P0 · ${dashboardData.money.p1Count ?? "—"} P1 · mapping reciente ${dashboardData.money.businessMappingPct ?? "—"}%.`
+                  : "PayFlow no está legible en este contexto. TORO falla cerrado y no inventa pagos."}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                {["P0 pagos", "Esta semana", "90 días", "Caja", "Conciliación"].map((label) => (
+                {[
+                  `P0: ${dashboardData?.money.p0Count ?? "—"}`,
+                  `P1: ${dashboardData?.money.p1Count ?? "—"}`,
+                  "90 días",
+                  "Caja",
+                  "Conciliación",
+                ].map((label) => (
                   <span key={label} className="rounded-full border border-slate-700 px-2.5 py-1 text-xs text-slate-300">{label}</span>
                 ))}
               </div>
@@ -145,13 +161,25 @@ export default async function DashboardPage() {
                   <Palette className="h-5 w-5 text-fuchsia-300" />
                   <h2 className="text-2xl font-black text-white">Studio</h2>
                 </div>
-                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-cyan-100">Pilot ready</span>
+                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-cyan-100">
+                  {dashboardData?.studio.available
+                    ? `${dashboardData.studio.safeAssetCount ?? "—"} assets QA`
+                    : "Sin lectura"}
+                </span>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                Campañas, drafts, assets, rights, approvals, publicación y performance. El piloto Dreamcatcher ya tiene brief y assets seguros para producción de borradores.
+                {dashboardData?.studio.available
+                  ? `Piloto canónico: ${dashboardData.studio.safeAssetCount ?? "—"} assets seguros · ${dashboardData.studio.draftDeliverableCount ?? "—"} entregables draft · publicación ${dashboardData.studio.publicationGated ? "con gate" : "sin gate registrado"}.`
+                  : "Studio no está legible en este contexto. TORO no muestra estado creativo sin fuente canónica."}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                {["Campañas", "Drafts", "Assets", "QA", "Approvals", "Performance"].map((label) => (
+                {[
+                  "Campañas",
+                  `Draft pack: ${dashboardData?.studio.draftDeliverableCount ?? "—"}`,
+                  `Assets QA: ${dashboardData?.studio.safeAssetCount ?? "—"}`,
+                  "Approvals",
+                  "Performance",
+                ].map((label) => (
                   <span key={label} className="rounded-full border border-slate-700 px-2.5 py-1 text-xs text-slate-300">{label}</span>
                 ))}
               </div>
