@@ -95,7 +95,7 @@ export default async function DashboardPage() {
           </div>
 
           <nav className="mt-6 flex gap-2 overflow-x-auto pb-1" aria-label="Secciones TORO Dashboard">
-            {sections.map((section) => (
+            {sections.filter((section) => section.implemented).map((section) => (
               <Link key={section.key} href={section.href} className="whitespace-nowrap rounded-full border border-slate-700 bg-black/25 px-3 py-2 text-xs font-semibold text-slate-300 hover:border-cyan-300/30 hover:text-white">
                 {section.label}
               </Link>
@@ -145,7 +145,7 @@ export default async function DashboardPage() {
                   <Palette className="h-5 w-5 text-fuchsia-300" />
                   <h2 className="text-2xl font-black text-white">Studio</h2>
                 </div>
-                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-cyan-100">5 assets ready</span>
+                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-[10px] font-semibold uppercase text-cyan-100">Pilot ready</span>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
                 Campañas, drafts, assets, rights, approvals, publicación y performance. El piloto Dreamcatcher ya tiene brief y assets seguros para producción de borradores.
