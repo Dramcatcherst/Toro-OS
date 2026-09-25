@@ -42,6 +42,7 @@ export const dashboardSections: ToroDashboardSection[] = [
     description: "Alertas, aprobaciones, bloqueos y próximas acciones.",
     href: "/dashboard",
     profiles: allProfiles,
+    implemented: true,
   },
   {
     key: "money",
