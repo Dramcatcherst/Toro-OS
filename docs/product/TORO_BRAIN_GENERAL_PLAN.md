@@ -1,7 +1,7 @@
 # TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-23
+**Date:** 2026-09-24
 **Master product:** TORO
 **Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
@@ -68,6 +68,7 @@ Internal capabilities:
 - TORO Finance
 - TORO Revenue
 - TORO Growth
+- TORO Studio
 - TORO Projects
 - TORO Knowledge
 - TORO Tools
@@ -80,6 +81,94 @@ Internal capabilities:
 - TORO Systems
 - TORO Builder
 - TORO Exchange (conditional experiment)
+
+## TORO Studio — governed creative & media capability
+
+TORO Studio is an internal subsystem/capability of the single TORO product.
+
+Canonical path:
+`Growth + Assets + Channels > TORO Studio`
+
+It does **not** create:
+- a second brain;
+- a separate visible brand;
+- a parallel project root;
+- a duplicate asset database;
+- an independent permission/evidence model.
+
+Its governed tools are:
+- TORO Images;
+- TORO Video;
+- TORO Design;
+- TORO Content;
+- TORO Media Library;
+- TORO Brand Guard.
+
+Internal specialist roles may include Brand Guardian, Creative Strategist, Prompt Architect, Image Producer, Video Producer, Copy Editor, QA Checker, Asset Librarian, Publisher and Performance Analyst. These are routing roles inside TORO, not independent agents with separate authority.
+
+Every material creative request must resolve at minimum:
+`brand -> goal -> audience -> channel -> format -> CTA -> source authority -> references/assets -> approver -> privacy/rights -> success metric when applicable`.
+
+Lifecycle:
+`IDEA -> BRIEF -> DRAFT -> REVIEW -> APPROVED -> PUBLISHED -> MEASURED -> ARCHIVED`.
+
+Core rules:
+- no material creative output without a business purpose;
+- one canonical brand/source-of-truth context per asset;
+- never invent prices, dates, availability, amenities, claims or policies;
+- distinguish real evidence, interpretation and synthetic content;
+- preserve asset/version/prompt/reference/date/approver provenance;
+- publishing, paid media and external commitments follow current TORO action ceilings;
+- real rooms/installations/services preserve identity and fidelity;
+- conceptual/generated illustrations are never presented as real commercial evidence;
+- originals and derivatives remain related;
+- learning remains tenant-scoped and evidence-backed.
+
+Image baseline:
+- 1:1, 4:5, 9:16, 16:9, A4 vertical/horizontal and thumbnail;
+- promotional, informational, corporate, operational, educational, comparative, ad, branding, event and menu/product/service assets.
+
+Video baseline:
+- 6s, 15s, 30s, 45s, 60s, 90s, slideshow and story sequence;
+- `HOOK -> MESSAGE -> PROOF/BENEFIT -> CTA`;
+- preserve script, storyboard/shot list, captions, thumbnail, channel/version, approver and metrics where published.
+
+TORO Studio reuses:
+- TORO Design DNA;
+- Identity/Scope Graph;
+- Governance/Approvals;
+- Knowledge;
+- Assets;
+- Data/provenance;
+- Channels;
+- current Drive/Dropbox media governance;
+- existing Growth/Website/Brand workstreams.
+
+Dreamcatcher Media/Brand remains a workstream inside Dreamcatcher Web/Marca/SEO/Reputación. TORO Studio is the reusable capability layer that can serve Dreamcatcher and future authorized organizations.
+
+Canonical subordinate contract:
+`operations.knowledge_items/toro_studio_v1`
+
+Human specification:
+`TORO Studio — Creative & Media System` in Notion.
+
+Current state:
+- design approved and registered;
+- image generation/editing exists through available creative tooling;
+- Design DNA exists;
+- media workstream exists;
+- end-to-end asset registry/approval/publishing/performance runtime is not yet globally implemented or verified.
+
+Next:
+1. reconcile current media assets/folders;
+2. close canonical brand kits and templates;
+3. define asset metadata/version contract;
+4. connect WhatsApp/Portal creative intake;
+5. add QA/approval states;
+6. pilot one recurring Dreamcatcher creative workflow;
+7. automate publication only after permission/evidence gates pass.
+
+---
 
 ## Specialist personas
 Internal routing, not separate systems:
@@ -652,7 +741,8 @@ critical runtimes are observable and audited.
 - Growth;
 - Assets;
 - Research;
-- owner dashboards.
+- owner dashboards;
+- TORO Studio governed creative/media capability.
 
 Exit:
 owner manages Dreamcatcher through exceptions and decisions rather than apps/tables.
