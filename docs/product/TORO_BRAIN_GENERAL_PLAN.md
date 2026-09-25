@@ -785,6 +785,51 @@ critical runtimes are observable and audited.
 Exit:
 owner manages Dreamcatcher through exceptions and decisions rather than apps/tables.
 
+### Demand Context Engine — TARGET / NEXT
+
+Owner: **TORO Revenue + TORO Growth**, with TORO Data/SOBRESITO governing sources and TERE/RICO/FIONA consuming scoped outputs.
+
+Purpose:
+- explain why demand may move before a pricing/marketing/operations decision;
+- combine verified calendar, market, booking and environmental context without creating a second PMS/pricing engine.
+
+Canonical signal families:
+- Costa Rica official holidays and labor-payment classification;
+- MEP school breaks;
+- material feeder-market holidays/school breaks;
+- verified local/regional events;
+- surf/music/wellness/sports/group-demand events;
+- airlift/access changes;
+- Search Console / Google Ads demand signals;
+- Kross OTB/pickup/lead-time/cancellations/ADR/inventory observations;
+- TERE inquiry themes;
+- tide/weather/daylight/marine context when materially relevant.
+
+Authority rule:
+> A demand signal may explain, flag and recommend. It is **not** rate, inventory, restriction, reservation or ad-spend authority.
+
+Data architecture decision — 2026-09-23:
+- reuse existing `public.holidays` / `public.holiday_calendars` only for their People/HR purpose; do not overload employee-scoped holiday tables with market-demand context;
+- keep `operations.web_growth_items` as the growth work/backlog surface, not the raw event ledger;
+- target one typed runtime table: `operations.demand_events`;
+- current draft lives at `supabase/drafts/20260923_operations_demand_events.sql`;
+- no production DDL is authorized by the draft;
+- long analytical history should move to the future analytical layer rather than turning the runtime table into a warehouse.
+
+Current implementation state:
+- Plan General / governance contract: documented;
+- Airtable Demand Context task/decision/rules: registered;
+- existing Supabase neighboring structures: audited read-only;
+- `operations.demand_events`: TARGET draft only, not live;
+- autonomous pricing/spend changes from demand context: prohibited.
+
+NEXT:
+1. validate draft SQL in isolated PostgreSQL/Supabase-compatible environment;
+2. review RLS and authority with the existing `private.has_org_role` pattern;
+3. verify no overlap with future Revenue pricing structures;
+4. prepare rollback and only then propose a reviewed production migration;
+5. start with official/verified events and no inferred price actions.
+
 ## Phase 5 — Portfolio sandbox
 **Priority: later**
 
