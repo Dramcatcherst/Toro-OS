@@ -55,3 +55,11 @@ test("dashboard MVP keeps the legacy technical cockpit outside the new route", a
   assert.doesNotMatch(dashboard, /Persistent Approval Console/);
   assert.match(dashboard, /\/|href/);
 });
+
+
+test("dashboard avoids stale hardcoded Studio readiness and dead future navigation", async () => {
+  const page = await readText("src/app/dashboard/page.tsx");
+
+  assert.doesNotMatch(page, /5 assets ready/i);
+  assert.match(page, /implemented/);
+});
