@@ -30,3 +30,27 @@ Scope: only the just-completed Coordinator -> CONTROL -> OPERATE -> GROW -> BUIL
 ### Evidence boundary
 - Vercel deployment `dpl_BDT8Li7kX2KwYzi8ocLkALy5Aboa` is READY on `toro-pr11-preview`, branch `codex/toro-dashboard-mvp`, target=null. This proves preview deployment only.
 - No inference is made about laptop/session state, physical execution, production adoption, or Work execution.
+
+
+## Post-cycle verification checkpoint — 2026-09-25 14:05Z
+
+### Material delta
+- CONTROL-plane fixed a taxonomy drift in `operations.toro_unified_portfolio_v1`: lifecycle `READY` + execution condition `CLEAR` now maps to `BACKLOG` instead of the obsolete `READY_NEXT`. Affected task: `finance_ws_fnb_settlement`. No protected source task field was changed.
+- Current health reconciles to 205 open = 2 EXECUTE_NOW + 153 CONSTRAINED + 50 BACKLOG + 0 REVIEW; owner-attention remains 0.
+- Notion working memory fetched at 2026-09-25T12:01:41Z still narrates 49 BACKLOG for the earlier snapshot; treat that narrative as stale versus current Supabase machine state.
+
+### Portfolio universes
+- Raw-open active nonterminal tasks: 205.
+- Unified portfolio work: 205.
+- Active-module open work: 191.
+- The 14 rows outside active-module work are `procurement_inventory` (8) + `maintenance_assets` (6).
+
+### Autopilot
+- 10/12 selected; CONTROL 3 / OPERATE 1 / GROW 3 / BUILD 3.
+- 10 unique task keys; all CONSTRAINED and structurally ready; 0 invalid constraint classes, 0 invalid conditions, 0 cooldown <10m; lane cap 3 respected.
+
+### Evidence/freshness
+- No GitHub commit or Vercel deployment was observed in the post-14:00Z cycle window; Plan General remains unchanged by this verifier.
+- Kross reservations remain 33 rows, 0 live, latest snapshotAsOf 2026-09-21T09:28:30.675Z, latest sync 2026-09-21T09:33:59.645087Z, TTL 6h, current-safe rows 0.
+- Kross arrivals/availability staging remains observed 2026-09-24T06:55:52Z, sourceAsOf 2026-09-23T06:00:00Z, TTL 2h, stale and not current-state.
+- Public booking engine, native authenticated backend, provisioned API and commercial permissions remain distinct evidence states.
