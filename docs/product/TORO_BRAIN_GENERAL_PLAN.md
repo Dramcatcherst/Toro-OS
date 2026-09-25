@@ -82,6 +82,43 @@ Internal capabilities:
 - TORO Builder
 - TORO Exchange (conditional experiment)
 
+## TORO Dashboard — unified product surface
+
+TORO Dashboard / Portal is the role-aware visual surface of the same TORO Brain.
+
+Canonical contract:
+- `operations.knowledge_items/toro_dashboard_surface_v1`
+- `docs/product/TORO_DASHBOARD_V1.md`
+
+Core navigation:
+- Today / Attention
+- Money
+- Studio
+- Customers
+- Operations
+- People
+- Growth
+- Legal & Risk
+- Assets & Spaces
+- Projects
+- Systems
+
+Rules:
+- dashboard is not a source of truth;
+- modules do not create parallel databases, task systems, approvals or notification centers;
+- role visibility comes from the shared identity/membership/capability model;
+- every material widget exposes source authority, freshness, attention state and next action;
+- default home is Today/Attention, not the technical cockpit;
+- mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
+
+MVP order:
+1. Today / Attention;
+2. Money / PayFlow;
+3. Studio;
+4. then remaining modules using the same contracts.
+
+---
+
 ## TORO Studio — governed creative & media capability
 
 TORO Studio is an internal subsystem/capability of the single TORO product.
