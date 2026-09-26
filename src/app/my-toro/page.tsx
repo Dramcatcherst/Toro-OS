@@ -11,6 +11,7 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { SignOutButton } from "@/features/auth/sign-out-button";
 import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 
@@ -85,6 +86,7 @@ export default async function MyToroPage({
           <div className="mt-5 rounded-2xl border border-slate-800 bg-black/25 p-4 text-sm text-slate-300">
             Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
           </div>
+          <SignOutButton />
         </div>
       </main>
     );
@@ -127,6 +129,7 @@ export default async function MyToroPage({
               >
                 <RotateCcw className="h-3.5 w-3.5" /> Rehacer onboarding
               </Link>
+              <SignOutButton />
             </div>
           </div>
         </header>
