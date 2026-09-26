@@ -1339,3 +1339,15 @@ guest_service_recovery_prepare_only:
     - replay_idempotency_proof
     - operational_evidence_and_closure
     - authorized_guest_followup
+
+openclaw_runtime_evidence:
+  canonical_status: configured_unverified
+  evaluator: src/features/openclaw/runtime-evidence.ts
+  template: data/openclaw_runtime_evidence_template_v1.json
+  runbook: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
+  packet_complete_does_not_verify_runtime: true
+  direct_host_access_from_current_toro_environment: false
+  independent_gateway_verification_required_for_active_status: true
+  raw_secrets_in_evidence_forbidden: true
+  real_guest_contact_for_runtime_proof_forbidden: true
+  audit_production_mutation_forbidden: true
