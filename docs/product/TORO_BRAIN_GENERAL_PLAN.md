@@ -535,6 +535,13 @@ Current identity evidence:
 
 No auto-linking by name.
 
+Current access control, verified 2026-09-25 CR:
+- Supabase migration `20260926034539_harden_dreamteam_employee_views_20260925` applied with Mauricio's authorization to `public.employee_reward_balances` and `public.employee_experience_kpis`;
+- both views now use `security_invoker=true`; `anon` and `authenticated` have no SELECT, `service_role` retains SELECT;
+- readback and security advisor confirmed the two prior `security_definer_view` errors cleared;
+- HTTP Data API probe and DreamTeam user-flow smoke test remain unverified; investigate regressions without reopening broad client grants;
+- employee onboarding/contact stays on owner HOLD. Evidence and recovery: `docs/security/DREAMTEAM_EMPLOYEE_VIEW_ACCESS_REVIEW_20260925.md`.
+
 ---
 
 # 11. Recognition & Points
