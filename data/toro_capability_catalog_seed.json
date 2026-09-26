@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-22-v1",
+  "version": "2026-09-26-v3",
   "principle": "Users activate useful capabilities; provider/tool implementation stays behind TORO where possible.",
   "statuses": [
     "implemented_foundation",
@@ -154,7 +154,9 @@
       ],
       "owner": "TORO Comms",
       "risk": "L2",
-      "status": "specified"
+      "status": "implemented_foundation",
+      "implementation": "POST /api/brain/internal-work",
+      "runtime_note": "Authenticated backend foundation exists; live WhatsApp consumption and sender binding remain unverified."
     },
     {
       "key": "notifications",
