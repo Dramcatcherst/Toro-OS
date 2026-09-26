@@ -319,3 +319,21 @@ Any failed/missing/unevidenced/duplicated gate:
 - `CONFIGURED_UNVERIFIED`.
 
 The template itself is not runtime evidence. Do not populate it from historical docs or owner recollection alone.
+
+## First owner-only WhatsApp test: M01 then M02
+
+Run on the existing authorized Gateway host, with its actual profile. These commands inspect state; do not run login, logout, `doctor --fix`, change config, approve pairing, restart or disclose credentials as part of this first pass.
+
+```bash
+openclaw --version
+openclaw gateway status
+openclaw channels status --channel whatsapp --probe --json
+openclaw status --deep
+openclaw channels capabilities --channel whatsapp --json
+```
+
+For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether the WhatsApp probe is **live** and successful, and any error category. A config-only fallback or `starting` is not a pass; wait for the Gateway to become ready and repeat the probe. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
+
+Only after M01 passes and the target account and owner allowlist are confirmed, Mauricio can send `/status` as a standalone message from his own phone to the verified TORO test chat. It asks for channel status and does not itself establish TORO identity. For M02, send a harmless read-only owner request and inspect the real inbound sender mapping: exact channel account + sender ID -> canonical Mauricio user + Dreamcatcher organization + active membership; refuse display-name or message-text authorization. Record provider message ID, correlation ID and masked identifiers; no employee, guest or production writes. If identity or personal/work isolation fails, stop before testing tasks.
+
+Status for this first pass remains `CONFIGURED_UNVERIFIED` or `EVIDENCE_PACKET_COMPLETE_UNVERIFIED` until the authorized host and canonical resolver evidence agree. The evaluator cannot promote live runtime merely because references are nonempty. Reuse M01–M12 criteria in `operations.knowledge_items/openclaw_whatsapp_runtime_audit_2026_09_v1` after M01/M02 pass.
