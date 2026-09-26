@@ -1,6 +1,6 @@
 # TORO / DreamTeam: review of two employee views
 
-Status: DRAFT — no production change. Date: 2026-09-25 (Costa Rica).
+Status: APPLIED IN PRODUCTION — 2026-09-25 Costa Rica / 2026-09-26 UTC.
 Canonical project: TORO; existing HR implementation: DreamTeam.
 Finding owner: TORO Systems / Sobresito; people-data reviewer: Fiona; decision owner: Mauricio.
 
@@ -14,11 +14,11 @@ Finding owner: TORO Systems / Sobresito; people-data reviewer: Fiona; decision o
 - Database view dependency inspection found no other views depending on these two. GitHub code search of `Dramcatcherst/Toro-OS` and `Dramcatcherst/dream-team` found no indexed matches; that is not proof of zero API/UI consumers.
 - The HTTP Data API exposure setting, analytics logs, clients and environment dependencies were **not** verified. No breach or external access is asserted.
 
-## Proposed remediation
+## Implemented remediation
 
-Use the separate [draft SQL](../../supabase/drafts/20260925_dreamteam_view_access_hardening.sql): check expected views and server-role access, set both to `security_invoker=true`, remove all grants from `PUBLIC`, `anon` and `authenticated`, verify catalog state in one transaction. Keep `service_role` access for reviewed server-side consumers. The draft is intentionally outside migrations.
+Applied the separate [reviewed SQL](../../supabase/drafts/20260925_dreamteam_view_access_hardening.sql): check expected views and server-role access, set both to `security_invoker=true`, remove all grants from `PUBLIC`, `anon` and `authenticated`, verify catalog state in one transaction. Keep `service_role` access for reviewed server-side consumers. The SQL reference remains outside the repository migration directory. Supabase migration history records `20260926034539_harden_dreamteam_employee_views_20260925`. The production permission change was explicitly authorized by Mauricio on 2026-09-25.
 
-Before approval: trace any references in DreamTeam/Vercel/server code and database or API traffic, confirm the exposed Data API schemas, and test the draft in a disposable Supabase branch. If an authenticated employee feature needs these aggregates, design a tenant- and employee-scoped replacement with RLS and a separate review; do not restore broad SELECT.
+Residual follow-up: trace any references in DreamTeam/Vercel/server code and database or API traffic, confirm the exposed Data API schemas, and test the draft in a disposable Supabase branch. If an authenticated employee feature needs these aggregates, design a tenant- and employee-scoped replacement with RLS and a separate review; do not restore broad SELECT.
 
 ## Acceptance checks
 
@@ -35,3 +35,14 @@ A blind rollback that re-grants anonymous SELECT would reintroduce the confirmed
 ## Broader contract gap
 
 The live Supabase migration history contains employee reward and experience changes from September 23, while `dream-team` on its default branch ends its migration tree at September 4. Reconcile migration ownership and code deployment before promoting this draft into the governed migration chain. Avoid a second HR schema authority.
+
+## Post-apply readback
+
+- Both public views report `security_invoker=true`.
+- `anon` and `authenticated` SELECT = false for both; `service_role` SELECT = true.
+- The post-change Supabase security advisor no longer reports `security_definer_view` (previously 2 ERROR findings).
+- Migration history lists `20260926034539_harden_dreamteam_employee_views_20260925`.
+- Direct HTTP Data API probe and end-user DreamTeam smoke test are still not verified. Do not claim either passed.
+- Employee rollout remains on owner HOLD; no invitation or contact occurred.
+
+Official background: https://supabase.com/docs/guides/database/postgres/row-level-security
