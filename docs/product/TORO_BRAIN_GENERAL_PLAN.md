@@ -734,20 +734,20 @@ Remaining:
 ## Phase 1 — Identity + authenticated core
 **Priority: P0 · IN PROGRESS**
 
-CURRENT verified 23/09/2026:
+CURRENT (foundation 23/09/2026; membership readback 26/09/2026 UTC):
 - coherent Supabase SSR/Auth + `resolveToroContext()` foundation is integrated in `main`;
 - Personal vs Organization policy is implemented and fixture-tested;
 - Visual Brain Stage C canonical read/projection is permission-scoped, read-only and fail-closed;
 - lower canonical-read tests verify invalid context rejection before Supabase access and explicit active-`org_id` scoping;
 - canonical membership home is `identity.organization_memberships`;
 - membership schema/backfill/RLS/rollback draft passed disposable PostgreSQL 16 validation plus production read-only preflight;
-- production `identity` schema/membership table remain intentionally **unapplied**;
+- production `identity.organization_memberships` is present; current readback found 4 active employee memberships with a primary employee link. This does not establish complete hosted user-flow parity;
 - resolver still uses active/non-revoked `user_roles` as transitional relationship evidence;
 - the 2026-09-25 owner decision authorizes a gated employee pilot; actual employee activation remains pending identity, role and channel validation.
 
 Remaining:
 - protected hosted Founder/restricted/revocation/logout/session/mobile-desktop QA;
-- explicit reviewed decision before any membership production DDL;
+- verify production membership RLS, resolver parity and rollback against the applied schema before changing membership DDL or broadening employee access;
 - after membership cutover, persistent membership/context parity;
 - User Vault RLS foundation, still empty until privacy gates pass;
 - employee/user reconciliation can advance toward a verified, reversible pilot under the owner release decision; individual identity and role evidence is required before activation.
