@@ -118,6 +118,10 @@ These require:
 ### Builder / Codex
 WhatsApp must not expose raw host shell or unrestricted Codex execution.
 
+Reuse the verified native OpenClaw Codex/background-task capabilities when the host audit confirms them. The normal owner/team DM stays routed to TORO. Codex is a governed worker; direct coding conversation requires an explicit temporary mode, and persistent ACP binding belongs only to a dedicated coding conversation. Sender-scoped OpenClaw tool policy and DM isolation add defense in depth; TORO identity, scope and current roles remain the authorization authority. The existing local `toro-openclaw-integration` is the transport implementation to inspect, not a reason to create a parallel adapter.
+
+The authenticated `POST /api/brain/internal-work` path is a backend foundation for task intake. The actual WhatsApp bridge, channel identity and completion receipt still require direct end-to-end proof.
+
 Flow:
 
 ```
