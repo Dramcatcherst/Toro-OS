@@ -934,6 +934,7 @@ product_proof_focus:
     writes_enabled: false
     verified_requires_real_owner_use_and_measured_outcome: true
     baseline_evidence: docs/evidence/TORO_EXECUTIVE_BRIEF_READONLY_BASELINE_2026-09-23.md
+    owner_proof_runbook: docs/runbooks/TORO_EXECUTIVE_BRIEF_OWNER_PROOF_V1.md
     production_commit: 5c14fd27172dc78bc94389f72b67ae7d21bb7844
     production_deployment_state: READY
   status: active_inside_internal_proof
