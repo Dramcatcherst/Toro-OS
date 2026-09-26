@@ -540,7 +540,14 @@ Current access control, verified 2026-09-25 CR:
 - both views now use `security_invoker=true`; `anon` and `authenticated` have no SELECT, `service_role` retains SELECT;
 - readback and security advisor confirmed the two prior `security_definer_view` errors cleared;
 - HTTP Data API probe and DreamTeam user-flow smoke test remain unverified; investigate regressions without reopening broad client grants;
-- employee onboarding/contact stays on owner HOLD. Evidence and recovery: `docs/security/DREAMTEAM_EMPLOYEE_VIEW_ACCESS_REVIEW_20260925.md`.
+- owner released the employee HOLD on 2026-09-25 CR for phased TORO People preparation and tests. This is authorization to proceed, not evidence of employee activation. Evidence and recovery: `docs/security/DREAMTEAM_EMPLOYEE_VIEW_ACCESS_REVIEW_20260925.md`.
+
+Owner decision and rollout gate (2026-09-25 CR):
+- canonical decision: `operations.executive_decisions/toro_employee_rollout_owner_release_20260925`;
+- current: 12 active employees, 4 with linked user/role, 8 requiring independent identity verification, 1 terminated without access; onboarding progress has 0 rows;
+- next: verify individual identities without name matching, test employee and restricted roles, personal/work isolation, revocation, HTTP Data API and DreamTeam self-service; capture evidence and a reversible pilot outcome;
+- WhatsApp tests with real staff require direct OpenClaw Gateway/host audit and channel identity binding; live runtime acceptance remains 0/12 verified;
+- roll out one verified employee at a time after these gates pass; no broad provisioning, name-based links or claims of activation.
 
 ---
 
@@ -736,14 +743,14 @@ CURRENT verified 23/09/2026:
 - membership schema/backfill/RLS/rollback draft passed disposable PostgreSQL 16 validation plus production read-only preflight;
 - production `identity` schema/membership table remain intentionally **unapplied**;
 - resolver still uses active/non-revoked `user_roles` as transitional relationship evidence;
-- employees remain HOLD for onboarding/contact.
+- the 2026-09-25 owner decision authorizes a gated employee pilot; actual employee activation remains pending identity, role and channel validation.
 
 Remaining:
 - protected hosted Founder/restricted/revocation/logout/session/mobile-desktop QA;
 - explicit reviewed decision before any membership production DDL;
 - after membership cutover, persistent membership/context parity;
 - User Vault RLS foundation, still empty until privacy gates pass;
-- employee/user reconciliation may continue read-only, but no employee onboarding before launch decision.
+- employee/user reconciliation can advance toward a verified, reversible pilot under the owner release decision; individual identity and role evidence is required before activation.
 
 Exit:
 one user securely moves between Personal and business context with hosted evidence, persistent governed membership and no cross-scope leakage.
@@ -990,7 +997,7 @@ Role menus must route to generic TORO capability keys rather than vendor-specifi
 ## P0
 1. Complete hosted synthetic Identity/Context QA through an approved protected access path; do not weaken Vercel Deployment Protection.
 2. Review the validated `identity.organization_memberships` draft for an explicit production-DDL decision; do not apply automatically.
-3. Continue read-only identity reconciliation for the 8 active unlinked employees and the single non-employee membership candidate; no name-based linking, invites or employee contact.
+3. Reconcile the 8 active unlinked employee identities with independent evidence, then test role, scope and revocation for a bounded pilot; do not link by name or grant bulk access.
 4. Connect authorized host access for the OpenClaw live audit.
 5. Run the OpenClaw audit read-only before any configuration change.
 6. Prove one real Dreamcatcher Cognitive Proof outcome from the existing maintenance field packet; do not generate substitute paperwork.
@@ -999,7 +1006,7 @@ Role menus must route to generic TORO capability keys rather than vendor-specifi
 7. After live Kross authority exists, prove one service date end-to-end for Breakfast/F&B before expanding to a week.
 8. Continue Visual Brain Stage C with the existing permission-scoped canonical projection; no second data path or graph database.
 9. Prepare the empty User Vault RLS foundation only after membership/context gates are closed; no personal data ingestion.
-10. Design TORO People shell over existing DreamTeam capabilities without employee rollout.
+10. Test TORO People shell over existing DreamTeam capabilities, then pilot one independently verified employee once identity, privacy and channel gates pass.
 11. Continue system-audit / connector-health convergence.
 
 ## P2
