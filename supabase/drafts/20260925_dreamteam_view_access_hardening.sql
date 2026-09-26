@@ -1,5 +1,6 @@
--- DRAFT ONLY — NOT APPLIED TO PRODUCTION
--- Owner review required: this changes DreamTeam view permissions.
+-- APPLIED 2026-09-26 UTC after Mauricio authorized the permission change.
+-- Supabase migration: 20260926034539_harden_dreamteam_employee_views_20260925.
+-- Retained as reviewed SQL evidence outside the repository migration chain.
 -- Observed 2026-09-25 CR: anon SELECT on employee_reward_balances returns 13 rows.
 -- Source: Supabase project abtyrbqlqbsastmridzp, PostgreSQL 17.
 -- Restore tests must use a disposable branch, then a staged production cutover.
