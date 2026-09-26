@@ -547,6 +547,7 @@ Owner decision and rollout gate (2026-09-25 CR):
 - current: 12 active employees, 4 with linked user/role, 8 requiring independent identity verification, 1 terminated without access; onboarding progress has 0 rows;
 - next: verify individual identities without name matching, test employee and restricted roles, personal/work isolation, revocation, HTTP Data API and DreamTeam self-service; capture evidence and a reversible pilot outcome;
 - WhatsApp tests with real staff require direct OpenClaw Gateway/host audit and channel identity binding; live runtime acceptance remains 0/12 verified;
+- DreamTeam implementation pipeline: #39 employee experience core, #41 channel identity and #42 atomic enrollment consumption remain open; the consumed-token sender check passed synthetic SQL/CI (683 tests) in #43 and was merged into the #42 branch on 2026-09-25 CR. Production channel enrollment tables and consumption RPC are absent; branch previews and passing CI are not live employee access;
 - roll out one verified employee at a time after these gates pass; no broad provisioning, name-based links or claims of activation.
 
 ---
