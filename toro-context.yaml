@@ -1339,3 +1339,30 @@ guest_service_recovery_prepare_only:
     - replay_idempotency_proof
     - operational_evidence_and_closure
     - authorized_guest_followup
+
+
+post_stay_opportunity_prepare_only:
+  updated_on: "2026-09-24"
+  product_proof_workflow: 12
+  owners:
+    - SKY
+    - TERE
+    - TORO Growth
+  state: PREPARED_PREPARE_ONLY
+  code: src/features/growth/post-stay.ts
+  tests: src/features/growth/post-stay.test.ts
+  evidence: docs/evidence/TORO_POST_STAY_OPPORTUNITY_PREPARE_2026-09-24.md
+  external_send_enabled: false
+  campaign_activation_enabled: false
+  direct_revenue_attribution_allowed: false
+  gates:
+    completed_stay_required: true
+    consent_allowed_required: true
+    service_recovery_must_be_closed: true
+    duplicate_review_request_forbidden: true
+  next_gate:
+    - authorized_post_stay_lifecycle_event
+    - consent_and_service_state_resolution
+    - authorized_deduplicated_send
+    - observed_outcome
+    - measured_attribution
