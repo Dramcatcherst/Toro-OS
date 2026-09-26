@@ -1396,6 +1396,24 @@ Core views:
 
 The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
 
+## Connected inventory and truthful graph projection — owner decision 2026-09-26
+
+"Show everything connected" means **complete, scope-authorized discoverability**, not drawing every node at once. The Brain must expose a searchable coverage view for all registered businesses, people/roles, agents/skills, projects/tasks, offers/assets, systems/connectors, schema catalogs, workflows, evidence and authorized external relationships. The opening viewport stays focused and compact; search, zoom/pan, filters, expansion and deep links reveal further levels. A non-graph list/timeline remains available. This is one projection of TORO, not another application or data authority.
+
+Keep four independent visual layers:
+1. **Containment** (`part_of`): hierarchy only. A parent-child line never claims an operational integration; an isolated child may still belong to TORO.
+2. **Documented relationship**: a typed edge between canonical IDs with source, owner, scope, evidence reference and verification state. Similar names or shared UI placement do not create an edge.
+3. **Connector capability**: distinguish discovered, configured, authorized read verified, approved write verified, stale/degraded and blocked. A listed table, installed skill or authenticated API is not by itself a connected capability.
+4. **Current activity**: overlay short-lived, permission-filtered receipts containing event/correlation ID, actor or runtime, action summary, affected node IDs, time, outcome and evidence reference. Expired or revoked receipts remove the pulse. Never render inferred "thinking" or hidden reasoning.
+
+The inventory pipeline is `authorized source manifest -> stable source IDs -> scope/permission filter -> deduped node projection -> evidenced edges -> event overlay`. Preserve source-system/account/container/object identity and the specialized authority of Kross, Alegra, banks, DreamTeam and other domains. Catalog entries may appear as expandable nodes, but a table definition is not a row-level operational fact. Projects and tasks primarily organize or trigger work; show a task as a node only when it is relevant to the selected focus, rather than duplicating it as a permanent department.
+
+Coverage must report counts with denominator, source cut and timestamp separately for **registered / eligible to display / verified readable / runtime active / blocked or stale**. Unknown or inaccessible data stays explicit, never zero or "fully connected". Exclude private fields before projection; deny cross-business, wrong-role and revoked access at the server boundary. The public demonstration uses synthetic or approved anonymized data only.
+
+Delivery gates: the current local `:3042` TORO Hoy demonstration and the canonical `/brain` implementation are different surfaces, not two authorities. Reconcile their IDs and interaction decisions into the existing canonical application; do not publish the local demo as proof of Stage C. First complete authenticated, permission-scoped read-only QA already specified below; then add normalized Event Spine receipts and expiry/replay; only then claim live work. Richer 3D and motion remain optional presentation layers after measured usability, performance, accessibility and reduced-motion checks. No new graph database, connector, agent, permission or production activation is authorized by this section.
+
+Acceptance for this contract: each visible line identifies containment, documentary relation or verified capability; each live pulse resolves to a current permitted receipt; the coverage denominator is inspectable; selecting an item shows authority, freshness, evidence, limitation and next safe action; unauthorized or failed reads cannot light nodes or leak details.
+
 ## Event Spine
 
 Live visual activity must be backed by normalized canonical events.
