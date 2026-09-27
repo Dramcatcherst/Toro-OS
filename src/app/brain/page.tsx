@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import {
   Activity,
   AlertTriangle,
@@ -95,22 +96,23 @@ function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
 
 function Graph({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
   const points = layout;
+  const synthetic = projection.synthetic;
 
   return (
     <div className={styles.graphFrame}>
       <div className={styles.graphHeader}>
         <div>
-          <span className={styles.eyebrow}>Business anatomy · synthetic scenario</span>
-          <h2>TORO sees the operation as connected evidence, not separate apps.</h2>
+          <span className={styles.eyebrow}>{synthetic ? "Business anatomy · synthetic scenario" : "Business anatomy · scoped canonical read"}</span>
+          <h2>{synthetic ? "TORO sees the operation as connected evidence, not separate apps." : "A focused view of records this organization can read."}</h2>
         </div>
         <div className={styles.graphLegend}>
-          <span><i className={styles.legendActive} /> active</span>
+          {synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}
           <span><i className={styles.legendRisk} /> needs attention</span>
-          <span><i className={styles.legendGate} /> approval gate</span>
+          {synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}
         </div>
       </div>
 
-      <div className={styles.graphCanvas} role="img" aria-label="Synthetic Dreamcatcher business graph showing TORO Finance reading Kross, Alegra and bank evidence, detecting a cash coverage issue and preparing an approval-gated decision.">
+      <div className={styles.graphCanvas} role="img" aria-label={synthetic ? "Synthetic Dreamcatcher business graph showing an example cash coverage issue and approval-gated decision." : `Read-only organization graph with ${projection.nodes.length} visible nodes and ${projection.edges.length} displayed links. No live activity is claimed.`}>
         <svg className={styles.edges} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <marker id="arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
@@ -143,7 +145,10 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
 }
 
 export default async function BrainPage() {
+  // The feature flag and authorized scope must be evaluated per request, never at build time.
+  await connection();
   const { projection, layout, runtime } = await loadBrainProjectionView();
+  const synthetic = projection.synthetic;
   const pendingApproval = projection.nodes.find((node) => node.kind === "approval");
   const cashNode = projection.nodes.find((node) => node.id === "node:cash");
   const revenueNode = projection.nodes.find((node) => node.id === "node:revenue");
@@ -168,21 +173,32 @@ export default async function BrainPage() {
 
         <div className={styles.heroGrid}>
           <div>
-            <p className={styles.eyebrow}>Dreamcatcher Hotel · reference simulation</p>
-            <h1>See what the business is doing, what TORO sees, and where a human decision is required.</h1>
+            <p className={styles.eyebrow}>{synthetic ? "Dreamcatcher Hotel · reference simulation" : "Organization · permission-scoped read"}</p>
+            <h1>{synthetic ? "See how TORO could connect evidence and a human decision." : "Explore the organization records available to this authorized context."}</h1>
             <p className={styles.lead}>
-              This is a contract-driven prototype. Every node, edge and activity state represents a defined TORO concept. No live guest, employee, payment or production data is used here. The UI now consumes a single server-side projection seam so Stage C can replace the source without creating a second interface architecture.
+              {synthetic
+                ? "This is a contract-driven example, not live activity. No private operational data or external action is represented."
+                : "This is a focused, read-only projection of authorized organization data. It does not show live agent activity, guest or employee records, payment data, or completed external actions."}
             </p>
           </div>
           <div className={styles.heroStats}>
             <div><span>Visible nodes</span><strong>{projection.nodes.length}</strong><small>bounded focus view</small></div>
-            <div><span>Recent events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>one correlation chain</small></div>
-            <div><span>Approval gates</span><strong>1</strong><small>external change blocked</small></div>
+            {synthetic ? (
+              <>
+                <div><span>Example events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>simulated correlation chain</small></div>
+                <div><span>Example approval gates</span><strong>{projection.nodes.filter((node) => node.kind === "approval").length}</strong><small>no external action</small></div>
+              </>
+            ) : (
+              <>
+                <div><span>Displayed links</span><strong>{projection.edges.length}</strong><small>focused projection</small></div>
+                <div><span>Source summaries</span><strong>{projection.sources.length}</strong><small>read-only coverage</small></div>
+              </>
+            )}
           </div>
         </div>
       </header>
 
-      <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
+      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
         <div>
           <CircleDollarSign aria-hidden="true" />
           <span>Reservations</span>
@@ -201,12 +217,12 @@ export default async function BrainPage() {
           <strong>{pendingApproval?.status}</strong>
           <small>owner approval required</small>
         </div>
-      </section>
+      </section> : null}
 
-      <section className={styles.mainGrid}>
+      <section className={`${styles.mainGrid} ${synthetic ? "" : styles.mainGridCanonical}`}>
         <Graph projection={projection} layout={layout} />
 
-        <aside className={styles.activityPanel}>
+        {synthetic ? <aside className={styles.activityPanel}>
           <div className={styles.panelHead}>
             <div>
               <span className={styles.eyebrow}>Watch TORO work</span>
@@ -245,10 +261,10 @@ export default async function BrainPage() {
               <p>TORO prepared a decision and stopped at the approval boundary.</p>
             </div>
           </div>
-        </aside>
+        </aside> : null}
       </section>
 
-      <section className={styles.lowerGrid}>
+      <section className={`${styles.lowerGrid} ${synthetic ? "" : styles.lowerGridCanonical}`}>
         <div className={styles.panel}>
           <div className={styles.panelHead}>
             <div>
@@ -273,7 +289,7 @@ export default async function BrainPage() {
           </div>
         </div>
 
-        <div className={styles.panel}>
+        {synthetic ? <div className={styles.panel}>
           <div className={styles.panelHead}>
             <div>
               <span className={styles.eyebrow}>Decision evidence</span>
@@ -287,7 +303,7 @@ export default async function BrainPage() {
             <div><AlertTriangle aria-hidden="true" /><span>Cash gap</span><strong>high attention</strong></div>
             <div><LockKeyhole aria-hidden="true" /><span>CAPEX change</span><strong>approval required</strong></div>
           </div>
-        </div>
+        </div> : null}
       </section>
 
       <section className={styles.listFallback}>
@@ -332,3 +348,4 @@ export default async function BrainPage() {
     </main>
   );
 }
+
