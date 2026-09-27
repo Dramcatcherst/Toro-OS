@@ -107,7 +107,7 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
         </div>
         <div className={styles.graphLegend}>
           {synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}
-          <span><i className={styles.legendRisk} /> needs attention</span>
+          <span><i className={styles.legendRisk} /> {synthetic ? "needs attention" : "evidence needs review"}</span>
           {synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}
         </div>
       </div>
@@ -118,12 +118,15 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
             <marker id="arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
               <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHead} />
             </marker>
+            <marker id="arrowAttention" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
+              <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHeadAttention} />
+            </marker>
           </defs>
           {projection.edges.map((edge) => {
             const source = points[edge.source];
             const target = points[edge.target];
             if (!source || !target) return null;
-            const isAttention = edge.freshness === "aging" || edge.verification === "partially_verified";
+            const isAttention = edge.freshness !== "current" || edge.verification !== "verified";
             return (
               <line
                 key={edge.id}
@@ -132,7 +135,8 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
                 x2={target.x}
                 y2={target.y}
                 className={isAttention ? styles.edgeAttention : styles.edge}
-                markerEnd="url(#arrow)"
+                data-evidence-state={isAttention ? "needs-review" : "current"}
+                markerEnd={isAttention ? "url(#arrowAttention)" : "url(#arrow)"}
               />
             );
           })}
@@ -348,4 +352,3 @@ export default async function BrainPage() {
     </main>
   );
 }
-
