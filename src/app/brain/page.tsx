@@ -148,6 +148,64 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
   );
 }
 
+function AccessibleNodeList({ projection }: { projection: BrainProjection }) {
+  const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
+
+  return (
+    <section className={styles.listFallback}>
+      <div className={styles.panelHead}>
+        <div>
+          <span className={styles.eyebrow}>Accessible list view</span>
+          <h2>The same Brain without spatial navigation</h2>
+        </div>
+        <Activity aria-hidden="true" />
+      </div>
+      <div className={styles.nodeList}>
+        {projection.nodes.map((node) => {
+          const Icon = nodeIcons[node.kind] ?? Activity;
+          const connections = projection.edges.flatMap((edge) => {
+            if (edge.source === node.id && visibleNodes.has(edge.target)) {
+              return [{ edge, other: visibleNodes.get(edge.target)!, outgoing: true }];
+            }
+            if (edge.target === node.id && visibleNodes.has(edge.source)) {
+              return [{ edge, other: visibleNodes.get(edge.source)!, outgoing: false }];
+            }
+            return [];
+          });
+          return (
+            <article key={node.id}>
+              <Icon aria-hidden="true" />
+              <div>
+                <span>{node.kind}</span>
+                <strong>{node.label}</strong>
+                <p>{node.summary}</p>
+                {connections.length > 0 ? (
+                  <details className={styles.nodeConnections}>
+                    <summary>{connections.length} {connections.length === 1 ? "connection" : "connections"}</summary>
+                    <ul>
+                      {connections.map(({ edge, other, outgoing }) => (
+                        <li key={edge.id}>
+                          {outgoing ? `${edge.relation.replaceAll("_", " ")} → ${other.label}` : `${other.label} → ${edge.relation.replaceAll("_", " ")}`}
+                          <small>{edge.verification ? verificationLabel[edge.verification] : "verification not reported"} · {edge.freshness ?? "freshness not reported"}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ) : null}
+              </div>
+              <div className={styles.listState}>
+                <span>{node.status}</span>
+                <span>{node.verification}</span>
+                <span>{node.freshness}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 export default async function BrainPage() {
   // The feature flag and authorized scope must be evaluated per request, never at build time.
   await connection();
@@ -156,7 +214,6 @@ export default async function BrainPage() {
   const pendingApproval = projection.nodes.find((node) => node.kind === "approval");
   const cashNode = projection.nodes.find((node) => node.id === "node:cash");
   const revenueNode = projection.nodes.find((node) => node.id === "node:revenue");
-  const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
 
   return (
     <main className={styles.page}>
@@ -202,6 +259,8 @@ export default async function BrainPage() {
           </div>
         </div>
       </header>
+
+      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} /></div>
 
       {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
         <div>
@@ -311,57 +370,7 @@ export default async function BrainPage() {
         </div> : null}
       </section>
 
-      <section className={styles.listFallback}>
-        <div className={styles.panelHead}>
-          <div>
-            <span className={styles.eyebrow}>Accessible list view</span>
-            <h2>The same Brain without spatial navigation</h2>
-          </div>
-          <Activity aria-hidden="true" />
-        </div>
-        <div className={styles.nodeList}>
-          {projection.nodes.map((node) => {
-            const Icon = nodeIcons[node.kind] ?? Activity;
-            const connections = projection.edges.flatMap((edge) => {
-              if (edge.source === node.id && visibleNodes.has(edge.target)) {
-                return [{ edge, other: visibleNodes.get(edge.target)!, outgoing: true }];
-              }
-              if (edge.target === node.id && visibleNodes.has(edge.source)) {
-                return [{ edge, other: visibleNodes.get(edge.source)!, outgoing: false }];
-              }
-              return [];
-            });
-            return (
-              <article key={node.id}>
-                <Icon aria-hidden="true" />
-                <div>
-                  <span>{node.kind}</span>
-                  <strong>{node.label}</strong>
-                  <p>{node.summary}</p>
-                  {connections.length > 0 ? (
-                    <details className={styles.nodeConnections}>
-                      <summary>{connections.length} {connections.length === 1 ? "connection" : "connections"}</summary>
-                      <ul>
-                        {connections.map(({ edge, other, outgoing }) => (
-                          <li key={edge.id}>
-                            {outgoing ? `${edge.relation.replaceAll("_", " ")} → ${other.label}` : `${other.label} → ${edge.relation.replaceAll("_", " ")}`}
-                            <small>{edge.verification ? verificationLabel[edge.verification] : "verification not reported"} · {edge.freshness ?? "freshness not reported"}</small>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  ) : null}
-                </div>
-                <div className={styles.listState}>
-                  <span>{node.status}</span>
-                  <span>{node.verification}</span>
-                  <span>{node.freshness}</span>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      <div className={styles.desktopBrain}><AccessibleNodeList projection={projection} /></div>
 
       <footer className={styles.footer}>
         <div>
