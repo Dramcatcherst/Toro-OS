@@ -145,6 +145,7 @@
   border: 1px solid rgba(56, 189, 248, 0.12);
   background: rgba(2, 6, 23, 0.7);
 }
+.signalStrip:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; }
 
 .signalStrip > div {
   display: grid;
@@ -613,9 +614,25 @@
   .heroTopline { align-items: flex-start; flex-direction: column; }
   .heroGrid { padding: 24px 18px; }
   .heroStats { grid-template-columns: 1fr 1fr 1fr; }
-  .signalStrip { grid-template-columns: 1fr; }
-  .signalStrip > div { border-right: 0; border-bottom: 1px solid rgba(148, 163, 184, 0.12); }
-  .signalStrip > div:last-child { border-bottom: 0; }
+  .signalStrip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 7px;
+    scrollbar-width: thin;
+    padding: 7px;
+  }
+  .signalStrip > div {
+    flex: 0 0 82%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(8, 15, 32, 0.68);
+    scroll-snap-align: start;
+  }
+  .signalStrip > div:last-child { border-right: 1px solid rgba(148, 163, 184, 0.18); }
   .graphFrame { display: none; }
   .lowerGrid { grid-template-columns: 1fr; }
   .decisionFlow { grid-template-columns: 1fr 1fr; }
