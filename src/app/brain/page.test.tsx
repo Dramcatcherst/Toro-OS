@@ -70,5 +70,34 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("CAPEX change");
     expect(connectionMock).toHaveBeenCalled();
   });
-});
+  it("marks unverified current links for review instead of drawing them as verified", async () => {
+    const currentEdge = visualBrainDemo.edges[0];
+    loadBrainProjectionViewMock.mockResolvedValue({
+      projection: {
+        ...visualBrainDemo,
+        synthetic: false,
+        nodes: visualBrainDemo.nodes.slice(0, 2),
+        edges: [
+          currentEdge,
+          { ...currentEdge, id: "edge:unverified", verification: "unverified" },
+        ],
+        recentEvents: undefined,
+      },
+      layout: visualBrainDemoLayout,
+      runtime: {
+        mode: "canonical_read_only",
+        realData: true,
+        externalWrite: false,
+        stage: "C",
+        reason: "Fixture",
+      },
+    });
 
+    const html = renderToStaticMarkup(await BrainPage());
+
+    expect(html).toContain("evidence needs review");
+    expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
+    expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
+    expect(html).toContain('marker-end="url(#arrowAttention)"');
+  });
+});
