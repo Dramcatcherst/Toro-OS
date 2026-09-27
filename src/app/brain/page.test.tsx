@@ -107,6 +107,33 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain('marker-end="url(#arrowAttention)"');
   });
 
+  it("keeps visible connections explorable when the spatial map is hidden", async () => {
+    loadBrainProjectionViewMock.mockResolvedValue({
+      projection: {
+        ...visualBrainDemo,
+        synthetic: false,
+        nodes: visualBrainDemo.nodes.slice(0, 2),
+        edges: [visualBrainDemo.edges[0], visualBrainDemo.edges[1]],
+        recentEvents: undefined,
+      },
+      layout: visualBrainDemoLayout,
+      runtime: {
+        mode: "canonical_read_only",
+        realData: true,
+        externalWrite: false,
+        stage: "C",
+        reason: "Fixture",
+      },
+    });
+
+    const html = renderToStaticMarkup(await BrainPage());
+
+    expect(html).toContain("1 connection</summary>");
+    expect(html).toContain("connected to → TORO Finance");
+    expect(html).toContain("Dreamcatcher Hotel → connected to");
+    expect(html).not.toContain("reads from → Kross PMS");
+  });
+
   it("renders the real canonical projection shape without synthetic business claims", async () => {
     const slice: CanonicalBrainReadSlice = {
       contractVersion: "stage-c-read-v1",
