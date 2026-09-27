@@ -124,6 +124,40 @@ describe("loadBrainProjectionView canonical gate", () => {
     expect(loadCanonicalBrainReadSliceMock).not.toHaveBeenCalled();
   });
 
+  it("fails closed when the active membership belongs to another organization", async () => {
+    vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", "true");
+    const context = resolvedContext();
+    context.membership = { ...context.membership!, orgId: "org-b" };
+    resolveToroContextMock.mockResolvedValue(context);
+
+    const view = await loadBrainProjectionView();
+
+    expect(view.runtime).toMatchObject({
+      mode: "synthetic_only",
+      realData: false,
+      externalWrite: false,
+    });
+    expect(view.projection.synthetic).toBe(true);
+    expect(loadCanonicalBrainReadSliceMock).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when the membership is suspended", async () => {
+    vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", "true");
+    const context = resolvedContext();
+    context.membership = { ...context.membership!, status: "suspended" };
+    resolveToroContextMock.mockResolvedValue(context);
+
+    const view = await loadBrainProjectionView();
+
+    expect(view.runtime).toMatchObject({
+      mode: "synthetic_only",
+      realData: false,
+      externalWrite: false,
+    });
+    expect(view.projection.synthetic).toBe(true);
+    expect(loadCanonicalBrainReadSliceMock).not.toHaveBeenCalled();
+  });
+
   it("returns canonical read-only mode only for resolved organization context", async () => {
     vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", "true");
     resolveToroContextMock.mockResolvedValue(resolvedContext());
@@ -160,3 +194,4 @@ describe("loadBrainProjectionView canonical gate", () => {
     expect(view.runtime.reason).toContain("failed closed");
   });
 });
+
