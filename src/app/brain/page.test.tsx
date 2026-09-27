@@ -13,6 +13,11 @@ vi.mock("@/lib/server/brain-projection", () => ({
 }));
 
 import { visualBrainDemo, visualBrainDemoLayout } from "@/lib/brain-fixtures";
+import type { CanonicalBrainReadSlice } from "@/features/brain/canonical-read";
+import {
+  buildCanonicalBrainLayout,
+  buildCanonicalBrainProjection,
+} from "@/features/brain/canonical-projection";
 import BrainPage from "./page";
 
 describe("BrainPage projection modes", () => {
@@ -70,6 +75,7 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("CAPEX change");
     expect(connectionMock).toHaveBeenCalled();
   });
+
   it("marks unverified current links for review instead of drawing them as verified", async () => {
     const currentEdge = visualBrainDemo.edges[0];
     loadBrainProjectionViewMock.mockResolvedValue({
@@ -99,5 +105,61 @@ describe("BrainPage projection modes", () => {
     expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
     expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
     expect(html).toContain('marker-end="url(#arrowAttention)"');
+  });
+
+  it("renders the real canonical projection shape without synthetic business claims", async () => {
+    const slice: CanonicalBrainReadSlice = {
+      contractVersion: "stage-c-read-v1",
+      generatedAt: "2026-09-23T12:00:00.000Z",
+      scopeRef: "scope:test",
+      organization: { ref: "organization:test", label: "Example Organization", status: "active" },
+      projects: [{
+        ref: "project:test",
+        label: "Illustrative Project",
+        status: "active",
+        priority: "P2",
+        businessArea: "Operations",
+        moduleKey: "TORO_OPERATE",
+        completionPct: null,
+        needsRevalidation: false,
+        sourceSystem: "Supabase",
+        updatedAt: "2026-09-23T11:00:00.000Z",
+      }],
+      sourceAuthority: [],
+      domainGovernance: [],
+      krossHealth: [{
+        ref: "kross-health:test",
+        sourceName: "Example Kross connector",
+        snapshotKind: "operational",
+        sourceAsOf: "2026-09-22T12:00:00.000Z",
+        observedAt: "2026-09-23T11:00:00.000Z",
+        liveRequired: true,
+        freshness: "stale",
+        safeForCurrentState: false,
+      }],
+    };
+    const projection = buildCanonicalBrainProjection(slice);
+    loadBrainProjectionViewMock.mockResolvedValue({
+      projection,
+      layout: buildCanonicalBrainLayout(projection),
+      runtime: {
+        mode: "canonical_read_only",
+        realData: true,
+        externalWrite: false,
+        stage: "C",
+        reason: "Fixture",
+      },
+    });
+
+    const html = renderToStaticMarkup(await BrainPage());
+
+    expect(html).toContain("Example Organization");
+    expect(html).toContain("Illustrative Project");
+    expect(html).toContain("Example Kross connector");
+    expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
+    expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
+    expect(html).toContain("No live activity is claimed");
+    expect(html).not.toContain("Synthetic scenario summary");
+    expect(html).not.toContain("Watch TORO work");
   });
 });
