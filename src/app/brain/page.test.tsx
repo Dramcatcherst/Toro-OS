@@ -40,6 +40,10 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("demo:cash-gap:1");
     expect(html).toContain("Synthetic scenario summary");
     expect(html).toContain("Simulation only");
+    expect(html).toContain('data-brain-trace="mobile"');
+    expect(html).toContain(`Example event trace · ${visualBrainDemo.recentEvents?.length ?? 0} steps`);
+    expect(html).not.toMatch(/<details[^>]*data-brain-trace="mobile"[^>]*\sopen(?:\s|>)/);
+    expect(html).toContain("No external action executed. Open to inspect the example.");
     expect(connectionMock).toHaveBeenCalled();
   });
 
@@ -71,6 +75,7 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("demo:cash-gap:1");
     expect(html).not.toContain("Synthetic scenario summary");
     expect(html).not.toContain("Watch TORO work");
+    expect(html).not.toContain('data-brain-trace="mobile"');
     expect(html).not.toContain("Cash coverage");
     expect(html).not.toContain("CAPEX change");
     expect(connectionMock).toHaveBeenCalled();
