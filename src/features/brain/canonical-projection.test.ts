@@ -74,6 +74,14 @@ describe("buildCanonicalBrainProjection", () => {
     });
   });
 
+  it("does not claim live work without verified activity receipts", () => {
+    const projection = buildCanonicalBrainProjection(makeSlice());
+
+    expect(projection.nodes).toHaveLength(19);
+    expect(projection.nodes.every((node) => node.activity === "idle")).toBe(true);
+    expect(projection.recentEvents).toBeUndefined();
+  });
+
   it("keeps the focused projection under the Stage B visual budget", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
 
