@@ -39,6 +39,8 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("reference simulation");
     expect(html).toContain("demo:cash-gap:1");
     expect(html).toContain("Synthetic scenario summary");
+    expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
+    expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain("Simulation only");
     expect(html).toContain('data-brain-trace="mobile"');
     expect(html).toContain(`Example event trace · ${visualBrainDemo.recentEvents?.length ?? 0} steps`);
