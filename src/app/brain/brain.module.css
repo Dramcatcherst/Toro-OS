@@ -507,6 +507,8 @@
   margin: 0 auto 18px;
 }
 
+.mobileBrain { display: none; }
+
 .nodeList {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -564,6 +566,8 @@
 }
 
 @media (max-width: 800px) {
+  .mobileBrain { display: block; }
+  .desktopBrain { display: none; }
   .page { padding: 12px; }
   .heroTopline { align-items: flex-start; flex-direction: column; }
   .heroGrid { padding: 24px 18px; }
@@ -582,7 +586,12 @@
 }
 
 @media (max-width: 540px) {
-  .heroStats { grid-template-columns: 1fr; }
+  .heroGrid { gap: 16px; padding: 18px 14px; }
+  .heroStats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .heroStats div { min-width: 0; padding: 10px 7px; }
+  .heroStats span { font-size: 10px; line-height: 1.3; letter-spacing: 0.04em; }
+  .heroStats small { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .heroStats strong { margin: 5px 0 3px; font-size: 24px; }
   .decisionFlow { grid-template-columns: 1fr; }
   .timeline { padding-left: 12px; padding-right: 12px; }
   .gate { margin-left: 12px; margin-right: 12px; }
