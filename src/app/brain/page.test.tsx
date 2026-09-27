@@ -134,6 +134,28 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("reads from → Kross PMS");
   });
 
+  it("starts the mobile Brain as collapsed node layers while preserving desktop nodes", async () => {
+    loadBrainProjectionViewMock.mockResolvedValue({
+      projection: visualBrainDemo,
+      layout: visualBrainDemoLayout,
+      runtime: {
+        mode: "synthetic_only",
+        realData: false,
+        externalWrite: false,
+        stage: "B",
+        reason: "Fixture",
+      },
+    });
+
+    const html = renderToStaticMarkup(await BrainPage());
+
+    expect(html.match(/<details[^>]*data-brain-layer="node"/g)).toHaveLength(visualBrainDemo.nodes.length);
+    expect(html).not.toMatch(/<details[^>]*data-brain-layer="node"[^>]*\sopen(?:\s|>)/);
+    expect(html).toContain("Open a node to reveal its connections");
+    expect(html).toContain("The same Brain without spatial navigation");
+    expect(html.match(/data-brain-list-node/g)).toHaveLength(visualBrainDemo.nodes.length);
+  });
+
   it("renders the real canonical projection shape without synthetic business claims", async () => {
     const slice: CanonicalBrainReadSlice = {
       contractVersion: "stage-c-read-v1",
