@@ -194,4 +194,3 @@ describe("loadBrainProjectionView canonical gate", () => {
     expect(view.runtime.reason).toContain("failed closed");
   });
 });
-
