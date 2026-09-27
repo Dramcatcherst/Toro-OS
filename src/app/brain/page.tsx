@@ -148,15 +148,15 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
   );
 }
 
-function AccessibleNodeList({ projection }: { projection: BrainProjection }) {
+function AccessibleNodeList({ projection, compact = false }: { projection: BrainProjection; compact?: boolean }) {
   const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
 
   return (
     <section className={styles.listFallback}>
       <div className={styles.panelHead}>
         <div>
-          <span className={styles.eyebrow}>Accessible list view</span>
-          <h2>The same Brain without spatial navigation</h2>
+          <span className={styles.eyebrow}>{compact ? "Explore by layer" : "Accessible list view"}</span>
+          <h2>{compact ? "Open a node to reveal its connections" : "The same Brain without spatial navigation"}</h2>
         </div>
         <Activity aria-hidden="true" />
       </div>
@@ -172,32 +172,54 @@ function AccessibleNodeList({ projection }: { projection: BrainProjection }) {
             }
             return [];
           });
+          const connectionDetails = connections.length > 0 ? (
+            <details className={styles.nodeConnections}>
+              <summary>{connections.length} {connections.length === 1 ? "connection" : "connections"}</summary>
+              <ul>
+                {connections.map(({ edge, other, outgoing }) => (
+                  <li key={edge.id}>
+                    {outgoing ? `${edge.relation.replaceAll("_", " ")} → ${other.label}` : `${other.label} → ${edge.relation.replaceAll("_", " ")}`}
+                    <small>{edge.verification ? verificationLabel[edge.verification] : "verification not reported"} · {edge.freshness ?? "freshness not reported"}</small>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null;
+          const state = (
+            <div className={styles.listState}>
+              <span>{node.status}</span>
+              <span>{node.verification}</span>
+              <span>{node.freshness}</span>
+            </div>
+          );
+
+          if (compact) {
+            return (
+              <details className={styles.mobileNode} data-brain-layer="node" key={node.id}>
+                <summary>
+                  <Icon aria-hidden="true" />
+                  <span className={styles.mobileNodeName}><small>{node.kind}</small><strong>{node.label}</strong></span>
+                  <span className={styles.mobileNodeCount}>{connections.length} {connections.length === 1 ? "link" : "links"}</span>
+                </summary>
+                <div className={styles.mobileNodeBody}>
+                  <p>{node.summary}</p>
+                  {state}
+                  {connectionDetails}
+                </div>
+              </details>
+            );
+          }
+
           return (
-            <article key={node.id}>
+            <article data-brain-list-node key={node.id}>
               <Icon aria-hidden="true" />
               <div>
                 <span>{node.kind}</span>
                 <strong>{node.label}</strong>
                 <p>{node.summary}</p>
-                {connections.length > 0 ? (
-                  <details className={styles.nodeConnections}>
-                    <summary>{connections.length} {connections.length === 1 ? "connection" : "connections"}</summary>
-                    <ul>
-                      {connections.map(({ edge, other, outgoing }) => (
-                        <li key={edge.id}>
-                          {outgoing ? `${edge.relation.replaceAll("_", " ")} → ${other.label}` : `${other.label} → ${edge.relation.replaceAll("_", " ")}`}
-                          <small>{edge.verification ? verificationLabel[edge.verification] : "verification not reported"} · {edge.freshness ?? "freshness not reported"}</small>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                ) : null}
+                {connectionDetails}
               </div>
-              <div className={styles.listState}>
-                <span>{node.status}</span>
-                <span>{node.verification}</span>
-                <span>{node.freshness}</span>
-              </div>
+              {state}
             </article>
           );
         })}
@@ -260,7 +282,7 @@ export default async function BrainPage() {
         </div>
       </header>
 
-      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} /></div>
+      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 
       {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
         <div>
