@@ -316,7 +316,7 @@ export default async function BrainPage() {
 
       <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 
-      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
+      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
         <div>
           <CircleDollarSign aria-hidden="true" />
           <span>Reservations</span>
