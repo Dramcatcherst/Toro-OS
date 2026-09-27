@@ -509,6 +509,30 @@
 
 .mobileBrain { display: none; }
 
+.mobileNode { border-bottom: 1px solid rgba(148, 163, 184, 0.12); }
+.mobileNode:last-child { border-bottom: 0; }
+.mobileNode > summary {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto 12px;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.mobileNode > summary::-webkit-details-marker { display: none; }
+.mobileNode > summary:focus-visible { outline: 2px solid #67e8f9; outline-offset: -3px; }
+.mobileNode > summary > svg { width: 19px; height: 19px; color: #67e8f9; }
+.mobileNode > summary::after { content: "›"; color: #67e8f9; font-size: 21px; line-height: 1; transition: transform 180ms ease; }
+.mobileNode[open] > summary::after { transform: rotate(90deg); }
+.mobileNodeName { min-width: 0; }
+.mobileNodeName small { display: block; color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; }
+.mobileNodeName strong { display: block; overflow-wrap: anywhere; font-size: 14px; }
+.mobileNodeCount { color: #67e8f9; font-size: 11px; white-space: nowrap; }
+.mobileNodeBody { padding: 0 16px 15px 48px; }
+.mobileNodeBody p { color: #cbd5e1; font-size: 12px; line-height: 1.5; }
+.mobileNodeBody .listState { justify-content: flex-start; margin-top: 10px; }
+
 .nodeList {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
