@@ -187,6 +187,10 @@
   gap: 18px;
 }
 
+.mainGridCanonical {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .graphFrame,
 .activityPanel,
 .panel,
@@ -443,6 +447,10 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.lowerGridCanonical {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .panelHead > svg { width: 20px; height: 20px; color: #67e8f9; }
 
 .sourceList,
@@ -577,3 +585,4 @@
 @media (prefers-reduced-motion: reduce) {
   .nodeActive { animation: none; }
 }
+
