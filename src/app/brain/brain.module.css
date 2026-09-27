@@ -359,6 +359,21 @@
 }
 
 .activityPanel { padding-bottom: 18px; }
+.mobileTrace { display: none; }
+.mobileTrace > summary {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 18px 48px 0 18px;
+  cursor: pointer;
+  list-style: none;
+}
+.mobileTrace > summary::-webkit-details-marker { display: none; }
+.mobileTrace > summary:focus-visible { outline: 2px solid #67e8f9; outline-offset: -3px; }
+.mobileTrace > summary::after { content: "›"; position: absolute; right: 19px; top: 27px; color: #67e8f9; font-size: 24px; transition: transform 180ms ease; }
+.mobileTrace[open] > summary::after { transform: rotate(90deg); }
+.mobileTrace > summary strong { font-size: 16px; }
+.mobileTrace > summary small { color: #cbd5e1; font-size: 12px; line-height: 1.4; }
 .correlation {
   max-width: 150px;
   overflow: hidden;
@@ -590,6 +605,8 @@
 }
 
 @media (max-width: 800px) {
+  .desktopTrace { display: none; }
+  .mobileTrace { display: block; }
   .mobileBrain { display: block; }
   .desktopBrain { display: none; }
   .page { padding: 12px; }
