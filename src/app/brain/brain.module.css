@@ -532,6 +532,11 @@
 }
 .nodeList strong { display: block; margin-top: 2px; font-size: 12px; }
 .nodeList p { margin-top: 5px; color: #94a3b8; font-size: 11px; line-height: 1.45; }
+.nodeConnections { margin-top: 9px; color: #cbd5e1; font-size: 11px; }
+.nodeConnections summary { cursor: pointer; color: #67e8f9; }
+.nodeConnections ul { margin: 7px 0 0; padding-left: 17px; }
+.nodeConnections li + li { margin-top: 7px; }
+.nodeConnections small { display: block; color: #94a3b8; font-size: 10px; }
 .listState { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 180px; }
 .listState span { font-size: 8px; padding: 3px 5px; }
 
