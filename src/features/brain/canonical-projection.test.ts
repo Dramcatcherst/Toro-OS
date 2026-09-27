@@ -82,6 +82,23 @@ describe("buildCanonicalBrainProjection", () => {
     expect(projection.recentEvents).toBeUndefined();
   });
 
+  it("only connects visible nodes and preserves each target's evidence state", () => {
+    const projection = buildCanonicalBrainProjection(makeSlice());
+    const nodes = new Map(projection.nodes.map((node) => [node.id, node]));
+    const rootId = projection.context.organizationRef;
+
+    expect(new Set(projection.edges.map((edge) => edge.id)).size).toBe(
+      projection.edges.length,
+    );
+    for (const edge of projection.edges) {
+      const target = nodes.get(edge.target);
+      expect(edge.source).toBe(rootId);
+      expect(target).toBeDefined();
+      expect(edge.verification).toBe(target?.verification);
+      expect(edge.freshness).toBe(target?.freshness);
+    }
+  });
+
   it("keeps the focused projection under the Stage B visual budget", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
 
