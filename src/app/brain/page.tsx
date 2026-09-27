@@ -228,6 +228,38 @@ function AccessibleNodeList({ projection, compact = false }: { projection: Brain
   );
 }
 
+function ActivityTraceBody({ projection }: { projection: BrainProjection }) {
+  return <>
+    <ol className={styles.timeline}>
+      {projection.recentEvents?.map((event, index) => (
+        <li key={event.eventId}>
+          <div className={styles.timelineRail}><span>{index + 1}</span></div>
+          <div>
+            <div className={styles.timelineTop}>
+              <strong>{event.eventType}</strong>
+              <time>{new Date(event.occurredAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Costa_Rica" })}</time>
+            </div>
+            <p>{event.summary}</p>
+            <div className={styles.eventMeta}>
+              <span>{event.executionState}</span>
+              <span>{event.verificationState}</span>
+              <span>risk {event.risk.toLowerCase()}</span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div className={styles.gate}>
+      <LockKeyhole aria-hidden="true" />
+      <div>
+        <span>Human authority preserved</span>
+        <strong>No external action executed.</strong>
+        <p>TORO prepared a decision and stopped at the approval boundary.</p>
+      </div>
+    </div>
+  </>;
+}
+
 export default async function BrainPage() {
   // The feature flag and authorized scope must be evaluated per request, never at build time.
   await connection();
@@ -308,7 +340,7 @@ export default async function BrainPage() {
       <section className={`${styles.mainGrid} ${synthetic ? "" : styles.mainGridCanonical}`}>
         <Graph projection={projection} layout={layout} />
 
-        {synthetic ? <aside className={styles.activityPanel}>
+        {synthetic ? <aside className={`${styles.activityPanel} ${styles.desktopTrace}`}>
           <div className={styles.panelHead}>
             <div>
               <span className={styles.eyebrow}>Watch TORO work</span>
@@ -317,37 +349,17 @@ export default async function BrainPage() {
             <span className={styles.correlation}>demo:cash-gap:1</span>
           </div>
 
-          <ol className={styles.timeline}>
-            {projection.recentEvents?.map((event, index) => (
-              <li key={event.eventId}>
-                <div className={styles.timelineRail}>
-                  <span>{index + 1}</span>
-                </div>
-                <div>
-                  <div className={styles.timelineTop}>
-                    <strong>{event.eventType}</strong>
-                    <time>{new Date(event.occurredAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Costa_Rica" })}</time>
-                  </div>
-                  <p>{event.summary}</p>
-                  <div className={styles.eventMeta}>
-                    <span>{event.executionState}</span>
-                    <span>{event.verificationState}</span>
-                    <span>risk {event.risk.toLowerCase()}</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          <div className={styles.gate}>
-            <LockKeyhole aria-hidden="true" />
-            <div>
-              <span>Human authority preserved</span>
-              <strong>No external action executed.</strong>
-              <p>TORO prepared a decision and stopped at the approval boundary.</p>
-            </div>
-          </div>
+          <ActivityTraceBody projection={projection} />
         </aside> : null}
+
+        {synthetic ? <details className={`${styles.activityPanel} ${styles.mobileTrace}`} data-brain-trace="mobile">
+          <summary>
+            <span className={styles.eyebrow}>Example event trace · {projection.recentEvents?.length ?? 0} steps</span>
+            <strong>From source to approval</strong>
+            <small>No external action executed. Open to inspect the example.</small>
+          </summary>
+          <ActivityTraceBody projection={projection} />
+        </details> : null}
       </section>
 
       <section className={`${styles.lowerGrid} ${synthetic ? "" : styles.lowerGridCanonical}`}>
