@@ -111,7 +111,11 @@ function BrainSearch({ projection, query, results, surface, onQuery, onSelect }:
 }) {
   return <div className={styles.brainSearch} data-brain-search={surface}>
     <label htmlFor={`brain-search-${surface}`}>Find a neuron</label>
-    <input id={`brain-search-${surface}`} type="search" value={query} onChange={(event) => onQuery(event.target.value)} placeholder="Person, agent, project, system…" autoComplete="off" />
+    <input id={`brain-search-${surface}`} type="search" value={query} onChange={(event) => onQuery(event.target.value)} onKeyDown={(event) => {
+      if (event.key !== "Enter" || !query.trim() || !results.length) return;
+      event.preventDefault();
+      onSelect(results[0].id, surface);
+    }} placeholder="Person, agent, project, system…" autoComplete="off" />
     <span className={styles.searchScope}>{projection.synthetic ? "Example network only" : "Loaded authorized view only"} · {projection.nodes.length} nodes</span>
     {query.trim() ? <div className={styles.searchResults} role="group" aria-label={`Search results in ${surface} Brain map`}>
       <span role="status">{results.length ? `${results.length} matches in this view` : "No matches in this view"}</span>
