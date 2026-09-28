@@ -1,6 +1,6 @@
 # TORO — Supabase Security Residual Review — 2026-09-28
 
-**Status:** PREPARED / READ-ONLY REVIEW COMPLETE  
+**Status:** RPC HARDENING APPLIED / AUTH LEAKED-PASSWORD TOGGLE PENDING  
 **Project:** `abtyrbqlqbsastmridzp`  
 **Canonical task:** `task-dc-timekeeping-validation-20260810`  
 **General Plan:** `docs/product/TORO_BRAIN_GENERAL_PLAN.md`
@@ -169,12 +169,35 @@ Separate Auth change:
 
 Do not combine Auth password-policy change and RPC role change into one irreversible step unless the rollback/testing plan explicitly covers both.
 
+## Applied result — 2026-09-28
+
+Mauricio explicitly authorized Admin Mode for the two overpermissive RPCs and leaked-password protection.
+
+Applied Supabase migration:
+`20260928224926_narrow_employee_operational_dashboard_access_20260928`
+
+Production verification:
+- before: EMPLEADO could retrieve 12 employees from `operational_schedule_workspace` and 103 attendance-day rows from `operational_time_clock_dashboard`;
+- before: direct RLS self-read correctly exposed only 1 employee for attendance and 1 for shifts;
+- after: EMPLEADO receives `not authorized` from both broad RPCs;
+- after: direct RLS self-read remains limited to 1 employee for attendance and shifts;
+- after: ADMIN remains ALLOWED on both RPCs;
+- readback confirms neither function body contains `EMPLEADO`;
+- Security Advisor still lists both functions because they remain intentionally callable by `authenticated` and enforce role authorization internally. The lint count therefore does not measure the repaired employee-scope issue.
+
+Reviewed SQL and rollback evidence:
+`supabase/drafts/20260928_narrow_employee_operational_dashboard_access.sql`
+
+### Leaked-password protection
+
+Still **PENDING/BLOCKED BY TOOLING**, not by authorization.
+
+Attempted authorized dashboard automation did not start because the connected browser-automation wallet has insufficient balance. No Auth setting was modified. The Supabase MCP exposes the Advisor and database operations but not Auth-settings mutation.
+
 ## Current recommendation
 
-Security residual should now be treated as:
-
-1. **P0:** verify and narrow the two broad employee-read RPCs.
-2. **P0:** enable leaked-password protection through authorized Auth control.
-3. **Review, not panic:** keep inspecting the 3 pre-login functions as intentional public endpoints.
-4. **P1:** review remaining authenticated SECURITY DEFINER functions over time; most currently show role/self guards and should not all be rewritten merely to silence the Advisor.
+1. **DONE:** narrow the two broad employee-read RPCs.
+2. **PENDING:** enable leaked-password protection through an authenticated Supabase Auth settings surface, then rerun Advisor.
+3. **Review, not panic:** keep the 3 pre-login functions as bounded intentional public endpoints subject to abuse/regression review.
+4. **P1:** review remaining authenticated SECURITY DEFINER functions incrementally; do not rewrite guarded functions merely to silence the Advisor.
 
