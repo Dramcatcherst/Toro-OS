@@ -153,6 +153,7 @@ export default async function Home() {
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyan-300">{airtableBase.name} / {airtableBase.blueprintTable}</p>
                 <h1 className="mt-1 text-2xl font-black text-white md:text-4xl">TORO command center</h1>
+                <p className="mt-1 text-xs text-amber-200">Legacy concept view: approval examples are synthetic and cannot authorize work.</p>
               </div>
               <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
                 <div className="border border-cyan-300/15 bg-black/35 px-3 py-2">
@@ -160,8 +161,8 @@ export default async function Home() {
                   <div className="mt-1 flex items-center gap-2"><span className="font-mono text-xl text-white">{connectedCount}</span><Pill className="border-cyan-300/30 bg-cyan-300/10 text-cyan-100">safe</Pill></div>
                 </div>
                 <div className="border border-amber-300/15 bg-black/35 px-3 py-2">
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500">Approvals</div>
-                  <div className="mt-1 flex items-center gap-2"><span className="font-mono text-xl text-white">{approvalCount}</span><Pill className="border-amber-300/30 bg-amber-300/10 text-amber-100">required</Pill></div>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500">Example approval states</div>
+                  <div className="mt-1 flex items-center gap-2"><span className="font-mono text-xl text-white">{approvalCount}</span><Pill className="border-amber-300/30 bg-amber-300/10 text-amber-100">synthetic</Pill></div>
                 </div>
                 <div className="border border-red-400/15 bg-black/35 px-3 py-2">
                   <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500">Critical queue</div>
@@ -218,7 +219,7 @@ export default async function Home() {
                       <div className="mt-2 grid gap-2 text-xs text-slate-300">
                         <div className="flex items-center justify-between border-b border-slate-800 pb-2"><span>Business knowledge</span><span className="font-mono text-cyan-200">{airtableTables.length} tables</span></div>
                         <div className="flex items-center justify-between border-b border-slate-800 pb-2"><span>Server connector health</span><span className="font-mono text-cyan-200">{connectorHealth.summary.live} live / {connectorHealth.summary.configured} configured</span></div>
-                        <div className="flex items-center justify-between"><span>Approval ledger</span><span className="font-mono text-amber-200">{approvalLedger.summary.Pending} pending / {approvalLedger.summary.Approved} approved</span></div>
+                        <div className="flex items-center justify-between"><span>Example approval states · not operational</span><span className="font-mono text-amber-200">{approvalLedger.summary.Pending} pending / {approvalLedger.summary.Approved} approved</span></div>
                       </div>
                     </div>
                   </div>
@@ -263,7 +264,7 @@ export default async function Home() {
 
             <section id="approvals" className="grid gap-4 xl:grid-cols-[0.8fr_1.2fr]">
               <Panel>
-                <SectionTitle icon={ClipboardCheck} title="Approval-Gated Action Queue" action="command review table" />
+                <SectionTitle icon={ClipboardCheck} title="Illustrative Approval-Gated Action Queue" action="synthetic examples · not operational" />
                 <div className="overflow-x-auto p-4">
                   <table className="min-w-full border-collapse text-left text-xs">
                     <thead>

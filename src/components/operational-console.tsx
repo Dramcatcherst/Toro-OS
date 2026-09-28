@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, DatabaseZap, GitPullRequestCreate, History, KeyRound, Server, XCircle } from "lucide-react";
+import { DatabaseZap, GitPullRequestCreate, History, KeyRound, Server } from "lucide-react";
 import { auditEvents, connectorEndpoints, workspaceRoles } from "@/lib/toro-data";
 import type { ApprovalRecord, ApprovalState, ApprovalSummary, ConnectorHealthRecord, SourceMeta } from "@/lib/toro-types";
 
@@ -35,8 +35,6 @@ function MiniMeta({ item }: { item: SourceMeta }) {
 export function OperationalConsole({ initialApprovals }: { initialApprovals: ApprovalRecord[] }) {
   const [approvals, setApprovals] = useState(initialApprovals);
   const [connectorHealth, setConnectorHealth] = useState<ConnectorHealthRecord[]>([]);
-  const [isSaving, setIsSaving] = useState<string | null>(null);
-  const [serverMode, setServerMode] = useState("server_persisted");
 
   const summary = useMemo(() => {
     return approvals.reduce<ApprovalSummary>(
@@ -58,7 +56,6 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
       if (approvalResponse.ok) {
         const approvalPayload = await approvalResponse.json();
         setApprovals(approvalPayload.approvals ?? initialApprovals);
-        setServerMode(approvalPayload.mode ?? "server_persisted");
       }
 
       if (connectorResponse.ok) {
@@ -70,34 +67,16 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
     void hydrate();
   }, [initialApprovals]);
 
-  async function setState(id: string, state: ApprovalState) {
-    setIsSaving(id);
-
-    const response = await fetch("/api/approvals", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, state }),
-    });
-
-    if (response.ok) {
-      const payload = await response.json();
-      setApprovals(payload.approvals ?? initialApprovals);
-      setServerMode(payload.mode ?? "server_persisted");
-    }
-
-    setIsSaving(null);
-  }
-
   return (
     <section id="live-ops" className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
       <div className="border border-cyan-400/12 bg-slate-950/72">
         <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
           <div className="flex items-center gap-2">
             <KeyRound className="h-4 w-4 text-cyan-300" />
-            <h2 className="text-sm font-semibold text-white">Persistent Approval Console</h2>
+            <h2 className="text-sm font-semibold text-white">Illustrative Approval Console</h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            <MiniPill className="border-cyan-400/30 bg-cyan-400/10 text-cyan-100">{serverMode}</MiniPill>
+            <MiniPill className="border-cyan-400/30 bg-cyan-400/10 text-cyan-100">synthetic · read only</MiniPill>
             {(Object.keys(summary) as ApprovalState[]).map((state) => (
               <MiniPill key={state} className={tone(state)}>{summary[state]} {state}</MiniPill>
             ))}
@@ -114,11 +93,7 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
                 <MiniPill className={tone(approval.state)}>{approval.state}</MiniPill>
               </div>
               <MiniMeta item={approval} />
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Approved")} className="border border-emerald-400/30 bg-emerald-400/10 px-2 py-2 text-xs text-emerald-100 disabled:opacity-50"><CheckCircle2 className="mx-auto mb-1 h-4 w-4" />Approve</button>
-                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Needs changes")} className="border border-amber-300/30 bg-amber-300/10 px-2 py-2 text-xs text-amber-100 disabled:opacity-50">Revise</button>
-                <button disabled={isSaving === approval.id} onClick={() => void setState(approval.id, "Rejected")} className="border border-red-400/30 bg-red-400/10 px-2 py-2 text-xs text-red-100 disabled:opacity-50"><XCircle className="mx-auto mb-1 h-4 w-4" />Reject</button>
-              </div>
+              <p className="mt-3 text-xs text-amber-200">Example only. This card cannot approve or reject real work.</p>
             </article>
           ))}
         </div>
@@ -195,7 +170,7 @@ export function OperationalConsole({ initialApprovals }: { initialApprovals: App
         <div className="border border-cyan-400/12 bg-slate-950/72 p-4">
           <div className="flex gap-2 text-xs text-slate-300">
             <DatabaseZap className="h-4 w-4 shrink-0 text-amber-200" />
-            Approval decisions now persist through a server-managed cookie ledger. No external business system is modified.
+            These are legacy example states, not canonical decisions. The demo cannot record approvals or modify an external business system.
           </div>
         </div>
       </div>
