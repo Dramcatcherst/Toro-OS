@@ -163,3 +163,26 @@ No task row was deleted. Recovery SQL remains versioned in:
 `supabase/drafts/20260928_toro_r1_task_revalidation_recovery.sql`.
 
 **R1-A result:** stale/historical backlog was reduced without creating another task system or losing source history.
+
+
+## Recovery dry-run — VERIFIED / ROLLED BACK
+
+The versioned recovery SQL was tested against the real R1-applied production post-state inside a transaction and rolled back.
+
+Inside the recovery transaction:
+
+- actionable rows expected: **62**
+- reviewed rows restored to `needs_revalidation=true`: **62**
+- original status mismatches after recovery: **0**
+- reviewed archived/inactive after recovery simulation: **0**
+- recovery audit receipts created in transaction: **62**
+
+Post-`ROLLBACK` readback confirmed production remained in the R1-applied state:
+
+- reviewed rows with `needs_revalidation=true`: **0**
+- reviewed archived/inactive: **21**
+- reviewed done/inactive: **1**
+- persisted apply receipts: **62**
+- persisted recovery receipts: **0**
+
+Therefore both the forward apply and recovery paths have transaction-level production evidence without destructive deletion.
