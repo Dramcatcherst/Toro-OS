@@ -41,6 +41,11 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Synthetic scenario summary");
     expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
     expect(html).toMatch(/tab[Ii]ndex="0"/);
+    expect(html).toContain('data-brain-mini-map="true"');
+    expect(html).toContain("Synthetic visual Brain overview");
+    expect(html).toContain('href="#brain-node-node:cash"');
+    expect(html).toContain('id="brain-node-node:cash"');
+    expect(html).toContain(`${visualBrainDemo.nodes.length} nodes · ${visualBrainDemo.edges.length} links`);
     expect(html).toContain("Simulation only");
     expect(html).toContain('data-brain-trace="mobile"');
     expect(html).toContain(`Example event trace · ${visualBrainDemo.recentEvents?.length ?? 0} steps`);
@@ -72,6 +77,8 @@ describe("BrainPage projection modes", () => {
 
     expect(html).toContain("permission-scoped read");
     expect(html).toContain("Canonical read-only projection");
+    expect(html).toContain("Read-only visual Brain overview");
+    expect(html).toContain('data-brain-mini-map="true"');
     expect(html).toContain("Source authority");
     expect(html).not.toContain("reference simulation");
     expect(html).not.toContain("demo:cash-gap:1");
