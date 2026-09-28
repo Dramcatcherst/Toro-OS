@@ -1,7 +1,7 @@
 # TORO Comms v1 — Communication & Coordination Contract
 
 **Status:** CURRENT PRODUCT SPEC
-**Date:** 2026-09-23
+**Date:** 2026-09-28
 **Subsystem:** TORO Comms
 **Primary surfaces:** WhatsApp/OpenClaw, WeSpeak, Instagram, Facebook/Messenger, email, website, review surfaces, TORO Portal
 **Canonical runtime truth:** Supabase
@@ -418,6 +418,28 @@ Notify when:
 
 Do not notify because data merely exists.
 
+### Owner Attention projection
+
+Canonical contract:
+- `operations.knowledge_items/owner_attention_comms_payflow_v1`
+- `operations.knowledge_items/payment_inbox_map_2026_09_v1`
+- `docs/product/TORO_OWNER_ATTENTION_PAYFLOW_V1.md`
+
+Owner Attention is one exception queue shared by Portal Today/Attention, Money/PayFlow and WhatsApp/OpenClaw.
+
+Typical critical/high triggers:
+- payment declined or business-critical service at suspension risk;
+- legal/tax deadline;
+- in-house guest emergency;
+- booking/channel response deadline under 24 hours;
+- invoice due soon and unreconciled;
+- duplicate charge/unreconciled collection claim;
+- new contract/material commercial terms;
+- payment proof requiring validation;
+- provider waiting on owner/manager decision.
+
+Routine successful receipts and informational notices belong to evidence/digest unless another rule makes them actionable.
+
 ## 14. OpenClaw integration boundary
 
 OpenClaw is a **channel gateway**.
@@ -440,6 +462,22 @@ It may not independently:
 ## 15. WeSpeak integration boundary
 
 WeSpeak remains an active specialist guest-communication runtime.
+
+### Voice
+
+Vendor roadmap evidence dated 2026-09-28 reports **Atender llamadas de Voz con IA = Completed**. This proves vendor feature availability only. Dreamcatcher activation remains unverified until account/runtime evidence passes pricing, number, inbound/outbound scope, consent/recording, hours, languages, handoff/emergency, transcript retention/privacy and action-ceiling QA.
+
+Canonical task: `wespeak_voice_activation_20260928`.
+
+Any voice call that becomes actionable must create/resolve the same TORO Comms follow-up. No parallel voice inbox.
+
+### Payments
+
+Current email evidence proves that WeSpeak handles many payment-information requests, SINPE instructions and payment-proof handoffs. It does **not** prove a native payment-processing product is enabled for Dreamcatcher.
+
+Canonical task: `wespeak_payments_capability_audit_20260928`.
+
+If enabled later, WeSpeak is an interaction surface only. Processor/bank/acquirer/Kross/Alegra evidence remains payment authority; money movement/refunds remain governed.
 
 TORO owns:
 - governed hotel facts;
