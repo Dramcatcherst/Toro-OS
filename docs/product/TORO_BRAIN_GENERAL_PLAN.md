@@ -1,7 +1,7 @@
 # TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-24
+**Date:** 2026-09-28
 **Master product:** TORO
 **Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
@@ -1910,11 +1910,11 @@ GATES:
 - Write workflows (profile update, leave submission) remain deferred until read-only parity is proven.
 
 
-### TORO Comms Wave 1 code foundation — 2026-09-23
+### TORO Comms Wave 1 code foundation — updated 2026-09-28
 
 CURRENT:
-- Draft PR #51: `feat: add TORO Comms read-only inbox foundation`.
-- Base: PR #42 context branch.
+- PR #42 context resolver is MERGED.
+- PR #51 `feat: add TORO Comms read-only inbox foundation` is MERGED.
 - Reuses existing `team_messages` + `team_message_read_states`; no duplicate chat database.
 - Read-only organization inbox with unread calculation.
 - Safe attachment projection excludes storage paths/raw JSON.
@@ -1924,13 +1924,15 @@ CURRENT:
   - DMs addressed to current linked employee;
   - unrelated privileged cross-user DMs are excluded.
 - Cross-user privileged DM review belongs in a separate explicit/audited governance/HR surface.
-- Vercel preview build = SUCCESS.
+- Same-Brain internal-work intake PR #142 is MERGED.
+- OpenClaw/Codex guidance from stale PR #143 was superseded by MERGED PR #168.
+- OpenClaw runtime evidence gate from stale PR #151 was superseded by MERGED PR #167.
 
 GATES:
-- PR #51 remains DRAFT until PR #42 lands and official tests execute.
-- No message send/write/read-state mutation yet.
-- No communication channel/binding tables yet.
-- OpenClaw bindings remain blocked by live runtime audit.
+- No general message send/write/read-state mutation has been promoted as the default Comms path.
+- No production multi-mailbox channel/binding layer is yet verified.
+- OpenClaw live runtime, verified channel identity and cross-source/mailbox capability parity remain unverified until direct Gateway acceptance.
+- Email completeness requires Workspace Admin inventory + real mailbox bindings + governed Gmail ingestion/backfill.
 
 
 ### TORO People Self-Service Wave 1 — 2026-09-23
