@@ -42,6 +42,9 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
     expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain('data-brain-mini-map="true"');
+    expect(html.match(/data-brain-edge-tooltip="true"/g)).toHaveLength(visualBrainDemo.edges.length * 2);
+    expect(html).toContain("Example link: TORO Finance reads from Kross PMS. verified · current.");
+    expect(html).toContain("hover a link for its relation");
     expect(html).toContain("Synthetic visual Brain overview");
     expect(html.match(/name="brain-map-node"/g)).toHaveLength(visualBrainDemo.nodes.length);
     expect(html).toContain("View connections");
@@ -251,6 +254,8 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Example Organization");
     expect(html).toContain("Illustrative Project");
     expect(html).toContain("Example Kross connector");
+    expect(html).toContain("Read-only link: Example Organization connected to Example Kross connector. unverified · stale.");
+    expect(html).not.toContain("Example link:");
     expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
     expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
     expect(html).toContain("No live activity is claimed");
