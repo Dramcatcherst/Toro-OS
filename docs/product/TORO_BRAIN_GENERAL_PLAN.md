@@ -653,6 +653,53 @@ Every event:
 
 ---
 
+## Access & credential strategy — owner decision 2026-09-28
+
+Current owner rule:
+- **access first, password rotation later**;
+- preserve working credentials while TORO maps ownership, recovery paths, MFA, sessions, aliases, integrations and dependent systems;
+- do **not** rotate passwords, enable new password-enforcement controls, change MFA, or rewrite recovery settings merely for hardening while access consolidation is still incomplete;
+- exception: if there is evidence of credential compromise, unauthorized access or an urgent provider requirement, security containment overrides this deferment;
+- TORO must never expose, copy into business data, or request secrets unnecessarily;
+- personal Google scope and hotel/company Google scope remain separate even when both are connected;
+- password rotation and Auth hardening become a later controlled wave with per-system rollback, dependency checks and post-change login/recovery verification.
+
+Current verified access snapshot:
+- Gmail connector: `admin@dreamcatcherhotel.com` / Dreamcatcher Hotel & Villas;
+- Google Drive: hotel identity `admin@dreamcatcherhotel.com` and separate personal identity `mauricio.fernandez.toro@gmail.com`;
+- Google Workspace: `admin@dreamcatcherhotel.com` originated the 2026-08-18 Workspace migration authorization request to `atrapasuenoshotel@gmail.com`; this proves administrative migration authority but does **not** yet prove Super Admin;
+- Notion: Hotel Atrapasueños workspace connected through `atrapasuenoshotel@gmail.com`;
+- Airtable: TORO bases writable through the connected workspace;
+- Supabase: canonical project `abtyrbqlqbsastmridzp` active/healthy;
+- GitHub: canonical `Dramcatcherst/Toro-OS` write/PR/merge path verified;
+- Vercel: Dreamcatcher team connected;
+- Dropbox: connected hotel archive scope under `info@atrapasuenos.net`;
+- Alegra: connected; account-link duplication is treated as a connector/session fact, not evidence of two separate accounting books.
+
+Root-access priority:
+1. Google Workspace Admin inventory and recovery ownership;
+2. Google Business Profile / Google hotel presence;
+3. Kross authorized read access;
+4. banking + TRIBU/Hacienda access without mixing personal and company scopes;
+5. Meta Business / WhatsApp / Instagram/Facebook ownership;
+6. only then coordinated password rotation, recovery cleanup and stronger Auth controls.
+
+### TinyFish policy
+
+TinyFish is an **optional browser-automation tool**, not part of TORO's canonical architecture and not a single point of failure.
+
+Default:
+- prefer direct connected apps/connectors and official APIs first;
+- use standard web research for public information;
+- use TinyFish only when a user-directed website workflow genuinely requires clicking/login/navigation and no direct connector or safer native route exists;
+- do **not** pay/top up TinyFish merely to keep ordinary TORO operations moving;
+- reconsider paying only when repeated website-only blockers create enough operational value to justify the cost.
+
+Canonical structured reference:
+`operations.knowledge_items/toro_access_control_matrix_2026_09_28_v1`.
+
+---
+
 # 12. Current data/platform ownership
 
 ## GitHub
