@@ -67,6 +67,11 @@ As of 2026-09-28:
 - ChatGPT Gmail connector is authenticated as `admin@dreamcatcherhotel.com`;
 - Supabase contains 6,128 governed Gmail metadata rows, all from `source_base_id=admin-dreamcatcherhotel`;
 - no complete multi-mailbox coverage exists;
+- the hotel Drive identity `admin@dreamcatcherhotel.com` is now separately connected and readable in ChatGPT;
+- no Shared Drives are visible for that identity;
+- `Google Admin Downloads` contains migration report `Migration_Report_7s22reb7vl8o0_202608140404_File`;
+- that report proves a historical IMAP migration path on 2026-08-14 from `info@dreamcatcherhotel.com` folders into Gmail target `atrapasuenoshotel@gmail.com`;
+- some folder/message crawler rows show `Success` and others `In Progress`, so the report proves migration activity but does **not** prove completion, current aliasing, forwarding, ownership, or that the target account remains canonical;
 - Google Drive connector still authenticates as `mauricio.fernandez.toro@gmail.com` even after a mobile-app account switch; ChatGPT connector OAuth must be reconnected separately;
 - PR #142 Same-Brain internal-work intake is merged;
 - PR #167 runtime evidence gate supersedes stale #151 and is merged;
