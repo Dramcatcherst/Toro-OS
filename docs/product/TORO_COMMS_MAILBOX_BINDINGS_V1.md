@@ -65,13 +65,40 @@ Do not assume six addresses = six independent users.
 
 As of 2026-09-28:
 - ChatGPT Gmail connector is authenticated as `admin@dreamcatcherhotel.com`;
-- Supabase contains 6,128 governed Gmail metadata rows, all from `source_base_id=admin-dreamcatcherhotel`;
+- Supabase contains 6,128 governed Gmail metadata rows, all indexed under `source_base_id=admin-dreamcatcherhotel`;
 - no complete multi-mailbox coverage exists;
-- Google Drive connector still authenticates as `mauricio.fernandez.toro@gmail.com` even after a mobile-app account switch; ChatGPT connector OAuth must be reconnected separately;
+- Google Drive now has two explicit connected identities: `mauricio.fernandez.toro@gmail.com` and `admin@dreamcatcherhotel.com`;
+- the hotel Drive identity has no Shared Drives visible;
+- the hotel Drive root is scope-mixed: 39 visible root items, of which 35 are Aprende AI/Maufertoro/TORO-related by title, 3 are Dreamcatcher/Google-Admin related, and 1 is other; do not mass-move/delete;
+- Google Admin Downloads contains migration report `Migration_Report_7s22reb7vl8o0_202608140404_File`;
 - PR #142 Same-Brain internal-work intake is merged;
 - PR #167 runtime evidence gate supersedes stale #151 and is merged;
 - PR #168 Same-Brain/Codex alignment supersedes stale #143 and is merged;
 - General Plan multi-mailbox + OpenClaw parity alignment is merged via PR #176.
+
+## Observed mailbox activity snapshot — 2026-09-28
+
+This is evidence from the currently connected Gmail corpus. It does **not** replace Workspace Admin classification.
+
+- `admin@dreamcatcherhotel.com`: directly connected Gmail profile; high current send/receive activity; verified Workspace administrator username.
+- `info@dreamcatcherhotel.com`: high current send/receive activity and used as an outgoing From identity; exact type (user/alias/send-as/delegation) remains unverified.
+- `accounting@atrapasuenos.net`: current 2026 send/receive evidence exists and includes the LAFISE retention-certificate chain. Raw SMTP headers show SiteGround infrastructure in its outbound path, so do not assume the `@atrapasuenos.net` mailboxes are part of the Dreamcatcher Workspace.
+- `info@atrapasuenos.net`: limited but current 2026 evidence exists.
+- `proveedores@atrapasuenos.net`: owner-confirmed address; current connected-corpus search is insufficient to classify the real endpoint.
+- `accounting@dreamcatcherhotel.com`: no 2026 message evidence found in the currently connected corpus; classification remains unverified.
+- `atrapasuenoshotel@gmail.com`: legacy Gmail remains a critical dependency; original messages Delivered-To this address are present through at least 2026-09-25, including GitHub/Vercel/Kross/Alegra-related traffic.
+
+### Verified Workspace migration timeline
+
+- **2026-08-14:** Google confirmed custom email for `dreamcatcherhotel.com`; Workspace administrator username `admin@dreamcatcherhotel.com`; Business Starter.
+- **2026-08-14:** Google Admin migration report records IMAP migration activity from `info@dreamcatcherhotel.com` folders into Gmail target `atrapasuenoshotel@gmail.com`.
+- **2026-08-18:** Google emailed `atrapasuenoshotel@gmail.com` that `admin@dreamcatcherhotel.com` requested authorization to connect that Gmail and transfer messages into `dreamcatcherhotel.com`.
+- **2026-08-23:** Workspace trial/setup notices were sent to both the legacy Gmail and the new admin address.
+- **2026-09-13:** Google sent Workspace welcome/setup guidance to `admin@dreamcatcherhotel.com`.
+- **Through at least 2026-09-25:** original messages delivered to the legacy Gmail remain present in the connected corpus.
+- **Migration completion:** NOT PROVEN. No completion notice was recovered.
+
+Do not retire the legacy Gmail or `info@dreamcatcherhotel.com` until Workspace Admin inventory, forwarding/import state, provider dependencies and migration completion are verified.
 
 ## Binding registry contract
 
