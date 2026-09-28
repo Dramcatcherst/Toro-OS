@@ -112,7 +112,7 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Comparar dominio/proyecto, SHA desplegado, autorización y rollback; revalidar bloqueo de portafolio recItHnqUB5E18F1L. Cierre: versión pública exacta y decisión registradas. Rol: Mauricio + técnico. Sin dependencia previa. No asumir que un reporte histórico sigue vigente. No merge/promoción/rollback ni cambio de dominio por esta carga.\n\nPlan target date (source): 2026-09-17\n\nExecution plan ref: DC2-022\n\nPrimary KPI: Releases verificadas\n\nSource notes:\nBLOQUEO DE SECUENCIA 17/09/2026. No preparar ni ejecutar release/producción mientras `Channel Truth P0` no cierre Kross→Booking/OTAs y los claims públicos críticos. El catálogo preview ya está gobernado y verde (PR #66); el release público debe permanecer congelado/capacity-neutral. Reanudar DC2-022 solo después de: (1) revisar 3 reservas DCV, (2) corregir Kross type9/copy si es seguro, (3) revalidar Booking y canales, (4) decidir Full Buyout/aforo por separado si afecta release. No abrir otro candidato de publicación en paralelo.\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.23166+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -120,8 +120,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The release-authority task remains the canonical production gate; current evidence still requires Channel Truth, exact SHA/domain/rollback verification and owner release approval.",
+    "evidence_ref": "supabase:operations.tasks/DC2-022@2026-09-23T06:06:49.23166+00"
   },
   {
     "task_id": "1f7142ed-ebaf-40ee-8b46-62f09e3759c6",
@@ -236,16 +236,16 @@
     "description": "Source notes:\nCreate a weekly import/reporting flow for spend, impressions, clicks, CTR, CPC, conversions, CPA, search terms, negatives, landing page, country, language and device. Do not optimize on page views.\n\n2026-08-22 TORO TRIAGE: moved to NEXT. Dependency: first stabilize booking conversion tracking/account setup so imported performance metrics optimize against reliable conversion events.",
     "updated_at": "2026-09-25 10:33:36.877168+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "REWRITE",
     "merge_target_task_key": null,
     "close_status": null,
-    "proposed_status": null,
+    "proposed_status": "blocked",
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The reporting objective remains valid, but the task is already dependency-gated by account setup and reliable booking conversion tracking; planned understates the current blocked state.",
+    "evidence_ref": "supabase:operations.tasks/google_ads_results_to_toro_os_v2@2026-09-25T10:33:36.877168+00"
   },
   {
     "task_id": "96e0893c-357e-46a0-9571-b9b6114ff73d",
@@ -577,7 +577,7 @@
     "description": "Verificar 20 unidades y pilotar solución de ropa húmeda en cinco, compatible con ventilación y circulación. Cotización/diseño antes de compras o perforaciones; no gasto indeterminado. Plan target source: 2026-10-09. KPI: quejas de humedad/ropa.\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: las 20 unidades del hotel para baseline; piloto físico limitado a 5 unidades seleccionadas desde ese baseline.\nResponsable: RICO; QA Housekeeping / Recepción.\nPrueba: documentar solución práctica de secado sin compra, perforación ni instalación irreversible; observar uso real, ventilación y circulación en las 5 unidades piloto.\nEvidencia: unidad, fecha/hora, foto de condición inicial y piloto, resultado PASS/FAIL, observación de circulación/ventilación y responsable.\nCriterio de cierre: baseline 20/20 + resultado comparable de 5 pilotos + recomendación sustentada y sin bloqueo de seguridad/circulación; compras u obra quedan fuera de este paquete.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-19 09:47:46.360289+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -585,8 +585,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The practical drying pilot remains a bounded physical experiment with a 20-room baseline and five-room pilot still lacking dated field evidence.",
+    "evidence_ref": "supabase:operations.tasks/DC2-045@2026-09-19T09:47:46.360289+00"
   },
   {
     "task_id": "e1d738e0-4e7a-4d9b-9d9b-153473114884",
@@ -670,7 +670,7 @@
     "description": "Cada jacuzzi debe quedar identificado con fuente de agua, calefacción, bomba/filtro y prueba funcional. Source due_date 2026-08-17 is stale and intentionally not promoted.\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: los dos jacuzzis Dreamcatcher, inferior y superior, incluyendo equipos visibles asociados.\nResponsable: RICO; apoyo Mantenimiento; QA Gerencia.\nPrueba: identificar fuente de agua, bomba/filtro y configuración de calefacción de cada unidad y ejecutar prueba funcional no invasiva de circulación; calefacción solo cuando corresponda a la configuración real.\nEvidencia: fecha/hora, foto del jacuzzi y equipo visible, identificación de configuración, PASS/FAIL por función y responsable.\nCriterio de cierre: ambos jacuzzis mapeados con configuración física sustentada, prueba funcional registrada, brechas explícitas y QA; no publicar claims al huésped desde este paquete.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-19 09:47:46.360289+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -678,8 +678,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Both jacuzzis still require dated physical mapping and functional evidence for water/circulation/heating configuration before claims or closure.",
+    "evidence_ref": "supabase:operations.tasks/task-dc-jacuzzi-mapping-20260810@2026-09-19T09:47:46.360289+00"
   },
   {
     "task_id": "328dd9da-0ec8-4cbe-bcc3-5799d46ff034",
@@ -794,7 +794,7 @@
     "description": "Verificar propiedad/GA4 correcta, sitemap canónico, indexación/cobertura y baseline queries/pages/clicks/impressions/CTR/position. Search Console es medición, no fuente de verdad hotelera. No borrar dominios ni hacer remociones masivas. Plan target source: 2026-10-04.\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.231509+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -802,8 +802,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Search Console baseline/indexation remains a current post-release measurement capability and no verified completion evidence supports closing or merging it.",
+    "evidence_ref": "supabase:operations.tasks/connect_search_console_and_submit_sitemap@2026-09-23T06:06:49.231509+00"
   },
   {
     "task_id": "97c9a2d3-455e-42e6-b9a8-670ede1cd554",
@@ -825,7 +825,7 @@
     "description": "Comparador de tres opciones: camas, baño, cocina privada/compartida/no, escaleras y vista real; reutilizar catálogo/fit. Cierre: cinco usuarios completan selección con datos correctos. No crear otra app ni inventario. Publicación pendiente de QA. Plan target source: 2026-10-04. KPI: selección a reserva / dudas.\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.23953+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -833,8 +833,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The room-comparison capability remains a distinct website selection/conversion improvement with governed catalog dependencies and no verified completion evidence.",
+    "evidence_ref": "supabase:operations.tasks/DC2-028@2026-09-23T06:06:49.23953+00"
   },
   {
     "task_id": "d7e40354-f870-44d5-b6ce-ba3165a3a028",
@@ -856,16 +856,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Baseline móvil: peso hero, contraste, labels, teclado y solapamientos CTA/WhatsApp. Cierre: antes/después reproducible y cero bloqueos de teclado. Rol: técnico. Dependencia: DC2-022. Conservar QA histórica G4/G5 cerrada; evaluar release vigente, no repetir proyecto antiguo.\\n\\nPlan target date (source): 2026-10-04\\n\\nExecution plan ref: DC2-030\\n\\nPrimary KPI: CWV y finalización de tareas\\n\\nSource notes:\\nÚNICO FRENTE NOW — Website, 18/09/2026. Arquitectura unificada: `dreamcatcherhotel.com` y `www` están en Vercel project `dreamcatcher-website-vnext-media-p0`, repo `Dramcatcherst/dreamcatcher-website-vnext`. Producción actual = deployment dpl_ELGVuV1GSnJiEFj8BwE6yvQLVc6L / SHA a992a681...; futuro oficial = misma repo, branch `ToroOS/phase-0b-foundation` HEAD fca11b11..., 5 commits adelante. `site0926` no tiene dominio oficial y su production attempt falló; `v100` queda histórico. No desarrollar esos sitios en paralelo.\n\nMEJORA A11Y EN CURSO: PR #68 draft `improve/a11y-landmark-focus-20260918`. Añade test real de teclado ES/EN, cambia `div#main-content` a semantic `main#main-content`, y aplica focus-visible global 3px/high-contrast. Primer Vercel preview falló por import de test `@playwright/test`; corregido a `playwright/test`. Preview actual dpl_8hnnPvzF7T6Gp8F2yME3NJUc1LCq = READY. GitHub Preview quality gate run 35315673521 sigue ejecutando verify/E2E. Producción intacta.\n\n20/09/2026 WATCHDOG PR68 RECONCILIATION: PR #68 (semantic main landmark + keyboard focus) is NOT absorbed by current production SHA 75a7e42754964331d811b70cba04c3a824b87b40. Production still uses a layout-level <div id=\"main-content\" tabIndex={-1}> and does not include PR68's global focus-visible rule; SiteHeader focus remains its pre-PR68 color. PR68 is open/draft and non-mergeable on a stale base. Treat PR68 as implementation evidence for this existing accessibility task, not as a separate task or merge candidate. Reimplement/rebase only the still-valid intent against the current production baseline, rerun targeted keyboard/landmark tests, then normal release QA. No production promotion without the existing release gate.\n\n[DC2-CURRENT-20260921]\nLínea vigente única: PR #71 draft (codex/a11y-current-baseline-20260921), base fef6c735f46743660efb0ad29ee60e2958fe0323, head b02264dd6c5d12805a77390a1c27b24169af698b. Cambio mínimo reversible: SiteHeader focus token #d9ba73→var(--sun) + contrato E2E de teclado/skip-link/único main en ES/EN y rutas públicas representativas. GitHub Preview quality gates run 35571762266 = PASS completo: npm audit high, npm run verify, qa:e2e y árbol limpio. Vercel preview dpl_8Prc7Da5Gz1NPssm4By9p4VWWJU6 para el mismo head = READY y protegido por SSO; no se creó bypass. PR #68/#72 quedan stale/duplicado sin merge. No merge ni producción sin release gate.\n[/DC2-CURRENT-20260921]\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.239745+00",
     "needs_revalidation": true,
-    "disposition": null,
-    "merge_target_task_key": null,
+    "disposition": "MERGE",
+    "merge_target_task_key": "DC2-022",
     "close_status": null,
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The accessibility/performance preview slice is explicitly complete; the only remaining material step is the existing release gate owned by DC2-022, so a separate active task would duplicate release work.",
+    "evidence_ref": "supabase:operations.tasks/DC2-030@2026-09-23T06:06:49.239745+00"
   },
   {
     "task_id": "ff79338a-be14-4810-85fc-10f469eea8e4",
@@ -887,7 +887,7 @@
     "description": "Source phase verified: 374/374 media records with unit/order/hero identity; 357 remain rights unknown/held. Continue identity/hash/dimensions/alt/right/public-safe review, Booking capture and Villa Toro mapping. No live writes without action-time approval; do not contact Kross or send campaigns from this task.\n\n[MEDIA-MERGE-TORO-BRAIN-R1]\nMedia/brand work is now a workstream inside dreamcatcher_website (Web, Marca, SEO y Reputación). Historical media project identity is preserved MERGED/inactive. [/MEDIA-MERGE-TORO-BRAIN-R1]",
     "updated_at": "2026-09-23 03:37:58.511773+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -895,8 +895,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Media/Kross reconciliation remains current: source identity/order is verified but rights/public-safe status, Booking capture and Villa Toro mapping are incomplete.",
+    "evidence_ref": "supabase:operations.tasks/MEDIA-KROSS-RECONCILE-22-UNITS-20260903@2026-09-23T03:37:58.511773+00"
   },
   {
     "task_id": "b7de6e88-84f5-4492-bec8-2033148d6521",
@@ -949,7 +949,7 @@
     "description": "Approved execution brief: Avance: ICE DC-01 identificado NISE 800984/medidor 1868843 con serie Mar-Ago; AyA Dreamcatcher NIS 5400638 cargado con anomalía; Makaiza NIS 5400639 confirmado. Cola formal abierta para AyA 5400641/5520130/3283121, Liberty 1757521 y segundo medidor ICE en conflicto.\\n\\nExecution plan ref: monthly_payments_infographics_v3_20260918\\n\\nPrimary KPI: Identificadores verificados + 5 pendientes formalizados + datasets regenerables\\n\\nSource notes:\\nPLAN V3 — INFOGRAMAS OPERATIVOS DE PAGOS 2026\nBase estadística: 2026-01-01 a 2026-08-31.\nObjetivo: entregar 5 láminas que permitan identificar, pagar, verificar y conciliar obligaciones sin mezclar Dreamcatcher con patrimonio/familia/proyectos.\n\nINFOGRAMA 1 — DREAMCATCHER · MAESTRO DE SERVICIOS Y PAGOS\nUna fila por servicio/obligación. Campos visibles: categoría; proveedor; servicio; identificador seguro (NIS/contrato/referencia enmascarada o alias operativo); propiedad/unidad; moneda; mínimo Ene-Ago; promedio Ene-Ago; máximo Ene-Ago; último monto verificado; variabilidad; método/fuente de pago si es seguro mostrarlo; estado; responsable; fuente de verificación; nota corta.\nNo mostrar: números completos de tarjeta/cuenta, credenciales, contraseñas, IDs personales completos.\nSeparar gasto fijo, variable y saldo/financiamiento. Tarjetas no se presentan como “servicio mensual”.\n\nINFOGRAMA 2 — DREAMCATCHER · CALENDARIO DE PAGOS\nOrdenado por día típico/fecha confirmada. Campos: día/ventana; obligación; fecha de emisión típica; vencimiento; gracia/recargo si está documentado; pago automático/manual; responsable; prerequisito para pagar; evidencia requerida; estado del mes actual; alerta T-7/T-3/T-1; contingencia si no llega factura.\nSolo usar fechas verificadas; las inferidas deben llevar etiqueta “estimada”.\n\nINFOGRAMA 3 — DREAMCATCHER · HISTÓRICO ENE–AGO Y CONTROL DE ANOMALÍAS\nPor concepto: 8 meses, min/prom/max, total 8 meses, desviación vs promedio, meses faltantes, picos >20/30%, tendencia. Debe permitir detectar consumo anormal, duplicados, facturas faltantes y oportunidades de ahorro.\nEjemplos ya detectados en banco: ICE electricidad, AyA, Liberty Hogar, ICE teléfono, CCSS, préstamo BAC (capital/interés/seguro). No usar transferencias genéricas sin clasificación.\n\nINFOGRAMA 4 — NO DREAMCATCHER · PROPIEDADES / PROYECTOS / FAMILIA\nVista separada: Santa Toro, Vista Alegre, Casa Toro/Pomas y Poemas, Rancho Estrellas Azules, DIEX/Toro, Cabuya y personales cuando corresponda. Mismos campos mínimos: obligación, entidad/activo, proveedor/autoridad, periodicidad, monto actual/histórico, próximo vencimiento, responsable, estado y fuente. Evitar que estos conceptos contaminen OPEX Dreamcatcher.\n\nINFOGRAMA 5 — CHECKLIST MENSUAL DE PAGOS Y CONCILIACIÓN\nFlujo operativo para administración:\n1. Revisar agenda T-7.\n2. Buscar factura/estado actual.\n3. Comparar contra rango min/prom/max Ene-Ago.\n4. Si variación >20% o identificador no coincide: detener y verificar.\n5. Confirmar que pertenece a Dreamcatcher/activo correcto.\n6. Pagar desde cuenta autorizada.\n7. Guardar comprobante.\n8. Conciliar contra banco/Alegra.\n9. Actualizar obligación y fecha siguiente.\n10. Respaldar documento contable en Dropbox.\nSemáforo: LISTO / VERIFICAR / BLOQUEADO / PAGADO / CONCILIADO.\n\nREGLAS DE DATOS:\n- Fuente canónica operativa: Supabase operations.obligations.\n- Factura/documento: finance.invoices.\n- Evidencia de pago/patrón: finance.bank_transactions + contabilidad.\n- Airtable = tablero/planeación/espejo, no sustituye fuente financiera.\n- Dropbox = respaldo documental; búsquedas directas del conector están fallando por validación de esquema en esta sesión, por lo que no afirmar búsqueda exhaustiva de Dropbox.\n- Importe de factura ≠ pago confirmado.\n- Saldo de tarjeta ≠ gasto mensual.\n- Saldo de préstamo ≠ cuota mensual.\n- Reclamo de cobranza ≠ saldo aprobado.\n- Mantener CRC y USD separados salvo política FX aprobada.\n\nDATOS YA ÚTILES PARA EL DISEÑO:\n- CCSS: patrón mensual, pagos bancarios observados Ene-Jul; ejemplo julio factura CRC669,403, último pago histórico CRC772,971.\n- ICE Electricidad Dreamcatcher: factura agosto verificada CRC491,910; banco Ene-Jul muestra múltiples pagos y variabilidad relevante.\n- Préstamo BAC ref 204012411: capital Ene-Jul promedio aprox USD3,248.64; interés aprox USD1,889.30; seguro/VID aprox USD260.02; cuota observada 01/09 USD5,244.87. Mostrar componentes, no saldo histórico como cuota.\n- Liberty móvil hotel: factura actual CRC12,287.38; patrón histórico banco alrededor CRC11.6k–12.3k para esa línea.\n- Alegra PRO: USD69.99 mensual, próxima fecha 04/10/2026 verificada.\n- Vercel Pro: USD20 mensual, siguiente ciclo exacto pendiente de recibo.\n- Starlink: factura/periodo reciente CRC21,000; histórico documental requiere completar meses Ene-Ago antes de calcular min/prom/max definitivo.\n- WeSpeak: evidencia de USD197, pero precio actual debe revalidarse.\n- Kross/Swiss Hotel Competence: histórico Supabase invoice Jan-Aug registra 9 docs, USD50–100, promedio USD84.44; obligación actual USD60 a verificar.\n- Servicios/activos no Dreamcatcher deben ir en infograma 4; no sumarlos al hotel.\n\nCRITERIO DE TERMINADO:\nA) 100% de obligaciones mensuales clasificadas por scope.\nB) Cada servicio Dreamcatcher tiene identificador operativo seguro o bandera “falta identificar”.\nC) Cada concepto tiene Ene-Ago con al menos 6 meses de evidencia o bandera de cobertura.\nD) Fechas de pago verificadas o explícitamente “estimadas”.\nE) Cero tarjetas/saldos/reclamos mezclados como costos fijos.\nF) Los 5 infogramas se generan desde una tabla maestra, no manualmente.",
     "updated_at": "2026-09-19 10:41:49.679191+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -957,8 +957,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Recurring-payments reconciliation remains active because source identifiers/provider evidence and master/calendar gaps remain unresolved despite the reporting stack being built.",
+    "evidence_ref": "supabase:operations.tasks/DROPBOX-P1-RECURRING-PAYMENTS-RECON-20260810@2026-09-19T10:41:49.679191+00"
   },
   {
     "task_id": "0d03aa3f-ff02-45d6-a70f-4f79dc18a733",
@@ -1073,16 +1073,16 @@
     "description": "Un solo motor gobernado para social, GBP, web/editorial SEO y lifecycle apropiado. Flujo: verdad TORO + Search Console/market insight → brief → creación → selección SKY → variantes por canal → rights/factual gates → publicación autorizada → medición. No auto-DM/auto-post sin aprobación separada; herramientas creativas no son bases de verdad independientes.",
     "updated_at": "2026-09-19 09:47:46.360289+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This is explicitly post-launch cadence work. The production release gate is not closed, so keeping it active now inflates the backlog before its trigger exists.",
+    "evidence_ref": "supabase:operations.tasks/start_post_launch_content_cadence_for_priority_clusters@2026-09-19T09:47:46.360289+00"
   },
   {
     "task_id": "2da11573-db9c-4d44-8a68-c0874667c7ce",
@@ -1724,7 +1724,7 @@
     "description": "Cada mes consolidar QA semanal + conversaciones del mes. Medir errores recurrentes, facts, TICOS, links, razones de no disponibilidad, escalamiento, intents no cubiertos, fricción/conversión, oportunidades de upsell y reglas legacy. Proponer máximo 5 causas raíz y un experimento pequeño para el siguiente mes. No cambiar WeSpeak/Kross live sin autorización.\n\nAUTONOMIA-ENERO2027: Comparar autonomía real y dependencia de socios con baseline, carga del equipo, calidad y resultado comercial. Un experimento acotado; no más reportes duplicados. No afirmar reserva/cobro por alerta.",
     "updated_at": "2026-09-21 05:50:09.203077+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1732,8 +1732,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The monthly deep review is an ongoing quality/conversion control that consolidates weekly QA and remains valid without duplicating live WeSpeak/Kross mutation.",
+    "evidence_ref": "supabase:operations.tasks/wespeak_monthly_deep_review@2026-09-21T05:50:09.203077+00"
   },
   {
     "task_id": "b57a45c2-86f6-4f5a-a9dc-1a6a5ad65ddd",
@@ -1941,16 +1941,16 @@
     "description": "Solicitud directa de Mauricio, 22/09/2026. Tarea real para utilizar en piloto de onboarding de mantenimiento, sin cambiar sus permisos ni puesto. Objetivo: temporizador para que los proyectores se apaguen automáticamente. Estado de instalación pendiente de aclaración por frase ambigua «esas ya las hice»; no afirmar completado. Faltan equipos/ubicaciones y horario o duración deseada. Preferir función de apagado compatible con equipo; no prescribir corte eléctrico brusco. Cierre: configuración registrada y prueba observada de apagado correcto; conservar quién informó y evidencia. Sin compra, envío, intervención física ni automatización creada por esta fila.\n\nFIELD-PACKET-20260922-OPERATE-PROJECTOR\nUBICACIÓN: Según assets.physical_assets, objetivos actuales PROJ-021 Habitación 21, PROJ-022 Habitación 22, PROJ-025 Habitación 25, PROJ-026 Habitación 26 y PROJ-027 Habitación 27. PROJ-011 / Habitación 11 queda EXCLUIDO de ejecución: es registro histórico en disputa y requiere verificación física separada antes de reactivar.\nRESPONSABLE: Mauricio Fernández Toro, como owner/assignee canónico de esta tarea. Mantenimiento solo participa si es delegado explícitamente; este paquete no modifica rol, turno ni permisos.\nPRUEBA: En cada proyector físicamente presente, identificar primero la función nativa compatible de sleep/auto-off/idle timer y el intervalo deseado. Configurar solo una función nativa/reversible cuando el intervalo esté confirmado; observar que el equipo se apaga al cumplirse el criterio y que posteriormente enciende y opera normalmente. No usar corte eléctrico brusco ni asumir modelo/marca.\nEVIDENCIA: Habitación + asset_key, foto/captura de pantalla de la configuración antes/después cuando sea posible, intervalo configurado, timestamp, operador, resultado PASS/FAIL del apagado observado y nota de reinicio/funcionamiento posterior. Si un proyector no está físicamente presente o no ofrece función compatible, registrar excepción; no inventar configuración.\nCRITERIO DE CIERRE: Cada objetivo 21/22/25/26/27 queda reconciliado como presente/no presente; para los presentes, intervalo confirmado + ajuste nativo registrado + apagado observado PASS + reinicio normal + evidencia fechada. Cualquier excepción queda explícita. Cerrar solo con QA/evidencia; no comprar, reemplazar ni modificar instalación eléctrica desde esta tarea.",
     "updated_at": "2026-09-23 01:54:29.094214+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "REWRITE",
     "merge_target_task_key": null,
     "close_status": null,
-    "proposed_status": null,
+    "proposed_status": "blocked",
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Owner reported timers configured, but room-by-room interval, observed auto-off, restart and QA evidence remain missing; blocked pending verification is more accurate than planned.",
+    "evidence_ref": "supabase:operations.tasks/maintenance-projector-auto-off-mauricio-20260922@2026-09-23T01:54:29.094214+00"
   },
   {
     "task_id": "7e6ccf08-c09b-43a4-9416-33580a6703b7",
