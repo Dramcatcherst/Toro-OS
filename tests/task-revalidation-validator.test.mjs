@@ -65,3 +65,10 @@ test("requires task identity and observed timestamp", () => {
   assert.throws(() => validateManifest([entry({ task_key: "" })], "ready"), /task_key/i);
   assert.throws(() => validateManifest([entry({ observed_updated_at: "" })], "ready"), /observed_updated_at/i);
 });
+
+
+test("accepts PostgreSQL timestamptz values captured from Supabase", () => {
+  assert.doesNotThrow(() => validateManifest([
+    entry({ observed_updated_at: "2026-09-21 14:53:01.583989+00" }),
+  ], "ready"));
+});
