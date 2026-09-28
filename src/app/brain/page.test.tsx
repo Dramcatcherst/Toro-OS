@@ -19,9 +19,20 @@ import {
   buildCanonicalBrainProjection,
 } from "@/features/brain/canonical-projection";
 import BrainPage from "./page";
-import { initialBrainNodes, unrevealedNeighbors } from "./brain-map";
+import { initialBrainNodes, searchBrainNodes, unrevealedNeighbors } from "./brain-map";
 
 describe("BrainPage projection modes", () => {
+  it("searches only loaded authorized neurons, including ones not yet revealed", () => {
+    expect(searchBrainNodes(visualBrainDemo, visualBrainDemoLayout, "reservations").map((node) => node.id)).toEqual(["node:revenue"]);
+    expect(searchBrainNodes(visualBrainDemo, visualBrainDemoLayout, "KROSS").map((node) => node.id)).toContain("node:kross");
+    expect(searchBrainNodes(visualBrainDemo, visualBrainDemoLayout, " ")).toEqual([]);
+    const reduced = { ...visualBrainDemo, nodes: visualBrainDemo.nodes.filter((node) => node.id !== "node:revenue") };
+    expect(searchBrainNodes(reduced, visualBrainDemoLayout, "reservations")).toEqual([]);
+    const layoutWithoutRevenue = { ...visualBrainDemoLayout };
+    delete layoutWithoutRevenue["node:revenue"];
+    expect(searchBrainNodes(visualBrainDemo, layoutWithoutRevenue, "reservations")).toEqual([]);
+  });
+
   it("reveals only supplied graph neighbors without inventing hierarchy or duplicated nodes", () => {
     const initial = initialBrainNodes(visualBrainDemo, visualBrainDemoLayout);
     const known = new Set(initial);
@@ -78,6 +89,9 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
     expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain('data-brain-mini-map="true"');
+    expect(html).toContain('data-brain-search="desktop"');
+    expect(html).toContain('data-brain-search="mobile"');
+    expect(html).toContain("Example network only");
     expect(html.match(/data-brain-edge-tooltip="true"/g)).toHaveLength(initialEdges.length * 2);
     expect(html).toContain("Example link: TORO Finance reads from Kross PMS. verified · current.");
     expect(html).toContain("hover a link for its relation");
