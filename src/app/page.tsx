@@ -359,7 +359,7 @@ export default async function Home() {
               </Panel>
 
               <Panel id="data">
-                <SectionTitle icon={Database} title="Airtable Data Brain" action={`${airtableTables.length} table contracts`} />
+                <SectionTitle icon={Database} title="Airtable · transición y referencia" action={`${airtableTables.length} table contracts`} />
                 <div className="max-h-[690px] overflow-auto p-4">
                   <div className="space-y-2">
                     {airtableTables.map((table) => (
