@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "generated_on": "2026-09-28",
+  "scope": "dreamcatcher_hotel",
+  "authority_rule": "Evidence seed only. Google Workspace Admin/provider account inventory determines endpoint type and current routing.",
+  "secrets_policy": "No passwords, OAuth tokens, API keys, recovery codes, cookies or secret values.",
+  "endpoints": [
+    {
+      "endpoint": "admin@dreamcatcherhotel.com",
+      "owner_confirmed": true,
+      "domain_scope": "dreamcatcherhotel.com",
+      "provider_status": "google_workspace_verified",
+      "endpoint_kind": "user_mailbox",
+      "endpoint_kind_confidence": "verified_admin_username",
+      "connection_status": "chatgpt_gmail_and_drive_connected",
+      "observed_activity": "active_send_receive",
+      "business_role": "admin",
+      "evidence": [
+        "Google Workspace custom-domain-ready email 2026-08-14",
+        "Google Workspace admin username evidence",
+        "ChatGPT Gmail profile",
+        "ChatGPT Google Drive hotel profile"
+      ],
+      "next_gate": "Workspace Admin inventory for aliases/groups/routing/delegation"
+    },
+    {
+      "endpoint": "info@dreamcatcherhotel.com",
+      "owner_confirmed": true,
+      "domain_scope": "dreamcatcherhotel.com",
+      "provider_status": "google_workspace_relationship_unresolved",
+      "endpoint_kind": "unknown",
+      "endpoint_kind_confidence": "unverified",
+      "connection_status": "visible_in_connected_gmail_corpus",
+      "observed_activity": "high_send_receive",
+      "business_role": "info",
+      "evidence": [
+        "Current Gmail corpus receives mail addressed to info@dreamcatcherhotel.com",
+        "Current Gmail corpus sends with From info@dreamcatcherhotel.com",
+        "Google Admin migration report references IMAP source info@dreamcatcherhotel.com"
+      ],
+      "next_gate": "Classify user vs alias vs send-as/delegation/routing in Workspace Admin"
+    },
+    {
+      "endpoint": "accounting@dreamcatcherhotel.com",
+      "owner_confirmed": true,
+      "domain_scope": "dreamcatcherhotel.com",
+      "provider_status": "unverified",
+      "endpoint_kind": "unknown",
+      "endpoint_kind_confidence": "unverified",
+      "connection_status": "not_observed_in_2026_connected_corpus",
+      "observed_activity": "none_found",
+      "business_role": "accounting",
+      "evidence": [
+        "Owner-confirmed account on device screenshot"
+      ],
+      "next_gate": "Workspace Admin inventory"
+    },
+    {
+      "endpoint": "info@atrapasuenos.net",
+      "owner_confirmed": true,
+      "domain_scope": "atrapasuenos.net",
+      "provider_status": "external_provider_unverified",
+      "endpoint_kind": "unknown",
+      "endpoint_kind_confidence": "unverified",
+      "connection_status": "not_directly_connected",
+      "observed_activity": "limited_2026_evidence",
+      "business_role": "info",
+      "evidence": [
+        "Current connected Gmail corpus contains limited 2026 messages involving this address"
+      ],
+      "next_gate": "Provider/account inventory; connect read-only transport; Evertec proof"
+    },
+    {
+      "endpoint": "accounting@atrapasuenos.net",
+      "owner_confirmed": true,
+      "domain_scope": "atrapasuenos.net",
+      "provider_status": "external_provider_siteground_observed",
+      "endpoint_kind": "unknown",
+      "endpoint_kind_confidence": "provider_path_only",
+      "connection_status": "not_directly_connected",
+      "observed_activity": "active_2026_send_receive",
+      "business_role": "accounting",
+      "evidence": [
+        "LAFISE retention certificate chain",
+        "Raw SMTP path includes SiteGround host and mailspamprotection"
+      ],
+      "next_gate": "Provider/account inventory; verify current hosting/MX without changing DNS"
+    },
+    {
+      "endpoint": "proveedores@atrapasuenos.net",
+      "owner_confirmed": true,
+      "domain_scope": "atrapasuenos.net",
+      "provider_status": "external_provider_unverified",
+      "endpoint_kind": "unknown",
+      "endpoint_kind_confidence": "unverified",
+      "connection_status": "not_directly_connected",
+      "observed_activity": "address_not_proven_by_raw_header_in_current_search",
+      "business_role": "providers",
+      "evidence": [
+        "Owner-confirmed account on device screenshot"
+      ],
+      "next_gate": "Provider/account inventory"
+    },
+    {
+      "endpoint": "atrapasuenoshotel@gmail.com",
+      "owner_confirmed": false,
+      "domain_scope": "legacy_google_identity",
+      "provider_status": "gmail_verified",
+      "endpoint_kind": "user_mailbox",
+      "endpoint_kind_confidence": "verified_delivery_identity",
+      "connection_status": "legacy_content_visible_in_connected_admin_corpus",
+      "observed_activity": "critical_dependency_through_2026_09_25",
+      "business_role": "legacy_system",
+      "evidence": [
+        "Raw MIME Delivered-To atrapasuenoshotel@gmail.com",
+        "Google Workspace setup/trial emails",
+        "Google data migration authorization request",
+        "Recent GitHub/Vercel/Kross/Alegra traffic"
+      ],
+      "next_gate": "Direct dependency inventory and migration-completion proof before any retirement"
+    }
+  ],
+  "migration_timeline": [
+    {
+      "date": "2026-08-14",
+      "event": "workspace_custom_email_ready",
+      "subject": "dreamcatcherhotel.com",
+      "detail": "Business Starter; administrator username admin@dreamcatcherhotel.com"
+    },
+    {
+      "date": "2026-08-14",
+      "event": "google_admin_imap_migration_activity",
+      "source": "info@dreamcatcherhotel.com",
+      "target": "atrapasuenoshotel@gmail.com",
+      "completion": "not_proven"
+    },
+    {
+      "date": "2026-08-18",
+      "event": "legacy_gmail_transfer_authorization_requested",
+      "requestor": "admin@dreamcatcherhotel.com",
+      "source": "atrapasuenoshotel@gmail.com",
+      "target": "dreamcatcherhotel.com"
+    },
+    {
+      "date": "2026-09-25",
+      "event": "legacy_gmail_delivery_still_observed",
+      "target": "atrapasuenoshotel@gmail.com"
+    }
+  ]
+}
