@@ -146,5 +146,49 @@
       "event": "legacy_gmail_delivery_still_observed",
       "target": "atrapasuenoshotel@gmail.com"
     }
-  ]
+  ],
+  "observed_domain_scan_20260928": {
+    "messages_scanned": 1145,
+    "observed_addresses": [
+      "info@dreamcatcherhotel.com",
+      "admin@dreamcatcherhotel.com",
+      "info@atrapasuenos.net",
+      "accounting@atrapasuenos.net",
+      "proveedores@atrapasuenos.net"
+    ],
+    "owner_confirmed_but_not_observed": [
+      "accounting@dreamcatcherhotel.com"
+    ],
+    "additional_corporate_addresses_observed": []
+  },
+  "target_architecture": {
+    "principle": "logical roles first; minimize paid mailboxes; preserve aliases/routes only after audit",
+    "roles": {
+      "admin_security": {
+        "preferred_address": "admin@dreamcatcherhotel.com",
+        "state": "verified connected"
+      },
+      "reception_guest_ops": {
+        "preferred_public_address": "info@dreamcatcherhotel.com",
+        "state": "active; Workspace object type unresolved",
+        "create_recepcion_user_by_default": false
+      },
+      "finance_providers": {
+        "preferred_address_if_verified": "accounting@dreamcatcherhotel.com",
+        "state": "owner-confirmed on device; corpus-unverified",
+        "create_contabilidad_user_by_default": false,
+        "legacy_routes_after_audit": [
+          "accounting@atrapasuenos.net",
+          "proveedores@atrapasuenos.net"
+        ]
+      }
+    },
+    "legacy_routes_after_audit": {
+      "info@atrapasuenos.net": "reception_guest_ops",
+      "accounting@atrapasuenos.net": "finance_providers",
+      "proveedores@atrapasuenos.net": "finance_providers"
+    },
+    "keep_legacy_gmail_until_parity": true,
+    "dedicated_payments_mailbox_default": false
+  }
 }
