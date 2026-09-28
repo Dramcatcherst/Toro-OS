@@ -175,6 +175,29 @@ describe("BrainPage projection modes", () => {
     expect(html.match(/data-brain-list-node/g)).toHaveLength(visualBrainDemo.nodes.length);
   });
 
+  it("preserves native keyboard controls from each map neuron to its matching layer", async () => {
+    loadBrainProjectionViewMock.mockResolvedValue({
+      projection: visualBrainDemo,
+      layout: visualBrainDemoLayout,
+      runtime: {
+        mode: "synthetic_only",
+        realData: false,
+        externalWrite: false,
+        stage: "B",
+        reason: "Fixture",
+      },
+    });
+
+    const html = renderToStaticMarkup(await BrainPage());
+
+    expect(html.match(/<details[^>]*name="brain-map-node"[^>]*><summary aria-label="[^"]+\. Show details\."[^>]*>/g))
+      .toHaveLength(visualBrainDemo.nodes.length);
+    for (const node of visualBrainDemo.nodes) {
+      expect(html).toContain(`href="#brain-node-${node.id}"`);
+      expect(html).toContain(`id="brain-node-${node.id}"`);
+    }
+  });
+
   it("renders the real canonical projection shape without synthetic business claims", async () => {
     const slice: CanonicalBrainReadSlice = {
       contractVersion: "stage-c-read-v1",
