@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 import assert from "node:assert/strict";
 
@@ -95,4 +97,22 @@ test("recovery restores captured state only from the R1-applied state", () => {
   assert.match(sql.recovery, /statuss*=s*'archived'/i);
   assert.match(sql.recovery, /needs_revalidations*=s*false/i);
   assert.match(sql.recovery, /TORO-R1-A-20260928-RECOVERY/);
+});
+
+
+test("committed generated SQL matches the ready manifest", () => {
+  const root = process.cwd();
+  const manifest = JSON.parse(readFileSync(
+    join(root, "data/governance/toro-r1-task-revalidation-20260928.json"),
+    "utf8",
+  ));
+  const generated = generateRevalidationSql(manifest);
+  assert.equal(
+    readFileSync(join(root, "supabase/drafts/20260928_toro_r1_task_revalidation_apply.sql"), "utf8"),
+    generated.apply,
+  );
+  assert.equal(
+    readFileSync(join(root, "supabase/drafts/20260928_toro_r1_task_revalidation_recovery.sql"), "utf8"),
+    generated.recovery,
+  );
 });
