@@ -204,11 +204,11 @@ function AccessibleNodeList({ projection, compact = false }: { projection: Brain
       <div className={styles.panelHead}>
         <div>
           <span className={styles.eyebrow}>{compact ? "Explore by layer" : "Accessible list view"}</span>
-          <h2>{compact ? "Open a node to reveal its connections" : "The same Brain without spatial navigation"}</h2>
+          <h2>{compact ? "Swipe nodes · open for connections" : "The same Brain without spatial navigation"}</h2>
         </div>
         <Activity aria-hidden="true" />
       </div>
-      <div className={styles.nodeList}>
+      <div className={styles.nodeList} aria-label={compact ? "Swipeable Brain node layers" : undefined} tabIndex={compact ? 0 : undefined}>
         {projection.nodes.map((node) => {
           const Icon = nodeIcons[node.kind] ?? Activity;
           const connections = projection.edges.flatMap((edge) => {
