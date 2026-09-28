@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import {
   Activity,
   AlertTriangle,
@@ -19,8 +20,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { BrainNode, BrainProjection } from "@/lib/brain-contracts";
-import type { BrainLayout } from "@/lib/server/brain-projection";
 import { loadBrainProjectionView } from "@/lib/server/brain-projection";
+import { BrainMap } from "./brain-map";
 import styles from "./brain.module.css";
 
 const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
@@ -34,20 +35,6 @@ const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
   decision: Brain,
 };
 
-const riskClass = {
-  Low: styles.riskLow,
-  Medium: styles.riskMedium,
-  High: styles.riskHigh,
-  Critical: styles.riskCritical,
-};
-
-const freshnessLabel = {
-  current: "current",
-  aging: "aging",
-  stale: "stale",
-  unknown: "unknown",
-};
-
 const verificationLabel = {
   verified: "verified",
   partially_verified: "partial",
@@ -56,94 +43,123 @@ const verificationLabel = {
   not_applicable: "n/a",
 };
 
-function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
-  const Icon = nodeIcons[node.kind] ?? Activity;
-  const point = layout[node.id];
-
-  if (!point) return null;
+function AccessibleNodeList({ projection, compact = false }: { projection: BrainProjection; compact?: boolean }) {
+  const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
 
   return (
-    <article
-      className={[
-        styles.node,
-        riskClass[node.risk],
-        node.activity && ["reading", "analyzing", "executing", "verifying"].includes(node.activity) ? styles.nodeActive : "",
-      ].join(" ")}
-      style={{ left: `${point.x}%`, top: `${point.y}%` }}
-      aria-label={`${node.label}. ${node.status}. Risk ${node.risk}. ${verificationLabel[node.verification]} verification.`}
-    >
-      <div className={styles.nodeHead}>
-        <span className={styles.nodeIcon}><Icon aria-hidden="true" /></span>
-        <span className={styles.nodeKind}>{node.kind}</span>
-      </div>
-      <h3>{node.label}</h3>
-      {node.metric ? (
-        <div className={styles.metric}>
-          <strong>{node.metric.value}{node.metric.unit}</strong>
-          <span>{node.metric.label}</span>
+    <section className={styles.listFallback}>
+      <div className={styles.panelHead}>
+        <div>
+          <span className={styles.eyebrow}>{compact ? "Explore by layer" : "Accessible list view"}</span>
+          <h2>{compact ? "Swipe nodes · open for connections" : "The same Brain without spatial navigation"}</h2>
         </div>
-      ) : null}
-      <p>{node.summary}</p>
-      <div className={styles.nodeMeta}>
-        <span>{node.status}</span>
-        <span>{freshnessLabel[node.freshness]}</span>
-        <span>{verificationLabel[node.verification]}</span>
+        <Activity aria-hidden="true" />
       </div>
-    </article>
+      <div className={styles.nodeList} aria-label={compact ? "Swipeable Brain node layers" : undefined} tabIndex={compact ? 0 : undefined}>
+        {projection.nodes.map((node) => {
+          const Icon = nodeIcons[node.kind] ?? Activity;
+          const connections = projection.edges.flatMap((edge) => {
+            if (edge.source === node.id && visibleNodes.has(edge.target)) {
+              return [{ edge, other: visibleNodes.get(edge.target)!, outgoing: true }];
+            }
+            if (edge.target === node.id && visibleNodes.has(edge.source)) {
+              return [{ edge, other: visibleNodes.get(edge.source)!, outgoing: false }];
+            }
+            return [];
+          });
+          const connectionDetails = connections.length > 0 ? (
+            <details className={styles.nodeConnections}>
+              <summary>{connections.length} {connections.length === 1 ? "connection" : "connections"}</summary>
+              <ul>
+                {connections.map(({ edge, other, outgoing }) => (
+                  <li key={edge.id}>
+                    {outgoing ? `${edge.relation.replaceAll("_", " ")} → ${other.label}` : `${other.label} → ${edge.relation.replaceAll("_", " ")}`}
+                    <small>{edge.verification ? verificationLabel[edge.verification] : "verification not reported"} · {edge.freshness ?? "freshness not reported"}</small>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null;
+          const state = (
+            <div className={styles.listState}>
+              <span>{node.status}</span>
+              <span>{node.verification}</span>
+              <span>{node.freshness}</span>
+            </div>
+          );
+
+          if (compact) {
+            return (
+              <details className={styles.mobileNode} data-brain-layer="node" id={`brain-node-${node.id}`} key={node.id}>
+                <summary>
+                  <Icon aria-hidden="true" />
+                  <span className={styles.mobileNodeName}><small>{node.kind}</small><strong>{node.label}</strong></span>
+                  <span className={styles.mobileNodeCount}>{connections.length} {connections.length === 1 ? "link" : "links"}</span>
+                </summary>
+                <div className={styles.mobileNodeBody}>
+                  <p>{node.summary}</p>
+                  {state}
+                  {connectionDetails}
+                </div>
+              </details>
+            );
+          }
+
+          return (
+            <article data-brain-list-node key={node.id}>
+              <Icon aria-hidden="true" />
+              <div>
+                <span>{node.kind}</span>
+                <strong>{node.label}</strong>
+                <p>{node.summary}</p>
+                {connectionDetails}
+              </div>
+              {state}
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
-function Graph({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
-  const points = layout;
-
-  return (
-    <div className={styles.graphFrame}>
-      <div className={styles.graphHeader}>
-        <div>
-          <span className={styles.eyebrow}>Business anatomy · synthetic scenario</span>
-          <h2>TORO sees the operation as connected evidence, not separate apps.</h2>
-        </div>
-        <div className={styles.graphLegend}>
-          <span><i className={styles.legendActive} /> active</span>
-          <span><i className={styles.legendRisk} /> needs attention</span>
-          <span><i className={styles.legendGate} /> approval gate</span>
-        </div>
-      </div>
-
-      <div className={styles.graphCanvas} role="img" aria-label="Synthetic Dreamcatcher business graph showing TORO Finance reading Kross, Alegra and bank evidence, detecting a cash coverage issue and preparing an approval-gated decision.">
-        <svg className={styles.edges} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <marker id="arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
-              <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHead} />
-            </marker>
-          </defs>
-          {projection.edges.map((edge) => {
-            const source = points[edge.source];
-            const target = points[edge.target];
-            if (!source || !target) return null;
-            const isAttention = edge.freshness === "aging" || edge.verification === "partially_verified";
-            return (
-              <line
-                key={edge.id}
-                x1={source.x}
-                y1={source.y}
-                x2={target.x}
-                y2={target.y}
-                className={isAttention ? styles.edgeAttention : styles.edge}
-                markerEnd="url(#arrow)"
-              />
-            );
-          })}
-        </svg>
-
-        {projection.nodes.map((node) => <NodeCard key={node.id} node={node} layout={layout} />)}
+function ActivityTraceBody({ projection }: { projection: BrainProjection }) {
+  return <>
+    <ol className={styles.timeline}>
+      {projection.recentEvents?.map((event, index) => (
+        <li key={event.eventId}>
+          <div className={styles.timelineRail}><span>{index + 1}</span></div>
+          <div>
+            <div className={styles.timelineTop}>
+              <strong>{event.eventType}</strong>
+              <time>{new Date(event.occurredAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Costa_Rica" })}</time>
+            </div>
+            <p>{event.summary}</p>
+            <div className={styles.eventMeta}>
+              <span>{event.executionState}</span>
+              <span>{event.verificationState}</span>
+              <span>risk {event.risk.toLowerCase()}</span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div className={styles.gate}>
+      <LockKeyhole aria-hidden="true" />
+      <div>
+        <span>Human authority preserved</span>
+        <strong>No external action executed.</strong>
+        <p>TORO prepared a decision and stopped at the approval boundary.</p>
       </div>
     </div>
-  );
+  </>;
 }
 
 export default async function BrainPage() {
+  // The feature flag and authorized scope must be evaluated per request, never at build time.
+  await connection();
   const { projection, layout, runtime } = await loadBrainProjectionView();
+  const synthetic = projection.synthetic;
   const pendingApproval = projection.nodes.find((node) => node.kind === "approval");
   const cashNode = projection.nodes.find((node) => node.id === "node:cash");
   const revenueNode = projection.nodes.find((node) => node.id === "node:revenue");
@@ -168,21 +184,32 @@ export default async function BrainPage() {
 
         <div className={styles.heroGrid}>
           <div>
-            <p className={styles.eyebrow}>Dreamcatcher Hotel · reference simulation</p>
-            <h1>See what the business is doing, what TORO sees, and where a human decision is required.</h1>
+            <p className={styles.eyebrow}>{synthetic ? "Dreamcatcher Hotel · reference simulation" : "Organization · permission-scoped read"}</p>
+            <h1>{synthetic ? "See how TORO could connect evidence and a human decision." : "Explore the organization records available to this authorized context."}</h1>
             <p className={styles.lead}>
-              This is a contract-driven prototype. Every node, edge and activity state represents a defined TORO concept. No live guest, employee, payment or production data is used here. The UI now consumes a single server-side projection seam so Stage C can replace the source without creating a second interface architecture.
+              {synthetic
+                ? "This is a contract-driven example, not live activity. No private operational data or external action is represented."
+                : "This is a focused, read-only projection of authorized organization data. It does not show live agent activity, guest or employee records, payment data, or completed external actions."}
             </p>
           </div>
           <div className={styles.heroStats}>
-            <div><span>Visible nodes</span><strong>{projection.nodes.length}</strong><small>bounded focus view</small></div>
-            <div><span>Recent events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>one correlation chain</small></div>
-            <div><span>Approval gates</span><strong>1</strong><small>external change blocked</small></div>
+            <div><span>Available nodes</span><strong>{projection.nodes.length}</strong><small>reveal within map</small></div>
+            {synthetic ? (
+              <>
+                <div><span>Example events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>simulated correlation chain</small></div>
+                <div><span>Example approval gates</span><strong>{projection.nodes.filter((node) => node.kind === "approval").length}</strong><small>no external action</small></div>
+              </>
+            ) : (
+              <>
+                <div><span>Displayed links</span><strong>{projection.edges.length}</strong><small>focused projection</small></div>
+                <div><span>Source summaries</span><strong>{projection.sources.length}</strong><small>read-only coverage</small></div>
+              </>
+            )}
           </div>
         </div>
       </header>
 
-      <section className={styles.signalStrip} aria-label="Synthetic scenario summary">
+      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
         <div>
           <CircleDollarSign aria-hidden="true" />
           <span>Reservations</span>
@@ -201,12 +228,12 @@ export default async function BrainPage() {
           <strong>{pendingApproval?.status}</strong>
           <small>owner approval required</small>
         </div>
-      </section>
+      </section> : null}
 
-      <section className={styles.mainGrid}>
-        <Graph projection={projection} layout={layout} />
+      <section className={`${styles.mainGrid} ${synthetic ? "" : styles.mainGridCanonical}`}>
+        <BrainMap projection={projection} layout={layout} />
 
-        <aside className={styles.activityPanel}>
+        {synthetic ? <aside className={`${styles.activityPanel} ${styles.desktopTrace}`}>
           <div className={styles.panelHead}>
             <div>
               <span className={styles.eyebrow}>Watch TORO work</span>
@@ -215,40 +242,22 @@ export default async function BrainPage() {
             <span className={styles.correlation}>demo:cash-gap:1</span>
           </div>
 
-          <ol className={styles.timeline}>
-            {projection.recentEvents?.map((event, index) => (
-              <li key={event.eventId}>
-                <div className={styles.timelineRail}>
-                  <span>{index + 1}</span>
-                </div>
-                <div>
-                  <div className={styles.timelineTop}>
-                    <strong>{event.eventType}</strong>
-                    <time>{new Date(event.occurredAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Costa_Rica" })}</time>
-                  </div>
-                  <p>{event.summary}</p>
-                  <div className={styles.eventMeta}>
-                    <span>{event.executionState}</span>
-                    <span>{event.verificationState}</span>
-                    <span>risk {event.risk.toLowerCase()}</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <ActivityTraceBody projection={projection} />
+        </aside> : null}
 
-          <div className={styles.gate}>
-            <LockKeyhole aria-hidden="true" />
-            <div>
-              <span>Human authority preserved</span>
-              <strong>No external action executed.</strong>
-              <p>TORO prepared a decision and stopped at the approval boundary.</p>
-            </div>
-          </div>
-        </aside>
+        {synthetic ? <details className={`${styles.activityPanel} ${styles.mobileTrace}`} data-brain-trace="mobile">
+          <summary>
+            <span className={styles.eyebrow}>Example event trace · {projection.recentEvents?.length ?? 0} steps</span>
+            <strong>From source to approval</strong>
+            <small>No external action executed. Open to inspect the example.</small>
+          </summary>
+          <ActivityTraceBody projection={projection} />
+        </details> : null}
       </section>
 
-      <section className={styles.lowerGrid}>
+      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
+
+      <section className={`${styles.lowerGrid} ${synthetic ? "" : styles.lowerGridCanonical}`}>
         <div className={styles.panel}>
           <div className={styles.panelHead}>
             <div>
@@ -273,7 +282,7 @@ export default async function BrainPage() {
           </div>
         </div>
 
-        <div className={styles.panel}>
+        {synthetic ? <div className={styles.panel}>
           <div className={styles.panelHead}>
             <div>
               <span className={styles.eyebrow}>Decision evidence</span>
@@ -287,38 +296,10 @@ export default async function BrainPage() {
             <div><AlertTriangle aria-hidden="true" /><span>Cash gap</span><strong>high attention</strong></div>
             <div><LockKeyhole aria-hidden="true" /><span>CAPEX change</span><strong>approval required</strong></div>
           </div>
-        </div>
+        </div> : null}
       </section>
 
-      <section className={styles.listFallback}>
-        <div className={styles.panelHead}>
-          <div>
-            <span className={styles.eyebrow}>Accessible list view</span>
-            <h2>The same Brain without spatial navigation</h2>
-          </div>
-          <Activity aria-hidden="true" />
-        </div>
-        <div className={styles.nodeList}>
-          {projection.nodes.map((node) => {
-            const Icon = nodeIcons[node.kind] ?? Activity;
-            return (
-              <article key={node.id}>
-                <Icon aria-hidden="true" />
-                <div>
-                  <span>{node.kind}</span>
-                  <strong>{node.label}</strong>
-                  <p>{node.summary}</p>
-                </div>
-                <div className={styles.listState}>
-                  <span>{node.status}</span>
-                  <span>{node.verification}</span>
-                  <span>{node.freshness}</span>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      <div className={styles.desktopBrain}><AccessibleNodeList projection={projection} /></div>
 
       <footer className={styles.footer}>
         <div>

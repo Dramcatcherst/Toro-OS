@@ -16,7 +16,7 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,3 +38,11 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Install Chromium for Brain E2E
+        run: npx playwright install --with-deps chromium
+
+      - name: Brain keyboard E2E
+        run: npx playwright test tests/brain-search.e2e.spec.ts --reporter=line
+        env:
+          TORO_BRAIN_CANONICAL_READ_ENABLED: "false"
