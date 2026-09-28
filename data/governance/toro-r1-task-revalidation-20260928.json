@@ -19,7 +19,7 @@
     "description": "Physically revalidate unresolved critical maintenance evidence before carrying it forward as live truth or closing it: water/leak chain for rooms 21–23 (maint-202689-3527, -3566, -3524), room 7 loose toilet (maint-2026721-3050), kitchen gas leak verification (maint-2026527-2179), recurrent water tank/pressure issue (maint-202671-2688 / -2088 / -1272), and recurrent electrical protection issue (maint-202644-1881). Completion requires current dated evidence and explicit status per event.\n\nAUTONOMIA-ENERO2027: Requisito previo a pruebas de ausencia. Responsable en propiedad y suplente deben verificar estado actual/evidencia de riesgos históricos; no interpretarlos como incidentes actuales ni cerrarlos por antigüedad.\n\nPILOTO-AUTONOMIA-20260918: Piloto habitación: inspección y entrega son verificaciones distintas de limpieza. Cero filas en facilities.inspection_rounds del alcance no demuestra ausencia de inspecciones fuera de TORO. Capturar referencia/evidencia actual sin duplicar registro nativo y confirmar responsable/suplente antes de prueba sin socios.\n\n[FIELD-PACKET-20260921]\nNo abrir una segunda inspección. Reutilizar maintenance_daily_p0_p1_round y ops_ws_room_safety_release para capturar las verificaciones físicas pendientes. Este task queda como checklist de cobertura: cada riesgo histórico debe enlazar a evidencia actual PASS/FAIL o quedar explícitamente pendiente; ausencia de evidencia no equivale a incidente actual ni a cierre. [/FIELD-PACKET-20260921]\n\n[FIELD-PACKET-20260921-OPERATE-R5]\nUbicación: reutilizar rutas/tickets existentes, no abrir una segunda inspección: Villa Toro #21/#22/#24/#28; habitación #7; cocina/punto de gas; sistema tanque-presión; tableros/protecciones eléctricas ya cubiertas por tareas específicas. Responsable: Mantenimiento/RICO para captura física; Housekeeping/Recepción para QA de habitación; técnico competente para gas/electricidad cuando aplique; Gerencia para revisar cobertura. Prueba: por cada uno de los 20 checks históricos, enlazar una prueba actual PASS/FAIL del ticket/ronda correspondiente o marcar explícitamente PENDIENTE con motivo; no convertir antigüedad ni ausencia de evidencia en PASS. Evidencia: fecha/hora, ubicación, task/evento origen, prueba objetiva, foto/video/lectura cuando aplique, responsable y QA. Criterio de cierre: 20/20 checks quedan cubiertos por evidencia actual verificable o excepción pendiente explícita; cualquier incidencia real sigue abierta hasta su propio criterio de cierre. Este task cierra cobertura documental, no repara ni libera habitaciones.\n[/FIELD-PACKET-20260921-OPERATE-R5]",
     "updated_at": "2026-09-21 14:53:01.583989+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -27,8 +27,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Critical hotel safety revalidation remains blocked by missing dated on-property PASS/FAIL evidence; the current field packet explicitly requires physical verification and supervisor review.",
+    "evidence_ref": "supabase:operations.tasks/critical_hotel_ops_safety_reverification_2026_09@2026-09-21T14:53:01.583989+00"
   },
   {
     "task_id": "e514137d-a84b-42fc-b2a1-5e81cc3b4f0f",
@@ -267,7 +267,7 @@
     "description": "Canonical TICOS truth root. Verify current live eligibility, percentage and stacking/targeting from the authorized Kross source. One result feeds promotions, TERE and discrepancy records. No runtime change, guest message, price or promotion write from this task.",
     "updated_at": "2026-09-23 06:01:56.402707+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -275,8 +275,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "TICOS terms remain an active commercial truth gap: public Kross evidence still does not verify live percentage, validity, eligibility or stacking rules.",
+    "evidence_ref": "supabase:operations.tasks/ticos_live_terms_verification_2026_09@2026-09-23T06:01:56.402707+00"
   },
   {
     "task_id": "207e2c88-4e79-45ff-bd7d-303cd117bfd7",
@@ -484,7 +484,7 @@
     "description": "Reducir las cinco bases Airtable auxiliares a una huella mínima de backup/reference — idealmente una sola base. Migrar o absorber funciones operativas a Supabase/TORO OS; no borrar por borrar. La prioridad es eliminar dependencias operativas, runtime fallbacks e interfaces viejas.\n\nALIGNMENT-20260922: DREAMCATCHER HOTEL appuk6zInco941sgc permanece TRANSITION/NO_NEW_FEATURES. Auditoría previa detectó 154 tablas y 12 automations válidas pero undeployed; descripciones legacy aún contradicen autoridad Supabase. Cierre exige dependencia humana/manual, consumidores y restore evidence. No activar automations ni retirar base por esta alineación.\n\nAUTOMATIONS-AUDIT-20260922: live connector read confirms 12 automations in Airtable DREAMCATCHER HOTEL (appuk6zInco941sgc), all configurationStatus=valid and deploymentStatus=undeployed; deployedVersion is null for all. Categories: Kross URL→room update; reservation confirmation email; check-in reminder; arrivals notification; post-stay review email; preventive-maintenance alert; AI brain analysis/email; duplicate-room detection; duplicate-room merge; daily room analysis/notification; amenities consolidation; one empty/malformed-name draft. No live automation behavior was observed or activated. Do NOT publish these drafts during convergence. Specifically Merge Duplicate Rooms remains prohibited from activation because canonical room deduplication is governed elsewhere; guest emails belong to governed guest messaging/TERE and Kross authority; room/amenity consolidation belongs to canonical Supabase models. Preserve draft metadata as historical evidence only until human/manual consumer audit closes.\n\nSURFACE-REGISTRY-20260922: operations.toro_system_surfaces_v1 is a static VALUES view. Its NEEDS_AUDIT labels can lag behind verified audits. Do not use the view alone as evidence that a surface still needs investigation. Next canonical schema/repo pass should migrate/refresh catalog definitions from governed evidence or at minimum version the updated VALUES through GitHub; no direct out-of-band production DDL in this cycle.\n\nPR27-ALIGNMENT-20260922: PR #27 is the single candidate migration for stale static surface metadata; rollback validation reports 65 surfaces / 2 NEEDS_AUDIT. Do not create another surface registry. Review nuance before merge: Vercel project toro-pr11-preview now has main target=production environment (Vercel-only aliases), while operational /toro is absent on main and PR16/26 remain protected previews. Catalog should distinguish environment target from operational product cutover.\n\n[DATA-LAYER-ALIGNMENT-R2-20260922]\nLive audit reconfirmed the owner architecture: Airtable target = TORO OS — Command Center (2 tables) as DERIVED_HUMAN_PROJECTION; Supabase abtyrbqlqbsastmridzp = CANONICAL_STRUCTURED_BACKEND. Master Brain has 31 tables and Sistema Operativo Central has 138 tables; the connector lists 0 automations in each of those three TORO bases. Do not create a fourth master base or parallel backend. Consolidate by parity, backup/restore, dependency closure and human-view coverage; archive/reference is acceptable terminal state. No base deletion, disablement or migration was executed in this cycle.\n[/DATA-LAYER-ALIGNMENT-R2-20260922]",
     "updated_at": "2026-09-23 05:24:03.315102+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -492,8 +492,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Residual Airtable consolidation is still current and non-destructive retirement gates remain open: parity, recoverable backup/restore, consumers and unique evidence are not yet proven.",
+    "evidence_ref": "supabase:operations.tasks/decommission_residual_airtable_estate_phase2@2026-09-23T05:24:03.315102+00"
   },
   {
     "task_id": "339e81e9-982c-4419-b57d-ce8cca43f6b3",
@@ -546,7 +546,7 @@
     "description": "Proyecto fpihshyoobzctnlerfjp ya no contiene HR/operación canónica: 0 Kross imports, 0 reservations, sin Edge Functions ni branches y sin referencias encontradas en GitHub. Conserva 2 auth users, 2 memberships y 3 sessions registradas.\n\n[RECLASSIFICATION-R2-20260922]\nFresh project audit shows fpihshyoobzctnlerfjp is NOT safely describable as auth-only/synthetic-only. It is ACTIVE_HEALTHY and contains 13 migrations, 11 public tables, 2 auth users, and 202 rows across fb_* tables (source archives, daily breakfast reports, operational facts, menu history, Kross daily snapshots, service daily logs, ingestion sources, aliases and settlement rates). kross_imports and kross_reservations remain empty, but the F&B history must be classified and mapped before any pause/delete. Security advisor also reports 12 RLS-enabled tables with no policies and leaked-password protection disabled. Treat the project as TRANSITION_BACKEND_CANDIDATE_FOR_CONSOLIDATION, not disposable pilot.\n[/RECLASSIFICATION-R2-20260922]\n\n[FNB-PARITY-AUDIT-R3-20260922]\nCanonical audit key: fnb_secondary_supabase_parity_audit_20260922_v1. Daily operational projection is 27/27 exact vs Airtable Master Brain 19A. Menu history is 53/54 semantically exact vs 19 Food & Beverage; one unmatched historical row remains: Desayuno completo CRC 6000, effective 2026-07-08 through 2026-09-11. Eight weekly settlement facts align with the eight 19B periods and control/net amounts (1489.50, 1322, 944, 1012, 803, 1038.60, 768, 1098 USD). Do not bulk-migrate duplicates. The secondary also has 52 operational facts and 3 WhatsApp source-archive metadata rows with SHA-256; exact hash search found none of the three in canonical evidence/archive tables. Two are referenced in main knowledge_items, one is not. Preserve/prove recoverable source copies before any pause/delete.\n[/FNB-PARITY-AUDIT-R3-20260922]\n\n[FNB-PRESERVATION-R4-20260922]\nThe canonical audit now contains a full historical/non-authoritative snapshot of all 52 fb_operational_facts, all 3 fb_source_archives metadata rows and all 6 fb_kross_item_aliases from fpihshyoobzctnlerfjp. Preservation is readback-verifiable in the main backend and does not promote stale/conflicting facts to current truth. This removes structured-row loss as a blocker for later semantic classification. Raw WhatsApp source files themselves are NOT proven backed up by this snapshot.\n[/FNB-PRESERVATION-R4-20260922]\n\n[FNB-PARITY-CORRECTION-R5-20260922]\nCorrection: the previously reported 53/54 menu gap was a semantic-type false negative. Airtable 19 Food & Beverage contains FB-HIST-BREAKFAST-CRC6000 as a Price History row (Desayuno completo ₡6.000), while the other 53 secondary fb_menu_history rows map to Airtable Menu Item rows. Therefore secondary menu/history is 54/54 represented across Airtable 19 semantic record types. CRC6000 is no longer a data-loss gate.\n[/FNB-PARITY-CORRECTION-R5-20260922]\n\n[FNB-RAW-SOURCE-VERIFY-R6-20260922]\nPASS: all 3 raw WhatsApp ZIP originals were located in ChatGPT Library and materialized. SHA-256 computed matches fb_source_archives 3/3 exactly: bd726c... (Admi ExCr through 17 Sep), a213f6... (Admi ExCr through 21 Sep), e316bf... (Restaurante Dreamcatcher pedidos through 18 Sep). Raw-source recoverability gate is CLOSED for F&B. Dropbox live verification was not counted because the connector account selector schema rejected the read call; one source has a documented Dropbox backup path but that is supporting evidence, not the basis of PASS.\n[/FNB-RAW-SOURCE-VERIFY-R6-20260922]\n\n[AUTH-GATE-AUDIT-R7-20260922]\nAuth is QA/synthetic, not canonical: 2 confirmed test users, 3 sessions and 3 non-revoked refresh tokens. Latest observed Auth/token activity is 08 Sep 2026; sessions_updated_last_7d=0. Edge Functions=0; branches=0. No access mutation performed. With F&B data-loss gate already closed, next destructive-adjacent step is explicit owner authorization to revoke/expire QA tokens and disable synthetic membership, followed by a no-regression observation window before reversible project pause.\n[/AUTH-GATE-AUDIT-R7-20260922]\n\n[RUNTIME-DEPENDENCY-AUDIT-R8-20260922]\nNo autonomous custom runtime found: database triggers=0, Edge Functions=0, branches=0. Five project functions are passive RPCs (F&B upsert/ingest plus pilot access checks). Current non-query DB connections observed are standard Supabase infrastructure only (PostgREST, pg_net process, supabase_admin, pg_cron scheduler, postgres_exporter); no external application connection was identified. This reduces dependency risk but does not prove no external API client. Therefore token revocation + no-regression observation remains the correct live dependency test.\n[/RUNTIME-DEPENDENCY-AUDIT-R8-20260922]",
     "updated_at": "2026-09-26 23:12:09.677825+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -554,8 +554,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The auth-pilot decommission gate remains active because the project is inactive but dependency, restore and security evidence plus human disposition are still unresolved.",
+    "evidence_ref": "supabase:operations.tasks/toro_auth_pilot_decommission_gate_2026_09@2026-09-26T23:12:09.677825+00"
   },
   {
     "task_id": "1be1c7b3-26ff-4586-be04-0c4cdf613d1f",
@@ -639,7 +639,7 @@
     "description": "OWNER-FACTURAS-EMPLEADOS-MARY-20260922: Mauricio designa a Mary para A&B y su coordinación actual; no Adrián. La definición del nombre ya no es pendiente. Faltan identidad/canal verificable, aceptación, suplencia, cobertura, lista de apertura/cierre y responsabilidades de inventario/POS. No se modifica vínculo bancario ni permisos por nombrar responsable.\n\nCanonical October kitchen staffing handoff executor. Define once: responsable principal/suplente, service boundary, opening checklist, POS/shift handoff, inventory responsibility, escalation and acceptance evidence. Commercial menu/costing remains in the revenue workstream and is not duplicated here.",
     "updated_at": "2026-09-22 18:24:28.11574+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -647,8 +647,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The October kitchen handoff remains a current operational transition with identity, acceptance, backup coverage and handoff gates still open.",
+    "evidence_ref": "supabase:operations.tasks/fnb_october_kitchen_handoff_2026_09@2026-09-22T18:24:28.11574+00"
   },
   {
     "task_id": "3e0e8543-e1bc-4c2d-a371-291206ecf19c",
@@ -701,7 +701,7 @@
     "description": "GATE DE PUESTA EN MARCHA. Consolidar únicamente lo que puede bloquear operación segura: 1) confirmar conjunto real de máquinas en servicio y nivelar/fijar cada lavadora; 2) elevar/proteger conexiones y validar protección de voltaje según placa/circuito; 3) verificar drenajes, ingreso de lluvia y acceso de limpieza; 4) ductos de secadoras directos al exterior con acceso para pelusa; 5) si la secadora a gas está en servicio, ubicación/regulación/cilindro y detector fijo validados por técnico competente; 6) señalizar cortes de agua/gas/electricidad; 7) confirmar ventilación e iluminación de tarea. El fallo LG OE se mantiene aparte en task-maint-lg-washer-oe-20260915. No convertir mejoras de diseño (chute, agua reutilizada, tendedero elevable, expansión externa, automatización) en bloqueadores de apertura salvo hallazgo físico de seguridad. CIERRE: evidencia fechada por gate, PASS/FAIL, responsable, foto/placa cuando aplique y lista explícita de lo diferido.\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: lavandería Dreamcatcher, máquinas en servicio, drenajes, ventilación y cortes asociados.\nResponsable: RICO / Mantenimiento + Housekeeping; técnico competente para validaciones eléctricas o de gas que lo requieran.\nPrueba: recorrer cada gate de seguridad y realizar solo pruebas funcionales no invasivas permitidas; cualquier prueba eléctrica/gas interna queda a técnico competente.\nEvidencia: fecha/hora, punto del gate, foto/placa cuando aplique, PASS/FAIL, responsable y lista explícita de diferidos.\nCriterio de cierre: todos los gates críticos documentados como PASS o bloqueados con causa/responsable; QA operativo completo antes de declarar puesta en marcha segura.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-20 14:33:50.260379+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -709,8 +709,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Laundry startup remains a current physical-safety/commissioning task; no verified closure evidence is present in the reviewed snapshot.",
+    "evidence_ref": "supabase:operations.tasks/task-laundry-safety-startup-20260918@2026-09-20T14:33:50.260379+00"
   },
   {
     "task_id": "f4757acd-e6a3-4c3b-a0e5-f18f498f7693",
@@ -732,7 +732,7 @@
     "description": "Preparar solo 3 accesos iniciales: Oliver Mendoza como capturador principal de Mantenimiento; Adonis Romero como respaldo; 1 persona de Housekeeping QA por designar entre el equipo activo.\n\nFLUJO CANÓNICO FUTURO POR PERSONA:\n1) confirmar identidad laboral y canal de acceso real;\n2) crear Auth únicamente con identificador verificado;\n3) asignar rol de seguridad EMPLEADO;\n4) fijar raw_app_meta_data.toro_role = CAMPO;\n5) vincular public.employees.user_id = auth.users.id;\n6) validar get_current_maintenance_field_round + submit_maintenance_inspection_check;\n7) confirmar que P0 siga reservado a Gerencia/Admin;\n8) documentar entrega/revocación de acceso.\n\nMODO MANUAL VIGENTE HASTA ONBOARDING:\n- Oliver/Adonis/Housekeeping reportan resultado y evidencia por el canal operativo actual (foto/WhatsApp).\n- Gerencia/Operaciones registra el check en TORO usando public.submit_maintenance_inspection_check.\n- responsible_name debe ser la persona que realmente hizo la revisión, no quien digitó.\n- evidence_ref debe apuntar a la evidencia conservada; evidence_note resume hallazgo/prueba.\n- PASS/FAIL conserva las mismas reglas; P0 sigue requiriendo confirmación Gerencia/Admin.\n- este modo NO autoriza a inventar evidencia, cerrar por mensaje verbal ni crear cuentas ficticias.\nAsí la operación de mantenimiento no depende del onboarding de Auth.\n\n[CONTEXT-MAIN-REBASELINE-20260923]\nCurrent main=280f8e17e8427718bd82a02a55fe0f96a79df049. Context/auth core is now integrated: Supabase SSR env/server/browser foundation; resolveToroContext + policy + tests; login surface; non-PII /api/brain/context; permission-scoped Visual Brain canonical read adapter. GitHub Actions run 35856973260 passed install/tests/lint/build; Vercel reports success. Production deployment dpl_8dQG9Xh8QEbVrJLmA8rcc5JBwvGt @672e... was READY target=production; subsequent main canonical-read commit 280f... also CI/Vercel success. Anonymous external fetch of the deployment context endpoint is blocked at Vercel Deployment Protection with login_required, so hosted application auth behavior remains unverified externally. organization_memberships remains absent in canonical Supabase. Preserve no-employee-contact hold; use synthetic identities/Mauricio only where authorized. Do not weaken deployment protection, use staff credentials, or infer multi-org proof from current production users.\n[/CONTEXT-MAIN-REBASELINE-20260923]",
     "updated_at": "2026-09-26 06:33:16.98217+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -740,8 +740,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "TORO People onboarding remains current after owner release, but individual identity, hosted role/isolation/revocation and verified channel gates are still open.",
+    "evidence_ref": "supabase:operations.tasks/toro_ops_staff_identity_onboarding_20260919@2026-09-26T06:33:16.98217+00"
   },
   {
     "task_id": "b3476ed9-0887-438c-ab50-b491a6a8ad99",
@@ -918,7 +918,7 @@
     "description": "Conciliar 16 meses enero–agosto 2025 y 2026 entre Total alojamientos y Room, noches y unidades disponibles. Diferencias acumuladas USD 81.77 y USD 7,234.64. Validar 23 unidades teóricas vs inventario PMS variable y villas/cierres. Terminado: diferencias explicadas, mapeo aprobado y definición de denominador por métrica; no ajustar históricos sin evidencia.\\nActualización 25/09/2026 (v4): en 2026 enero presenta +USD 5,862.93 y febrero +USD 1,341.53 de diferencia canales menos PMS; juntos suman USD 7,204.46 (99.6% del saldo neto ene–ago de USD 7,234.64). Existe una fila Airbnb enero por USD 5,984.58 como pista no confirmada. Cruzar reservas individuales antes de reclasificar. Evidencia: infograma de 12 láminas, indicador 04, y CSV verificado.",
     "updated_at": "2026-09-25 08:43:40.54113+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -926,8 +926,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The year-over-year source reconciliation remains current and no verified canonical reconciliation result supports closure or merge.",
+    "evidence_ref": "supabase:operations.tasks/dc_yoy_2025_2026_reconcile_sources@2026-09-25T08:43:40.54113+00"
   },
   {
     "task_id": "73c73552-feef-4643-83c9-09c3ae2be042",
@@ -980,7 +980,7 @@
     "description": "[OWNER-FACTURAS-EMPLEADOS-MARY-20260922 — INSTRUCCIÓN VIGENTE]\nMary es la coordinadora actual de A&B designada por Mauricio. El seguimiento de factura debe gestionarse con Mary, no dirigirse automáticamente a Adrián. El emisor de la factura del14-20 se verifica según el servicio original; no se cambia el beneficiario histórico del pagoUSD1098 ref406411289. Solicitud pendiente de canal/contacto inequívoco; no hay envío nuevo. Regla documental para socios/empleados y método de pago en payment_processor_operating_matrix_2026_09_v1.\n[/OWNER-FACTURAS-EMPLEADOS-MARY-20260922]\n\n[COCINA-PAGO-406411289 — ESTADO VIGENTE]\nSemana 14–20/09/2026: US$1.098 PAGADOS, confirmado por Mauricio y comprobante de transferencia del 21/09/2026 12:43:01, referencia 406411289, destinatario ADRIAN DAVID SOTO ACEVEDO. El pago coincide con el cierre reportado; diferencia del cierre respecto al pago: US$0. No volver a presentar este monto como impago ni repetir la transferencia.\nFACTURA NO RECIBIDA, confirmado expresamente por Mauricio el 22/09/2026. Siguiente: SOLICITARLA al proveedor; no tratarla como disponible para archivar. Una vez recibida, revisar desglose y conciliarla con el pago existente y el ajuste de US$20, sin generar otro pago. No se ha enviado una solicitud desde esta revisión. El detalle diario y el cierre contable siguen pendientes; el banco no fue consultado en vivo.\nFuente: adjunto file_00000000eafc81f6b87bdc2c2c73fdb6, SHA256 8e3eb869fd9208ac2a88884f56ccd6765198d7f7927e25dacf40746de384c3de. No se copian cuentas bancarias completas.\nExcel actualizado: Dreamcatcher_Cocina_14-20_Sep_2026_Pagado_Factura_Pendiente.xlsx, SHA256 122d3dda139fc9e447a05bcfd050a3d8cd458c8475255d239f54d1401511628c. Versiones anteriores intactas.\nEsta actualización reemplaza las menciones históricas inferiores de pago1098 no verificado. No se ejecutó transferencia, factura, asiento ni cierre general de tarea.\n[/COCINA-PAGO-406411289]\n\nHISTORIAL ANTERIOR (conservar como evidencia, no como estado vigente):\nOWNER-COCINA-DIEX-20260921 — confirmación comercial de Mauricio incorporada al SOP existente.\nRESULTADO: un corte semanal lunes-domingo de A&B, con pago previsto lunes solo después de conciliación y aprobación. Desayuno realmente servido: US$8 a cocina. Otras comidas: exactamente 2/3 del precio de venta a cocina y 1/3 para hotel. Ya no está pendiente definir el reparto de las comidas.\nCONTROL: separar incluidos servidos/no consumidos, extras, casa, pagos directos, anulaciones y ajustes; no pagar incluidos no consumidos ni contar dos veces pagos directos. Bebidas y consumos sin precio no heredan una regla por inferencia.\nSIGUIENTE: corregir/verificar el modelo de cálculo, conciliar una semana con Kross/POS y reporte final de cocina, incorporar factura/documento y criterio contable de fecha, resolver diferencias y obtener aceptación humana.\nTERMINADO: SOP + campos mínimos + responsable + semana conciliada y evidencia. La confirmación de la fórmula no equivale a aprobación de pago ni a cierre completo.\nFUENTE: operations.knowledge_items/fnb_weekly_settlement_invoice_payment_sop_2026_09_v1; estado anterior preservado en portfolio_scope_alignment_2026_09_v1.owner_correction_20260921.before.\n\n[COCINA-SEMANA-14-20-20260922]\nHECHO: cierre de 14-20 localizado en export Admi ExCr subido 21/09; imagen IMG-20260921-WA0049.jpg. Reporta 136 desayunos x USD8=1088; 3 comidas a USD15 x2/3=30; ajuste Tes La Teresita -20; total1098. Diferencia aritmética cero. Mauricio revisó el resumen 21/09 11:48. Esto no prueba transferencia, factura o consumo diario reconciliado. No crear 136 registros ficticios ni repartir por plato/fecha sin fuente.\nNUEVA EVIDENCIA HISTÓRICA: aviso BAC de transferencia USD768 del 14/09 16:37 para 07-13, IMG-20260914-WA0106.jpg. No clasificar ese monto como impago ni repetirlo; validación bancaria en vivo sigue pendiente.\nMODELO: Dreamcatcher_Cocina_Conciliacion_14-20_Sep_2026.xlsx, SHA256 5ea70af4a4f96f394de65a4d124618274183e77c83249597c4561d7a2faa7ec8. Nueva hoja agregada Conciliacion 14-20; 8 controles de actualización y 26 pruebas previas PASS; Registro Servicio vacío por falta de detalle diario. Fuentes y metadatos sin cuentas bancarias en el SOP existente.\nSIGUIENTE: verificar movimiento/pago de1098 antes de cualquier nueva transferencia; obtener factura, comprobante del ajuste y registros diarios del14-20. No rehacer fórmula ni volver a buscar el resumen que ya fue recuperado. No pagos, postings, cambios de estado o responsables.\n[/COCINA-SEMANA-14-20-20260922]",
     "updated_at": "2026-09-22 18:24:28.11574+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -988,8 +988,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The A&B settlement/invoicing SOP remains active: payment is known, but invoice receipt, channel/contact certainty and operating acceptance remain unresolved.",
+    "evidence_ref": "supabase:operations.tasks/fnb_settlement_invoicing_sop_2026_09@2026-09-22T18:24:28.11574+00"
   },
   {
     "task_id": "eff7627c-db3d-4534-a233-d86ba848b668",
@@ -1011,7 +1011,7 @@
     "description": "Junio 2026 PMS 30.98% ocupación operativa vs 54.09% en 2025; 180 noches vs 218 con mayor capacidad. Revisar día de semana, anticipación, estancia, restricciones, precio, comisión y cancelaciones. Booking.com 58.8% del alojamiento ene–ago 2026 vs 39.3% en 2025. Terminado: diagnóstico verificable, tácticas para fechas débiles y tablero de ingreso neto/canal; no cambiar tarifas automáticamente.\\nActualización 25/09/2026 (v4): en junio 2026, 16/30 días con ocupación PMS inferior a 30% frente a 4/30 en junio 2025. Capacidad estimada por mes: 403 a 581 unidades-noche; el 04/06/2026 el PMS registra 0% de ocupación. Verificar inventario abierto por fecha y restricciones antes de atribuirlo a demanda; no cambiar tarifas de modo automático. Evidencia: indicador 05 diario y tablero interactivo.",
     "updated_at": "2026-09-25 08:43:40.54113+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1019,8 +1019,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The June/channel diagnostic remains a distinct current Revenue analysis objective and no verified completed diagnostic is recorded in this snapshot.",
+    "evidence_ref": "supabase:operations.tasks/dc_revenue_june_channel_2026_diagnostic@2026-09-25T08:43:40.54113+00"
   },
   {
     "task_id": "fbd447d1-f10e-413b-a151-651784ae6f28",
@@ -1042,7 +1042,7 @@
     "description": "[COCINA-PAGO-406411289 — ESTADO VIGENTE]\nSemana 14–20/09/2026: US$1.098 PAGADOS, confirmado por Mauricio y comprobante de transferencia del 21/09/2026 12:43:01, referencia 406411289, destinatario ADRIAN DAVID SOTO ACEVEDO. El pago coincide con el cierre reportado; diferencia del cierre respecto al pago: US$0. No volver a presentar este monto como impago ni repetir la transferencia.\nFACTURA PENDIENTE, confirmado por Mauricio. Siguiente: incorporar factura del proveedor y conciliarla con el pago existente y el ajuste de US$20, sin generar otro pago. El detalle diario y el cierre contable siguen pendientes; el banco no fue consultado en vivo.\nFuente: adjunto file_00000000eafc81f6b87bdc2c2c73fdb6, SHA256 8e3eb869fd9208ac2a88884f56ccd6765198d7f7927e25dacf40746de384c3de. No se copian cuentas bancarias completas.\nExcel actualizado: Dreamcatcher_Cocina_14-20_Sep_2026_Pagado_Factura_Pendiente.xlsx, SHA256 122d3dda139fc9e447a05bcfd050a3d8cd458c8475255d239f54d1401511628c. Versiones anteriores intactas.\nEsta actualización reemplaza las menciones históricas inferiores de pago1098 no verificado. No se ejecutó transferencia, factura, asiento ni cierre general de tarea.\n[/COCINA-PAGO-406411289]\n\nHISTORIAL ANTERIOR (conservar como evidencia, no como estado vigente):\nOWNER-COCINA-DIEX-20260921 — regla confirmada por Mauricio.\nRESULTADO: modelo de liquidación y contribución del hotel para el alcance vigente de 11 productos, sin costear los 75 históricos ni reactivar productos HOLD. Revalidar vigencia del catálogo antes de un corte real.\nREGLAS: desayuno realmente servido = US$8 a cocina; otras comidas = 2/3 del precio de venta a cocina y 1/3 retenido por el hotel. Conservar fracciones exactas. Desayuno incluido no consumido se desglosa y no se paga; casa se muestra aparte según SOP.\nSIGUIENTE: separar tipo/servido/cantidad/precio de venta/base de reparto/pago cocina/retención hotel/costos propios documentados; corregir la fórmula histórica que aplica 2/3 al desayuno; probar 11/11 ítems y una semana real.\nEFICIENCIA: recetas y costos internos del proveedor no bloquean calcular la obligación contractual ya definida. No sumar ingredientes/mano de obra del proveedor nuevamente como costo del hotel; registrar solo costos adicionales realmente asumidos por el hotel. La retención no equivale a utilidad neta.\nPENDIENTES: precio y ventas reales, evidencia de servido, costos propios, redondeo/reconciliación, pagos directos/ajustes y excepciones de bebidas o consumos sin precio cuando correspondan. No inventar tratamiento tributario.\nTERMINADO: fórmulas verificadas para todos los ítems vigentes, control de no consumidos, diferencia explicada, una semana conciliada y aceptación; ningún pago/posting/reprecio autorizado.\nFUENTE: operations.knowledge_items/fnb_weekly_settlement_invoice_payment_sop_2026_09_v1; estado anterior preservado en portfolio_scope_alignment_2026_09_v1.owner_correction_20260921.before.\n\n[COCINA-MODELO-CORREGIDO-V1]\nHECHO DE MODELO, NO CIERRE OPERATIVO: copia Dreamcatcher_Cocina_Modelo_Corregido.xlsx generada en la conversación, SHA256 431d7360ef7ccc3cf943074c3e96e12a7eb1de22d77085e4527d7cad375eb577. Conserva 75 filas históricas originales y añade 4 comidas fuente; 11 activos (7 desayunos + 4 comidas), 68 HOLD. US$8 por desayuno servido; otras comidas 2/3 exactos. Bebidas/Extras/HOLD bloqueados. Incluidos no consumidos = 0 a cocina; no convertir incluido en ingreso de US$15. Cobros directos/ajustes no se duplican; costos propios desconocidos no son 0.\nVALIDACIÓN: 26/26 casos sintéticos PASS, prueba de integración Registro→Liquidacion PASS, 0 errores de fórmula detectados en export. Los datos sintéticos están solo en Pruebas; Registro Servicio quedó vacío. Fuente original fc0e147c21ca0af9156a23a5f280d67a581cb97e9e59fa863bfeefa2e66ddb7c intacta.\nREFERENCIA: Liquidacion_AyB_07-13_sep_2026_v2.xlsx documenta 77 incluidos servidos + 13 extras + 6 casa = 96 desayunos; 96×8=US$768. Aritmética coincide; factura/pago y evidencia primaria NO revalidados. No es saldo impago ni nuevo ahorro.\nBLOQUEO RESTANTE: en el corte consultado operations.breakfast_orders contiene 0 filas. No se recuperó cierre primario completo para 14–20 septiembre. Conciliar un período real con cocina, Kross/POS, factura/documento, cobros directos/ajustes y aprobación. El redondeo por línea es propuesta que debe ratificarse.\nARCHIVO: copia local de conversación; NO subida a Dropbox/Library. Originales y fuentes históricas intactos. No pagos, asientos, precios, publicaciones, permisos ni cambios de status.\n[/COCINA-MODELO-CORREGIDO-V1]\n\n[COCINA-SEMANA-14-20-20260922]\nHECHO: cierre de 14-20 localizado en export Admi ExCr subido 21/09; imagen IMG-20260921-WA0049.jpg. Reporta 136 desayunos x USD8=1088; 3 comidas a USD15 x2/3=30; ajuste Tes La Teresita -20; total1098. Diferencia aritmética cero. Mauricio revisó el resumen 21/09 11:48. Esto no prueba transferencia, factura o consumo diario reconciliado. No crear 136 registros ficticios ni repartir por plato/fecha sin fuente.\nNUEVA EVIDENCIA HISTÓRICA: aviso BAC de transferencia USD768 del 14/09 16:37 para 07-13, IMG-20260914-WA0106.jpg. No clasificar ese monto como impago ni repetirlo; validación bancaria en vivo sigue pendiente.\nMODELO: Dreamcatcher_Cocina_Conciliacion_14-20_Sep_2026.xlsx, SHA256 5ea70af4a4f96f394de65a4d124618274183e77c83249597c4561d7a2faa7ec8. Nueva hoja agregada Conciliacion 14-20; 8 controles de actualización y 26 pruebas previas PASS; Registro Servicio vacío por falta de detalle diario. Fuentes y metadatos sin cuentas bancarias en el SOP existente.\nSIGUIENTE: verificar movimiento/pago de1098 antes de cualquier nueva transferencia; obtener factura, comprobante del ajuste y registros diarios del14-20. No rehacer fórmula ni volver a buscar el resumen que ya fue recuperado. No pagos, postings, cambios de estado o responsables.\n[/COCINA-SEMANA-14-20-20260922]",
     "updated_at": "2026-09-22 06:50:24.364506+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1050,8 +1050,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "A&B costing/margin validation for the current product set remains an active revenue-control objective with no verified completion evidence.",
+    "evidence_ref": "supabase:operations.tasks/fnb_costing_complete_2026_09@2026-09-22T06:50:24.364506+00"
   },
   {
     "task_id": "6f0a92a7-349c-409e-82a9-092ef6036970",
@@ -1104,7 +1104,7 @@
     "description": "Cada semana revisar conversaciones reales y alertas WeSpeak de los últimos 7 días. Mínimo: todas Crear/Realizar reserva, cancelaciones/modificaciones, problemas de huésped y pagos + 20 conversaciones normales si existen. Evaluar facts/DC-ROOM-N, inventario físico único, disponibilidad y razones de no-disponibilidad contra Kross, TICOS activo (porcentaje live/eligibilidad/contexto), links y preservación de parámetros, idioma/moneda, tono/brevedad, repetición, escalamiento, pagos, fricción, conversión y upsells. Comparar con wespeak_weekly_qa_baseline_2026_09_18_v1.\n\nAUTONOMIA-ENERO2027: Alinear a dreamcatcher_autonomy_january_2027_v1: muestra representativa, casos únicos, corrección verificada, tiempos humanos/propietarios si existen. Las 66 alertas no son universo de chats ni conversión. Reportar cobertura y NO MEDIDO, no PASS, cuando falten conversaciones o resultado Kross. Mantener escaladas legítimas.\n\n[GROW-QA-DELTA]\n21/09/2026: QA semanal pasa a contrato incremental wespeak_qa_cadence_contract_2026_09_v1. Baseline de 66 alertas (18/09) queda como referencia y no se reprocesa. Revisar solo eventos nuevos después del watermark aceptado + todos los P0 nuevos + >=20 conversaciones normales nuevas únicamente si existe fuente nativa. message_id deduplica entrega; chat_id identifica conversación; Gmail thread no identifica caso. Si falta cobertura nativa: SIN DATOS, no reescanear baseline. Sin cambios live WeSpeak/Kross.\n[/GROW-QA-DELTA]\n\n[GROW-QA-RUN-20260921-01]\n21/09/2026 incremental: 17 alertas nuevas post-watermark revisadas; cobertura de conversaciones normales nativas = SIN DATOS. P0 materiales: (1) Room 21 volvió a describirse con terraza contra core.rooms has_terrace=false; (2) se citó USD10/h para late checkout aunque ese valor es histórico/no público y requiere verificación humana. Drift de fechas de 1a0b580 ya estaba canonicalizado y no se duplicó. Mejora prioritaria propuesta: gate runtime para impedir términos no públicos/requieren verificación + room_key gobernado. Sin mensajes, cambios live WeSpeak/Kross, precios, reservas ni permisos. Evidencia: wespeak_qa_cadence_contract_2026_09_v1.latest_incremental_run.\n[/GROW-QA-RUN-20260921-01]",
     "updated_at": "2026-09-28 15:38:56.872353+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1112,8 +1112,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The recurring WeSpeak/TERE QA remains a valid ongoing control; current evidence explicitly says coverage is partial and native-source attribution is still blocked.",
+    "evidence_ref": "supabase:operations.tasks/wespeak_weekly_conversation_qa@2026-09-28T15:38:56.872353+00"
   },
   {
     "task_id": "0b5f39f4-7aa1-462c-b2d4-4c8209e11943",
@@ -1135,7 +1135,7 @@
     "description": "Programa de pruebas PROPUESTO, no prueba ejecutada: 48h en noviembre, 7 días antes del 15/12 y 30 días consecutivos durante enero. Requisitos: responsables/suplentes aceptados, fuentes operativas frescas, despliegues autorizados, permisos acotados aprobados, reconciliación, alertas entregadas y fallback ensayado. Medir 90% de gestión recurrente elegible automatizada y reducción de 90% de horas rutinarias de socios; reportar volumen y minutos ponderados, excepciones, carga del equipo, calidad y caja. Emergencias se atienden siempre y se registran; nunca suprimirlas para lograr la meta. Corte financiero con documentos y coste completo; no garantía de distribución. Terminado = evidencia continua verificable con ventana/denominador, QA y roles, ninguna acción crítica no autorizada y aceptación de socios; no basta existencia del dashboard.\n\nPILOTO-AUTONOMIA-20260918: Gate previo: caso completo con evidencia, denominador versionado y horas reales. Prueba de frescura por predicado 12 casos: filtro actual admite seis no aptos para uso verificado; candidato pasa muestra pero NO está desplegado. La prueba de ausencia no comienza hasta cerrar integración/roles/alertas y operación física.",
     "updated_at": "2026-09-21 05:50:09.203077+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1143,8 +1143,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The January 2027 autonomy acceptance test remains a current strategic readiness gate with explicit dependencies; it is not completed or duplicated by the baseline task.",
+    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_acceptance_2027_01@2026-09-21T05:50:09.203077+00"
   },
   {
     "task_id": "9023b678-5e2c-46fa-b945-a701a42de359",
@@ -1166,7 +1166,7 @@
     "description": "Plan propuesto en dreamcatcher_autonomy_january_2027_v1. Registrar una semana representativa de casos, tiempos manuales, intervenciones de cada socio, ocupación/volumen, errores y trabajo administrativo por rol. Reutilizar fuentes y tareas existentes; no inferir horas desde alertas de correo. Fijar universo/denominador de 90% y distinguir autonomía IA, delegación humana y ejecución física. Confirmar responsable humano de operación y suplente, cobertura por turno y límites de decisión, sin nombramiento unilateral. Entregar mapa de diez procesos y matriz propuesta de permisos/costes con pruebas de finalización. Capturar ingreso mensual objetivo de socios y presupuesto incremental como DESCONOCIDO hasta definición; no detiene la preparación técnica. Terminado = fuente/periodo/cobertura, baseline medible, roles aceptados y métricas con denominador documentados; una plantilla vacía no equivale a medición.\n\nPILOTO-AUTONOMIA-20260918: Piloto de observación detallado: 19–20/09 preparar, 21–27 observar, 28 revisar, baseline hasta 30/09. Diez procesos y captura mínima están en dreamcatcher_autonomy_pilot_readiness_20260918_v1. No iniciado/notificado. Medir minutos de socios y equipo separados de trabajo físico; no deducir horas de timestamps. Responsables humanos/suplente pendientes.",
     "updated_at": "2026-09-21 05:50:09.203077+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1174,8 +1174,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The autonomy baseline is required before the January 2027 acceptance test and still depends on real timing/case data and human role confirmation.",
+    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_baseline_2026_09@2026-09-21T05:50:09.203077+00"
   },
   {
     "task_id": "48875793-5529-45f5-8dd0-2eed9d4e8809",
@@ -1197,7 +1197,7 @@
     "description": "Diseñar sobre estructuras existentes, sin DDL todavía. Empresa/organization es tenant superior. app_users es identidad global. Separar membership de role antes de piloto externo; soportar usuario multiempresa, selector de empresa, unidades/ubicaciones opcionales, modo personal separado, configuración por empresa, permisos, conectores, retención, capability matrix, planes/uso y offboarding/export. Portal: Ask TORO como centro; vistas Empresa, Mi trabajo, Equipo, Tareas, Conocimiento, Herramientas/Conexiones, Automatizaciones, Reportes, Puntos y Configuración según rol. Cierre de diseño: contrato de entidades/estados/permisos, wireflow por owner/admin/employee, migración propuesta y pruebas de aislamiento; no crear tablas hasta revisión.\n\n[PORTAL-CONTRACT-V1]\nHallazgos 22/09: current backend = 1 organization, 5 app_users, 9 user_roles, 7 roles, 1 property; no membership/workspace table física detectada. User Vault CURRENT design ya propone user_workspace_memberships. RLS actual usa org_id+role y self-read. Diseño recomendado: membership explícita separada de role_assignment; multiempresa; modo personal aislado; Portal adaptativo por rol; technical cockpit actual pasa a vista Sistemas/Admin. No DDL todavía. Criterio antes de build: migration map sin romper RLS + tenant isolation tests + synthetic second tenant plan. [/PORTAL-CONTRACT-V1]\n\n[TEN-STEPS-AHEAD-R1]\nMembership distinct from role; last-owner protection; active scope Personal/Org; multi-org switcher; verified channel bindings; per-scope memory; points per membership; usage/billing per tenant; separate user/org offboarding. Current GitHub root page is technical v0.3 command console using Airtable-shaped authority language; preserve useful components for Systems/Admin advanced, replace as default product home only after contract/wireflow/RLS design. [/TEN-STEPS-AHEAD-R1]\n\n[MEMBERSHIP-RLS-V1]\nExisting has_org_role infers membership from active non-revoked user_roles. Target membership lifecycle is separate. Proposed migration: backfill active memberships from distinct current org/user roles; keep role rows; add membership helper; require active membership inside has_org_role; positive/negative RLS tests; only then cut membership inference. Invariants: invited/suspended/left/revoked deny access; role without active membership grants nothing; last-owner protected. [/MEMBERSHIP-RLS-V1]\n\n[PORTAL-WIREFLOW-R1]\nPortal universal: shell con scope Personal/Empresa, Ask TORO, búsqueda/notificaciones; home común con what matters/can solve/approvals/continue. Owner/Admin, Gerencia, Empleado y Sistemas/Admin avanzado tienen navegación progresiva. Cockpit v0.3 se reutiliza en Sistemas/Admin. Research Center y Capability Center definidos. WhatsApp→Portal conserva un mismo action_id. [/PORTAL-WIREFLOW-R1]\n\n[PREBUILD-ORDER-R1]\nNo new branch yet: repo has 12 open PRs. Reconcile #26 Human Layer config + #27 registry/canonical gate + #16/#15 shell chain before implementation. Proposed build order: branch/base reconciliation → membership migration spec → RLS tests → capability registry config → scope switcher → universal Portal shell → move v0.3 cockpit to Systems/Admin → cross-channel action_id → synthetic tenant → external pilot gate. [/PREBUILD-ORDER-R1]\n\n[SELF-BUSINESS-PILOT-R1]\nEl contrato empresa→membresía→usuario→permisos debe soportar tres pruebas sin ramas de producto separadas: Dreamcatcher (pilot 1), TORO Business (pilot 2 self-hosted) y un tenant sintético de aislamiento. TORO Business debe existir como organización separada del platform/control plane, sin bypass de tenant/RBAC, con scope Personal/Empresa, memoria y datos separados, conectores propios, offboarding/export y capability enablement normal. Esta tarea no crea todavía el tenant real; define el contrato que permitirá hacerlo de forma segura.\n[/SELF-BUSINESS-PILOT-R1]\n\n[MERGED-SCOPE-R1-20260922]\nAbsorbe tres scopes que antes estaban fragmentados en tareas separadas:\nA) Business Discovery: public pre-research + connected-source learning; pipeline discover→extract→classify→reconcile→confidence/privacy/authority→atomic knowledge→next action; scope debe resolverse antes de persistir y nunca cruzar tenants automáticamente.\nB) Message/Memory: WhatsApp no es truth canónica; promover hechos/decisiones/tareas/evidencia atómica con scope Personal/Empresa, conservación configurable, minimización de sensibles, export/delete/tombstone y legal-hold solo cuando corresponda.\nC) Human Profiles: DreamTeam es acceptance slice real; roster activo conocido 12 personas, 4 con Auth/user_id y 8 sin vínculo al corte existente. Cada perfil debe quedar VERIFIED/NEEDS_VERIFICATION/BLOCKED, con contexto mínimo, herramientas/capacidades permitidas y procedencia, sin copiar chats completos ni inventar identidad.\nEstos scopes son subcontratos del mismo tenant/user/context contract; no vuelven a existir como executors independientes.\n[/MERGED-SCOPE-R1-20260922]\n\n[IDENTITY-MEMBERSHIP-PREBUILD-R2]\nGate 0: duplicate owner identity must be reconciled before membership backfill. Separate organization_invitations from organization_memberships. Do not infer workspace owner from ADMIN. Scope switcher uses /toro/personal and /toro/o/{org_slug}; server revalidates authority. Reuse tasks + approval/audit before considering a generic actions table. [/IDENTITY-MEMBERSHIP-PREBUILD-R2]\n\n[SELF-BUSINESS-BOOTSTRAP-R1]\nCurrent backend read-only check: public.organizations contains 1 real org, Dreamcatcher Hotel & Villas; TORO Business does not exist yet. Future activation must create TORO Business as a separate organization/tenant only after tenant-isolation gates pass. Bootstrap captures business profile, memberships, customers, sales/pipeline, offers/pricing versions, support/success, finance/cost sources, product/release sources, vendors/tools, policies, capabilities, goals/KPIs and source authority. Legal-entity status is a separate optional field and must not be inferred from organization creation. Platform secrets/config remain outside tenant memory. Metrics schema may be defined now; values remain UNKNOWN until real data exists.\n[/SELF-BUSINESS-BOOTSTRAP-R1]\n\n[IDENTITY-RECONCILIATION-PACK-R1]\nKey evidence: employee-linked candidate has 1 employee link, 2 role rows, 68 sessions, 3449 access events, 5743 audit actor rows, 3 sent team messages, 1 read state. Residual candidate has 0 employee links, 1 role row, 0 sessions/access events, 7 audit actor rows. Strong canonical candidate identified, but no Auth mutation authorized. [/IDENTITY-RECONCILIATION-PACK-R1]\n\n[PRINCIPAL-MEMBERSHIP-R1-20260922]\nRead-only evidence: public.app_users.id has FK directly to auth.users(id), so current app_users semantics are access principals. Two active Mauricio-labelled principals exist with different auth emails: principal A is employee-linked, carries Gerencia+Administrador and has the large historical access/session/audit footprint; principal B carries toro_role=FOUNDER + Administrador and has very limited historical references. Names alone do not authorize collapsing them.\nAuthorization rule: organization membership attaches to app_user/auth principal, not to an inferred human identity. Backfill membership from distinct active user_roles (org_id,user_id) while preserving each principal separately. Role grants remain separate rows. A future optional account-link/human-subject layer may unify profile/context for the same verified human, but cannot itself grant access or silently merge sessions/history.\nSecurity invariant: no principal merge, revoke, role transfer or session migration by inference. A multi-principal human may continue using separate logins until explicit verified account-linking/canonical-login migration is designed and approved. This removes the need to block membership design on name-based dedupe while preserving authorization safety.\n[/PRINCIPAL-MEMBERSHIP-R1-20260922]\n\n[MERGED-DELTA-R2-20260922]\nBusiness Discovery implementation contract now references operations.knowledge_items/toro_master_knowledge_acquisition_matrix_2026_09_v1: source-by-source authority/freshness/cost/privacy/retention/failure/revoke, with public/connected/personal-opt-in modes and tenant scope resolution before persistence. Message/Memory implementation contract now references toro_message_memory_retention_contract_v1: channel history remains outside canonical memory; canonical layers are transient ingest → scoped atomic memory → business evidence/restricted, with inspect/correct/supersede/delete UX where permitted. These are subordinate contracts of Core Tenant; they do not restore independent executors.\n[/MERGED-DELTA-R2-20260922]\n\n[MEMBERSHIP-RLS-MIGRATION-SPEC-R1-20260922]\nCURRENT verified: private.has_org_role(target_org,allowed_roles) authorizes by active, non-revoked public.user_roles for auth.uid(); app_users self-read/update is id=auth.uid(); employee self-read is employees.user_id=auth.uid(). No physical membership table exists today.\nTARGET contract (design only, no DDL): reuse the planned user_workspace_memberships concept as the organization-membership lifecycle; membership belongs to (org_id, app_user/auth principal), not inferred human name. Backfill candidate = DISTINCT active, non-revoked (org_id,user_id) from user_roles. Preserve user_roles unchanged. Membership states must distinguish invited/active/suspended/left/revoked; only active grants eligibility.\nAuthorization order after future approved migration: auth principal -> active org membership -> role grant -> resource policy. A role row without active membership MUST deny. Human/account-link metadata MUST NOT grant access.\nFuture helper contract: has_active_org_membership(target_org) checks auth.uid() membership. private.has_org_role keeps existing role-code compatibility but adds has_active_org_membership as mandatory predicate. Existing app_users self-read remains principal-self; employees self-read remains exact principal link.\nPositive tests: active membership + allowed active role permits intended org resource; current Dreamcatcher principals retain exactly their existing role behavior after backfill. Negative tests: no membership+role DENY; suspended/left/revoked membership+role DENY; active membership+wrong role DENY; Org A membership cannot read Org B; two principals believed to be same human cannot inherit each other roles/sessions; employee self-read does not cross principals; no public signup gain.\nLast-owner/admin guard: suspension/revocation that would remove the final privileged recovery path must fail or require separately governed recovery/owner procedure. Account offboarding does not delete Auth or audit history automatically.\nRollout order: 1 snapshot user_roles/app_users/auth linkage counts; 2 prepare/backfill memberships in isolated migration; 3 verify row-count/idempotency; 4 add helper; 5 test helper directly; 6 update has_org_role to require active membership; 7 run positive/negative RLS suite across organizations/employees/user_roles; 8 hosted restricted/Founder E2E; 9 only then enable tenant switcher/business pilot.\nRollback: restore previous has_org_role definition first; leave membership rows inert for inspection; never delete principals/roles/sessions as rollback.\nStatus: migration SPEC complete; implementation remains gated by existing branch/release/Auth gates.\n[/MEMBERSHIP-RLS-MIGRATION-SPEC-R1-20260922]\n\n[COGNITIVE-MODEL-CORE-SCOPE-GAP-20260922]\nGitHub main commit 6dab11b9f53f380fca3fe6a95d52dd705127149c establishes docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md as the universal TORO Brain cognitive contract. Current operations.knowledge_items requires org_id NOT NULL and public.organizations currently exposes only Dreamcatcher Hotel & Villas, so DO NOT store this universal product rule as Dreamcatcher-scoped knowledge merely for convenience. Resolve a governed platform/core knowledge scope through the existing tenant/context architecture before runtime replication. Until then GitHub + toro-context.yaml are authority; Notion is narrative projection. Existing Autopilot L0-L4 action/risk permissions and Cognitive A0-A6 workflow autonomy maturity are separate axes and must not be conflated. Reuse this existing tenant contract task; do not create a parallel project/table/knowledge store.\n[/COGNITIVE-MODEL-CORE-SCOPE-GAP-20260922]\n\n[CONTEXT-MAIN-REBASELINE-20260923]\nCurrent main=280f8e17e8427718bd82a02a55fe0f96a79df049. Context/auth core is now integrated: Supabase SSR env/server/browser foundation; resolveToroContext + policy + tests; login surface; non-PII /api/brain/context; permission-scoped Visual Brain canonical read adapter. GitHub Actions run 35856973260 passed install/tests/lint/build; Vercel reports success. Production deployment dpl_8dQG9Xh8QEbVrJLmA8rcc5JBwvGt @672e... was READY target=production; subsequent main canonical-read commit 280f... also CI/Vercel success. Anonymous external fetch of the deployment context endpoint is blocked at Vercel Deployment Protection with login_required, so hosted application auth behavior remains unverified externally. organization_memberships remains absent in canonical Supabase. Preserve no-employee-contact hold; use synthetic identities/Mauricio only where authorized. Do not weaken deployment protection, use staff credentials, or infer multi-org proof from current production users.\n[/CONTEXT-MAIN-REBASELINE-20260923]\n\n[MEMBERSHIP-ISOLATED-PASS-20260923]\nPR67 / merge 4b6da23b... validated identity.organization_memberships in disposable PostgreSQL16. SQL run35858881529 PASS all RLS/constraint/backfill/rollback assertions; app CI35858881721 PASS; Vercel success. Production preflight read-only passed against real schemas/roles/helper. No production DDL applied; identity schema still absent. Historical public.organization_memberships draft is not canonical.\n[/MEMBERSHIP-ISOLATED-PASS-20260923]\n\n[IDENTITY-RECON-R1-20260923]\nRead-only deterministic reconciliation complete. 13 nondeleted employees:4 linked_valid,8 active unlinked on owner HOLD,1 data_conflict terminated-vs-record-active without access. 5 app_users active. 1 active nonemployee relationship with ADMIN role stays other/unclassified. employment_profiles=0/13 is a separate data-completeness gap. No names/private-profile values used for matching; no invites, links, role/access or employee-status changes. Canonical detail: operations.knowledge_items/operate_execution_control_v1.identity_reconciliation_r1.\n[/IDENTITY-RECON-R1-20260923]",
     "updated_at": "2026-09-25 09:14:40.291632+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1205,8 +1205,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The company/user/Portal contract remains core current work: membership foundation exists, but hosted QA, sender identity, channel consumption and scope proof are still gated.",
+    "evidence_ref": "supabase:operations.tasks/toro_company_user_portal_contract_20260922@2026-09-25T09:14:40.291632+00"
   },
   {
     "task_id": "5012fac0-a634-48fb-ac18-5b9721308c30",
@@ -1228,7 +1228,7 @@
     "description": "Diseñar programa de design partners sin conectar todavía datos privados externos. Owner reporta que hay al menos dos empresas interesadas. Crear criterios de candidato, NDA/DPA/consentimiento cuando aplique, alcance piloto, sandbox, éxito/fracaso, soporte, incidentes, offboarding/export, limitaciones visibles y pricing hypotheses. Monetización a validar: onboarding/setup fee + suscripción por empresa + bundles de usuarios + uso/action credits + conectores/automatizaciones premium + managed setup/support. Hospitality Pack primera vertical; core universal. Gate: datos privados y Controlled External Pilot solo después de readiness A-I PASS + aprobación founder.\n\n[BUSINESS-ONBOARDING-R1]\n10 etapas: candidate/design partner sin private data → public pre-research → owner claim → confirm profile → memberships/roles → first safe sources → work-map discovery → capability plan → first verified value → deeper pilot connections. Cada connector nuevo debe declarar value unlocked/read-write/approver/revoke. Pilot real sigue bloqueado por readiness gate. [/BUSINESS-ONBOARDING-R1]\n\n[TENANT-SANDBOX-R1]\nDesign suite: 6 synthetic personas across Org A/Org B/Personal; 24 positive/negative isolation scenarios covering membership lifecycle, roles, search, memory, channels, points, connectors, billing, offboarding, capabilities, high-risk approvals and WhatsApp↔Portal single action state. No real external customer private data before this suite passes plus readiness gates. [/TENANT-SANDBOX-R1]\n\n[SELF-BUSINESS-MONETIZATION-R1]\nSecuencia de producto: 1 Dreamcatcher como proving ground real; 2 TORO Business como segundo negocio piloto interno, usando OPERATE/CONTROL/GROW/BUILD para su propio soporte, finanzas, crecimiento, ventas, producto y clientes; 3 design partners externos solo después de gates de seguridad/portabilidad. TORO Business debe validar pricing, onboarding, CRM/pipeline, soporte, usage/cost-to-serve, conversion/retention y mejora de producto sin conectar datos privados de terceros durante esta fase. No crear un proyecto TORO Business paralelo: consumir toro_executive_control + capacidades/configuración de tenant.\n[/SELF-BUSINESS-MONETIZATION-R1]\n\n[SELF-BUSINESS-OPERATING-R1]\nWhen TORO Business activates, its first operating cycle uses the same four lanes: OPERATE customer onboarding/support/service; CONTROL finance/security/costs/KPIs; GROW positioning/sales/pipeline/pricing/retention/partners; BUILD product/engineering/capabilities/integrations. First success evidence is not revenue by assumption: it is that TORO can maintain its own business profile, priorities, pipeline, costs, customers, product work and evidence without platform-only shortcuts. Values such as MRR, CAC, churn, margin or support SLA remain UNKNOWN until measured.\n[/SELF-BUSINESS-OPERATING-R1]",
     "updated_at": "2026-09-23 00:00:25.243556+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1236,8 +1236,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The design-partner/monetization task remains valid as a controlled productization objective, while its own blocker correctly prevents external private-data onboarding before readiness gates pass.",
+    "evidence_ref": "supabase:operations.tasks/toro_design_partner_monetization_20260922@2026-09-23T00:00:25.243556+00"
   },
   {
     "task_id": "3573ec60-0fea-4e78-861d-e90a86f3126b",
