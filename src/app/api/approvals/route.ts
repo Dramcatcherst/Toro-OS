@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       requestedState,
       approvals,
       summary,
-      auditMessage: "Approval decision persisted in the TORO OS internal ledger store. No external business system was modified.",
+      auditMessage: "Approval decision persisted in the TORO internal ledger store. No external business system was modified.",
       updatedAt: persisted.updatedAt,
     });
   }
