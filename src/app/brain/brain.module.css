@@ -586,6 +586,7 @@
 .mobileMapPopover strong { font-size: 12px; overflow-wrap: anywhere; }
 .mobileMapPopover span { font-size: 10px; color: #cbd5e1; overflow-wrap: anywhere; }
 .mobileMapPopover a { font-size: 11px; color: #67e8f9; text-decoration: underline; }
+.mobileMapPopover a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 2px; }
 .mobileMapHint { margin-top: 5px; color: #cbd5e1; font-size: 11px; line-height: 1.4; }
 
 .mobileNode { border-bottom: 1px solid rgba(148, 163, 184, 0.12); scroll-margin-top: 16px; }
