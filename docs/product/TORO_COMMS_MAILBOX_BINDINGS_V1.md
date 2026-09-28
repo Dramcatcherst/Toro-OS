@@ -100,6 +100,45 @@ This is evidence from the currently connected Gmail corpus. It does **not** repl
 
 Do not retire the legacy Gmail or `info@dreamcatcherhotel.com` until Workspace Admin inventory, forwarding/import state, provider dependencies and migration completion are verified.
 
+## Target mailbox architecture — minimal-account rule
+
+The target architecture is **logical-role based**, not one paid Google user per historical address.
+
+Recommended target after Workspace/provider inventory:
+
+1. **Admin / Security**
+   - canonical identity: `admin@dreamcatcherhotel.com`;
+   - Google Workspace administration, security, billing ownership, contracts/admin notices;
+   - no guest-facing routine traffic unless required.
+
+2. **Reception / Guest Operations**
+   - public address to preserve: `info@dreamcatcherhotel.com`;
+   - this address is already heavily active;
+   - first determine whether it is a user, alias, delegated identity or routed address;
+   - do **not** create `recepcion@dreamcatcherhotel.com` as another paid user by default. A logical role/group/alias may be enough.
+
+3. **Finance / Providers**
+   - owner device shows `accounting@dreamcatcherhotel.com`, but no 2026 message activity was found in the connected corpus;
+   - verify the object in Workspace Admin before use;
+   - if it is a real suitable mailbox, prefer reusing it rather than also creating `contabilidad@dreamcatcherhotel.com`;
+   - legacy `accounting@atrapasuenos.net` and `proveedores@atrapasuenos.net` may later route/alias into the Finance role only after provider/DNS/dependency audit.
+
+Legacy routing candidates after verification:
+- `info@atrapasuenos.net` -> Reception;
+- `accounting@atrapasuenos.net` -> Finance;
+- `proveedores@atrapasuenos.net` -> Finance/provider intake;
+- `atrapasuenoshotel@gmail.com` -> preserve as legacy dependency until every login, billing sender, recovery path and historical-message parity is verified.
+
+Do **not** create a separate `payments@` mailbox merely to collect notifications. TORO PayFlow classifies finance/payment events into the canonical Finance role regardless of the receiving address.
+
+Evidence scan on 2026-09-28:
+- 1,145 historical Gmail messages containing the corporate domains were sampled/scanned;
+- observed addresses: `info@dreamcatcherhotel.com`, `admin@dreamcatcherhotel.com`, `info@atrapasuenos.net`, `accounting@atrapasuenos.net`, `proveedores@atrapasuenos.net`;
+- no additional corporate address was observed;
+- `accounting@dreamcatcherhotel.com` remains owner-confirmed by device screenshot but corpus-unverified.
+
+No external account creation, aliasing, routing, MX/DNS change, deletion or license purchase is authorized by this target architecture.
+
 ## Binding registry contract
 
 Draft table: `integrations.communication_channel_bindings`.
