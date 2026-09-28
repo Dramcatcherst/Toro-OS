@@ -19,8 +19,20 @@ import {
   buildCanonicalBrainProjection,
 } from "@/features/brain/canonical-projection";
 import BrainPage from "./page";
+import { initialBrainNodes, unrevealedNeighbors } from "./brain-map";
 
 describe("BrainPage projection modes", () => {
+  it("reveals only supplied graph neighbors without inventing hierarchy or duplicated nodes", () => {
+    const initial = initialBrainNodes(visualBrainDemo, visualBrainDemoLayout);
+    const known = new Set(initial);
+    expect(initial).toHaveLength(8);
+    expect(unrevealedNeighbors("node:kross", visualBrainDemo, known, visualBrainDemoLayout)).toEqual(["node:revenue"]);
+    expect(unrevealedNeighbors("node:decision", visualBrainDemo, known, visualBrainDemoLayout)).toEqual(["node:capex-approval"]);
+    expect(unrevealedNeighbors("node:kross", visualBrainDemo, new Set([...initial, "node:revenue"]), visualBrainDemoLayout)).toEqual([]);
+    const reduced = { ...visualBrainDemo, nodes: visualBrainDemo.nodes.filter((node) => node.id !== "node:revenue") };
+    expect(unrevealedNeighbors("node:kross", reduced, known, visualBrainDemoLayout)).toEqual([]);
+  });
+
   it("labels the example as synthetic and shows its example-only panels", async () => {
     loadBrainProjectionViewMock.mockResolvedValue({
       projection: visualBrainDemo,
@@ -35,6 +47,9 @@ describe("BrainPage projection modes", () => {
     });
 
     const html = renderToStaticMarkup(await BrainPage());
+    const initial = initialBrainNodes(visualBrainDemo, visualBrainDemoLayout);
+    const initialSet = new Set(initial);
+    const initialEdges = visualBrainDemo.edges.filter((edge) => initialSet.has(edge.source) && initialSet.has(edge.target));
 
     expect(html).toContain("reference simulation");
     expect(html).toContain("demo:cash-gap:1");
@@ -42,17 +57,20 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
     expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain('data-brain-mini-map="true"');
-    expect(html.match(/data-brain-edge-tooltip="true"/g)).toHaveLength(visualBrainDemo.edges.length * 2);
+    expect(html.match(/data-brain-edge-tooltip="true"/g)).toHaveLength(initialEdges.length * 2);
     expect(html).toContain("Example link: TORO Finance reads from Kross PMS. verified · current.");
     expect(html).toContain("hover a link for its relation");
     expect(html).toContain("Synthetic visual Brain overview");
-    expect(html.match(/name="brain-map-node"/g)).toHaveLength(visualBrainDemo.nodes.length);
-    expect(html).toContain("View connections");
+    expect(html.match(/name="brain-map-node"/g)).toHaveLength(initial.length);
+    expect(html).toContain('data-brain-expand="node:kross"');
+    expect(html).toContain('data-brain-expand="node:decision"');
+    expect(html).toContain('data-brain-graph="true"');
+    expect(html).toContain("View all documented connections");
     expect(html).toContain("Status: Review · Verification: partially verified");
     expect(html).toContain("Signal freshness: aging");
     expect(html).toContain('href="#brain-node-node:cash"');
     expect(html).toContain('id="brain-node-node:cash"');
-    expect(html).toContain(`${visualBrainDemo.nodes.length} nodes · ${visualBrainDemo.edges.length} links`);
+    expect(html).toContain(`${initial.length} / ${visualBrainDemo.nodes.length} nodes · ${initialEdges.length} visible links`);
     expect(html).toContain("Simulation only");
     expect(html).toContain('data-brain-trace="mobile"');
     expect(html).toContain(`Example event trace · ${visualBrainDemo.recentEvents?.length ?? 0} steps`);
@@ -192,14 +210,15 @@ describe("BrainPage projection modes", () => {
     });
 
     const html = renderToStaticMarkup(await BrainPage());
+    const initial = initialBrainNodes(visualBrainDemo, visualBrainDemoLayout);
 
     expect(html.match(/<details[^>]*name="brain-map-node"[^>]*><summary aria-label="[^"]+\. Show details\."[^>]*>/g))
-      .toHaveLength(visualBrainDemo.nodes.length);
+      .toHaveLength(initial.length);
     expect(html.match(/name="brain-map-node"[^>]*style="[^"]*width:44px;height:44px"/g))
-      .toHaveLength(visualBrainDemo.nodes.length);
+      .toHaveLength(initial.length);
     expect(html.match(/<summary[^>]*><span class="[^"]*mobileMapVisual[^"]*" style="width:(?:22|[23]\d|3[0-8])px;height:(?:22|[23]\d|3[0-8])px"/g))
-      .toHaveLength(visualBrainDemo.nodes.length);
-    for (const node of visualBrainDemo.nodes) {
+      .toHaveLength(initial.length);
+    for (const node of visualBrainDemo.nodes.filter((candidate) => initial.includes(candidate.id))) {
       expect(html).toContain(`href="#brain-node-${node.id}"`);
       expect(html).toContain(`id="brain-node-${node.id}"`);
     }
@@ -258,7 +277,7 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("Example link:");
     expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
     expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
-    expect(html).toContain("No live activity is claimed");
+    expect(html).toContain("It does not show live agent activity");
     expect(html).not.toContain("Synthetic scenario summary");
     expect(html).not.toContain("Watch TORO work");
   });

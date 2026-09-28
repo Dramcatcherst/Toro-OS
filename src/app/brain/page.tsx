@@ -19,9 +19,9 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import type { BrainEdge, BrainNode, BrainProjection } from "@/lib/brain-contracts";
-import type { BrainLayout } from "@/lib/server/brain-projection";
+import type { BrainNode, BrainProjection } from "@/lib/brain-contracts";
 import { loadBrainProjectionView } from "@/lib/server/brain-projection";
+import { BrainMap } from "./brain-map";
 import styles from "./brain.module.css";
 
 const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
@@ -35,20 +35,6 @@ const nodeIcons: Partial<Record<BrainNode["kind"], typeof Brain>> = {
   decision: Brain,
 };
 
-const riskClass = {
-  Low: styles.riskLow,
-  Medium: styles.riskMedium,
-  High: styles.riskHigh,
-  Critical: styles.riskCritical,
-};
-
-const freshnessLabel = {
-  current: "current",
-  aging: "aging",
-  stale: "stale",
-  unknown: "unknown",
-};
-
 const verificationLabel = {
   verified: "verified",
   partially_verified: "partial",
@@ -56,177 +42,6 @@ const verificationLabel = {
   conflicted: "conflict",
   not_applicable: "n/a",
 };
-
-function connectionTooltip(edge: BrainEdge, labels: Map<string, string>, synthetic: boolean) {
-  const source = labels.get(edge.source) ?? "Unknown source";
-  const target = labels.get(edge.target) ?? "Unknown target";
-  const relation = edge.relation.replaceAll("_", " ");
-  const verification = edge.verification ? verificationLabel[edge.verification] : "verification not reported";
-  const freshness = edge.freshness ?? "freshness not reported";
-  return `${synthetic ? "Example" : "Read-only"} link: ${source} ${relation} ${target}. ${verification} · ${freshness}.`;
-}
-
-function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
-  const Icon = nodeIcons[node.kind] ?? Activity;
-  const point = layout[node.id];
-
-  if (!point) return null;
-
-  return (
-    <article
-      className={[
-        styles.node,
-        riskClass[node.risk],
-        node.activity && ["reading", "analyzing", "executing", "verifying"].includes(node.activity) ? styles.nodeActive : "",
-      ].join(" ")}
-      style={{ left: `${point.x}%`, top: `${point.y}%` }}
-      aria-label={`${node.label}. ${node.status}. Risk ${node.risk}. ${verificationLabel[node.verification]} verification.`}
-    >
-      <div className={styles.nodeHead}>
-        <span className={styles.nodeIcon}><Icon aria-hidden="true" /></span>
-        <span className={styles.nodeKind}>{node.kind}</span>
-      </div>
-      <h3>{node.label}</h3>
-      {node.metric ? (
-        <div className={styles.metric}>
-          <strong>{node.metric.value}{node.metric.unit}</strong>
-          <span>{node.metric.label}</span>
-        </div>
-      ) : null}
-      <p>{node.summary}</p>
-      <div className={styles.nodeMeta}>
-        <span>{node.status}</span>
-        <span>{freshnessLabel[node.freshness]}</span>
-        <span>{verificationLabel[node.verification]}</span>
-      </div>
-    </article>
-  );
-}
-
-function Graph({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
-  const points = layout;
-  const synthetic = projection.synthetic;
-  const labels = new Map(projection.nodes.map((node) => [node.id, node.label]));
-
-  return (
-    <div className={styles.graphFrame}>
-      <div className={styles.graphHeader}>
-        <div>
-          <span className={styles.eyebrow}>{synthetic ? "Business anatomy · synthetic scenario" : "Business anatomy · scoped canonical read"}</span>
-          <h2>{synthetic ? "TORO sees the operation as connected evidence, not separate apps." : "A focused view of records this organization can read."}</h2>
-        </div>
-        <div className={styles.graphLegend}>
-          <span><i className={styles.legendLink} /> hover a link for its relation</span>
-          {synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}
-          <span><i className={styles.legendRisk} /> {synthetic ? "needs attention" : "evidence needs review"}</span>
-          {synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}
-        </div>
-      </div>
-
-      <div className={styles.graphCanvas} role="img" aria-label={synthetic ? "Synthetic Dreamcatcher business graph showing an example cash coverage issue and approval-gated decision." : `Read-only organization graph with ${projection.nodes.length} visible nodes and ${projection.edges.length} displayed links. No live activity is claimed.`}>
-        <svg className={styles.edges} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <marker id="arrow" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
-              <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHead} />
-            </marker>
-            <marker id="arrowAttention" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
-              <path d="M0,0 L5,2.5 L0,5 Z" className={styles.arrowHeadAttention} />
-            </marker>
-          </defs>
-          {projection.edges.map((edge) => {
-            const source = points[edge.source];
-            const target = points[edge.target];
-            if (!source || !target) return null;
-            const isAttention = edge.freshness !== "current" || edge.verification !== "verified";
-            return (
-              <g key={edge.id}>
-              <line
-                x1={source.x}
-                y1={source.y}
-                x2={target.x}
-                y2={target.y}
-                className={isAttention ? styles.edgeAttention : styles.edge}
-                data-evidence-state={isAttention ? "needs-review" : "current"}
-                data-brain-relation={edge.relation}
-                markerEnd={isAttention ? "url(#arrowAttention)" : "url(#arrow)"}
-              />
-              <line x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={styles.edgeHit} data-brain-edge-tooltip="true">
-                <title>{connectionTooltip(edge, labels, synthetic)}</title>
-              </line>
-              </g>
-            );
-          })}
-        </svg>
-
-        {projection.nodes.map((node) => <NodeCard key={node.id} node={node} layout={layout} />)}
-      </div>
-    </div>
-  );
-}
-
-function MobileBrainMap({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
-  const labels = new Map(projection.nodes.map((node) => [node.id, node.label]));
-  const layerCounts = new Map<number, number>();
-  for (const node of projection.nodes) {
-    const point = layout[node.id];
-    if (point) layerCounts.set(point.y, (layerCounts.get(point.y) ?? 0) + 1);
-  }
-  const widestLayer = Math.max(1, ...layerCounts.values());
-  const nodeSize = Math.max(22, Math.min(38, Math.floor(220 / widestLayer)));
-
-  return (
-    <nav className={styles.mobileMap} data-brain-mini-map="true" aria-label={projection.synthetic ? "Synthetic visual Brain overview" : "Read-only visual Brain overview"}>
-      <div className={styles.mobileMapHeading}>
-        <strong>{projection.synthetic ? "Example network" : "Connected records"}</strong>
-        <span>{projection.nodes.length} nodes · {projection.edges.length} links</span>
-      </div>
-      <div className={styles.mobileMapCanvas}>
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          {projection.edges.map((edge) => {
-            const from = layout[edge.source];
-            const to = layout[edge.target];
-            if (!from || !to) return null;
-            return <g key={edge.id}>
-              <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={edge.freshness === "current" && edge.verification === "verified" ? styles.mobileMapEdge : styles.mobileMapEdgeReview} data-brain-relation={edge.relation} />
-              <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={styles.mobileMapEdgeHit} data-brain-edge-tooltip="true">
-                <title>{connectionTooltip(edge, labels, projection.synthetic)}</title>
-              </line>
-            </g>;
-          })}
-        </svg>
-        {projection.nodes.map((node) => {
-          const point = layout[node.id];
-          if (!point) return null;
-          const Icon = nodeIcons[node.kind] ?? Activity;
-          return (
-            <details
-              key={node.id}
-              className={styles.mobileMapNode}
-              data-kind={node.kind}
-              data-side={point.x < 35 ? "left" : point.x > 65 ? "right" : "center"}
-              data-vertical={point.y > 50 ? "above" : "below"}
-              name="brain-map-node"
-              style={{ left: `${point.x}%`, top: `${point.y}%`, width: 44, height: 44 }}
-            >
-              <summary aria-label={`${node.label}. ${node.status}. Show details.`} title={node.label}>
-                <span className={styles.mobileMapVisual} style={{ width: nodeSize, height: nodeSize }}>
-                  <Icon aria-hidden="true" />
-                </span>
-              </summary>
-              <div className={styles.mobileMapPopover}>
-                <strong>{node.label}</strong>
-                <span>Status: {node.status} · Verification: {node.verification.replaceAll("_", " ")}</span>
-                <span>Signal freshness: {freshnessLabel[node.freshness]}</span>
-                <a href={`#brain-node-${node.id}`}>View connections →</a>
-              </div>
-            </details>
-          );
-        })}
-      </div>
-      <p className={styles.mobileMapHint}>Tap a neuron for its status, then open its connections.</p>
-    </nav>
-  );
-}
 
 function AccessibleNodeList({ projection, compact = false }: { projection: BrainProjection; compact?: boolean }) {
   const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
@@ -378,7 +193,7 @@ export default async function BrainPage() {
             </p>
           </div>
           <div className={styles.heroStats}>
-            <div><span>Visible nodes</span><strong>{projection.nodes.length}</strong><small>bounded focus view</small></div>
+            <div><span>Available nodes</span><strong>{projection.nodes.length}</strong><small>reveal within map</small></div>
             {synthetic ? (
               <>
                 <div><span>Example events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>simulated correlation chain</small></div>
@@ -393,9 +208,6 @@ export default async function BrainPage() {
           </div>
         </div>
       </header>
-
-      <MobileBrainMap projection={projection} layout={layout} />
-      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 
       {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
         <div>
@@ -419,7 +231,7 @@ export default async function BrainPage() {
       </section> : null}
 
       <section className={`${styles.mainGrid} ${synthetic ? "" : styles.mainGridCanonical}`}>
-        <Graph projection={projection} layout={layout} />
+        <BrainMap projection={projection} layout={layout} />
 
         {synthetic ? <aside className={`${styles.activityPanel} ${styles.desktopTrace}`}>
           <div className={styles.panelHead}>
@@ -442,6 +254,8 @@ export default async function BrainPage() {
           <ActivityTraceBody projection={projection} />
         </details> : null}
       </section>
+
+      <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 
       <section className={`${styles.lowerGrid} ${synthetic ? "" : styles.lowerGridCanonical}`}>
         <div className={styles.panel}>
