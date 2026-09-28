@@ -148,6 +148,54 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
   );
 }
 
+function MobileBrainMap({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
+  const layerCounts = new Map<number, number>();
+  for (const node of projection.nodes) {
+    const point = layout[node.id];
+    if (point) layerCounts.set(point.y, (layerCounts.get(point.y) ?? 0) + 1);
+  }
+  const widestLayer = Math.max(1, ...layerCounts.values());
+  const nodeSize = Math.max(22, Math.min(38, Math.floor(220 / widestLayer)));
+
+  return (
+    <nav className={styles.mobileMap} data-brain-mini-map="true" aria-label={projection.synthetic ? "Synthetic visual Brain overview" : "Read-only visual Brain overview"}>
+      <div className={styles.mobileMapHeading}>
+        <strong>{projection.synthetic ? "Example network" : "Connected records"}</strong>
+        <span>{projection.nodes.length} nodes · {projection.edges.length} links</span>
+      </div>
+      <div className={styles.mobileMapCanvas}>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          {projection.edges.map((edge) => {
+            const from = layout[edge.source];
+            const to = layout[edge.target];
+            if (!from || !to) return null;
+            return <line key={edge.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={edge.freshness === "current" && edge.verification === "verified" ? styles.mobileMapEdge : styles.mobileMapEdgeReview} />;
+          })}
+        </svg>
+        {projection.nodes.map((node) => {
+          const point = layout[node.id];
+          if (!point) return null;
+          const Icon = nodeIcons[node.kind] ?? Activity;
+          return (
+            <a
+              key={node.id}
+              className={styles.mobileMapNode}
+              data-kind={node.kind}
+              href={`#brain-node-${node.id}`}
+              style={{ left: `${point.x}%`, top: `${point.y}%`, width: nodeSize, height: nodeSize }}
+              aria-label={`${node.label}. ${node.status}. Open its layer for connections.`}
+              title={node.label}
+            >
+              <Icon aria-hidden="true" />
+            </a>
+          );
+        })}
+      </div>
+      <p className={styles.mobileMapHint}>Tap a neuron, then open its layer to inspect connections.</p>
+    </nav>
+  );
+}
+
 function AccessibleNodeList({ projection, compact = false }: { projection: BrainProjection; compact?: boolean }) {
   const visibleNodes = new Map(projection.nodes.map((node) => [node.id, node]));
 
@@ -195,7 +243,7 @@ function AccessibleNodeList({ projection, compact = false }: { projection: Brain
 
           if (compact) {
             return (
-              <details className={styles.mobileNode} data-brain-layer="node" key={node.id}>
+              <details className={styles.mobileNode} data-brain-layer="node" id={`brain-node-${node.id}`} key={node.id}>
                 <summary>
                   <Icon aria-hidden="true" />
                   <span className={styles.mobileNodeName}><small>{node.kind}</small><strong>{node.label}</strong></span>
@@ -314,6 +362,7 @@ export default async function BrainPage() {
         </div>
       </header>
 
+      <MobileBrainMap projection={projection} layout={layout} />
       <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 
       {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
