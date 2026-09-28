@@ -67,3 +67,66 @@ R1-A therefore **did not assign a disposition** to the stale snapshot entry. It 
 - `legacy_task_rec8Qj1aPRrhgQEms` is marked REWRITE from planned -> blocked because the current row itself records unresolved Kross/activation/QA gates. No Kross or WeSpeak write was performed.
 
 No Supabase task row was changed by this review.
+
+
+## Final reviewed manifest — 2026-09-28
+
+All 65 snapshot rows now have an explicit review disposition:
+
+- KEEP: **40**
+- HOLD: **20**
+- REWRITE: **3**
+- MERGE: **1**
+- CLOSE: **1**
+
+Three rows were concurrently resolved outside the R1 apply path and are explicit no-ops in generated SQL:
+
+- `google_control_plane_readonly_map_20260826`
+- `task-dc-timekeeping-validation-20260810`
+- `toro_os_vercel_release_gate_separation_2026_08_23`
+
+The manifest preserves the original `updated_at` snapshot and uses `observed_updated_at` as the effective stale-write guard after any documented concurrent refresh.
+
+### Generated SQL
+
+- Apply: `supabase/drafts/20260928_toro_r1_task_revalidation_apply.sql`
+- Recovery: `supabase/drafts/20260928_toro_r1_task_revalidation_recovery.sql`
+- Summary: `docs/evidence/TORO_R1_BACKLOG_REVALIDATION_GENERATION_20260928.txt`
+
+Generator result:
+
+- TOTAL: **65**
+- ACTIONABLE: **62**
+- NO_OP_CONCURRENT: **3**
+
+Every actionable task requires exact `task_id`, `task_key`, `observed_updated_at`, and `needs_revalidation=true`; every mutation writes one `public.audit_logs` receipt with request ID `TORO-R1-A-20260928`. No task DELETE is generated.
+
+## Production transaction dry-run — VERIFIED / ROLLED BACK
+
+The exact generated apply logic was executed inside a transaction and rolled back.
+
+Observed inside the transaction:
+
+- reviewed manifest rows found: **65**
+- actionable rows expected: **62**
+- actionable rows changed to `needs_revalidation=false`: **62**
+- R1 audit receipts created inside transaction: **62**
+- orphan project references after projected changes: **0**
+- merge target `DC2-022` remained active: **true**
+- total task rows: **350 before / 350 after**
+- active open tasks: **208 before / 187 projected after**
+- HOLD/archive rows in reviewed scope after projected changes: **21**
+
+The projected active-open reduction is **21** because HOLD/MERGE/CLOSE dispositions remove those rows from active work while preserving history.
+
+### Rollback readback
+
+Immediately after `ROLLBACK`:
+
+- total tasks: **350**
+- active open tasks: **208**
+- actionable rows still `needs_revalidation=true`: **62**
+- reviewed rows already false from concurrent external work: **3**
+- persisted R1 audit receipts: **0**
+
+Therefore the dry-run produced no persistent task or audit mutation.
