@@ -29,7 +29,8 @@
     "proposed_blocking_reason": null,
     "reason": "Critical hotel safety revalidation remains blocked by missing dated on-property PASS/FAIL evidence; the current field packet explicitly requires physical verification and supervisor review.",
     "evidence_ref": "supabase:operations.tasks/critical_hotel_ops_safety_reverification_2026_09@2026-09-21T14:53:01.583989+00",
-    "observed_updated_at": "2026-09-21 14:53:01.583989+00"
+    "observed_updated_at": "2026-09-21 14:53:01.583989+00",
+    "observed_completion_notes": "\nSOURCE REVALIDATION 2026-09-14: confirmed historical critical rows still unresolved in Airtable: water chain 21–23 (3527/3566/3524), room 7 loose toilet (3050), kitchen gas leak verification (2179), recurrent tank issue (2688), recurrent electrical protection issue (1881). Converted to a single physical reinspection packet with PASS/FAIL evidence standard. Task moved BLOCKED because next action is physical, not another database scan.\n2026-09-17/18 PROCUREMENT BRIDGE: facilities.maintenance_events now links to assets.purchase_run_items via maintenance_event_id. View facilities.maintenance_procurement_needs created. Historical maintenance does NOT create purchase automatically: only current verified evidence can become procurement draft. Existing March breaker request is discovery evidence and must be revalidated before buying.\nFIELD-ROUND-STATUS-20260919-NOON: MNT-DAILY-P0-P1-20260919 is READY with 20/20 required checks still pending, 0 PASS, 0 FAIL, 0 closure-ready. First execution sequence remains P0 water/humidity: #22 active water cause + dry/test; #21 meter/sectorization/non-destructive leak check; #24/#28 controlled reproduction and cause closure. These three require supervisor review. Remaining 17 are P1: #2/#3 plumbing, windows #1/#2/#3/#4/#5/#7/#8, recurrence #7, A/C #10 and laundry safety/startup. No physical state was inferred or closed."
   },
   {
     "task_id": "e514137d-a84b-42fc-b2a1-5e81cc3b4f0f",
@@ -61,7 +62,8 @@
     "proposed_blocking_reason": null,
     "reason": "Still requires licensed physical/electrical evidence. Historical age cannot satisfy the professional field-verification closure gate.",
     "evidence_ref": "supabase:operations.tasks/task-dc-electrical-assessment-20260810@2026-09-21T12:57:12.398081Z",
-    "observed_updated_at": "2026-09-21 12:57:12.398081+00"
+    "observed_updated_at": "2026-09-21 12:57:12.398081+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved. Stale source due_date 2026-08-12 not promoted to canonical due_date."
   },
   {
     "task_id": "4319a7a7-c2df-4c96-a6d2-a863436e549a",
@@ -93,7 +95,8 @@
     "proposed_blocking_reason": null,
     "reason": "Still requires a dated on-property night inspection of cameras, recording, gate contingency and critical lighting; no current PASS evidence was found.",
     "evidence_ref": "supabase:operations.tasks/task-dc-security-readiness-20260810@2026-09-23T00:56:35.385735Z",
-    "observed_updated_at": "2026-09-23 00:56:35.385735+00"
+    "observed_updated_at": "2026-09-23 00:56:35.385735+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved. Stale source due_date 2026-08-12 not promoted to canonical due_date."
   },
   {
     "task_id": "35fd3dc7-acd5-4fb3-bcd9-86f1f286404c",
@@ -125,7 +128,8 @@
     "proposed_blocking_reason": null,
     "reason": "The release-authority task remains the canonical production gate; current evidence still requires Channel Truth, exact SHA/domain/rollback verification and owner release approval.",
     "evidence_ref": "supabase:operations.tasks/DC2-022@2026-09-23T06:06:49.23166+00",
-    "observed_updated_at": "2026-09-23 06:06:49.23166+00"
+    "observed_updated_at": "2026-09-23 06:06:49.23166+00",
+    "observed_completion_notes": "P0 NEXT classification 2026-09-19 = BLOQUEO_REAL. Source preserved; no new project."
   },
   {
     "task_id": "1f7142ed-ebaf-40ee-8b46-62f09e3759c6",
@@ -157,7 +161,8 @@
     "proposed_blocking_reason": null,
     "reason": "Finance rebuild is still an active in-progress program with unresolved fiscal, bank, Kross/CxP and reconciliation evidence gates; no closure or merge is justified.",
     "evidence_ref": "supabase:operations.tasks/finance_accounting_reset_2026_09_15@2026-09-22T20:54:46.341077Z",
-    "observed_updated_at": "2026-09-22 20:54:46.341077+00"
+    "observed_updated_at": "2026-09-22 20:54:46.341077+00",
+    "observed_completion_notes": "Checkpoint 2026-09-15: Executive Portfolio reporta E1/E2 parciales; se reconoce como evidencia transicional de ejecución, no como prueba fiscal canónica. Supabase solo avanza el estado a in_progress por existencia verificada de fuentes Alegra actuales en Dropbox. Mantener needs_revalidation hasta incorporar TRIBU actual y evidencia bancaria/fiscal.\n2026-09-18 CURRENT SOURCE CHECK: Alegra exports are available from 13–15 Sep; transaction export download still resolves to a ZIP with CSV/XLSX. Gmail search found no current TRIBU/Hacienda messages after 01/09. Stop treating Alegra export availability as missing; focus on fiscal/bank/reconciliation evidence.\n2026-09-18 CERTIFIED FINANCIALS INGESTED AS REFERENCE: signed H1 statements establish a trusted historical baseline and liquidity bridge. They do not substitute for current September close evidence.\n2026-09-17/18 CLASSIFICATION CONTROL: INS receipt dated 07/09/2026 found in Outlook is NOT Dreamcatcher RC; it is a personal medical insurance payment with Atrapa Sueños as payer. Preserve restricted evidence and route to accounting classification. Do not treat automatically as hotel OPEX or RC premium. RC first premium remains unverified.\nINTERNAL_ACCURACY_REVIEW_20260918: documento fuente conservado. Margen después de ISR calculado H1=34,76%, 2025=33,85%; rótulos fuente 49,66%/48,36% corresponden aritméticamente a antes de ISR. Flujo ₡33.990.560 ya incorpora reducción de deuda ₡39.208.736; no descontar dos veces. Cierre requiere aclaración contable y conciliación por banco/fecha, no solo existencia de firmas. Sin envío al contador autorizado.\nLOAN MAP 18/09/2026: BAC confirms credit facility vigente and liability formalized May-2024. F-CRI-0006545 (14/07/2025) documents a USD35,000 draw: USD34,447.15 deposit detail, USD525 commission, USD27.85 initial saldo-deudor, 3.37% variable rate at that time, USD5,120 base installment day 1, 167 months remaining. This aligns with monthly bank debit pattern but does not print ref 204012411. Owner email references overall USD726,000 loan and USD16,000 remaining before this approval; do not mark final USD16,000 as received without bank-posting evidence.\nFIONA-CROSSWALK-20260918: usar siete correspondencias de servicio/expediente para no duplicar gastos entre Airtable y Supabase. No calcular caja requerida sumando invoice_total/claim/current_balance/plan_price sin conciliación de período, titular y pagos/créditos. Starlink vencimiento no acreditado retirado, revisión intacta. Registro31 obligaciones es alcance hotel, no factura por fila ni estado de cuenta completo. Auditoría interna enlazada: finance_obligations_crosswalk_20260918_v1; sin asientos ni pagos.\nBAC-JULY-SOURCE-20260918: julioBAC incorporado a registro interno,164movimientos verificados contra original y2resúmenes; no contabilización Alegra. Cobertura rawBAC1839filas hasta31/07; faltan clasificaciones/cotejo y agosto-septiembre. No confundir20patas de10transferencias propias con20ingresos. Crédito01/07principal3403.12/interés1588.21/cargoVID256.23 suma5247.56; proyecciónagosto no pago. Mantener separación hotel/familia/DIEX y discrepancias financieras anteriores. Referenciafinance_bac_july_2026_source_import_v1.\nFINANCE-GENERAL-20260918: análisis financiero integral y plan PROPUESTO registrados en operations.knowledge_items/finance_general_review_improvement_plan_20260918_v1; PDF7páginas, sin otro proyecto ni tarea. F02/F03/F04/F10/F11: conciliar obligaciones, margenJulAgo, origen de saldos yTRIBUantesdeajuste. AlegraingresosJul→Ago-49.27%,gastos-9.14%, diferenciaAgo-CRC2838866.38 no pérdidaauditada. Cambio deudaCRCno equivale aprincipalpagado; costetotaldelegaciónsociosy cierres supervisados. No se ejecutan pagos/asientos/reclasificaciones/envíos ni se cambian fechas o responsables automáticamente; fuentes históricas y saldos no conciliados separados. Mantener datos recientes de otros frentes y aprobación explícita.\nIVA-REPORTS-20260918: se verificaron y estructuraron los reportes contables IVA ene-ago 2026 respaldados en /Dreamcatcher Hotel/Administracion/Contabilidad/2026/Impuestos. Acumulado fuente: ventas netas gravadas CRC105,863,668.77; IVA ventas CRC13,762,276.94; gastos netos reportados CRC45,084,711.58; IVA gastos CRC5,071,999.58; diferencia calculada CRC8,690,277.36. Esta diferencia NO es impuesto declarado/pagable: faltan TRIBU/Hacienda, créditos/ajustes, pagos y conciliación. Periodos permanecen yellow/partial; septiembre sigue sin reporte mensual.\nFIN-H1-IVA-COVERAGE-20260918: conflicto de cobertura registrado en integrations.data_conflicts y enlazado a certified_financials_h1_2026_v1. No se modificaron declaraciones, pagos ni P&L canónico.\nBANK-CORPORATE-SCOPE-20260918: se corrigió el alcance del faltante bancario. Los estados BAC/BN recientes disponibles en Outlook son personales y no deben cerrar el gap del hotel. Cuentas corporativas canónicas verificadas: BAC ****3660/****3588 y Lafise ****1998/****7740. BN/BCR corporativo permanece desconocido pese a mención en EEFF H1. Solicitud BAC de acceso/token 18/09 sin respuesta posterior localizada.\nTAX-FILING-CHECK-20260918: carpeta canónica 2026/Impuestos contiene reportes contables IVA ene-ago + RUT + RTBF, pero no acuse IVA. Original MINISTERIO HACIENDA tampoco contiene acuse mensual 2026; Gmail/Outlook sin coincidencias de declaración/IVA desde 01/09. Se corrige el control: buscar presentación/pago del último período cerrado; ausencia de evidencia conectada no demuestra incumplimiento.\n19/09/2026 EVIDENCE CORRECTION: /RECUPERACION_HISTORICA_2026-09-17/02_CONTABILIDAD/REPORTES MENSUALES CAROLINA/Reporte IVA Agosto 2026.pdf verified. Period 01/08–31/08/2026: sales net CRC7,029,972.15; sales VAT CRC913,896.38; expense net CRC3,846,827.69; expense VAT CRC441,461.84. This is accounting evidence, not filing/payment proof.\n\nREGISTRY-QA-20260919: verificación nueva de 1839 claves bancarias únicas y 26 estados: sin discrepancias de cantidades, débitos/créditos, ecuación de saldos, signo/importes o vinculación de estado. Esto verifica aritmética interna, no conciliación Alegra ni caja septiembre. Julio ya presenta 42 clasificaciones de alta confianza, 121 de naturaleza provisional y 1 pendiente USD90; no repetir importación/clasificación de otra ronda. Candidato H1 de 12 filas con valores anteriores y procedencia queda PROPUESTO, sin aplicar; intereses USD11636.89 y principal USD19337.36. Referencia privada única: finance_bac_july_2026_source_import_v1.registry_validation_20260919. Conservar estado, responsables y bloqueos vigentes; siguiente conciliación de provisional/abono desconocido y fuentes corporativas agosto-septiembre.\nFIN-01 CLASSIFICATION PASS 2026-09-19: Jan-Jul BAC raw rows=1006; exact-source duplicates=2 extra rows across 2 groups, preserved but excluded through finance.bank_transactions_canonical_v (1004 canonical rows). High-confidence raw classification increased from 282 to 618 without forcing accounting purpose. Explicit promotions include related-party inbound transfers (Ana Carolina/Margot; purpose unverified), merchant settlements/reversals, bank fees, ATM withdrawals/deposits, SINPE mechanism, Liberty Mobile 8844-4004 recurring payments, Booking.com counterparty debit, Ferretería Cóbano, Supermercado Económico, Municipalidad checkout, Correos checkout, Claro recharge, insurance adjustment and Yuplón marketplace counterparty. 385 rows remain rule_based_review_recommended plus one needs_review (USD90 Sergio Frugone). Residual is overwhelmingly bank transfers with unidentified counterparty/purpose; top IDs searched in Gmail/Outlook, employee bank accounts and Airtable source have no identity evidence, and none of the top 10 IDs have an Alegra link in source. Exact known internal BAC pair remains 958665366 USD debit ↔ 958665358 CRC credit, 78 legs each; do NOT infer 814135000/814134003 as internal from partial date coincidences. No Alegra postings, payments or tax filings changed.\nF03-SOURCE-BRIDGE-20260919: comparación contableJul/Ago preparada en workbook canónicoDropbox, no conciliación terminada. S1/S2ReportesIVA y S3correoAlegra: bruto con bruto,brechaingresosCRC15001647.26/9015129.40 y gastosCRC16505432.95/15509574.78. No inferir omisión/deuda/pérdida ni sumar ambas brechas como exposición. Cierre requiere detalle documentos/asientos/filtros/fechas/monedas y separaciónpropiedad, además bancos/acusefiscal. Registro:finance_general_review_improvement_plan_20260918_v1.jul_aug_source_bridge_20260919. Datosraw/clasificaciones deotrasrondas sepreservan. Sin pago/envío/asiento; sin progresoautonomía. Archivo30606bytes,idDropboxRAP-nKYFY_UAAAAAAALzEQ,46fórmulas sinerrores exportados."
   },
   {
     "task_id": "daea4390-774a-4a77-bf67-7821842157bd",
@@ -189,7 +194,8 @@
     "proposed_blocking_reason": null,
     "reason": "The setup objective remains current and externally gated; no verified evidence of account setup completion or authorization to add campaign/billing was found in this R1 review.",
     "evidence_ref": "supabase:operations.tasks/finish_google_ads_new_account_setup@2026-09-19T09:16:19.750733Z",
-    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved."
   },
   {
     "task_id": "f274911f-08e5-4baa-8c29-e17cdda69e81",
@@ -221,7 +227,8 @@
     "proposed_blocking_reason": null,
     "reason": "Conversion tracking remains a distinct current dependency for Ads performance attribution; no verified evidence of a completed fix was found in this R1 review.",
     "evidence_ref": "supabase:operations.tasks/fix_google_ads_booking_conversion_tracking@2026-09-19T09:16:19.750733Z",
-    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = MIGRAR. Unique Airtable work migrated canonically after duplicate checks. Source preserved."
   },
   {
     "task_id": "671d3866-1cd8-421b-a94f-082de2f6dfff",
@@ -253,7 +260,8 @@
     "proposed_blocking_reason": null,
     "reason": "The reporting objective remains valid, but the task is already dependency-gated by account setup and reliable booking conversion tracking; planned understates the current blocked state.",
     "evidence_ref": "supabase:operations.tasks/google_ads_results_to_toro_os_v2@2026-09-25T10:33:36.877168+00",
-    "observed_updated_at": "2026-09-25 10:33:36.877168+00"
+    "observed_updated_at": "2026-09-25 10:33:36.877168+00",
+    "observed_completion_notes": "P0 NEXT classification 2026-09-19 = MIGRAR. Source preserved; no new project.\nGROW-UNBLOCK-PREP-20260925: L2 reversible prep only. No active verified knowledge item was found for Google Ads conversion tracking, and operations has no existing attribution/campaign/conversion/ads table. Prepared import contract for future non-production preview once booking conversion truth is stable: period_start/end, spend, impressions, clicks, ctr, cpc, conversions, conversion_action, conversion_value, cpa, search_term, negative_flag, landing_page, country, language, device, campaign/ad_group identifiers, captured_at, source_is_live, source_system. Gate: do not optimize/import as trusted performance until conversion events are verified; no page-view substitution. No campaign/account mutation, publish, secret, permission or production deploy."
   },
   {
     "task_id": "96e0893c-357e-46a0-9571-b9b6114ff73d",
@@ -285,7 +293,8 @@
     "proposed_blocking_reason": null,
     "reason": "TICOS terms remain an active commercial truth gap: public Kross evidence still does not verify live percentage, validity, eligibility or stacking rules.",
     "evidence_ref": "supabase:operations.tasks/ticos_live_terms_verification_2026_09@2026-09-23T06:01:56.402707+00",
-    "observed_updated_at": "2026-09-23 06:01:56.402707+00"
+    "observed_updated_at": "2026-09-23 06:01:56.402707+00",
+    "observed_completion_notes": "\nTICOS-READONLY-20260921: Motor público Kross revisado en ES/CRC y ES/USD. No se observó texto TICOS ni condiciones de código/promoción; solo términos generales. Intento controlado de búsqueda/código no produjo evidencia válida de porcentaje, fechas, elegibilidad o stacking. La tarea permanece BLOQUEADA por falta de evidencia Kross nativa/autorizada; no se modificó promoción, tarifa, reserva ni runtime.\nTICOS-CASE-EVIDENCE-20260921: Reserva Kross 5156 contiene total USD264.60 sobre precio inicial USD294, equivalente aritméticamente a 10% de descuento, y el chat humano asociado informó TICOS10%. Esto corrobora un caso concreto con 10% aplicado, pero NO demuestra configuración global TICOS, vigencia completa, elegibilidad, stacking ni que el descuento provino técnicamente del código TICOS. Mantener términos globales BLOQUEADOS hasta fuente nativa Kross.\nGROW-SOURCECHECK-20260923T0603Z: canonical TICOS root reviewed. No authorized native Kross backend/source is available in this runtime to verify configured percent, eligibility, stay/booking windows, stacking or restrictions. Per canonical Kross hold/rules, no public-engine/email/synthetic rescan was substituted. Existing observed 10% case remains case evidence only; live terms remain WAITING_EVIDENCE. No price, promotion, runtime, reservation or outbound change.\nGROW-LIVE-KROSS-20260923T0702Z: navegador público oficial Kross, sourceIsLive=true, capturedAt=2026-09-23T07:02Z, TTL=6h. Búsqueda 24/09/2026→25/09/2026, 1 habitación, 2 adultos, CRC: 13 opciones disponibles. En step1 no existe campo público de código promocional/cupón; por tanto TICOS no pudo probarse y el canal público no expone porcentaje, elegibilidad, vigencia ni stacking. Ejemplos observados: #9 ₡26.350 DREAM RATE / ₡32.940 DREAM+BREAKFAST; #8 ₡30.600 / ₡38.250; Villa Toro ₡240.975 / ₡301.220. Esto es evidencia del flujo público, NO prueba la configuración backend de TICOS ni autoriza cambio comercial. Sin reserva, mensaje, precio, promoción, permiso ni write Kross."
   },
   {
     "task_id": "207e2c88-4e79-45ff-bd7d-303cd117bfd7",
@@ -317,7 +326,8 @@
     "proposed_blocking_reason": null,
     "reason": "Booking KYP/location and Villa Toro availability still require external authenticated evidence; no verified resolution was found.",
     "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P0-BOOKING-KYP-20260810@2026-09-19T09:16:19.750733Z",
-    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved. Stale source due_date 2026-08-12 not promoted to canonical due_date."
   },
   {
     "task_id": "42dd4306-4901-42e1-9f0a-9b01042e4b95",
@@ -349,7 +359,8 @@
     "proposed_blocking_reason": null,
     "reason": "The lifecycle/attribution objective remains current and its dependency is still blocked; no evidence supports closing or merging it.",
     "evidence_ref": "supabase:operations.tasks/wespeak_crm_reactivation_attribution_20260826@2026-09-26T02:33:10.211396Z",
-    "observed_updated_at": "2026-09-26 02:33:10.211396+00"
+    "observed_updated_at": "2026-09-26 02:33:10.211396+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = MIGRAR. Unique Airtable work migrated canonically after duplicate checks. Source preserved.\nGROW-ATTRIBUTION-PREP-20260925: L2 internal attribution contract prepared; no sends/runtime writes. Current evidence still shows WeSpeak runtime consumption UNVERIFIED and Kross governed current_reservations_safe=0, so reactivation remains gated. Proposed join semantics: message_id = delivery dedupe only; chat_id = conversation identity; Gmail thread_id MUST NOT identify guest/case; campaign/source/intent stored as event attributes; reservation/booking linkage only through verified Kross identifier/crosswalk; no inferred identity from similar messages. Minimum preview fields: event_at, message_id, chat_id, process/intent, campaign, source, medium, language, consent/policy state, outcome_proxy, verified_reservation_id nullable, attribution_confidence, captured_at, source_is_live. No baseline re-audit, no external message, no WeSpeak/Kross write.\nGROW-RUNTIME-DELTA-20260926T0230Z: New governed delta after prior attribution prep. openclaw_whatsapp_runtime_audit_2026_09_v1 updated 2026-09-26T02:29:09Z: canonical backend primitives=READY, but direct_runtime_observed=false, WhatsApp/OpenClaw runtime parity=UNVERIFIED, Mauricio runtime E2E=0/12, primary blocker=DIRECT_OPENCLAW_GATEWAY_HOST_CONFIG_LOG_ACCESS. Kross governed mirror remains 33 rows / 0 source_is_live / current_reservations_safe=0, latest snapshot 2026-09-21T09:28:30.675Z. Constraint therefore remains unchanged: attribution/reactivation stays PREP-ONLY. Unblock evidence packet is now explicit: runtime identity + verified sender binding + personal/work isolation + replay idempotency + receipt lifecycle, plus verified Kross reservation crosswalk before booking attribution. No messages, campaign sends, Kross/WeSpeak writes or production promotion.\nGROW-RUNTIME-DELTA-20260926T0432Z: Governed source delta observed after prior 02:30Z prep. operations.knowledge_items/openclaw_whatsapp_runtime_audit_2026_09_v1 updated 2026-09-26T03:57:11.791091Z and now records mainline reuse ruling + closure backlog v2. Direct runtime remains unobserved; runtime E2E remains 0/12; primary blocker remains DIRECT_OPENCLAW_GATEWAY_HOST_CONFIG_LOG_ACCESS. GitHub read-only verification: PR #142 same-brain internal-work intake is MERGED; PR #143 OpenClaw plan alignment is OPEN/UNMERGED with TORO Brain CI success and Vercel success; PR #151 runtime evidence gate is OPEN/UNMERGED with TORO Brain CI success, Workstation health tests success, and Vercel success. Kross governed mirror remains 33 rows / 0 source_is_live / current_reservations_safe=0, latest snapshot 2026-09-21T09:28:30.675Z. L2 consequence: no further backend feature duplication is justified; the unblock packet should stay focused on direct gateway/runtime evidence (identity binding, personal/work isolation, replay idempotency, receipts/reconnect) plus verified Kross reservation crosswalk before booking attribution. No messages, campaign sends, Kross/WeSpeak writes, merge, deploy, permission/secret changes, or production promotion."
   },
   {
     "task_id": "2cd25691-b4da-4a69-94a9-dbe908e52641",
@@ -381,7 +392,8 @@
     "proposed_blocking_reason": null,
     "reason": "Concurrent work revalidated this task after the R1 snapshot and already cleared needs_revalidation. R1 records the current reviewed state but must not write this row again.",
     "evidence_ref": "supabase:operations.tasks/google_control_plane_readonly_map_20260826@2026-09-28T23:40:36.211797+00:concurrent-resolved",
-    "observed_updated_at": "2026-09-28 23:40:36.211797+00"
+    "observed_updated_at": "2026-09-28 23:40:36.211797+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved."
   },
   {
     "task_id": "3b9e63ab-cc25-4ddc-817b-8c1239ab472a",
@@ -402,18 +414,19 @@
     "blocking_reason": "BLOCKED_EXTERNAL / ACCESS_IDENTITY: fresh Supabase security advisor 22/09/2026 18:53 CR reporta 35 tablas con RLS habilitado sin policy (INFO/deny-by-default), 3 RPC SECURITY DEFINER ejecutables por anon y 40 por authenticated. DreamTeam rollout espera validación de intención/guards, usuarios/roles/sesiones, recovery admin independiente y least-privilege Auth/RLS/MFA; reglas laborales/planilla siguen bajo validación profesional. No cambiar grants, RLS, Auth ni automatizar decisiones laborales desde esta tarea.",
     "description": "Approved execution brief: SIMPLIFICATION/SECURITY 14/09/2026: DreamTeam/Personas pertenece a FIONA + SOBRESITO y no debe ocupar WIP activo hasta cerrar seguridad. Supabase project abtyrbqlqbsastmridzp está ACTIVE_HEALTHY y usa RLS, pero advisor actual reporta funciones SECURITY DEFINER ejecutables por roles amplios y tablas en esquemas assets/facilities/finance/operations/risk con RLS habilitado sin políticas. Mantener PR/gate existentes; revisar intención de cada RPC/policy antes de cualquier migration, MFA, Auth o rollout. No se modificó Supabase en esta auditoría.\n\nFounder gate/action: Prepare the legal/rule/evidence matrix and current incident list first. Escalate only actual policy/legal choices that require Mauricio or professional approval; do not ask him to resolve raw attendance rows.\n\nSource notes:\nACTIVE P0 under Architecture C. Preserve individual Supabase Auth, invitations, password recovery, MFA for privileged roles, RLS/permission matrix, audit and no public signup. First validate independent admin/recovery path and current named-user/role/session evidence; then prepare an isolated remediation plan for DreamTeam issues #22/#24. No credential reproduction, no lockout-risk rotation, no payroll/legal automation promotion until professional/versioned rules and RLS are verified. Closure requires safe access recovery, least privilege, privileged MFA/RLS evidence and a reconciled payroll/attendance sample cycle.",
     "updated_at": "2026-09-23 00:55:19.051258+00",
-    "needs_revalidation": true,
-    "disposition": "REWRITE",
+    "needs_revalidation": false,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
-    "proposed_blocking_reason": "R1-B SECURITY 28/09/2026: live Supabase authorization catalog has 96 public/private functions versus the prior 71-signature repository policy; ACL/catalog reconciliation is under review in DreamTeam PR #46 and production permission changes remain gated behind disposable-branch validation. Employee rollout also remains gated by hosted identity/role/revocation tests and professional validation of Costa Rica labor/payroll rules.",
-    "reason": "The HR/legal objective remains valid, but the 22/09 security counts in the blocker are stale and must point to the current R1-B reconciliation rather than the old advisor snapshot.",
-    "evidence_ref": "github:Dramcatcherst/dream-team/pull/46",
-    "observed_updated_at": "2026-09-23 00:55:19.051258+00"
+    "proposed_blocking_reason": null,
+    "reason": "Concurrent work fixed the employee RPC overpermission and refreshed the blocker; remaining identity/session/recovery and professional labor/payroll validation gates remain current. R1 must not rewrite this row.",
+    "evidence_ref": "supabase:operations.tasks/task-dc-timekeeping-validation-20260810@2026-09-28T22:52:34.438408+00:concurrent-resolved",
+    "observed_updated_at": "2026-09-28 22:52:34.438408+00",
+    "observed_completion_notes": "P0 REVIEW CLASSIFICATION 2026-09-19 = BLOQUEO_REAL. Unique Airtable work migrated canonically after duplicate checks. Source preserved. Stale source due_date 2026-08-31 not promoted to canonical due_date.\nAUDIT-R11-SUPABASE-20260922: advisor security actual: 35 tablas con RLS habilitado sin políticas; 3 SECURITY DEFINER ejecutables por anon; 40 SECURITY DEFINER ejecutables por authenticated. Advisor performance: 285 foreign keys sin índice, 155 índices sin uso y 76 casos de políticas permisivas múltiples. Evidencia read-only; no se modificaron permisos, RLS, funciones ni índices. Priorizar revisión de intención/RBAC antes de cualquier migration o rollout."
   },
   {
     "task_id": "c4c1105b-8b62-43b6-8657-bbe2f71bedd7",
@@ -434,18 +447,19 @@
     "blocking_reason": "CONTROL-R29 22/09/2026 21:54 CR: Vercel read-only audit confirms the release-policy/runtime-classification drift persists. Canonical project prj_nxerFw9ciNews6tUMAah3GAlAJzs has newer READY deployments with target=production from main; latest observed is dpl_Hby8XfeLMxhgnocNtcdyhoACwoXs @ c5d3dfe87ed5522bb6fa6f01ce33f219ff94a680. Registry still classifies toro-pr11-preview as CANONICAL/TORO_PREVIEW_RUNTIME with write_policy PREVIEW_ONLY. This environment fact does not establish official public-domain authority. Remaining gate: align intended branch/environment/domain/recovery policy before any configuration change. No integration, branch, domain, deploy, protection or production action authorized.",
     "description": "Source notes:\nPROVENANCE_MISMATCH 2026-09-02: el projectId guardado resuelve a `dreamcatcher-hotel-santa-teresa-v100`, latest production dpl_FGpwrbGWtkSRY4UjKEjAtqkppAHi READY, no a `toro-os-v03`. Se retira el gate de Mauricio hasta identificar y verificar el proyecto Vercel exacto del repositorio TORO, la rama productiva actual, el SHA desplegado y un rollback probado. No se cambió Git integration, Production Branch, dominio, alias ni despliegue.",
     "updated_at": "2026-09-23 03:54:39.830258+00",
-    "needs_revalidation": true,
-    "disposition": "KEEP",
+    "needs_revalidation": false,
+    "disposition": "CLOSE",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "done",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": "Gate remains current: the TORO Vercel project produced a fresh READY production-target deployment from main on 28/09/2026, so preview-only intent and actual deployment behavior are still not aligned.",
-    "evidence_ref": "vercel:dpl_5f5KUmjissa1WunB85vEVB37yRHq",
-    "observed_updated_at": "2026-09-23 03:54:39.830258+00"
+    "reason": "Concurrent work verified the release-gate separation: main deployments are disabled by versioned Vercel config while feature/docs previews remain available. Task is already done; R1 records it as no-op evidence.",
+    "evidence_ref": "supabase:operations.tasks/toro_os_vercel_release_gate_separation_2026_08_23@2026-09-28T22:52:32.476563+00:concurrent-resolved",
+    "observed_updated_at": "2026-09-28 22:52:32.476563+00",
+    "observed_completion_notes": "VERIFIED 28/09/2026: added versioned vercel.json with git.deploymentEnabled.main=false in PR #183. Preview branch deployment dpl_7EYykEz12dGioWaMuNMwpQy8zREx READY, target=null. PR #183 merged as 2f4ed8fca34138b78304b56c4e8816b86f4f14ad; no Vercel deployment was created for that main merge SHA. PR #180 then merged as 6906625d3c37078ec6c136164e194afb3116593f; again no main deployment was created. Feature/docs branches continue to create previews. Explicit promotion remains the intended production release path. Rollback: revert/remove vercel.json."
   },
   {
     "task_id": "2ecbad3e-6d99-4888-af63-8b5b510d2d48",
@@ -477,7 +491,8 @@
     "proposed_blocking_reason": null,
     "reason": "The refreshed task remains a core TORO runtime objective: capability parity now explicitly includes shared source-authority and mailbox bindings, while OpenClaw/channel identity/runtime evidence gates remain open.",
     "evidence_ref": "supabase:operations.tasks/toro_surface_capability_parity_20260922@2026-09-28T22:58:46.993081+00:concurrent-refresh",
-    "observed_updated_at": "2026-09-28 22:58:46.993081+00"
+    "observed_updated_at": "2026-09-28 22:58:46.993081+00",
+    "observed_completion_notes": "SIMPLIFY-R1 22/09/2026: este task queda como executor único de runtime/surface parity. Diseño/registry pueden avanzar; implementación espera branch/release/runtime gates existentes.\nCOORD-R20 22/09/2026: normalized to conditioned backlog. Preparation/evidence package remains valid; no remaining agent-safe execution before the already documented interactive/access/owner/root gate. Reopen on gate delta; do not repeat broad research or duplicate umbrella work.\nCONTROL-FRESHNESS-20260926: GitHub read-only verification: Dramcatcherst/Toro-OS PR #143 CLOSED unmerged (closed 2026-09-26T05:03:14Z); PR #151 CLOSED unmerged (closed 2026-09-26T04:53:30Z); PR #171 OPEN unmerged (updated 2026-09-26T07:00:52Z). Canonical OpenClaw audit remains direct_runtime_observed=false and runtime_e2e_verified=0/12. This removes stale PR-open evidence only; it does not prove live runtime, identity binding, deployment, or production readiness."
   },
   {
     "task_id": "567c455b-9ccb-4721-be2e-54e7a882ec41",
@@ -509,7 +524,8 @@
     "proposed_blocking_reason": null,
     "reason": "Residual Airtable consolidation is still current and non-destructive retirement gates remain open: parity, recoverable backup/restore, consumers and unique evidence are not yet proven.",
     "evidence_ref": "supabase:operations.tasks/decommission_residual_airtable_estate_phase2@2026-09-23T05:24:03.315102+00",
-    "observed_updated_at": "2026-09-23 05:24:03.315102+00"
+    "observed_updated_at": "2026-09-23 05:24:03.315102+00",
+    "observed_completion_notes": "\n2026-09-14: phase 2 now has a concrete baseline. Five residual bases are fully schema-registered; no further broad discovery needed. Consolidation should proceed by domain exception/parity and stop once operational dependencies are removed, even if some legacy bases remain read-only archives.\n2026-09-14 close-first update: legacy semantic reconciliation is no longer a broad unknown. Do not reopen mass-table review; finish the explicit remaining transport/audit gates only.\nCLOSE WAVE V8 2026-09-14: no broad Airtable review remains. Move to BLOCKED until explicit transport/UI/human gates are supplied; physical deletion remains optional.\n2026-09-17 DELTA: 148 physical assets loaded idempotently into Supabase; automation inventory closed; migration_map 1,252/1,252 rows dispositioned. Do not reopen broad schema discovery.\n2026-09-18 WEB drift reconciled: baseline now 277 rows/15 nonempty with fresh hashes and no unique data remaining.\n2026-09-18 DELTA: DREAMCATCHER WEB + CHANNELS is now backup/restore complete and dependency_status=clear across its registry rows. It remains can_delete=false solely for human approval/base-level no-use confirmation.\n2026-09-18 DREAMTEAM KNOWLEDGE OS: 45/45 rows + 7-table schema independently backed up; Waste & Recycling 5/5 preserved with source Draft/Needs Validation status and mapped only to high-level WST-001/WST-002; 0 automations, 0 interfaces, no runtime code consumer. Base is archive-ready, not delete-ready.\n2026-09-18 ESTATE DISPOSITION V1: 3 bases archive-ready; 3 bases explicitly KEEP ACTIVE; 2 bases KEEP UNTIL CUTOVER. Inventario Maestro registry corrected to 148 rows / migrated / assets.physical_assets while source base remains active."
   },
   {
     "task_id": "339e81e9-982c-4419-b57d-ce8cca43f6b3",
@@ -541,7 +557,8 @@
     "proposed_blocking_reason": "Owner approval exists for a Kross-only USD20/night pet-fee change, but execution remains blocked on authenticated Kross live access, capture of the current live rule/version and rollback, Admin/Reception activation signoff, checkout QA, and read-only verification that WeSpeak reflects the integrated value. Do not edit WeSpeak manually or modify existing reservations automatically.",
     "reason": "The task has real blockers but is still marked planned. Reclassify it as blocked without changing the approved Kross-only execution boundary.",
     "evidence_ref": "supabase:operations.tasks/legacy_task_rec8Qj1aPRrhgQEms@2026-09-23T00:27:09.660769Z",
-    "observed_updated_at": "2026-09-23 00:27:09.660769+00"
+    "observed_updated_at": "2026-09-23 00:27:09.660769+00",
+    "observed_completion_notes": "P1 blocked review 2026-09-19. Unique Airtable task migrated canonically; stale historical due dates were not promoted.\nCOORD-R19 22/09/2026: normalized to dependency-consumer backlog. Unique scope preserved; no remaining agent-safe execution before its existing root access/identity/owner gate. Reopen when that root gate changes; do not duplicate blocker work."
   },
   {
     "task_id": "84e8fdea-f0b8-4fde-a011-7f6ebe7a0e61",
@@ -573,7 +590,8 @@
     "proposed_blocking_reason": null,
     "reason": "The auth-pilot decommission gate remains active because the project is inactive but dependency, restore and security evidence plus human disposition are still unresolved.",
     "evidence_ref": "supabase:operations.tasks/toro_auth_pilot_decommission_gate_2026_09@2026-09-26T23:12:09.677825+00",
-    "observed_updated_at": "2026-09-26 23:12:09.677825+00"
+    "observed_updated_at": "2026-09-26 23:12:09.677825+00",
+    "observed_completion_notes": "\n2026-09-18 DEEP CHECK: pilot identities are synthetic and distinct from canonical users; 3/3 refresh tokens are still unrevoked but have not updated since 08/09. No code references found. Technical decommission evidence is complete; next action is access mutation requiring explicit authorization.\n2026-09-22 RECLASSIFICATION: previous synthetic-auth-only disposition is superseded by fresh live evidence of non-empty F&B operational-history tables. Decommission remains blocked; no auth/session mutation, migration, pause or deletion executed.\n2026-09-26 CONTROL DELTA: Supabase project status for fpihshyoobzctnlerfjp verified as INACTIVE. This supersedes prior wording that the project was still technically active. No pause/restore/revoke/delete/access mutation was executed. Actor/cause of the state transition remains unknown; destructive/access decisions remain human-gated."
   },
   {
     "task_id": "1be1c7b3-26ff-4586-be04-0c4cdf613d1f",
@@ -605,7 +623,8 @@
     "proposed_blocking_reason": null,
     "reason": "The practical drying pilot remains a bounded physical experiment with a 20-room baseline and five-room pilot still lacking dated field evidence.",
     "evidence_ref": "supabase:operations.tasks/DC2-045@2026-09-19T09:47:46.360289+00",
-    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "e1d738e0-4e7a-4d9b-9d9b-153473114884",
@@ -637,7 +656,8 @@
     "proposed_blocking_reason": null,
     "reason": "Recognition & Points remains an approved TORO People capability; implementation is still gated by identity, QA and labor/accounting review.",
     "evidence_ref": "github:Dramcatcherst/Toro-OS/docs/product/TORO_BRAIN_GENERAL_PLAN.md#11-recognition--points",
-    "observed_updated_at": "2026-09-23 00:54:46.852239+00"
+    "observed_updated_at": "2026-09-23 00:54:46.852239+00",
+    "observed_completion_notes": null
   },
   {
     "task_id": "78a03d64-dcc0-4d69-9c45-4a67eae2264a",
@@ -669,7 +689,8 @@
     "proposed_blocking_reason": null,
     "reason": "The October kitchen handoff remains a current operational transition with identity, acceptance, backup coverage and handoff gates still open.",
     "evidence_ref": "supabase:operations.tasks/fnb_october_kitchen_handoff_2026_09@2026-09-22T18:24:28.11574+00",
-    "observed_updated_at": "2026-09-22 18:24:28.11574+00"
+    "observed_updated_at": "2026-09-22 18:24:28.11574+00",
+    "observed_completion_notes": "[AUTOPILOT-OPERATE-FNB-HANDOFF-20260928-MARIBEL]\nOwner-provided material delta: \"Mary\" is Maribel Jimenez Badilla, WhatsApp operational channel +506 8976 9179. She is NOT hotel payroll/employee; model her as external kitchen operator/vendor collaborator. Mauricio confirms she is the kitchen lead from now on; Adrian and Drift are no longer part of the current operating model.\n\nCommercial/operational terms confirmed by owner:\n- breakfast settlement: USD 8 per actually served breakfast;\n- other food: kitchen/operator share = 2/3 of applicable sale price, hotel share = 1/3;\n- operator is responsible for kitchen implements/supplies and labor under this operating model;\n- settlement/payment cadence: weekly, subject to invoice/settlement reconciliation;\n- maintain invoice follow-up as required evidence before/around weekly settlement; do not execute payment from this task;\n- operational channel: WhatsApp.\n\nAccess/readiness requirement prepared, NOT granted:\n- include Maribel in DreamTeam as EXTERNAL COLLABORATOR / KITCHEN OPERATOR, not employee;\n- least-privilege operational access required to consumption information, Kross POS/app and relevant F&B reports needed to register/reconcile service;\n- no payroll identity, employee attendance, HR entitlement or employee-role inference;\n- permission/account provisioning remains human-gated and must be verified before activation.\n\nExisting canonical SOP remains controlling where not superseded: Kross is source for F&B consumption; kitchen registers extras before preparation; Reception avoids duplication and handles guest collection; weekly reconciliation only pays services correctly evidenced in Kross. Historical chat evidence identifies MARY Restaurante Cocina and prior October handoff verification requirement.\n\nSensitive banking evidence supplied separately by owner on 2026-09-28; do not replicate full bank/account identifiers into general task notes or Plan General. Verify beneficiary/payment destination only at authorized payment workflow.\n\nOpen human gates after this reconciliation:\n1) confirm Maribel explicitly accepts the ongoing operator role and commercial terms;\n2) confirm backup/coverage person(s) and service hours/days;\n3) approve exact least-privilege Kross/DreamTeam access profile before provisioning;\n4) define invoice issuer/legal supplier name if different from Maribel personally.\n[/AUTOPILOT-OPERATE-FNB-HANDOFF-20260928-MARIBEL]"
   },
   {
     "task_id": "3e0e8543-e1bc-4c2d-a371-291206ecf19c",
@@ -701,7 +722,8 @@
     "proposed_blocking_reason": null,
     "reason": "Both jacuzzis still require dated physical mapping and functional evidence for water/circulation/heating configuration before claims or closure.",
     "evidence_ref": "supabase:operations.tasks/task-dc-jacuzzi-mapping-20260810@2026-09-19T09:47:46.360289+00",
-    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "328dd9da-0ec8-4cbe-bcc3-5799d46ff034",
@@ -733,7 +755,8 @@
     "proposed_blocking_reason": null,
     "reason": "Laundry startup remains a current physical-safety/commissioning task; no verified closure evidence is present in the reviewed snapshot.",
     "evidence_ref": "supabase:operations.tasks/task-laundry-safety-startup-20260918@2026-09-20T14:33:50.260379+00",
-    "observed_updated_at": "2026-09-20 14:33:50.260379+00"
+    "observed_updated_at": "2026-09-20 14:33:50.260379+00",
+    "observed_completion_notes": null
   },
   {
     "task_id": "f4757acd-e6a3-4c3b-a0e5-f18f498f7693",
@@ -765,7 +788,8 @@
     "proposed_blocking_reason": null,
     "reason": "TORO People onboarding remains current after owner release, but individual identity, hosted role/isolation/revocation and verified channel gates are still open.",
     "evidence_ref": "supabase:operations.tasks/toro_ops_staff_identity_onboarding_20260919@2026-09-26T06:33:16.98217+00",
-    "observed_updated_at": "2026-09-26 06:33:16.98217+00"
+    "observed_updated_at": "2026-09-26 06:33:16.98217+00",
+    "observed_completion_notes": "IDENTITY-SNAPSHOT-20260919: current active department/user linkage: GERENCIA 2/2 linked; RECEPCION 2/3 linked; HOUSEKEEPING 0/5 linked; MANTENIMIENTO 0/2 linked. Oliver Mendoza and Adonis Romero are active MANTENIMIENTO with no user_id. Alexandra is already linked in Recepción and is not an identity blocker. Housekeeping QA remains undesignated. No Auth user was created or modified.\nQA-CANDIDATE-SHORTLIST-20260919: after corrected non-multiplying attendance aggregation, active Housekeeping evidence = Elvira 12 attendance days/4642 min in Sep through 15/09 + 10 future draft shifts; Zeneida 11 days/4270 min through 15/09 + 10 drafts; Elizabeth 10 days/3861 min +10 drafts; Carolina Borges 6 days/2448 min +5 drafts; Abigail 0 Sep days, last attendance 17/08, 0 future drafts. Recommend management choose Elvira or Zeneida for first QA based on role fit; this note is a recommendation, not an assignment. Private-profile check: Oliver, Adonis, Elvira and Zeneida have no active profile, stored personal email or phone in current Supabase. No Auth/contact data was invented or created.\nAUDIT-R10-20260922: status normalizado de in_progress a blocked porque el propio execution_condition/blocking_reason exige gate/evidencia externa o consume evidencia de otro executor. No implica cierre, despriorización ni cambio de owner/due_date.\nCOORD-R20 22/09/2026: normalized to conditioned backlog. Preparation/evidence package remains valid; no remaining agent-safe execution before the already documented interactive/access/owner/root gate. Reopen on gate delta; do not repeat broad research or duplicate umbrella work.\nOPERATE-QA-20260928-IDENTITY-MEMBERSHIP: Freshness/reconciliation found a material stale statement in task context: canonical Supabase now has identity.organization_memberships (RLS enabled) with 5 active memberships; 4 are membership_type=employee and match both primary_employee_id and public.employees.user_id, plus 1 active non-employee membership. Employee onboarding state otherwise remains 12 employment-active, 4 linked, 8 unlinked, 1 termination/status conflict; employee_channel_enrollments=0 and employee_channel_identities=0. This reduces the prior “organization_memberships absent” blocker only; it does NOT authorize employee activation, messaging, shared-phone binding, permissions, or hosted role/isolation/revocation sign-off."
   },
   {
     "task_id": "b3476ed9-0887-438c-ab50-b491a6a8ad99",
@@ -797,7 +821,8 @@
     "proposed_blocking_reason": null,
     "reason": "Still requires current external/physical technical evidence; the review cannot be closed from historical documentation alone.",
     "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P1-DECK-TECH-REVIEW-20260810@2026-09-19T09:18:56.610286Z",
-    "observed_updated_at": "2026-09-19 09:18:56.610286+00"
+    "observed_updated_at": "2026-09-19 09:18:56.610286+00",
+    "observed_completion_notes": "P1 blocked review 2026-09-19. Unique Airtable task migrated canonically; stale historical due dates were not promoted.\n\nOPERATE_L2_RECON_20260923: Fuente Airtable canónica TORO OS / tasks resuelta en record rec0xAMwQLoDmfcRf. Reconciliación actual: status=blocked y owner_human=\"RICO + ingeniero responsable\" coinciden con la fila canónica Supabase; la fecha 2026-08-17 permanece como due_date histórica en Airtable y NO se promovió a Supabase. Evidencia exigida por la fuente: planos, cálculo, permisos, contrato, seguro, cronograma y QA. Intervención humana concreta: ingeniero responsable debe validar deck/parapetos/anclajes/drenaje/materiales contra planos/as-built y dejar aprobación técnica/presupuesto o descarte documentado. No autoriza obra ni especificaciones."
   },
   {
     "task_id": "e790e0ea-d3a9-4878-bdc4-cb9efa875496",
@@ -829,7 +854,8 @@
     "proposed_blocking_reason": null,
     "reason": "Search Console baseline/indexation remains a current post-release measurement capability and no verified completion evidence supports closing or merging it.",
     "evidence_ref": "supabase:operations.tasks/connect_search_console_and_submit_sitemap@2026-09-23T06:06:49.231509+00",
-    "observed_updated_at": "2026-09-23 06:06:49.231509+00"
+    "observed_updated_at": "2026-09-23 06:06:49.231509+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "97c9a2d3-455e-42e6-b9a8-670ede1cd554",
@@ -861,7 +887,8 @@
     "proposed_blocking_reason": null,
     "reason": "The room-comparison capability remains a distinct website selection/conversion improvement with governed catalog dependencies and no verified completion evidence.",
     "evidence_ref": "supabase:operations.tasks/DC2-028@2026-09-23T06:06:49.23953+00",
-    "observed_updated_at": "2026-09-23 06:06:49.23953+00"
+    "observed_updated_at": "2026-09-23 06:06:49.23953+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "d7e40354-f870-44d5-b6ce-ba3165a3a028",
@@ -893,7 +920,8 @@
     "proposed_blocking_reason": null,
     "reason": "The accessibility/performance preview slice is explicitly complete; the only remaining material step is the existing release gate owned by DC2-022, so a separate active task would duplicate release work.",
     "evidence_ref": "supabase:operations.tasks/DC2-030@2026-09-23T06:06:49.239745+00",
-    "observed_updated_at": "2026-09-23 06:06:49.239745+00"
+    "observed_updated_at": "2026-09-23 06:06:49.239745+00",
+    "observed_completion_notes": "Migrated from active unique Airtable task on 2026-09-19; source preserved and semantic duplication checked before migration.\n19/09/2026 verification: PR #68 head 24826a77... remains draft/open/mergeable; Vercel preview is READY; GitHub workflow \"Preview quality gates\" run 35318802201 completed SUCCESS. The accessibility slice (single semantic main landmark, skip-link keyboard focus, governed 3px focus-visible outline) is verified in preview. Production remains untouched and DC2-030 stays in_progress because release/performance gates are separate.\nDC2-030-20260921: stale PR68 intent was rebased onto current foundation fef6c735... in draft PR #71, branch codex/a11y-current-baseline-20260921. TDD contract added first; implementation moves skip target to each semantic page-shell main, preserves one main landmark, and governs 3px keyboard focus visibility. Current PR head e072db3c... is mergeable and remains draft/preview-only. Preview quality gates run 35571329293 started and is still in_progress at last check; therefore QA is not yet claimed complete. Production untouched.\nAUDIT-R10-20260922: status normalizado de in_progress a blocked porque el propio execution_condition/blocking_reason exige gate/evidencia externa o consume evidencia de otro executor. No implica cierre, despriorización ni cambio de owner/due_date."
   },
   {
     "task_id": "ff79338a-be14-4810-85fc-10f469eea8e4",
@@ -925,7 +953,8 @@
     "proposed_blocking_reason": null,
     "reason": "Media/Kross reconciliation remains current: source identity/order is verified but rights/public-safe status, Booking capture and Villa Toro mapping are incomplete.",
     "evidence_ref": "supabase:operations.tasks/MEDIA-KROSS-RECONCILE-22-UNITS-20260903@2026-09-23T03:37:58.511773+00",
-    "observed_updated_at": "2026-09-23 03:37:58.511773+00"
+    "observed_updated_at": "2026-09-23 03:37:58.511773+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "b7de6e88-84f5-4492-bec8-2033148d6521",
@@ -957,7 +986,8 @@
     "proposed_blocking_reason": null,
     "reason": "The year-over-year source reconciliation remains current and no verified canonical reconciliation result supports closure or merge.",
     "evidence_ref": "supabase:operations.tasks/dc_yoy_2025_2026_reconcile_sources@2026-09-25T08:43:40.54113+00",
-    "observed_updated_at": "2026-09-25 08:43:40.54113+00"
+    "observed_updated_at": "2026-09-25 08:43:40.54113+00",
+    "observed_completion_notes": null
   },
   {
     "task_id": "73c73552-feef-4643-83c9-09c3ae2be042",
@@ -989,7 +1019,8 @@
     "proposed_blocking_reason": null,
     "reason": "Recurring-payments reconciliation remains active because source identifiers/provider evidence and master/calendar gaps remain unresolved despite the reporting stack being built.",
     "evidence_ref": "supabase:operations.tasks/DROPBOX-P1-RECURRING-PAYMENTS-RECON-20260810@2026-09-19T10:41:49.679191+00",
-    "observed_updated_at": "2026-09-19 10:41:49.679191+00"
+    "observed_updated_at": "2026-09-19 10:41:49.679191+00",
+    "observed_completion_notes": "Migrated from active unique Airtable task on 2026-09-19; source preserved and semantic duplication checked before migration.\nDATE-NORMALIZATION-20260919: Airtable source due_date was 2026-08-15 and is preserved in source/provenance; canonical due_date cleared because the date is stale and no current deadline was verified. Keep needs_revalidation=true until a fresh deadline is established.\nPAYMENT-REPORTING-BACKEND-20260919: created reporting.payment_monthly_checklist_2026 as security_invoker read-only view. Dynamic snapshot: 5 due/past-due rows, 19 needs-verification rows, 14 coverage gaps, 7 anomaly-or-identifier attention cases, 23 calendar rows without verified dates. View has no anon/authenticated/service_role direct SELECT grants. Four existing reporting payment tables remain RLS fail-closed. Five infographic outputs can now be generated from the canonical reporting stack; outstanding source evidence stays blocked.\nIDENTIFIER-DELTA-20260919: created canonical obligations for Vista Alegre AyA NIS3283121 and Santa Toro AyA NIS5520130; DIEX NIS5400641 obligation updated to identifier-mapped/current-invoice-missing. Added these three to non-Dreamcatcher payment master via source-derived aggregation. Identifier review queue now 3 resolved / 2 open. ICE second meter normalized to exact NISE2416159 but property remains conflict; Liberty1757521 remains unmapped after exact Gmail/Outlook/document-manifest search."
   },
   {
     "task_id": "0d03aa3f-ff02-45d6-a70f-4f79dc18a733",
@@ -1021,7 +1052,8 @@
     "proposed_blocking_reason": null,
     "reason": "The A&B settlement/invoicing SOP remains active: payment is known, but invoice receipt, channel/contact certainty and operating acceptance remain unresolved.",
     "evidence_ref": "supabase:operations.tasks/fnb_settlement_invoicing_sop_2026_09@2026-09-22T18:24:28.11574+00",
-    "observed_updated_at": "2026-09-22 18:24:28.11574+00"
+    "observed_updated_at": "2026-09-22 18:24:28.11574+00",
+    "observed_completion_notes": "\nFINANCE-GENERAL-20260918: análisis financiero integral y plan PROPUESTO registrados en operations.knowledge_items/finance_general_review_improvement_plan_20260918_v1; PDF7páginas, sin otro proyecto ni tarea. F08: liquidación semanal conciliada ytarifaporperíodo. SOPbajaUSD8vshojapreviaUSD10,diferenciapotencial2/unidad,no sobrepagoprobado. No consumir/pagar incluidos no consumidos niaplicarrepartonoaprobadoaotrosplatos. No se ejecutan pagos/asientos/reclasificaciones/envíos ni se cambian fechas o responsables automáticamente; fuentes históricas y saldos no conciliados separados. Mantener datos recientes de otros frentes y aprobación explícita."
   },
   {
     "task_id": "eff7627c-db3d-4534-a233-d86ba848b668",
@@ -1053,7 +1085,8 @@
     "proposed_blocking_reason": null,
     "reason": "The June/channel diagnostic remains a distinct current Revenue analysis objective and no verified completed diagnostic is recorded in this snapshot.",
     "evidence_ref": "supabase:operations.tasks/dc_revenue_june_channel_2026_diagnostic@2026-09-25T08:43:40.54113+00",
-    "observed_updated_at": "2026-09-25 08:43:40.54113+00"
+    "observed_updated_at": "2026-09-25 08:43:40.54113+00",
+    "observed_completion_notes": null
   },
   {
     "task_id": "fbd447d1-f10e-413b-a151-651784ae6f28",
@@ -1085,7 +1118,8 @@
     "proposed_blocking_reason": null,
     "reason": "A&B costing/margin validation for the current product set remains an active revenue-control objective with no verified completion evidence.",
     "evidence_ref": "supabase:operations.tasks/fnb_costing_complete_2026_09@2026-09-22T06:50:24.364506+00",
-    "observed_updated_at": "2026-09-22 06:50:24.364506+00"
+    "observed_updated_at": "2026-09-22 06:50:24.364506+00",
+    "observed_completion_notes": null
   },
   {
     "task_id": "6f0a92a7-349c-409e-82a9-092ef6036970",
@@ -1117,7 +1151,8 @@
     "proposed_blocking_reason": null,
     "reason": "This is explicitly post-launch cadence work. The production release gate is not closed, so keeping it active now inflates the backlog before its trigger exists.",
     "evidence_ref": "supabase:operations.tasks/start_post_launch_content_cadence_for_priority_clusters@2026-09-19T09:47:46.360289+00",
-    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00",
+    "observed_completion_notes": "P1 NEXT classification 2026-09-19 = MIGRAR. Unique future work preserved as canonical backlog; no new project and no live action authorized."
   },
   {
     "task_id": "2da11573-db9c-4d44-8a68-c0874667c7ce",
@@ -1149,7 +1184,8 @@
     "proposed_blocking_reason": null,
     "reason": "The recurring WeSpeak/TERE QA remains a valid ongoing control; current evidence explicitly says coverage is partial and native-source attribution is still blocked.",
     "evidence_ref": "supabase:operations.tasks/wespeak_weekly_conversation_qa@2026-09-28T15:38:56.872353+00",
-    "observed_updated_at": "2026-09-28 15:38:56.872353+00"
+    "observed_updated_at": "2026-09-28 15:38:56.872353+00",
+    "observed_completion_notes": "BASELINE 18/09: TICOS 10 mentions/7d (10%=7, 15%=2); supplier/agency targeting hits=2. wspk alerts=8; 13 unique redirects tested, 13/13 property-boundary PASS, 6 deep-context, 6 generic ES home, 1 generic book/view, currency explicit 0. Room21 terrace hits=3/14d; old check-in hits=0/30d. Added #7/#8 capacity and #1/#4 inventory reasoning checks.\n2026-09-18 BASELINE V1 CREATED: 66 alerts/7d. 39 advisor escalations were classified; most are justified. New QA conflict classes added for dining 2-hour rule, catch-of-day provenance, duplicate physical room reasoning and Room7/8 capacity reasoning. Weekly automation now checks these patterns.\n2026-09-18 BASELINE V1: 66 alerts/7d. Requires-advisor=39, but 32/39 are clearly payment/invoice, explicit-human, supplier/job, tours or group/agency flows. New QA rule: do not target fewer escalations blindly; improve intake/routing. Material defects tracked: TICOS terms/targeting, Room21 terrace, link context, inventory/capacity reasoning and dining provenance/rules.\nOBSERVACIONES-REALES-20260918: Muestra real8 alertas:8 chat IDs,4 hilos Gmail. Deduplicar por message_id para eventos, chat nativo+proceso/objeto verificado para casos; no por hilo/asunto. Conservar conversaciones similares distintas sin prueba. Validar coherencia matemática de totales y explicación de paquete, sin asumir tarifa vigente. Registro: baseline.retrospective_sample_20260918.7 observaciones Excel,0 cierres/horas acreditados; no sustituye universo semanal.\nWESPEAK-LIVE-20260919: alerta real revisada. TERE ofreció hamburguesa Dreamcatcher USD20, pesca del día USD25 y favoritos de piscina/nachos/alitas/papas desde USD5, aunque catalog.menu_items actual tiene 11 activos y esos ítems no forman parte del catálogo activo; los 4 platos low-season nuevos están en review/no públicos y los 7 desayunos activos sí están verificados a USD15. Registrar como drift factual de dining, no como error del catálogo. También hubo escalamiento correcto para ATV: 2 conductores + 1 acompañante; precio debe confirmarlo humano/proveedor. No se cambió runtime.\nWESPEAK-QA-20260919-B: fresh alerts continue to show correct human escalation for live availability/payment/tour cases, including SINPE/payment requests and ATV details. Separate alert indicates operational dependency on alternate WhatsApp 83709777. Also observed an in-stay Room 3 fan-help request, which should feed guest-safe room-instructions coverage rather than prompt an invented answer. No guest message, payment confirmation or provider promise was executed from TORO.\nWESPEAK-QA-20260921: Gmail telemetry 7d reviewed for every mandatory alert category available: 24 alerts = Crear reserva 3 / Realizar reserva 2 / Cancelaciones-modificaciones 3 / Problema huésped 11 / Pago 5. Normal 20-conversation sample = NO MEDIDO because Gmail alerts are not the full chat universe. Material factual/commercial risks: TICOS appears as both 10% and 15%; wspk.link shorteners remain in guest flows despite direct-official-link target; Room 25 was handled for 5 adults + 2 babies although canonical core.rooms max_capacity=5, and the same chat described garden view while canonical view_type=Pool; Room25 price/payment-policy wording also drifted and was not backed by fresh Kross evidence. Live availability/Kross outcomes = NO MEDIDO until fresh authorized Kross transport is verified. Positive control: payment, modification and guest-problem cases generally escalated to humans rather than inventing completion. No guest messages, reservation/rate/inventory changes or runtime writes made.\nWESPEAK-QA-AUTOMATION-20260921-0806: informe semanal interno consolidado sin duplicar tarea. Ventana solicitada 14–21/09; Gmail localizó 75 entregas de alertas en esa búsqueda. Para el tramo posterior al watermark canónico 18/09T15:51:07Z se revisaron 17 entregas nuevas, deduplicadas por chat_id a 13 conversaciones/casos de conversación (4 entregas adicionales pertenecían a chats ya contados: Jimena, Dream Team interno, Karen, y reserva/pago hab25). Fuente nativa WeSpeak intentada en solo lectura: login_required; muestra normal hasta20 = SIN DATOS. No usar thread_id Gmail como caso.\nFALLOS MATERIALES: (1) RECURRING P0 Room21 llamada Suite con terraza aunque DC-ROOM-21 has_terrace=false. (2) P0 capacidad: chat df319... gestionó DC-ROOM-25 para5 adultos+2 bebés; core max_capacity=5 y no existe excepción infantil Kross verificada; debía bloquear/escalar antes de seguir cotización. (3) P0 autoridad transaccional: chat8a545... presentó disponibilidad y totales Room27 como ciertos y luego fechas/día-semana inconsistentes sin evidencia Kross live autorizada; wspk.link impide verificar preservación fecha/ocupación/idioma/moneda. (4) late checkout USD10/h sigue needs_verification/public_visibility=false; escalamiento de disponibilidad correcto, precio no apto para afirmación pública. (5) dining drift: desayuno7–10 yUSD15 sí son canónicos, pero hamburguesa/pesca/nachos/alitas/papas no están en el menú activo actual; otros_servicios=confirm_daily y no existe regla canónica fija2h. (6) promo TICOS continúa ACTIVA por autoridad del propietario, intended10%, pero live_kross_terms_status=needs_live_verification; motor público leído mostró términos generales, no términos TICOS, y el intento de cotización no produjo evidencia válida. No tratar10% como términos Kross live verificados ni apilar con temporada sin prueba. (7) routing: proveedor Ancyfer recibió promo/feriado antes de clasificarse como proveedor; conversación interna Dream Team volvió a entrar como problema de huésped. (8) privacidad: alertas de correo replican datos de facturación, identificadores bancarios y códigos personales de acceso de chats; mantenerlos fuera de reportes y priorizar minimización/redacción de telemetría.\nCONTROLES POSITIVOS: TERE escaló correctamente tipo de cambio/pago SINPE, verificación de comprobantes, precio exacto ATV, amenity/fridge incierto y late-checkout disponibilidad; estas son delegaciones humanas correctas, NO cierres autónomos IA. Un subcaso TV muestra cierre humano explícito, no autonomía IA. Autonomía IA, resolución end-to-end, horas humanas/socios, correcciones y reabiertos = NO MEDIDOS por falta de universo nativo y outcome transaccional.\nCAUSA RAÍZ: ausencia de hard pre-send authority gate que combine room_key/max_capacity + public_visibility/requires_human_verification + Kross-live para claims transaccionales; contexto histórico/marketing y short-links todavía pueden ganar al dato canónico. Secundario: intent routing insuficiente para supplier/internal traffic y telemetría no minimizada.\nMEJORA PRIORITARIA EN ESTA MISMA TAREA (NO tarea nueva): gate fail-closed antes de responder: resolver DC-ROOM-N y max_capacity; para tarifa/disponibilidad/promo exigir evidencia Kross live; rechazar cualquier fact/extra/menu no público o needs_human; emitir solo enlace oficial con fechas/ocupación/idioma/moneda preservados; si falla cualquiera de esos checks, escalar con intake completo. Añadir redacción de secretos/datos de pago en alertas como requisito de QA, pero sin cambiar runtime sin autorización. No mensajes externos, reservas, pagos, tarifas, permisos ni publicaciones modificados.\nWESPEAK-QA-CONTINUE-20260921: No se encontraron alertas WeSpeak posteriores al watermark 2026-09-20T21:07:49Z; el mensaje más reciente hallado coincide exactamente con el ya auditado, por lo que no se incrementó el denominador. Acceso nativo full-chat reintentado en modo solo lectura con perfil de navegador: login requerido y no hay credenciales/sesión configuradas; 20 conversaciones normales = SIN DATOS. operations.reservations contiene 33 filas Kross pero 0 source_is_live; estados de calidad solo review/conflict, así que no acredita cierre de reserva/pago. Prueba pública del deep-link canónico con fechas 22–24/09, 2 adultos, 1 habitación, ES/CRC terminó en /book/step1 con fechas vacías y parámetros comerciales no preservados en la respuesta observada; tratar preservación de link como FALLA/NO VERIFICADA hasta prueba nativa Kross/WeSpeak. No se enviaron mensajes ni se cambió WeSpeak/Kross.\nWESPEAK-QA-OUTCOME-20260921-R2: Se obtuvo evidencia posterior del caso DC-ROOM-25. Kross reservation 5156 (snapshot 2026-09-21T09:28:30.675Z) figura CONF para 10–13/10/2026, 5 adultos + 2 niños, total USD264.60 y amount_paid USD265. finance.pms_payments registra USD265 el 20/09 por transferencia BAC, pero source_id_not_bank_reconciled; no acreditar liquidación bancaria. core.rooms DC-ROOM-25 y la página pública Kross coinciden en máximo5, por lo que la reserva de7 es una contradicción operativa real. El advisor humano realizó la creación/cotización; TERE luego escaló correctamente la verificación del comprobante. Clasificar por separado: (a) IA: escalamiento de pago correcto; (b) humano/PMS: reserva por encima de capacidad física; (c) pago: registrado en PMS, conciliación bancaria DESCONOCIDA. Además, la página pública Kross #25 anuncia terraza/patio y Balcony/Terrace, mientras core.rooms verificado dice has_terrace=false y aclara que no existe balcón/terraza permanente. #21 presenta el mismo conflicto: core has_terrace=false, página pública lista Balcony/Balcony-Terrace. Causa raíz ampliada: además del gate TERE falta reconciliación de static room facts entre core.rooms y contenido público Kross; no usar Kross marketing estático como autoridad física cuando contradiga core verificado. #27 sí coincide en capacidad2, cama king, sin cocina y entorno jardín; disponibilidad/tarifa siguen requiriendo evidencia transaccional de las fechas exactas.\nWESPEAK-QA-OUTCOMES-20260921-R3: Outcomes posteriores cruzados sin crear otra tarea. (1) Chat e334...: TERE cotizó DC-ROOM-24 con desayuno para 2 adultos, 18–20/09, USD185 y aclaró que aún no estaba confirmada. Kross reservation 5121 posterior contiene exactamente Room24, 2 adultos, BE-DREAM+BREAKFAST, total USD185 para 18–20/09; luego se añadió Room22/3 adultos y el total de la reserva llegó a USD403.45. PASS LIMITADO solo a exactitud de esa cotización/componente y manejo de no-confirmación; la finalización fue humana y no acredita autonomía E2E ni cobro bancario. (2) Chat 8c3f...: TERE escaló pago directo de Maria Jose. Kross reservation 5100 posterior muestra PMS amountPaid USD210.46/balance0 con dos pagos registrados; bankReconciled=false. Resultado humano/PMS verificado, liquidación bancaria DESCONOCIDA. (3) Chat a6ed...: TERE escaló reducción del grupo de4 a3. Kross reservation 4998 posterior muestra3 adultos; cambio de ocupación visible, pero ajuste económico/refund DESCONOCIDO. Delegación humana, no autonomía IA. (4) Chat da22... Karen Mora: alerta pidió21–24/11 Room24 con desayuno; Kross 5148 posterior está WAIT para20–22/11, totalUSD203, con evidencia de adelanto equivalenteUSD101.50 y nota de estancia reducida a2 noches. No comparar tarifa/fechas del alert con outcome final como si fueran el mismo producto; hubo cambio intermedio no visible por falta de chat nativo. (5) Chat 8b0c... repite fallo de capacidad #7/#8: TERE dijo que no servían para2 adultos cada una por capacidad menor, pero core.rooms y Kross público dicen max_capacity=3 para ambas. Además afirmó “2 unidades de cada tipo” para rooms1/4, violando identidad física única por número. Outcome de esas dos reservas web no identificable con evidencia accesible.\nLa muestra de outcomes sigue seleccionada y el mirror tiene source_is_live=false; no calcular tasa global.\nAUDIT-R10-20260922: status normalizado de in_progress a blocked porque el propio execution_condition/blocking_reason exige gate/evidencia externa o consume evidencia de otro executor. No implica cierre, despriorización ni cambio de owner/due_date.\nWESPEAK-QA-20260928: 21-28 Sep: 0 nuevas alertas WeSpeak accesibles por Gmail; esto es ausencia de telemetria, no cero casos. Full-chat nativo post-V4 y muestra normal <=20: NO MEDIDO. Reservas mirror: 0 source_is_live; outcomes/transacciones: DESCONOCIDO. Core rooms: 20 activas, 0 room_number duplicados (PASS limitado al catalogo canonico). TICOS sigue ACTIVA; terminos live globales siguen DESCONOCIDOS sin Kross nativo. Causa raiz prioritaria: brecha de observabilidad post-V4. Mejora prioritaria sin tarea nueva: cerrar evidencia post-V4 ya definida en wespeak_apply_compact_tere_context_2026_09 antes de puntuar mejora; mantener truth gate fail-closed. No Booking UNREAD ni cambios externos."
   },
   {
     "task_id": "0b5f39f4-7aa1-462c-b2d4-4c8209e11943",
@@ -1181,7 +1217,8 @@
     "proposed_blocking_reason": null,
     "reason": "The January 2027 autonomy acceptance test remains a current strategic readiness gate with explicit dependencies; it is not completed or duplicated by the baseline task.",
     "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_acceptance_2027_01@2026-09-21T05:50:09.203077+00",
-    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00",
+    "observed_completion_notes": "\nFINANCE-GENERAL-20260918: análisis financiero integral y plan PROPUESTO registrados en operations.knowledge_items/finance_general_review_improvement_plan_20260918_v1; PDF7páginas, sin otro proyecto ni tarea. F12: tranquilidadfinanciera requierecajaycompromisosconciliados, costedeequipoquesustituyerutinas, objetivoingresosocioypolíticareparto aprobados. Reserva8semanasespropuesta; 90%noautoriza pagos niasegura ganancias. Dos cierres supervisados antesdeafirmarautonomía. No se ejecutan pagos/asientos/reclasificaciones/envíos ni se cambian fechas o responsables automáticamente; fuentes históricas y saldos no conciliados separados. Mantener datos recientes de otros frentes y aprobación explícita."
   },
   {
     "task_id": "9023b678-5e2c-46fa-b945-a701a42de359",
@@ -1213,7 +1250,8 @@
     "proposed_blocking_reason": null,
     "reason": "The autonomy baseline is required before the January 2027 acceptance test and still depends on real timing/case data and human role confirmation.",
     "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_baseline_2026_09@2026-09-21T05:50:09.203077+00",
-    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00",
+    "observed_completion_notes": "\nMEDICION-XLSX-20260918: preparación completada, NO medición completada. Archivo local TORO_OS_Medicion_Autonomia.xlsx, SHA256 7e6bb9ce31e06ad98a841f68b1ac440e0036b805ff4beb026d5f1a79b71f227a. 34 pruebas sintéticas, 200 filas vacías, 5 hojas. Cero casos reales y cero envíos. Incorporar por exportación/referencia cuando se adopte; no duplicar captura manual en sistemas existentes. Roles/suplente, tiempo real y cobertura continúan pendientes. Detalle: dreamcatcher_autonomy_pilot_readiness_20260918_v1.capture_workbook.\nOBSERVACIONES-REALES-20260918: Preparada copia con7 observaciones retrospectivas reales17–18/09, tomadas de8 alertas con un proveedor separado. Alcance/cierre/minutos pendientes explícitos. No se completó baseline representativa ni se inició piloto de campo; conservar plantilla original vacía. Archivo observado y SHA en piloto.retrospective_sample_20260918. No horas ni autonomía inferidas."
   },
   {
     "task_id": "48875793-5529-45f5-8dd0-2eed9d4e8809",
@@ -1245,7 +1283,8 @@
     "proposed_blocking_reason": null,
     "reason": "The company/user/Portal contract remains core current work: membership foundation exists, but hosted QA, sender identity, channel consumption and scope proof are still gated.",
     "evidence_ref": "supabase:operations.tasks/toro_company_user_portal_contract_20260922@2026-09-25T09:14:40.291632+00",
-    "observed_updated_at": "2026-09-25 09:14:40.291632+00"
+    "observed_updated_at": "2026-09-25 09:14:40.291632+00",
+    "observed_completion_notes": "SIMPLIFY-R1 22/09/2026: absorbidos Business Discovery, Message/Memory y Human Profiles como subcontratos. Esto reduce fragmentación; no significa que esos subscopes estén implementados.\nCONTROL-R16 22/09/2026: identity semantics clarified read-only. Membership design no longer depends on merging Mauricio-labelled principals; preserve principals separately. Auth/roles/sessions unchanged.\nCOORD-R17 22/09/2026: concurrent deltas from merged Business Discovery and Message/Memory reabsorbed into Core Tenant; auxiliary executors closed again.\nCONTROL-R18 22/09/2026: membership/RLS migration specification completed from live schema/functions/policies. Task moved to planned backlog because no remaining agent-safe implementation exists before existing integration/Auth gates."
   },
   {
     "task_id": "5012fac0-a634-48fb-ac18-5b9721308c30",
@@ -1277,7 +1316,8 @@
     "proposed_blocking_reason": null,
     "reason": "The design-partner/monetization task remains valid as a controlled productization objective, while its own blocker correctly prevents external private-data onboarding before readiness gates pass.",
     "evidence_ref": "supabase:operations.tasks/toro_design_partner_monetization_20260922@2026-09-23T00:00:25.243556+00",
-    "observed_updated_at": "2026-09-23 00:00:25.243556+00"
+    "observed_updated_at": "2026-09-23 00:00:25.243556+00",
+    "observed_completion_notes": "SELF-BUSINESS-R1 22/09/2026: TORO Business es piloto interno 2 después de Dreamcatcher. Debe usar mismo kernel y cuatro lanes; design partners externos vienen después."
   },
   {
     "task_id": "3573ec60-0fea-4e78-861d-e90a86f3126b",
@@ -1309,7 +1349,8 @@
     "proposed_blocking_reason": null,
     "reason": "Valid future extras/NBO work, but current prerequisites for room fit, price freshness and availability are not yet closed; reactivate when those gates are ready rather than carrying it as active work.",
     "evidence_ref": "supabase:operations.tasks/DC2-037@2026-09-23T06:06:49.24081+00",
-    "observed_updated_at": "2026-09-23 06:06:49.24081+00"
+    "observed_updated_at": "2026-09-23 06:06:49.24081+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "99af6e87-0dfa-4c28-a0f3-ad587279e915",
@@ -1341,7 +1382,8 @@
     "proposed_blocking_reason": null,
     "reason": "Energy/water denominator analysis is valid but explicitly downstream of higher-priority source and operational gates; no current 30-day reconciliation trigger is active.",
     "evidence_ref": "supabase:operations.tasks/DC2-048@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "7affee16-d4aa-41e3-adbb-536c5c38f773",
@@ -1373,7 +1415,8 @@
     "proposed_blocking_reason": null,
     "reason": "This remains a current operational capability-development initiative with a defined mentor/QA path and measurable delegation objective; no promotion or permission change is implied.",
     "evidence_ref": "supabase:operations.tasks/alexandra_ops_manager_development_20260918@2026-09-23T04:53:56.858614+00",
-    "observed_updated_at": "2026-09-23 04:53:56.858614+00"
+    "observed_updated_at": "2026-09-23 04:53:56.858614+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "b92fe78d-447f-4efe-b4bd-414c0fe73a8f",
@@ -1405,7 +1448,8 @@
     "proposed_blocking_reason": null,
     "reason": "The task itself is explicitly P2 and deferred until P0/P1 close; keep it out of the active backlog until that trigger exists.",
     "evidence_ref": "supabase:operations.tasks/DC2-044@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "79cb650f-f310-4202-87df-e7969b551307",
@@ -1437,7 +1481,8 @@
     "proposed_blocking_reason": null,
     "reason": "The water-reuse technical dossier is valid but explicitly deferred behind higher-priority work; no current technical/legal trigger requires active execution.",
     "evidence_ref": "supabase:operations.tasks/DC2-050@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "217e7159-b630-41d0-b3eb-5f0a71495568",
@@ -1469,7 +1514,8 @@
     "proposed_blocking_reason": null,
     "reason": "The reversible sound pilot depends on earlier work and has no current trigger; retain as future experiment rather than active commitment.",
     "evidence_ref": "supabase:operations.tasks/DC2-055@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "8364ad99-7f3a-4180-a581-a1221566bfbf",
@@ -1501,7 +1547,8 @@
     "proposed_blocking_reason": null,
     "reason": "Low-risk physical sharing pilots are future experiments dependent on earlier safety/workstream gates; no current trigger justifies active status.",
     "evidence_ref": "supabase:operations.tasks/DC2-064@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "805baee5-0943-47a4-be11-55e1e1e1b7c9",
@@ -1533,7 +1580,8 @@
     "proposed_blocking_reason": null,
     "reason": "The survey is valid but explicitly P2/non-blocking. Reactivate when network troubleshooting or the planned resilience work needs room-level measurements.",
     "evidence_ref": "supabase:operations.tasks/task-dc-wifi-survey-20260810@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "43f85647-83e1-4d9c-8ae9-f8b63200edce",
@@ -1565,7 +1613,8 @@
     "proposed_blocking_reason": null,
     "reason": "CTA testing is valid but explicitly downstream of website/release gates; reactivate after the production baseline is settled.",
     "evidence_ref": "supabase:operations.tasks/DC2-027@2026-09-23T06:06:49.232028+00",
-    "observed_updated_at": "2026-09-23 06:06:49.232028+00"
+    "observed_updated_at": "2026-09-23 06:06:49.232028+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "71a050f1-acb7-46bc-b423-4b35641a8414",
@@ -1597,7 +1646,8 @@
     "proposed_blocking_reason": null,
     "reason": "ES/EN + TICOS profile routing is valid but downstream of verified live TICOS terms and current website truth; keep it on HOLD until those inputs exist.",
     "evidence_ref": "supabase:operations.tasks/DC2-035@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "bbf2b3ea-69f6-497c-8dee-37ef4bc767e9",
@@ -1629,7 +1679,8 @@
     "proposed_blocking_reason": null,
     "reason": "This is a narrow historical tax opportunity with a founder/legal gate and no current evidence package; keep it parked until materiality/support justify reopening.",
     "evidence_ref": "supabase:operations.tasks/tax-audit-tourism-vat-2019-2023@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "5168c5ed-1825-4de7-beec-ec526d0ee622",
@@ -1661,7 +1712,8 @@
     "proposed_blocking_reason": null,
     "reason": "Wedding/group SOP work is useful but not tied to a current event-specific trigger in this task; reactivate when a live group/event requires the standardized package.",
     "evidence_ref": "supabase:operations.tasks/DC2-063@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "4c7e812c-d68f-4d28-a18c-51f4ffa4e2c5",
@@ -1693,7 +1745,8 @@
     "proposed_blocking_reason": null,
     "reason": "The PMS evaluation remains current: Cloudbeds is an active candidate and the task has concrete TCO/API/inventory/reversibility questions that still require a decision.",
     "evidence_ref": "supabase:operations.tasks/DC2-068@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "42d95464-c6b2-406b-a362-b5673eae450f",
@@ -1725,7 +1778,8 @@
     "proposed_blocking_reason": null,
     "reason": "This experiment-decision task depends on upstream pricing/data readiness and a later review window; no current trigger exists.",
     "evidence_ref": "supabase:operations.tasks/DC2-069@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "f1bb525e-ac95-469b-abc5-2720417672f7",
@@ -1757,7 +1811,8 @@
     "proposed_blocking_reason": null,
     "reason": "Meta ownership verification remains important before paid/automation integration, but there is no current integration/cutover trigger; keep it parked until that workstream activates.",
     "evidence_ref": "supabase:operations.tasks/verify_dreamcatcher_facebook_page_ownership@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "502541b0-eebf-4a6e-a358-e67108172f3d",
@@ -1789,7 +1844,8 @@
     "proposed_blocking_reason": null,
     "reason": "The monthly deep review is an ongoing quality/conversion control that consolidates weekly QA and remains valid without duplicating live WeSpeak/Kross mutation.",
     "evidence_ref": "supabase:operations.tasks/wespeak_monthly_deep_review@2026-09-21T05:50:09.203077+00",
-    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00",
+    "observed_completion_notes": "Cadencia estable: semanal = operación/fallos; mensual = tendencias, simplificación y mejora de conversión."
   },
   {
     "task_id": "b57a45c2-86f6-4f5a-a9dc-1a6a5ad65ddd",
@@ -1821,7 +1877,8 @@
     "proposed_blocking_reason": null,
     "reason": "A generic weekly three-front review would duplicate newer TORO command/reporting rhythms unless a specific gap is demonstrated; keep it parked rather than create another recurring review loop.",
     "evidence_ref": "supabase:operations.tasks/DC2-019@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "82f06e56-7b45-4a0e-ba4f-025a54d40da0",
@@ -1853,7 +1910,8 @@
     "proposed_blocking_reason": null,
     "reason": "This is explicitly a later portfolio-selection gate for demonstrated improvements; reactivate at the evidence/decision window rather than carrying it as active work.",
     "evidence_ref": "supabase:operations.tasks/DC2-070@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "196224e7-45e5-4ea1-9f2c-90ab9a1b95b2",
@@ -1885,7 +1943,8 @@
     "proposed_blocking_reason": null,
     "reason": "Translation workflow is valid only after English/Spanish source truth is approved; keep it parked until that source-truth trigger is satisfied.",
     "evidence_ref": "supabase:operations.tasks/legacy_task_recmYCDbpmMvpHMQo@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "d52aaebb-4f96-4524-baf7-0524b3fbf892",
@@ -1917,7 +1976,8 @@
     "proposed_blocking_reason": null,
     "reason": "This is the single active Performance Intelligence execution task and already contains the governed metric/data-quality workstream; archiving it would strand current canonicalization/conflict-resolution work.",
     "evidence_ref": "supabase:operations.tasks/occ_sep_oct_daily_revenue_dashboard_20260825@2026-09-23T05:38:31.835823+00",
-    "observed_updated_at": "2026-09-23 05:38:31.835823+00"
+    "observed_updated_at": "2026-09-23 05:38:31.835823+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "ad46f9e6-c613-45ca-adcc-5a74b3f3fd4d",
@@ -1949,7 +2009,8 @@
     "proposed_blocking_reason": null,
     "reason": "Network topology, recovery ownership and failover documentation remain a current operational resilience need with a concrete non-secret next action and no duplicate active authority.",
     "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P2-NETWORK-INVENTORY-20260810@2026-09-19T09:55:36.680053+00",
-    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00",
+    "observed_completion_notes": "P2 NEXT classification 2026-09-19 = MIGRATE_BACKLOG. Unique future work preserved as canonical planned/medium backlog; no live action, purchase, external message, filing, deployment or configuration change authorized."
   },
   {
     "task_id": "eb3817a8-3c68-4e19-b89f-4f38ffcf6ab7",
@@ -1981,7 +2042,8 @@
     "proposed_blocking_reason": null,
     "reason": "Accepted-risk Wi-Fi credential rotation has no current trigger; keep the secret out of TORO and reactivate only on the documented exposure/personnel/network conditions.",
     "evidence_ref": "supabase:operations.tasks/confirm_wifi_wording_backup_2026_06_17@2026-09-19T09:50:38.924282+00",
-    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00",
+    "observed_completion_notes": "P3/INCUBATOR classification 2026-09-19 = MIGRAR_LOW. Preserved as low-priority future decision; no purchase, external action, secret change or production action authorized."
   },
   {
     "task_id": "d9c2f2c6-24f8-47c7-b65c-31981d8563a8",
@@ -2013,7 +2075,8 @@
     "proposed_blocking_reason": null,
     "reason": "Owner reported timers configured, but room-by-room interval, observed auto-off, restart and QA evidence remain missing; blocked pending verification is more accurate than planned.",
     "evidence_ref": "supabase:operations.tasks/maintenance-projector-auto-off-mauricio-20260922@2026-09-23T01:54:29.094214+00",
-    "observed_updated_at": "2026-09-23 01:54:29.094214+00"
+    "observed_updated_at": "2026-09-23 01:54:29.094214+00",
+    "observed_completion_notes": "Mauricio confirma directamente en Codex: «temporizados configurados y listo». Cierre por declaración del responsable; no inspección independiente ni prueba de apagado observada por el sistema. Horario y equipos específicos no documentados. Piloto de mantenimiento; no acredita escritura autónoma desde WhatsApp.\n\n[OPERATE-QA-GUARD-20260922] Owner report is preserved as reported completion, not verified closure. Reopen only for non-invasive verification against the existing field packet; no purchase, electrical modification or duplicate configuration."
   },
   {
     "task_id": "7e6ccf08-c09b-43a4-9416-33580a6703b7",
@@ -2045,7 +2108,8 @@
     "proposed_blocking_reason": null,
     "reason": "Role manuals remain an incubator artifact until core staff/SOP truth stabilizes; active backlog should not carry this future derived-document work.",
     "evidence_ref": "supabase:operations.tasks/dreamteam_role_manuals_incubator_20260913@2026-09-19T09:50:38.924282+00",
-    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00",
+    "observed_completion_notes": "P3/INCUBATOR classification 2026-09-19 = MIGRAR_LOW. Preserved as low-priority future decision; no purchase, external action, secret change or production action authorized."
   },
   {
     "task_id": "01063c62-08b8-45ff-9855-0518d2c389fa",
@@ -2077,6 +2141,7 @@
     "proposed_blocking_reason": null,
     "reason": "Future domain purchase has no current product/content trigger and explicitly requires later pricing/ownership/privacy approval; keep it on HOLD rather than active backlog.",
     "evidence_ref": "supabase:operations.tasks/future_domain_purchase_readiness@2026-09-19T09:50:38.924282+00",
-    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00",
+    "observed_completion_notes": "P3/INCUBATOR classification 2026-09-19 = MIGRAR_LOW. Preserved as low-priority future decision; no purchase, external action, secret change or production action authorized."
   }
 ]
