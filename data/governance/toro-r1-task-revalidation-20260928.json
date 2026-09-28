@@ -28,7 +28,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Critical hotel safety revalidation remains blocked by missing dated on-property PASS/FAIL evidence; the current field packet explicitly requires physical verification and supervisor review.",
-    "evidence_ref": "supabase:operations.tasks/critical_hotel_ops_safety_reverification_2026_09@2026-09-21T14:53:01.583989+00"
+    "evidence_ref": "supabase:operations.tasks/critical_hotel_ops_safety_reverification_2026_09@2026-09-21T14:53:01.583989+00",
+    "observed_updated_at": "2026-09-21 14:53:01.583989+00"
   },
   {
     "task_id": "e514137d-a84b-42fc-b2a1-5e81cc3b4f0f",
@@ -59,7 +60,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Still requires licensed physical/electrical evidence. Historical age cannot satisfy the professional field-verification closure gate.",
-    "evidence_ref": "supabase:operations.tasks/task-dc-electrical-assessment-20260810@2026-09-21T12:57:12.398081Z"
+    "evidence_ref": "supabase:operations.tasks/task-dc-electrical-assessment-20260810@2026-09-21T12:57:12.398081Z",
+    "observed_updated_at": "2026-09-21 12:57:12.398081+00"
   },
   {
     "task_id": "4319a7a7-c2df-4c96-a6d2-a863436e549a",
@@ -90,7 +92,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Still requires a dated on-property night inspection of cameras, recording, gate contingency and critical lighting; no current PASS evidence was found.",
-    "evidence_ref": "supabase:operations.tasks/task-dc-security-readiness-20260810@2026-09-23T00:56:35.385735Z"
+    "evidence_ref": "supabase:operations.tasks/task-dc-security-readiness-20260810@2026-09-23T00:56:35.385735Z",
+    "observed_updated_at": "2026-09-23 00:56:35.385735+00"
   },
   {
     "task_id": "35fd3dc7-acd5-4fb3-bcd9-86f1f286404c",
@@ -121,7 +124,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The release-authority task remains the canonical production gate; current evidence still requires Channel Truth, exact SHA/domain/rollback verification and owner release approval.",
-    "evidence_ref": "supabase:operations.tasks/DC2-022@2026-09-23T06:06:49.23166+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-022@2026-09-23T06:06:49.23166+00",
+    "observed_updated_at": "2026-09-23 06:06:49.23166+00"
   },
   {
     "task_id": "1f7142ed-ebaf-40ee-8b46-62f09e3759c6",
@@ -152,7 +156,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Finance rebuild is still an active in-progress program with unresolved fiscal, bank, Kross/CxP and reconciliation evidence gates; no closure or merge is justified.",
-    "evidence_ref": "supabase:operations.tasks/finance_accounting_reset_2026_09_15@2026-09-22T20:54:46.341077Z"
+    "evidence_ref": "supabase:operations.tasks/finance_accounting_reset_2026_09_15@2026-09-22T20:54:46.341077Z",
+    "observed_updated_at": "2026-09-22 20:54:46.341077+00"
   },
   {
     "task_id": "daea4390-774a-4a77-bf67-7821842157bd",
@@ -183,7 +188,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The setup objective remains current and externally gated; no verified evidence of account setup completion or authorization to add campaign/billing was found in this R1 review.",
-    "evidence_ref": "supabase:operations.tasks/finish_google_ads_new_account_setup@2026-09-19T09:16:19.750733Z"
+    "evidence_ref": "supabase:operations.tasks/finish_google_ads_new_account_setup@2026-09-19T09:16:19.750733Z",
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
   },
   {
     "task_id": "f274911f-08e5-4baa-8c29-e17cdda69e81",
@@ -214,7 +220,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Conversion tracking remains a distinct current dependency for Ads performance attribution; no verified evidence of a completed fix was found in this R1 review.",
-    "evidence_ref": "supabase:operations.tasks/fix_google_ads_booking_conversion_tracking@2026-09-19T09:16:19.750733Z"
+    "evidence_ref": "supabase:operations.tasks/fix_google_ads_booking_conversion_tracking@2026-09-19T09:16:19.750733Z",
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
   },
   {
     "task_id": "671d3866-1cd8-421b-a94f-082de2f6dfff",
@@ -245,7 +252,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The reporting objective remains valid, but the task is already dependency-gated by account setup and reliable booking conversion tracking; planned understates the current blocked state.",
-    "evidence_ref": "supabase:operations.tasks/google_ads_results_to_toro_os_v2@2026-09-25T10:33:36.877168+00"
+    "evidence_ref": "supabase:operations.tasks/google_ads_results_to_toro_os_v2@2026-09-25T10:33:36.877168+00",
+    "observed_updated_at": "2026-09-25 10:33:36.877168+00"
   },
   {
     "task_id": "96e0893c-357e-46a0-9571-b9b6114ff73d",
@@ -276,7 +284,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "TICOS terms remain an active commercial truth gap: public Kross evidence still does not verify live percentage, validity, eligibility or stacking rules.",
-    "evidence_ref": "supabase:operations.tasks/ticos_live_terms_verification_2026_09@2026-09-23T06:01:56.402707+00"
+    "evidence_ref": "supabase:operations.tasks/ticos_live_terms_verification_2026_09@2026-09-23T06:01:56.402707+00",
+    "observed_updated_at": "2026-09-23 06:01:56.402707+00"
   },
   {
     "task_id": "207e2c88-4e79-45ff-bd7d-303cd117bfd7",
@@ -307,7 +316,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Booking KYP/location and Villa Toro availability still require external authenticated evidence; no verified resolution was found.",
-    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P0-BOOKING-KYP-20260810@2026-09-19T09:16:19.750733Z"
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P0-BOOKING-KYP-20260810@2026-09-19T09:16:19.750733Z",
+    "observed_updated_at": "2026-09-19 09:16:19.750733+00"
   },
   {
     "task_id": "42dd4306-4901-42e1-9f0a-9b01042e4b95",
@@ -338,7 +348,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The lifecycle/attribution objective remains current and its dependency is still blocked; no evidence supports closing or merging it.",
-    "evidence_ref": "supabase:operations.tasks/wespeak_crm_reactivation_attribution_20260826@2026-09-26T02:33:10.211396Z"
+    "evidence_ref": "supabase:operations.tasks/wespeak_crm_reactivation_attribution_20260826@2026-09-26T02:33:10.211396Z",
+    "observed_updated_at": "2026-09-26 02:33:10.211396+00"
   },
   {
     "task_id": "2cd25691-b4da-4a69-94a9-dbe908e52641",
@@ -369,7 +380,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": null,
-    "evidence_ref": null
+    "evidence_ref": null,
+    "observed_updated_at": "2026-09-22 22:16:30.327057+00"
   },
   {
     "task_id": "3b9e63ab-cc25-4ddc-817b-8c1239ab472a",
@@ -400,7 +412,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": "R1-B SECURITY 28/09/2026: live Supabase authorization catalog has 96 public/private functions versus the prior 71-signature repository policy; ACL/catalog reconciliation is under review in DreamTeam PR #46 and production permission changes remain gated behind disposable-branch validation. Employee rollout also remains gated by hosted identity/role/revocation tests and professional validation of Costa Rica labor/payroll rules.",
     "reason": "The HR/legal objective remains valid, but the 22/09 security counts in the blocker are stale and must point to the current R1-B reconciliation rather than the old advisor snapshot.",
-    "evidence_ref": "github:Dramcatcherst/dream-team/pull/46"
+    "evidence_ref": "github:Dramcatcherst/dream-team/pull/46",
+    "observed_updated_at": "2026-09-23 00:55:19.051258+00"
   },
   {
     "task_id": "c4c1105b-8b62-43b6-8657-bbe2f71bedd7",
@@ -431,7 +444,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Gate remains current: the TORO Vercel project produced a fresh READY production-target deployment from main on 28/09/2026, so preview-only intent and actual deployment behavior are still not aligned.",
-    "evidence_ref": "vercel:dpl_5f5KUmjissa1WunB85vEVB37yRHq"
+    "evidence_ref": "vercel:dpl_5f5KUmjissa1WunB85vEVB37yRHq",
+    "observed_updated_at": "2026-09-23 03:54:39.830258+00"
   },
   {
     "task_id": "2ecbad3e-6d99-4888-af63-8b5b510d2d48",
@@ -462,7 +476,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": null,
-    "evidence_ref": null
+    "evidence_ref": null,
+    "observed_updated_at": "2026-09-26 20:08:54.031855+00"
   },
   {
     "task_id": "567c455b-9ccb-4721-be2e-54e7a882ec41",
@@ -493,7 +508,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Residual Airtable consolidation is still current and non-destructive retirement gates remain open: parity, recoverable backup/restore, consumers and unique evidence are not yet proven.",
-    "evidence_ref": "supabase:operations.tasks/decommission_residual_airtable_estate_phase2@2026-09-23T05:24:03.315102+00"
+    "evidence_ref": "supabase:operations.tasks/decommission_residual_airtable_estate_phase2@2026-09-23T05:24:03.315102+00",
+    "observed_updated_at": "2026-09-23 05:24:03.315102+00"
   },
   {
     "task_id": "339e81e9-982c-4419-b57d-ce8cca43f6b3",
@@ -524,7 +540,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": "Owner approval exists for a Kross-only USD20/night pet-fee change, but execution remains blocked on authenticated Kross live access, capture of the current live rule/version and rollback, Admin/Reception activation signoff, checkout QA, and read-only verification that WeSpeak reflects the integrated value. Do not edit WeSpeak manually or modify existing reservations automatically.",
     "reason": "The task has real blockers but is still marked planned. Reclassify it as blocked without changing the approved Kross-only execution boundary.",
-    "evidence_ref": "supabase:operations.tasks/legacy_task_rec8Qj1aPRrhgQEms@2026-09-23T00:27:09.660769Z"
+    "evidence_ref": "supabase:operations.tasks/legacy_task_rec8Qj1aPRrhgQEms@2026-09-23T00:27:09.660769Z",
+    "observed_updated_at": "2026-09-23 00:27:09.660769+00"
   },
   {
     "task_id": "84e8fdea-f0b8-4fde-a011-7f6ebe7a0e61",
@@ -555,7 +572,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The auth-pilot decommission gate remains active because the project is inactive but dependency, restore and security evidence plus human disposition are still unresolved.",
-    "evidence_ref": "supabase:operations.tasks/toro_auth_pilot_decommission_gate_2026_09@2026-09-26T23:12:09.677825+00"
+    "evidence_ref": "supabase:operations.tasks/toro_auth_pilot_decommission_gate_2026_09@2026-09-26T23:12:09.677825+00",
+    "observed_updated_at": "2026-09-26 23:12:09.677825+00"
   },
   {
     "task_id": "1be1c7b3-26ff-4586-be04-0c4cdf613d1f",
@@ -586,7 +604,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The practical drying pilot remains a bounded physical experiment with a 20-room baseline and five-room pilot still lacking dated field evidence.",
-    "evidence_ref": "supabase:operations.tasks/DC2-045@2026-09-19T09:47:46.360289+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-045@2026-09-19T09:47:46.360289+00",
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
   },
   {
     "task_id": "e1d738e0-4e7a-4d9b-9d9b-153473114884",
@@ -617,7 +636,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Recognition & Points remains an approved TORO People capability; implementation is still gated by identity, QA and labor/accounting review.",
-    "evidence_ref": "github:Dramcatcherst/Toro-OS/docs/product/TORO_BRAIN_GENERAL_PLAN.md#11-recognition--points"
+    "evidence_ref": "github:Dramcatcherst/Toro-OS/docs/product/TORO_BRAIN_GENERAL_PLAN.md#11-recognition--points",
+    "observed_updated_at": "2026-09-23 00:54:46.852239+00"
   },
   {
     "task_id": "78a03d64-dcc0-4d69-9c45-4a67eae2264a",
@@ -648,7 +668,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The October kitchen handoff remains a current operational transition with identity, acceptance, backup coverage and handoff gates still open.",
-    "evidence_ref": "supabase:operations.tasks/fnb_october_kitchen_handoff_2026_09@2026-09-22T18:24:28.11574+00"
+    "evidence_ref": "supabase:operations.tasks/fnb_october_kitchen_handoff_2026_09@2026-09-22T18:24:28.11574+00",
+    "observed_updated_at": "2026-09-22 18:24:28.11574+00"
   },
   {
     "task_id": "3e0e8543-e1bc-4c2d-a371-291206ecf19c",
@@ -679,7 +700,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Both jacuzzis still require dated physical mapping and functional evidence for water/circulation/heating configuration before claims or closure.",
-    "evidence_ref": "supabase:operations.tasks/task-dc-jacuzzi-mapping-20260810@2026-09-19T09:47:46.360289+00"
+    "evidence_ref": "supabase:operations.tasks/task-dc-jacuzzi-mapping-20260810@2026-09-19T09:47:46.360289+00",
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
   },
   {
     "task_id": "328dd9da-0ec8-4cbe-bcc3-5799d46ff034",
@@ -710,7 +732,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Laundry startup remains a current physical-safety/commissioning task; no verified closure evidence is present in the reviewed snapshot.",
-    "evidence_ref": "supabase:operations.tasks/task-laundry-safety-startup-20260918@2026-09-20T14:33:50.260379+00"
+    "evidence_ref": "supabase:operations.tasks/task-laundry-safety-startup-20260918@2026-09-20T14:33:50.260379+00",
+    "observed_updated_at": "2026-09-20 14:33:50.260379+00"
   },
   {
     "task_id": "f4757acd-e6a3-4c3b-a0e5-f18f498f7693",
@@ -741,7 +764,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "TORO People onboarding remains current after owner release, but individual identity, hosted role/isolation/revocation and verified channel gates are still open.",
-    "evidence_ref": "supabase:operations.tasks/toro_ops_staff_identity_onboarding_20260919@2026-09-26T06:33:16.98217+00"
+    "evidence_ref": "supabase:operations.tasks/toro_ops_staff_identity_onboarding_20260919@2026-09-26T06:33:16.98217+00",
+    "observed_updated_at": "2026-09-26 06:33:16.98217+00"
   },
   {
     "task_id": "b3476ed9-0887-438c-ab50-b491a6a8ad99",
@@ -772,7 +796,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Still requires current external/physical technical evidence; the review cannot be closed from historical documentation alone.",
-    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P1-DECK-TECH-REVIEW-20260810@2026-09-19T09:18:56.610286Z"
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P1-DECK-TECH-REVIEW-20260810@2026-09-19T09:18:56.610286Z",
+    "observed_updated_at": "2026-09-19 09:18:56.610286+00"
   },
   {
     "task_id": "e790e0ea-d3a9-4878-bdc4-cb9efa875496",
@@ -803,7 +828,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Search Console baseline/indexation remains a current post-release measurement capability and no verified completion evidence supports closing or merging it.",
-    "evidence_ref": "supabase:operations.tasks/connect_search_console_and_submit_sitemap@2026-09-23T06:06:49.231509+00"
+    "evidence_ref": "supabase:operations.tasks/connect_search_console_and_submit_sitemap@2026-09-23T06:06:49.231509+00",
+    "observed_updated_at": "2026-09-23 06:06:49.231509+00"
   },
   {
     "task_id": "97c9a2d3-455e-42e6-b9a8-670ede1cd554",
@@ -834,7 +860,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The room-comparison capability remains a distinct website selection/conversion improvement with governed catalog dependencies and no verified completion evidence.",
-    "evidence_ref": "supabase:operations.tasks/DC2-028@2026-09-23T06:06:49.23953+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-028@2026-09-23T06:06:49.23953+00",
+    "observed_updated_at": "2026-09-23 06:06:49.23953+00"
   },
   {
     "task_id": "d7e40354-f870-44d5-b6ce-ba3165a3a028",
@@ -865,7 +892,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The accessibility/performance preview slice is explicitly complete; the only remaining material step is the existing release gate owned by DC2-022, so a separate active task would duplicate release work.",
-    "evidence_ref": "supabase:operations.tasks/DC2-030@2026-09-23T06:06:49.239745+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-030@2026-09-23T06:06:49.239745+00",
+    "observed_updated_at": "2026-09-23 06:06:49.239745+00"
   },
   {
     "task_id": "ff79338a-be14-4810-85fc-10f469eea8e4",
@@ -896,7 +924,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Media/Kross reconciliation remains current: source identity/order is verified but rights/public-safe status, Booking capture and Villa Toro mapping are incomplete.",
-    "evidence_ref": "supabase:operations.tasks/MEDIA-KROSS-RECONCILE-22-UNITS-20260903@2026-09-23T03:37:58.511773+00"
+    "evidence_ref": "supabase:operations.tasks/MEDIA-KROSS-RECONCILE-22-UNITS-20260903@2026-09-23T03:37:58.511773+00",
+    "observed_updated_at": "2026-09-23 03:37:58.511773+00"
   },
   {
     "task_id": "b7de6e88-84f5-4492-bec8-2033148d6521",
@@ -927,7 +956,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The year-over-year source reconciliation remains current and no verified canonical reconciliation result supports closure or merge.",
-    "evidence_ref": "supabase:operations.tasks/dc_yoy_2025_2026_reconcile_sources@2026-09-25T08:43:40.54113+00"
+    "evidence_ref": "supabase:operations.tasks/dc_yoy_2025_2026_reconcile_sources@2026-09-25T08:43:40.54113+00",
+    "observed_updated_at": "2026-09-25 08:43:40.54113+00"
   },
   {
     "task_id": "73c73552-feef-4643-83c9-09c3ae2be042",
@@ -958,7 +988,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Recurring-payments reconciliation remains active because source identifiers/provider evidence and master/calendar gaps remain unresolved despite the reporting stack being built.",
-    "evidence_ref": "supabase:operations.tasks/DROPBOX-P1-RECURRING-PAYMENTS-RECON-20260810@2026-09-19T10:41:49.679191+00"
+    "evidence_ref": "supabase:operations.tasks/DROPBOX-P1-RECURRING-PAYMENTS-RECON-20260810@2026-09-19T10:41:49.679191+00",
+    "observed_updated_at": "2026-09-19 10:41:49.679191+00"
   },
   {
     "task_id": "0d03aa3f-ff02-45d6-a70f-4f79dc18a733",
@@ -989,7 +1020,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The A&B settlement/invoicing SOP remains active: payment is known, but invoice receipt, channel/contact certainty and operating acceptance remain unresolved.",
-    "evidence_ref": "supabase:operations.tasks/fnb_settlement_invoicing_sop_2026_09@2026-09-22T18:24:28.11574+00"
+    "evidence_ref": "supabase:operations.tasks/fnb_settlement_invoicing_sop_2026_09@2026-09-22T18:24:28.11574+00",
+    "observed_updated_at": "2026-09-22 18:24:28.11574+00"
   },
   {
     "task_id": "eff7627c-db3d-4534-a233-d86ba848b668",
@@ -1020,7 +1052,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The June/channel diagnostic remains a distinct current Revenue analysis objective and no verified completed diagnostic is recorded in this snapshot.",
-    "evidence_ref": "supabase:operations.tasks/dc_revenue_june_channel_2026_diagnostic@2026-09-25T08:43:40.54113+00"
+    "evidence_ref": "supabase:operations.tasks/dc_revenue_june_channel_2026_diagnostic@2026-09-25T08:43:40.54113+00",
+    "observed_updated_at": "2026-09-25 08:43:40.54113+00"
   },
   {
     "task_id": "fbd447d1-f10e-413b-a151-651784ae6f28",
@@ -1051,7 +1084,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "A&B costing/margin validation for the current product set remains an active revenue-control objective with no verified completion evidence.",
-    "evidence_ref": "supabase:operations.tasks/fnb_costing_complete_2026_09@2026-09-22T06:50:24.364506+00"
+    "evidence_ref": "supabase:operations.tasks/fnb_costing_complete_2026_09@2026-09-22T06:50:24.364506+00",
+    "observed_updated_at": "2026-09-22 06:50:24.364506+00"
   },
   {
     "task_id": "6f0a92a7-349c-409e-82a9-092ef6036970",
@@ -1082,7 +1116,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This is explicitly post-launch cadence work. The production release gate is not closed, so keeping it active now inflates the backlog before its trigger exists.",
-    "evidence_ref": "supabase:operations.tasks/start_post_launch_content_cadence_for_priority_clusters@2026-09-19T09:47:46.360289+00"
+    "evidence_ref": "supabase:operations.tasks/start_post_launch_content_cadence_for_priority_clusters@2026-09-19T09:47:46.360289+00",
+    "observed_updated_at": "2026-09-19 09:47:46.360289+00"
   },
   {
     "task_id": "2da11573-db9c-4d44-8a68-c0874667c7ce",
@@ -1113,7 +1148,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The recurring WeSpeak/TERE QA remains a valid ongoing control; current evidence explicitly says coverage is partial and native-source attribution is still blocked.",
-    "evidence_ref": "supabase:operations.tasks/wespeak_weekly_conversation_qa@2026-09-28T15:38:56.872353+00"
+    "evidence_ref": "supabase:operations.tasks/wespeak_weekly_conversation_qa@2026-09-28T15:38:56.872353+00",
+    "observed_updated_at": "2026-09-28 15:38:56.872353+00"
   },
   {
     "task_id": "0b5f39f4-7aa1-462c-b2d4-4c8209e11943",
@@ -1144,7 +1180,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The January 2027 autonomy acceptance test remains a current strategic readiness gate with explicit dependencies; it is not completed or duplicated by the baseline task.",
-    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_acceptance_2027_01@2026-09-21T05:50:09.203077+00"
+    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_acceptance_2027_01@2026-09-21T05:50:09.203077+00",
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
   },
   {
     "task_id": "9023b678-5e2c-46fa-b945-a701a42de359",
@@ -1175,7 +1212,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The autonomy baseline is required before the January 2027 acceptance test and still depends on real timing/case data and human role confirmation.",
-    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_baseline_2026_09@2026-09-21T05:50:09.203077+00"
+    "evidence_ref": "supabase:operations.tasks/dreamcatcher_autonomy_baseline_2026_09@2026-09-21T05:50:09.203077+00",
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
   },
   {
     "task_id": "48875793-5529-45f5-8dd0-2eed9d4e8809",
@@ -1206,7 +1244,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The company/user/Portal contract remains core current work: membership foundation exists, but hosted QA, sender identity, channel consumption and scope proof are still gated.",
-    "evidence_ref": "supabase:operations.tasks/toro_company_user_portal_contract_20260922@2026-09-25T09:14:40.291632+00"
+    "evidence_ref": "supabase:operations.tasks/toro_company_user_portal_contract_20260922@2026-09-25T09:14:40.291632+00",
+    "observed_updated_at": "2026-09-25 09:14:40.291632+00"
   },
   {
     "task_id": "5012fac0-a634-48fb-ac18-5b9721308c30",
@@ -1237,7 +1276,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The design-partner/monetization task remains valid as a controlled productization objective, while its own blocker correctly prevents external private-data onboarding before readiness gates pass.",
-    "evidence_ref": "supabase:operations.tasks/toro_design_partner_monetization_20260922@2026-09-23T00:00:25.243556+00"
+    "evidence_ref": "supabase:operations.tasks/toro_design_partner_monetization_20260922@2026-09-23T00:00:25.243556+00",
+    "observed_updated_at": "2026-09-23 00:00:25.243556+00"
   },
   {
     "task_id": "3573ec60-0fea-4e78-861d-e90a86f3126b",
@@ -1268,7 +1308,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Valid future extras/NBO work, but current prerequisites for room fit, price freshness and availability are not yet closed; reactivate when those gates are ready rather than carrying it as active work.",
-    "evidence_ref": "supabase:operations.tasks/DC2-037@2026-09-23T06:06:49.24081+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-037@2026-09-23T06:06:49.24081+00",
+    "observed_updated_at": "2026-09-23 06:06:49.24081+00"
   },
   {
     "task_id": "99af6e87-0dfa-4c28-a0f3-ad587279e915",
@@ -1299,7 +1340,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Energy/water denominator analysis is valid but explicitly downstream of higher-priority source and operational gates; no current 30-day reconciliation trigger is active.",
-    "evidence_ref": "supabase:operations.tasks/DC2-048@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-048@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "7affee16-d4aa-41e3-adbb-536c5c38f773",
@@ -1330,7 +1372,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This remains a current operational capability-development initiative with a defined mentor/QA path and measurable delegation objective; no promotion or permission change is implied.",
-    "evidence_ref": "supabase:operations.tasks/alexandra_ops_manager_development_20260918@2026-09-23T04:53:56.858614+00"
+    "evidence_ref": "supabase:operations.tasks/alexandra_ops_manager_development_20260918@2026-09-23T04:53:56.858614+00",
+    "observed_updated_at": "2026-09-23 04:53:56.858614+00"
   },
   {
     "task_id": "b92fe78d-447f-4efe-b4bd-414c0fe73a8f",
@@ -1361,7 +1404,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The task itself is explicitly P2 and deferred until P0/P1 close; keep it out of the active backlog until that trigger exists.",
-    "evidence_ref": "supabase:operations.tasks/DC2-044@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-044@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "79cb650f-f310-4202-87df-e7969b551307",
@@ -1392,7 +1436,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The water-reuse technical dossier is valid but explicitly deferred behind higher-priority work; no current technical/legal trigger requires active execution.",
-    "evidence_ref": "supabase:operations.tasks/DC2-050@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-050@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "217e7159-b630-41d0-b3eb-5f0a71495568",
@@ -1423,7 +1468,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The reversible sound pilot depends on earlier work and has no current trigger; retain as future experiment rather than active commitment.",
-    "evidence_ref": "supabase:operations.tasks/DC2-055@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-055@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "8364ad99-7f3a-4180-a581-a1221566bfbf",
@@ -1454,7 +1500,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Low-risk physical sharing pilots are future experiments dependent on earlier safety/workstream gates; no current trigger justifies active status.",
-    "evidence_ref": "supabase:operations.tasks/DC2-064@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-064@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "805baee5-0943-47a4-be11-55e1e1e1b7c9",
@@ -1485,7 +1532,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The survey is valid but explicitly P2/non-blocking. Reactivate when network troubleshooting or the planned resilience work needs room-level measurements.",
-    "evidence_ref": "supabase:operations.tasks/task-dc-wifi-survey-20260810@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/task-dc-wifi-survey-20260810@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "43f85647-83e1-4d9c-8ae9-f8b63200edce",
@@ -1516,7 +1564,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "CTA testing is valid but explicitly downstream of website/release gates; reactivate after the production baseline is settled.",
-    "evidence_ref": "supabase:operations.tasks/DC2-027@2026-09-23T06:06:49.232028+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-027@2026-09-23T06:06:49.232028+00",
+    "observed_updated_at": "2026-09-23 06:06:49.232028+00"
   },
   {
     "task_id": "71a050f1-acb7-46bc-b423-4b35641a8414",
@@ -1547,7 +1596,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "ES/EN + TICOS profile routing is valid but downstream of verified live TICOS terms and current website truth; keep it on HOLD until those inputs exist.",
-    "evidence_ref": "supabase:operations.tasks/DC2-035@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-035@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "bbf2b3ea-69f6-497c-8dee-37ef4bc767e9",
@@ -1578,7 +1628,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This is a narrow historical tax opportunity with a founder/legal gate and no current evidence package; keep it parked until materiality/support justify reopening.",
-    "evidence_ref": "supabase:operations.tasks/tax-audit-tourism-vat-2019-2023@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/tax-audit-tourism-vat-2019-2023@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "5168c5ed-1825-4de7-beec-ec526d0ee622",
@@ -1609,7 +1660,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Wedding/group SOP work is useful but not tied to a current event-specific trigger in this task; reactivate when a live group/event requires the standardized package.",
-    "evidence_ref": "supabase:operations.tasks/DC2-063@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-063@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "4c7e812c-d68f-4d28-a18c-51f4ffa4e2c5",
@@ -1640,7 +1692,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The PMS evaluation remains current: Cloudbeds is an active candidate and the task has concrete TCO/API/inventory/reversibility questions that still require a decision.",
-    "evidence_ref": "supabase:operations.tasks/DC2-068@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-068@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "42d95464-c6b2-406b-a362-b5673eae450f",
@@ -1671,7 +1724,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This experiment-decision task depends on upstream pricing/data readiness and a later review window; no current trigger exists.",
-    "evidence_ref": "supabase:operations.tasks/DC2-069@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-069@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "f1bb525e-ac95-469b-abc5-2720417672f7",
@@ -1702,7 +1756,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Meta ownership verification remains important before paid/automation integration, but there is no current integration/cutover trigger; keep it parked until that workstream activates.",
-    "evidence_ref": "supabase:operations.tasks/verify_dreamcatcher_facebook_page_ownership@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/verify_dreamcatcher_facebook_page_ownership@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "502541b0-eebf-4a6e-a358-e67108172f3d",
@@ -1733,7 +1788,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "The monthly deep review is an ongoing quality/conversion control that consolidates weekly QA and remains valid without duplicating live WeSpeak/Kross mutation.",
-    "evidence_ref": "supabase:operations.tasks/wespeak_monthly_deep_review@2026-09-21T05:50:09.203077+00"
+    "evidence_ref": "supabase:operations.tasks/wespeak_monthly_deep_review@2026-09-21T05:50:09.203077+00",
+    "observed_updated_at": "2026-09-21 05:50:09.203077+00"
   },
   {
     "task_id": "b57a45c2-86f6-4f5a-a9dc-1a6a5ad65ddd",
@@ -1764,7 +1820,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "A generic weekly three-front review would duplicate newer TORO command/reporting rhythms unless a specific gap is demonstrated; keep it parked rather than create another recurring review loop.",
-    "evidence_ref": "supabase:operations.tasks/DC2-019@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-019@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "82f06e56-7b45-4a0e-ba4f-025a54d40da0",
@@ -1795,7 +1852,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This is explicitly a later portfolio-selection gate for demonstrated improvements; reactivate at the evidence/decision window rather than carrying it as active work.",
-    "evidence_ref": "supabase:operations.tasks/DC2-070@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/DC2-070@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "196224e7-45e5-4ea1-9f2c-90ab9a1b95b2",
@@ -1826,7 +1884,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Translation workflow is valid only after English/Spanish source truth is approved; keep it parked until that source-truth trigger is satisfied.",
-    "evidence_ref": "supabase:operations.tasks/legacy_task_recmYCDbpmMvpHMQo@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/legacy_task_recmYCDbpmMvpHMQo@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "d52aaebb-4f96-4524-baf7-0524b3fbf892",
@@ -1857,7 +1916,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "This is the single active Performance Intelligence execution task and already contains the governed metric/data-quality workstream; archiving it would strand current canonicalization/conflict-resolution work.",
-    "evidence_ref": "supabase:operations.tasks/occ_sep_oct_daily_revenue_dashboard_20260825@2026-09-23T05:38:31.835823+00"
+    "evidence_ref": "supabase:operations.tasks/occ_sep_oct_daily_revenue_dashboard_20260825@2026-09-23T05:38:31.835823+00",
+    "observed_updated_at": "2026-09-23 05:38:31.835823+00"
   },
   {
     "task_id": "ad46f9e6-c613-45ca-adcc-5a74b3f3fd4d",
@@ -1888,7 +1948,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Network topology, recovery ownership and failover documentation remain a current operational resilience need with a concrete non-secret next action and no duplicate active authority.",
-    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P2-NETWORK-INVENTORY-20260810@2026-09-19T09:55:36.680053+00"
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P2-NETWORK-INVENTORY-20260810@2026-09-19T09:55:36.680053+00",
+    "observed_updated_at": "2026-09-19 09:55:36.680053+00"
   },
   {
     "task_id": "eb3817a8-3c68-4e19-b89f-4f38ffcf6ab7",
@@ -1919,7 +1980,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Accepted-risk Wi-Fi credential rotation has no current trigger; keep the secret out of TORO and reactivate only on the documented exposure/personnel/network conditions.",
-    "evidence_ref": "supabase:operations.tasks/confirm_wifi_wording_backup_2026_06_17@2026-09-19T09:50:38.924282+00"
+    "evidence_ref": "supabase:operations.tasks/confirm_wifi_wording_backup_2026_06_17@2026-09-19T09:50:38.924282+00",
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
   },
   {
     "task_id": "d9c2f2c6-24f8-47c7-b65c-31981d8563a8",
@@ -1950,7 +2012,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Owner reported timers configured, but room-by-room interval, observed auto-off, restart and QA evidence remain missing; blocked pending verification is more accurate than planned.",
-    "evidence_ref": "supabase:operations.tasks/maintenance-projector-auto-off-mauricio-20260922@2026-09-23T01:54:29.094214+00"
+    "evidence_ref": "supabase:operations.tasks/maintenance-projector-auto-off-mauricio-20260922@2026-09-23T01:54:29.094214+00",
+    "observed_updated_at": "2026-09-23 01:54:29.094214+00"
   },
   {
     "task_id": "7e6ccf08-c09b-43a4-9416-33580a6703b7",
@@ -1981,7 +2044,8 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Role manuals remain an incubator artifact until core staff/SOP truth stabilizes; active backlog should not carry this future derived-document work.",
-    "evidence_ref": "supabase:operations.tasks/dreamteam_role_manuals_incubator_20260913@2026-09-19T09:50:38.924282+00"
+    "evidence_ref": "supabase:operations.tasks/dreamteam_role_manuals_incubator_20260913@2026-09-19T09:50:38.924282+00",
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
   },
   {
     "task_id": "01063c62-08b8-45ff-9855-0518d2c389fa",
@@ -2012,6 +2076,7 @@
     "proposed_description": null,
     "proposed_blocking_reason": null,
     "reason": "Future domain purchase has no current product/content trigger and explicitly requires later pricing/ownership/privacy approval; keep it on HOLD rather than active backlog.",
-    "evidence_ref": "supabase:operations.tasks/future_domain_purchase_readiness@2026-09-19T09:50:38.924282+00"
+    "evidence_ref": "supabase:operations.tasks/future_domain_purchase_readiness@2026-09-19T09:50:38.924282+00",
+    "observed_updated_at": "2026-09-19 09:50:38.924282+00"
   }
 ]
