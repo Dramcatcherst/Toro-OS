@@ -19,7 +19,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import type { BrainNode, BrainProjection } from "@/lib/brain-contracts";
+import type { BrainEdge, BrainNode, BrainProjection } from "@/lib/brain-contracts";
 import type { BrainLayout } from "@/lib/server/brain-projection";
 import { loadBrainProjectionView } from "@/lib/server/brain-projection";
 import styles from "./brain.module.css";
@@ -56,6 +56,15 @@ const verificationLabel = {
   conflicted: "conflict",
   not_applicable: "n/a",
 };
+
+function connectionTooltip(edge: BrainEdge, labels: Map<string, string>, synthetic: boolean) {
+  const source = labels.get(edge.source) ?? "Unknown source";
+  const target = labels.get(edge.target) ?? "Unknown target";
+  const relation = edge.relation.replaceAll("_", " ");
+  const verification = edge.verification ? verificationLabel[edge.verification] : "verification not reported";
+  const freshness = edge.freshness ?? "freshness not reported";
+  return `${synthetic ? "Example" : "Read-only"} link: ${source} ${relation} ${target}. ${verification} · ${freshness}.`;
+}
 
 function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
   const Icon = nodeIcons[node.kind] ?? Activity;
@@ -97,6 +106,7 @@ function NodeCard({ node, layout }: { node: BrainNode; layout: BrainLayout }) {
 function Graph({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
   const points = layout;
   const synthetic = projection.synthetic;
+  const labels = new Map(projection.nodes.map((node) => [node.id, node.label]));
 
   return (
     <div className={styles.graphFrame}>
@@ -106,6 +116,7 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
           <h2>{synthetic ? "TORO sees the operation as connected evidence, not separate apps." : "A focused view of records this organization can read."}</h2>
         </div>
         <div className={styles.graphLegend}>
+          <span><i className={styles.legendLink} /> hover a link for its relation</span>
           {synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}
           <span><i className={styles.legendRisk} /> {synthetic ? "needs attention" : "evidence needs review"}</span>
           {synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}
@@ -128,16 +139,21 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
             if (!source || !target) return null;
             const isAttention = edge.freshness !== "current" || edge.verification !== "verified";
             return (
+              <g key={edge.id}>
               <line
-                key={edge.id}
                 x1={source.x}
                 y1={source.y}
                 x2={target.x}
                 y2={target.y}
                 className={isAttention ? styles.edgeAttention : styles.edge}
                 data-evidence-state={isAttention ? "needs-review" : "current"}
+                data-brain-relation={edge.relation}
                 markerEnd={isAttention ? "url(#arrowAttention)" : "url(#arrow)"}
               />
+              <line x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={styles.edgeHit} data-brain-edge-tooltip="true">
+                <title>{connectionTooltip(edge, labels, synthetic)}</title>
+              </line>
+              </g>
             );
           })}
         </svg>
@@ -149,6 +165,7 @@ function Graph({ projection, layout }: { projection: BrainProjection; layout: Br
 }
 
 function MobileBrainMap({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
+  const labels = new Map(projection.nodes.map((node) => [node.id, node.label]));
   const layerCounts = new Map<number, number>();
   for (const node of projection.nodes) {
     const point = layout[node.id];
@@ -169,7 +186,12 @@ function MobileBrainMap({ projection, layout }: { projection: BrainProjection; l
             const from = layout[edge.source];
             const to = layout[edge.target];
             if (!from || !to) return null;
-            return <line key={edge.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={edge.freshness === "current" && edge.verification === "verified" ? styles.mobileMapEdge : styles.mobileMapEdgeReview} />;
+            return <g key={edge.id}>
+              <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={edge.freshness === "current" && edge.verification === "verified" ? styles.mobileMapEdge : styles.mobileMapEdgeReview} data-brain-relation={edge.relation} />
+              <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={styles.mobileMapEdgeHit} data-brain-edge-tooltip="true">
+                <title>{connectionTooltip(edge, labels, projection.synthetic)}</title>
+              </line>
+            </g>;
           })}
         </svg>
         {projection.nodes.map((node) => {
