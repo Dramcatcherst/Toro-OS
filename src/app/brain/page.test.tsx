@@ -43,6 +43,8 @@ describe("BrainPage projection modes", () => {
     expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain('data-brain-mini-map="true"');
     expect(html).toContain("Synthetic visual Brain overview");
+    expect(html.match(/name="brain-map-node"/g)).toHaveLength(visualBrainDemo.nodes.length);
+    expect(html).toContain("View connections");
     expect(html).toContain('href="#brain-node-node:cash"');
     expect(html).toContain('id="brain-node-node:cash"');
     expect(html).toContain(`${visualBrainDemo.nodes.length} nodes · ${visualBrainDemo.edges.length} links`);
