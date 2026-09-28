@@ -14,7 +14,8 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - Authenticated `/my-toro` has role/source-aware reads.
 - Canonical projects/tasks exist in Supabase.
 - Message-to-task, project portfolio and Builder/Codex capabilities are already cataloged.
-- OpenClaw is configured/unverified; direct live host access is still unavailable from this execution environment.
+- PR #142 is merged and the shared `POST /api/brain/internal-work` execution primitive exists in canonical TORO.
+- OpenClaw live consumption remains configured/unverified; direct live host access is still unavailable from this execution environment.
 - The historical/local `toro-openclaw-integration` worktree must be reused when recovered. Do not recreate its transport modules in another repository.
 
 ## Workstream A — shared execution primitive
@@ -25,8 +26,8 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - [x] Add an authenticated server executor using existing TORO context + Supabase RLS.
 - [x] Add `POST /api/brain/internal-work`.
 - [x] Add contract tests and register them in the canonical test suite.
-- [ ] CI green.
-- [ ] Merge after review/green checks.
+- [x] CI green for PR #142.
+- [x] PR #142 merged into canonical TORO.
 - [ ] Verify one real authenticated test task in a controlled organization context; archive/delete only if test policy permits.
 
 ## Workstream B — channel identity and service authentication
@@ -89,7 +90,43 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - [ ] No hidden cross-user memory.
 - [ ] Personal/work isolation preserved.
 
-## Workstream H — runtime acceptance
+## Workstream H — authorized source + mailbox parity
+
+OpenClaw/WhatsApp must consume TORO capabilities through the shared Brain/router. It must not connect directly to raw credentials or create a second connector fabric.
+
+- [ ] Enumerate every authoritative business connector currently available to TORO and classify read/write/approval ceiling.
+- [ ] Verify WhatsApp owner identity can request governed reads across authorized Dreamcatcher/Atrapasueños domains: Finance, Operations, Revenue, Guests, People, Projects, Knowledge, Systems and Assets.
+- [ ] Route source reads through the same source-authority rules used by Portal/Brain.
+- [ ] Return source/freshness/provenance with material answers.
+- [ ] Fail closed when a connector is unavailable, stale, outside active scope or not authorized.
+- [ ] Never expose raw tokens, passwords, API keys, bank credentials or recovery secrets to the channel model.
+- [ ] Preserve Personal / work-private / organization / family isolation even when the owner can access several scopes.
+
+### Email coverage gate
+
+Owner-confirmed business addresses to reconcile:
+- `info@atrapasuenos.net`
+- `proveedores@atrapasuenos.net`
+- `accounting@atrapasuenos.net`
+- `admin@dreamcatcherhotel.com`
+- `info@dreamcatcherhotel.com`
+- `accounting@dreamcatcherhotel.com`
+
+Before claiming email parity:
+- [ ] Google Workspace Admin classifies each address as user / alias / group / delegated/shared mailbox / route.
+- [ ] Each real mailbox has an authorized read transport.
+- [ ] Historical backfill is indexed with mailbox provenance and deduplication.
+- [ ] New-mail ingestion uses official Gmail API/history/push where authorized.
+- [ ] TORO Comms classifies actionable mail and writes governed follow-ups/tasks instead of duplicating raw mail.
+- [ ] OpenClaw/WhatsApp can query cross-mailbox status via TORO Comms without direct mailbox passwords.
+- [ ] Sending/reply/forward/delete/routing remain disabled until separately approved and tested.
+
+Current 2026-09-28 evidence:
+- ChatGPT Gmail connector covers only `admin@dreamcatcherhotel.com`;
+- Supabase governed Gmail metadata index contains 6,128 rows from that mailbox only;
+- therefore multi-mailbox coverage is incomplete.
+
+## Workstream I — runtime acceptance
 
 Run the existing OpenClaw audit gates:
 - channel probe/capabilities;
@@ -113,7 +150,10 @@ Then run end-to-end scenarios:
 6. unauthorized employee action denied;
 7. unknown sender denied/guest-safe;
 8. reconnect + continue;
-9. completed task -> one notification.
+9. completed task -> one notification;
+10. cross-domain authorized read -> source/evidence returned;
+11. query all bound business mailboxes -> aggregated actionable summary without duplicate messages;
+12. forbidden/private scope -> denied without leakage.
 
 ## Promotion rule
 
