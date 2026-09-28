@@ -1,6 +1,6 @@
 import { expect, test } from "playwright/test";
 
-const brainUrl = process.env.BRAIN_E2E_URL ?? "http://localhost:3057/brain";
+const brainUrl = process.env.BRAIN_E2E_URL ?? `http://localhost:${process.env.BRAIN_E2E_PORT ?? 3057}/brain`;
 
 for (const scenario of [
   { surface: "desktop", viewport: { width: 1440, height: 900 }, query: "Reservations", nodeId: "node:revenue" },
