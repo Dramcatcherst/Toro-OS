@@ -192,6 +192,10 @@ describe("BrainPage projection modes", () => {
 
     expect(html.match(/<details[^>]*name="brain-map-node"[^>]*><summary aria-label="[^"]+\. Show details\."[^>]*>/g))
       .toHaveLength(visualBrainDemo.nodes.length);
+    expect(html.match(/name="brain-map-node"[^>]*style="[^"]*width:44px;height:44px"/g))
+      .toHaveLength(visualBrainDemo.nodes.length);
+    expect(html.match(/<summary[^>]*><span class="[^"]*mobileMapVisual[^"]*" style="width:(?:22|[23]\d|3[0-8])px;height:(?:22|[23]\d|3[0-8])px"/g))
+      .toHaveLength(visualBrainDemo.nodes.length);
     for (const node of visualBrainDemo.nodes) {
       expect(html).toContain(`href="#brain-node-${node.id}"`);
       expect(html).toContain(`id="brain-node-${node.id}"`);
