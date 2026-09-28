@@ -184,10 +184,12 @@ function MobileBrainMap({ projection, layout }: { projection: BrainProjection; l
               data-side={point.x < 35 ? "left" : point.x > 65 ? "right" : "center"}
               data-vertical={point.y > 50 ? "above" : "below"}
               name="brain-map-node"
-              style={{ left: `${point.x}%`, top: `${point.y}%`, width: nodeSize, height: nodeSize }}
+              style={{ left: `${point.x}%`, top: `${point.y}%`, width: 44, height: 44 }}
             >
               <summary aria-label={`${node.label}. ${node.status}. Show details.`} title={node.label}>
-                <Icon aria-hidden="true" />
+                <span className={styles.mobileMapVisual} style={{ width: nodeSize, height: nodeSize }}>
+                  <Icon aria-hidden="true" />
+                </span>
               </summary>
               <div className={styles.mobileMapPopover}>
                 <strong>{node.label}</strong>
