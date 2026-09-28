@@ -45,6 +45,8 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Synthetic visual Brain overview");
     expect(html.match(/name="brain-map-node"/g)).toHaveLength(visualBrainDemo.nodes.length);
     expect(html).toContain("View connections");
+    expect(html).toContain("Status: Review · Verification: partially verified");
+    expect(html).toContain("Signal freshness: aging");
     expect(html).toContain('href="#brain-node-node:cash"');
     expect(html).toContain('id="brain-node-node:cash"');
     expect(html).toContain(`${visualBrainDemo.nodes.length} nodes · ${visualBrainDemo.edges.length} links`);
