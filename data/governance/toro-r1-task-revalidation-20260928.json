@@ -370,8 +370,8 @@
     "blocking_reason": "BLOCKED_EXTERNAL / ACCESS_IDENTITY: public and Search Console read-only findings are already preserved. Remaining validation requires authorized read-only access to Workspace Admin, GBP and Hotel Center; Google Home additionally requires the private user reauthentication already documented, and Soro still lacks an exact service URL/identity. Do not change users, aliases, groups, DNS/MX, ownership or public-profile settings.",
     "description": "Approved execution brief: BLOCKED_EXTERNAL. Workspace Admin / GBP / Hotel Center authority cannot be proven from current connectors. Public read-only findings are preserved. Reopen with authorized Google Admin/GBP/Hotel Center access; no DNS/MX/ownership/public-profile writes by inference.\n\nPlan target date (source): 2026-09-29\n\nExecution plan ref: DC2-033\n\nPrimary KPI: Reservas netas metasearch\n\nSource notes:\nKeep Workspace Admin and GBP as separate connectors. Workspace: users, aliases, groups, domains, recovery/admin health. GBP: owners/managers, business identity, category, website/booking links, photos/posts/review signals and drift. Read-only first; document minimum human action. No DWD, Super Admin expansion, DNS/MX, ownership or public-profile writes without explicit gate.\n\n[2026-09-08 | Mauricio request | readonly account review]\nIntegrated Soro, Google Home and Search Console review into existing task, not a new project. Search Console opened authenticated with Mauricio's existing Chrome account; dreamcatcherhotel.com property available. No manual action or security issue reported. Google Home requires private identity reauthentication; no password read/entered. Soro appears in TORO registry but targeted source_objects lookup returned no URL; exact service/link pending clarification (do not assume Sora/TORO). No users, permissions, devices, account recovery, DNS/MX or public profile modified. Evidence: PLAN_OPERATIVO_IA_TORO.md section11 and qa_report/google-identity-2026-09-08.md. Public legacy-domain work stays in existing task reczOuqtUJ1GZ4Pxd; preserve legacy email dependency rectH7cdKQGUPbLsw. NEXT: continue read-only review after identified Soro URL and user-private Google Home reauthentication.",
     "updated_at": "2026-09-22 22:16:30.327057+00",
-    "needs_revalidation": true,
-    "disposition": null,
+    "needs_revalidation": false,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -379,9 +379,9 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null,
-    "observed_updated_at": "2026-09-22 22:16:30.327057+00"
+    "reason": "Concurrent work revalidated this task after the R1 snapshot and already cleared needs_revalidation. R1 records the current reviewed state but must not write this row again.",
+    "evidence_ref": "supabase:operations.tasks/google_control_plane_readonly_map_20260826@2026-09-28T23:40:36.211797+00:concurrent-resolved",
+    "observed_updated_at": "2026-09-28 23:40:36.211797+00"
   },
   {
     "task_id": "3b9e63ab-cc25-4ddc-817b-8c1239ab472a",
@@ -467,7 +467,7 @@
     "description": "Definir capability parity, no UI parity. WhatsApp y Portal consumen el mismo motor, memoria gobernada, permisos, tareas y action router. Toda acción que TORO pueda legítimamente orquestar mediante sus ejecutores (incluido Codex para trabajo técnico autorizado) debe poder iniciarse/consultarse desde WhatsApp, salvo limitación real del canal; en ese caso WhatsApp inicia y devuelve deep-link/approval al Portal sin crear lógica paralela. Capability registry por acción: required role, risk, source authority, executor, supports_whatsapp, supports_portal, approval surface, evidence/receipt, current runtime status. Codex sigue siendo ejecutor interno, no identidad separada frente al usuario.\n\n[CAPABILITY-REGISTRY-V1]\nRegistry mínimo por capacidad: key, domain, examples, executor, source authority, risk, action levels, permissions, approval, tenant enable, role grants, WhatsApp/Portal/audio/image/file support, evidence, runtime status, failure behavior, cost class. Cross-channel state vive en TORO, no en transcript. Si el canal no soporta auth/UI suficiente, WhatsApp inicia/consulta y deriva al Portal sin duplicar task/action. [/CAPABILITY-REGISTRY-V1]\n\n[CAPABILITY-SEED-V1]\nInitial registry seed now covers core conversation, files/images/audio, research, knowledge, tasks/approvals, People self-service, points, Operations, Hospitality/Kross, Comms, Finance, Growth, Systems and Builder. Each capability records executor, risk, WhatsApp/Portal support and current status such as auth_rls_verified/source_required/runtime_unverified/human_gate. Use this seed for wireframes and sandbox tests, not as proof runtime is live. [/CAPABILITY-SEED-V1]\n\n[CAPABILITY-REGISTRY-CONSOLIDATED]\nSeed de 27 capacidades movido al registro canónico toro_product_capability_registry_v1. La Biblia ya no mantiene catálogo paralelo. Future Portal/WhatsApp consumers deben leer/proyectar desde ese registro + grants/runtime evidence. [/CAPABILITY-REGISTRY-CONSOLIDATED]\n\n[GRANTS-R1]\nCandidate grants defined without permission changes. Use global role + linked employee department/position specialization. No new department roles yet. Live RLS/source/runtime state always wins. [/GRANTS-R1]\n\n[DREAMCATCHER-GRANTS-R2]\nRole/department examples now defined for Owner/Admin, Gerencia, Recepción, Aseo, Mantenimiento, Finance/Admin and Personal-only. Department specialization comes from linked employee profile; no new role codes. Present max 1–3 best next capabilities. [/DREAMCATCHER-GRANTS-R2]",
     "updated_at": "2026-09-26 20:08:54.031855+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -475,9 +475,9 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null,
-    "observed_updated_at": "2026-09-26 20:08:54.031855+00"
+    "reason": "The refreshed task remains a core TORO runtime objective: capability parity now explicitly includes shared source-authority and mailbox bindings, while OpenClaw/channel identity/runtime evidence gates remain open.",
+    "evidence_ref": "supabase:operations.tasks/toro_surface_capability_parity_20260922@2026-09-28T22:58:46.993081+00:concurrent-refresh",
+    "observed_updated_at": "2026-09-28 22:58:46.993081+00"
   },
   {
     "task_id": "567c455b-9ccb-4721-be2e-54e7a882ec41",
