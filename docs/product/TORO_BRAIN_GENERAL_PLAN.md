@@ -339,6 +339,10 @@ Personal data is not employer-visible by default.
 
 Owner: **TORO Comms**
 
+Canonical subordinate mailbox/channel contract:
+- `docs/product/TORO_COMMS_MAILBOX_BINDINGS_V1.md`
+- draft schema: `supabase/drafts/20260928_toro_comms_channel_bindings.sql` (NOT applied)
+
 Primary surfaces:
 - WhatsApp/OpenClaw
 - WeSpeak
