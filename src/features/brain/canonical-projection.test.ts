@@ -82,6 +82,28 @@ describe("buildCanonicalBrainProjection", () => {
     expect(projection.recentEvents).toBeUndefined();
   });
 
+  it("keeps an authority approval rule distinct from a pending approval", () => {
+    const projection = buildCanonicalBrainProjection(makeSlice());
+    const authority = projection.nodes.find((node) => node.id === "authority:a0");
+
+    expect(authority).toMatchObject({
+      kind: "knowledge",
+      sourceSystem: "TORO Data",
+      authoritySystem: "Kross",
+      summary: "Official source: Kross · official · Policy requires human approval; no decision record in this read",
+      capabilities: {
+        canApprove: false,
+        canPrepareAction: false,
+        canExecute: false,
+        actionCeiling: "observe",
+        approvalRequirement: "None",
+      },
+      activity: "idle",
+    });
+    expect(projection.nodes.some((node) => node.kind === "decision")).toBe(false);
+    expect(projection.recentEvents).toBeUndefined();
+  });
+
   it("only connects visible nodes and preserves each target's evidence state", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
     const nodes = new Map(projection.nodes.map((node) => [node.id, node]));

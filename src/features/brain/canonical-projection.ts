@@ -124,9 +124,13 @@ function authorityNode(
     authoritySystem: rule.officialSource,
     capabilities: observeOnly,
     activity: "idle",
-    summary: rule.authorityLevel
-      ? `Official source: ${rule.officialSource} · ${rule.authorityLevel}`
-      : `Official source: ${rule.officialSource}`,
+    summary: [
+      `Official source: ${rule.officialSource}`,
+      rule.authorityLevel,
+      rule.approvalRequired
+        ? "Policy requires human approval; no decision record in this read"
+        : "No human approval requirement recorded; no decision record in this read",
+    ].filter(Boolean).join(" · "),
   };
 }
 
