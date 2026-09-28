@@ -148,7 +148,7 @@ describe("BrainPage projection modes", () => {
     expect(html).not.toContain("reads from → Kross PMS");
   });
 
-  it("starts the mobile Brain as collapsed node layers while preserving desktop nodes", async () => {
+  it("keeps mobile layers collapsed in a swipeable rail while preserving desktop nodes", async () => {
     loadBrainProjectionViewMock.mockResolvedValue({
       projection: visualBrainDemo,
       layout: visualBrainDemoLayout,
@@ -165,7 +165,8 @@ describe("BrainPage projection modes", () => {
 
     expect(html.match(/<details[^>]*data-brain-layer="node"/g)).toHaveLength(visualBrainDemo.nodes.length);
     expect(html).not.toMatch(/<details[^>]*data-brain-layer="node"[^>]*\sopen(?:\s|>)/);
-    expect(html).toContain("Open a node to reveal its connections");
+    expect(html).toContain("Swipe nodes · open for connections");
+    expect(html).toContain('aria-label="Swipeable Brain node layers"');
     expect(html).toContain("The same Brain without spatial navigation");
     expect(html.match(/data-brain-list-node/g)).toHaveLength(visualBrainDemo.nodes.length);
   });
