@@ -608,6 +608,9 @@ Current access control, verified 2026-09-25 CR:
 - Supabase migration `20260926034539_harden_dreamteam_employee_views_20260925` applied with Mauricio's authorization to `public.employee_reward_balances` and `public.employee_experience_kpis`;
 - both views now use `security_invoker=true`; `anon` and `authenticated` have no SELECT, `service_role` retains SELECT;
 - readback and security advisor confirmed the two prior `security_definer_view` errors cleared;
+- 2026-09-28 Admin Mode hardening applied migration `20260928224926_narrow_employee_operational_dashboard_access_20260928`: `EMPLEADO` was removed from `public.operational_schedule_workspace` and `public.operational_time_clock_dashboard`, because baseline testing proved an employee identity could read 12 employee rows and 103 attendance-day rows through those broad SECURITY DEFINER RPCs;
+- post-migration regression: EMPLEADO receives `not authorized` from both broad RPCs; existing `attendance_self_read` / `shift_self_read` RLS still exposes only the employee's own records; ADMIN remains allowed; evidence and rollback are in `docs/security/TORO_SUPABASE_SECURITY_RESIDUAL_2026-09-28.md` and `supabase/drafts/20260928_narrow_employee_operational_dashboard_access.sql`;
+- leaked-password protection remains disabled only because the available authenticated browser-automation channel could not start due tooling wallet balance; authorization exists, but no Auth setting change has been made yet;
 - HTTP Data API probe and DreamTeam user-flow smoke test remain unverified; investigate regressions without reopening broad client grants;
 - owner released the employee HOLD on 2026-09-25 CR for phased TORO People preparation and tests. This is authorization to proceed, not evidence of employee activation. Evidence and recovery: `docs/security/DREAMTEAM_EMPLOYEE_VIEW_ACCESS_REVIEW_20260925.md`.
 
@@ -1534,9 +1537,12 @@ AI design/code tools may accelerate delivery but do not become architecture auth
 - legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
 
 ### Vercel
-Verified/rebaselined 2026-09-23:
+Verified/rebaselined 2026-09-28:
 - `toro-pr11-preview` / `prj_nxerFw9ciNews6tUMAah3GAlAJzs` = **CANONICAL ACTIVE RUNTIME**;
-- it deploys `Dramcatcherst/Toro-OS` from `main` and continues receiving current production-target deployments;
+- release-policy drift was closed on 2026-09-28 by merging PR #183: repository-root `vercel.json` now sets `git.deploymentEnabled.main=false`;
+- feature/docs branches continue producing Vercel Preview deployments (`target=null`);
+- two post-change merges to `main` (`2f4ed8fca34138b78304b56c4e8816b86f4f14ad` and `6906625d3c37078ec6c136164e194afb3116593f`) produced **no automatic Vercel deployment**, verifying that `main` no longer auto-promotes;
+- production is now an explicit promotion/release action after verification; rollback of this policy is to revert/remove `vercel.json`;
 - `toro-os-v03` / `prj_nzsVpQZree5WuErakMPKIyiK6gsA` = **LEGACY / ROLLBACK / REFERENCE — DO NOT DELETE YET**;
 - legacy deploys `Dramcatcherst/toro-os-v88-new` from `master`;
 - legacy project last updated 2026-09-08; latest inspected legacy production deployment is from 2026-08-23;
