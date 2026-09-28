@@ -1414,6 +1414,12 @@ Delivery gates: the current local `:3042` TORO Hoy demonstration and the canonic
 
 Acceptance for this contract: each visible line identifies containment, documentary relation or verified capability; each live pulse resolves to a current permitted receipt; the coverage denominator is inspectable; selecting an item shows authority, freshness, evidence, limitation and next safe action; unauthorized or failed reads cannot light nodes or leak details.
 
+### Executive decision and approval reconciliation
+
+`operations.executive_decisions` is the canonical structured workflow for executive decisions; an Airtable source record remains provenance and a human-facing surface, not a second authorization engine. Keep the source record ID, business/property scope, source status, workflow status, decision value, verified human response and evidence as separate fields. Neither `processed` nor `processed_at` alone proves a human approval; the writer's exact meaning for `processed` remains unverified. A nonempty response text without verified author and decision meaning is not sufficient either.
+
+When the source remains pending or the explicit decision value is absent, show **needs reconciliation** and `canApprove=false`; do not count the item as approved, illuminate an approval pulse or execute its proposed action. Require matching source identity and scope, current source read, explicit human decision evidence and an authorized permission path before a real approval state can be projected. A read-only acceptance fixture with workflow `processed`, missing decision value and source `Pending` must remain unresolved. This rule changes no existing source record, permission or production runtime.
+
 ## Event Spine
 
 Live visual activity must be backed by normalized canonical events.
