@@ -177,21 +177,28 @@ function MobileBrainMap({ projection, layout }: { projection: BrainProjection; l
           if (!point) return null;
           const Icon = nodeIcons[node.kind] ?? Activity;
           return (
-            <a
+            <details
               key={node.id}
               className={styles.mobileMapNode}
               data-kind={node.kind}
-              href={`#brain-node-${node.id}`}
+              data-side={point.x < 35 ? "left" : point.x > 65 ? "right" : "center"}
+              data-vertical={point.y > 50 ? "above" : "below"}
+              name="brain-map-node"
               style={{ left: `${point.x}%`, top: `${point.y}%`, width: nodeSize, height: nodeSize }}
-              aria-label={`${node.label}. ${node.status}. Open its layer for connections.`}
-              title={node.label}
             >
-              <Icon aria-hidden="true" />
-            </a>
+              <summary aria-label={`${node.label}. ${node.status}. Show details.`} title={node.label}>
+                <Icon aria-hidden="true" />
+              </summary>
+              <div className={styles.mobileMapPopover}>
+                <strong>{node.label}</strong>
+                <span>{node.status} · {node.verification}</span>
+                <a href={`#brain-node-${node.id}`}>View connections →</a>
+              </div>
+            </details>
           );
         })}
       </div>
-      <p className={styles.mobileMapHint}>Tap a neuron, then open its layer to inspect connections.</p>
+      <p className={styles.mobileMapHint}>Tap a neuron for its status, then open its connections.</p>
     </nav>
   );
 }
