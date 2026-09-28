@@ -29,7 +29,7 @@ export function evaluatePolicy(input: {
     return {
       allowed: false,
       approval: "Blocked",
-      reason: "This action is blocked in TORO OS v0.3 because it can affect external systems or sensitive business state.",
+      reason: "This action is blocked in TORO because it can affect external systems or sensitive business state.",
     };
   }
 
