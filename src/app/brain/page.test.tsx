@@ -83,6 +83,8 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("hover a link for its relation");
     expect(html).toContain("Synthetic visual Brain overview");
     expect(html.match(/name="brain-map-node"/g)).toHaveLength(initial.length);
+    expect(html).toContain('data-brain-mobile-node="node:kross"');
+    expect(html.match(/tabindex="-1"/g)).toHaveLength(initial.length);
     expect(html).toContain('data-brain-expand="node:kross"');
     expect(html).toContain('data-brain-expand="node:decision"');
     expect(html).toContain('data-brain-graph="true"');

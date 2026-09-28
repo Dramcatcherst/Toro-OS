@@ -359,6 +359,7 @@
   outline: 2px solid #67e8f9;
   outline-offset: 2px;
 }
+.node:focus { outline: 2px solid #fbbf24; outline-offset: 3px; }
 .graphHint { padding: 8px 12px; color: #cbd5e1; font-size: 11px; line-height: 1.4; }
 
 .riskLow { border-color: rgba(34, 211, 238, 0.24); }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Activity, Bot, Brain, Building2, Database, FileCheck2, FolderKanban, Gauge, LockKeyhole } from "lucide-react";
 import type { BrainEdge, BrainNode, BrainProjection } from "@/lib/brain-contracts";
 import type { BrainLayout } from "@/lib/server/brain-projection";
@@ -68,7 +68,7 @@ function connectionTooltip(edge: BrainEdge, labels: Map<string, string>, synthet
   return `${synthetic ? "Example" : "Read-only"} link: ${source} ${edge.relation.replaceAll("_", " ")} ${target}. ${verification} · ${edge.freshness ?? "freshness not reported"}.`;
 }
 
-function NodeCard({ node, layout, hiddenCount, expand }: { node: BrainNode; layout: BrainLayout; hiddenCount: number; expand: () => void }) {
+function NodeCard({ node, layout, hiddenCount, expand }: { node: BrainNode; layout: BrainLayout; hiddenCount: number; expand: (fromKeyboard: boolean) => void }) {
   const Icon = icons[node.kind] ?? Activity;
   const point = layout[node.id];
   if (!point) return null;
@@ -77,18 +77,29 @@ function NodeCard({ node, layout, hiddenCount, expand }: { node: BrainNode; layo
     style={{ left: `${point.x}%`, top: `${point.y}%` }}
     aria-label={`${node.label}. ${node.status}. Risk ${node.risk}. ${node.verification.replaceAll("_", " ")} verification.`}
     data-brain-visible-node={node.id}
+    tabIndex={-1}
   >
     <div className={styles.nodeHead}><span className={styles.nodeIcon}><Icon aria-hidden="true" /></span><span className={styles.nodeKind}>{node.kind}</span></div>
     <h3>{node.label}</h3>
     {node.metric ? <div className={styles.metric}><strong>{node.metric.value}{node.metric.unit}</strong><span>{node.metric.label}</span></div> : null}
     <p>{node.summary}</p>
     <div className={styles.nodeMeta}><span>{node.status}</span><span>{node.freshness}</span><span>{node.verification.replaceAll("_", " ")}</span></div>
-    {hiddenCount > 0 ? <button type="button" className={styles.nodeExpand} data-brain-expand={node.id} onClick={expand} aria-label={`Reveal ${hiddenCount} connected ${hiddenCount === 1 ? "neuron" : "neurons"} from ${node.label}`} title="Reveal connected neurons in this map">+{hiddenCount} connections</button> : null}
+    {hiddenCount > 0 ? <button type="button" className={styles.nodeExpand} data-brain-expand={node.id} onClick={(event) => expand(event.detail === 0)} aria-label={`Reveal ${hiddenCount} connected ${hiddenCount === 1 ? "neuron" : "neurons"} from ${node.label}`} title="Reveal connected neurons in this map">+{hiddenCount} connections</button> : null}
   </article>;
 }
 
 export function BrainMap({ projection, layout }: { projection: BrainProjection; layout: BrainLayout }) {
   const [visibleIds, setVisibleIds] = useState(() => initialBrainNodes(projection, layout));
+  const pendingFocus = useRef<{ id: string; surface: "desktop" | "mobile" } | null>(null);
+  useEffect(() => {
+    const target = pendingFocus.current;
+    if (!target) return;
+    const attribute = target.surface === "mobile" ? "data-brain-mobile-node" : "data-brain-visible-node";
+    const node = [...document.querySelectorAll<HTMLElement>(`[${attribute}]`)]
+      .find((element) => element.getAttribute(attribute) === target.id);
+    (target.surface === "mobile" ? node?.querySelector<HTMLElement>("summary") : node)?.focus();
+    pendingFocus.current = null;
+  }, [visibleIds]);
   const visible = new Set(visibleIds);
   const nodes = projection.nodes.filter((node) => visible.has(node.id) && layout[node.id]);
   const edges = projection.edges.filter((edge) => visible.has(edge.source) && visible.has(edge.target) && layout[edge.source] && layout[edge.target]);
@@ -96,9 +107,11 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
   const layerCounts = new Map<number, number>();
   nodes.forEach((node) => layerCounts.set(layout[node.id].y, (layerCounts.get(layout[node.id].y) ?? 0) + 1));
   const nodeSize = Math.max(22, Math.min(38, Math.floor(220 / Math.max(1, ...layerCounts.values()))));
-  const expand = (id: string) => {
+  const expand = (id: string, surface: "desktop" | "mobile", fromKeyboard: boolean) => {
     const next = unrevealedNeighbors(id, projection, visible, layout);
-    if (next.length) setVisibleIds((current) => [...new Set([...current, ...next])]);
+    if (!next.length) return;
+    if (fromKeyboard) pendingFocus.current = { id: next[0], surface };
+    setVisibleIds((current) => [...new Set([...current, ...next])]);
   };
 
   return <>
@@ -114,11 +127,11 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
         {nodes.map((node) => {
           const point = layout[node.id], Icon = icons[node.kind] ?? Activity;
           const hiddenCount = unrevealedNeighbors(node.id, projection, visible, layout).length;
-          return <details key={node.id} className={styles.mobileMapNode} data-kind={node.kind} data-side={point.x < 35 ? "left" : point.x > 65 ? "right" : "center"} data-vertical={point.y > 50 ? "above" : "below"} name="brain-map-node" style={{ left: `${point.x}%`, top: `${point.y}%`, width: 44, height: 44 }}>
+          return <details key={node.id} className={styles.mobileMapNode} data-brain-mobile-node={node.id} data-kind={node.kind} data-side={point.x < 35 ? "left" : point.x > 65 ? "right" : "center"} data-vertical={point.y > 50 ? "above" : "below"} name="brain-map-node" style={{ left: `${point.x}%`, top: `${point.y}%`, width: 44, height: 44 }}>
             <summary aria-label={`${node.label}. ${node.status}. Show details.`} title={node.label}><span className={styles.mobileMapVisual} style={{ width: nodeSize, height: nodeSize }}><Icon aria-hidden="true" /></span></summary>
             <div className={styles.mobileMapPopover}>
               <strong>{node.label}</strong><span>Status: {node.status} · Verification: {node.verification.replaceAll("_", " ")}</span><span>Signal freshness: {node.freshness}</span>
-              {hiddenCount > 0 ? <button type="button" className={styles.mobileExpand} data-brain-expand={node.id} onClick={() => expand(node.id)}>Reveal {hiddenCount} connected {hiddenCount === 1 ? "neuron" : "neurons"} here</button> : null}
+              {hiddenCount > 0 ? <button type="button" className={styles.mobileExpand} data-brain-expand={node.id} onClick={(event) => { event.currentTarget.closest("details")?.removeAttribute("open"); expand(node.id, "mobile", event.detail === 0); }}>Reveal {hiddenCount} connected {hiddenCount === 1 ? "neuron" : "neurons"} here</button> : null}
               <a href={`#brain-node-${node.id}`}>View all documented connections →</a>
             </div>
           </details>;
@@ -138,7 +151,7 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
             return <g key={edge.id}><line x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={attention ? styles.edgeAttention : styles.edge} data-evidence-state={attention ? "needs-review" : "current"} data-brain-relation={edge.relation} markerEnd={attention ? "url(#arrowAttention)" : "url(#arrow)"} /><line x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={styles.edgeHit} data-brain-edge-tooltip="true"><title>{connectionTooltip(edge, labels, projection.synthetic)}</title></line></g>;
           })}
         </svg>
-        {nodes.map((node) => <NodeCard key={node.id} node={node} layout={layout} hiddenCount={unrevealedNeighbors(node.id, projection, visible, layout).length} expand={() => expand(node.id)} />)}
+        {nodes.map((node) => <NodeCard key={node.id} node={node} layout={layout} hiddenCount={unrevealedNeighbors(node.id, projection, visible, layout).length} expand={(fromKeyboard) => expand(node.id, "desktop", fromKeyboard)} />)}
       </div>
       <p className={styles.graphHint}>{nodes.length} of {projection.nodes.length} authorized nodes shown · Relationships retain their original direction and verification. Hierarchy is only claimed for “part of” links.</p>
     </div>
