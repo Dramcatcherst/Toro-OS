@@ -191,7 +191,8 @@ function MobileBrainMap({ projection, layout }: { projection: BrainProjection; l
               </summary>
               <div className={styles.mobileMapPopover}>
                 <strong>{node.label}</strong>
-                <span>{node.status} · {node.verification}</span>
+                <span>Status: {node.status} · Verification: {node.verification.replaceAll("_", " ")}</span>
+                <span>Signal freshness: {freshnessLabel[node.freshness]}</span>
                 <a href={`#brain-node-${node.id}`}>View connections →</a>
               </div>
             </details>
