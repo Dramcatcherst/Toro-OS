@@ -50,7 +50,7 @@
     "description": "Approved execution brief: Bloqueo correcto: requiere electricista/profesional habilitado y evidencia física. Sale de NOW digital; TORO conserva checklist y criterio de cierre.\n\nPlan target date (source): 2026-09-16\n\nExecution plan ref: DC2-002\n\nPrimary KPI: Hallazgos críticos abiertos\n\nSource notes:\nTRIAGE EJECUTIVO 2026-08-23 — FOCO #1 · Seguridad eléctrica. Siguiente acción: coordinar visita de electricista autorizado; medir 220 V, identificar breaker/circuito/transformador y documentar condición segura. No energizar ni improvisar reparaciones antes del diagnóstico. Criterio de cierre: informe, mediciones, circuitos identificados, fotos y plan o corrección segura. Fecha original vencida: confirmar una nueva fecha real sin borrar el historial.\n\n[FIELD-PACKET-20260921-OPERATE-R3]\nUbicación: tableros/circuitos 220–240 V y transformador asociados al alcance Dreamcatcher definido en DC2-002. Responsable físico/técnico: electricista autorizado; acompañamiento RICO/Mantenimiento; QA técnico: el mismo profesional habilitado y Gerencia para recepción del informe. Prueba: medir voltajes y protecciones según práctica profesional, identificar breaker/circuito/transformador y condición observable; no energizar, puentear ni improvisar reparación fuera del diagnóstico del técnico. Evidencia: fecha/hora, mediciones, fotos de tablero/placas/etiquetas, identificación de circuitos, hallazgos, firma/nombre del técnico y recomendación. Criterio de cierre: informe técnico + mediciones + circuitos/protecciones identificados + riesgo corregido o plan seguro explícito con responsable; no declarar seguro sin evidencia profesional.\n[/FIELD-PACKET-20260921-OPERATE-R3]",
     "updated_at": "2026-09-21 12:57:12.398081+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -58,8 +58,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Still requires licensed physical/electrical evidence. Historical age cannot satisfy the professional field-verification closure gate.",
+    "evidence_ref": "supabase:operations.tasks/task-dc-electrical-assessment-20260810@2026-09-21T12:57:12.398081Z"
   },
   {
     "task_id": "4319a7a7-c2df-4c96-a6d2-a863436e549a",
@@ -81,7 +81,7 @@
     "description": "Approved execution brief: Bloqueo correcto: requiere inspección física de noche de cámaras, portón e iluminación. Sale de NOW digital; mantener criterio de cierre sin consumir prioridad ejecutiva.\n\nSource notes:\nTRIAGE EJECUTIVO 2026-08-23 — FOCO #3 · Seguridad física. Siguiente acción: probar cámaras y grabación, portón y mecanismo de contingencia, y recorrer zonas oscuras en horario de noche. Criterio de cierre: inventario de cámaras operativas, evidencia de grabación, portón probado, iluminación crítica resuelta y responsables de seguimiento. Fecha original vencida: confirmar una nueva fecha real.\n\n[FIELD-PACKET-20260922-OPERATE-SECURITY]\nUbicación: accesos/portón principal, sistema de cámaras y grabador asociado, y zonas exteriores/comunes identificadas como oscuras en Dreamcatcher; recorrido de noche, sin abrir un segundo barrido si coincide con otra ronda vigente. Responsable: RICO / Mantenimiento para verificación física; Gerencia para QA; técnico competente solo si una falla requiere intervención especializada. Prueba: (1) cámaras: imagen actual + reproducción de grabación reciente con fecha/hora coherente; (2) portón: apertura/cierre normal y mecanismo de contingencia según procedimiento existente, sin puentear seguridad; (3) iluminación: recorrer de noche las zonas críticas y comprobar encendido/visibilidad operativa sin inferir seguridad absoluta. Evidencia: fecha/hora, ubicación/equipo, PASS/FAIL, foto o captura útil, referencia de reproducción de grabación, resultado del portón/contingencia, observación de iluminación, responsable y QA. Criterio de cierre: inventario de cámaras del alcance con reproducción verificada o excepción explícita; portón y contingencia probados sin falla material; zonas oscuras críticas resueltas o brecha trazable con responsable; evidencia fechada + QA. No cambiar permisos, accesos, turnos, mensajes externos ni ejecutar reparación desde este paquete.\n[/FIELD-PACKET-20260922-OPERATE-SECURITY]",
     "updated_at": "2026-09-23 00:56:35.385735+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -89,8 +89,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Still requires a dated on-property night inspection of cameras, recording, gate contingency and critical lighting; no current PASS evidence was found.",
+    "evidence_ref": "supabase:operations.tasks/task-dc-security-readiness-20260810@2026-09-23T00:56:35.385735Z"
   },
   {
     "task_id": "35fd3dc7-acd5-4fb3-bcd9-86f1f286404c",
@@ -143,7 +143,7 @@
     "description": "[ACCOUNTING-FIELD-MAP-QA-20260922 — SIGUIENTE VIGENTE]\n37 equivalencias de campos Airtable/Supabase con destino/tipo verificado;5 destinos/semánticas sin equivalencia directa.30 pruebas offline PASS, incluyendo2 muestras documentales corroboradas Vercel/Booking con claves distintas. No migración, sincronización ni conciliación financiera demostrada. Especificación/pruebas y IDs están en finance_accounting_rebuild_scope_2026_09_v1.accounting_format_alignment.field_mapping_review.\nSiguiente: resolver5brechas y aprobar proyecciones de identidad/estados antes de aplicar a registros; mantener fiscal/centros/servicios bajo gate. Se alineó metadata.alegra_october_readiness con el SOP vigente: pago1098 ya confirmado, factura no recibida y Mary coordinadora. No repetir pago ni crear factura ficticia. No más inventario general de cuentas o nuevos ejecutores.\n[/ACCOUNTING-FIELD-MAP-QA-20260922]\n\n[OWNER-ALINEACION-CONTABLE-20260922 — NO DUPLICAR MATRIZ]\nAmpliar la matriz R2 existente con equivalencias campo-origen/canónico/destino de Kross, Airtable, Dropbox, Supabase, Alegra, bancos, TRIBU y formularios/Excel. Conservar IDs nativos por sistema/objeto, entidad legal y negocio, servicio/unidad, fechas distintas, moneda/FX, cuenta/centro y estados independientes de factura/pago/reembolso/conciliación. R6/R7 ya prueba que Kross3 Desayuno NO equivale a Alegra3 Almuerzo; Alegra2 es candidato, no posteo aprobado.\nEstado: contrato documentado; mapeo técnico y piloto integral pendientes. Fuente única: finance_accounting_rebuild_scope_2026_09_v1.accounting_format_alignment. Próxima entrega: completar R2 y pasar pruebas aisladas antes de sincronización/publicación/postings; ninguna escritura financiera ni DDL autorizada por esta nota.\nRebase factual: consumir el SOP A&B vigente, no las dudas históricas R9/R10. US1098 ref406411289 ya PAGADOS; factura no recibida; Mary coordina actualmente y no se altera beneficiario histórico. No repetir búsqueda del pago ni crear otra tarea.\n[/OWNER-ALINEACION-CONTABLE-20260922]\n\nCrear una base contable confiable: exportar TRIBU, auditar plan de cuentas Alegra, corregir FX mayo, separar capex/opex, establecer flujo de facturación/comprobantes/gastos y reconciliar saldos fiscales. Mantener Mini Room fuera del denominador estándar de ocupación y no reimportar históricos Kross contables antiguos.\n\nAUTONOMIA-ENERO2027: Reutilizar esta tarea para caja/forecast de 13 semanas y margen disponible después del coste de operación delegada. Baseline H1 con discrepancia no es liquidez actual. Reconciliar saldos y compromisos; definir reservas/distribución objetivo solo tras datos/aprobación.\n\nPILOTO-AUTONOMIA-20260918: Completitud del subconjunto Supabase por propiedad Dreamcatcher:22 obligaciones activas,6 con current_amount,7 con next_due_date y0 con human_owner. Campos presentes no prueban saldo actual; hay precios de plan/fechas históricas e inferidas. Completar fuente/importe/fecha/estado/rol por obligación antes del forecast y no sumar todo como deuda. Sin alterar importes ni enviar solicitudes.\n\nCUT-20260918-PAYABLES: Alegra AR CRC182,040 / 5 invoices; supplier AP CRC0 but not total obligations. Margot opening balance CRC8,250,500 omitted at migration; reconstructed CRC1,923,710 before additional bank classification. Joe loan ledger is unreliable: only credit USD4,000 originated from Luz Margoth Toro, while subsequent Joe payments create debit balance CRC13,962,585. BAC development loan: payment day 1, Sep payment USD5,244.87, documented principal CRC294,119,564 at 30/06 only. Booking verified invoice USD2,455.93 due19/09 versus Synerjoy claim USD9,382.97 un-reconciled. BAC card ledgers USD4,446.85 + CRC1,080,750 need current statements. Tax assets: available credits CRC45,103,741; retentions to apply CRC4,021,420; IVA inconsistency CRC684,247. Tax debts: ISU CRC70,137 due30/09 and another CRC70,137 due31/12. Do not post corrections until source-level reconciliation package is approved.\n\n[ALEGRA-OCT-20261001-R1] Mandato Mauricio 20/09: coordinar arranque Alegra organizado 01/10 con Kross/cierre/Plan General y agentes existentes; reconstrucción histórica aplazada. TORO coordina; FIONA prepara; SOBRESITO contrato/QA; RICO/Recepción evidencia; Mauricio responsable humano, contador nominal por confirmar. Plan General sección ALEGRA-OCT-20261001-R1. GET empresa/servicios1–4/cuenta5364 PASS 20:53CR; cero escrituras. Índice preparación40/100 por10controles, no listo. Próximo: matriz exacta antes/después porID/campo/centro/moneda, pruebas y reversión; decisiones restaurante/paquetes/CABYS pendientes. Banco al31/07, aceptación fiscal y piloto integral abiertos. No pagos, emisión, asientos, permisos, producción ni envíos autorizados por este bloque. [/ALEGRA-OCT-20261001-R1]\n\n[ALEGRA-OCT-20261001-R2] Matriz exacta de servicios/cuentas/centros/monedas/medios preparada en el expediente y Plan General existentes. Lectura incremental:11income activas,9registros banco/caja,8medios4.4. No cuenta alimento específica identificada; tasa500manual; titular/moneda bancaria y alcance restaurante pendientes. Sin escrituras Alegra, preparación40/100. Próxima unidad: validación de emisión fiscal por lectura de configuración y muestra existente con XML/respuesta, sin emitir ni reenviar. No repetir inventarios. [/ALEGRA-OCT-20261001-R2]\n\n[ALEGRA-OCT-20261001-R3] Catalogo de control actualizado:335cuentas revisadas,32conceptos/30IDs existentes/2pendientes; FV-1129 confirma5273/5320/5364. Propuesta C01 ingreso alimentos bajo5363 y C02 servicios2-4; no aplicada en Alegra. Canal de escritura de cuentas y alcance restaurante/paquetes pendientes. Ver expediente y CATALOGO_CUENTAS_HOTEL.json en directorio canonico. Proxima: resolver C01+C02 sin repetir inventarios; preparacion40/100. [/ALEGRA-OCT-20261001-R3]\n\n[ALEGRA-OCT-20261001-R4] Incluidos/extras/otros servicios separados; desayuno incluido no duplica venta. Notas y precioOTA requieren confirmacion/versiones/lineas porID.27reservas espejo sin canal;3muestras4982/5137/5141 para validar, accesoKross bloqueado por browserpolicy. C02R3 condicionado; siguiente leer esas3muestras/catálogoextras+OTA, sin repetir inventario ni escribir reservas/Alegra. Ver expedienteR4. [/ALEGRA-OCT-20261001-R4]\n\n[ALEGRA-OCT-20261001-R6] AccesoKross restaurado,3muestras nativas/canales verificados.5137 diferencia60 resuelta como desayunos.5141 nota10000CRC vs saldo20USD pendiente caja; OTA187.57->168.80 trazado. Kross3Desayuno no Alegra3Almuerzo; candidatoAlegra2. Vat0logs requiere validacionfiscal. Kross anuncia vence03/10, verificar continuidad. Ver expedienteR6;0escriturasKross/Alegra. [/ALEGRA-OCT-20261001-R6]\n\n[ALEGRA-OCT-20261001-R7] Servicios3/4/6 nativos leidos:15USD desayuno IVA0;15USD persona/noche IVA vacio(cargo historico10);10USD/hora latecheckout IVA0. Alegra2 desayuno5522.12CRC/IVA13/cuenta5364: contrato fiscal pendiente.5141: nota de Camila20/09 10:15:15 dice Paga10000CRC; puede ser acuerdo futuro. COBRO PENDIENTE DE CONFIRMAR, no efectivo recibido/faltante afirmados.25pagos17-21Sep sin efectivo. Ver expedienteR7 y catalogo service_config_review. Siguiente contrato fiscal3/4/6 y confirmacion de cobro al salir.40/100,0escriturasKross/Alegra. [/ALEGRA-OCT-20261001-R7]\n\n[ALEGRA-OCT-20261001-R8] Mauricio confirma desayuno15USD precioFINAL; no sumarIVA. BCCR2025 candidatos alojamiento63111/63112 y restaurante6331/6332 a13%, codigo exacto y emisor pendientes. Actividades4.4 Alegra5510.1/5610.0 confirmadas en catalogo. Factura1129: numeracion no electronica, no pruebaHacienda. Contrato C01/C02 porcampo en fiscal_mapping_review; extras4/6 cuenta5364candidata, items pendientes. Siguiente confirmar emisor comida/contador y CABYS/impuesto/reversion. R7cobro5141pendiente,40/100,0escriturasKross/Alegra. [/ALEGRA-OCT-20261001-R8]\n\n[ALEGRA-OCT-20261001-R9] Mauricio confirma: Atrapa cobra comidas; Cocina recibe8USD por desayuno consumido, corte lunes-domingo, pago lunes siguiente; incluye comidas y bebidas con tarifas propias aun pendientes.15USD desayuno final al cliente conservado. Proxima liquidacion candidata14-20Sep/pago21Sep, sin consumo ni total acreditado. Preparar UNPOSTED con consumo real, documentoCocina, ajustes y tarifas; no usar previsiones como consumos ni8 para todo. Contrato kitchen_settlement_contract en catalogo y period_evidence16.0pagos/0escriturasAlegra/Kross. [/ALEGRA-OCT-20261001-R9]\n\n[ALEGRA-OCT-20261001-R10] ZIPAdmiExCr analizado:305mensajes,7referenciasliquidacion,49preciosmenuhistorico; mediosomitidos.8USDdesayuno incluido/extra ratificado,10propuesta rechazada. Agosto6273 es resumenfactura no bancoconciliado;10Ago1544bruto/1322neto;3Agodiferencia0.50.14Sep96x8=768confirmadochat, no consumo14-20. AvisoMary cambio destinatariooctubre pendienteverificacion,noaplicado. Ver COCINA_EXTRACCION_CHAT_2026-09-21.md yCSVs en directorio canonico. Siguiente recuperarPDF/XMLproveedor01Sep y consumo14-20, verificarbeneficiariooctubre.0pagos/cambiosAlegraKross. [/ALEGRA-OCT-20261001-R10]",
     "updated_at": "2026-09-22 20:54:46.341077+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -151,8 +151,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Finance rebuild is still an active in-progress program with unresolved fiscal, bank, Kross/CxP and reconciliation evidence gates; no closure or merge is justified.",
+    "evidence_ref": "supabase:operations.tasks/finance_accounting_reset_2026_09_15@2026-09-22T20:54:46.341077Z"
   },
   {
     "task_id": "daea4390-774a-4a77-bf67-7821842157bd",
@@ -174,7 +174,7 @@
     "description": "Approved execution brief: BLOCKED_EXTERNAL. Google Ads account-only setup requires authenticated Google Ads access. Do not create campaign, budget, billing, GBP/YouTube link or activate ads. Reopen only in authenticated account context.\n\nFounder gate/action: Mauricio approval is required only before campaign activation, budget/billing, payment method or external account linking.\n\nSource notes:\nNew account ID 891-691-9742 exists and reached account-only/expert setup path. Complete only account settings if Google allows it. Do not create campaign, set budget, enter payment method, link GBP/YouTube, or activate ads without explicit approval. After account is stable, use the existing import pack / preview script from data/google_ads_reservation_machine.",
     "updated_at": "2026-09-19 09:16:19.750733+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -182,8 +182,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The setup objective remains current and externally gated; no verified evidence of account setup completion or authorization to add campaign/billing was found in this R1 review.",
+    "evidence_ref": "supabase:operations.tasks/finish_google_ads_new_account_setup@2026-09-19T09:16:19.750733Z"
   },
   {
     "task_id": "f274911f-08e5-4baa-8c29-e17cdda69e81",
@@ -205,7 +205,7 @@
     "description": "Approved execution brief: BLOCKED_EXTERNAL/DEPENDENCY. Conversion tracking depends on a stable booking handoff and confirmed conversion event. Short-link work is superseded; Kross/booking channel path remains externally gated. Do not optimize Ads against incomplete booking attribution.\n\nPlan target date (source): 2026-09-20\n\nExecution plan ref: DC2-008\n\nPrimary KPI: % ingresos conciliados / duplicados\n\nSource notes:\nAUTOPILOT 14/09: conversion tracking sigue siendo importante, pero va después de resolver short-link/Kross handoff y disponer de una ruta de reserva estable. Mantener en NEXT para evitar medir un funnel aún inconsistente.",
     "updated_at": "2026-09-19 09:16:19.750733+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -213,8 +213,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Conversion tracking remains a distinct current dependency for Ads performance attribution; no verified evidence of a completed fix was found in this R1 review.",
+    "evidence_ref": "supabase:operations.tasks/fix_google_ads_booking_conversion_tracking@2026-09-19T09:16:19.750733Z"
   },
   {
     "task_id": "671d3866-1cd8-421b-a94f-082de2f6dfff",
@@ -298,7 +298,7 @@
     "description": "Approved execution brief: BLOCKED_EXTERNAL. Requires authorized channel/KYP panel access to verify current Villa Toro location, mapping and availability. Public visibility is not sufficient evidence. Reopen only with authenticated panel access.\n\nSource notes:\nAUTOPILOT 14/09: el listing Toro aparece públicamente activo y vendiendo múltiples habitaciones, por lo que el bloqueo antiguo necesita revalidación antes de ocupar NOW. Mantener en NEXT hasta verificar KYP/ubicación/mapping en panel autorizado; no asumir resuelto solo por visibilidad pública.",
     "updated_at": "2026-09-19 09:16:19.750733+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -306,8 +306,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Booking KYP/location and Villa Toro availability still require external authenticated evidence; no verified resolution was found.",
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P0-BOOKING-KYP-20260810@2026-09-19T09:16:19.750733Z"
   },
   {
     "task_id": "42dd4306-4901-42e1-9f0a-9b01042e4b95",
@@ -329,7 +329,7 @@
     "description": "Approved execution brief: BLOCKED_DEPENDENCY. Canonical TERE conversion lifecycle waits for stable Kross/WeSpeak handoff and attribution contract. No shorteners. Keep segments/drafts privacy-safe; no sends without consent/policy + send gate.\n\nPlan target date (source): 2026-10-19\n\nExecution plan ref: DC2-040\n\nPrimary KPI: Reservas / baja / quejas\n\nSource notes:\nConstruir segmentos privacy-safe, drafts personalizados y campaign/source/intent attribution. Priorizar huéspedes anteriores y leads perdidos antes de paid media. No enviar sin consentimiento/policy + gate de envío.",
     "updated_at": "2026-09-26 02:33:10.211396+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -337,8 +337,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The lifecycle/attribution objective remains current and its dependency is still blocked; no evidence supports closing or merging it.",
+    "evidence_ref": "supabase:operations.tasks/wespeak_crm_reactivation_attribution_20260826@2026-09-26T02:33:10.211396Z"
   },
   {
     "task_id": "2cd25691-b4da-4a69-94a9-dbe908e52641",
@@ -391,16 +391,16 @@
     "description": "Approved execution brief: SIMPLIFICATION/SECURITY 14/09/2026: DreamTeam/Personas pertenece a FIONA + SOBRESITO y no debe ocupar WIP activo hasta cerrar seguridad. Supabase project abtyrbqlqbsastmridzp está ACTIVE_HEALTHY y usa RLS, pero advisor actual reporta funciones SECURITY DEFINER ejecutables por roles amplios y tablas en esquemas assets/facilities/finance/operations/risk con RLS habilitado sin políticas. Mantener PR/gate existentes; revisar intención de cada RPC/policy antes de cualquier migration, MFA, Auth o rollout. No se modificó Supabase en esta auditoría.\n\nFounder gate/action: Prepare the legal/rule/evidence matrix and current incident list first. Escalate only actual policy/legal choices that require Mauricio or professional approval; do not ask him to resolve raw attendance rows.\n\nSource notes:\nACTIVE P0 under Architecture C. Preserve individual Supabase Auth, invitations, password recovery, MFA for privileged roles, RLS/permission matrix, audit and no public signup. First validate independent admin/recovery path and current named-user/role/session evidence; then prepare an isolated remediation plan for DreamTeam issues #22/#24. No credential reproduction, no lockout-risk rotation, no payroll/legal automation promotion until professional/versioned rules and RLS are verified. Closure requires safe access recovery, least privilege, privileged MFA/RLS evidence and a reconciled payroll/attendance sample cycle.",
     "updated_at": "2026-09-23 00:55:19.051258+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "REWRITE",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
-    "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "proposed_blocking_reason": "R1-B SECURITY 28/09/2026: live Supabase authorization catalog has 96 public/private functions versus the prior 71-signature repository policy; ACL/catalog reconciliation is under review in DreamTeam PR #46 and production permission changes remain gated behind disposable-branch validation. Employee rollout also remains gated by hosted identity/role/revocation tests and professional validation of Costa Rica labor/payroll rules.",
+    "reason": "The HR/legal objective remains valid, but the 22/09 security counts in the blocker are stale and must point to the current R1-B reconciliation rather than the old advisor snapshot.",
+    "evidence_ref": "github:Dramcatcherst/dream-team/pull/46"
   },
   {
     "task_id": "c4c1105b-8b62-43b6-8657-bbe2f71bedd7",
@@ -422,7 +422,7 @@
     "description": "Source notes:\nPROVENANCE_MISMATCH 2026-09-02: el projectId guardado resuelve a `dreamcatcher-hotel-santa-teresa-v100`, latest production dpl_FGpwrbGWtkSRY4UjKEjAtqkppAHi READY, no a `toro-os-v03`. Se retira el gate de Mauricio hasta identificar y verificar el proyecto Vercel exacto del repositorio TORO, la rama productiva actual, el SHA desplegado y un rollback probado. No se cambió Git integration, Production Branch, dominio, alias ni despliegue.",
     "updated_at": "2026-09-23 03:54:39.830258+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -430,8 +430,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Gate remains current: the TORO Vercel project produced a fresh READY production-target deployment from main on 28/09/2026, so preview-only intent and actual deployment behavior are still not aligned.",
+    "evidence_ref": "vercel:dpl_5f5KUmjissa1WunB85vEVB37yRHq"
   },
   {
     "task_id": "2ecbad3e-6d99-4888-af63-8b5b510d2d48",
@@ -515,16 +515,16 @@
     "description": "Approved execution brief: BLOCKED_OWNER/OPS. Need one explicit current rule for size/weight, fee/no-fee, number of pets and unattended-pet condition. Until then TERE/Reception says pets are accepted under conditions and confirms details before arrival.\n\nSource notes:\n17/09/2026 canonical state: Dreamcatcher is pet-friendly. Public-safe wording remains conditional. Legacy 15 kg limit and USD10/night fee exist only in provenance and are NOT approved as current public truth. No automatic fee/weight promise. Duplicate pet task rec5ijYfL9A2tXgmU merged here.\n\n20/09/2026 evidence: Mauricio requests very small pets, two price tiers and bowls/bed experience. Draft only: <=5 kg USD10/stay; >5-15 kg USD20/stay. Legacy USD10/night is unapproved and conflicts with proposed per-stay unit. Kross public requires prior confirmation; Villa page states up to six pets. Retail reference in CRC for two bowls, one small bed, 60 bags: 22420-26530 before shipping/cleaning. Physical stock, actual costs, accommodation rules, unattended-pet rule and exact Kross setup remain unverified. Airtable source recKeK7194ZILlo9f updated. Keep blocked; no public fee or automation.\n\n20/09/2026 Mauricio inventory report: 2 individual pet bowls + 1 collapsible double bowl from Olaya. No confirmed stock for beds, blankets, coolers, balls, rackets or bicycles; all remain pending physical count. Pricing challenge: draft experience fee USD15/stay <=5kg and USD25/stay >5-15kg, not per bowl; beach draft USD5 blanket, USD10 cooler, USD5 ball, USD10 pair rackets, USD25 beach-day bundle if stock exists. Never publish or charge until stock, cleaning, replacement, responsibility and Kross unit are verified.\n\n20/09/2026 pricing challenge: USD15/25 was considered potentially too low for preparation, cleaning, replacement and risk. Recommended draft now USD20/stay <=5kg and USD30/stay >5-15kg; still inactive and subject to real costs. Do not publish or charge.\n\n20/09/2026 decisión provisional de Mauricio: mantener USD 10 por noche únicamente como borrador interno mientras se verifica inventario, limpieza, responsabilidad y costos. No publicar, no cobrar automáticamente y no cambiar Kross. Después de la ficha física y FIONA se revisa la migración a precios por estancia/tipo de mascota.\n\n20/09/2026 protocolo Kross/WeSpeak: Mauricio solicita preparar USD 20 por noche. Kross y WeSpeak ya tienen contenido publicado; no cambiar solo notas. Antes de activar: (1) capturar regla vigente y unidad; (2) aprobación Admin/Recepción + Mauricio; (3) actualizar Kross y WeSpeak con la misma versión; (4) QA ES/EN y checkout; (5) registrar rollback a la versión anterior. Estado: solicitud de cambio pendiente de protocolo, acceso live y evidencia. No publicar ni cobrar automáticamente.\n\n20/09/2026 aprobación de Mauricio: continuar solicitud USD20/noche. La aprobación cubre preparar y continuar el change request; no demuestra publicación live. Pendientes de ejecución: capturar regla vigente en Kross, versión/rollback, aprobación Administración o Recepción para publicación/envío y acceso live verificable. Kross y WeSpeak deben actualizarse en pareja y pasar QA ES/EN + checkout.\n\n20/09/2026 evidencia histórica localizada: booking-photo-batch09/execution-2026-09-07.json y wespeak-content-manifest.json registran USD10 por noche, sin multiplicador automático por varias mascotas; el lote dejó Kross sin cambios y conserva rollback de cuatro textos WeSpeak. Delta solicitado: antes USD10/noche -> después USD20/noche. No aplicar a reservas existentes automáticamente. El paquete queda listo para capturar la regla Kross actual, actualizar Kross + WeSpeak ES/EN en pareja y probar checkout.\n\n20/09/2026 instrucción de Mauricio: no cambiar WeSpeak; conservar textos y configuración porque la integración ya funciona según el propietario. El change request queda Kross-only: verificar regla live, cambiar Kross a USD20/noche con rollback y hacer solo una prueba de lectura para confirmar que WeSpeak refleja la integración. Si no refleja Kross automáticamente, detener sin editar WeSpeak.",
     "updated_at": "2026-09-23 00:27:09.660769+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "REWRITE",
     "merge_target_task_key": null,
     "close_status": null,
-    "proposed_status": null,
+    "proposed_status": "blocked",
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
-    "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "proposed_blocking_reason": "Owner approval exists for a Kross-only USD20/night pet-fee change, but execution remains blocked on authenticated Kross live access, capture of the current live rule/version and rollback, Admin/Reception activation signoff, checkout QA, and read-only verification that WeSpeak reflects the integrated value. Do not edit WeSpeak manually or modify existing reservations automatically.",
+    "reason": "The task has real blockers but is still marked planned. Reclassify it as blocked without changing the approved Kross-only execution boundary.",
+    "evidence_ref": "supabase:operations.tasks/legacy_task_rec8Qj1aPRrhgQEms@2026-09-23T00:27:09.660769Z"
   },
   {
     "task_id": "84e8fdea-f0b8-4fde-a011-7f6ebe7a0e61",
@@ -608,7 +608,7 @@
     "description": "Diseñar primero, no implementar ledger todavía. Puntos aplican por defecto solo a tareas EXTRA opcionales/configuradas, no sustituyen salario ni penalizan funciones base. Flujo: extra task offer→eligibility→accept/assign→evidence→QA/approval→point event→point total. Ledger inmutable/idempotente; no autoaward; reglas transparentes; cap y anti-gaming; team split; appeal/reversal; leaderboard público opcional y apagado por defecto. Canje: empezar con reconocimiento/perks no monetarios; cualquier canje económico o beneficio recurrente requiere revisión laboral, revisión financiera previa y política empresarial. Debe generalizarse como módulo opt-in por tenant.\n\n[SCOPE-CORRECTION-R1]\nWork points account is scoped to organization membership, never global user identity. Leaving an org freezes/finalizes org point total per policy without affecting other orgs or personal identity. Any leaderboard is tenant-scoped. [/SCOPE-CORRECTION-R1]\n\n[POINTS-CONTRACT-V1]\nCanonical subordinate contract: toro_points_extra_tasks_contract_v1. Membership-scoped, optional per tenant; lifecycle offered→eligible→accepted/assigned→submitted→QA→awarded→reversal/appeal. Immutable/idempotent event ledger in future design; no table created yet. Recognition-only pilot first; economic redemption gated. [/POINTS-CONTRACT-V1]\n\n[POINTS-PILOT-R1]\nPilot scoring proposed: P1/P3/P5/P8 assigned before task start; no subjective completion bonus; evidence + QA required. Candidate categories: knowledge capture, improvement project, training contribution, data quality, guest-experience project, cross-team help. Excludes core duty/overtime/safety obligations. Pilot 5–10 tasks, recognition-only pilot. [/POINTS-PILOT-R1]\n\n[DREAMTEAM-POINTS-EXAMPLES-R1]\nConcrete extra-task examples added per Recepción/Aseo/Equipo técnico/Gerencia. All examples qualify only if marked EXTRA before work begins; routine duties remain excluded. [/DREAMTEAM-POINTS-EXAMPLES-R1]",
     "updated_at": "2026-09-23 00:54:46.852239+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -616,8 +616,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Recognition & Points remains an approved TORO People capability; implementation is still gated by identity, QA and labor/accounting review.",
+    "evidence_ref": "github:Dramcatcherst/Toro-OS/docs/product/TORO_BRAIN_GENERAL_PLAN.md#11-recognition--points"
   },
   {
     "task_id": "78a03d64-dcc0-4d69-9c45-4a67eae2264a",
@@ -763,7 +763,7 @@
     "description": "Source notes:\nEvidencia: planos, cálculo, permisos, contrato, seguro, cronograma y QA. Dependencia: ingeniero. No ejecutar antes. Cierre: aprobación técnica/presupuesto o descarte documentado.",
     "updated_at": "2026-09-19 09:18:56.610286+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -771,8 +771,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Still requires current external/physical technical evidence; the review cannot be closed from historical documentation alone.",
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P1-DECK-TECH-REVIEW-20260810@2026-09-19T09:18:56.610286Z"
   },
   {
     "task_id": "e790e0ea-d3a9-4878-bdc4-cb9efa875496",
