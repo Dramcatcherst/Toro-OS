@@ -4,7 +4,7 @@ import { KrossBookingAssist } from "@/features/kross/booking-assist";
 import { parseBookingAssistPrefill } from "@/features/kross/booking-assist-prefill";
 
 export const metadata: Metadata = {
-  title: "TORO Brain · Buscar en Kross",
+  title: "TORO · Buscar en Kross",
   description:
     "Prepara una búsqueda segura en el motor oficial de Dreamcatcher sin convertir el resultado en verdad interna de TORO.",
 };
