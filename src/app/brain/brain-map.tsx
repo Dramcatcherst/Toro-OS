@@ -15,9 +15,34 @@ const riskClass = { Low: styles.riskLow, Medium: styles.riskMedium, High: styles
 // Reveal only supplied, permission-filtered nodes. A relationship is not a parent-child claim.
 export function initialBrainNodes(projection: BrainProjection, layout: BrainLayout): string[] {
   const known = new Set(projection.nodes.filter((node) => layout[node.id]).map((node) => node.id));
-  const incoming = new Set(projection.edges.filter((edge) => known.has(edge.source) && known.has(edge.target)).map((edge) => edge.target));
-  const roots = projection.nodes.filter((node) => known.has(node.id) && !incoming.has(node.id)).map((node) => node.id);
-  const visible = new Set(roots.length ? roots : projection.nodes.filter((node) => known.has(node.id)).slice(0, 1).map((node) => node.id));
+  const validEdges = projection.edges.filter((edge) => known.has(edge.source) && known.has(edge.target));
+  const incoming = new Set(validEdges.map((edge) => edge.target));
+  const neighbors = new Map([...known].map((id) => [id, [] as string[]]));
+  validEdges.forEach((edge) => {
+    neighbors.get(edge.source)?.push(edge.target);
+    neighbors.get(edge.target)?.push(edge.source);
+  });
+  const visited = new Set<string>();
+  const seeds: string[] = [];
+  for (const id of known) {
+    if (visited.has(id)) continue;
+    const component: string[] = [];
+    const pending = [id];
+    visited.add(id);
+    while (pending.length) {
+      const current = pending.pop()!;
+      component.push(current);
+      for (const neighbor of neighbors.get(current) ?? []) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          pending.push(neighbor);
+        }
+      }
+    }
+    const roots = component.filter((nodeId) => !incoming.has(nodeId));
+    seeds.push(...(roots.length ? roots : component.slice(0, 1)));
+  }
+  const visible = new Set(seeds);
   let frontier = [...visible];
   for (let depth = 0; depth < 2; depth += 1) {
     const next = projection.edges.filter((edge) => frontier.includes(edge.source) && known.has(edge.target)).map((edge) => edge.target);

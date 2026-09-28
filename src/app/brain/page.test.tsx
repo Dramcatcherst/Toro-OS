@@ -33,6 +33,27 @@ describe("BrainPage projection modes", () => {
     expect(unrevealedNeighbors("node:kross", reduced, known, visualBrainDemoLayout)).toEqual([]);
   });
 
+  it("keeps a disconnected cycle discoverable without claiming it is a child", () => {
+    const prototypeNode = visualBrainDemo.nodes[0];
+    const prototypeEdge = visualBrainDemo.edges[0];
+    const cycleA = "node:disconnected-a", cycleB = "node:disconnected-b";
+    const projection = {
+      ...visualBrainDemo,
+      nodes: [...visualBrainDemo.nodes, { ...prototypeNode, id: cycleA }, { ...prototypeNode, id: cycleB }],
+      edges: [
+        ...visualBrainDemo.edges,
+        { ...prototypeEdge, id: "edge:cycle-a-b", source: cycleA, target: cycleB },
+        { ...prototypeEdge, id: "edge:cycle-b-a", source: cycleB, target: cycleA },
+      ],
+    };
+    const point = visualBrainDemoLayout[prototypeNode.id];
+    const layout = { ...visualBrainDemoLayout, [cycleA]: point, [cycleB]: point };
+    const initial = initialBrainNodes(projection, layout);
+    expect(initial).toContain(cycleA);
+    expect(initial).toContain(cycleB);
+    expect(new Set(initial).size).toBe(initial.length);
+  });
+
   it("labels the example as synthetic and shows its example-only panels", async () => {
     loadBrainProjectionViewMock.mockResolvedValue({
       projection: visualBrainDemo,
