@@ -117,6 +117,17 @@ MVP order:
 3. Studio;
 4. then remaining modules using the same contracts.
 
+### Owner Attention + PayFlow contract — 2026-09-28
+
+Canonical subordinate contract:
+- `operations.knowledge_items/owner_attention_comms_payflow_v1`
+- `operations.knowledge_items/payment_inbox_map_2026_09_v1`
+- `docs/product/TORO_OWNER_ATTENTION_PAYFLOW_V1.md`
+
+Today/Attention and Money/PayFlow must project the same canonical exceptions to Portal and WhatsApp/OpenClaw. The owner does not monitor raw inbox volume. Email, WeSpeak and provider notifications are signals; only unresolved decisions, approvals, deadlines, risks, failed payments, unreconciled charges, response deadlines or material exceptions enter Owner Attention.
+
+Routine successful receipts remain evidence/digest unless another rule makes them actionable. No payment, contract acceptance, reservation/rate write, permission change, DNS/MX change or destructive mail action is implied by appearance in Owner Attention.
+
 ---
 
 ## TORO Studio — governed creative & media capability
@@ -348,6 +359,12 @@ Primary surfaces:
 - WeSpeak
 - TORO Portal
 - email / future channels
+
+WeSpeak capability status — 2026-09-28:
+- guest messaging/runtime remains active;
+- vendor roadmap reports **Atender llamadas de Voz con IA = Completed**, but Dreamcatcher Voice activation/runtime is **UNVERIFIED**; canonical task `wespeak_voice_activation_20260928`;
+- connected email evidence proves guest payment requests, SINPE instructions and payment-proof handoffs, but does **not** prove a native WeSpeak Payments processor is enabled; canonical task `wespeak_payments_capability_audit_20260928`;
+- Voice and any future Payments capability must feed TORO Comms / Owner Attention / PayFlow and may not become a parallel inbox, payment ledger or authority.
 
 Rule:
 A conversation is not the work.

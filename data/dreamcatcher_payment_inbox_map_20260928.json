@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "generated_on": "2026-09-28",
+  "canonical_knowledge_key": "payment_inbox_map_2026_09_v1",
+  "mailboxes": {
+    "info@dreamcatcherhotel.com": {
+      "status": "ACTIVE",
+      "flows": [
+        "wespeak_guest_payments",
+        "wespeak_vendor_billing",
+        "meta_ads",
+        "whatsapp_business",
+        "booking_invoices",
+        "starlink_fiscal",
+        "bac_transfers",
+        "kross_support"
+      ]
+    },
+    "admin@dreamcatcherhotel.com": {
+      "status": "ACTIVE_CONNECTED",
+      "flows": [
+        "google_workspace_billing",
+        "booking_agreements",
+        "ins_copies",
+        "google_admin_notices"
+      ]
+    },
+    "atrapasuenoshotel@gmail.com": {
+      "status": "LEGACY_CRITICAL_DO_NOT_RETIRE",
+      "flows": [
+        "alegra",
+        "vercel",
+        "airtable",
+        "supabase",
+        "ice",
+        "google_workspace_duplicate",
+        "dropbox_legacy",
+        "github_vercel_security"
+      ]
+    },
+    "accounting@atrapasuenos.net": {
+      "status": "ACTIVE_EXTERNAL_PROVIDER",
+      "flows": [
+        "lafise_retention_certificates",
+        "finance_correspondence"
+      ]
+    },
+    "info@atrapasuenos.net": {
+      "status": "DIRECT_ACCESS_MISSING",
+      "flows": [
+        "legacy_commercial",
+        "bcr_evertec_expected"
+      ]
+    },
+    "proveedores@atrapasuenos.net": {
+      "status": "DIRECT_ACCESS_MISSING",
+      "flows": [
+        "supplier_mail_expected"
+      ]
+    },
+    "accounting@dreamcatcherhotel.com": {
+      "status": "OWNER_CONFIRMED_NO_2026_CORPUS_EVIDENCE",
+      "flows": []
+    }
+  },
+  "external_dependencies": {
+    "mauferto@live.com": [
+      "INS_policy_copies",
+      "owner_legacy_admin"
+    ],
+    "anacarolinaf92@gmail.com": [
+      "requested_document_handoff_only"
+    ]
+  },
+  "source_unknown": [
+    "Liberty",
+    "Telecable",
+    "AyA",
+    "Swiss Hotel Competence billing source"
+  ],
+  "rules": [
+    "real recipient comes from provider/Gmail evidence, not connector identity",
+    "mail receipt is evidence, not payment finality",
+    "legacy identities remain until parity and dependency audit pass",
+    "personal collaborator inboxes are not corporate truth automatically"
+  ]
+}
