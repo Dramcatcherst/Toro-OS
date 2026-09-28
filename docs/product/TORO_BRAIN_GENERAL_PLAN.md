@@ -416,6 +416,15 @@ TORO must inventory and bind every active Atrapasueños/Dreamcatcher business ad
 
 For each address, Google Workspace Admin must identify whether it is a user mailbox, alias, group, delegated/shared mailbox or routed address, plus owner/recovery/2SV/dependencies. Preserve legacy identities until dependency and recovery audits are complete.
 
+Mailbox consolidation principle — 2026-09-28:
+- minimize paid users and organize around three logical roles: Admin/Security, Reception/Guest Operations, Finance/Providers;
+- preserve `admin@dreamcatcherhotel.com` as admin/security identity;
+- preserve active public `info@dreamcatcherhotel.com` as the Reception/Guest Operations address unless Admin inventory proves a safer mapping;
+- verify `accounting@dreamcatcherhotel.com` before using it as Finance; prefer reusing it over creating a second `contabilidad@` user;
+- do not create `recepcion@`, `contabilidad@` or `payments@` paid users merely because the logical roles exist;
+- route legacy `@atrapasuenos.net` addresses only after provider/DNS/dependency audit;
+- retain `atrapasuenoshotel@gmail.com` until provider logins, recovery paths, billing senders and message-history parity are verified.
+
 Gmail remains email source authority. Supabase stores governed metadata, normalized classifications, provenance, follow-ups and selected extracted facts; it must not become an indiscriminate raw-mail copy. Production ingestion should prefer official Gmail APIs/push history once authorized. Browser automation is an exception/fallback for portals or unsupported surfaces, not the primary mailbox transport.
 
 Current observed coverage on 2026-09-28:
