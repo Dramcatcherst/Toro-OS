@@ -39,3 +39,21 @@ for (const scenario of [
     });
   });
 }
+
+test.describe("mobile Brain signal strip", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("keeps hidden-scrollbar cards reachable with the keyboard", async ({ page }) => {
+    await page.goto(brainUrl, { waitUntil: "networkidle" });
+    const strip = page.getByRole("region", { name: /Synthetic scenario summary/ });
+    await expect(strip).toBeVisible();
+    expect(await strip.evaluate((element) => getComputedStyle(element).scrollbarWidth)).toBe("none");
+    expect(await strip.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+
+    await strip.focus();
+    await strip.press("ArrowRight");
+    await expect.poll(() => strip.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+    await strip.press("End");
+    await expect(strip.getByText("owner approval required")).toBeVisible();
+  });
+});

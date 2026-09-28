@@ -782,9 +782,10 @@
     overscroll-behavior-inline: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 7px;
-    scrollbar-width: thin;
+    scrollbar-width: none;
     padding: 7px;
   }
+  .signalStrip::-webkit-scrollbar { display: none; }
   .signalStrip > div {
     flex: 0 0 82%;
     min-width: 0;
