@@ -14,6 +14,16 @@ function hasText(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+function validObservedTimestamp(value) {
+  if (!hasText(value)) return false;
+  const normalized = value
+    .trim()
+    .replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:)/, "$1T$2")
+    .replace(/([+-]\d{2})$/, "$1:00")
+    .replace(/(\.\d{3})\d+(?=(?:[+-]\d{2}:\d{2}|Z)$)/, "$1");
+  return Number.isFinite(Date.parse(normalized));
+}
+
 function fail(index, taskKey, message) {
   throw new Error(`manifest entry ${index + 1} (${taskKey || "unknown"}): ${message}`);
 }
@@ -27,7 +37,7 @@ export function validateManifest(entries, mode = "ready") {
     if (!entry || typeof entry !== "object") fail(index, "", "entry must be an object");
     if (!hasText(entry.task_id)) fail(index, entry.task_key, "task_id is required");
     if (!hasText(entry.task_key)) fail(index, entry.task_key, "task_key is required");
-    if (!hasText(entry.observed_updated_at) || !Number.isFinite(Date.parse(entry.observed_updated_at))) {
+    if (!validObservedTimestamp(entry.observed_updated_at)) {
       fail(index, entry.task_key, "observed_updated_at must be a valid timestamp");
     }
     if (keys.has(entry.task_key)) fail(index, entry.task_key, "duplicate task_key");
