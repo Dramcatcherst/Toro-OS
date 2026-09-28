@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TORO Brain",
-  description: "TORO Brain makes complex business operations easier to understand, coordinate and execute.",
+  title: "TORO",
+  description: "TORO makes complex business operations easier to understand, coordinate and execute.",
 };
 
 export default function RootLayout({

@@ -18,7 +18,7 @@ const stayTypes = [
 ];
 
 const proof = [
-  "Source-backed content from TORO OS business objects and connector health.",
+  "Source-backed content from governed TORO business objects and connector health.",
   "Kross remains the authority for live rates, availability and restrictions.",
   "Owner approval required before any external publishing, pricing or guest-facing send.",
 ];
@@ -60,7 +60,7 @@ export default async function DreamcatcherLanding() {
           <div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#f6d29d]/30 bg-[#f6d29d]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#f6d29d]"><Sparkles className="h-4 w-4" /> Boutique hotel · villas · buyouts</div>
             <h1 className="max-w-5xl text-6xl font-black leading-[0.9] tracking-[-0.07em] text-white sm:text-7xl lg:text-8xl">Sleep inside the wild rhythm of Santa Teresa.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/72">{property?.details ?? "Dreamcatcher Hotel is positioned as the first high-confidence TORO OS workspace for hospitality conversion."} The page packages every stay as a clear path from desire to qualified inquiry, without overpromising live inventory.</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/72">{property?.details ?? "Dreamcatcher Hotel is positioned as the first high-confidence TORO workspace for hospitality conversion."} The page packages every stay as a clear path from desire to qualified inquiry, without overpromising live inventory.</p>
             <CTA className="mt-8" />
           </div>
           <div className="rounded-[2rem] border border-white/14 bg-white/10 p-4 shadow-[0_40px_120px_rgba(0,0,0,0.45)] backdrop-blur-xl">

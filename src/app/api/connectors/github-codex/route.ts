@@ -10,9 +10,9 @@ export async function POST(request: Request) {
     configured: Boolean(process.env.GITHUB_TOKEN && process.env.GITHUB_REPOSITORY),
     issuePayload: {
       repository: body.repository ?? process.env.GITHUB_REPOSITORY ?? "owner/repo-required",
-      title: body.title ?? "TORO OS approved builder task",
+      title: body.title ?? "TORO approved builder task",
       labels: ["toro-os", "approval-required", "prepared-only"],
-      body: body.body ?? "Prepared by TORO OS. Create only after human approval.",
+      body: body.body ?? "Prepared by TORO. Create only after human approval.",
     },
     nextAction: "Provide owner/repo and approval, then create issue through GitHub connector.",
   });

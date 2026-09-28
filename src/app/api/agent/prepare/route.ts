@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     externalWrite: false,
     decision,
     draft: {
-      title: body.title ?? "Prepared TORO OS agent output",
+      title: body.title ?? "Prepared TORO agent output",
       summary: "This is a guarded draft. It can be reviewed, edited and queued, but not executed externally in v0.3.",
       nextAction: decision.approval === "Blocked" ? "Revise action scope." : "Route to approval queue.",
     },

@@ -6,7 +6,7 @@ export const approvalSeed: ApprovalRecord[] = queuedActions.map((action) => ({
   title: action.title,
   module: action.module,
   targetTool: action.targetTool,
-  requestedBy: "TORO OS",
+  requestedBy: "TORO",
   state: "Pending",
   actionLevel: action.actionLevel,
   updatedAt: "2026-06-09T09:00:00.000Z",
