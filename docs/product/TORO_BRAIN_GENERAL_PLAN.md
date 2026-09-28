@@ -2207,3 +2207,18 @@ Merge commit:
 4. Wave 4E — employee change/swap only after a reviewed self-service RLS/RPC contract exists.
 
 Salary/payroll forecast must remain a separately authorized finance capability and must not leak into generic team schedule views.
+
+
+## 2026-09-28 — TORO Consolidation R1-A backlog closeout
+
+VERIFIED production result:
+- canonical task universe remains `operations.tasks`;
+- 65 legacy/current tasks were reviewed under KEEP / HOLD / REWRITE / MERGE / CLOSE;
+- 62 guarded R1 mutations were applied with audit receipts;
+- 3 concurrent rows were preserved as no-op evidence;
+- `needs_revalidation=true` across the reviewed set is now 0;
+- active open task count moved from 208 to 187;
+- 21 reviewed rows are archived/inactive and 1 is done/inactive;
+- no task deletion and no parallel task/project authority created.
+
+Evidence: `docs/evidence/TORO_R1_BACKLOG_REVALIDATION_20260928.md`.
