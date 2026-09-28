@@ -1910,16 +1910,16 @@
     "description": "INCUBATOR / accepted risk. Mantener secreto fuera de GitHub/Airtable/Dropbox/documentación general. Reabrir rotación solo ante cambio de personal/proveedor con conocimiento, sospecha de abuso, rediseño de red, quejas de seguridad/desempeño o exposición accidental. No almacenar la credencial en TORO.",
     "updated_at": "2026-09-19 09:50:38.924282+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Accepted-risk Wi-Fi credential rotation has no current trigger; keep the secret out of TORO and reactivate only on the documented exposure/personnel/network conditions.",
+    "evidence_ref": "supabase:operations.tasks/confirm_wifi_wording_backup_2026_06_17@2026-09-19T09:50:38.924282+00"
   },
   {
     "task_id": "d9c2f2c6-24f8-47c7-b65c-31981d8563a8",
@@ -1972,16 +1972,16 @@
     "description": "INCUBATOR. Generar manuales por rol solo desde staff_directory, departments y SOPs validados; nunca desde memoria. Deben ser vistas/artefactos derivados para evitar documentación duplicada. No ejecutar hasta estabilizar procesos base.",
     "updated_at": "2026-09-19 09:50:38.924282+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Role manuals remain an incubator artifact until core staff/SOP truth stabilizes; active backlog should not carry this future derived-document work.",
+    "evidence_ref": "supabase:operations.tasks/dreamteam_role_manuals_incubator_20260913@2026-09-19T09:50:38.924282+00"
   },
   {
     "task_id": "01063c62-08b8-45ff-9855-0518d2c389fa",
@@ -2003,15 +2003,15 @@
     "description": "INCUBATOR. No comprar ni reservar ahora. Compra solo cuando exista contenido/producto listo, finalidad/titular definidos, privacidad/permisos probados, cotización final con moneda/total/renovación/impuestos y aprobación explícita de importe/condiciones. La captura histórica no prueba disponibilidad ni precio futuro.",
     "updated_at": "2026-09-19 09:50:38.924282+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Future domain purchase has no current product/content trigger and explicitly requires later pricing/ownership/privacy approval; keep it on HOLD rather than active backlog.",
+    "evidence_ref": "supabase:operations.tasks/future_domain_purchase_readiness@2026-09-19T09:50:38.924282+00"
   }
 ]
