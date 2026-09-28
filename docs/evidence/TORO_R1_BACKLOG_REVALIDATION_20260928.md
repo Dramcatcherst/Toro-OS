@@ -130,3 +130,36 @@ Immediately after `ROLLBACK`:
 - persisted R1 audit receipts: **0**
 
 Therefore the dry-run produced no persistent task or audit mutation.
+
+
+## Production apply closeout — VERIFIED
+
+R1-A was applied in six guarded module batches after the rollback-only dry-run passed.
+
+Batch results:
+
+| Module | Actionable rows | Final active-open rows in reviewed scope | Archived |
+| --- | ---: | ---: | ---: |
+| `toro_executive_control` | 12 | 9 | 5 |
+| `business_truth_bible` | 6 | 3 | 3 |
+| `critical_hotel_operations` | 17 | 12 | 5 |
+| `revenue_booking_stack` | 15 | 11 | 4 |
+| `dreamcatcher_website` | 7 | 4 | 3 |
+| `finance_controls` | 5 | 4 | 1 |
+
+Final production readback:
+
+- total task rows: **350**
+- active open tasks: **187**
+- reviewed rows: **65**
+- reviewed rows still `needs_revalidation=true`: **0**
+- R1 apply audit receipts: **62**
+- reviewed archived/inactive: **21**
+- reviewed done/inactive: **1**
+
+The three rows already revalidated by concurrent work were not mutated by the R1 apply generator.
+
+No task row was deleted. Recovery SQL remains versioned in:
+`supabase/drafts/20260928_toro_r1_task_revalidation_recovery.sql`.
+
+**R1-A result:** stale/historical backlog was reduced without creating another task system or losing source history.
