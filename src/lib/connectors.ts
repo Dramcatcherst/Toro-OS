@@ -16,7 +16,7 @@ export function prepareConnectorAction(input: Omit<PreparedConnectorAction, "ext
     ...input,
     externalWrite: false,
     status: "prepared_only",
-    auditMessage: "TORO OS v0.3 does not execute external writes. This action is queued for approval and audit review.",
+    auditMessage: "TORO does not execute this external write without the required approval and audit review.",
   };
 }
 
