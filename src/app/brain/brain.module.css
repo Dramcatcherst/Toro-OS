@@ -522,8 +522,44 @@
 }
 
 .mobileBrain { display: none; }
+.mobileMap { display: none; }
+.mobileMapHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.mobileMapHeading strong { font-size: 14px; color: #f8fafc; }
+.mobileMapHeading span { font-size: 11px; color: #94a3b8; white-space: nowrap; }
+.mobileMapCanvas {
+  position: relative;
+  height: clamp(270px, 45vw, 330px);
+  margin-top: 8px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 48%, rgba(14, 165, 233, 0.16), transparent 60%);
+}
+.mobileMapCanvas svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mobileMapEdge, .mobileMapEdgeReview { vector-effect: non-scaling-stroke; stroke-width: 1.5; }
+.mobileMapEdge { stroke: rgba(34, 211, 238, 0.54); }
+.mobileMapEdgeReview { stroke: rgba(245, 158, 11, 0.65); stroke-dasharray: 3 2; }
+.mobileMapNode {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid #67e8f9;
+  border-radius: 50%;
+  background: #081b2d;
+  color: #a5f3fc;
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.26);
+}
+.mobileMapNode svg { width: 54%; height: 54%; }
+.mobileMapNode[data-kind="organization"] { border-color: #fbbf24; color: #fde68a; }
+.mobileMapNode[data-kind="agent"] { border-color: #c084fc; color: #e9d5ff; }
+.mobileMapNode[data-kind="kpi"] { border-color: #34d399; color: #a7f3d0; }
+.mobileMapNode[data-kind="project"] { border-color: #fb923c; color: #fed7aa; }
+.mobileMapNode[data-kind="approval"] { border-color: #fb7185; color: #fecdd3; }
+.mobileMapNode[data-kind="decision"] { border-color: #f472b6; color: #fbcfe8; }
+.mobileMapNode:focus-visible { outline: 2px solid #fff; outline-offset: 3px; z-index: 2; }
+.mobileMapHint { margin-top: 5px; color: #cbd5e1; font-size: 11px; line-height: 1.4; }
 
-.mobileNode { border-bottom: 1px solid rgba(148, 163, 184, 0.12); }
+.mobileNode { border-bottom: 1px solid rgba(148, 163, 184, 0.12); scroll-margin-top: 16px; }
+.mobileNode:target { background: rgba(34, 211, 238, 0.12); }
 .mobileNode:last-child { border-bottom: 0; }
 .mobileNode > summary {
   display: grid;
@@ -606,6 +642,7 @@
 @media (max-width: 800px) {
   .desktopTrace { display: none; }
   .mobileTrace { display: block; }
+  .mobileMap { display: block; margin: 0 auto 12px; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.28); background: rgba(2, 6, 23, 0.84); }
   .mobileBrain { display: block; }
   .desktopBrain { display: none; }
   .page { padding: 12px; }
