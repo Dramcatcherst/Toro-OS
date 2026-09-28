@@ -550,25 +550,31 @@
   height: 100%;
   cursor: pointer;
   list-style: none;
+  border-radius: 50%;
+}
+.mobileMapNode > summary::-webkit-details-marker { display: none; }
+.mobileMapVisual {
+  display: grid;
+  place-items: center;
   border: 1px solid #67e8f9;
   border-radius: 50%;
   background: #081b2d;
   color: #a5f3fc;
   box-shadow: 0 0 14px rgba(34, 211, 238, 0.26);
 }
-.mobileMapNode > summary::-webkit-details-marker { display: none; }
-.mobileMapNode > summary svg { width: 54%; height: 54%; }
-.mobileMapNode[data-kind="organization"] > summary { border-color: #fbbf24; color: #fde68a; }
-.mobileMapNode[data-kind="agent"] > summary { border-color: #c084fc; color: #e9d5ff; }
-.mobileMapNode[data-kind="kpi"] > summary { border-color: #34d399; color: #a7f3d0; }
-.mobileMapNode[data-kind="project"] > summary { border-color: #fb923c; color: #fed7aa; }
-.mobileMapNode[data-kind="approval"] > summary { border-color: #fb7185; color: #fecdd3; }
-.mobileMapNode[data-kind="decision"] > summary { border-color: #f472b6; color: #fbcfe8; }
+.mobileMapVisual svg { width: 54%; height: 54%; }
+.mobileMapNode[data-kind="organization"] .mobileMapVisual { border-color: #fbbf24; color: #fde68a; }
+.mobileMapNode[data-kind="agent"] .mobileMapVisual { border-color: #c084fc; color: #e9d5ff; }
+.mobileMapNode[data-kind="kpi"] .mobileMapVisual { border-color: #34d399; color: #a7f3d0; }
+.mobileMapNode[data-kind="project"] .mobileMapVisual { border-color: #fb923c; color: #fed7aa; }
+.mobileMapNode[data-kind="approval"] .mobileMapVisual { border-color: #fb7185; color: #fecdd3; }
+.mobileMapNode[data-kind="decision"] .mobileMapVisual { border-color: #f472b6; color: #fbcfe8; }
 .mobileMapNode > summary:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .mobileMapPopover {
   position: absolute;
   display: grid;
   gap: 5px;
+  pointer-events: none;
   width: min(210px, 74vw);
   padding: 9px 11px;
   border: 1px solid rgba(103, 232, 249, 0.6);
@@ -585,7 +591,7 @@
 .mobileMapNode[data-vertical="below"] .mobileMapPopover { top: calc(100% + 7px); }
 .mobileMapPopover strong { font-size: 12px; overflow-wrap: anywhere; }
 .mobileMapPopover span { font-size: 10px; color: #cbd5e1; overflow-wrap: anywhere; }
-.mobileMapPopover a { font-size: 11px; color: #67e8f9; text-decoration: underline; }
+.mobileMapPopover a { pointer-events: auto; font-size: 11px; color: #67e8f9; text-decoration: underline; }
 .mobileMapPopover a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 2px; }
 .mobileMapHint { margin-top: 5px; color: #cbd5e1; font-size: 11px; line-height: 1.4; }
 
