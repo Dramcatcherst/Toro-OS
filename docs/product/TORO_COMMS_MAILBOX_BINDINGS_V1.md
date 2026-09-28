@@ -78,6 +78,30 @@ As of 2026-09-28:
 - PR #168 Same-Brain/Codex alignment supersedes stale #143 and is merged;
 - General Plan multi-mailbox + OpenClaw parity alignment is merged via PR #176.
 
+## Observed mailbox activity snapshot — 2026-09-28
+
+This is an evidence snapshot from the currently connected Gmail corpus. It does **not** replace Workspace Admin classification.
+
+- `admin@dreamcatcherhotel.com`: directly connected Gmail profile; high current send/receive activity; canonical Workspace admin username.
+- `info@dreamcatcherhotel.com`: high current send/receive activity and used as an outgoing From identity from the connected corpus; exact object type (alias/user/send-as/delegation) remains unverified.
+- `accounting@atrapasuenos.net`: current 2026 send/receive evidence exists; includes the LAFISE retention certificate forwarding chain.
+- `info@atrapasuenos.net`: limited but current 2026 evidence exists.
+- `proveedores@atrapasuenos.net`: address is owner-confirmed, but current connected-corpus searches did not produce a header-level proof of the address itself; classification remains unverified.
+- `accounting@dreamcatcherhotel.com`: no 2026 message evidence found in the currently connected corpus; classification remains unverified.
+- `atrapasuenoshotel@gmail.com`: legacy Gmail remains a critical dependency. The connected corpus contains original messages Delivered-To this address through at least 2026-09-25; 2026 activity includes GitHub, Vercel, Kross and Alegra-related traffic.
+
+### Verified Workspace migration timeline
+
+- **2026-08-14:** Google confirmed custom email for `dreamcatcherhotel.com` was configured; Workspace admin username `admin@dreamcatcherhotel.com`; Business Starter.
+- **2026-08-14:** Google Admin migration report records IMAP migration activity from `info@dreamcatcherhotel.com` folders into Gmail target `atrapasuenoshotel@gmail.com`.
+- **2026-08-18:** Google emailed `atrapasuenoshotel@gmail.com` that `admin@dreamcatcherhotel.com` requested authorization to connect that Gmail account and transfer messages into `dreamcatcherhotel.com`.
+- **2026-08-23:** Google sent Workspace trial/setup notices to both the legacy Gmail and the new admin address.
+- **2026-09-13:** Google sent Workspace welcome/setup guidance to `admin@dreamcatcherhotel.com`.
+- **Through at least 2026-09-25:** original messages delivered to the legacy Gmail are present in the currently connected corpus.
+- **Migration completion:** NOT PROVEN. No completion notice was recovered.
+
+Candidate architecture must therefore preserve the legacy Gmail until Workspace Admin inventory, forwarding/import state, provider dependencies and migration completion are verified.
+
 ## Binding registry contract
 
 Draft table: `integrations.communication_channel_bindings`.
