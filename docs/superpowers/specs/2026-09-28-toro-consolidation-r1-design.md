@@ -1,6 +1,6 @@
 # TORO Consolidation R1 — Architecture & Canonicalization Design
 
-**Status:** PROPOSED FOR OWNER REVIEW  
+**Status:** PROPOSED FOR OWNER REVIEW — not current authority until approved and merged  
 **Date:** 2026-09-28  
 **Product:** TORO  
 **Reference implementation:** Dreamcatcher Hotel  
@@ -25,7 +25,7 @@ R1 should produce:
 
 1. one visible product and brand: **TORO**;
 2. one canonical Plan General;
-3. one canonical runtime data platform;
+3. one canonical platform for TORO-owned structured runtime data;
 4. one project/task/decision/approval universe;
 5. one explicit source-authority model;
 6. one normalized action/execution loop;
@@ -721,7 +721,7 @@ Known legacy/reference:
 - `Dramcatcherst/agoversion-v100` -> **REFERENCE / STATIC QA SNAPSHOT**
 - `Dramcatcherst/dc-king` -> **REFERENCE / PRIOR WEBSITE IMPLEMENTATION**
 - `Dramcatcherst/dreamcatcher-hotel-santa-teresa-v100` -> **REFERENCE / PRIOR WEBSITE IMPLEMENTATION**
-- `Dramcatcherst/dreamcatcher-santa-teresa-next` -> **REFERENCE / ABANDONED BOOTSTRAP CANDIDATE** unless a current consumer is discovered
+- `Dramcatcherst/dreamcatcher-santa-teresa-next` -> **REFERENCE / ISOLATED BOOTSTRAP CANDIDATE**; no current consumer was observed in this audit
 - `Dramcatcherst/dreamcatcher-el-sueno-de-mama` -> **ARCHIVE** (repository is already archived)
 
 Active/migrate:
