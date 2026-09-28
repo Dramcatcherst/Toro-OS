@@ -365,6 +365,44 @@ Possible outcomes:
 
 Messages never create permanent memory directly.
 
+## Same-Brain communication and mailbox rule — owner directive 2026-09-28
+
+WhatsApp/OpenClaw, email, Portal, WeSpeak and future channels are **surfaces over the same TORO Brain**. They may not become independent assistants, memories, task stores, approval systems or business truth layers.
+
+OpenClaw/WhatsApp must be able to reach the full set of **authorized business capabilities and sources** through TORO context, routing and permission contracts, including Finance, Operations, Revenue, Guests, People, Projects, Knowledge, Systems, Assets and approved external connectors. "Access to everything" means capability parity with TORO for the active authorized scope; it never means bypassing tenant isolation, personal/work separation, RLS, approval gates, secret handling or source-authority rules.
+
+Required runtime chain:
+
+`WhatsApp/OpenClaw -> verified channel identity -> TORO context resolver -> capability/action router -> authoritative connector/source -> evidence/readback -> TORO response/follow-up`
+
+Rules:
+- OpenClaw must not store a parallel business personality, memory or backlog;
+- the same Human Layer, organization context, roles, action ceilings and canonical tasks/projects apply across WhatsApp and Portal;
+- personal/family/private scopes remain excluded unless the authenticated identity is explicitly authorized for that scope;
+- material writes, money movement, tax/legal submissions, reservation/rate changes, permission changes and destructive actions remain approval-gated according to TORO Governance;
+- secrets/tokens/passwords are never exposed to the WhatsApp model or persisted in messages; connectors broker access server-side;
+- reconnect/replay must be idempotent and must not duplicate tasks, notifications or external actions.
+
+### Dreamcatcher business mailbox coverage
+
+TORO must inventory and bind every active Atrapasueños/Dreamcatcher business address before claiming complete email coverage. Current owner-confirmed addresses to reconcile:
+- `info@atrapasuenos.net`
+- `proveedores@atrapasuenos.net`
+- `accounting@atrapasuenos.net`
+- `admin@dreamcatcherhotel.com`
+- `info@dreamcatcherhotel.com`
+- `accounting@dreamcatcherhotel.com`
+
+For each address, Google Workspace Admin must identify whether it is a user mailbox, alias, group, delegated/shared mailbox or routed address, plus owner/recovery/2SV/dependencies. Preserve legacy identities until dependency and recovery audits are complete.
+
+Gmail remains email source authority. Supabase stores governed metadata, normalized classifications, provenance, follow-ups and selected extracted facts; it must not become an indiscriminate raw-mail copy. Production ingestion should prefer official Gmail APIs/push history once authorized. Browser automation is an exception/fallback for portals or unsupported surfaces, not the primary mailbox transport.
+
+Current observed coverage on 2026-09-28:
+- ChatGPT Gmail connector: `admin@dreamcatcherhotel.com` only;
+- governed Gmail metadata index: 6,128 rows, all from the admin Dreamcatcher mailbox;
+- Google Drive connector currently represents Mauricio's personal Google account, not the hotel Workspace tenant;
+- therefore complete Workspace/email coverage is **NOT YET VERIFIED**.
+
 ---
 
 # 7. Tool architecture
@@ -462,6 +500,33 @@ Public baseline reviewed:
 - security audit + deep audit;
 - backups/recovery;
 - private Tailscale access preferred for remote laptop gateway.
+
+## SAME-BRAIN execution update — 2026-09-28
+
+Canonical Same-Brain code path is already part of TORO:
+- PR #142 is merged;
+- shared internal-work intake exists for canonical task/project work;
+- WhatsApp remains TORO's primary conversational surface and Codex/Builder is a delegated worker, not a second assistant.
+
+Still unverified live:
+- actual OpenClaw Gateway host/worktree consumption;
+- authenticated runtime-to-TORO connection;
+- verified WhatsApp channel identity pairing;
+- source/capability parity across authorized business connectors;
+- continuity after reconnect/replay;
+- duplicate suppression/readback across real WhatsApp actions.
+
+P0 acceptance requires one real controlled run proving:
+1. authenticated identity -> correct TORO organization/workspace;
+2. read access to authorized cross-domain business context without leaking forbidden scopes;
+3. task creation;
+4. maintenance action intake;
+5. project follow-up;
+6. delegated Builder/Codex work;
+7. reconnect/replay continuity;
+8. notification/follow-up without duplicates;
+9. source/evidence readback;
+10. fail-closed behavior for unauthorized data/actions.
 
 ## UNKNOWN until host audit
 
@@ -611,7 +676,7 @@ Fiscal/accounting authority.
 Active guest communication runtime.
 
 ## OpenClaw
-Configured-unverified channel/runtime.
+Same-Brain code path exists; live Gateway/channel identity/capability parity remains configured-unverified until host acceptance.
 
 ---
 
