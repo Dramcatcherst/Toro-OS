@@ -61,13 +61,39 @@ Expected: every live function signature is present exactly once.
 
 Add exact signatures for the observed additions, including maintenance, membership, recovery-delivery, TORO decision/search, employee channel enrollment, and related private helpers/triggers.
 
-Use these policy classes:
-- trigger-only/private implementation helpers -> `noDirectAccess`;
-- authenticated user self/org operations -> `authenticated`;
-- server-only enrollment/recovery delivery/owner-pilot operations -> `server`;
-- agency/revenue reads remain non-public unless an existing verified consumer proves a direct authenticated requirement.
+Use this exact target matrix for the 25 live signatures absent from the 2026-09-04 policy:
 
-Expected: `RPC_ACCESS_POLICY` and the live catalog contain the same governed signature set.
+| Signature | Target direct roles |
+| --- | --- |
+| `private.can_access_maintenance_field(...)` | none |
+| `private.get_current_maintenance_field_round_impl(...)` | none |
+| `private.guard_accommodation_product_publish()` | none |
+| `private.guard_recovery_delivery_state()` | none |
+| `private.guard_room_content_publish()` | none |
+| `private.guard_villa_publish()` | none |
+| `private.has_active_membership(...)` | authenticated |
+| `private.set_updated_at_experience_catalog()` | none |
+| `private.submit_maintenance_inspection_check_impl(...)` | none |
+| `private.validate_membership_employee_link()` | none |
+| `public.confirm_maintenance_inspection_check(...)` | authenticated |
+| `public.consume_employee_channel_enrollment_v1(...)` | service_role |
+| `public.get_agency_rate_lookup(...)` | authenticated |
+| `public.get_current_maintenance_field_round(...)` | authenticated |
+| `public.get_current_maintenance_round()` | none; retire direct execute in favor of the scoped wrapper |
+| `public.get_current_revenue_access()` | authenticated |
+| `public.list_my_decisions(...)` | authenticated |
+| `public.recovery_delivery_find_by_batch_user(...)` | service_role |
+| `public.recovery_delivery_find_by_idempotency(...)` | service_role |
+| `public.recovery_delivery_insert_pending(...)` | service_role |
+| `public.recovery_delivery_update_state(...)` | service_role |
+| `public.resolve_toro_decision(...)` | authenticated |
+| `public.search_toro(...)` | authenticated |
+| `public.submit_maintenance_inspection_check(...)` | authenticated |
+| `public.toro_owner_pilot_identity(...)` | service_role |
+
+Also preserve the current code contract that `src/lib/auth/rate-limit-service.ts` calls `check_login_rate_limit`, `check_recovery_rate_limit`, and `record_login_attempt` through `createSupabaseServiceClient()`; browser/session clients must not call those RPCs directly.
+
+Expected: `RPC_ACCESS_POLICY` and the live catalog contain the same governed signature set and the three pre-auth rate-limit RPCs are explicitly server-mediated.
 
 - [ ] **Step 4: Update `rpc-access-policy.test.ts`**
 
