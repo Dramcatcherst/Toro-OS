@@ -1259,16 +1259,16 @@
     "description": "Approved execution brief: RENTABILIDAD CONTINUA V5 — FAMILY NEXT BEST OFFER. Corrección: Kross Edad describe al huésped principal; NO usarla para estimar niños. Para familia, TERE debe capturar adultos + niños + edad de cada niño por habitación y resolver primero Room Fit. Evidencia actual: export filtrado de 14 reservas activas: 50% con 3+ huéspedes, 42,9% con 4+, 28,6% multi-room; grupos de 5/8/15/18 pax. Priorizar #3/#4/#6/#11/#21/#22/#25/#26 y villas según capacidad/camas/cocina/escaleras/piscina/continuidad. Después de habitación, máximo 1 extra relevante (desayuno/F&B/experiencia/traslado/late checkout/extensión) solo con precio/costo/disponibilidad confirmables. Métrica: family eligible→would_show→shown→accepted→revenue→contribution; no spam ni inferencia demográfica.\n\nPlan target date (source, not canonical due date): 2026-10-24\n\nExecution plan ref: DC2-037\n\nPrimary KPI: Paid consumption + attach rate + contribution per SKU + NBO acceptance\n\nSource notes:\nR8 2026-09-15 23:46:09 UTC — REGLA DE PRECIO PREPARADA. Fuente pública autorizada o referencia aprobada; identidad/contexto/fecha/moneda/inclusiones/caducidad; cotización exacta respeta expiry proveedor; piloto propuesto15–30min refresco/24h referencia, no conexión validada. No se extrajeron importes ni tarifas netas. Disponibilidad separada; no sumar room rates para inventar villa/bundle. MK/combinaciones consulta; no prometer selección por links genéricos. Máximo1extra pertinente sigue vigente. Ver R8 central; sin activar lógica ni campañas.\n\nR7 — 2026-09-15 23:20:31 UTC. Integrar dentro de una TERE compartida los mismos IDs/hechos del catálogo normal y selección por prompt. Elegibilidad/capacidad/camas primero; preferencias explícitas y evidencia; diversidad útil máximo3opciones. Máximo1extra apto por oportunidad; costos internos no se exponen; no inferir niños/riqueza/nacionalidad. Precios orientativos de alojamiento aceptados por Mauricio solo con fuente/fecha/contexto/condiciones/vencimiento y confirmación final. No activar ofertas con precio/costo/cupo desconocidos. Implementación NO realizada; conservar brief V5 y estado actual.\n\n--- HISTÓRICO ---\nR6 — 2026-09-15 22:53:45 UTC. Integración preparada de Family Next Best Offer en rediseño integral74URLs. Preservar brief V5: Room Fit primero, edades reales necesarias por niño/habitación; máximo1extra con precio/costo/cupo/operación confirmables. Una TERE conectada a web/WeSpeak existentes, Mi viaje y comparación. Estados elegible→simulada→mostrada→aceptada→entregada→ingreso→contribución; supresión tras rechazo/incidencia. Solo estudio; sin activación AI, mensajes ni venta. Ver analysis.md revisión6; plan general ya aprobado. No se cambia estado de implementación.\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.24081+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Valid future extras/NBO work, but current prerequisites for room fit, price freshness and availability are not yet closed; reactivate when those gates are ready rather than carrying it as active work.",
+    "evidence_ref": "supabase:operations.tasks/DC2-037@2026-09-23T06:06:49.24081+00"
   },
   {
     "task_id": "99af6e87-0dfa-4c28-a0f3-ad587279e915",
@@ -1290,16 +1290,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Reusar medidores/consumos; separar construcción, cocina y noches físicas. Cierre: 30 días conciliados y huecos desconocidos, no cero. Rol: mantenimiento + datos. Dependencia: DC2-021. No atribuir ahorro sin base comparable ni sumar inventario virtual en denominador.\n\nPlan target date (source, not canonical due date): 2026-10-19\n\nExecution plan ref: DC2-048\n\nPrimary KPI: kWh/room-night y L/guest-night",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Energy/water denominator analysis is valid but explicitly downstream of higher-priority source and operational gates; no current 30-day reconciliation trigger is active.",
+    "evidence_ref": "supabase:operations.tasks/DC2-048@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "7affee16-d4aa-41e3-adbb-536c5c38f773",
@@ -1321,7 +1321,7 @@
     "description": "Primary KPI: % responsabilidades operativas delegadas con QA\n\nSource notes:\nRol actual permanece Recepción + Líder Operativa. Crear desarrollo gradual: coordinación diaria, housekeeping/lavandería, incidencias, turnos, handoff recepción, métricas y permisos. Criterio de promoción futura: responsabilidades y autoridad formalmente definidas, entrenamiento completado y desempeño medido.\n\n[FIELD-PACKET-20260922-OPERATE-ALEXANDRA]\nUbicación: Recepción/Administración y handoffs operativos reales de Housekeeping/Lavandería e incidencias; usar trabajo existente, sin crear una ronda física adicional. Responsable: Alexandra como ejecutora del desarrollo; Mauricio/Gerencia como mentor y QA. Prueba: seleccionar responsabilidades operativas ya definidas y observar su ejecución en escenarios reales de coordinación/handoff; verificar que cada una se complete con seguimiento, escalamiento correcto y QA, sin cambiar turnos, puesto, permisos ni identidades. Evidencia: fecha/hora, responsabilidad practicada, caso o handoff atendido, resultado, excepción/escalamiento, responsable y QA. Criterio de cierre: conjunto de responsabilidades objetivo definido y ejercido con evidencia y QA durante la ventana acordada, métricas básicas registradas y brechas explícitas; cualquier promoción, cambio contractual, turno o permiso queda fuera de este paquete.\n[/FIELD-PACKET-20260922-OPERATE-ALEXANDRA]",
     "updated_at": "2026-09-23 04:53:56.858614+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1329,8 +1329,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This remains a current operational capability-development initiative with a defined mentor/QA path and measurable delegation objective; no promotion or permission change is implied.",
+    "evidence_ref": "supabase:operations.tasks/alexandra_ops_manager_development_20260918@2026-09-23T04:53:56.858614+00"
   },
   {
     "task_id": "b92fe78d-447f-4efe-b4bd-414c0fe73a8f",
@@ -1352,16 +1352,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-10-05\n\nExecution plan ref: DC2-044\n\nPrimary KPI: Incidencias primeras 2h",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The task itself is explicitly P2 and deferred until P0/P1 close; keep it out of the active backlog until that trigger exists.",
+    "evidence_ref": "supabase:operations.tasks/DC2-044@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "79cb650f-f310-4202-87df-e7969b551307",
@@ -1383,16 +1383,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-10-12\n\nExecution plan ref: DC2-050\n\nPrimary KPI: Evidencias vigentes / incidencias\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: sistema físico de reúso de agua y sus componentes visibles en Dreamcatcher/DIEX, desde origen hasta almacenamiento/uso o descarga según exista realmente.\nResponsable: RICO / Mantenimiento para captura física; Mauricio para QA; técnico competente cuando haga falta interpretar o intervenir componentes internos.\nPrueba: trazar de forma no invasiva origen, conducción, almacenamiento, uso y rebose/descarga observables; contrastar cada tramo con planos/manuales disponibles sin asumir que reflejan el estado actual.\nEvidencia: fecha/hora, fotos y croquis por tramo, función observada, PASS/FAIL, documento de referencia cuando exista y brechas explícitas.\nCriterio de cierre: expediente técnico describe configuración real observable, evidencia y diferencias frente a documentación; cumplimiento sanitario/legal solo se acredita con soporte oficial separado.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The water-reuse technical dossier is valid but explicitly deferred behind higher-priority work; no current technical/legal trigger requires active execution.",
+    "evidence_ref": "supabase:operations.tasks/DC2-050@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "217e7159-b630-41d0-b3eb-5f0a71495568",
@@ -1414,16 +1414,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Inventariar música, licencias, volumen y zonas; conservar silencio/naturaleza. Cierre: piloto reversible siete días con feedback. Rol: Mauricio + recepción. Dependencia: DC2-054. MUSIC_MASTER vacío no prueba ausencia de música. No autoplay web ni compra de equipos.\n\nPlan target date (source, not canonical due date): 2026-10-24\n\nExecution plan ref: DC2-055\n\nPrimary KPI: Quejas sonoras y percepción",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The reversible sound pilot depends on earlier work and has no current trigger; retain as future experiment rather than active commitment.",
+    "evidence_ref": "supabase:operations.tasks/DC2-055@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "8364ad99-7f3a-4180-a581-a1221566bfbf",
@@ -1445,16 +1445,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Tres pilotos reversibles: encuadre vegetal existente, soporte discreto de teléfono o tarjeta de árbol. Cierre: uso real sin daño ni invasión de privacidad/circulación. Rol: Mauricio + mantenimiento. Dependencias: DC2-002;DC2-051. No nuevas estructuras, poda ni gasto indeterminado.\n\nPlan target date (source, not canonical due date): 2026-11-03\n\nExecution plan ref: DC2-064\n\nPrimary KPI: UGC autorizado y uso real\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: áreas comunes Dreamcatcher elegidas para los tres pilotos reversibles, sin intervenir estructuras ni vegetación.\nResponsable: Mauricio + Mantenimiento; QA RICO.\nPrueba: montar temporalmente cada piloto aprobado y observar uso real, circulación, privacidad y posible daño, sin poda, perforación ni obra.\nEvidencia: área exacta, fecha/hora, foto antes/durante/después, uso observado, PASS/FAIL y responsable.\nCriterio de cierre: tres pilotos probados de forma reversible, sin daño ni invasión de privacidad/circulación, con resultado y recomendación sustentados; cualquier gasto o instalación permanente queda separado.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Low-risk physical sharing pilots are future experiments dependent on earlier safety/workstream gates; no current trigger justifies active status.",
+    "evidence_ref": "supabase:operations.tasks/DC2-064@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "805baee5-0943-47a4-be11-55e1e1e1b7c9",
@@ -1476,16 +1476,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-09-19\n\nExecution plan ref: DC2-014\n\nPrimary KPI: Latencia, pérdida y sesiones utilizables\n\nSource notes:\nEvidencia y criterio de cierre: Diagrama actual, equipos/ubicaciones, pruebas por habitación y criterio de aceptación documentado.\n\nHistorical/source due_date preserved only in provenance: 2026-08-17\n\n[FIELD-PACKET-20260921-OPERATE-R7]\nUbicación: habitaciones #21, #22, #23, #24 y #27, más los puntos de red/AP necesarios para explicar esas mediciones.\nResponsable: SOBRESITO en campo; RICO para QA operativo.\nPrueba: medir señal, latencia, pérdida y rendimiento utilizable con método consistente por habitación y registrar el AP/ruta observada cuando sea posible; no cambiar configuración de red desde este paquete.\nEvidencia: fecha/hora, habitación, dispositivo/método usado, mediciones, AP/ruta observada cuando aplique, PASS/FAIL y responsable.\nCriterio de cierre: 5/5 habitaciones medidas, topología relevante documentada, brechas/dead zones explícitas y QA; cualquier cambio de red queda como acción separada y autorizada.\n[/FIELD-PACKET-20260921-OPERATE-R7]",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The survey is valid but explicitly P2/non-blocking. Reactivate when network troubleshooting or the planned resilience work needs room-level measurements.",
+    "evidence_ref": "supabase:operations.tasks/task-dc-wifi-survey-20260810@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "43f85647-83e1-4d9c-8ae9-f8b63200edce",
@@ -1507,16 +1507,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-09-28\n\nExecution plan ref: DC2-027\n\nPrimary KPI: Inicio disponibilidad / sesión cualificada\n[DCW100-v2-20260922] Ampliación de criterios asociada al mismo trabajo: operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2. Consultar blocks.task para IDs aplicables. No se reabre el trabajo agotado ni se modifica estado, prioridad, responsable, fuente transaccional o gate. La nueva dirección visual queda en propuesta detallada; aceptación requiere QA del SHA exacto y aprobación de publicación existente.\n\n[DCW-SINGLE-EXECUTOR-R1] Reutilizar coordinación y evidencia actuales en operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2 -> coordination_single_executor_r1. No abrir tarea/PR/visor/footer equivalente. Mantener límites por recurso y handoff secuencial; conservar estados, gates y autoridades. DC2-037 sigue en Datos e Integraciones como proveedor de verdad de extras, no como otro ejecutor web. La validación global PR74 está SUCCESS para SHA8eccdf3; revalidar solo si cambia código/base/entorno/contrato o para release. [/DCW-SINGLE-EXECUTOR-R1]",
     "updated_at": "2026-09-23 06:06:49.232028+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "CTA testing is valid but explicitly downstream of website/release gates; reactivate after the production baseline is settled.",
+    "evidence_ref": "supabase:operations.tasks/DC2-027@2026-09-23T06:06:49.232028+00"
   },
   {
     "task_id": "71a050f1-acb7-46bc-b423-4b35641a8414",
@@ -1538,16 +1538,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-10-02\n\nExecution plan ref: DC2-035\n\nPrimary KPI: Click a reserva cualificado",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "ES/EN + TICOS profile routing is valid but downstream of verified live TICOS terms and current website truth; keep it on HOLD until those inputs exist.",
+    "evidence_ref": "supabase:operations.tasks/DC2-035@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "bbf2b3ea-69f6-497c-8dee-37ef4bc767e9",
@@ -1569,16 +1569,16 @@
     "description": "Primary KPI: CRC recuperable documentado de servicios accesorios, si existe\n\nFounder gate/action: Autorizar cualquier rectificación solamente después de presentar cuadro de diferencias, soporte ICT y efecto neto por período.\n\nSource notes:\nCORRECCIÓN LEGAL: no auditar hospedaje ordinario buscando 0%/4%/8%, porque los hoteles ya estaban gravados por la antigua Ley 6826 y el Transitorio IX excluía servicios previamente gravados. Solo revisar si Atrapa Sueños facturó servicios turísticos accesorios que (a) no estuvieran gravados antes del IVA, (b) estuvieran inscritos ante ICT bajo el régimen aplicable y (c) tengan materialidad suficiente. Evita un proyecto de rectificación masiva basado en una premisa incorrecta.",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This is a narrow historical tax opportunity with a founder/legal gate and no current evidence package; keep it parked until materiality/support justify reopening.",
+    "evidence_ref": "supabase:operations.tasks/tax-audit-tourism-vat-2019-2023@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "5168c5ed-1825-4de7-beec-ec526d0ee622",
@@ -1600,16 +1600,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Cotizar composición, baños, aforo, ruido, horario, lluvia, montaje, proveedores y anticipo según tarifa. Cierre: plantilla aprobada con restricciones. Rol: Mauricio + recepción. Dependencias: DC2-004;DC2-002;DC2-006. Capacidad de camas no acredita aforo de evento; no prometer instalación no liberada.\n\nPlan target date (source, not canonical due date): 2026-11-03\n\nExecution plan ref: DC2-063\n\nPrimary KPI: Contribución por grupo / incidencias",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Wedding/group SOP work is useful but not tied to a current event-specific trigger in this task; reactivate when a live group/event requires the standardized package.",
+    "evidence_ref": "supabase:operations.tasks/DC2-063@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "4c7e812c-d68f-4d28-a18c-51f4ffa4e2c5",
@@ -1631,7 +1631,7 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Reusar proyecto recyu2huDFMyxFOYF: costo total, contrato, 7+8/9+10/villas, API, datos y reversibilidad. Cierre: matriz respondida por proveedor y decisión. Rol: Mauricio + revenue. Dependencias: DC2-004;DC2-025;DC2-033. No firma, tarjeta, migración ni aceptación de penalidades por esta carga.\n\nPlan target date (source, not canonical due date): 2026-11-08\n\nExecution plan ref: DC2-068\n\nPrimary KPI: Casos críticos aprobados / TCO",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1639,8 +1639,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "The PMS evaluation remains current: Cloudbeds is an active candidate and the task has concrete TCO/API/inventory/reversibility questions that still require a decision.",
+    "evidence_ref": "supabase:operations.tasks/DC2-068@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "42d95464-c6b2-406b-a362-b5673eae450f",
@@ -1662,16 +1662,16 @@
     "description": "Approved execution brief: RENTABILIDAD CONTINUA V5 — PRICE SHADOW CON LIST RATE + PROMO RULES. Como Kross no permite exportar tarifa viva por unidad, usar temporalmente tres capas: LIST_RATE (DREAM RATE numérico cuando Mauricio lo capture), PROMO_DEFINITION (14 reglas Kross visibles) y OBSERVED/CONFIRMED RATE (solo cuando se compruebe en Kross con fechas). Las promociones NO equivalen automáticamente al descuento efectivo: verificar habitación/rate plan, periodo de validez, periodo de llegada, stacking/exclusividad/códigos. No tocar promociones ni tarifas. Santa Toro queda fuera de pricing activo por status retired; Mini Room queda fuera como independiente hasta reconciliar por qué Kross reporta 5 reservas/38 noches/$715 en 2026. Makaiza sigue inquiry-active aunque no aparezca en la lista DREAM RATE suministrada. ONE_TAP_READY permanece 0 hasta current/effective rate + exact mapping + inventory/pickup + floor/ceiling + expiry + rollback.\n\nPlan target date (source, not canonical due date): 2026-11-13\n\nExecution plan ref: DC2-069\n\nPrimary KPI: Shadow recommendations con live rate; ONE_TAP_READY solo con freshness+rollback",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This experiment-decision task depends on upstream pricing/data readiness and a later review window; no current trigger exists.",
+    "evidence_ref": "supabase:operations.tasks/DC2-069@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "f1bb525e-ac95-469b-abc5-2720417672f7",
@@ -1693,16 +1693,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-09-19\n\nExecution plan ref: DC2-034\n\nPrimary KPI: Canales recuperables\n\nSource notes:\nBefore connecting Meta Ads, publishing automation or business integrations, confirm the existing Dreamcatcher Facebook page is the official managed asset, identify Business Manager/account ownership, verify current Instagram association and ensure at least two reliable business administrators/recovery paths where possible. Do not share a personal Facebook password or create a duplicate page merely to simplify integration. After ownership is verified, document only IDs/roles/access metadata in TORO, never session cookies/passwords/tokens.\n\n2026-08-14 Night Audit: the operational hotel Gmail received a Meta invitation to join the `Dreamcatcher Hotel` business portfolio, sent by Mauricio Fernandez Toro. Invitation expiry shown: 2026-09-12. This is positive ownership-progress evidence but NOT yet proof of correct asset linkage/admin redundancy. Do not accept or grant access automatically overnight; verify portfolio/page/Instagram/ad-account mapping and recovery admins first.",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Meta ownership verification remains important before paid/automation integration, but there is no current integration/cutover trigger; keep it parked until that workstream activates.",
+    "evidence_ref": "supabase:operations.tasks/verify_dreamcatcher_facebook_page_ownership@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "502541b0-eebf-4a6e-a358-e67108172f3d",
@@ -1755,16 +1755,16 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-09-15\n\nExecution plan ref: DC2-019\n\nPrimary KPI: Tareas cerradas con evidencia",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "A generic weekly three-front review would duplicate newer TORO command/reporting rhythms unless a specific gap is demonstrated; keep it parked rather than create another recurring review loop.",
+    "evidence_ref": "supabase:operations.tasks/DC2-019@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "82f06e56-7b45-4a0e-ba4f-025a54d40da0",
@@ -1786,16 +1786,16 @@
     "description": "Approved execution brief: APROBADO: DC2-APPROVAL-20260913. Revisión 12/12 de ingresos netos, incidentes, experiencia y ahorro; conservar tres mejoras demostradas. Cierre: tres decisiones con responsable, evidencia, presupuesto concreto y continuidad. Rol: Mauricio. Dependencias: DC2-065;DC2-069. No gasto futuro indeterminado ni seguimiento automático activado.\n\nPlan target date (source, not canonical due date): 2026-12-12\n\nExecution plan ref: DC2-070\n\nPrimary KPI: Contribución / calidad / horas ahorradas",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This is explicitly a later portfolio-selection gate for demonstrated improvements; reactivate at the evidence/decision window rather than carrying it as active work.",
+    "evidence_ref": "supabase:operations.tasks/DC2-070@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "196224e7-45e5-4ea1-9f2c-90ab9a1b95b2",
@@ -1817,16 +1817,16 @@
     "description": "Source notes:\nWeb exposes language foundations, but structured Spanish translations and other languages are incomplete. | Recommended fix: Create translation workflow after English/Spanish source truth is approved. | Entity: global | Entity ID: translations",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "HOLD",
     "merge_target_task_key": null,
-    "close_status": null,
+    "close_status": "archived",
     "proposed_status": null,
     "proposed_priority": null,
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Translation workflow is valid only after English/Spanish source truth is approved; keep it parked until that source-truth trigger is satisfied.",
+    "evidence_ref": "supabase:operations.tasks/legacy_task_recmYCDbpmMvpHMQo@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "d52aaebb-4f96-4524-baf7-0524b3fbf892",
@@ -1848,7 +1848,7 @@
     "description": "Approved execution brief: REPRIORITIZED 17/09/2026 — P2. Trabajo válido pero no desbloquea los 5 NOW ni seguridad/revenue/web-release/data canonical crítica. Mantener en NEXT y ejecutar después del cierre de dependencias P0/P1.\n\nPlan target date (source, not canonical due date): 2026-10-12\n\nExecution plan ref: DC2-065\n\nPrimary KPI: ADR neto + contribución/noche + extras/estancia + ONE_TAP_READY count + freshness\n\nSource notes:\nMedir diariamente solo KPIs accionables: occupancy/pickup by need-date, ADR neto, direct share, leads, booking starts, confirmed bookings, CAC/ROAS when spend exists. Evitar dashboards decorativos.\n\n[DC-PERFORMANCE-ABSORPTION-20260922]\nAlcance añadido por solicitud del propietario: evaluar y absorber el tablero Dreamcatcher desempeño 2025–2026 en ESTA tarea, bajo Phase 4 Management/intelligence del Plan General canónico GitHub docs/product/TORO_BRAIN_GENERAL_PLAN.md. Mantener toro_executive_control como dueño ejecutivo; reutilizar TORO Revenue/TERE para producción y TORO Finance/FIONA para conciliación, con SOBRESITO para integración y QA. No nuevo proyecto, tarea, backend, autenticación ni segunda contabilidad.\nCURRENT — DC-PERFORMANCE-SOURCE-QA-R2: sitio sigue sin inspección/código por HTTP401. Recuperados en Library el comparativo Excel (corte09Sep2026) y reporte Word v2 (14Sep2026), sin prueba de que alimenten la web. Comparación de18meses con774filas preservadas Supabase: noches y reservas coinciden18/18; diferencias máximas alojamiento0.02USD y totalreservas0.03USD.11/11 comprobaciones aritméticas/integridad, no validación financiera ni pruebas de la web. Excel contiene cuatro niveles de agregado (suma ingenua aprox4x), sep-dicOTB no realizado y ocupación compatible con24unidades fijas no verificadas; usa promedio simple mensual. Diferencias Jan-Ago vs Word redondeado:1983.75USD(2025) y13792.24USD(2026); definiciones de ocupación tampoco homologadas. Un expediente abierto en integrations.data_conflicts/DC-PERFORMANCE-SOURCE-QA-R2, sin elegir cifra canónica ni declarar faltante de caja. Detalle en metadata.source_review_r2 del manifiesto existente.\nDatos existentes observados: 774 filas Kross ene2025–jun2026, todas sin property_id ni occupancy_pct; 22 etiquetas históricas NO equivalen al inventario vendible. finance.monthly_metrics contiene 9 meses ene–sep2026, todos partial. Son una base candidata, no tablero en vivo ni cierre financiero.\nTARGET: capacidad reutilizable de desempeño del negocio, especializada para hospitalidad; vista compacta con detalle, evidencia, frescura y acciones gobernadas desde Portal/WhatsApp. Un mismo significado de KPI y permisos, no aplicación paralela.\nNEXT R2: resolver el expediente único de discrepancias: fuente original, corte, alcance, moneda/base de ingreso y disponibilidad por unidad/fecha; no promedio ni precedencia automática entre cifras candidatas. Reutilizar los18meses históricos ya preservados SOLO LECTURA y no repetir su importación. Mantener sep-dicOTB como snapshot histórico separado del realizado. Recuperar código/exportación autorizada del sitio para elegir componentes reutilizables. Importador deberá distinguir detalle/subtotales/total, conservar faltantes y probar villas/habitaciones/canjes/MiniRoom. Sigue vigente no reimportar contabilidad Kross antigua sin instrucción explícita; mismos proyecto, módulo, estado y prioridad, sin implementación ni despliegue.\nACEPTACIÓN: paridad de KPI con fuentes y redondeos documentados, ausencia de duplicación y fuga de alcance, datos parciales/faltantes visibles, respaldo recuperable y autorización antes de retirar original. No mostrar ocupación/RevPAR sin denominador válido ni utilidad/caja como verificadas sin conciliación. Mantener fechas, estado y prioridad existentes; registrar encaje no equivale a implementación.\n[/DC-PERFORMANCE-ABSORPTION-20260922]\n\n[PERFORMANCE-INTELLIGENCE-R3-20260922]\nCANONICALIZATION: absorbed into TORO Performance Intelligence v1, cross-subsystem capability owned by Revenue + Finance + Data and surfaced through executive control. GitHub contract: docs/product/TORO_PERFORMANCE_INTELLIGENCE_V1.md. Supabase knowledge: toro_performance_intelligence_v1. This remains the SINGLE execution task; no new project/task/dashboard authority.\n\n10 execution units inside this task:\n1. EVIDENCE — preserve original exports with hashes/provenance and source cutoffs.\n2. METRIC CONTRACT — one definition/state/cutoff/source/quality contract for Portal, WhatsApp and reports.\n3. SCOPE MAPPING — resolve property/unit mappings for 774 historical Kross rows without reimporting history.\n4. INVENTORY — use verified dynamic available-room denominator for occupancy/RevPAR; fixed 20/23/24-room calendars are proxies until reconciled.\n5. TIME STATE — split ACTUAL_OPERATIONAL, PARTIAL_PERIOD and ON_THE_BOOKS; September 2026 cannot be one undifferentiated result.\n6. MONEY LANES — keep PMS production, invoices/accounting, collections/settlements and cash separate until reconciled.\n7. CHANNEL SEMANTICS — distinguish capture channel from acquisition source; FrontOffice is not automatically direct.\n8. UNIT ECONOMICS QA — prevent villa/room/bundle double count; Mini Room auxiliary; Santa Toro excluded; canje #0 classified without inventing economic value.\n9. EXPERIENCE — compact owner Performance surface plus Ask TORO/WhatsApp using the SAME metric contract and progressive detail.\n10. PARITY/RETIREMENT — retire standalone performance view only after source parity, quality gates, backup/rollback and authorization.\n\nOPEN CONFLICTS: DC-PERFORMANCE-SOURCE-QA-R2; DC-PERF-OCC-DENOM-20260922; DC-PERF-AUG26-PRODUCTION-20260922. Do not silently choose a winner.\nPRIORITY: keep existing P2/NEXT/medium posture. This work must not displace Identity/Tenant Isolation/Runtime gates.\nBOUNDARIES: no financial postings, reservation/rate changes, DDL, production deployment, permission expansion or destructive retirement from this note.\n[/PERFORMANCE-INTELLIGENCE-R3-20260922]\n\n[PERFORMANCE-INTELLIGENCE-R4-20260922]\nDATA QUALITY ADVANCE:\n- Property enrichment VERIFIED_APPLIED: 771/774 historical Kross room/channel rows now carry Dreamcatcher property_id; 754 map to all 20 canonical room numbers and 17 are explicit Dreamcatcher Villa/Villa Toro rows. Three null-unit rows remain intentionally unresolved under DC-PERF-UNASSIGNED-UNIT-20260922. No amounts/channels/nights changed.\n- Availability rule strengthened: occupancy/RevPAR require 100% date denominator coverage OR authoritative daily inventory calendar. Zero-demand days with missing denominator are not zero inventory. August and September daily-source denominator coverage are complete; October and December snapshots are incomplete for occupancy/RevPAR.\n- September semantics: elapsed actual through source cutoff 13/09 is separate from 14–30/09 ON_THE_BOOKS. Never present full-month snapshot as realized.\n- Reservation count is NON_ADDITIVE across time buckets. Monthly reservation counts must not be summed into annual unique bookings; use distinct reservation IDs or verified period totals. Daily report Reservas is also not monthly unique booking count.\n- Channel semantics: FrontOffice is capture/native channel, not automatically direct acquisition. Observed native reservation evidence has FrontOffice + acquisition Telefono. Direct share requires verified acquisition source; otherwise label FrontOffice Capture Share.\n- finance.monthly_metrics remains reusable structure but NOT_READY_FOR_EXECUTIVE_AUTHORITY until completeness/reconciliation gates pass.\nSame task/project/priority retained. No new task, project, DDL, posting, rate/reservation change or deployment.\n[/PERFORMANCE-INTELLIGENCE-R4-20260922]\n\n[PERFORMANCE-INTELLIGENCE-R5-20260922]\nTRUTH MODEL CONSOLIDATION:\n- Historical property enrichment remains 771/774 Dreamcatcher rows. One of the 3 null-property rows is now explicitly classified as SANTA_TORO_HISTORICAL_SEPARATE_PROPERTY from governed workbook evidence and intentionally remains property_id NULL because Santa Toro has no canonical public.properties row. Two rows remain truly UNKNOWN_UNIT: 2025-02 SimpleBooking 1 night / 80; 2026-03 FrontOffice 2 nights / 0.\n- Source recovery attempt for OtaProduction (23).xlsx did not locate an accessible original in current Library or source archive. Do not invent unit assignment.\n- booking_count remains NON_ADDITIVE across time buckets.\n- Historical monthly nights are mixed room-product and villa-product grain; never convert directly into physical room occupancy.\n- Canje/complimentary nights remain occupied capacity; adjusted paid ADR must be separately labeled and barter value is not imputed.\n- FrontOffice remains capture/native channel, not verified acquisition source.\n- August and September are anchored in existing finance.period_evidence; Sep is split ACTUAL_OPERATIONAL through cutoff vs ON_THE_BOOKS future.\n- finance.monthly_metrics remains NOT_READY_FOR_EXECUTIVE_AUTHORITY.\nOne execution task only. No new project/task/schema, no posting, no rate/reservation change, no deploy.\n[/PERFORMANCE-INTELLIGENCE-R5-20260922]\n\n[PERFORMANCE-INTELLIGENCE-R6-20260922]\nEXECUTIVE READINESS + DEMAND DRIVERS:\n- Metric readiness matrix is now governed in toro_performance_intelligence_v1. Current classes: source-scoped operational production/occupied nights/availability/occupancy/ADR/RevPAR = YELLOW with explicit gates; booking_count/direct acquisition/accounting result/cash = RED; live search-demand/funnel = GRAY until existing executors close gates.\n- Owner surface rule: headline KPIs may use YELLOW/GREEN only with state/cutoff/limitation; RED belongs in Attention as blocker, not a confident number.\n- Demand/Growth is a driver layer, not financial truth. Reuse existing Search Console, Google Control Plane, Hotel Center and Direct Booking workstreams; Performance Intelligence synthesizes their verified outputs and creates no duplicate audits.\n- Historical Google/Demanda workbook registered as derived evidence only, not live Google/Kross authority.\n- FrontOffice capture != direct acquisition; booking engine labels != all direct bookings; OTB window != realized or forecast.\nSame single execution task, unchanged priority/status. No new project/schema/deploy/posting/rate action.\n[/PERFORMANCE-INTELLIGENCE-R6-20260922]\n\n[PERFORMANCE-INTELLIGENCE-R7-20260922]\nCONFLICT REDUCTION + FRESHNESS:\n- DC-PERFORMANCE-SOURCE-QA-R2 RESOLVED_MANUAL by semantic separation: Kross BusinessOnTheBook room_revenue/source_occupancy and Kross OTA accommodation_production/calendar_proxy_occupancy are separate historical metrics; do not average or pick a winner.\n- DC-PERF-OCC-DENOM-20260922 RESOLVED_MANUAL at definition level: canonical denominator = authoritative daily available_room_nights across all calendar days; fixed 20/23/24 inventories remain PROXY only. Historical missing denominator is still not made valid.\n- Current Kross reservation mirror freshness FAIL: latest snapshot observed 2026-09-21T09:28:30.675Z; at 2026-09-23T05:34:38Z age ~44h, 0 live rows / 33 snapshot rows. Performance Intelligence must fail closed for today/current availability, occupancy, in-house, balances, pickup/pace. Canonical executor remains rev_ws_kross_truth; no second mirror.\n- Demand driver dependencies reuse Search Console, Google Control Plane, Hotel Center and permanent Direct Booking workstreams. Historical Google/Demanda workbook is derived evidence only.\n- Public PR #29 now includes generic freshness, demand-driver and executive-readiness rules; no Dreamcatcher private figures/hashes.\nOpen data conflicts remain: August production mismatch, two truly unassigned historical rows + one Santa Toro historical classified/null property, incomplete monthly_metrics projection, mixed room/villa grain, stale Kross current-state mirror.\n[/PERFORMANCE-INTELLIGENCE-R7-20260922]",
     "updated_at": "2026-09-23 05:38:31.835823+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1856,8 +1856,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "This is the single active Performance Intelligence execution task and already contains the governed metric/data-quality workstream; archiving it would strand current canonicalization/conflict-resolution work.",
+    "evidence_ref": "supabase:operations.tasks/occ_sep_oct_daily_revenue_dashboard_20260825@2026-09-23T05:38:31.835823+00"
   },
   {
     "task_id": "ad46f9e6-c613-45ca-adcc-5a74b3f3fd4d",
@@ -1879,7 +1879,7 @@
     "description": "Source notes:\nALCANCE NO BLOQUEANTE — 2026-08-15\n\nMauricio decidió mantener por ahora la credencial Wi‑Fi de huéspedes actual. El inventario de red continúa como mejora operativa independiente y no bloquea el PR #9.\n\nDocumentar sin guardar contraseñas:\n- proveedor(es) y circuito(s);\n- router/controlador/AP y ubicación;\n- SSID clasificados: huéspedes, administración, cámaras/IoT/POS y otros;\n- propietario y recuperación del acceso administrativo;\n- respaldo/export de configuración cuando sea viable;\n- responsable primario y suplente;\n- procedimiento de caída y contacto del proveedor;\n- fecha de última prueba y failover.\n\nCIERRE\nTopología restringida, responsables y recuperación documentados; failover probado; cero credenciales en Airtable o documentos generales. La futura rotación se administra en el registro separado `confirm_wifi_wording_backup_2026_06_17`.\n\nHistorical/source due_date preserved only in provenance: 2026-08-24",
     "updated_at": "2026-09-19 09:55:36.680053+00",
     "needs_revalidation": true,
-    "disposition": null,
+    "disposition": "KEEP",
     "merge_target_task_key": null,
     "close_status": null,
     "proposed_status": null,
@@ -1887,8 +1887,8 @@
     "proposed_task_name": null,
     "proposed_description": null,
     "proposed_blocking_reason": null,
-    "reason": null,
-    "evidence_ref": null
+    "reason": "Network topology, recovery ownership and failover documentation remain a current operational resilience need with a concrete non-secret next action and no duplicate active authority.",
+    "evidence_ref": "supabase:operations.tasks/WA-ADMIN-P2-NETWORK-INVENTORY-20260810@2026-09-19T09:55:36.680053+00"
   },
   {
     "task_id": "eb3817a8-3c68-4e19-b89f-4f38ffcf6ab7",
