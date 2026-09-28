@@ -189,7 +189,7 @@ export function routeDreamcatcherGmailLabels(
   }
 
   let domain: ToroCommsRoute["domain"] = "unclassified";
-  let attention: ToroCommsAttention = "normal";
+  let explicitAttention: ToroCommsAttention | null = null;
   let needsSecondaryClassification = false;
   const agents = new Set<string>();
 
@@ -199,9 +199,10 @@ export function routeDreamcatcherGmailLabels(
     }
     if (
       rule.attention &&
-      ATTENTION_RANK[rule.attention] > ATTENTION_RANK[attention]
+      (!explicitAttention ||
+        ATTENTION_RANK[rule.attention] > ATTENTION_RANK[explicitAttention])
     ) {
-      attention = rule.attention;
+      explicitAttention = rule.attention;
     }
     if (rule.needsSecondaryClassification) {
       needsSecondaryClassification = true;
@@ -224,7 +225,7 @@ export function routeDreamcatcherGmailLabels(
   return {
     domain,
     agents: [...agents],
-    attention,
+    attention: explicitAttention ?? "normal",
     needsSecondaryClassification,
     matchedLabels: matches.map(({ label }) => label),
   };
