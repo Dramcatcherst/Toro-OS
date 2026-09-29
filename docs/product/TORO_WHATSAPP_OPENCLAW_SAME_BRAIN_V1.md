@@ -46,6 +46,52 @@ An authorized user should be able to use WhatsApp as the simplest TORO client an
 
 The system must also understand normal free text. Menus, numbers and buttons are shortcuts, not the only interface.
 
+## 2.1 Employee self-service through WhatsApp
+
+This is the same TORO People self-service capability exposed through a verified channel, not a channel-specific HR database or authorization model.
+
+Initial permitted outcomes for a verified employee are:
+
+- read governed company/DreamTeam knowledge allowed by the current Role Pack;
+- read the employee's own schedule, attendance summary, leave requests, tasks and notifications;
+- read the employee's own payroll/payment receipt only through a purpose-built, minimal, redacted self-service projection;
+- continue an existing safe workflow across Portal and WhatsApp without changing identity or organization context.
+
+Mandatory boundaries:
+
+- a phone/sender identifier establishes a channel binding only after one-time explicit enrollment; it never grants data access by itself;
+- each inbound message re-resolves active TORO identity, organization, employee relationship, role and capability;
+- unknown, revoked, inactive or ambiguous senders fail closed and receive no employee data;
+- self-service readers enforce `context.user_id + org_id + employee_id` and never accept a client-supplied employee ID as authority;
+- an employee cannot read another employee's payroll, private profile, schedule or requests;
+- managers, RRHH and administrators receive no expanded data merely because their phone is recognized; current capability, purpose, RLS/RPC and privileged gates still apply;
+- payroll approval/payment, salary changes, bank data, collective payroll and other sensitive writes remain outside the initial read-only slice;
+- raw phone numbers are not persisted in routing identity tables, general logs, prompts or telemetry; server-side HMAC hashes are used for routing;
+- personal mode and organization mode remain isolated.
+
+Canonical execution issue:
+- `Dramcatcherst/Toro-OS#122` — verified employee channel identity for WhatsApp.
+
+Current implementation evidence:
+
+- DreamTeam PR #45 merged the server-only enrollment and atomic consumption foundation;
+- production contains `employee_channel_enrollments` and `employee_channel_identities` with RLS and service-role-only access;
+- zero real channel identities and zero pending enrollments exist at this update;
+- the legacy database function `toro_owner_pilot_identity` uses an older MD5 phone comparison and must not be reused for employee self-service; replace/isolate it behind the current HMAC channel identity contract before any live pilot.
+
+Required Wave 0 proof:
+
+1. unknown sender denied;
+2. valid one-time enrollment binds the intended employee only;
+3. replay from the original sender is idempotent;
+4. replay from a different sender is denied without identity disclosure;
+5. revocation and inactive employment deny immediately;
+6. employee A cannot read employee B;
+7. organization A cannot cross into organization B;
+8. the own-payroll reader returns an allowlisted/redacted projection only;
+9. Portal and WhatsApp resolve the same TORO context;
+10. no raw phone or payroll payload appears in general telemetry.
+
 ## 3. One TORO identity and mind
 
 The following are shared across Portal, ChatGPT-assisted workflows, Codex/Builder and WhatsApp/OpenClaw:
