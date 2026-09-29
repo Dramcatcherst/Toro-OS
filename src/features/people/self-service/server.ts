@@ -9,6 +9,7 @@ import {
   mapEmploymentSummary,
   mapLeaveBalances,
   mapLeaveRequests,
+  mapPayrollReceipts,
   mapSelfProfile,
   mapShifts,
 } from "./mappers";
@@ -41,6 +42,7 @@ export async function loadMyPeopleSelfService(
     leaveRequestsResult,
     leaveBalancesResult,
     attendanceResult,
+    payrollResult,
   ] = await Promise.all([
     supabase
       .from("employees")
@@ -90,6 +92,17 @@ export async function loadMyPeopleSelfService(
       .is("deleted_at", null)
       .order("work_date", { ascending: false })
       .limit(14),
+    supabase
+      .from("payroll_lines")
+      .select(
+        "id,payroll_period_id,regular_minutes,overtime_minutes,gross_amount,deduction_amount,net_amount,line_status,calculation_snapshot",
+      )
+      .eq("org_id", scope.orgId)
+      .eq("employee_id", scope.employeeId)
+      .in("line_status", ["approved", "paid"])
+      .is("deleted_at", null)
+      .order("updated_at", { ascending: false })
+      .limit(12),
   ]);
 
   const failedSources = [
@@ -99,6 +112,7 @@ export async function loadMyPeopleSelfService(
     leaveRequestsResult.error ? "leave_requests" : null,
     leaveBalancesResult.error ? "leave_balances" : null,
     attendanceResult.error ? "attendance" : null,
+    payrollResult.error ? "payroll_receipts" : null,
   ].filter((value): value is string => Boolean(value));
 
   if (failedSources.length) {
@@ -132,6 +146,7 @@ export async function loadMyPeopleSelfService(
       leaveRequests: mapLeaveRequests(leaveRequestsResult.data),
       leaveBalances: mapLeaveBalances(leaveBalancesResult.data),
       recentAttendance: mapAttendance(attendanceResult.data),
+      payrollReceipts: mapPayrollReceipts(payrollResult.data),
       source: "supabase_canonical",
       loadedAt: new Date().toISOString(),
     },
