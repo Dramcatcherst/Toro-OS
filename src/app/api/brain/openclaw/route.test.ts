@@ -8,6 +8,7 @@ const {
   loadOwnerAttentionProjectionWithClient,
   createToroInternalWorkWithContext,
   loadCanonicalBrainReadSliceWithClient,
+  resolveToroReadOnlyMenuForContext,
 } = vi.hoisted(() => ({
   authorizeOpenClawService: vi.fn(),
   resolveOpenClawChannelContext: vi.fn(),
@@ -16,6 +17,7 @@ const {
   loadOwnerAttentionProjectionWithClient: vi.fn(),
   createToroInternalWorkWithContext: vi.fn(),
   loadCanonicalBrainReadSliceWithClient: vi.fn(),
+  resolveToroReadOnlyMenuForContext: vi.fn(),
 }));
 
 vi.mock("@/features/openclaw/service-auth", () => ({
@@ -38,6 +40,9 @@ vi.mock("@/features/actions/internal-work-server", () => ({
 }));
 vi.mock("@/features/brain/canonical-read", () => ({
   loadCanonicalBrainReadSliceWithClient,
+}));
+vi.mock("@/features/menu/server", () => ({
+  resolveToroReadOnlyMenuForContext,
 }));
 
 import { POST } from "./route";
@@ -87,6 +92,7 @@ describe("POST /api/brain/openclaw", () => {
     loadOwnerAttentionProjectionWithClient.mockReset();
     createToroInternalWorkWithContext.mockReset();
     loadCanonicalBrainReadSliceWithClient.mockReset();
+    resolveToroReadOnlyMenuForContext.mockReset();
 
     authorizeOpenClawService.mockReturnValue({
       ok: true,
@@ -182,6 +188,53 @@ describe("POST /api/brain/openclaw", () => {
     });
     expect(JSON.stringify(body)).not.toContain("user-1");
     expect(JSON.stringify(body)).not.toContain("employee-1");
+  });
+
+  it("reads the same role/source-aware menu used by TORO surfaces", async () => {
+    resolveToroReadOnlyMenuForContext.mockResolvedValue({
+      context,
+      preferredDisplayName: "Synthetic Owner",
+      menu: {
+        profileId: "owner_executive",
+        title: "TORO",
+        items: [],
+      },
+      sourceReadiness: {
+        readyReads: [],
+        blockedReads: [],
+      },
+      profileSummary: [],
+      capabilityNotes: {},
+      capabilityAlternatives: {},
+      focusableCapabilities: [],
+      availableSubmenus: {},
+      focus: null,
+      state: "resolved",
+    });
+
+    const response = await POST(
+      request({
+        identity: {
+          channel: "whatsapp",
+          connectionKey: "hotel-main",
+          subject: "sender",
+        },
+        operation: "menu.read",
+        input: { focusCapability: "executive.brief" },
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(resolveToroReadOnlyMenuForContext).toHaveBeenCalledWith(
+      context,
+      { client: "synthetic" },
+      "executive.brief",
+    );
+    await expect(response.json()).resolves.toMatchObject({
+      state: "ready",
+      principal: "openclaw-runtime",
+      menu: { state: "resolved" },
+    });
   });
 
   it("reads the same canonical Brain projection used by TORO surfaces", async () => {
