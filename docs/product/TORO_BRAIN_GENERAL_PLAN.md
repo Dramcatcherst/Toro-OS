@@ -684,7 +684,7 @@ Current owner rule:
 Current verified access snapshot:
 - Gmail connector: `admin@dreamcatcherhotel.com` / Dreamcatcher Hotel & Villas;
 - Google Drive: hotel identity `admin@dreamcatcherhotel.com` and separate personal identity `mauricio.fernandez.toro@gmail.com`;
-- Google Workspace: `admin@dreamcatcherhotel.com` originated the 2026-08-18 Workspace migration authorization request to `atrapasuenoshotel@gmail.com`; this proves administrative migration authority but does **not** yet prove Super Admin;
+- Google Workspace: `admin@dreamcatcherhotel.com` is now **verified Super Admin / Administrador avanzado** from owner-provided Admin Console screenshots; assignment status `Asignado`, scope `Todas las unidades organizativas`; Directory currently shows 1 active user; no role/password/MFA/recovery change was made;
 - Notion: Hotel Atrapasueños workspace connected through `atrapasuenoshotel@gmail.com`;
 - Airtable: TORO bases writable through the connected workspace;
 - Supabase: canonical project `abtyrbqlqbsastmridzp` active/healthy;
@@ -692,6 +692,12 @@ Current verified access snapshot:
 - Vercel: Dreamcatcher team connected;
 - Dropbox: connected hotel archive scope under `info@atrapasuenos.net`;
 - Alegra: connected; account-link duplication is treated as a connector/session fact, not evidence of two separate accounting books.
+- Workspace address evidence: `info@dreamcatcherhotel.com` is actively receiving and sending through the connected hotel mailbox while Directory shows one licensed user; classify as ACTIVE but keep alias/group/routing type **UNKNOWN** until Admin Console readback;
+- Google marketing: Search Console for `dreamcatcherhotel.com` is active; `DREAMCATCHER HOTEL - GA4` is associated; Google Ads and Hotel Center account ownership remain unverified;
+- Kross: ticket `KB-305650/26` remains provider-gated; Kross closed it after contacting the local provider; the detailed 2026-09-24 follow-up exists as **DRAFT_NOT_SENT**, so no API provisioning or follow-up send is claimed;
+- Meta: Dreamcatcher portfolio evidence exists with Business ID `550218633755147`, WABA ID `4486822484975685`, Instagram `dreamcatcherhotel`, and approved ad activity; the historical invitation to `atrapasuenoshotel@gmail.com` expired 2026-09-12, so current admin access still requires live verification;
+- BAC corporate access: bank correspondence confirms the Atrapa Sueños corporate accounts and Mauricio's corporate user exist; products are not visible because permission assignment requires a current Master user; target remains read-only consultation/download, not banking authority changes;
+- LAFISE/TRIBU: historical corporate/tax access evidence exists, but current authenticated access remains unverified; TORO does not preserve or reuse historical passwords, validation codes, QR tokens or other authentication secrets.
 
 Root-access priority:
 1. Google Workspace Admin inventory and recovery ownership;
