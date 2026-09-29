@@ -3,6 +3,10 @@ import "server-only";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 
 import { resolveToroContext } from "@/features/context/resolver";
+import {
+  hashOpenClawChannelSubject,
+  normalizeOpenClawChannelIdentity,
+} from "@/features/openclaw/channel-context";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
 
@@ -47,7 +51,7 @@ export type OpenClawPairingResult =
   | { state: "forbidden"; error: string }
   | { state: "unavailable"; error: string };
 
-function sha256Hex(value: string) {
+export function hashOpenClawPairingToken(value: string) {
   return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
@@ -175,7 +179,7 @@ export async function issueOpenClawPairing(
 
   const now = injected?.now ?? new Date();
   const expiresAt = new Date(now.getTime() + 15 * 60_000).toISOString();
-  const tokenHash = sha256Hex(token);
+  const tokenHash = hashOpenClawPairingToken(token);
   const idempotencyKey = `openclaw-enroll:${randomUUID()}`;
 
   const inserted = await client
@@ -334,4 +338,82 @@ export async function cancelOpenClawPairing(
   }
 
   return { state: "cancelled", enrollmentId };
+}
+
+
+export type OpenClawPairingConsumeResult =
+  | { state: "bound" | "already_bound" | "already_used" }
+  | { state: "invalid" | "expired" | "cancelled" | "employee_inactive" | "employee_has_active_identity" | "subject_already_bound" | "conflict" }
+  | { state: "unavailable"; error: string };
+
+export async function consumeOpenClawPairing(
+  input: unknown,
+  client?: PrivilegedClient,
+): Promise<OpenClawPairingConsumeResult> {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return { state: "invalid" };
+  }
+
+  const record = input as Record<string, unknown>;
+  const token = cleanText(record.token, 256);
+  const normalized = normalizeOpenClawChannelIdentity(record.identity);
+
+  if (!token || token.length < 32 || !normalized.ok) {
+    return { state: "invalid" };
+  }
+
+  let subjectHash: string;
+  try {
+    subjectHash = hashOpenClawChannelSubject(normalized.value);
+  } catch {
+    return {
+      state: "unavailable",
+      error: "Channel identity hashing is not configured.",
+    };
+  }
+
+  let supabase: PrivilegedClient;
+  try {
+    supabase = client ?? createPrivilegedSupabaseClient();
+  } catch {
+    return {
+      state: "unavailable",
+      error: "Privileged pairing transport is not configured.",
+    };
+  }
+
+  const result = await supabase.rpc("consume_employee_channel_enrollment_v1", {
+    p_token_hash: hashOpenClawPairingToken(token),
+    p_channel: normalized.value.channel,
+    p_connection_key: normalized.value.connectionKey,
+    p_subject_hash: subjectHash,
+  });
+
+  if (result.error) {
+    return { state: "unavailable", error: "Pairing consumption failed safely." };
+  }
+
+  const status =
+    result.data &&
+    typeof result.data === "object" &&
+    !Array.isArray(result.data) &&
+    typeof (result.data as { status?: unknown }).status === "string"
+      ? (result.data as { status: string }).status
+      : null;
+
+  switch (status) {
+    case "bound":
+    case "already_bound":
+    case "already_used":
+    case "invalid":
+    case "expired":
+    case "cancelled":
+    case "employee_inactive":
+    case "employee_has_active_identity":
+    case "subject_already_bound":
+    case "conflict":
+      return { state: status };
+    default:
+      return { state: "unavailable", error: "Pairing response was not recognized." };
+  }
 }
