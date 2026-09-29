@@ -9,6 +9,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { authorizeOpenClawService } from "@/features/openclaw/service-auth";
 import { consumeOpenClawPairing } from "@/features/openclaw/pairing";
 import { resolveToroReadOnlyMenuForContext } from "@/features/menu/server";
+import { resolveToroMenuIntent } from "@/features/menu/resolver";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
 
 export const runtime = "nodejs";
@@ -59,7 +60,8 @@ export async function POST(request: Request) {
     operation !== "internal_work.create" &&
     operation !== "channel_identity.consume_enrollment" &&
     operation !== "brain.read" &&
-    operation !== "menu.read"
+    operation !== "menu.read" &&
+    operation !== "menu.resolve"
   ) {
     return response({ state: "invalid", error: "Unsupported OpenClaw operation." }, 400);
   }
@@ -131,6 +133,49 @@ export async function POST(request: Request) {
       principal: auth.principal,
       context: safeContextProjection(context),
     });
+  }
+
+  if (operation === "menu.resolve") {
+    const rawText =
+      record.input &&
+      typeof record.input === "object" &&
+      !Array.isArray(record.input) &&
+      typeof (record.input as { text?: unknown }).text === "string"
+        ? (record.input as { text: string }).text.trim()
+        : "";
+
+    if (!rawText || rawText.length > 500) {
+      return response(
+        { state: "invalid", error: "A bounded menu input text is required." },
+        400,
+      );
+    }
+
+    try {
+      const view = await resolveToroReadOnlyMenuForContext(
+        context,
+        supabase,
+        null,
+      );
+      if (!view.menu) {
+        return response(
+          { state: "runtime_unavailable", error: "No authorized TORO menu is available." },
+          503,
+        );
+      }
+
+      return response({
+        state: "ready",
+        principal: auth.principal,
+        intent: resolveToroMenuIntent(view.menu, rawText),
+        menuProfileId: view.menu.profileId,
+      });
+    } catch {
+      return response(
+        { state: "runtime_unavailable", error: "TORO menu resolution is unavailable." },
+        503,
+      );
+    }
   }
 
   if (operation === "menu.read") {
