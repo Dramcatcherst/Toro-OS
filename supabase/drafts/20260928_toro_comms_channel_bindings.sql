@@ -14,6 +14,11 @@ create table if not exists integrations.communication_channel_bindings (
   -- checked Supabase schemas. This nullable placeholder is NOT an authority:
   -- define its FK and verify org/business/property ownership before any apply.
   business_id uuid null,
+  -- The simple property_id FK below proves existence only, not that the
+  -- property belongs to org_id or to business_id. public.properties currently
+  -- lacks UNIQUE(org_id,id), and no verified business-property relation exists.
+  -- Before any apply, review same-org composite FKs and an active relation
+  -- check; do not treat Airtable links or names as authorization.
   property_id uuid null references public.properties(id) on delete set null,
 
   channel text not null
