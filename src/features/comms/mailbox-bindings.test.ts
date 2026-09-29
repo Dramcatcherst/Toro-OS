@@ -69,6 +69,7 @@ const orgContext: ToroResolvedContext = {
 const readGrant: ToroMailboxMetadataReadGrant = {
   capability: TORO_MAIL_METADATA_READ_CAPABILITY,
   actorId: "user-1",
+  membershipId: "membership-1",
   orgId: "org-1",
   businessId: "business-1",
   propertyId: null,
@@ -165,6 +166,7 @@ describe("mailbox operational policy", () => {
 
   it.each([
     ["another actor", { actorId: "another-user" }],
+    ["another membership", { membershipId: "membership-2" }],
     ["another organization", { orgId: "org-2" }],
     ["another business", { businessId: "business-2" }],
     ["another property", { propertyId: "property-2" }],

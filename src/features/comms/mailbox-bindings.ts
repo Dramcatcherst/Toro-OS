@@ -80,6 +80,7 @@ export const TORO_MAIL_METADATA_READ_CAPABILITY = "comms.mail.metadata.read";
 export type ToroMailboxMetadataReadGrant = {
   capability: typeof TORO_MAIL_METADATA_READ_CAPABILITY;
   actorId: string;
+  membershipId: string;
   orgId: string;
   businessId: string;
   propertyId: string | null;
@@ -176,6 +177,7 @@ export function canUseMailboxBinding(
       grant?.capability === TORO_MAIL_METADATA_READ_CAPABILITY &&
       grant.status === "active" &&
       grant.actorId === context.userId &&
+      grant.membershipId === context.membership.membershipId &&
       grant.orgId === binding.orgId &&
       grant.businessId === binding.businessId &&
       grant.propertyId === binding.propertyId &&
