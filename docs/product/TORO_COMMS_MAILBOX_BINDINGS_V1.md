@@ -148,6 +148,8 @@ Authorization to use a binding comes from TORO context + capability/action polic
 
 This is a pure local policy contract, **not** an active read permission or Gmail connection. The draft registry has no `business_id` column, and a read-only check on the canonical Supabase project found `integrations.communication_channel_bindings` absent on 2026-09-29. Consequently no trusted runtime can currently populate the required business-scoped binding/grant. Do not apply the draft SQL or expose metadata in Portal/WhatsApp on the strength of these tests. First reconcile the business/property ownership mapping and review the registry schema, migration, RLS and server-only adapter through the normal approval path.
 
+Mauricio approved the reusable capability name `comms.mail.metadata.read` on 2026-09-29. The hotel is selected by the exact organization/business/property/binding scope of a grant, not by a hotel-specific capability name. This approval covers contract alignment and review only; it does not authorize a registry migration, Gmail ingestion, a live grant issuer, Portal access or mail actions.
+
 ## Gmail/Workspace transport
 
 Preferred production order:

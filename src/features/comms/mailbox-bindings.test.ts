@@ -138,8 +138,9 @@ describe("mailbox operational policy", () => {
     ["another binding", { bindingId: "binding-2" }],
     ["another provider", { provider: "outlook" }],
     ["revoked grant", { status: "revoked" as const }],
+    ["obsolete hotel capability", { capability: "comms.hotel.metadata.read" }],
   ])("denies %s", (_label, patch) => {
-    expect(canUseMailboxBinding(orgContext, baseBinding, { ...readGrant, ...patch })).toBe(false);
+    expect(canUseMailboxBinding(orgContext, baseBinding, { ...readGrant, ...patch } as ToroMailboxMetadataReadGrant)).toBe(false);
   });
 
   it("denies personal, unscoped and inactive memberships", () => {
