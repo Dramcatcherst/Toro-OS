@@ -796,6 +796,10 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 ## Migrate
 - dream-team -> TORO People
+  - CURRENT Vercel evidence 28/09/2026: two production projects still exist from the same `Dramcatcherst/dream-team` repo: `dream-team-public` / `prj_zYp3J2Kge87od6pG0GRbpV0jOrYu` and `dream-team` / `prj_mDjCechFMCkWh7SBPq2AyUwanTaZ`;
+  - both have recent READY production deployments and only Vercel-hosted aliases on the latest inspected deployments; no custom non-Vercel domain was observed;
+  - `dreamcatcherhotel.com/dreamteam` remains the known public entry and historically redirects to `dream-team-public`;
+  - this is verified runtime duplication, but retirement is blocked until env/auth/OIDC/cookies/recovery/consumers and rollback are compared; do not disable either project yet.
 - DreamTeam Knowledge OS -> TORO Knowledge
 
 ## Reference/historical
@@ -804,7 +808,7 @@ Technical project keys are retained for compatibility and do not redefine archit
 - historical TORO Airtable bases
 
 ## Channel implementation
-- Dreamcatcher public website canonical implementation must be singularly identified and historical parallel builds retired/reference-only
+- Dreamcatcher public website CURRENT canonical runtime is Vercel project `dreamcatcher-website-vnext-media-p0` / `prj_iX2eCBZkd6cmkX3AlfcpYOpkOOur`; verified production deployment `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn` is READY and owns custom aliases `dreamcatcherhotel.com` and `www.dreamcatcherhotel.com`. Historical parallel website builds remain reference-only until domain/env/rollback parity is documented; do not delete them merely because the public domain has converged.
 
 ## Experiment
 - dreamauro / RicoSky -> potential TORO Exchange
