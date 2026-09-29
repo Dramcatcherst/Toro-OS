@@ -929,9 +929,16 @@ Remaining multi-tenant portability gate before users may belong to multiple orgs
 - `search_toro` currently searches all active role orgs.
 Today production has one active org across the current user population, so no current cross-tenant exposure is evidenced. Multi-org rollout must introduce an explicit active-tenant context and rebase these three functions before claiming tenant-safe portability.
 
-Additional migration:
+Additional migrations:
 - `harden_revoke_user_sessions_tenant_scope_20260929`;
-- `harden_toro_security_definer_search_path_20260929`.
+- `harden_toro_security_definer_search_path_20260929`;
+- `lock_server_mediated_employee_tables_20260929`.
+
+RLS/no-policy posture:
+- no-policy business tables in finance/assets/facilities/risk/reporting/integrations/core/operations have no direct anon/authenticated grants in the audited set and remain fail closed;
+- all 12 `public` RLS/no-policy People tables now have zero direct SELECT/INSERT/UPDATE/DELETE grants for `anon` and `authenticated`;
+- two channel identity/enrollment tables were already server-only; ten employee AI/capability/experience/feedback/onboarding/reward/receipt tables were aligned to the same server-mediated pattern;
+- do not add permissive policies merely to clear an advisor. Add client access only with an explicit role/tenant contract.
 
 ## Canonical
 - Dramcatcherst/Toro-OS
