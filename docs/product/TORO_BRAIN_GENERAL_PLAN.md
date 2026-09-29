@@ -2438,25 +2438,26 @@ Priority gates:
    - do not blanket-revoke privileges;
    - owner directive remains: ACCESS FIRST, PASSWORD/POLICY ROTATION LATER.
 
-2. **Gate D — Execution Engine: FAIL**
-   - verified E2E workflows: **3**
-   - target: **>=12**
-   - current verified examples:
-     - backup/restore drill;
-     - Gmail recovery-security alert -> owner confirmation -> canonical closure;
-     - CI failure alert -> authoritative GitHub revalidation -> recovered state -> no false incident -> durable governance rule.
+2. **Gate D — Execution Engine: PASS**
+   - verified E2E workflows: **12**
+   - threshold: **>=12**
+   - evidence spans recovery, security/communication, systems reliability, release governance, asset transfer, F&B truth reconciliation, RLS hardening, SECURITY DEFINER hardening, finance reconciliation, revenue contract operationalization, document intake, and maintenance source parity.
    - code/tests/previews alone do not count.
+   - Room Safety, People attendance/payroll and Kross current-state remain open operating gates; Gate D PASS does not close them.
 
-3. **Gate I — Portability: FAIL**
-   - conceptual/schema portability has partial PASS evidence;
-   - a persistent second TORO tenant still must complete onboarding, roles, knowledge, workflows, export and teardown.
+3. **Gate I — Portability: PARTIAL**
+   - persistent synthetic B2B and retail tenants now exist in dreamteam-recovery-sandbox;
+   - membership RLS, Core object isolation and composite tenant-local foreign-key negative tests PASS;
+   - deterministic export snapshot hash: 7a622d1a1ad253a3ab11c2d020375c4cbb081ff9867eb7efd692a96b15abda25;
+   - teardown assertions PASS inside transaction and rollback restores the persistent fixture;
+   - GitHub PR #196 / merge a4cbd3bafdd88a98a76713c1ebd4af65f8cd4836 contains the reproducible draft/tests/sandbox harness;
+   - remaining requirement: hosted TORO runtime must authenticate into the synthetic organization, resolve context, configure knowledge/capabilities/workflow and prove governed runtime export/teardown.
 
 ### Critical path to a real external design partner
 
 ```text
-Authenticated multi-org isolation
--> >=12 verified E2E workflows
--> persistent synthetic second tenant
+Authenticated multi-org runtime isolation
+-> hosted onboarding of the persistent synthetic second tenant
 -> TORO Business internal self-hosted tenant
 -> Controlled External Pilot
 ```
@@ -2490,3 +2491,16 @@ Hospitality Pack is the first vertical pack. It must map onto universal Core rat
 - Airtable is a human-facing projection/transition surface, not canonical execution authority.
 - GitHub/Vercel are subordinate code/deployment/evidence layers.
 - Owner-dependent questions/actions must be grouped only at the end of responses.
+
+
+### Execution progress R2 — 2026-09-29
+
+Verified after the initial 2026-09-29 alignment:
+
+- Gate D reached **PASS: 12/12** verified E2E workflows.
+- Representative finance proof: ICE NISE 800984 Sep-2026 PDF-verified invoice CRC369,825 -> canonical utility obligation -> exact Alegra corporate bank-ledger movement #7214 on 21/09/2026, account mapped to Lafise CRC ****1998 -> canonical reconciliation ice_800984_202609_invoice_alegra_7214 = reconciled/high. Raw Sep bank statement remains outside current Supabase bank import; no payment/journal was created by TORO.
+- Gate I advanced to **PARTIAL** with persistent synthetic B2B + retail tenants, export hashing and teardown rehearsal in recovery sandbox.
+- Core portability harness merged through PR #196 / a4cbd3bafdd88a98a76713c1ebd4af65f8cd4836.
+- W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
+- W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
+- Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
