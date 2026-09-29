@@ -169,7 +169,7 @@ export default async function BrainPage() {
       <header className={styles.hero}>
         <div className={styles.heroTopline}>
           <div className="flex items-center gap-3">
-            <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO Brain</Link>
+            <Link href="/" className={styles.brand}><Brain aria-hidden="true" /> TORO</Link>
             <Link href="/experience-lab" className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-cyan-100 hover:border-cyan-300/40">
               Experience Lab
             </Link>
@@ -192,43 +192,8 @@ export default async function BrainPage() {
                 : "This is a focused, read-only projection of authorized organization data. It does not show live agent activity, guest or employee records, payment data, or completed external actions."}
             </p>
           </div>
-          <div className={styles.heroStats}>
-            <div><span>Available nodes</span><strong>{projection.nodes.length}</strong><small>reveal within map</small></div>
-            {synthetic ? (
-              <>
-                <div><span>Example events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>simulated correlation chain</small></div>
-                <div><span>Example approval gates</span><strong>{projection.nodes.filter((node) => node.kind === "approval").length}</strong><small>no external action</small></div>
-              </>
-            ) : (
-              <>
-                <div><span>Displayed links</span><strong>{projection.edges.length}</strong><small>focused projection</small></div>
-                <div><span>Source summaries</span><strong>{projection.sources.length}</strong><small>read-only coverage</small></div>
-              </>
-            )}
-          </div>
         </div>
       </header>
-
-      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
-        <div>
-          <CircleDollarSign aria-hidden="true" />
-          <span>Reservations</span>
-          <strong>{revenueNode?.metric?.value}{revenueNode?.metric?.unit}</strong>
-          <small>booked value trend</small>
-        </div>
-        <div className={styles.signalRisk}>
-          <AlertTriangle aria-hidden="true" />
-          <span>Cash coverage</span>
-          <strong>{cashNode?.metric?.value}{cashNode?.metric?.unit}</strong>
-          <small>timing gap detected</small>
-        </div>
-        <div>
-          <LockKeyhole aria-hidden="true" />
-          <span>Decision</span>
-          <strong>{pendingApproval?.status}</strong>
-          <small>owner approval required</small>
-        </div>
-      </section> : null}
 
       <section className={`${styles.mainGrid} ${synthetic ? "" : styles.mainGridCanonical}`}>
         <BrainMap projection={projection} layout={layout} />
@@ -254,6 +219,42 @@ export default async function BrainPage() {
           <ActivityTraceBody projection={projection} />
         </details> : null}
       </section>
+
+      <section className={styles.heroStats} aria-label="Projection coverage" data-brain-metrics="true">
+        <div><span>Available nodes</span><strong>{projection.nodes.length}</strong><small>reveal within map</small></div>
+        {synthetic ? (
+          <>
+            <div><span>Example events</span><strong>{projection.recentEvents?.length ?? 0}</strong><small>simulated correlation chain</small></div>
+            <div><span>Example approval gates</span><strong>{projection.nodes.filter((node) => node.kind === "approval").length}</strong><small>no external action</small></div>
+          </>
+        ) : (
+          <>
+            <div><span>Displayed links</span><strong>{projection.edges.length}</strong><small>focused projection</small></div>
+            <div><span>Source summaries</span><strong>{projection.sources.length}</strong><small>read-only coverage</small></div>
+          </>
+        )}
+      </section>
+
+      {synthetic ? <section className={styles.signalStrip} aria-label="Synthetic scenario summary. Swipe or use arrow keys to inspect three signals." tabIndex={0}>
+        <div>
+          <CircleDollarSign aria-hidden="true" />
+          <span>Reservations</span>
+          <strong>{revenueNode?.metric?.value}{revenueNode?.metric?.unit}</strong>
+          <small>booked value trend</small>
+        </div>
+        <div className={styles.signalRisk}>
+          <AlertTriangle aria-hidden="true" />
+          <span>Cash coverage</span>
+          <strong>{cashNode?.metric?.value}{cashNode?.metric?.unit}</strong>
+          <small>timing gap detected</small>
+        </div>
+        <div>
+          <LockKeyhole aria-hidden="true" />
+          <span>Decision</span>
+          <strong>{pendingApproval?.status}</strong>
+          <small>owner approval required</small>
+        </div>
+      </section> : null}
 
       <div className={styles.mobileBrain}><AccessibleNodeList projection={projection} compact /></div>
 

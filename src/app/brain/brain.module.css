@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  padding: 24px;
+  padding: 14px;
   background:
     radial-gradient(circle at 18% 0%, rgba(14, 165, 233, 0.16), transparent 30%),
     radial-gradient(circle at 88% 8%, rgba(245, 158, 11, 0.11), transparent 24%),
@@ -10,7 +10,7 @@
 
 .hero {
   max-width: 1600px;
-  margin: 0 auto 18px;
+  margin: 0 auto 12px;
   border: 1px solid rgba(56, 189, 248, 0.14);
   background: rgba(2, 6, 23, 0.72);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
@@ -21,7 +21,7 @@
   gap: 16px;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 10px 16px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
@@ -76,10 +76,7 @@
 }
 
 .heroGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.6fr);
-  gap: 24px;
-  padding: clamp(24px, 4vw, 54px);
+  padding: 12px 16px 14px;
 }
 
 .eyebrow {
@@ -93,29 +90,31 @@
 }
 
 .hero h1 {
-  max-width: 1000px;
-  font-size: clamp(32px, 5vw, 72px);
-  line-height: 0.98;
-  letter-spacing: -0.045em;
+  max-width: 1100px;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   font-weight: 900;
 }
 
 .lead {
-  max-width: 860px;
-  margin-top: 20px;
-  color: #94a3b8;
-  font-size: clamp(15px, 1.3vw, 19px);
-  line-height: 1.65;
+  max-width: 1100px;
+  margin-top: 6px;
+  color: #a9bbcf;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .heroStats {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  align-content: end;
+  max-width: 1600px;
+  margin: 0 auto 12px;
 }
 
 .heroStats div {
-  padding: 18px;
+  padding: 12px 14px;
   border: 1px solid rgba(148, 163, 184, 0.14);
   background: rgba(8, 15, 32, 0.68);
 }
@@ -131,9 +130,9 @@
 
 .heroStats strong {
   display: block;
-  margin: 7px 0 5px;
+  margin: 4px 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 32px;
+  font-size: 22px;
   color: #fff;
 }
 
@@ -182,10 +181,10 @@
 .mainGrid,
 .lowerGrid {
   max-width: 1600px;
-  margin: 0 auto 18px;
+  margin: 0 auto 12px;
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.4fr);
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
 }
 
 .mainGridCanonical {
@@ -207,13 +206,13 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
-  padding: 18px;
+  padding: 12px 16px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
 .graphHeader h2,
 .panelHead h2 {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 750;
   color: #f8fafc;
 }
@@ -284,7 +283,7 @@
 
 .graphCanvas {
   position: relative;
-  min-height: 720px;
+  min-height: max(520px, calc(100svh - 290px));
   overflow: hidden;
   background-image:
     linear-gradient(rgba(56, 189, 248, 0.045) 1px, transparent 1px),
@@ -733,10 +732,7 @@
 .footer svg { width: 15px; height: 15px; }
 
 @media (max-width: 1100px) {
-  .heroGrid,
-  .mainGrid { grid-template-columns: 1fr; }
-  .heroStats { grid-template-columns: repeat(3, 1fr); }
-  .graphCanvas { min-height: 660px; }
+  .graphCanvas { min-height: max(520px, calc(100svh - 290px)); }
   .node { width: 160px; }
 }
 
@@ -771,10 +767,10 @@
   .mobileBrain .mobileNode:target { border-color: #67e8f9; background: rgba(34, 211, 238, 0.12); }
   .mobileBrain .mobileNode:last-child { border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
   .desktopBrain { display: none; }
-  .page { padding: 12px; }
-  .heroTopline { align-items: flex-start; flex-direction: column; }
-  .heroGrid { padding: 24px 18px; }
-  .heroStats { grid-template-columns: 1fr 1fr 1fr; }
+  .page { padding: 10px; }
+  .heroTopline { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .heroGrid { padding: 10px 14px 12px; }
+  .heroStats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .signalStrip {
     display: flex;
     gap: 8px;
@@ -806,7 +802,14 @@
 }
 
 @media (max-width: 540px) {
-  .heroGrid { gap: 16px; padding: 18px 14px; }
+  .heroTopline { padding: 9px 12px; }
+  .heroGrid { padding: 10px 12px 12px; }
+  .hero h1 { font-size: 21px; }
+  .hero .eyebrow { margin-bottom: 5px; font-size: 9px; }
+  .lead { font-size: 12px; line-height: 1.4; }
+  .badges { gap: 5px; }
+  .badges span { font-size: 9px; padding: 4px 6px; }
+  .badges span:nth-child(n + 3) { display: none; }
   .heroStats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .heroStats div { min-width: 0; padding: 10px 7px; }
   .heroStats span { font-size: 10px; line-height: 1.3; letter-spacing: 0.04em; }
