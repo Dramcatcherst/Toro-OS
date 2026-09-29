@@ -909,6 +909,30 @@ Applied Supabase migrations:
 - `extend_task_revalidation_stale_open_20260929`;
 - `classify_task_coordination_wrappers_20260929`.
 
+### Authenticated SECURITY DEFINER posture — verified 2026-09-29
+
+Current public inventory accessible to `authenticated` = 40 functions:
+- 36 have direct internal authorization/identity gates;
+- 1 wrapper, `replace_attendance_blocks_manual_v3`, delegates to a gated ADMIN/RRHH implementation;
+- 3 login/recovery rate-limit RPCs are intentionally also available to `anon` and are tracked as public auth-surface functions;
+- unresolved functions without a demonstrated gate = 0;
+- all 40 now use `search_path=''`.
+
+Hardening applied:
+- `revoke_user_sessions` preserves its API but fails closed for ambiguous multi-org target users and revokes only sessions in the single authorized `org_id`;
+- `resolve_toro_decision` and `search_toro` use empty search paths;
+- the curated `reception_attendance_overview` remains an explicit front-desk operational-hours decision and does not expose salaries, bank data or private employee profiles.
+
+Remaining multi-tenant portability gate before users may belong to multiple orgs:
+- `enforce_user_session` currently resolves the first active role org;
+- `record_access_event` currently records against the first active role org;
+- `search_toro` currently searches all active role orgs.
+Today production has one active org across the current user population, so no current cross-tenant exposure is evidenced. Multi-org rollout must introduce an explicit active-tenant context and rebase these three functions before claiming tenant-safe portability.
+
+Additional migration:
+- `harden_revoke_user_sessions_tenant_scope_20260929`;
+- `harden_toro_security_definer_search_path_20260929`.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
