@@ -191,6 +191,47 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
+.mapWorkspace { min-width: 0; }
+.mapWorkspaceFocused {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  padding: 12px;
+  background: #030712;
+}
+.mapWorkspaceFocused .graphFrame {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.mapWorkspaceFocused .graphCanvas {
+  flex: 1;
+  min-height: 0;
+}
+.mapFocusButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 5px 8px;
+  border: 1px solid rgba(103, 232, 249, 0.42);
+  border-radius: 5px;
+  background: rgba(8, 47, 73, 0.78);
+  color: #a5f3fc;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.mapFocusButton svg { width: 15px; height: 15px; }
+.mapFocusButton:hover, .mapFocusButton:focus-visible { border-color: #fbbf24; outline: 2px solid #67e8f9; outline-offset: 2px; }
+
 .graphFrame,
 .activityPanel,
 .panel,
@@ -584,7 +625,7 @@
 
 .mobileBrain { display: none; }
 .mobileMap { display: none; }
-.mobileMapHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.mobileMapHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .mobileMapHeading strong { font-size: 14px; color: #f8fafc; }
 .mobileMapHeading span { font-size: 11px; color: #94a3b8; white-space: nowrap; }
 .mobileMapCanvas {
@@ -740,6 +781,10 @@
   .desktopTrace { display: none; }
   .mobileTrace { display: block; }
   .mobileMap { display: block; margin: 0 auto 12px; padding: 12px; border: 1px solid rgba(56, 189, 248, 0.28); background: rgba(2, 6, 23, 0.84); }
+  .mapWorkspaceFocused .graphFrame { display: none; }
+  .mapWorkspaceFocused .mobileMap { display: flex; flex: 1; flex-direction: column; min-height: 0; width: 100%; margin: 0; overflow: hidden; }
+  .mapWorkspaceFocused .mobileMapCanvas { flex: 1; min-height: 0; height: auto; max-height: none; width: 100%; }
+  .mobileMapHeading span { min-width: 0; white-space: normal; text-align: right; }
   .mobileMap .brainSearch { grid-template-columns: 1fr; gap: 6px; padding: 9px 0; margin: 5px 0 10px; background: transparent; }
   .mobileMap .searchScope { white-space: normal; }
   .mobileBrain { display: block; }

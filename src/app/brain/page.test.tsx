@@ -91,6 +91,9 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Swipe or use arrow keys to inspect three signals.");
     expect(html).toMatch(/tab[Ii]ndex="0"/);
     expect(html).toContain('data-brain-mini-map="true"');
+    expect(html).toContain('data-brain-focus="closed"');
+    expect(html).toContain('aria-label="Expand map to fill screen"');
+    expect(html).toContain("Expand map");
     expect(html).toContain('data-brain-search="desktop"');
     expect(html).toContain('data-brain-search="mobile"');
     expect(html).toContain("Example network only");

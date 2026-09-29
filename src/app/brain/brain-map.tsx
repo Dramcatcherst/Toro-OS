@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Activity, Bot, Brain, Building2, Database, FileCheck2, FolderKanban, Gauge, LockKeyhole } from "lucide-react";
+import { Activity, Bot, Brain, Building2, Database, FileCheck2, FolderKanban, Gauge, LockKeyhole, Maximize2, Minimize2 } from "lucide-react";
 import type { BrainEdge, BrainNode, BrainProjection } from "@/lib/brain-contracts";
 import type { BrainLayout } from "@/lib/server/brain-projection";
 import styles from "./brain.module.css";
@@ -131,7 +131,22 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
   const [visibleIds, setVisibleIds] = useState(() => initialBrainNodes(projection, layout));
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [focused, setFocused] = useState(false);
+  const workspaceRef = useRef<HTMLDivElement>(null);
   const pendingFocus = useRef<{ id: string; surface: "desktop" | "mobile" } | null>(null);
+  useEffect(() => {
+    if (!focused) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFocused(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [focused]);
   useEffect(() => {
     const target = pendingFocus.current;
     if (!target) return;
@@ -163,9 +178,24 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
     setQuery("");
   };
 
-  return <>
+  const keepFocusInside = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!focused || event.key !== "Tab") return;
+    const focusable = [...(workspaceRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])') ?? [])]
+      .filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  return <div ref={workspaceRef} className={`${styles.mapWorkspace} ${focused ? styles.mapWorkspaceFocused : ""}`} data-brain-focus={focused ? "open" : "closed"} role={focused ? "dialog" : undefined} aria-modal={focused ? true : undefined} aria-label={focused ? "Expanded TORO map" : undefined} onKeyDown={keepFocusInside}>
     <nav className={styles.mobileMap} data-brain-mini-map="true" aria-label={projection.synthetic ? "Synthetic visual Brain overview" : "Read-only visual Brain overview"}>
-      <div className={styles.mobileMapHeading}><strong>{projection.synthetic ? "Example network" : "Connected records"}</strong><span>{nodes.length} / {projection.nodes.length} nodes · {edges.length} visible links</span></div>
+      <div className={styles.mobileMapHeading}><strong>{projection.synthetic ? "Example network" : "Connected records"}</strong><span>{nodes.length} / {projection.nodes.length} nodes · {edges.length} visible links</span><button type="button" className={styles.mapFocusButton} onClick={() => setFocused((value) => !value)} aria-label={focused ? "Close expanded map" : "Expand map to fill screen"} title={focused ? "Close expanded map" : "Expand map to fill screen"}>{focused ? <Minimize2 aria-hidden="true" /> : <Maximize2 aria-hidden="true" />}</button></div>
       <BrainSearch projection={projection} query={query} results={results} surface="mobile" onQuery={setQuery} onSelect={selectSearchResult} />
       <div className={styles.mobileMapCanvas}>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -191,7 +221,7 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
     </nav>
 
     <div className={styles.graphFrame}>
-      <div className={styles.graphHeader}><div><span className={styles.eyebrow}>{projection.synthetic ? "Business anatomy · synthetic scenario" : "Business anatomy · scoped canonical read"}</span><h2>{projection.synthetic ? "TORO sees the operation as connected evidence, not separate apps." : "A focused view of records this organization can read."}</h2></div><div className={styles.graphLegend}><span><i className={styles.legendLink} /> hover a link for its relation</span><span>Click +connections to reveal the next linked level here</span>{projection.synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}<span><i className={styles.legendRisk} /> {projection.synthetic ? "needs attention" : "evidence needs review"}</span>{projection.synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}</div></div>
+      <div className={styles.graphHeader}><div><span className={styles.eyebrow}>{projection.synthetic ? "Business anatomy · synthetic scenario" : "Business anatomy · scoped canonical read"}</span><h2>{projection.synthetic ? "TORO sees the operation as connected evidence, not separate apps." : "A focused view of records this organization can read."}</h2></div><div className={styles.graphLegend}><span><i className={styles.legendLink} /> hover a link for its relation</span><span>Click +connections to reveal the next linked level here</span>{projection.synthetic ? <span><i className={styles.legendActive} /> example activity</span> : null}<span><i className={styles.legendRisk} /> {projection.synthetic ? "needs attention" : "evidence needs review"}</span>{projection.synthetic ? <span><i className={styles.legendGate} /> example approval gate</span> : null}<button type="button" className={styles.mapFocusButton} onClick={() => setFocused((value) => !value)}>{focused ? <Minimize2 aria-hidden="true" /> : <Maximize2 aria-hidden="true" />}{focused ? "Close expanded map" : "Expand map"}</button></div></div>
       <BrainSearch projection={projection} query={query} results={results} surface="desktop" onQuery={setQuery} onSelect={selectSearchResult} />
       <div className={styles.graphCanvas} data-brain-graph="true" aria-label={`${projection.synthetic ? "Synthetic" : "Read-only"} graph with ${nodes.length} of ${projection.nodes.length} nodes revealed and ${edges.length} visible links. Click a neuron to reveal linked nodes in this map.`}>
         <svg className={styles.edges} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -206,5 +236,5 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
       </div>
       <p className={styles.graphHint}>{nodes.length} of {projection.nodes.length} authorized nodes shown · Relationships retain their original direction and verification. Hierarchy is only claimed for “part of” links.</p>
     </div>
-  </>;
+  </div>;
 }
