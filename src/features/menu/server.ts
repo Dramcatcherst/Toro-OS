@@ -7,6 +7,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
+import { executiveDecisionDisplay } from "./executive-decision-display";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
 import {
   evaluateSourceAwareCapabilityStates,
@@ -543,12 +544,15 @@ async function loadCapabilityFocus(
       label,
       items: data.map((raw) => {
         const row = raw as unknown as Record<string, unknown>;
+        const display = executiveDecisionDisplay(cleanText(row.status));
         return {
           title: cleanText(row.decision_title) ?? "Decisión",
-          meta: [cleanText(row.status), cleanText(row.priority)]
+          meta: [display.statusLabel, cleanText(row.priority)]
             .filter(Boolean)
             .join(" · "),
-          detail: briefDetail(row.next_action),
+          detail: display.requiresReconciliation
+            ? "Procesado no confirma aprobación. Verificar fuente y autorización antes de actuar."
+            : briefDetail(row.next_action),
         };
       }),
     };

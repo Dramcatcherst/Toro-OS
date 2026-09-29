@@ -281,6 +281,7 @@ describe("BrainPage projection modes", () => {
       }],
       sourceAuthority: [],
       domainGovernance: [],
+      unreconciledDecisionCount: 2,
       krossHealth: [{
         ref: "kross-health:test",
         sourceName: "Example Kross connector",
@@ -310,10 +311,12 @@ describe("BrainPage projection modes", () => {
     expect(html).toContain("Example Organization");
     expect(html).toContain("Illustrative Project");
     expect(html).toContain("Example Kross connector");
+    expect(html).toContain("Decisiones por conciliar");
+    expect(html).toContain('data-brain-visible-node="organization:test:decisions-needing-reconciliation"');
     expect(html).toContain("Read-only link: Example Organization connected to Example Kross connector. unverified · stale.");
     expect(html).not.toContain("Example link:");
     expect(html.match(/data-evidence-state="current"/g)).toHaveLength(1);
-    expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(1);
+    expect(html.match(/data-evidence-state="needs-review"/g)).toHaveLength(2);
     expect(html).toContain("It does not show live agent activity");
     expect(html).not.toContain("Synthetic scenario summary");
     expect(html).not.toContain("Watch TORO work");

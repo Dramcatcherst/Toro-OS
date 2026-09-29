@@ -243,6 +243,24 @@ export function buildCanonicalBrainProjection(
     ...projects.map((item) =>
       projectNode(item, slice.scopeRef, slice.generatedAt),
     ),
+    ...(slice.unreconciledDecisionCount !== null && slice.unreconciledDecisionCount > 0
+      ? [{
+          id: `${root.id}:decisions-needing-reconciliation`,
+          kind: "decision" as const,
+          label: "Decisiones por conciliar",
+          scopeRef: slice.scopeRef,
+          status: "Review" as const,
+          risk: "Medium" as const,
+          verification: "unverified" as const,
+          freshness: "unknown" as const,
+          sourceSystem: "Supabase",
+          authoritySystem: "operations.executive_decisions",
+          capabilities: observeOnly,
+          activity: "idle" as const,
+          summary: "Workflow processed without decision value; source approval not verified",
+          metric: { label: "Needs reconciliation", value: slice.unreconciledDecisionCount },
+        }]
+      : []),
     ...kross.map((item) => krossNode(item, slice.scopeRef)),
     ...authority.map((item) =>
       authorityNode(item, slice.scopeRef, slice.generatedAt),
@@ -259,7 +277,9 @@ export function buildCanonicalBrainProjection(
       source: root.id,
       target: node.id,
       relation:
-        node.kind === "connector"
+        node.kind === "decision"
+          ? ("connected_to" as const)
+          : node.kind === "connector"
           ? ("connected_to" as const)
           : node.kind === "project"
             ? ("operates" as const)
@@ -288,7 +308,20 @@ export function buildCanonicalBrainProjection(
     slice.projects.length > PROJECT_LIMIT ||
     slice.krossHealth.length > KROSS_LIMIT ||
     slice.sourceAuthority.length > AUTHORITY_LIMIT ||
-    slice.domainGovernance.length > GOVERNANCE_LIMIT;
+    slice.domainGovernance.length > GOVERNANCE_LIMIT ||
+    slice.unreconciledDecisionCount === null;
+
+  const degradedReasons = [
+    slice.projects.length > PROJECT_LIMIT ||
+    slice.krossHealth.length > KROSS_LIMIT ||
+    slice.sourceAuthority.length > AUTHORITY_LIMIT ||
+    slice.domainGovernance.length > GOVERNANCE_LIMIT
+      ? "Focused projection intentionally capped; expand through governed detail views."
+      : null,
+    slice.unreconciledDecisionCount === null
+      ? "Decision reconciliation count unavailable; no decision state projected."
+      : null,
+  ].filter(Boolean);
 
   return {
     contractVersion: BRAIN_CONTRACT_VERSION,
@@ -305,9 +338,7 @@ export function buildCanonicalBrainProjection(
     edges,
     sources: [...sourceMap.values()],
     partial,
-    degradedReason: partial
-      ? "Focused projection intentionally capped; expand through governed detail views."
-      : undefined,
+    degradedReason: degradedReasons.length ? degradedReasons.join(" ") : undefined,
   };
 }
 
@@ -343,18 +374,23 @@ export function buildCanonicalBrainLayout(
   const connectors = projection.nodes
     .filter((node) => node.kind === "connector")
     .map((node) => node.id);
+  const decisions = projection.nodes
+    .filter((node) => node.kind === "decision")
+    .map((node) => node.id);
   const authority = projection.nodes
     .filter((node) => node.kind === "knowledge" && node.id.startsWith("authority:"))
     .map((node) => node.id);
   const governance = projection.nodes
     .filter((node) => node.kind === "knowledge" && node.id.startsWith("governance:"))
     .map((node) => node.id);
+  const hasDecisions = decisions.length > 0;
 
   return {
     ...(root ? { [root.id]: { x: 50, y: 8 } } : {}),
-    ...spread(projects, 28),
-    ...spread(connectors, 48),
-    ...spread(authority, 67),
-    ...spread(governance, 84),
+    ...spread(projects, hasDecisions ? 24 : 28),
+    ...spread(decisions, 40),
+    ...spread(connectors, hasDecisions ? 56 : 48),
+    ...spread(authority, hasDecisions ? 72 : 67),
+    ...spread(governance, hasDecisions ? 88 : 84),
   };
 }

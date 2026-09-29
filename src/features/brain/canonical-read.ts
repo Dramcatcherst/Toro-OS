@@ -66,6 +66,7 @@ export type CanonicalBrainReadSlice = {
   sourceAuthority: CanonicalSourceAuthoritySummary[];
   domainGovernance: CanonicalDomainGovernanceSummary[];
   krossHealth: CanonicalKrossHealthSummary[];
+  unreconciledDecisionCount: number | null;
 };
 
 type OrganizationRow = {
@@ -159,6 +160,7 @@ export function projectCanonicalBrainReadSlice(input: {
   sourceAuthority: SourceAuthorityRow[];
   domainGovernance: DomainGovernanceRow[];
   krossHealth: KrossHealthRow[];
+  unreconciledDecisionCount: number | null;
   generatedAt?: string;
 }): CanonicalBrainReadSlice {
   return {
@@ -213,6 +215,7 @@ export function projectCanonicalBrainReadSlice(input: {
       freshness: row.freshness_status,
       safeForCurrentState: row.safe_for_current_state === true,
     })),
+    unreconciledDecisionCount: input.unreconciledDecisionCount,
   };
 }
 
@@ -229,6 +232,7 @@ export async function loadCanonicalBrainReadSlice(
     authorityResult,
     governanceResult,
     krossResult,
+    decisionCountResult,
   ] = await Promise.all([
       supabase
         .from("organizations")
@@ -273,6 +277,13 @@ export async function loadCanonicalBrainReadSlice(
         .eq("org_id", context.orgId)
         .order("observed_at", { ascending: false })
         .limit(25),
+      supabase
+        .schema("operations")
+        .from("executive_decisions")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", context.orgId)
+        .eq("status", "processed")
+        .is("decision_value", null),
     ]);
 
   for (const result of [
@@ -298,5 +309,8 @@ export async function loadCanonicalBrainReadSlice(
     sourceAuthority: (authorityResult.data ?? []) as SourceAuthorityRow[],
     domainGovernance: (governanceResult.data ?? []) as DomainGovernanceRow[],
     krossHealth: (krossResult.data ?? []) as KrossHealthRow[],
+    unreconciledDecisionCount: decisionCountResult.error
+      ? null
+      : decisionCountResult.count ?? null,
   });
 }

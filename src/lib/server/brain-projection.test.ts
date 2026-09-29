@@ -65,6 +65,7 @@ function canonicalSlice(): CanonicalBrainReadSlice {
     sourceAuthority: [],
     domainGovernance: [],
     krossHealth: [],
+    unreconciledDecisionCount: 0,
   };
 }
 

@@ -56,6 +56,7 @@ function makeSlice(): CanonicalBrainReadSlice {
       freshness: index === 0 ? "stale" : "fresh",
       safeForCurrentState: index !== 0,
     })),
+    unreconciledDecisionCount: 0,
   };
 }
 
@@ -102,6 +103,34 @@ describe("buildCanonicalBrainProjection", () => {
     });
     expect(projection.nodes.some((node) => node.kind === "decision")).toBe(false);
     expect(projection.recentEvents).toBeUndefined();
+  });
+
+  it("shows processed decisions without values as unresolved, never approved or active", () => {
+    const slice = makeSlice();
+    slice.unreconciledDecisionCount = 2;
+    const projection = buildCanonicalBrainProjection(slice);
+    const decision = projection.nodes.find((node) => node.kind === "decision");
+
+    expect(decision).toMatchObject({
+      label: "Decisiones por conciliar",
+      status: "Review",
+      verification: "unverified",
+      activity: "idle",
+      metric: { value: 2 },
+      capabilities: { canApprove: false, canExecute: false },
+    });
+    expect(projection.recentEvents).toBeUndefined();
+    expect(buildCanonicalBrainLayout(projection)[decision!.id]).toBeDefined();
+  });
+
+  it("shows incomplete coverage when the decision count cannot be read", () => {
+    const slice = makeSlice();
+    slice.unreconciledDecisionCount = null;
+    const projection = buildCanonicalBrainProjection(slice);
+
+    expect(projection.partial).toBe(true);
+    expect(projection.nodes.some((node) => node.kind === "decision")).toBe(false);
+    expect(projection.degradedReason).toContain("Decision reconciliation count unavailable");
   });
 
   it("only connects visible nodes and preserves each target's evidence state", () => {

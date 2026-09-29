@@ -78,6 +78,7 @@ function buildSlice() {
         safe_for_current_state: true,
       },
     ],
+    unreconciledDecisionCount: 2,
   });
 }
 
@@ -185,7 +186,9 @@ function buildOrganizationContext(
   };
 }
 
-function buildScopedClient() {
+function buildScopedClient(
+  decisionCountResult: { count: number | null; error: Error | null } = { count: 2, error: null },
+) {
   const eqCalls: Array<{ path: string; field: string; value: unknown }> = [];
 
   function queryFor(
@@ -205,7 +208,11 @@ function buildScopedClient() {
       eqCalls.push({ path, field, value });
       return query;
     });
-    query.is.mockReturnValue(query);
+    query.is.mockImplementation(() =>
+      path === "operations.executive_decisions"
+        ? Promise.resolve(decisionCountResult)
+        : query,
+    );
     query.order.mockReturnValue(query);
     query.limit.mockResolvedValue({ data, error: null });
 
@@ -294,9 +301,10 @@ describe("loadCanonicalBrainReadSlice isolation", () => {
     expect(slice.sourceAuthority).toEqual([]);
     expect(slice.domainGovernance).toEqual([]);
     expect(slice.krossHealth).toEqual([]);
+    expect(slice.unreconciledDecisionCount).toBe(2);
 
     const orgFilters = eqCalls.filter(({ field }) => field === "org_id");
-    expect(orgFilters).toHaveLength(4);
+    expect(orgFilters).toHaveLength(5);
     expect(orgFilters.every(({ value }) => value === ORG_ID)).toBe(true);
     expect(new Set(orgFilters.map(({ path }) => path))).toEqual(
       new Set([
@@ -304,6 +312,7 @@ describe("loadCanonicalBrainReadSlice isolation", () => {
         "integrations.source_authority_rules",
         "integrations.domain_governance",
         "integrations.kross_snapshot_health",
+        "operations.executive_decisions",
       ]),
     );
 
@@ -312,5 +321,14 @@ describe("loadCanonicalBrainReadSlice isolation", () => {
       field: "id",
       value: ORG_ID,
     });
+  });
+
+  it("keeps a failed decision count unknown instead of zero", async () => {
+    const { client } = buildScopedClient({ count: null, error: new Error("unavailable") });
+    createServerSupabaseClientMock.mockResolvedValue(client);
+
+    const slice = await loadCanonicalBrainReadSlice(buildOrganizationContext());
+
+    expect(slice.unreconciledDecisionCount).toBeNull();
   });
 });
