@@ -2358,3 +2358,135 @@ Merge commit:
 4. Wave 4E — employee change/swap only after a reviewed self-service RLS/RPC contract exists.
 
 Salary/payroll forecast must remain a separately authorized finance capability and must not leak into generic team schedule views.
+
+
+---
+
+## Alignment update — 2026-09-29
+
+This update is subordinate to the existing Plan General. It does not create another roadmap, brain, backlog, source of truth or product root.
+
+### Current productization model
+
+Dreamcatcher remains the first real proving ground. TORO itself is the reusable product.
+
+Every new learning/capability must pass the existing Pilot-to-Product Promotion Gate and be classified as:
+
+- `UNIVERSAL_CORE`
+- `INDUSTRY_PACK`
+- `TENANT_CONFIG`
+- `CONNECTOR_EXECUTOR`
+- `DO_NOT_PROMOTE`
+
+No item is promoted from one anecdote. Reuse requires evidence, source authority, tenant isolation, risk/action ceiling and regression/negative tests.
+
+Current universal Core design contracts:
+
+- `toro_core_business_relationship_contract_v1`
+- `toro_core_work_object_contract_v1`
+- `toro_core_offering_contract_v1`
+- `toro_core_commercial_order_contract_v1`
+
+These are **DESIGN/SANDBOX ONLY**. They are not production DDL and do not authorize external private-data onboarding.
+
+### Mandatory tenant-reference invariant
+
+All multi-tenant Core cross-object references must bind tenant and object together:
+
+`(org_id, referenced_id)`
+
+Never rely on a referenced UUID alone.
+
+Reason:
+- RLS governs query-time access.
+- composite tenant-local foreign keys also prevent accidental/malicious cross-tenant references at the integrity layer.
+
+Sandbox negative tests passed for:
+- Relationship -> Party
+- Order -> Customer Party
+- Order Line -> Offering
+- Work Object -> Customer Party
+- Fulfillment -> Work Object
+
+### Multiindustry sandbox evidence
+
+Rollback-safe Supabase sandbox tests passed with:
+- B2B field-services synthetic organization;
+- retail synthetic organization;
+- separate synthetic authenticated principals;
+- isolated memberships;
+- parties/relationships;
+- offerings;
+- commercial orders/order lines;
+- work objects;
+- fulfillments.
+
+RLS returned only tenant-local data and cross-tenant composite FK attempts were rejected. Full rollback verification left no synthetic users, organizations, schemas, tables or helper functions.
+
+This is strong schema-level portability evidence, **not** external-business readiness.
+
+### Readiness status — 2026-09-29
+
+External onboarding remains blocked.
+
+Priority gates:
+
+1. **Gate F — Security / Tenant Isolation: FAIL**
+   - organization-membership and multiindustry isolation contracts passed rollback-safe Supabase sandbox tests;
+   - canonical persistent membership/runtime authenticated multi-org E2E remains unproven;
+   - SECURITY DEFINER grants/internal authorization remain under intent-by-intent review;
+   - do not blanket-revoke privileges;
+   - owner directive remains: ACCESS FIRST, PASSWORD/POLICY ROTATION LATER.
+
+2. **Gate D — Execution Engine: FAIL**
+   - verified E2E workflows: **3**
+   - target: **>=12**
+   - current verified examples:
+     - backup/restore drill;
+     - Gmail recovery-security alert -> owner confirmation -> canonical closure;
+     - CI failure alert -> authoritative GitHub revalidation -> recovered state -> no false incident -> durable governance rule.
+   - code/tests/previews alone do not count.
+
+3. **Gate I — Portability: FAIL**
+   - conceptual/schema portability has partial PASS evidence;
+   - a persistent second TORO tenant still must complete onboarding, roles, knowledge, workflows, export and teardown.
+
+### Critical path to a real external design partner
+
+```text
+Authenticated multi-org isolation
+-> >=12 verified E2E workflows
+-> persistent synthetic second tenant
+-> TORO Business internal self-hosted tenant
+-> Controlled External Pilot
+```
+
+Controlled External Pilot requires:
+- readiness A-I PASS;
+- explicit founder approval;
+- no critical tenant/authz bypass;
+- governed onboarding/support/offboarding/export;
+- no private data from an external business before the gate allows it.
+
+### Industry Packs
+
+Previous wording that generalized Business Packs were wholly out of scope is superseded by this rule:
+
+- **design and sandbox validation are allowed now** to remove Dreamcatcher hardcode;
+- **production activation and external private-data onboarding remain blocked** by readiness.
+
+Hospitality Pack is the first vertical pack. It must map onto universal Core rather than forcing Core to adopt hotel-specific entities.
+
+### Plan General governance reinforcement
+
+- TORO remains the only master system.
+- No second brain.
+- No second master plan.
+- No parallel backlog.
+- No parallel task system.
+- No parallel capability registry.
+- No client-specific Core fork.
+- Supabase `operations.projects`, `operations.tasks`, governed knowledge/source-authority contracts remain canonical execution/control.
+- Airtable is a human-facing projection/transition surface, not canonical execution authority.
+- GitHub/Vercel are subordinate code/deployment/evidence layers.
+- Owner-dependent questions/actions must be grouped only at the end of responses.
