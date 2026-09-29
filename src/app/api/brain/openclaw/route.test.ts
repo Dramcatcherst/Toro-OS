@@ -7,6 +7,7 @@ const {
   canViewOwnerAttention,
   loadOwnerAttentionProjectionWithClient,
   createToroInternalWorkWithContext,
+  loadCanonicalBrainReadSliceWithClient,
 } = vi.hoisted(() => ({
   authorizeOpenClawService: vi.fn(),
   resolveOpenClawChannelContext: vi.fn(),
@@ -14,6 +15,7 @@ const {
   canViewOwnerAttention: vi.fn(),
   loadOwnerAttentionProjectionWithClient: vi.fn(),
   createToroInternalWorkWithContext: vi.fn(),
+  loadCanonicalBrainReadSliceWithClient: vi.fn(),
 }));
 
 vi.mock("@/features/openclaw/service-auth", () => ({
@@ -33,6 +35,9 @@ vi.mock("@/features/attention/owner-attention-server", () => ({
 }));
 vi.mock("@/features/actions/internal-work-server", () => ({
   createToroInternalWorkWithContext,
+}));
+vi.mock("@/features/brain/canonical-read", () => ({
+  loadCanonicalBrainReadSliceWithClient,
 }));
 
 import { POST } from "./route";
@@ -81,6 +86,7 @@ describe("POST /api/brain/openclaw", () => {
     canViewOwnerAttention.mockReset();
     loadOwnerAttentionProjectionWithClient.mockReset();
     createToroInternalWorkWithContext.mockReset();
+    loadCanonicalBrainReadSliceWithClient.mockReset();
 
     authorizeOpenClawService.mockReturnValue({
       ok: true,
@@ -176,6 +182,47 @@ describe("POST /api/brain/openclaw", () => {
     });
     expect(JSON.stringify(body)).not.toContain("user-1");
     expect(JSON.stringify(body)).not.toContain("employee-1");
+  });
+
+  it("reads the same canonical Brain projection used by TORO surfaces", async () => {
+    loadCanonicalBrainReadSliceWithClient.mockResolvedValue({
+      contractVersion: "stage-c-read-v1",
+      generatedAt: "2026-09-29T10:00:00.000Z",
+      scopeRef: "scope:synthetic",
+      organization: {
+        ref: "organization:synthetic",
+        label: "Synthetic Hotel",
+        status: "active",
+      },
+      projects: [],
+      sourceAuthority: [],
+      domainGovernance: [],
+      krossHealth: [],
+    });
+
+    const response = await POST(
+      request({
+        identity: {
+          channel: "whatsapp",
+          connectionKey: "hotel-main",
+          subject: "sender",
+        },
+        operation: "brain.read",
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(loadCanonicalBrainReadSliceWithClient).toHaveBeenCalledWith(
+      context,
+      { client: "synthetic" },
+    );
+
+    const body = await response.json();
+    expect(body).toMatchObject({
+      state: "ready",
+      principal: "openclaw-runtime",
+      brain: { contractVersion: "stage-c-read-v1" },
+    });
   });
 
   it("reads the same Owner Attention projection only for an allowed actor", async () => {
