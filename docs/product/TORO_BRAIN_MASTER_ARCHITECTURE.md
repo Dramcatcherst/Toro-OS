@@ -417,3 +417,43 @@ There is one master brain:
 
 OpenClaw, agents, portals, WhatsApp, Supabase and connected systems are runtimes, tools or surfaces. None of them becomes a competing brain.
 
+
+
+<!-- TORO_MASTER_EXECUTION_CONTRACT_V1 -->
+## TORO Master Execution Contract v1 — canonical execution directive
+
+Canonical source of truth:
+- `operations.knowledge_items/toro_master_execution_contract_v1`
+- `operations.knowledge_items/toro_brain_taxonomy_v1#execution_brain_extension_v1`
+- `operations.knowledge_items/toro_agent_architecture_v1#master_execution_directive_v1`
+- `operations.knowledge_items/openclaw_hotel_operating_contract_v1`
+
+Execution rule:
+1. understand the real outcome;
+2. locate the work in the single TORO Brain / General Plan;
+3. reuse and deduplicate before creating;
+4. resolve identity, source authority, project home, freshness and risk;
+5. execute the next safe authorized step;
+6. verify with evidence/receipt;
+7. close or record a real blocker;
+8. learn and write back only verified reusable learning;
+9. continue while another safe authorized step exists.
+
+Stop only on verified completion, real external blocker, login/2FA, a current L3 human gate, or an L4 prohibition.
+
+Authority:
+- TORO/ChatGPT: Brain, Plan General, portfolio, strategy and governance.
+- Supabase/TORO: canonical control plane.
+- OpenClaw: hotel operational runtime, alerts and authorized communications; never a parallel brain/backlog/memory.
+- Kross: transactional authority for reservations/rates while current authority remains in force.
+- GitHub: product constitution, implementation and evidence.
+- Vercel: deployment/runtime evidence; never a parallel plan.
+
+Risk ceiling:
+- L0 observe.
+- L1 read/reconcile/verify.
+- L2 reversible internal prep and explicitly delegated low-risk controls.
+- L3 human gate.
+- L4 prohibited without specific authorization.
+
+Proof rule: prepared is not done; completed requires verifiable evidence. Unknown provider state is never treated as success.
