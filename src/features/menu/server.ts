@@ -798,12 +798,11 @@ export type ToroRealMenuView = {
   state: "resolved" | "context_choice_required" | "no_menu";
 };
 
-export async function resolveCurrentToroReadOnlyMenu(
+export async function resolveToroReadOnlyMenuForContext(
+  context: ToroResolvedContext,
+  supabase: SupabaseServerClient | null,
   focusCapability?: string | null,
-): Promise<ToroRealMenuView | null> {
-  const context = await resolveToroContext({ mode: "organization" });
-
-  if (!context) return null;
+): Promise<ToroRealMenuView> {
 
   if (context.requiresContextChoice || !context.orgId || !context.membership) {
     return {
@@ -841,20 +840,21 @@ export async function resolveCurrentToroReadOnlyMenu(
     blockedReads: ["Fuentes de esta vista"],
   };
 
-  let supabase: SupabaseServerClient | null = null;
-  try {
-    supabase = await createServerSupabaseClient();
-    const [snapshot, summary] = await Promise.all([
-      loadMenuSourceSnapshot(context, supabase),
-      loadProfileSummary(context, discoveryMenu?.profileId, supabase),
-    ]);
-    const evaluated = evaluateSourceAwareCapabilityStates(baseline, snapshot);
-    capabilityStates = evaluated.states;
-    sourceReadiness = evaluated.readiness;
-    profileSummary = summary;
-  } catch {
-    // Fail closed: identity can still resolve, but no capability becomes
-    // readable when source probing itself is unavailable.
+  if (supabase) {
+    try {
+      const [snapshot, summary] = await Promise.all([
+        loadMenuSourceSnapshot(context, supabase),
+        loadProfileSummary(context, discoveryMenu?.profileId, supabase),
+      ]);
+      const evaluated = evaluateSourceAwareCapabilityStates(baseline, snapshot);
+      capabilityStates = evaluated.states;
+      sourceReadiness = evaluated.readiness;
+      profileSummary = summary;
+    } catch {
+      // Fail closed: identity can still resolve, but no capability becomes
+      // readable when source probing itself is unavailable.
+      supabase = null;
+    }
   }
 
   const resolvedMenu = resolveToroMenu({
@@ -924,4 +924,25 @@ export async function resolveCurrentToroReadOnlyMenu(
     focus,
     state: menu ? "resolved" : "no_menu",
   };
+}
+
+
+export async function resolveCurrentToroReadOnlyMenu(
+  focusCapability?: string | null,
+): Promise<ToroRealMenuView | null> {
+  const context = await resolveToroContext({ mode: "organization" });
+  if (!context) return null;
+
+  let supabase: SupabaseServerClient | null = null;
+  try {
+    supabase = await createServerSupabaseClient();
+  } catch {
+    supabase = null;
+  }
+
+  return resolveToroReadOnlyMenuForContext(
+    context,
+    supabase,
+    focusCapability,
+  );
 }
