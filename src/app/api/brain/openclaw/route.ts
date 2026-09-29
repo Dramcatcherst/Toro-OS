@@ -8,6 +8,7 @@ import { resolveOpenClawChannelContext } from "@/features/openclaw/channel-conte
 import type { ToroResolvedContext } from "@/features/context/types";
 import { authorizeOpenClawService } from "@/features/openclaw/service-auth";
 import { consumeOpenClawPairing } from "@/features/openclaw/pairing";
+import { resolveToroReadOnlyMenuForContext } from "@/features/menu/server";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
 
 export const runtime = "nodejs";
@@ -57,7 +58,8 @@ export async function POST(request: Request) {
     operation !== "owner_attention.read" &&
     operation !== "internal_work.create" &&
     operation !== "channel_identity.consume_enrollment" &&
-    operation !== "brain.read"
+    operation !== "brain.read" &&
+    operation !== "menu.read"
   ) {
     return response({ state: "invalid", error: "Unsupported OpenClaw operation." }, 400);
   }
@@ -129,6 +131,35 @@ export async function POST(request: Request) {
       principal: auth.principal,
       context: safeContextProjection(context),
     });
+  }
+
+  if (operation === "menu.read") {
+    const focusCapability =
+      record.input &&
+      typeof record.input === "object" &&
+      !Array.isArray(record.input) &&
+      typeof (record.input as { focusCapability?: unknown }).focusCapability === "string"
+        ? (record.input as { focusCapability: string }).focusCapability.trim()
+        : null;
+
+    try {
+      const view = await resolveToroReadOnlyMenuForContext(
+        context,
+        supabase,
+        focusCapability,
+      );
+
+      return response({
+        state: "ready",
+        principal: auth.principal,
+        menu: view,
+      });
+    } catch {
+      return response(
+        { state: "runtime_unavailable", error: "TORO menu is unavailable." },
+        503,
+      );
+    }
   }
 
   if (operation === "brain.read") {
