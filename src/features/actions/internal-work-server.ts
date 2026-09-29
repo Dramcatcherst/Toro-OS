@@ -1,13 +1,19 @@
 import "server-only";
 
 import { resolveToroContext } from "@/features/context/resolver";
+import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import {
   buildToroInternalTaskDraft,
   canCreateToroInternalWork,
   validateToroInternalWorkRequest,
+  type ToroInternalWorkRequest,
 } from "./internal-work";
+
+type ToroServerSupabaseClient = Awaited<
+  ReturnType<typeof createServerSupabaseClient>
+>;
 
 export type ToroInternalWorkResult =
   | {
@@ -60,33 +66,20 @@ function normalizeTask(row: SupabaseTaskRow) {
   };
 }
 
-export async function createToroInternalWork(
-  input: unknown,
+async function executeToroInternalWork(
+  request: ToroInternalWorkRequest,
+  context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
 ): Promise<ToroInternalWorkResult> {
-  const parsed = validateToroInternalWorkRequest(input);
-  if (!parsed.ok) return { state: "invalid", error: parsed.error };
-
-  const context = await resolveToroContext({ mode: "organization" });
-  if (!context) return { state: "unauthenticated" };
-
-  if (!canCreateToroInternalWork(context)) {
-    return {
-      state: "forbidden",
-      error:
-        "This first controlled-write slice is limited to ADMIN or GERENCIA organization context.",
-    };
-  }
-
-  const supabase = await createServerSupabaseClient();
   let projectId: string | null = null;
 
-  if (parsed.value.projectKey) {
+  if (request.projectKey) {
     const { data, error } = await supabase
       .schema("operations")
       .from("projects")
       .select("id")
       .eq("org_id", context.orgId!)
-      .eq("project_key", parsed.value.projectKey)
+      .eq("project_key", request.projectKey)
       .eq("active", true)
       .limit(1);
 
@@ -109,7 +102,7 @@ export async function createToroInternalWork(
     projectId = id;
   }
 
-  const taskKey = `toro_intake:${parsed.value.idempotencyKey}`;
+  const taskKey = `toro_intake:${request.idempotencyKey}`;
   const existingResult = await supabase
     .schema("operations")
     .from("tasks")
@@ -132,7 +125,7 @@ export async function createToroInternalWork(
   if (existing) return { state: "replayed", task: existing };
 
   const draft = buildToroInternalTaskDraft({
-    request: parsed.value,
+    request,
     context,
     projectId,
     nowIso: new Date().toISOString(),
@@ -146,7 +139,6 @@ export async function createToroInternalWork(
     .single();
 
   if (inserted.error) {
-    // A concurrent retry may win the unique (org_id, task_key) race.
     if (inserted.error.code === "23505") {
       const replay = await supabase
         .schema("operations")
@@ -178,4 +170,47 @@ export async function createToroInternalWork(
   }
 
   return { state: "created", task };
+}
+
+function authorizeInternalWorkContext(
+  context: ToroResolvedContext,
+): ToroInternalWorkResult | null {
+  if (!canCreateToroInternalWork(context)) {
+    return {
+      state: "forbidden",
+      error:
+        "This first controlled-write slice is limited to ADMIN or GERENCIA organization context.",
+    };
+  }
+  return null;
+}
+
+export async function createToroInternalWorkWithContext(
+  input: unknown,
+  context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
+): Promise<ToroInternalWorkResult> {
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+
+  const denied = authorizeInternalWorkContext(context);
+  if (denied) return denied;
+
+  return executeToroInternalWork(parsed.value, context, supabase);
+}
+
+export async function createToroInternalWork(
+  input: unknown,
+): Promise<ToroInternalWorkResult> {
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+
+  const context = await resolveToroContext({ mode: "organization" });
+  if (!context) return { state: "unauthenticated" };
+
+  const denied = authorizeInternalWorkContext(context);
+  if (denied) return denied;
+
+  const supabase = await createServerSupabaseClient();
+  return executeToroInternalWork(parsed.value, context, supabase);
 }

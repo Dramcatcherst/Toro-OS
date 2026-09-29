@@ -12,15 +12,18 @@ import {
   type OwnerAttentionProjection,
 } from "./owner-attention";
 
-export async function loadOwnerAttentionProjection(
+type ToroServerSupabaseClient = Awaited<
+  ReturnType<typeof createServerSupabaseClient>
+>;
+
+export async function loadOwnerAttentionProjectionWithClient(
   context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
   input: { today?: string; limit?: number } = {},
 ): Promise<OwnerAttentionProjection> {
   if (!canViewOwnerAttention(context) || !context.orgId) {
     throw new Error("Owner Attention requires an authorized organization context.");
   }
-
-  const supabase = await createServerSupabaseClient();
 
   const [followupsResult, obligationsResult, invoicesResult] = await Promise.all([
     supabase
@@ -67,4 +70,12 @@ export async function loadOwnerAttentionProjection(
     today,
     limit: input.limit,
   });
+}
+
+export async function loadOwnerAttentionProjection(
+  context: ToroResolvedContext,
+  input: { today?: string; limit?: number } = {},
+): Promise<OwnerAttentionProjection> {
+  const supabase = await createServerSupabaseClient();
+  return loadOwnerAttentionProjectionWithClient(context, supabase, input);
 }
