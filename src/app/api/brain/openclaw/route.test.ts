@@ -190,6 +190,64 @@ describe("POST /api/brain/openclaw", () => {
     expect(JSON.stringify(body)).not.toContain("employee-1");
   });
 
+  it("resolves numeric, alias and natural menu intent through the canonical resolver", async () => {
+    resolveToroReadOnlyMenuForContext.mockResolvedValue({
+      context,
+      preferredDisplayName: "Synthetic Owner",
+      menu: {
+        profileId: "owner_executive",
+        selectionReason: "role:GERENCIA",
+        hiddenCapabilityCount: 0,
+        items: [
+          {
+            index: 1,
+            key: "projects",
+            emoji: "P",
+            label: "Proyectos",
+            aliases: ["proyectos", "estado de proyectos"],
+            capability: "projects.status",
+            state: "READ_ONLY",
+          },
+        ],
+      },
+      sourceReadiness: {
+        readyReads: ["projects"],
+        blockedReads: [],
+      },
+      profileSummary: [],
+      capabilityNotes: {},
+      capabilityAlternatives: {},
+      focusableCapabilities: ["projects.status"],
+      availableSubmenus: {},
+      focus: null,
+      state: "resolved",
+    });
+
+    for (const text of ["1", "proyectos", "quiero ver estado de proyectos"]) {
+      const response = await POST(
+        request({
+          identity: {
+            channel: "whatsapp",
+            connectionKey: "hotel-main",
+            subject: "sender",
+          },
+          operation: "menu.resolve",
+          input: { text },
+        }),
+      );
+
+      expect(response.status).toBe(200);
+      await expect(response.json()).resolves.toMatchObject({
+        state: "ready",
+        menuProfileId: "owner_executive",
+        intent: {
+          kind: "item",
+          item: { capability: "projects.status" },
+        },
+      });
+    }
+  });
+
   it("reads the same role/source-aware menu used by TORO surfaces", async () => {
     resolveToroReadOnlyMenuForContext.mockResolvedValue({
       context,
