@@ -81,7 +81,11 @@ export async function issueOpenClawPairing(
   const employeeId = cleanText(record.employeeId, 36);
   const channel = cleanText(record.channel, 32)?.toLowerCase() ?? null;
   const connectionKey = cleanText(record.connectionKey, 128);
+  const confirmation = cleanText(record.confirmation, 32);
 
+  if (confirmation !== "PAIR_CHANNEL") {
+    return { state: "invalid", error: "Explicit PAIR_CHANNEL confirmation is required." };
+  }
   if (!employeeId || !UUID_RE.test(employeeId)) {
     return { state: "invalid", error: "A canonical employeeId is required." };
   }
@@ -224,10 +228,15 @@ export async function revokeOpenClawChannelIdentity(
     return { state: "invalid", error: "Revocation request must be an object." };
   }
 
+  const revocationRecord = input as Record<string, unknown>;
+  const confirmation = cleanText(revocationRecord.confirmation, 32);
   const identityId = cleanText(
-    (input as Record<string, unknown>).identityId,
+    revocationRecord.identityId,
     36,
   );
+  if (confirmation !== "REVOKE_CHANNEL") {
+    return { state: "invalid", error: "Explicit REVOKE_CHANNEL confirmation is required." };
+  }
   if (!identityId || !UUID_RE.test(identityId)) {
     return { state: "invalid", error: "A canonical identityId is required." };
   }
@@ -290,10 +299,15 @@ export async function cancelOpenClawPairing(
     return { state: "invalid", error: "Cancellation request must be an object." };
   }
 
+  const cancellationRecord = input as Record<string, unknown>;
+  const confirmation = cleanText(cancellationRecord.confirmation, 32);
   const enrollmentId = cleanText(
-    (input as Record<string, unknown>).enrollmentId,
+    cancellationRecord.enrollmentId,
     36,
   );
+  if (confirmation !== "CANCEL_PAIRING") {
+    return { state: "invalid", error: "Explicit CANCEL_PAIRING confirmation is required." };
+  }
   if (!enrollmentId || !UUID_RE.test(enrollmentId)) {
     return { state: "invalid", error: "A canonical enrollmentId is required." };
   }
