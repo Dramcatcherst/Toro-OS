@@ -712,7 +712,50 @@ Root-access priority:
 5. Meta Business / WhatsApp / Instagram/Facebook ownership;
 6. only then coordinated password rotation, recovery cleanup and stronger Auth controls.
 
-### TinyFish policy
+### Mixed personal/business finance sources — owner decision 2026-09-29
+
+TORO finance must search business-primary mailboxes **and** Mauricio's personal mailboxes because Dreamcatcher/Atrapa Sueños evidence is materially distributed across them.
+
+Current source policy:
+- `admin@dreamcatcherhotel.com` = hotel-primary Google Workspace source;
+- `atrapasuenoshotel@gmail.com` = legacy hotel Google identity/dependency; do not retire until parity;
+- `mauferto@live.com` = **mixed personal/business** Outlook source and must be searched for hotel + Mauricio accounting evidence;
+- `mauricio.fernandez.toro@gmail.com` = **mixed personal/business** Gmail source and must be searched once a separate Gmail connection is available; the current Gmail connector in this chat is still `admin@dreamcatcherhotel.com`.
+
+Classification rule:
+**mailbox location and payment instrument do not determine accounting scope.**
+
+For each document or transaction, classify using:
+1. issuer;
+2. legal receiver/account holder;
+3. benefiting entity/property/project;
+4. business purpose;
+5. payment source;
+6. invoice/receipt/contract evidence;
+7. reimbursement / shareholder-current-account treatment when an owner paid personally.
+
+Owner-paid expenses:
+- a personal card/bank payment may still be a legitimate company expense;
+- it is staged as owner-paid evidence until purpose/entity/support are verified;
+- if verified as business, accounting may later treat it through the appropriate payable/reimbursement/shareholder-current-account route;
+- do not post or reimburse solely because a transaction appears in Mauricio's mailbox/card;
+- do not load Mauricio's personal bank/card statements as Dreamcatcher corporate bank truth;
+- do not double count the invoice and the card notification as two expenses.
+
+Verified 2026-09-29 evidence:
+- Outlook `mauferto@live.com` contains hotel bills, Booking/Synerjoy, BAC corporate-access/retention evidence, INS, hotel software/vendor proposals, licensing and financial statements;
+- the Sep-2026 personal BAC AMEX statement contains 38 posted purchases totaling CRC 241,591.55; this is **personal-source reconciliation evidence only**, not a corporate bank statement;
+- two Correos de Costa Rica invoices received by Mauricio matched exact external payment evidence and were marked paid while their business scope remains pending;
+- corporate Aug/Sep BAC and LAFISE statement gaps remain unresolved and must not be replaced by personal statements.
+
+Privacy rule:
+- detailed personal-card transaction data stays out of public GitHub and should not be replicated broadly across TORO;
+- canonical systems store only the minimum evidence/state necessary to reconcile business accounting;
+- no password, token, bank credential, full card number or recovery secret is stored.
+
+---
+
+## TinyFish policy
 
 TinyFish is an **optional browser-automation tool**, not part of TORO's canonical architecture and not a single point of failure.
 
