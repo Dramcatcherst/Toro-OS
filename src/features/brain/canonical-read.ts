@@ -307,6 +307,9 @@ export async function loadCanonicalBrainReadSliceWithClient(
 export async function loadCanonicalBrainReadSlice(
   context: ToroResolvedContext,
 ): Promise<CanonicalBrainReadSlice> {
+  // Preserve the existing isolation contract: reject invalid/personal/cross-org
+  // context before opening any canonical data client.
+  assertOrganizationContext(context);
   const supabase = await createServerSupabaseClient();
   return loadCanonicalBrainReadSliceWithClient(context, supabase);
 }
