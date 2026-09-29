@@ -10,6 +10,10 @@ create table if not exists integrations.communication_channel_bindings (
   id uuid primary key default gen_random_uuid(),
 
   org_id uuid not null references public.organizations(id),
+  -- REVIEW BLOCKER: no canonical business registry/relationship exists in the
+  -- checked Supabase schemas. This nullable placeholder is NOT an authority:
+  -- define its FK and verify org/business/property ownership before any apply.
+  business_id uuid null,
   property_id uuid null references public.properties(id) on delete set null,
 
   channel text not null
@@ -132,6 +136,9 @@ create table if not exists integrations.communication_channel_bindings (
   check (not admin_enabled or auth_status = 'connected'),
   check (not delete_enabled or send_enabled),
   check (not send_enabled or draft_enabled),
+  -- Email metadata cannot be enabled for an unscoped business. A non-null UUID
+  -- alone is insufficient: server policy must verify the relationship.
+  check (channel <> 'email' or not read_enabled or business_id is not null),
   check (
     verification_status <> 'verified'
     or (verified_at is not null and verified_by is not null)

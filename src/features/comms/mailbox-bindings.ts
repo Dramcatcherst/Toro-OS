@@ -166,6 +166,9 @@ export function canUseMailboxBinding(
       context.orgId &&
       context.orgId === binding.orgId &&
       context.membership?.status === "active" &&
+      context.membership.source === "organization_memberships" &&
+      typeof context.membership.membershipId === "string" &&
+      context.membership.membershipId.length > 0 &&
       context.membership.orgId === binding.orgId &&
       context.canUseOrganizationData &&
       !context.requiresContextChoice &&

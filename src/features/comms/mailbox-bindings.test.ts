@@ -46,7 +46,7 @@ const orgContext: ToroResolvedContext = {
   orgId: "org-1",
   membership: {
     orgId: "org-1",
-    membershipId: null,
+    membershipId: "membership-1",
     membershipType: "owner",
     status: "active",
     roles: ["ADMIN"],
@@ -56,7 +56,7 @@ const orgContext: ToroResolvedContext = {
     positionCode: null,
     positionName: null,
     workArea: null,
-    source: "legacy_user_roles",
+    source: "organization_memberships",
   },
   availableOrgIds: ["org-1"],
   allowedDataScopes: ["work_org"],
@@ -128,6 +128,35 @@ describe("mailbox operational policy", () => {
     expect(
       canUseMailboxBinding(
         { ...orgContext, canUseOrganizationData: false },
+        baseBinding,
+        readGrant,
+      ),
+    ).toBe(false);
+  });
+
+  it("denies transitional legacy role membership even with an exact grant", () => {
+    expect(
+      canUseMailboxBinding(
+        {
+          ...orgContext,
+          membership: {
+            ...orgContext.membership!,
+            source: "legacy_user_roles",
+          },
+        },
+        baseBinding,
+        readGrant,
+      ),
+    ).toBe(false);
+  });
+
+  it("denies an unverified canonical membership identifier", () => {
+    expect(
+      canUseMailboxBinding(
+        {
+          ...orgContext,
+          membership: { ...orgContext.membership!, membershipId: null },
+        },
         baseBinding,
         readGrant,
       ),
