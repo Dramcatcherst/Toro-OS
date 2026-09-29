@@ -4,6 +4,7 @@ import { canViewOwnerAttention } from "@/features/attention/owner-attention";
 import { loadOwnerAttentionProjectionWithClient } from "@/features/attention/owner-attention-server";
 import { createToroInternalWorkWithContext } from "@/features/actions/internal-work-server";
 import { resolveOpenClawChannelContext } from "@/features/openclaw/channel-context";
+import type { ToroResolvedContext } from "@/features/context/types";
 import { authorizeOpenClawService } from "@/features/openclaw/service-auth";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
 
@@ -17,13 +18,7 @@ function response(body: unknown, status = 200) {
   return NextResponse.json(body, { status, headers: NO_STORE });
 }
 
-function safeContextProjection(
-  context: Awaited<
-    ReturnType<typeof resolveOpenClawChannelContext>
-  > extends { state: "resolved"; context: infer T }
-    ? T
-    : never,
-) {
+function safeContextProjection(context: ToroResolvedContext) {
   return {
     mode: context.mode,
     orgId: context.orgId,
