@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { canViewOwnerAttention } from "@/features/attention/owner-attention";
 import { loadOwnerAttentionProjectionWithClient } from "@/features/attention/owner-attention-server";
 import { createToroInternalWorkWithContext } from "@/features/actions/internal-work-server";
+import { loadCanonicalBrainReadSliceWithClient } from "@/features/brain/canonical-read";
 import { resolveOpenClawChannelContext } from "@/features/openclaw/channel-context";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { authorizeOpenClawService } from "@/features/openclaw/service-auth";
@@ -55,7 +56,8 @@ export async function POST(request: Request) {
     operation !== "context.resolve" &&
     operation !== "owner_attention.read" &&
     operation !== "internal_work.create" &&
-    operation !== "channel_identity.consume_enrollment"
+    operation !== "channel_identity.consume_enrollment" &&
+    operation !== "brain.read"
   ) {
     return response({ state: "invalid", error: "Unsupported OpenClaw operation." }, 400);
   }
@@ -127,6 +129,26 @@ export async function POST(request: Request) {
       principal: auth.principal,
       context: safeContextProjection(context),
     });
+  }
+
+  if (operation === "brain.read") {
+    try {
+      const brain = await loadCanonicalBrainReadSliceWithClient(
+        context,
+        supabase,
+      );
+
+      return response({
+        state: "ready",
+        principal: auth.principal,
+        brain,
+      });
+    } catch {
+      return response(
+        { state: "runtime_unavailable", error: "Canonical Brain read is unavailable." },
+        503,
+      );
+    }
   }
 
   if (operation === "owner_attention.read") {
