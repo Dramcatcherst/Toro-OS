@@ -883,6 +883,32 @@ Technical project keys are retained for compatibility and do not redefine archit
 - toro_executive_control = TORO operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
 - business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
 
+### Task routing and open-work invariants — verified 2026-09-29
+
+Machine-state authority for task routing is Supabase.
+
+- `operations.tasks.project_id` is the canonical project home.
+- `canonical_module_key` may be that active project key or a registered `operations.admin_modules` submodule; free-form unknown module keys fail closed.
+- active non-terminal tasks without a project home may auto-resolve only when `canonical_module_key` exactly matches an active canonical project.
+- terminal task states force `active=false`.
+- workstream and strategic outcome derive from the project home; a submodule never creates a parallel project.
+- `operations.tasks_revalidation_queue` reuses the existing task surface and classifies `coordination_wrapper`, `needs_revalidation`, `overdue` and `stale_open` (>7 days without delta).
+- age alone never closes, cancels, reprioritizes or reassigns work.
+- coordination wrappers consume the result of one canonical executor and may not duplicate execution.
+- material Autopilot suppression must persist in the source task/gate or in deterministic queue logic; snapshot-only suppression is diagnostic, not a safety control.
+
+Current machine evidence after hardening:
+- `UNMAPPED=0`;
+- `project_module_mismatch=0`;
+- terminal-active contradictions = 0;
+- Katty/FEELIN external-action rows are persisted as `OWNER_GATE` and excluded from Autopilot;
+- routing guard tests passed for project-home autoresolution, terminal→inactive and rejection of invented module keys.
+
+Applied Supabase migrations:
+- `toro_task_routing_machine_guard_20260929`;
+- `extend_task_revalidation_stale_open_20260929`;
+- `classify_task_coordination_wrappers_20260929`.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
