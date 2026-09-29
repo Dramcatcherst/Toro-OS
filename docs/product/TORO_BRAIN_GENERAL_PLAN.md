@@ -952,6 +952,29 @@ Additional performance migrations:
 - `split_room_workload_profiles_rls_20260929`;
 - `split_canonical_hr_write_rls_20260929`.
 
+### Access-first control model — verified 2026-09-29
+
+TORO separates **technical access** from **human account control**.
+
+- `CONNECTED` means a live authorized connector/session proves only the bounded capability stated for that system.
+- Repository/project/calendar/base/accounting read access does not by itself prove account ownership, MFA, recovery, billing or primary-admin authority.
+- Calendar `owner` on a primary calendar does not prove Google Workspace ownership.
+- GitHub repository admin permission does not prove GitHub account MFA/recovery.
+- Airtable base `create` permission does not prove workspace ownership.
+- Alegra document/accounting reads do not prove the legal account owner.
+- Supabase project health/admin connector capability does not prove organization human-admin roster.
+- Vercel team/project inventory does not prove RBAC or production-promotion authority.
+- If a connector cannot expose ownership/MFA/recovery/RBAC, preserve its technical-access evidence and stop using that connector to infer human-control state. Resume only through the provider's authoritative account/admin surface.
+- **ACCESS FIRST / ROTATION LATER:** preserve working authorized access while ownership/recovery is mapped; change passwords, MFA, recovery, billing or roles only after evidence and the applicable owner/security gate.
+
+Current P0 live-read evidence without Mauricio:
+- GitHub repository permissions verified;
+- Supabase canonical project and recovery sandbox visible; `toro-auth-pilot` observed INACTIVE but not authorized for deletion;
+- Vercel team/project inventory visible, RBAC still partial;
+- hotel/personal Google Drive connector identities verified;
+- hotel Gmail connector read verified.
+Calendar, Contacts, Airtable and Alegra add P1 supporting evidence under the same non-inference rule.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
