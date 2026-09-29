@@ -1351,3 +1351,43 @@ openclaw_runtime_evidence:
   raw_secrets_in_evidence_forbidden: true
   real_guest_contact_for_runtime_proof_forbidden: true
   audit_production_mutation_forbidden: true
+
+
+# TORO_MASTER_EXECUTION_CONTRACT_V1
+master_execution_contract:
+  canonical_knowledge_key: toro_master_execution_contract_v1
+  master_project_key: toro_os_portfolio_master
+  execution_loop:
+    - understand
+    - locate_in_brain
+    - dedupe_and_reuse
+    - prioritize
+    - execute_safe_next_step
+    - verify_evidence
+    - close_or_block
+    - learn
+    - write_back_canonically
+    - continue
+  stop_conditions:
+    - verified_done
+    - blocked_external_with_evidence
+    - login_or_2fa_required
+    - current_L3_human_gate
+    - L4_prohibition
+  authorities:
+    brain_and_general_plan: TORO
+    canonical_control_plane: Supabase
+    hotel_operational_runtime: OpenClaw
+    reservation_rate_transaction_authority: Kross
+    implementation_constitution: GitHub
+    deployment_evidence: Vercel
+  risk_model:
+    L0: observe
+    L1: read_reconcile_verify
+    L2: reversible_internal_prep
+    L3: human_gate
+    L4: prohibited_without_specific_authorization
+  proof_rule: "prepared_is_not_done; completion_requires_verifiable_evidence"
+  no_parallel_brain: true
+  no_parallel_plan: true
+  no_parallel_backlog: true
