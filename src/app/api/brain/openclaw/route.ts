@@ -6,6 +6,7 @@ import { createToroInternalWorkWithContext } from "@/features/actions/internal-w
 import { resolveOpenClawChannelContext } from "@/features/openclaw/channel-context";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { authorizeOpenClawService } from "@/features/openclaw/service-auth";
+import { consumeOpenClawPairing } from "@/features/openclaw/pairing";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
 
 export const runtime = "nodejs";
@@ -53,7 +54,8 @@ export async function POST(request: Request) {
   if (
     operation !== "context.resolve" &&
     operation !== "owner_attention.read" &&
-    operation !== "internal_work.create"
+    operation !== "internal_work.create" &&
+    operation !== "channel_identity.consume_enrollment"
   ) {
     return response({ state: "invalid", error: "Unsupported OpenClaw operation." }, 400);
   }
@@ -66,6 +68,34 @@ export async function POST(request: Request) {
       { state: "runtime_unavailable", error: "Privileged TORO bridge is not configured." },
       503,
     );
+  }
+
+  if (operation === "channel_identity.consume_enrollment") {
+    const token =
+      record.input &&
+      typeof record.input === "object" &&
+      !Array.isArray(record.input)
+        ? (record.input as { token?: unknown }).token
+        : null;
+
+    const consumed = await consumeOpenClawPairing(
+      { token, identity: record.identity },
+      supabase,
+    );
+
+    if (consumed.state === "unavailable") {
+      return response(consumed, 503);
+    }
+
+    if (
+      consumed.state === "bound" ||
+      consumed.state === "already_bound" ||
+      consumed.state === "already_used"
+    ) {
+      return response({ state: consumed.state });
+    }
+
+    return response({ state: consumed.state }, 403);
   }
 
   const resolved = await resolveOpenClawChannelContext(record.identity, supabase);
