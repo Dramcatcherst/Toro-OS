@@ -177,7 +177,7 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
   const expand = (id: string, surface: "desktop" | "mobile", fromKeyboard: boolean) => {
     const next = unrevealedNeighbors(id, projection, visible, layout);
     if (!next.length) return;
-    if (fromKeyboard) pendingFocus.current = { id: next[0], surface };
+    if (focused || fromKeyboard) pendingFocus.current = { id: next[0], surface };
     setVisibleIds((current) => [...new Set([...current, ...next])]);
   };
   const selectSearchResult = (id: string, surface: "desktop" | "mobile") => {
