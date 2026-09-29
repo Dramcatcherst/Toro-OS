@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_on": "2026-09-28",
+  "generated_on": "2026-09-29",
   "scope": "dreamcatcher_hotel",
   "authority_rule": "Evidence seed only. Google Workspace Admin/provider account inventory determines endpoint type and current routing.",
   "secrets_policy": "No passwords, OAuth tokens, API keys, recovery codes, cookies or secret values.",
@@ -13,7 +13,7 @@
       "endpoint_kind": "user_mailbox",
       "endpoint_kind_confidence": "verified_admin_username",
       "connection_status": "chatgpt_gmail_and_drive_connected",
-      "observed_activity": "active_send_receive",
+      "observed_activity": "active_send_receive_high",
       "business_role": "admin",
       "evidence": [
         "Google Workspace custom-domain-ready email 2026-08-14",
@@ -21,7 +21,14 @@
         "ChatGPT Gmail profile",
         "ChatGPT Google Drive hotel profile"
       ],
-      "next_gate": "Workspace Admin inventory for aliases/groups/routing/delegation"
+      "next_gate": "Workspace Admin inventory for aliases/groups/routing/delegation",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": "100+",
+        "received_messages_observed": 93,
+        "latest_sent": "2026-09-28T07:10:26-06:00",
+        "latest_received": "2026-09-28T23:08:18-07:00"
+      }
     },
     {
       "endpoint": "info@dreamcatcherhotel.com",
@@ -31,14 +38,21 @@
       "endpoint_kind": "unknown",
       "endpoint_kind_confidence": "unverified",
       "connection_status": "visible_in_connected_gmail_corpus",
-      "observed_activity": "high_send_receive",
+      "observed_activity": "active_send_receive_high",
       "business_role": "info",
       "evidence": [
         "Current Gmail corpus receives mail addressed to info@dreamcatcherhotel.com",
         "Current Gmail corpus sends with From info@dreamcatcherhotel.com",
         "Google Admin migration report references IMAP source info@dreamcatcherhotel.com"
       ],
-      "next_gate": "Classify user vs alias vs send-as/delegation/routing in Workspace Admin"
+      "next_gate": "Classify user vs alias vs send-as/delegation/routing in Workspace Admin",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 89,
+        "received_messages_observed": "100+",
+        "latest_sent": "2026-09-28T17:35:38-06:00",
+        "latest_received": "2026-09-29T04:30:14+02:00"
+      }
     },
     {
       "endpoint": "accounting@dreamcatcherhotel.com",
@@ -48,12 +62,17 @@
       "endpoint_kind": "unknown",
       "endpoint_kind_confidence": "unverified",
       "connection_status": "not_observed_in_2026_connected_corpus",
-      "observed_activity": "none_found",
+      "observed_activity": "none_found_in_connected_corpus",
       "business_role": "accounting",
       "evidence": [
         "Owner-confirmed account on device screenshot"
       ],
-      "next_gate": "Workspace Admin inventory"
+      "next_gate": "Workspace Admin inventory",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 0,
+        "received_messages_observed": 0
+      }
     },
     {
       "endpoint": "info@atrapasuenos.net",
@@ -63,12 +82,19 @@
       "endpoint_kind": "unknown",
       "endpoint_kind_confidence": "unverified",
       "connection_status": "not_directly_connected",
-      "observed_activity": "limited_2026_evidence",
+      "observed_activity": "limited_2026_send_receive",
       "business_role": "info",
       "evidence": [
         "Current connected Gmail corpus contains limited 2026 messages involving this address"
       ],
-      "next_gate": "Provider/account inventory; connect read-only transport; Evertec proof"
+      "next_gate": "Provider/account inventory; connect read-only transport; Evertec proof",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 1,
+        "received_messages_observed": 5,
+        "latest_sent": "2026-07-12T09:12:52-06:00",
+        "latest_received": "2026-08-13T18:44:38-06:00"
+      }
     },
     {
       "endpoint": "accounting@atrapasuenos.net",
@@ -84,7 +110,14 @@
         "LAFISE retention certificate chain",
         "Raw SMTP path includes SiteGround host and mailspamprotection"
       ],
-      "next_gate": "Provider/account inventory; verify current hosting/MX without changing DNS"
+      "next_gate": "Provider/account inventory; verify current hosting/MX without changing DNS",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 3,
+        "received_messages_observed": 9,
+        "latest_sent": "2026-08-13T18:44:38-06:00",
+        "latest_received": "2026-08-13T17:46:11-06:00"
+      }
     },
     {
       "endpoint": "proveedores@atrapasuenos.net",
@@ -94,12 +127,17 @@
       "endpoint_kind": "unknown",
       "endpoint_kind_confidence": "unverified",
       "connection_status": "not_directly_connected",
-      "observed_activity": "address_not_proven_by_raw_header_in_current_search",
+      "observed_activity": "none_found_in_connected_corpus",
       "business_role": "providers",
       "evidence": [
         "Owner-confirmed account on device screenshot"
       ],
-      "next_gate": "Provider/account inventory"
+      "next_gate": "Provider/account inventory",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 0,
+        "received_messages_observed": 0
+      }
     },
     {
       "endpoint": "atrapasuenoshotel@gmail.com",
@@ -109,7 +147,7 @@
       "endpoint_kind": "user_mailbox",
       "endpoint_kind_confidence": "verified_delivery_identity",
       "connection_status": "legacy_content_visible_in_connected_admin_corpus",
-      "observed_activity": "critical_dependency_through_2026_09_25",
+      "observed_activity": "critical_dependency_current",
       "business_role": "legacy_system",
       "evidence": [
         "Raw MIME Delivered-To atrapasuenoshotel@gmail.com",
@@ -117,7 +155,15 @@
         "Google data migration authorization request",
         "Recent GitHub/Vercel/Kross/Alegra traffic"
       ],
-      "next_gate": "Direct dependency inventory and migration-completion proof before any retirement"
+      "next_gate": "Direct dependency inventory and migration-completion proof before any retirement",
+      "current_corpus_evidence": {
+        "window_start": "2026-04-01",
+        "sent_messages_observed": 19,
+        "received_messages_observed": "100+",
+        "latest_sent": "2026-07-31T19:29:36-07:00",
+        "latest_received": "2026-09-29T00:18:24+00:00",
+        "retirement_safe": false
+      }
     }
   ],
   "migration_timeline": [
@@ -146,5 +192,6 @@
       "event": "legacy_gmail_delivery_still_observed",
       "target": "atrapasuenoshotel@gmail.com"
     }
-  ]
+  ],
+  "evidence_note": "Counts are bounded by connector max_results=100; '100+' means at least 100 observed, not an exact mailbox total. Traffic evidence classifies observed use only; endpoint kind and provider ownership still require Workspace/provider readback."
 }
