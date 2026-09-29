@@ -77,6 +77,9 @@ Current implementation evidence:
 - DreamTeam PR #45 merged the server-only enrollment and atomic consumption foundation;
 - production contains `employee_channel_enrollments` and `employee_channel_identities` with RLS and service-role-only access;
 - zero real channel identities and zero pending enrollments exist at this update;
+- `payroll_lines` already has a self-read RLS policy limited to the current employee and `approved`/`paid` lines, but the current 49 rows contain zero employee-visible lines;
+- `payment_receipts` already has an employee self-read policy, but its current single row is not employee-linked; there are zero employee receipts to expose;
+- the initial own-payroll surface therefore remains TARGET, not CURRENT: first produce/link a governed approved or paid receipt, then expose only its allowlisted projection;
 - the legacy database function `toro_owner_pilot_identity` uses an older MD5 phone comparison and must not be reused for employee self-service; replace/isolate it behind the current HMAC channel identity contract before any live pilot.
 
 Required Wave 0 proof:
