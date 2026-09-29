@@ -940,6 +940,18 @@ RLS/no-policy posture:
 - two channel identity/enrollment tables were already server-only; ten employee AI/capability/experience/feedback/onboarding/reward/receipt tables were aligned to the same server-mediated pattern;
 - do not add permissive policies merely to clear an advisor. Add client access only with an explicit role/tenant contract.
 
+Performance posture verified 2026-09-29:
+- `auth_rls_initplan` improved from 1 to 0 by caching `auth.uid()` in the organization-membership self-read policy;
+- `multiple_permissive_policies` reduced from 77 to 36 without removing self/manager/HR capabilities: one workload-profile overlap and 54 canonical HR `FOR ALL` policies were split into write-only actions while SELECT remains under existing read policies;
+- the remaining 36 warnings represent deliberate role/self/manager overlap and require role-specific negative tests before consolidation;
+- `unindexed_foreign_keys` and `unused_index` remain informational; do not mass-create or drop indexes from advisor counts alone;
+- benchmark of the recurring `pms_payments` org/property/reservation lookup was ~0.43 ms over ~2.1k rows, so no premature index was added.
+
+Additional performance migrations:
+- `optimize_org_memberships_self_read_rls_20260929`;
+- `split_room_workload_profiles_rls_20260929`;
+- `split_canonical_hr_write_rls_20260929`.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
