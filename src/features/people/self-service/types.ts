@@ -53,6 +53,19 @@ export type PeopleAttendanceDay = {
   approvalStatus: string;
 };
 
+export type PeoplePayrollReceipt = {
+  id: string;
+  payrollPeriodId: string;
+  periodFrom: string;
+  periodTo: string;
+  regularMinutes: number;
+  overtimeMinutes: number;
+  grossAmount: number | null;
+  deductionAmount: number | null;
+  netAmount: number | null;
+  lineStatus: "approved" | "paid";
+};
+
 export type PeopleSelfServiceData = {
   employment: PeopleEmploymentSummary;
   profile: PeopleSelfServiceProfile | null;
@@ -60,6 +73,7 @@ export type PeopleSelfServiceData = {
   leaveRequests: PeopleLeaveRequest[];
   leaveBalances: PeopleLeaveBalance[];
   recentAttendance: PeopleAttendanceDay[];
+  payrollReceipts: PeoplePayrollReceipt[];
   source: "supabase_canonical";
   loadedAt: string;
 };
