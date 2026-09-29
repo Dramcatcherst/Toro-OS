@@ -150,6 +150,8 @@ This is a pure local policy contract, **not** an active read permission or Gmail
 
 Mauricio approved the reusable capability name `comms.mail.metadata.read` on 2026-09-29. The hotel is selected by the exact organization/business/property/binding scope of a grant, not by a hotel-specific capability name. This approval covers contract alignment and review only; it does not authorize a registry migration, Gmail ingestion, a live grant issuer, Portal access or mail actions.
 
+The local gate now derives `readable` from the same health decision shown to operators. A degraded/paused ingestion, a recorded error, partial verification or backfill pending cannot be presented as healthy/readable even if `read_enabled` is true. This does not prove live freshness; a future route must still validate the message-level cut before returning metadata.
+
 ## Gmail/Workspace transport
 
 Preferred production order:

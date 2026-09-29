@@ -102,7 +102,11 @@ describe("mailbox operational policy", () => {
     [{ authStatus: "disconnected" as const }, "unavailable"],
     [{ authStatus: "pending" as const }, "unverified"],
     [{ ingestionStatus: "paused" as const }, "degraded"],
+    [{ ingestionStatus: "degraded" as const }, "degraded"],
+    [{ ingestionStatus: "backfill_pending" as const }, "unverified"],
     [{ verificationStatus: "conflict" as const }, "degraded"],
+    [{ verificationStatus: "partial" as const }, "unverified"],
+    [{ lastErrorCode: "sync_failure" }, "degraded"],
   ])("fails closed for %o", (patch, health) => {
     const binding = { ...baseBinding, ...patch };
     expect(isMailboxBindingReadable(binding)).toBe(false);

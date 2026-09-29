@@ -2111,6 +2111,7 @@ GATES:
 - Email completeness requires Workspace Admin inventory + real mailbox bindings + governed Gmail ingestion/backfill.
 - Metadata-read policy preparation (2026-09-29): `canUseMailboxBinding` now requires an explicit server-issued `comms.mail.metadata.read` grant matching actor, organization, business, property, binding and provider; active organization membership alone no longer suffices. The binding registry is absent in the canonical Supabase project and its draft has no business mapping, so this remains code-only and denies live reads. No Gmail access, RLS/schema change, route or deployment was activated.
 - Owner decision (2026-09-29): use the reusable `comms.mail.metadata.read` capability, with the hotel constrained by the grant's exact scope. The older `comms.hotel.metadata.read` spelling in the isolated demo is superseded and must fail closed. Approval is for contract alignment and code review, not SQL, live mail reads, routing, sending or production activation.
+- PR #208 review hardening (2026-09-29): metadata readability now follows binding health. Degraded ingestion, recorded errors, incomplete verification and pending backfill deny the local policy even with a matching grant; this remains code-only until a real server context and registry are reviewed.
 
 
 ### TORO People Self-Service Wave 1 — 2026-09-23

@@ -140,7 +140,8 @@ export function mailboxBindingHealth(
 
   if (
     binding.authStatus !== "connected" ||
-    binding.verificationStatus === "unverified"
+    binding.verificationStatus !== "verified" ||
+    !["healthy", "syncing"].includes(binding.ingestionStatus)
   ) {
     return "unverified";
   }
@@ -150,20 +151,7 @@ export function mailboxBindingHealth(
 
 export function isMailboxBindingReadable(binding: ToroMailboxBinding) {
   if (!binding.active || binding.channel !== "email") return false;
-  if (!binding.readEnabled || binding.authStatus !== "connected") return false;
-  if (
-    binding.ingestionStatus === "not_configured" ||
-    binding.ingestionStatus === "paused"
-  ) {
-    return false;
-  }
-  if (
-    binding.verificationStatus === "unverified" ||
-    binding.verificationStatus === "conflict"
-  ) {
-    return false;
-  }
-  return true;
+  return binding.readEnabled && mailboxBindingHealth(binding) === "healthy";
 }
 
 export function canUseMailboxBinding(
@@ -190,7 +178,6 @@ export function canUseMailboxBinding(
       grant.propertyId === binding.propertyId &&
       grant.bindingId === binding.id &&
       grant.provider === binding.provider &&
-      binding.verificationStatus === "verified" &&
       isMailboxBindingReadable(binding),
   );
 }
