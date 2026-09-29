@@ -400,16 +400,21 @@ Standalone runtime is not retired until:
 
 ## 11. Current deployment evidence
 
-Vercel currently lists projects:
-- `dream-team`;
-- `dream-team-public`.
+Vercel current evidence, revalidated 2026-09-28:
+- `dream-team` / `prj_mDjCechFMCkWh7SBPq2AyUwanTaZ`;
+- `dream-team-public` / `prj_zYp3J2Kge87od6pG0GRbpV0jOrYu`.
 
-The available Vercel connector returned no recent deployments for either during this audit.
+Both are **ACTIVE PRODUCTION RUNTIMES** sourced from the same `Dramcatcherst/dream-team` repository:
+- latest inspected `dream-team` production deployment `dpl_A1cUrkARHhK7LYqCxpcShosw87VM` = READY;
+- latest inspected `dream-team-public` production deployment `dpl_6E9iKdrkmnQ9dh8FJDJmBhQRzvpx` = READY;
+- both projects also receive recent preview deployments from the same security branch/commit line;
+- latest inspected production aliases are Vercel-hosted only; no custom non-Vercel domain was observed;
+- grouped runtime-error query returned zero errors for both over the inspected 7-day window.
 
 Classification:
-`PROJECT_EXISTS · DEPLOYMENT_STATE_UNVERIFIED`
+`DUPLICATE_ACTIVE_RUNTIME · CONSOLIDATION_REQUIRES_PARITY_GATE`
 
-Do not infer active or inactive runtime solely from project existence.
+Do not disable either runtime until env/auth/OIDC/cookie/recovery consumers, public entry routing and rollback are verified.
 
 ## 12. Definition of done
 
