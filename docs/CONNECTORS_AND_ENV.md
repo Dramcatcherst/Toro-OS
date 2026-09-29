@@ -103,3 +103,48 @@ Any action with external impact, critical risk or execution intent must route th
 3. Audit log
 4. Connector-specific adapter
 5. Human approval before execution
+
+
+## OpenClaw / WhatsApp Same-Brain machine bridge
+
+Prepared in PR #206. This is **not production activation** and does not prove the live
+OpenClaw runtime or WhatsApp account.
+
+Routes:
+- machine: `POST /api/brain/openclaw`
+- authorized manager pairing/revocation: `POST /api/brain/openclaw/pairing`
+
+Machine operations:
+- `context.resolve`
+- `menu.read`
+- `menu.resolve`
+- `brain.read`
+- `owner_attention.read`
+- `internal_work.create`
+- `channel_identity.consume_enrollment`
+
+Required server-only configuration:
+- `TORO_OPENCLAW_SERVICE_TOKEN` — dedicated OpenClaw -> TORO Bearer credential, minimum 32 characters.
+- `TORO_CHANNEL_IDENTITY_HMAC_SECRET` — independent key used only by TORO to HMAC provider sender identity before database lookup/storage; minimum 32 characters.
+- `SUPABASE_SECRET_KEY` — preferred server-side Supabase secret for the privileged identity bridge.
+- `SUPABASE_SERVICE_ROLE_KEY` — compatibility fallback only while legacy service-role credentials remain in use.
+- `SUPABASE_URL` — optional server-only URL alias; `NEXT_PUBLIC_SUPABASE_URL` is accepted as the non-secret URL fallback.
+
+Security contract:
+- never expose any of these secrets through `NEXT_PUBLIC_*`, browser bundles, chat, logs, Airtable or business tables;
+- OpenClaw never receives the Supabase secret key;
+- TORO receives the provider sender subject only over the authenticated machine request and stores/looks up only a scoped HMAC hash;
+- display name, phone-like text, message body or contact name never authorize a user;
+- unknown/unpaired/inactive/wrong-membership/role-less senders fail closed;
+- personal User Vault remains unavailable in organization channel context;
+- pairing requires an authenticated ADMIN/GERENCIA context plus explicit action confirmation;
+- pairing token is random, short-lived, returned once, and only its SHA-256 hash is persisted;
+- consuming a pairing challenge uses the existing service-only `consume_employee_channel_enrollment_v1` RPC;
+- revocation is organization-scoped and explicit;
+- canonical reads reuse TORO menu, Brain and Owner Attention projections;
+- canonical writes reuse the idempotent `operations.tasks` internal-work contract;
+- no WhatsApp outbound send, reservation/rate/payment mutation, raw shell or filesystem capability is added by this bridge.
+
+Live activation remains blocked until direct OpenClaw Gateway evidence proves the intended
+WhatsApp account/session, sender mapping, session isolation, replay behavior, recovery and
+M01-M12 acceptance gates.
