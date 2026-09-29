@@ -1,11 +1,42 @@
 # TORO Consolidation R1 — Architecture & Canonicalization Design
 
-**Status:** PROPOSED FOR OWNER REVIEW — not current authority until approved and merged  
+**Status:** APPROVED BY OWNER / R1 IN EXECUTION — merge into `main` pending  
 **Date:** 2026-09-28  
 **Product:** TORO  
 **Reference implementation:** Dreamcatcher Hotel  
 **Canonical repository:** `Dramcatcherst/Toro-OS`  
-**Base commit inspected:** `3af9316eb250b57af6f57ff36907b734a9346693`
+**Base commit inspected:** `3af9316eb250b57af6f57ff36907b734a9346693`  
+**Rebased documentation branch from current main:** `e36898f85a346fb4263e8eb9282e5184aa7c1ec1`
+
+---
+
+## Execution status — 2026-09-28
+
+The evidence baseline below is intentionally preserved as the pre-R1 snapshot.
+
+Verified progress since that snapshot:
+
+- **R1-A Backlog Revalidation: VERIFIED COMPLETE IN PRODUCTION**
+  - 65/65 reviewed;
+  - KEEP 40 / HOLD 20 / REWRITE 3 / MERGE 1 / CLOSE 1;
+  - 62 guarded production mutations + 3 concurrent no-op rows;
+  - 62 persisted audit receipts;
+  - reviewed `needs_revalidation=true` = 0;
+  - active open tasks moved 208 -> 187;
+  - forward and recovery paths both transaction-tested;
+  - no task deletion or parallel task authority.
+- **R1-B Security/Access: IMPLEMENTED IN BRANCH / PRODUCTION NOT CHANGED BY R1-B**
+  - live RPC policy catalog 96/96;
+  - CI green;
+  - global EXECUTE ACL reconciliation + rollback prepared;
+  - 10 TORO People server-owned tables direct-client ACL hardening + rollback prepared;
+  - negative authorization matrix documented;
+  - live catalog rebase after concurrent security fix shows no signature/ACL drift;
+  - hosted Supabase branch validation remains gated by explicit cost confirmation (US$0.01344/hour).
+- **R1-C Naming/Documentation:** next active consolidation workstream.
+- **R1-D Source/Surface Registry:** next active consolidation workstream.
+
+This R1 architecture remains subordinate to the single TORO Plan General and does not create a second product, plan, task universe or runtime authority.
 
 ---
 
