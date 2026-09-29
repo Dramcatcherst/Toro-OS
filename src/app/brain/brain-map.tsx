@@ -137,14 +137,24 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
   useEffect(() => {
     if (!focused) return;
     const originalOverflow = document.body.style.overflow;
+    const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     document.body.style.overflow = "hidden";
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setFocused(false);
     };
+    const keepModalFocus = (event: FocusEvent) => {
+      if (workspaceRef.current?.contains(event.target as Node)) return;
+      const firstVisibleButton = [...(workspaceRef.current?.querySelectorAll<HTMLButtonElement>("button") ?? [])]
+        .find((button) => button.getClientRects().length > 0);
+      firstVisibleButton?.focus();
+    };
     document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("focusin", keepModalFocus);
     return () => {
       document.body.style.overflow = originalOverflow;
       document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("focusin", keepModalFocus);
+      if (returnFocus?.isConnected) returnFocus.focus();
     };
   }, [focused]);
   useEffect(() => {
@@ -180,8 +190,8 @@ export function BrainMap({ projection, layout }: { projection: BrainProjection; 
 
   const keepFocusInside = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!focused || event.key !== "Tab") return;
-    const focusable = [...(workspaceRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])') ?? [])]
-      .filter((element) => element.getClientRects().length > 0);
+    const focusable = [...(workspaceRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input, summary, [tabindex]:not([tabindex="-1"])') ?? [])]
+      .filter((element) => element.getClientRects().length > 0 && (element.matches("summary") || !element.closest("details:not([open])")));
     if (!focusable.length) return;
     const first = focusable[0], last = focusable[focusable.length - 1];
     if (event.shiftKey && document.activeElement === first) {
