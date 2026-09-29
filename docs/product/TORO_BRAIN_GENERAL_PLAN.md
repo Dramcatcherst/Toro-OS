@@ -2596,3 +2596,94 @@ Verified after the initial 2026-09-29 alignment:
 - W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
+
+
+---
+
+# Mail Ingest V2 + Dropbox Document Vault V2 — 2026-09-29
+
+Owner directive: TORO must stop relying on repeated topic-by-topic mailbox/file searches as its primary extraction method. The governed default is **one historical backfill per authorized source + incremental processing only after the checkpoint**.
+
+## TORO Comms ingestion contract
+
+Canonical runtime knowledge:
+- `operations.knowledge_items/toro_comms_mailbox_bindings_v1`
+- `integrations.source_authority_rules/communications_email`
+
+Rules:
+- Gmail/Outlook original messages remain source authority for message existence/content.
+- Each `message_id` is processed once; threads/case keys group related messages.
+- Read body and every relevant attachment, classify scope/type, extract atomic facts, dedupe and preserve provenance.
+- Material evidence binaries are backed up to Dropbox; ordinary mail bodies/newsletters/repeated system notices are not blanket-copied.
+- Facts route to existing canonical TORO domains; existing tasks/obligations are updated/closed idempotently.
+- After mailbox backfill, only new messages since cursor/history checkpoint are ingested; topic search is exception/gap resolution only.
+- Email content never grants authority for payments, sends/deletes/forwards, credential/security changes, cancellations, contract acceptance or provider changes.
+
+Functional surfaces are lenses over the same Brain, not independent inbox brains:
+- Owner Attention
+- Reception
+- Finance
+- Admin/Security
+- Revenue/Reservations
+- Systems
+
+## Dropbox Document Vault V2
+
+Canonical policy:
+- Dropbox = original/binary evidence vault.
+- Supabase = structured manifest, metadata, provenance and domain state.
+- Airtable = human operational/transition projection where useful.
+- Notion = architecture, policy and long-form decision memory.
+- OpenClaw/WhatsApp = intake/action channel, never storage authority or parallel memory.
+
+New promoted evidence naming pattern:
+`YYYY-MM-DD__SCOPE__COUNTERPARTY__DOCTYPE__DOCID__PERIOD.ext`
+
+Original historical files are **not bulk-renamed**. Original name/path/file_id/revision/hash are preserved in `integrations.document_manifest`; a normalized name is used only when a document is intentionally promoted/copied to a canonical destination.
+
+Search order:
+1. Supabase manifest/domain filters;
+2. Dropbox scoped filename/content search;
+3. original Gmail/Outlook/provider/bank/authority source.
+
+Required metadata for material documents includes:
+`business/project -> legal entity -> property -> domain -> document type -> provider/counterparty -> date/period/expiry -> privacy -> authority/lifecycle -> source path/id/hash -> canonical destination -> owner -> retention/deletion gate`.
+
+## Historical Dropbox backfill
+
+The existing Dropbox contains current business, legacy business, properties, shared projects and personal/private roots. The program is governed by waves, not ad-hoc cleanup:
+
+0. inventory/freeze — map roots, sizes, privacy, owners and consumers; no moves/deletes;
+1. high-value/high-risk — finance, tax, legal, HR/payroll, banking, insurance, security/access;
+2. operations/commercial — contracts, agencies, suppliers, reservations, rates, maintenance, permits, utilities, CST;
+3. assets/media — hash/path/rights index; avoid copying huge media libraries without promotion need;
+4. personal/family — metadata/scope only by default, private/restricted; extract only explicit business/legal/property relevance;
+5. cleanup — duplicates/archive candidates only after identity/hash, canonical backup, zero active consumers, retention checks and human approval.
+
+Important observed roots at the 2026-09-29 audit:
+- active Dreamcatcher root: `/Dreamcatcher Hotel`;
+- legacy hotel cache: ~146.8 GB, classified `LEGACY_FROZEN_SOURCE`;
+- `/ATRAPASUEÑOS-CAROLINA`: ~2.14 GB, legacy business source;
+- `/SANTA TORO`: separate property scope;
+- `/SOCIEDADES`: corporate/legal scope;
+- `/CAROLINA` and `/Mauricio`: personal/private by default;
+- `/RECUPERACION_HISTORICA_2026-09-17`: recovery quarantine, never promoted to current truth without reconciliation.
+
+Current Wave 1 progress: **928 high-value legacy documents indexed in Supabase manifest** without moving/deleting them. The index spans finance/procurement/banking, HR/payroll, insurance, tax, legal/corporate/operations/revenue and Booking evidence. Content promotion remains document-by-document and evidence-based.
+
+## Finance target layout
+
+Original invoices/evidence:
+`/Dreamcatcher Hotel/Administracion/Facturas/YYYY/YYYY-MM/PROVIDER`
+
+Accounting workbench:
+`/Dreamcatcher Hotel/Administracion/Contabilidad/YYYY`
+with governed subfolders for inbox, sales, purchases/expenses, banks, acquiring/retentions, taxes, payroll/CCSS, loans/insurance, CAPEX, unsupported expenses, monthly closes and historical reconstruction.
+
+The existing mixed `/Facturas/2026` taxonomy is transitional. Do not mass-move it until manifest/dependency parity exists.
+
+## Permanent cleanup rule
+
+**Inventory -> classify -> index -> extract facts -> back up evidence -> reconcile -> reorganize -> only then consider deletion.**
+
+No root/folder/file is “junk” merely because it is old, duplicated-looking or badly named. Destructive cleanup requires proven identity/duplicate state, canonical/backup copy, no consumers/links, legal/retention clearance, domain-owner approval and Mauricio approval for a destructive batch.
