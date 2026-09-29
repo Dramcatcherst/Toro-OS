@@ -805,6 +805,50 @@ Same-Brain code path exists; live Gateway/channel identity/capability parity rem
 
 ---
 
+## DIEX / Villa Toro — intercompany legal-finance bridge — verified 2026-09-29
+
+DIEX remains inside the existing `Construcción / DIEX · Desarrollo y cierre documental` project. It is **not** a new master project or accounting brain.
+
+Verified legal/economic split:
+- DIEX de Santa Teresa S.A. (`3-101-355172`) is the ZMT concession/property/project entity for Villa Toro/DIEX;
+- Atrapa Sueños de Santa Teresa S.A. (`3-101-354441`) is the Dreamcatcher operating company;
+- BAC credit `204012411` is legally documented to **Atrapa Sueños**, not DIEX;
+- the principal BAC credit was formalized 31-May-2024 for USD 728,000; July-2026 principal outstanding was USD 640,705.26;
+- a separate/additional BAC formalization document dated 23-May-2025 shows USD 63,700 and net client deposit USD 62,693.82; it remains unreconciled to a specific loan reference and must not be added to the USD 728,000 by inference;
+- 2026 loan cash-flow reconstruction currently supports USD 29,466.74 principal, USD 16,481.50 interest and USD 2,328.57 insurance through Sep, with Aug/Sep still awaiting fresh corporate bank statements;
+- Alegra omitted the May-2026 USD 3,150.09 principal component that exists in the corporate BAC bank source, proving Alegra alone is not sufficient for historical loan reconstruction.
+
+Target intercompany architecture, pending legal/tax gates:
+1. **DIEX → Atrapa Sueños:** documented arm's-length operating lease or other legally permitted use agreement for Villa Toro/DIEX.
+2. **Atrapa Sueños → DIEX:** separately documented intercompany financing / due-from balance for BAC-funded amounts actually traced to DIEX construction, improvements or qualifying project costs.
+3. Do not relabel the BAC bank liability as a DIEX bank loan.
+4. Do not net rent and financing invisibly; gross legal/accounting flows and eliminations must remain traceable.
+5. Loan principal is balance-sheet financing, not operating expense.
+6. DIEX construction/improvements are CAPEX when applicable; interest, insurance, canon, maintenance and depreciation follow their legally supported entity/tax treatment.
+7. Existing Alegra cost center `DREAMCATCHER` must stop being the default analytical scope for DIEX. Owner authorized a dedicated `DIEX` cost center on 29-Sep-2026, but historical entries must not be mass-reclassified until a transaction-level map and rollback exist.
+
+Tax-governance rule:
+- related-party rent and financing must follow the Costa Rica arm's-length / libre-competencia standard;
+- do not set rent equal to debt service merely to shift taxable profit;
+- compare capital-real-estate-income treatment against the utilities regime before contract activation;
+- any commercial-rent VAT exemption must be proven; default assumption is taxable under the general regime unless an applicable exemption is documented;
+- no retroactive invoices or artificial backdating.
+
+Current legal gates:
+- recover the full DIEX ZMT concession instrument and its permitted-use/third-party-operation clauses;
+- confirm current DIEX personería and signing authority;
+- confirm whether municipal/ICT authorization is required for Atrapa Sueños to operate the concession area;
+- benchmark arm's-length rent using comparable property/use or a defensible valuation method;
+- trace BAC disbursements and DIEX CAPEX to establish the opening intercompany balance;
+- choose tax regime before first intercompany invoice.
+
+Canonical structured references:
+- `operations.knowledge_items/diex_intercompany_accounting_tax_model_2026_09_29_v1`
+- `operations.knowledge_items/alegra_cost_center_mapping_audit_2026_09_29_v1`
+- task `diex_intercompany_lease_tax_structure_20260929`.
+
+---
+
 # 13. Repository/project disposition
 
 ## Canonical portfolio hierarchy — verified 2026-09-22
