@@ -1,0 +1,72 @@
+name: TORO Core Portability SQL
+
+on:
+  pull_request:
+    paths:
+      - "supabase/drafts/20260929_toro_core_portability_contracts*.sql"
+      - "tests/sql/core_portability_*.sql"
+      - ".github/workflows/core-portability-sql.yml"
+      - "supabase/drafts/20260923_identity_organization_memberships*.sql"
+      - "tests/sql/identity_memberships_*.sql"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toro_portability_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d toro_portability_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/toro_portability_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure psql
+        shell: bash
+        run: |
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+          psql --version
+
+      - name: Build Supabase-compatible identity fixture
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/identity_memberships_fixture.sql
+
+      - name: Apply membership schema and backfill
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20260923_identity_organization_memberships.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20260923_identity_organization_memberships_backfill.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/identity_memberships_assertions.sql
+
+      - name: Apply TORO Core portability draft
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20260929_toro_core_portability_contracts.sql
+
+      - name: Assert tenant isolation and Core integrity
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/core_portability_assertions.sql
+
+      - name: Verify Core rollback
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20260929_toro_core_portability_contracts_rollback.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/core_portability_rollback_assertions.sql
+
+      - name: Verify membership rollback
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20260923_identity_organization_memberships_rollback.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/identity_memberships_rollback_assertions.sql
