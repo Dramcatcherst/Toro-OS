@@ -216,12 +216,15 @@ export function projectCanonicalBrainReadSlice(input: {
   };
 }
 
-export async function loadCanonicalBrainReadSlice(
+type ToroServerSupabaseClient = Awaited<
+  ReturnType<typeof createServerSupabaseClient>
+>;
+
+export async function loadCanonicalBrainReadSliceWithClient(
   context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
 ): Promise<CanonicalBrainReadSlice> {
   assertOrganizationContext(context);
-
-  const supabase = await createServerSupabaseClient();
 
   const [
     organizationResult,
@@ -299,4 +302,11 @@ export async function loadCanonicalBrainReadSlice(
     domainGovernance: (governanceResult.data ?? []) as DomainGovernanceRow[],
     krossHealth: (krossResult.data ?? []) as KrossHealthRow[],
   });
+}
+
+export async function loadCanonicalBrainReadSlice(
+  context: ToroResolvedContext,
+): Promise<CanonicalBrainReadSlice> {
+  const supabase = await createServerSupabaseClient();
+  return loadCanonicalBrainReadSliceWithClient(context, supabase);
 }
