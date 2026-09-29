@@ -64,6 +64,7 @@ const readyState: PeopleSelfServiceState = {
         approvalStatus: "approved",
       },
     ],
+    payrollReceipts: [],
     source: "supabase_canonical",
     loadedAt: "2026-09-23T12:00:00Z",
   },

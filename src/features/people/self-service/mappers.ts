@@ -3,6 +3,7 @@ import type {
   PeopleEmploymentSummary,
   PeopleLeaveBalance,
   PeopleLeaveRequest,
+  PeoplePayrollReceipt,
   PeopleSelfServiceProfile,
   PeopleShift,
 } from "./types";
@@ -24,6 +25,12 @@ function nullableText(value: unknown): string | null {
 function numberValue(value: unknown, fallback = 0): number {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function nullableNumber(value: unknown): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 export function mapEmploymentSummary(
@@ -127,6 +134,43 @@ export function mapAttendance(value: unknown): PeopleAttendanceDay[] {
       workedMinutes: numberValue(row.worked_minutes),
       attendanceStatus: text(row.attendance_status),
       approvalStatus: text(row.approval_status),
+    }];
+  });
+}
+
+export function mapPayrollReceipts(value: unknown): PeoplePayrollReceipt[] {
+  if (!Array.isArray(value)) return [];
+
+  return value.flatMap((item) => {
+    const row = record(item);
+    const snapshot = record(row.calculation_snapshot);
+    const id = text(row.id);
+    const payrollPeriodId = text(row.payroll_period_id);
+    const periodFrom = text(snapshot.period_from);
+    const periodTo = text(snapshot.period_to);
+    const lineStatus = text(row.line_status);
+
+    if (
+      !id ||
+      !payrollPeriodId ||
+      !periodFrom ||
+      !periodTo ||
+      (lineStatus !== "approved" && lineStatus !== "paid")
+    ) {
+      return [];
+    }
+
+    return [{
+      id,
+      payrollPeriodId,
+      periodFrom,
+      periodTo,
+      regularMinutes: numberValue(row.regular_minutes),
+      overtimeMinutes: numberValue(row.overtime_minutes),
+      grossAmount: nullableNumber(row.gross_amount),
+      deductionAmount: nullableNumber(row.deduction_amount),
+      netAmount: nullableNumber(row.net_amount),
+      lineStatus,
     }];
   });
 }

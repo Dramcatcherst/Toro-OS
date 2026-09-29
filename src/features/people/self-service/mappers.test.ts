@@ -5,6 +5,7 @@ import {
   mapEmploymentSummary,
   mapLeaveBalances,
   mapLeaveRequests,
+  mapPayrollReceipts,
   mapSelfProfile,
   mapShifts,
 } from "./mappers";
@@ -86,9 +87,47 @@ describe("TORO People self-service mappers", () => {
     ]);
   });
 
+  it("maps only the employee-safe payroll receipt projection", () => {
+    expect(
+      mapPayrollReceipts([
+        {
+          id: "line-1",
+          payroll_period_id: "period-1",
+          regular_minutes: 4800,
+          overtime_minutes: 120,
+          gross_amount: "250000.50",
+          deduction_amount: "25000.25",
+          net_amount: "225000.25",
+          line_status: "paid",
+          calculation_snapshot: {
+            period_from: "2026-09-01",
+            period_to: "2026-09-15",
+            hourly_rate: 999999,
+            adjustment_note: "SHOULD_NOT_PROJECT",
+          },
+          bank_account: "SHOULD_NOT_PROJECT",
+        },
+      ]),
+    ).toEqual([
+      {
+        id: "line-1",
+        payrollPeriodId: "period-1",
+        periodFrom: "2026-09-01",
+        periodTo: "2026-09-15",
+        regularMinutes: 4800,
+        overtimeMinutes: 120,
+        grossAmount: 250000.5,
+        deductionAmount: 25000.25,
+        netAmount: 225000.25,
+        lineStatus: "paid",
+      },
+    ]);
+  });
+
   it("drops malformed rows instead of inventing identifiers/dates", () => {
     expect(mapLeaveRequests([{ leave_type: "vacation" }])).toEqual([]);
     expect(mapAttendance([{ worked_minutes: 480 }])).toEqual([]);
     expect(mapLeaveBalances([{ available_days: 3 }])).toEqual([]);
+    expect(mapPayrollReceipts([{ net_amount: 1 }])).toEqual([]);
   });
 });
