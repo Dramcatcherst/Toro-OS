@@ -142,6 +142,12 @@ Later client-readable projections require a separate reviewed security-invoker v
 
 Authorization to use a binding comes from TORO context + capability/action policy, not merely from the existence of a row.
 
+### Metadata-read gate — code-only preparation, 2026-09-29
+
+`canUseMailboxBinding` now denies by default. A valid organization session and active membership are necessary but insufficient: a trusted server policy must also supply an active `comms.mail.metadata.read` grant for the exact actor, organization, business, property, binding ID and provider. The resolved binding must carry the same business scope. Personal mode, missing business scope, a revoked grant, a mismatched scope or an unhealthy binding denies access. Request parameters, email domains and synthetic UI profiles cannot issue this grant.
+
+This is a pure local policy contract, **not** an active read permission or Gmail connection. The draft registry has no `business_id` column, and a read-only check on the canonical Supabase project found `integrations.communication_channel_bindings` absent on 2026-09-29. Consequently no trusted runtime can currently populate the required business-scoped binding/grant. Do not apply the draft SQL or expose metadata in Portal/WhatsApp on the strength of these tests. First reconcile the business/property ownership mapping and review the registry schema, migration, RLS and server-only adapter through the normal approval path.
+
 ## Gmail/Workspace transport
 
 Preferred production order:

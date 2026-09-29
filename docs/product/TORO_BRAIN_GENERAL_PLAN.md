@@ -2109,6 +2109,7 @@ GATES:
 - No production multi-mailbox channel/binding layer is yet verified.
 - OpenClaw live runtime, verified channel identity and cross-source/mailbox capability parity remain unverified until direct Gateway acceptance.
 - Email completeness requires Workspace Admin inventory + real mailbox bindings + governed Gmail ingestion/backfill.
+- Metadata-read policy preparation (2026-09-29): `canUseMailboxBinding` now requires an explicit server-issued `comms.mail.metadata.read` grant matching actor, organization, business, property, binding and provider; active organization membership alone no longer suffices. The binding registry is absent in the canonical Supabase project and its draft has no business mapping, so this remains code-only and denies live reads. No Gmail access, RLS/schema change, route or deployment was activated.
 
 
 ### TORO People Self-Service Wave 1 — 2026-09-23
