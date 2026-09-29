@@ -968,7 +968,7 @@ TORO separates **technical access** from **human account control**.
 - **ACCESS FIRST / ROTATION LATER:** preserve working authorized access while ownership/recovery is mapped; change passwords, MFA, recovery, billing or roles only after evidence and the applicable owner/security gate.
 
 Current P0 live-read evidence without Mauricio:
-- GitHub repository permissions verified;
+- GitHub repository permissions verified; CURRENT risk: `main` is unprotected, required status checks are off and repository rulesets are empty. Canonical task `github_main_branch_protection_gate_20260929` holds the OWNER_GATE. Proposed minimum: PR-required + `TORO Brain CI / validate` + conversation resolution + block force-push/delete; no repository-setting write without explicit approval;
 - Supabase canonical project and recovery sandbox visible; `toro-auth-pilot` observed INACTIVE but not authorized for deletion;
 - Vercel team/project inventory visible, RBAC still partial;
 - hotel/personal Google Drive connector identities verified;
