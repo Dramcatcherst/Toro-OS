@@ -257,8 +257,8 @@ export function buildCanonicalBrainProjection(
           authoritySystem: "operations.executive_decisions",
           capabilities: observeOnly,
           activity: "idle" as const,
-          summary: "Workflow processed without decision value; source approval not verified",
-          metric: { label: "Needs reconciliation", value: slice.unreconciledDecisionCount },
+          summary: "Procesadas sin valor de decisión; aprobación en la fuente sin verificar",
+          metric: { label: "Por conciliar", value: slice.unreconciledDecisionCount },
         }]
       : []),
     ...kross.map((item) => krossNode(item, slice.scopeRef)),
