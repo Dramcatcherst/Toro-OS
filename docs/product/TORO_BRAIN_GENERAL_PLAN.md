@@ -2658,9 +2658,10 @@ Redes, dossier, web y correo usarán los mismos activos y una solicitud de grupo
 
 **Portal:** recursos públicos en los módulos existentes Growth/Channels/Revenue. La página privada de planificación conserva la evidencia de correo; no se incorporan destinatarios a código público.
 
-### Agencias de viajes — prioridad estratégica; preparación antes del contacto
+### Agencias de viajes — preparación secundaria; lanzamiento después de la nueva web
 
-**Decisión del propietario:** este canal debe ser importante y reunir alojamiento, grupos y experiencias. Primero investigar y preparar la estrategia; después desarrollar herramientas, probarlas y solo entonces contactar. El calendario anterior es orientativo: manda la preparación verificada, no una fecha de lanzamiento.
+**Orden vigente del propietario · 29/09/2026 23:17 CR:** la publicación verificada de la nueva web de Dreamcatcher precede al lanzamiento de agencias, Hotelbeds, grupos y campañas de este frente. Prioridad relativa menor dentro del Plan General: preparación documental ahora; activación comercial diferida. Podemos investigar, depurar bases, preparar catálogo/fotos/condiciones y diseñar herramientas internas. No enviar correos, mensajes, dossiers ni campañas; no ejecutar altas comerciales. Publicar la web no dispara envíos automáticamente: después se revisará la preparación y el siguiente paso.
+Este canal reunirá alojamiento, grupos y experiencias. La secuencia de 90 días queda subordinada a la web nueva publicada y no obliga a lanzar ni contactar.
 
 **Orden de trabajo y condiciones para avanzar**
 1. Investigación: reactivar conocimiento de relaciones previas; contrastar agencias receptivas/DMC de Costa Rica, especialistas en surf/bienestar, organizadores de grupos y compradores internacionales. Horizontes, Camino Travel y Swiss Travel son candidatos de investigación, no socios confirmados. Evaluar mercado emisor, Santa Teresa en sus rutas, tipo/tamaño de cliente, estacionalidad, alojamiento buscado, forma de reserva y compatibilidad operativa.
