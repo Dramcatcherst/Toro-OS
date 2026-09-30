@@ -9,6 +9,23 @@
 
 Verify the actual OpenClaw Gateway/channel/runtime without exposing credentials and without treating historical documentation as live proof.
 
+### One-command sanitized first pass
+
+On the **existing authorized OpenClaw host**, from a current checkout of this
+repository, run `node scripts/openclaw-host-diagnostics.mjs`. It invokes only
+read-only OpenClaw status, probe, capabilities, security-audit, backup-list and
+a bounded 200-line channel-log command. It prints a small allowlisted JSON
+summary; raw command output is processed transiently and is not printed or
+persisted by the script. Share only the summary with TORO Systems. Review
+local shell/session logging policy before running it on the host.
+
+The summary cannot prove live WhatsApp-to-TORO identity, action receipts,
+history persistence or the exact `Capability unavailable` trace. After this
+first pass, inspect the existing `toro-openclaw-integration` worktree and a
+bounded, sanitized failure trace on the host. Do not publish raw logs or run
+automatic fixes. The script does not change Gateway configuration or send a
+message.
+
 Official references:
 - https://docs.openclaw.ai/cli/channels
 - https://docs.openclaw.ai/gateway/security/running-the-audit
