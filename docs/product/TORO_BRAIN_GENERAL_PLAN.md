@@ -9,6 +9,16 @@
 
 ---
 
+## WhatsApp / OpenClaw repair intake — 2026-09-29
+
+**Owner:** TORO Comms, with TORO Identity, Operations, Finance and Systems. **State:** CURRENT gap / NEXT controlled implementation. This is part of the existing WhatsApp Same-Brain lane.
+
+- **Observed in production Supabase:** one WhatsApp/OpenClaw binding is connected/verified and marked healthy, while the external dependency still says `needs_audit` (last audited 2026-09-22). `integrations.communication_channel_sessions` and `integrations.communication_channel_receipts` exist but each has zero rows, as does `public.employee_channel_identities`. This is configuration evidence, not live TORO execution proof. The Gateway, existing `toro-openclaw-integration` worktree and exact `Capability unavailable` trace were not accessible here. The agent report says text/media/transcription and `chat_id` reach the channel; that report does not prove canonical persistence.
+- **Prepared in local code review:** `src/features/openclaw/channel-ledger.ts` defines hashed transport identity, fail-closed authorization, record validation and distinct DENIED/UNAVAILABLE/STALE states. The revised `supabase/drafts/20260929_toro_comms_durable_channel_ledger.sql` adds only content and structured-record storage over the existing sessions/receipts, with search indexes and rollback. It is not applied or connected to WhatsApp.
+- **Current mirror limit:** `operations.reservations` has 33 rows, latest `snapshot_as_of` 2026-09-21 09:28 UTC; `operations.current_reservations_safe` has zero rows. The Kross snapshot health rows observed on 2026-09-24 are marked stale. These sources can support labeled historical/reference reads only, never occupancy or arrivals "today".
+- **Next:** inspect the existing adapter and sanitized failing trace; bind Mauricio through the existing verified channel identity flow; route the adapter through TORO's current permissions and receipts; test owner-only history and replay-safe guest-list persistence. Restore/verify mirror freshness before current reservations/occupancy/aseo reads. Keep Kross paid access deferred and Alegra writes separately approval-gated.
+- **Promotion gate:** prove context compaction, restart, long history, duplicate replay, wrong user/org, revoked binding, stale mirror, media failure and backup/restore on the actual host. No costs, external messages or new connections from this lane without owner authorization.
+
 # 1. Final direction
 
 TORO is the master intelligence, memory, governance and orchestration layer for a person's work, businesses, projects and authorized external relationships.
