@@ -67,11 +67,15 @@ export function sourceObservation(source: BrainSourceSummary): string | null {
   return new Date(time).toISOString();
 }
 
-export function attentionNodes(projection: BrainProjection): BrainNode[] {
+export function allAttentionNodes(projection: BrainProjection): BrainNode[] {
   const rank = { Critical: 0, High: 1, Medium: 2, Low: 3 };
   return projection.nodes.filter(node => node.risk === "Critical" || node.risk === "High" ||
     node.status === "Blocked" || node.status === "Review" ||
     node.verification === "unverified" || node.verification === "conflicted")
-    .sort((a, b) => rank[a.risk] - rank[b.risk] || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-    .slice(0, 4);
+    .sort((a, b) => rank[a.risk] - rank[b.risk] || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+}
+
+/** Four highlights are a summary, never the universe of searchable attention. */
+export function attentionNodes(projection: BrainProjection): BrainNode[] {
+  return allAttentionNodes(projection).slice(0, 4);
 }

@@ -16,6 +16,14 @@ function fixture(): BrainProjection {
 }
 
 describe("brain explorer state", () => {
+  it("searches_all_attention_records_beyond_the_four_highlights", () => {
+    const p = fixture();
+    const base = p.nodes[0];
+    p.nodes = ["a", "b", "c", "d", "e"].map(id => ({ ...base, id, label: `Alerta ${id}`, risk: "Critical" }));
+    const state = { ...initialBrainState("a", "list"), focus: "attention" as const };
+    expect(visibleBrainObjects(p, { ...state, query: "Alerta e" }).nodes.map(node => node.id)).toEqual(["e"]);
+    expect(visibleBrainObjects(p, state).nodes.map(node => node.id)).toEqual(["a", "b", "c", "d", "e"]);
+  });
   it("preserves_selection_between_views", () => {
     const state = reduce(initialBrainState("a", "list"), { type: "select", id: "to" });
     expect(reduce(state, { type: "view", value: "map" })).toMatchObject({ view: "map", selectedId: "to" });

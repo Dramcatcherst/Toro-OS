@@ -1,5 +1,5 @@
 import type { BrainProjection } from "@/lib/brain-contracts";
-import { attentionNodes } from "./presentation";
+import { allAttentionNodes } from "./presentation";
 export type BrainView = "map" | "list";
 export type BrainFocus = "all" | "attention" | "projects" | "portfolio";
 export type BrainLocale = "es" | "en";
@@ -23,7 +23,7 @@ export function brainExplorerReducer(state: BrainExplorerState, action: BrainExp
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 export function visibleBrainObjects(projection: BrainProjection, state: BrainExplorerState) {
   const query = normalize(state.query.trim());
-  const candidates = state.focus === "attention" ? attentionNodes(projection) : [...projection.nodes].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+  const candidates = state.focus === "attention" ? allAttentionNodes(projection) : [...projection.nodes].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
   const nodes = candidates.filter(node => {
     if (state.focus === "projects" && node.kind !== "project") return false;
     if (state.focus === "portfolio" && !["portfolio", "organization", "business", "property", "project"].includes(node.kind)) return false;
