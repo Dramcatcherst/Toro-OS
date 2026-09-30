@@ -1,5 +1,6 @@
 import type {
   BrainFreshnessState,
+  BrainNodeKind,
   BrainProjection,
   BrainProjectionMode,
   BrainVerificationState,
@@ -245,4 +246,49 @@ export type ToroMcpExecutionReceipt = {
   authoritySystem: string;
   rollbackRef?: string;
   cancellationRef?: string;
+};
+
+export type ToroMcpPrioritiesInput = {
+  scopeRef?: string;
+  horizon?: ToroMcpPriorityHorizon;
+  limit?: number;
+  correlationId?: string;
+};
+
+export type ToroMcpBusinessStatusInput = {
+  scopeRef?: string;
+  sections?: readonly string[];
+  correlationId?: string;
+};
+
+export type ToroMcpPendingDecisionsInput = {
+  scopeRef?: string;
+  state?: string;
+  limit?: number;
+  correlationId?: string;
+};
+
+export type ToroMcpExecutionReceiptsInput = {
+  scopeRef?: string;
+  correlationId?: string;
+  actionRef?: string;
+  workflowRunRef?: string;
+  since?: string;
+  until?: string;
+  limit?: number;
+};
+
+export type ToroMcpBusinessStatusData = {
+  scopeRef: string;
+  organization?: {
+    objectRef: string;
+    label: string;
+    status: string;
+  };
+  nodeCount: number;
+  countsByKind: Partial<Record<BrainNodeKind, number>>;
+  riskCounts: Partial<Record<RiskLevel, number>>;
+  sources: readonly ToroMcpSourceSummary[];
+  partial: boolean;
+  degradedReason?: string;
 };
