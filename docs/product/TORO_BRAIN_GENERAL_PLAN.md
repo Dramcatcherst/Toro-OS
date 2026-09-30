@@ -3000,3 +3000,51 @@ Notion de Dashboard: https://app.notion.com/p/3e6f5169a39a810f810adefdcd4851e7?p
 
 Referencias estructuradas leídas: `toro_dashboard_surface_v1`, `toro_brain_taxonomy_v1` y `toro_product_capability_registry_v1`, en el runtime Supabase canónico. La lectura íntegra del Plan General conserva todo su contenido previo e incorpora esta definición con los estados separados.
 
+
+
+---
+
+## Human Layer / TERE / DreamTeam R4 — owner directive 2026-09-30
+
+**State:** CURRENT canonical refinement.  
+**Subordinate contract:** `docs/product/TORO_HUMAN_LAYER_TERE_DREAMTEAM_R4.md`
+
+Mauricio directed TORO to recover and preserve the durable personality, communication, TERE, hotel-voice and DreamTeam rules from historical/current sources; simplify and merge them before implementation; and apply approximately 50 material improvements without creating another brain, project, task system, employee authority or prompt universe.
+
+### Canonical decisions
+
+- TORO remains the single visible orchestrator/Brain.
+- TERE remains the Dreamcatcher guest-facing specialist/persona. WeSpeak/OpenClaw/WhatsApp/Portal are runtimes/surfaces, not separate brains.
+- Personality is durable behavior, never volatile business truth.
+- TERE keeps the current practical-first principle: **80% useful reality / 15% Dreamcatcher identity / 5% surprise**.
+- R4 adds governed social chemistry: serious → warm → playful → complicit, based on reciprocal rapport. Complaints, safety, money-sensitive topics, policy disputes and discomfort force serious mode.
+- The new active Supabase configuration key is `tere-social-chemistry-playfulness-r4-20260930`. Configuration existence does **not** prove WeSpeak/OpenClaw consumption; runtime version/hash + QA remains required.
+- Airtable Central now carries the R4 owner decision and learned social-chemistry rule. Superseded dream-heavy packs remain historical and must not be reactivated.
+- DreamTeam functionality is defined as **verified identity + correct role/capabilities + authorized channel + onboarding + runtime acceptance**, not merely “employee record exists”.
+- Current People runtime observation on 2026-09-30: 12 active employees + 1 terminated; all 12 active have AI profiles/Role Packs; 4 have linked application users; 0/12 have verified employee channel identities; onboarding progress remains unstarted. Do not bind the remaining people by name inference.
+- Current kitchen operator Mary/Maribel remains an **external collaborator/operator**, not a payroll employee; minimal scoped access is separately approval-gated.
+- Kross retains live transactional authority; stale/non-live mirrors cannot answer current occupancy, availability or rates.
+- Alegra retains fiscal/accounting authority; TORO may analyze/reconcile/prepare, but material accounting writes remain governed.
+- Dropbox remains the original-evidence/backup home where governed, but a fresh Dropbox audit was **BLOCKED** in this pass by the current connector search/schema conflict; do not describe it as re-audited.
+
+### R4 improvement package
+
+The subordinate contract applies **50 net-new improvements** on top of the existing I01–I20 agent/skill controls, grouped into:
+1. canonical memory/governance and simplification;
+2. personality/playfulness/social chemistry;
+3. guest communication and Dreamcatcher voice;
+4. DreamTeam functionality/onboarding/permissions;
+5. Kross/Alegra/evidence/QA/observability.
+
+The detailed R4-01…R4-50 definitions, activation gates and rollback live only in the subordinate contract above to avoid duplicating the same specification in multiple places.
+
+### Acceptance gate
+
+R4 is not runtime-complete until:
+- each active guest-facing runtime proves the personality/config version/hash it consumed;
+- TERE passes serious-mode, rapport, privacy, joke-fatigue and cross-channel scenarios;
+- DreamTeam identities are individually verified and role-isolated;
+- employee channel revocation/offboarding works;
+- Kross/Alegra authority remains intact;
+- corrections persist across sessions/channels without copied parallel prompts.
+
