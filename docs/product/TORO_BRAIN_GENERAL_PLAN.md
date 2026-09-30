@@ -476,6 +476,41 @@ Generic capability layer:
 
 Workflow logic should call generic capabilities rather than hard-code vendors where practical.
 
+### ChatGPT App + MCP interface — approved 2026-09-30
+
+TORO is platform-first and interface-agnostic. ChatGPT is one official interface to TORO alongside Portal, mobile, WhatsApp/OpenClaw and future surfaces; it is not a second Brain, database, permission system or execution ledger.
+
+Canonical path:
+
+**ChatGPT App / Apps SDK → TORO MCP → TORO Brain / Control Plane → policy + identity + scope → authoritative source/tool or delegated worker → verification/readback → receipt → TORO response**
+
+Rules:
+- critical business logic must not live exclusively inside ChatGPT;
+- Supabase/canonical TORO state remains the durable source for governed memory, work state, permissions, provenance and receipts;
+- OpenClaw and other workers remain governed execution channels and do not become alternate authorities;
+- ChatGPT capabilities are exposed only when current identity, scope, source freshness and runtime capability are verified;
+- unavailable or read-only capabilities must be represented honestly and fail closed;
+- MCP/tool calls must be idempotent where replay could duplicate work;
+- secrets remain server-side and are never exposed to the model or UI;
+- every material action follows **Intent → Policy → Approval → Execution → Verification → Receipt → Memory**.
+
+Initial MCP surface to design and verify:
+1. `get_brain_status`
+2. `search_toro`
+3. `get_priorities`
+4. `get_business_status`
+5. `get_pending_decisions`
+6. `get_execution_receipts`
+
+Delivery sequence:
+- **P0:** define the TORO MCP contract against the existing Brain/Control Plane; no duplicate data layer;
+- **P1:** build a read-first TORO ChatGPT App and visual components for Brain, priorities, decisions and receipts;
+- **P2:** prove authenticated scope, freshness labels, read parity and failure states;
+- **P3:** add governed actions only where current ChatGPT/MCP/runtime capabilities and TORO policy gates are verified;
+- **P4:** consider broader plugin/directory distribution only after internal reliability, isolation, recovery and product-readiness gates pass.
+
+Current product-plan or provider limitations are runtime facts to verify at implementation time, not assumptions embedded into the architecture.
+
 ---
 
 # 8. System auditing
@@ -2621,13 +2656,17 @@ Verified after the initial 2026-09-29 alignment:
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
 
 
-# 23. Finished product definition — owner direction 2026-09-29
+# 23. VERSION FINAL — definición del producto terminado — owner direction 2026-09-29
 
 **Classification:** TARGET definition, proposed acceptance detail; not a runtime-completion claim.  
 **Source:** owner direction of 2026-09-29, constitution and existing General Plan/contracts.  
 **Scope:** existing TORO master product and authorized portfolio; no new master project/backlog.  
 **Delivery:** full product definition below; editable/presentation exports and a complete indexed General Plan reader are derived artifacts.  
 **Governance:** existing A0–A6 workflow authority, Autopilot caps, identity/privacy, budget, readiness, source and release gates remain effective.
+
+**R2 refinement — 2026-09-30:** Mauricio designates this section as **VERSION FINAL**: the canonical TARGET description of TORO as the finished product. The subordinate execution/design prompt is `docs/product/TORO_VERSION_FINAL_SUPERPROMPT_V1.md`. It strengthens the executive/general-manager layer, first-class mobile experience, event-driven execution, Same-Brain OpenClaw/WhatsApp architecture, Business DNA portability and the visual self-use loop in which TORO Business operates with TORO. Its VF01–VF40 refinements extend the product definition without replacing the existing P01–P40 acceptance criteria, R4 Human Layer controls, current queues, source authorities or runtime/release gates.
+
+**R3 interface decision — 2026-09-30:** TORO is **platform-first and interface-agnostic**. ChatGPT becomes a first-class TORO interface through a TORO ChatGPT App built with the Apps SDK and a governed TORO MCP boundary. ChatGPT is not the system of record and does not own critical business logic, memory, permissions or execution state. TORO Brain, Supabase/canonical data, Control Plane, policy/permission enforcement and evidence/receipt state remain authoritative.
 
 
 ### Propósito y alcance
@@ -2653,6 +2692,14 @@ La portada interna final es el Cerebro conectado para toda identidad autenticada
 La portada combina mapa y lista equivalente sobre los mismos objetos, con señales de atención y acciones en contexto. No obliga a explorar el grafo para una tarea repetitiva: búsqueda, «Hoy» y acceso directo al objeto conservan ámbito y selección. La experiencia prioriza pantallas compactas con detalle progresivo; el contenido largo, la ampliación de texto y las excepciones pueden desplazarse con scroll normal.
 
 Los once módulos visibles son Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Brain, conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones son capacidades comunes. Los subsistemas internos pueden ser más numerosos que los módulos del menú; cada uno tiene un propietario de capacidad y comparte identidad, permisos y estado.
+
+### ChatGPT como interfaz oficial de TORO
+
+El usuario puede abrir TORO desde ChatGPT y conversar con el mismo Brain que utiliza Portal o WhatsApp. La experiencia puede presentar Brain, prioridades, decisiones, módulos, evidencia y recibos como componentes interactivos, pero la interfaz no crea una autoridad paralela.
+
+Una instrucción desde ChatGPT conserva identidad, ámbito, fuente, permisos y estado canónico. Si la capacidad es solo de lectura, TORO no simula una acción. Si una acción está permitida, pasa por el mismo ciclo de política, aprobación, ejecución, verificación y recibo que cualquier otra superficie.
+
+El Portal sigue siendo la superficie visual/control más completa; ChatGPT optimiza investigación, conversación, razonamiento y comando; mobile optimiza operación rápida; WhatsApp/OpenClaw optimiza continuidad y trabajo en canal. Todos proyectan el mismo TORO.
 
 ### Portafolio y contextos
 
