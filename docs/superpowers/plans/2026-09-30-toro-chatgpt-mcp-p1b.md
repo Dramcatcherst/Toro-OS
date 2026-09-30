@@ -23,6 +23,17 @@ P1-B ends before:
 - production enablement without OAuth;
 - custom ChatGPT widgets beyond tool responses.
 
+
+### Owner dogfood path
+
+Current OpenAI developer documentation states that ChatGPT Developer Mode supports full MCP tools for Plus and Pro accounts. Therefore the first TORO connection target is Mauricio's existing ChatGPT Pro account in Developer Mode, using the protected TORO MCP staging endpoint.
+
+This does **not** expand TORO authority:
+- TORO v1 remains read-only by our contract even if ChatGPT can technically invoke write-capable MCP tools;
+- no public directory submission is required for owner dogfood;
+- public/plugin packaging is a later distribution decision;
+- re-check current ChatGPT Developer Mode availability immediately before connection because provider product surfaces can change.
+
 ---
 
 ## 2. Current verified implementation choice — 2026-09-30
@@ -309,16 +320,19 @@ A successful preview is not production authorization.
 
 Only after preview + auth pass:
 
-1. re-check current OpenAI Apps SDK / MCP developer documentation;
-2. enable the relevant ChatGPT developer/app connection flow;
+1. re-check current OpenAI Apps SDK / MCP Developer Mode documentation;
+2. use Mauricio's existing ChatGPT Pro account for private owner dogfood when Developer Mode remains available;
 3. connect the protected preview/staging MCP endpoint;
-4. authenticate with a dedicated TORO test identity;
-5. verify tool discovery/annotations;
-6. run read-only acceptance cases;
+4. authenticate first with a dedicated restricted TORO test identity, then separately with an owner identity after restricted-scope denial passes;
+5. verify tool discovery, auth metadata and read-only annotations;
+6. run all six read-only acceptance cases;
 7. verify account switching/revocation behavior where supported;
-8. only then evaluate custom UI components.
+8. record the connection/test evidence;
+9. only then evaluate custom UI components.
 
-No write tool is introduced to make a demo look more complete.
+Public plugin/directory publication is not required for this gate and is not part of P1-B.
+
+No write tool is introduced to make a demo look more complete. ChatGPT client capability never overrides TORO's own read-only v1 ceiling.
 
 ---
 
