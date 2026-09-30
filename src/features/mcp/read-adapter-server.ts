@@ -270,6 +270,16 @@ export async function runToroMcpReadTool(
   }
 
   if (tool === "get_priorities") {
+    if (typeof input.horizon === "string" && input.horizon !== "now") {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "capability_unavailable",
+        "Only the current/now priority horizon is exposed in MCP v1.",
+        false,
+      );
+    }
+
     if (!canViewOwnerAttention(resolved.context)) {
       return errorResponse(
         tool,
@@ -355,8 +365,8 @@ export async function runToroMcpReadTool(
       data: {
         items: executionReceiptsFromProjection(projection, {
           correlationId:
-            typeof input.filterCorrelationId === "string"
-              ? input.filterCorrelationId
+            typeof input.receiptCorrelationId === "string"
+              ? input.receiptCorrelationId
               : undefined,
           actionRef:
             typeof input.actionRef === "string" ? input.actionRef : undefined,
@@ -364,6 +374,8 @@ export async function runToroMcpReadTool(
             typeof input.workflowRunRef === "string"
               ? input.workflowRunRef
               : undefined,
+          since: typeof input.since === "string" ? input.since : undefined,
+          until: typeof input.until === "string" ? input.until : undefined,
           limit: typeof input.limit === "number" ? input.limit : undefined,
         }),
       },
