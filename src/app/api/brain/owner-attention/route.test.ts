@@ -3,17 +3,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ToroResolvedContext } from "@/features/context/types";
 import type { InvoiceRow } from "@/features/attention/owner-attention";
 
-const { resolveContext, createClient } = vi.hoisted(() => ({
+const { resolveContext, createClient, loadBrainView } = vi.hoisted(() => ({
   resolveContext: vi.fn(),
   createClient: vi.fn(),
+  loadBrainView: vi.fn(),
 }));
 
 // Only external identity/database boundaries are replaced. The route, provider,
 // authorization policy and projection builder all execute their real code.
 vi.mock("@/features/context/resolver", () => ({ resolveToroContext: resolveContext }));
 vi.mock("@/lib/supabase/server", () => ({ createServerSupabaseClient: createClient }));
+// The separately tested Brain reader is another external read boundary here.
+// MCP, Owner Attention provider, policy and projection still execute real code.
+vi.mock("@/lib/server/brain-projection", () => ({ loadBrainProjectionView: loadBrainView }));
 
 import { loadOwnerAttentionProjection } from "@/features/attention/owner-attention-server";
+import { runToroMcpReadTool } from "@/features/mcp/read-adapter-server";
 import { GET } from "./route";
 
 function ownerContext(): ToroResolvedContext {
@@ -68,6 +73,15 @@ beforeEach(() => {
   queries = [];
   failingSource = undefined;
   resolveContext.mockResolvedValue(ownerContext());
+  loadBrainView.mockResolvedValue({
+    runtime: { realData: true },
+    projection: {
+      contractVersion: "1.0.0", generatedAt: "2026-09-30T12:00:00.000Z",
+      mode: "workspace", synthetic: false, partial: false,
+      context: { mode: "organization", scopeRef: "synthetic-org", organizationRef: "synthetic-org", isolationMode: "private" },
+      nodes: [], edges: [], events: [], sources: [],
+    },
+  });
   createClient.mockResolvedValue({
     schema: (schema: string) => ({
       from: (table: string) => {
@@ -109,6 +123,47 @@ const disabledConfigurations = [
   ["true", undefined], ["true", "false"], ["true", "TRUE"],
   ["true", "1"], ["true", " true "],
 ] as const;
+
+describe("MCP consumer preserves the Owner Attention read boundary", () => {
+  // Removing the provider's gate must expose synthetic invoice priorities and
+  // fail these assertions: the real MCP consumer cannot bypass that gate.
+  it.each(disabledConfigurations)("returns no priorities or database reads for flags %s / %s", async (brain, attention) => {
+    vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", brain);
+    vi.stubEnv("TORO_OWNER_ATTENTION_READ_ENABLED", attention);
+    const result = await runToroMcpReadTool("get_priorities", { correlationId: "synthetic-correlation" });
+    expect(result.error?.code).toBe("degraded");
+    expect(result).not.toHaveProperty("data");
+    expect(JSON.stringify(result)).not.toMatch(/Synthetic supplier|TEST-1|synthetic-invoice/);
+    expect(createClient).not.toHaveBeenCalled();
+  });
+
+  it("projects a synthetic priority through the real provider when both capabilities and role allow it", async () => {
+    const result = await runToroMcpReadTool("get_priorities", { limit: 1 });
+    expect(result.error).toBeUndefined();
+    expect(result.data).toMatchObject({ items: [expect.objectContaining({ objectRef: "synthetic-invoice", title: "Synthetic supplier — TEST-1", sourceSystem: "TORO Finance", freshness: "unknown", verification: "unverified" })] });
+    expect(queries.map(query => query.source)).toEqual(["operations.communication_followups", "operations.obligations", "finance.invoices"]);
+    expect(queries.every(query => query.filters.some(([key, value]) => key === "org_id" && value === "synthetic-org"))).toBe(true);
+  });
+
+  it("keeps priorities unavailable for a role without Owner Attention permission", async () => {
+    const context = ownerContext();
+    context.membership!.roles = ["CONTABILIDAD"];
+    resolveContext.mockResolvedValue(context);
+    const result = await runToroMcpReadTool("get_priorities");
+    expect(result.error?.code).toBe("capability_unavailable");
+    expect(result).not.toHaveProperty("data");
+    expect(createClient).not.toHaveBeenCalled();
+  });
+
+  it("does not reach Owner Attention when Brain is a demonstration", async () => {
+    const view = await loadBrainView();
+    loadBrainView.mockResolvedValue({ ...view, runtime: { realData: false } });
+    const result = await runToroMcpReadTool("get_priorities");
+    expect(result.error?.code).toBe("capability_unavailable");
+    expect(result).not.toHaveProperty("data");
+    expect(createClient).not.toHaveBeenCalled();
+  });
+});
 
 describe("Owner Attention disabled read boundary", () => {
   // Removing either gate must fail these: even a valid owner cannot load data
