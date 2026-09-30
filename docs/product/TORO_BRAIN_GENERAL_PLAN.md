@@ -41,6 +41,8 @@ The operating/execution layer is an internal capability of TORO, not a second pr
 
 Normal users experience **one TORO**.
 
+**TARGET product experience — 2026-09-29:** The finished-product definition in section 23 specifies one owner operating the authorized portfolio through TORO, with the Brain, role views, evidence and permitted work in one experience. Dropbox documents and the full-plan visual reader are projections of this General Plan; they may not become a parallel plan.
+
 ---
 
 # 2. Product hierarchy
@@ -120,6 +122,7 @@ Rules:
 - role visibility comes from the shared identity/membership/capability model;
 - every material widget exposes source authority, freshness, attention state and next action;
 - default home is Today/Attention, not the technical cockpit;
+- TARGET owner composition: Today/Attention remains the home function; Brain becomes the dominant owner visual area with immediate decisions and next actions. Other roles retain work-first homes. Section 23 details the eleven modules without creating a twelfth module or another task/approval store.
 - mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
 
 MVP order:
@@ -329,6 +332,8 @@ TORO may cross-analyze owned/authorized scopes when useful.
 
 External clients and sensitive scopes remain isolated.
 
+**TARGET portfolio coverage — 2026-09-29:** The authorized overview must make Dreamcatcher, Santa Toro, Vista Alegre, Cabuya, TORO Business and existing owned projects discoverable with their documented type, status and relationships. This visibility does not reactivate inactive businesses, establish legal ownership, flatten properties into tenants or grant cross-scope access. TORO Business means internal use of TORO by its own business under the same controls, not an infrastructure-hosting decision.
+
 ---
 
 # 5. User model
@@ -354,6 +359,8 @@ User Vault scopes:
 - system
 
 Personal data is not employer-visible by default.
+
+**TARGET simple access — 2026-09-29:** A common entry URL uses individual identity and grants. Mauricio's owner view covers authorized controlled scopes; Carolina and Mauricio's mother receive only their explicitly configured scopes and capabilities. A family relationship or shared device does not confer access. See section 23 for role experiences and mobile/session acceptance.
 
 ---
 
@@ -1645,6 +1652,8 @@ Core views:
 
 The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
 
+**TARGET global continuity — 2026-09-29:** The owner composition keeps an authorized portfolio overview and orientation visible while semantic zoom, focus, search and expansion expose detail. Complete discoverability is tested through the coverage inventory rather than rendering every row simultaneously. Activity uses current evidenced events, never inferred thinking. The requested `https://dreamcatcherhotel.com/toro` entry is TARGET and must route to the canonical TORO experience with separate public demonstration and private authentication; no route, DNS, permission or release is activated by this definition. Detailed experience and P01–P40 acceptance criteria are integrated in section 23.
+
 ## Connected inventory and truthful graph projection — owner decision 2026-09-26
 
 "Show everything connected" means **complete, scope-authorized discoverability**, not drawing every node at once. The Brain must expose a searchable coverage view for all registered businesses, people/roles, agents/skills, projects/tasks, offers/assets, systems/connectors, schema catalogs, workflows, evidence and authorized external relationships. The opening viewport stays focused and compact; search, zoom/pan, filters, expansion and deep links reveal further levels. A non-graph list/timeline remains available. This is one projection of TORO, not another application or data authority.
@@ -2607,3 +2616,387 @@ Verified after the initial 2026-09-29 alignment:
 - W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
+
+
+# 23. Finished product definition — owner direction 2026-09-29
+
+**Classification:** TARGET definition, proposed acceptance detail; not a runtime-completion claim.  
+**Source:** owner direction of 2026-09-29, constitution and existing General Plan/contracts.  
+**Scope:** existing TORO master product and authorized portfolio; no new master project/backlog.  
+**Delivery:** full product definition below; editable/presentation exports and a complete indexed General Plan reader are derived artifacts.  
+**Governance:** existing A0–A6 workflow authority, Autopilot caps, identity/privacy, budget, readiness, source and release gates remain effective.
+
+
+### Propósito y alcance
+
+TORO reúne la operación, el conocimiento y el avance de los negocios y proyectos autorizados en una plataforma que Mauricio puede abrir, entender y dirigir desde el celular. Comprende el contexto, conecta las fuentes existentes, organiza el trabajo, ejecuta dentro de sus permisos y muestra resultados comprobables. La experiencia se vuelve más sencilla mientras el sistema mejora.
+
+Esta definición describe el producto final deseado. Las capacidades se narran en presente para poder diseñar desde el resultado terminado y volver hacia los requisitos de construcción. Su clasificación es TARGET; el capítulo sobre realidad actual conserva los límites de implementación. Esta versión no acredita que el producto ya funcione de esa manera ni activa agentes, conectores, permisos o publicaciones.
+
+La única base es el Plan General de TORO en `docs/product/TORO_BRAIN_GENERAL_PLAN.md`. Este texto forma parte de su ampliación de producto terminado. El documento editable, su presentación de lectura y el índice visual son proyecciones de esa misma definición, no un segundo plan ni otra lista de tareas. Fecha de corte: 29 de septiembre de 2026, Costa Rica.
+
+### La experiencia completa
+
+Mauricio abre TORO y encuentra su portafolio autorizado, los asuntos que necesitan una decisión y el trabajo que está avanzando. Puede tocar un negocio, proyecto, persona, sistema o módulo; preguntar qué sucede; revisar la evidencia y ordenar una acción permitida. Para el trabajo ordinario no necesita abrir Codex, recorrer chats ni recordar dónde quedó cada conversación.
+
+Una solicitud se convierte en un objeto de trabajo trazable. TORO identifica a quién pertenece, qué fuente responde, qué resultado se espera y qué acciones están permitidas. Mantiene el contexto durante los relevos, los reinicios y el cambio entre Portal y WhatsApp. Solo pregunta cuando falta una decisión o un dato material que no puede resolver por su cuenta.
+
+Cada resultado muestra qué cambió, dónde verlo, quién intervino, qué prueba lo respalda y qué sigue. Un documento preparado, una función desplegada y una mejora utilizada con beneficio medido tienen estados distintos. Los reportes se concentran en cambios útiles y no llenan la pantalla con ciclos sin novedades.
+
+### Una sola plataforma y dos maneras de trabajar
+
+La composición recomendada combina Brain y operación. El Brain es protagonista en la pantalla del dueño, acompañado de Atención y de un acceso inmediato a decisiones y pendientes. Hoy sigue siendo la función de entrada del Dashboard; el Brain es su composición visual para el dueño. Recepción, mantenimiento, finanzas y otros roles entran a la vista que les sirve para trabajar, con acceso al mismo mapa cuando ayuda a entender relaciones.
+
+Un inicio basado solo en el Brain favorecería la exploración, pero dificultaría tareas repetitivas. Un inicio formado solo por tarjetas facilitaría la rutina, pero perdería la visión del conjunto. La composición conjunta conserva la red visible y permite pasar a listas, formularios y acciones concretas sobre los mismos objetos.
+
+Los once módulos visibles son Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Brain, conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones son capacidades comunes. Los subsistemas internos pueden ser más numerosos que los módulos del menú; cada uno tiene un propietario de capacidad y comparte identidad, permisos y estado.
+
+### Portafolio y contextos
+
+TORO representa personas, organizaciones, negocios, propiedades, proyectos, productos, proveedores y aliados con identidades y relaciones explícitas. La red no obliga a que todo sea un cliente ni convierte una propiedad en una empresa por aparecer como nodo.
+
+El portafolio de Mauricio contempla Dreamcatcher, Santa Toro, Vista Alegre, Cabuya y TORO Business, además de los proyectos ya registrados y las relaciones autorizadas. Dreamcatcher contiene sus propiedades y productos según el inventario vigente, incluyendo las referencias de Villa Toro y Makaiza. Atrapasueños y las entidades legales mantienen sus relaciones documentadas. El encuadre definitivo de Santa Toro, Vista Alegre y Cabuya se toma de las fuentes patrimoniales y operativas; su presencia visual no reactiva negocios, no acredita titularidad y no modifica estructuras legales.
+
+Cada contexto identifica qué está activo, en pausa, histórico, en preparación o pendiente de verificación. El dueño puede comparar ámbitos con permiso de portafolio; los datos personales y los clientes externos conservan su aislamiento. Una relación visible explica si significa pertenencia, propiedad documentada, operación, dependencia, colaboración o conexión comprobada.
+
+### TORO Business utiliza TORO
+
+TORO Business es el negocio que desarrolla, vende y da soporte al producto. Utiliza el mismo TORO para organizar su trabajo, registrar costos, entender usuarios, controlar calidad, gestionar soporte y mejorar. Aquí autouso significa operar su propio negocio como un ámbito interno; no decide dónde se aloja la infraestructura.
+
+El Brain del producto y el nodo TORO Business representan funciones distintas del mismo sistema. El primero coordina los ámbitos autorizados; el segundo es un negocio usuario, con sus propios proyectos y permisos. TORO Business no tiene un atajo privilegiado para saltarse el aislamiento de otros negocios.
+
+La retroalimentación sigue un ciclo visible: experiencia del usuario, problema u oportunidad, propuesta, evaluación, decisión aplicable, piloto, medición y conservación o reversión. Una mejora de TORO se prueba utilizando TORO. Los patrones reutilizables se separan de los datos privados que los originaron.
+
+### El Brain y la red completa
+
+El Brain ocupa la mayor parte del área útil en la vista del dueño y conserva a la vista el contexto del portafolio. Su lenguaje visual comunica una organización viva: identidad oficial, profundidad, nodos claros y movimiento moderado. La referencia de una interfaz cinematográfica se traduce en navegación útil, legibilidad y respuesta rápida.
+
+La vista global muestra todos los ámbitos autorizados y las conexiones principales. Al acercarse aparecen dominios, módulos, proyectos, capacidades y objetos relevantes. Un minimapa o rastro de contexto conserva la orientación al explorar. Volver a la vista global no pierde la selección ni obliga a navegar por redes independientes.
+
+Red completa significa que todo lo registrado y autorizado es localizable. El detalle se agrupa por nivel para evitar que miles de tareas, documentos o filas hagan ilegible la pantalla. El inventario permite comprobar cobertura por fuente y fecha, separando registrado, visible para ese usuario, lectura comprobada, actividad vigente y bloqueado o desactualizado. Una fuente inaccesible se muestra como desconocida.
+
+Tocar un nodo abre una ficha con nombre, tipo, ámbito, responsable, objetivo, estado, fuente, fecha, evidencia, vínculos, relaciones y siguiente acción permitida. Tocar una conexión explica su significado y respaldo. Los filtros conservan el contexto global y avisan qué parte de la red se está viendo.
+
+La actividad ilumina o amplía suavemente los nodos afectados mientras existe un evento de trabajo vigente. La ficha permite abrir la acción, su resultado y la evidencia. La señal desaparece al expirar o revocarse. La salud de un servicio tiene un indicador distinto: estar encendido no significa estar ejecutando trabajo. Se puede revisar la historia mediante una línea de tiempo, con reproducción claramente identificada.
+
+La información también está disponible como lista y línea de tiempo, con equivalencia de estados y acciones. Hay controles de movimiento reducido, navegación por teclado, buen contraste y etiquetas que explican los colores. El modo de presentación usa datos sintéticos, públicos o expresamente aprobados.
+
+### Celular y entrada a TORO
+
+La entrada deseada es `https://dreamcatcherhotel.com/toro`. Se define como un acceso sencillo que presenta TORO y dirige al Portal canónico; la decisión de ruta o redirección conserva los sitios y releases existentes. Esta dirección es TARGET, no una ruta entregada por este documento.
+
+El enlace puede ser común para todos. La operación privada utiliza una identidad individual sencilla y una sesión adecuada al dispositivo. Esto permite mostrar el alcance correcto, identificar quién actuó y retirar un acceso sin cambiar el de todos. El demo público y la entrada no contienen información privada del hotel.
+
+En celular, el usuario encuentra su negocio activo, Atención, búsqueda y comando. El Brain adapta el nivel de detalle al espacio, permite tocar nodos y abre fichas con acciones grandes y claras. La lista equivalente permite completar tareas sin manipular el mapa. Adjuntar una foto, dictar una solicitud o revisar una aprobación requiere pocos pasos. El estado de conexión distingue información reciente, caché y envío pendiente; nunca presenta una captura sin enviar como trabajo ya registrado.
+
+En escritorio se amplía la exploración, la comparación autorizada y la revisión de evidencia. El cambio de dispositivo conserva el contexto y los permisos. Un dispositivo compartido permite cerrar sesión y cambiar de persona sin conservar el acceso anterior.
+
+### Usuarios y vistas
+
+Mauricio tiene la vista de dueño sobre todos los ámbitos que sus permisos controlan. Carolina y la madre de Mauricio reciben vistas amplias cuando los alcances y capacidades individuales estén definidos; un vínculo familiar no otorga acceso automáticamente. El producto permite una experiencia sencilla con permisos precisos.
+
+Recepción ve servicio, clientes y operación de su ámbito. Mantenimiento ve asignaciones, espacios y evidencia de cierre. Finanzas ve obligaciones, caja y conciliaciones autorizadas. Crecimiento y producción creativa ven campañas, activos y clientes permitidos. Personas administra el trabajo y los procesos laborales que le corresponden. Sistemas controla la salud técnica para sus administradores.
+
+Cada persona tiene una identidad y puede trabajar en varios negocios con roles distintos. El cambio de contexto es visible. Los datos personales y de trabajo privado mantienen sus límites incluso ante un administrador del negocio. Ocultar un botón no es la protección: cada lectura y acción se valida en el servidor.
+
+### Contrato común de los módulos
+
+Cada módulo muestra información útil para el rol, su ámbito activo, fuente y fecha. Cuando un dato no está confirmado, lo dice y ofrece el siguiente paso seguro. Las métricas indican unidad, período, moneda cuando corresponde y forma de cálculo. Una proyección no se confunde con un dato observado.
+
+Las fichas comparten atención, responsable, dependencias, historial, enlaces y evidencia. Se puede pedir trabajo, revisar propuestas, aprobar lo que corresponde, pausar el trabajo autorizado o abrir el sistema original. La acción ejecutada vuelve al mismo registro canónico. Un módulo no crea una segunda tarea cuando otro módulo ya es responsable del asunto.
+
+La interfaz admite español e inglés. Fechas, moneda, números y zona horaria se resuelven por usuario y ámbito. Los documentos conservan idioma y procedencia originales.
+
+Los módulos se habilitan según disponibilidad comprobada, configuración del negocio y capacidades del usuario. El núcleo de identidad, aislamiento, seguridad, autoridad de fuentes y auditoría no es opcional. Un módulo todavía no implementado se describe en esta visión final y conserva su estado real en la matriz de ejecución.
+
+### Módulo 1 Hoy y Atención
+
+Hoy reúne lo que necesita actuar ahora: decisiones, aprobaciones, vencimientos, riesgos, fallos relevantes y bloqueos que no se resolvieron dentro del ámbito autorizado. El dueño ve una síntesis del portafolio y puede abrir la causa de cada excepción. El empleado ve sus asuntos y las prioridades de su trabajo.
+
+Una tarjeta explica el problema, impacto, plazo, recomendación, opciones y decisión requerida. Los correos, mensajes y avisos se transforman en señales trazables; solo las excepciones útiles llegan a Atención. Los resultados rutinarios quedan en el resumen y la evidencia. La información repetida se reúne sobre el mismo objeto.
+
+El usuario puede resolver una decisión, pedir un dato, delegar dentro del alcance permitido o posponer con motivo. Cada respuesta queda ligada a la versión del objeto. Una aprobación de un caso no se convierte en permiso general para todos los casos futuros.
+
+Hoy se integra con Dinero para pagos y caja, Operaciones para incidentes, Clientes para servicio, Proyectos para dependencias y Sistemas para fallos. Ejemplo final: un comprobante de pago llega al canal autorizado, TORO lo vincula con la obligación y muestra a la persona indicada únicamente la conciliación que sigue pendiente.
+
+El módulo está terminado para una versión cuando las excepciones relevantes llegan al rol correcto, se resuelven sobre el registro original y el usuario puede comprobar la resolución. Se mide atención pendiente, tiempo de resolución e intervenciones del dueño evitadas, con una línea base.
+
+### Módulo 2 Dinero
+
+Dinero reúne caja, obligaciones, cobros, pagos, gastos y proyección de liquidez por negocio y moneda. PayFlow permite entender los próximos noventa días con fechas, supuestos y escenarios claros. Las cuentas bancarias respaldan el efectivo observado; Alegra conserva la autoridad contable y fiscal que le corresponde.
+
+La pantalla muestra vencimientos, flujo proyectado, saldos con fecha, comprobantes y conciliaciones pendientes. Un mismo movimiento no se cuenta dos veces por aparecer en un correo, un banco y un sistema contable. Las cuentas con información personal y empresarial mezclada mantienen la clasificación y las restricciones aplicables.
+
+TORO prepara propuestas de pago, detecta inconsistencias y explica diferencias. Mover dinero, cambiar beneficiarios o realizar trámites fiscales conserva los permisos y aprobaciones del flujo vigente. La autorización para revisar caja no autoriza un pago.
+
+Dinero recibe señales de Clientes, proveedores, correo y operación; entrega excepciones a Hoy y restricciones de caja a Proyectos. Ejemplo final: antes de una compra, el dueño ve su efecto en caja, las obligaciones que compiten por esa fecha y la evidencia del precio solicitado.
+
+La entrega se acredita con conciliación rastreable, ausencia de duplicados, segregación de permisos y recuperación ante fallos. Se miden obligaciones vencidas, tiempo de conciliación, exactitud de proyección y costo o recuperación comprobados. Los beneficios se atribuyen con evidencia.
+
+### Módulo 3 Studio
+
+Studio permite pedir, producir, revisar y administrar contenido visual y escrito con un propósito de negocio. Reúne imágenes, video, diseño, textos y biblioteca de medios. La marca, el público, canal, formato, referencias, derechos, aprobador y objetivo se resuelven antes de producir.
+
+El usuario ve el brief, originales, versiones, comparaciones, revisiones, aprobaciones y destino. Los archivos conservan su procedencia y relación con sus derivados. Los espacios reales mantienen identidad y fidelidad; una ilustración conceptual se identifica como tal. No se inventan amenidades, precios o disponibilidad para hacer una pieza más atractiva.
+
+Studio prepara una publicación y muestra qué versión fue aprobada para qué canal. Publicar o contratar medios sigue la autorización de ese canal. Puede reutilizar formatos y reglas revisadas sin transferir datos privados de otro negocio.
+
+Se integra con Crecimiento para objetivos y medición, Activos para originales y derechos, Clientes para preguntas útiles y Sistemas para las herramientas. Ejemplo final: una solicitud de campaña utiliza fotos verificadas, genera versiones pertinentes, pasa revisión y conserva el enlace del resultado publicado cuando la publicación está autorizada.
+
+Se considera entregado el flujo cuando el usuario puede recorrer solicitud, pieza, revisión, aprobación, destino y resultado sin perder la versión. Se mide tiempo de producción y retrabajo; el rendimiento comercial se evalúa con el método de atribución correspondiente.
+
+### Módulo 4 Clientes
+
+Clientes conserva el contexto autorizado de prospectos, huéspedes o clientes y acompaña su recorrido antes, durante y después del servicio. Incluye necesidades, conversaciones permitidas, solicitudes, compromisos y seguimiento. La terminología y las etapas se adaptan al negocio.
+
+La vista presenta quién necesita atención, el estado de su solicitud y los compromisos vigentes. En Dreamcatcher, Kross mantiene la autoridad de reservas, tarifas y disponibilidad. Si no existe lectura viva comprobada, TORO lo informa y ofrece el enlace o relevo oficial; no convierte una página pública o una captura en disponibilidad actual.
+
+El usuario puede preparar una respuesta, atender una consulta y transferir un incidente al área responsable. La transferencia mantiene cliente, objeto, plazo y evidencia necesarios sin copiar información fuera de su alcance. El seguimiento evita solicitudes duplicadas y respeta consentimiento y permisos del canal.
+
+Clientes se integra con Operaciones para servicio, Personas para responsables, Dinero para pagos y Crecimiento para seguimiento autorizado. Ejemplo final: un huésped informa una avería, TORO registra la solicitud una vez, la asigna al flujo operativo y permite a recepción revisar el cierre antes de responder.
+
+El flujo está entregado cuando el relevo no pierde contexto, el sistema original se respeta y el cliente recibe seguimiento por la ruta permitida. Se mide respuesta, resolución, pérdida de relevos y conversión comprobada; una conversación o clic no equivale a venta.
+
+### Módulo 5 Operaciones
+
+Operaciones organiza servicio, tareas, incidentes, mantenimiento, listas de comprobación y procedimientos del negocio. Muestra trabajo asignado, prioridad, plazo, dependencia, lugar y evidencia necesaria para cerrar. Las variantes hoteleras pertenecen al paquete de hospitalidad.
+
+Un trabajador captura una solicitud por texto, voz o foto y la ve en su lista autorizada. El responsable recibe instrucciones concretas y puede registrar avance, impedimento o evidencia. TORO detecta relevos sin respuesta y escalaciones según la política vigente.
+
+La terminación requiere evidencia proporcional: una reparación puede necesitar foto, comprobación y validación; marcar una casilla no acredita que el equipo funcione. Un cierre técnico del job tampoco cambia por sí solo la prioridad, el responsable o el estado de la tarea de negocio.
+
+Operaciones se integra con Clientes para servicio, Personas para turnos y responsables, Activos para equipos y espacios, Dinero para costos y Hoy para excepciones. Ejemplo final: un incidente relacionado con una habitación muestra la ubicación y el equipo, asigna el trabajo, conserva sus restricciones y devuelve el cierre al mismo caso.
+
+La entrega exige un caso usado por el equipo con recuperación ante duplicados o desconexión. Se miden tiempo de resolución, reincidencia, cumplimiento del servicio y retrabajo, sin premiar cierres sin evidencia.
+
+### Módulo 6 Personas
+
+Personas integra DreamTeam dentro de TORO People. Reúne equipo, funciones, turnos, solicitudes, disponibilidad, asistencia y procedimientos laborales autorizados. Cada empleado dispone de Mi TORO para su información y acciones permitidas.
+
+La pantalla permite conocer a quién recurrir y abrir el contacto autorizado. Los botones de comunicación muestran canal e intención; abrir WhatsApp o un borrador no significa que se haya enviado un mensaje. Los datos personales, laborales y visibles al equipo tienen clasificaciones separadas.
+
+El usuario puede presentar una solicitud de horario, registrar información que le corresponde y revisar su estado. Los cambios efectivos de turnos o condiciones siguen su aprobación. Reconocimiento y puntos usan reglas transparentes, evidencia y revisión; no sustituyen obligaciones laborales ni exponen evaluaciones privadas.
+
+Personas se integra con Operaciones para responsabilidades, Clientes para continuidad de servicio, Legal y Riesgo para obligaciones y Sistemas para acceso y baja. El aprendizaje y la formación utilizan procedimientos revisados; haber completado un curso no concede nuevos permisos.
+
+El flujo está entregado cuando el empleado entra con su identidad, ve únicamente lo permitido y puede completar una solicitud con aprobación y resultado rastreables. Se mide tiempo de resolución, calidad de relevos y correcciones necesarias, manteniendo privacidad.
+
+### Módulo 7 Crecimiento
+
+Crecimiento reúne adquisición, reputación, campañas, oportunidades, canales y medición. Coordina el website, buscadores, perfiles, directorios y seguimiento para que el negocio sea más fácil de encontrar, entender y contratar.
+
+La pantalla muestra oportunidades con fundamento, trabajo de canal, campañas y resultados medibles. Distingue tráfico, consulta, reserva, venta y recuperación. Los objetivos se conectan con la capacidad operativa y no prometen servicios o disponibilidad que las fuentes no respaldan.
+
+TORO prepara mejoras, respuestas y campañas dentro de los permisos existentes. Las publicaciones, contactos externos y gastos publicitarios se autorizan por su flujo. La calidad de servicio precede a una solicitud de reseña cuando existe una incidencia abierta.
+
+Crecimiento se integra con Studio para piezas, Clientes para seguimiento permitido, Dinero para presupuesto y retorno, Proyectos para website y Activos para evidencia comercial. Ejemplo final: una mejora de la página de una villa conserva identidad y datos reales, se revisa visualmente, se despliega por la ruta vigente y mide su efecto con los límites de atribución visibles.
+
+Se considera entregado cuando existe un ciclo de oportunidad, cambio, revisión, publicación autorizada y medición. El website de Dreamcatcher y la presentación comercial de TORO tienen públicos y releases definidos; comparten capacidades sin volverse un mismo producto público.
+
+### Módulo 8 Legal y Riesgo
+
+Legal y Riesgo reúne obligaciones, contratos, vencimientos, seguros, permisos y riesgos relevantes por entidad y ámbito. Los documentos, autoridades oficiales y responsables humanos respaldan cada hecho material.
+
+La vista explica qué vence, a quién corresponde, qué evidencia existe y qué sigue pendiente de confirmación. Los vínculos entre activos, financiamiento, entidades y compromisos se presentan con su procedencia. Una interpretación del sistema se distingue de un documento o resolución oficial.
+
+TORO organiza, detecta faltantes y prepara expedientes o consultas. Firmar, aceptar contratos, presentar trámites o asumir un compromiso conserva las autorizaciones aplicables. Las alertas no inventan una conclusión jurídica ni sustituyen la revisión profesional requerida por el caso.
+
+El módulo se integra con Dinero para obligaciones, Personas para aspectos laborales, Activos para titularidad y seguros, Proyectos para dependencias y Hoy para plazos. Ejemplo final: una renovación muestra documento vigente, fecha, responsable, requisitos y acción concreta, sin perder la entidad legal correcta.
+
+La entrega exige trazabilidad, privacidad, vencimientos correctos y resolución con evidencia. Se miden obligaciones sin responsable, atrasos y tiempo de preparar expedientes. El riesgo residual permanece visible cuando no está resuelto.
+
+### Módulo 9 Activos y Espacios
+
+Activos y Espacios permite entender inmuebles, habitaciones, instalaciones, equipos, inventario y archivos asociados. Relaciona ubicación, identidad, condición, responsable, mantenimiento y documentos, sin confundir un activo con un negocio.
+
+El usuario abre un espacio y encuentra sus objetos, incidencias, fotografías verificadas y acciones autorizadas. El mapa espacial puede mostrar ubicaciones o distribución cuando existe información suficiente y la capacidad está implementada; su diseño actual no acredita un mapa operativo entregado.
+
+Los activos físicos conservan registro de estado y mantenimiento. Los activos digitales conservan originales, derechos, versiones y canales permitidos. Un mapa o fotografía conceptual se diferencia de la distribución y evidencia real.
+
+Se integra con Operaciones para trabajos, Studio para medios, Legal y Riesgo para documentos, Dinero para costos y Proyectos para obras o mejoras. Ejemplo final: tocar un equipo revela el incidente activo, su historial y la evidencia de la última reparación; el usuario puede entrar al mismo trabajo operativo.
+
+El módulo está entregado cuando los activos del alcance acordado son localizables y sus vínculos resuelven al registro correcto. Se mide cobertura verificada, tiempo de localizar información, mantenimiento atrasado y reincidencia.
+
+### Módulo 10 Proyectos
+
+Proyectos muestra objetivos, programas, hitos, dependencias y trabajo existente. Ordena las iniciativas del portafolio bajo las identidades canónicas, con responsables, prioridades y resultados esperados. Las conversaciones y entregables se vinculan al proyecto que corresponde.
+
+La vista permite ver qué está activo, qué se detuvo y por qué, qué bloquea el siguiente resultado y qué recursos compiten por caja o tiempo. Los avances distinguen preparación, implementación, despliegue, verificación, uso y beneficio. El número de commits no reemplaza el progreso del negocio.
+
+TORO prepara la siguiente unidad elegible y coordina especialistas por capacidad. Una idea nueva se incorpora al Plan General y al proyecto existente antes de abrir un frente. Los proyectos duplicados o históricos se conservan con su disposición documentada.
+
+Se integra con todos los módulos según el resultado, con Dinero para restricciones, Sistemas para releases y Hoy para decisiones. Ejemplo final: el dueño abre la construcción de TORO, ve sus módulos y dependencias, revisa los links de entregables comprobados y responde una sola decisión concreta cuando es necesaria.
+
+La entrega exige que el siguiente paso, dependencia y resultado sean claros, y que una pausa o relevo no pierda contexto. Se mide trabajo terminado útil, bloqueos resueltos y tiempo desde intención hasta uso.
+
+### Módulo 11 Sistemas
+
+Sistemas muestra las herramientas y conectores de los que depende el negocio: propósito, propietario, alcance, autoridad, salud, permisos, costo, última comprobación y recuperación. La vista técnica pertenece a administradores; el resto ve únicamente los estados y acciones que necesita.
+
+Una herramienta registrada, una conexión configurada, una lectura autorizada comprobada y una escritura aprobada comprobada tienen estados distintos. TORO detecta desactualización, fallos y diferencias entre configuración esperada y observada. Los botones abren destinos registrados y verificados con icono y etiqueta.
+
+El administrador puede revisar una propuesta de configuración, renovar el acceso por la ruta permitida, pausar trabajos y comprobar recuperación. Las credenciales se administran mediante mecanismos protegidos; no aparecen en las fichas, mensajes o prompts.
+
+Sistemas se integra con Proyectos para cambios, Dinero para consumo, Hoy para excepciones y todos los módulos para dependencias. Ejemplo final: si un conector falla, TORO limita el dato afectado, muestra la causa comprobada, propone recuperación y retoma desde el checkpoint una vez autorizado.
+
+El módulo está entregado cuando la salud declarada coincide con evidencia, el fallo no genera datos falsos y una prueba de recuperación funciona. Se mide disponibilidad de capacidades, tiempo de recuperación, costo por resultado y fallos repetidos.
+
+### Conversación y herramientas compartidas
+
+Texto, voz, adjuntos, WhatsApp, Portal y correo se conectan al mismo contexto, permisos y trabajo. La conversación puede responder, preparar una acción, registrar un incidente, solicitar una decisión o dar seguimiento. No se vuelve por sí sola memoria permanente.
+
+OpenClaw y WeSpeak son runtimes o canales dentro de esta arquitectura. La experiencia final de WhatsApp tiene la misma cobertura de capacidades autorizadas que el Portal para la identidad y ámbito activos. Los nombres Whisper, Tether u otros mencionados informalmente se resuelven contra el inventario antes de asignarles funciones; no se presume que sean un sistema instalado.
+
+El acceso a toda la información significa acceso completo a lo que el usuario y el flujo tienen autorizado. La paridad se cumple mediante ejecución compatible o un relevo seguro al Portal. Cada canal conserva sus requisitos de identidad, autenticación y capacidades; no hereda automáticamente los permisos de otro. El cambio entre canales no permite saltarse privacidad, aprobaciones o aislamiento. El enlace para contactar a DreamTeam prepara o abre la conversación por el canal apropiado y conserva la autorización de envío.
+
+TORO Knowledge y TORO Research aportan contexto, fuentes, procedimientos y aprendizaje revisado a los once módulos. TORO Tools y TORO Channels conectan acciones y destinos; TORO Governance e Identity aplican los límites. Estas capacidades compartidas evitan crear otra bandeja, memoria o motor por canal.
+
+### Avance autónomo y control del dueño
+
+TORO encadena unidades de trabajo elegibles dentro de una sesión de ejecución y continúa desde checkpoints entre sesiones cuando existe un worker persistente autorizado. No depende de que Mauricio escriba continuar ni de dejar ChatGPT abierto. Esa continuidad es una capacidad final que necesita implementación y prueba; programar un aviso recurrente no la acredita.
+
+El coordinador elige trabajo de la cola existente según impacto, prioridad, dependencia, riesgo, permiso, presupuesto y capacidad. Tras verificar un resultado, toma el siguiente elegible dentro de los límites vigentes. Los agentes reciben encargos acotados por capacidad, con resultado esperado y consumo máximo; los nombres de especialistas no crean autoridades independientes.
+
+La velocidad se mide como tiempo ocioso con trabajo autorizado elegible y capacidad disponible. Las esperas por aprobación, presupuesto, cooldown, fallo de conexión o ausencia de trabajo se explican por separado. No se requiere trabajo constante si no existe trabajo útil permitido.
+
+El dueño ve resultado, costo, evidencia y próximos pasos. Puede pausar por ámbito y reanudar un trabajo pausado desde su checkpoint. Un job cancelado queda terminal; retomar su objetivo requiere una nueva acción autorizada, enlazada al original y con conciliación de efectos previos. Una acción externa ya iniciada entra en conciliación cuando no se puede cancelar; no se informa falsamente que fue deshecha. Pausar una automatización no cancela automáticamente reservas, pagos o compromisos.
+
+La ejecución conserva los topes, periodos y capacidades definidos en los contratos vigentes. Sin presupuesto vigente y límites configurados no se inicia ejecución incremental. Se controlan costo y duración por job, topes diarios y mensuales, concurrencia, reintentos y corte ante fallos repetidos. La espera y las consultas sin cambios utilizan mecanismos de bajo costo y no consumen modelo innecesariamente. Los eventos, workers y subagentes comparten límites. Crear más agentes no aumenta el presupuesto ni evade el cooldown. Los permisos se verifican de nuevo antes de un efecto material; repetir un evento no debe repetir el efecto.
+
+### Revisión y mejora continua
+
+El trabajo pasa por verificación proporcional antes de declararse terminado. Los cambios materiales se revisan con evidencia independiente cuando corresponde. TORO no se otorga permisos, no redefine su evaluador y no amplía su presupuesto para aprobar su propio cambio.
+
+Una corrección se registra con contexto y procedencia. El sistema busca causa, propone una solución reutilizable, prueba, aplica dentro de la política autorizada y mide recurrencia. Si empeora el resultado, revierte. El aprendizaje conserva la privacidad del negocio de origen.
+
+Los avances se revisan por utilidad: servicio, caja, conversión, tiempo humano, errores, recuperación y costo por resultado. La plataforma presenta una línea base y observaciones posteriores antes de afirmar que generó un beneficio. La supervisión automática se apoya en contratos y controles, no solo en un prompt más largo.
+
+### Integración de las herramientas existentes
+
+GitHub conserva constitución, código y contratos versionados. Supabase conserva identidades, permisos, datos operativos propios y auditoría. Dropbox conserva originales, archivos y evidencia. Notion presenta narrativa, investigación y memoria de trabajo. Airtable sigue como proyección humana transitoria donde aporta valor. Las referencias y proyecciones apuntan al Plan General único.
+
+Kross conserva la autoridad viva de reservas, tarifas y disponibilidad; Alegra la contable y fiscal; los bancos la evidencia del efectivo; los canales y autoridades oficiales mantienen sus dominios. TORO conecta y explica esas fuentes con procedencia y límites.
+
+Los enlaces útiles y recomendados forman un catálogo por ámbito y función, con icono, etiqueta, destino, responsable, permisos y fecha de comprobación. Una recomendación se identifica como tal y no implica una herramienta ya contratada o conectada. Un link rotulado debe resolver al destino que anuncia.
+
+Dropbox Dash facilita el descubrimiento dentro de las fuentes autorizadas cuando está disponible; sus resultados se resuelven al original antes de convertirse en evidencia. No sustituye los archivos originales ni crea otra autoridad.
+
+### Aplicación a otros negocios
+
+TORO separa núcleo universal, paquete de industria, configuración del negocio y adaptadores de herramientas. Identidad, permisos, evidencia, tareas y gobierno son comunes. La terminología, procedimientos, campos específicos y conexiones se configuran según el negocio.
+
+El producto terminado incorpora un negocio mediante descubrimiento guiado: personas y roles, objetivos, estructura, fuentes, herramientas, permisos, procedimientos, métricas y riesgos. Presenta lo detectado, los conflictos y lo que requiere confirmación antes de operar. La importación no copia todo indiscriminadamente ni presume que el acceso a un sistema permita todas sus acciones.
+
+Una capacidad probada en Dreamcatcher puede abstraerse y validarse en otro ámbito sin trasladar huéspedes, finanzas, secretos o estrategia privada. El segundo negocio se valida en sandbox con escenarios de lectura, acción, aislamiento, recuperación y baja. El onboarding externo real conserva el readiness gate vigente.
+
+La modularidad permite contratar o habilitar capacidades disponibles sin eliminar el núcleo obligatorio. El soporte, la salida del servicio, la exportación autorizada, las dependencias y la recuperación forman parte del producto. El negocio puede comprender qué queda conectado, qué está funcionando y qué todavía espera implementación.
+
+### Cuarenta criterios de producto terminado
+
+Esta serie nueva P01 a P40 concreta esta definición TARGET. Son criterios de aceptación, no cuarenta funciones implementadas ni una renumeración de M01 a M20 del contrato Agent Steward. La ejecución se vincula a los proyectos y trabajos existentes después de resolver duplicados.
+
+| ID | Resultado observable | Comprobación de aceptación |
+|---|---|---|
+| P01 | Una sola base de dirección | Cada requisito material resuelve a una sección del Plan General y a su capacidad existente. |
+| P02 | Una entrada sencilla | En móvil dirige al Portal oficial, separa demo y operación y no transfiere credenciales ni datos privados por URL. |
+| P03 | Identidad individual | Cambio de usuario y revocación impiden conservar el acceso anterior. |
+| P04 | Alcance visible | Pantalla y acción identifican negocio y contexto; otra organización no accede al objeto. |
+| P05 | Inicio útil por rol | Dueño encuentra Brain y Atención; cada trabajador encuentra su siguiente acción autorizada. |
+| P06 | Brain protagonista | El dueño explora la red y alcanza una decisión sin perder el contexto global. |
+| P07 | Red localizable completa | Inventario y búsqueda cubren lo autorizado con denominadores y fuentes inspectables. |
+| P08 | Zoom con orientación | Expansión, filtros y retorno conservan selección y relaciones del ámbito. |
+| P09 | Conexiones explicables | Cada línea indica tipo y procedencia; pertenencia no se presenta como integración. |
+| P10 | Actividad comprobable | Cada pulso abre un evento vigente permitido y desaparece con expiración o revocación. |
+| P11 | Celular operativo | En 320 píxeles se puede buscar, consultar y actuar sin cortes esenciales, en ES y EN con formatos del usuario. |
+| P12 | Alternativa accesible | Lista y timeline conservan estados y acciones; teclado y movimiento reducido funcionan. |
+| P13 | Fichas con evidencia | Objetos materiales muestran fuente, fecha, estado, responsable y próximo paso. |
+| P14 | Enlaces útiles | Botones con etiqueta e icono abren destinos registrados; no hay links presentados como verificados sin prueba. |
+| P15 | Atención sin duplicados | Señales sobre el mismo caso producen una excepción canónica y no varias tareas. |
+| P16 | Decisión concreta | Una respuesta queda vinculada al objeto y versión y no concede autoridad general. |
+| P17 | Dinero conciliable | Caja, moneda, obligación y comprobante son rastreables y no duplican un movimiento. |
+| P18 | Studio con versiones | Original, derivado, revisión, derechos, canal y aprobación resuelven al archivo correcto. |
+| P19 | Clientes con continuidad | Un caso conserva contexto y relevo; no inventa tarifas o disponibilidad sin fuente viva. |
+| P20 | Operación con cierre útil | Un flujo real incluye asignación, evidencia, verificación y respuesta al registro original. |
+| P21 | Personas con privacidad | Empleado y responsable completan el flujo sin acceso a datos ajenos no autorizados. |
+| P22 | Crecimiento medible | Cambio y resultado tienen método de atribución; clics no se presentan como ventas. |
+| P23 | Riesgos respaldados | Vencimiento, entidad, responsable y documento resuelven a fuente y fecha correctas. |
+| P24 | Activos localizables | Espacio, equipo, archivos e incidentes se vinculan por identidad verificable. |
+| P25 | Proyectos sin otro backlog | Cada avance y dependencia corresponden al proyecto y tarea canónicos existentes. |
+| P26 | Sistemas con estados honestos | Registro, configuración, lectura, escritura, falla y desactualización se distinguen. |
+| P27 | Portal y WhatsApp equivalentes | La misma identidad y contexto conservan fuentes y límites; acciones compatibles o relevo seguro respetan autenticación por canal. |
+| P28 | Contactos con intención | Abrir conversación o borrador se diferencia de envío; el envío conserva su permiso. |
+| P29 | Trabajo encadenado | Con trabajo, capacidad y presupuesto disponibles reclama la siguiente unidad sin esperar el reloj; latencia y ocio elegible cumplen un SLO aprobado. |
+| P30 | Continuación persistente | Reinicio o cierre de la superficie conserva checkpoints sin perder trabajo ni repetir efectos. |
+| P31 | Consumo limitado | Sin presupuesto y topes no inicia; costo, duración, reintentos y subagentes comparten límites y corte ante fallos. |
+| P32 | Concurrencia segura | Dos ejecutores no duplican efectos; resultado externo incierto se concilia antes de reintentar y revocación bloquea efectos nuevos. |
+| P33 | Pausa y cancelación | Pausado reanuda con checkpoint; cancelado queda terminal y un nuevo intento autorizado concilia efectos previos. |
+| P34 | Revisión independiente | Un cambio material acredita evaluación aplicable y el ejecutor no modifica su propio evaluador. |
+| P35 | Recuperación comprobada | Timeout, duplicado, falla de conector y restauración se ensayan sin duplicar acciones. |
+| P36 | Reporte de resultados | Cada avance material tiene prueba y enlace; distingue preparado, verificado, usado y medido. |
+| P37 | TORO se opera con TORO | TORO Business usa los mismos controles y registra sus resultados sin privilegio transversal. |
+| P38 | Aprendizaje reversible | Corrección, prueba, decisión, medición y reversión quedan trazados sin copiar datos privados. |
+| P39 | Portabilidad por configuración | Un segundo ámbito en sandbox reutiliza capacidades, demuestra aislamiento y rechaza referencias cruzadas entre tenants. |
+| P40 | Salida y versión completas | Una versión acredita su alcance contratado, soporte, recuperación, exportación y baja autorizados. |
+
+### Un día con TORO
+
+Al comenzar el día, Mauricio abre TORO desde el celular y ve el portafolio, las decisiones urgentes y los resultados nuevos. Toca Dreamcatcher y revisa una excepción de caja con su comprobante. Responde la decisión concreta; TORO registra la respuesta y continúa el trabajo que ya está permitido.
+
+Recepción informa un problema de servicio. El mismo caso aparece en Clientes y Operaciones; mantenimiento recibe la acción y registra evidencia en el espacio correcto. Recepción confirma el cierre por el flujo autorizado. El Brain muestra ese recorrido y el dueño puede comprobarlo sin leer toda la conversación.
+
+Crecimiento pide una pieza. Studio utiliza originales autorizados, prepara versiones y presenta una revisión. La publicación ocurre solo por su autorización de canal. Si un conector falla, Sistemas señala la limitación y el dato afectado deja de presentarse como actual.
+
+TORO Business revisa el costo y los resultados de esos flujos. Un patrón de relevo repetido genera una propuesta de mejora. Se prueba, se evalúa y se mantiene o revierte. Al terminar el día, el dueño recibe lo que cambió, el beneficio comprobado y las decisiones que siguen pendientes.
+
+### Realidad actual y camino de construcción
+
+El Plan General, la Constitución, los once módulos y los contratos de Visual Brain ya están definidos. Existen implementación canónica, demostración sintética y trabajos preparados de Dashboard y lectura real. Esto no acredita once módulos completos ni operación privada end to end.
+
+La lectura canónica del Brain conserva el gate de QA autenticada. El estado final de WhatsApp y OpenClaw requiere pruebas directas de runtime y de equivalencia autorizada. La continuidad persistente requiere un worker comprobado. El mapa espacial está diseñado, no entregado globalmente. Kross Live pagado permanece diferido por decisión del dueño; esta definición no reactiva esa contratación. El onboarding externo conserva los gates vigentes.
+
+Las automatizaciones pueden cambiar durante otras sesiones. Su habilitación y última fecha de ejecución no acreditan éxito. Los estados actuales se consultan en sus fuentes con fecha y evidencia; esta definición de producto no congela un snapshot operativo.
+
+El orden de construcción permanece desde el núcleo: identidad y alcance, verdad, gobierno y autoridad de fuentes, conectores, inteligencia, ejecución con recuperación, aprendizaje, experiencia y prueba de portafolio. Los controles necesarios están comprobados antes del primer efecto material. Diseñar desde el producto final permite saber qué debe alcanzar cada paso; no obliga a publicar primero una apariencia sin los controles que la sostienen.
+
+El siguiente trabajo es cerrar esta definición y representar pocas escenas de experiencia: vista del dueño, interacción con un nodo y flujo móvil de atención. Después, cada módulo se desarrolla por su capacidad y dependencia existentes, con unidades completas, revisión e integración. Se prioriza un flujo útil probado antes de multiplicar pantallas.
+
+Una versión está terminada cuando el alcance comprometido es utilizado por sus usuarios, las fuentes y permisos están comprobados, las acciones tienen evidencia, la recuperación funciona y existen métricas de utilidad. No exige integrar todas las herramientas posibles para poder cerrar una versión.
+
+### Vinculación con el Plan General
+
+| Parte de la definición | Sección existente del Plan General |
+|---|---|
+| Producto y experiencia final | 1 Final direction y 18 Program north star |
+| Once módulos y composición Brain con Atención | 2 Product hierarchy y TORO Dashboard |
+| Portafolio y autouso | 3 Scope architecture y 4 Target model y Alignment update |
+| Identidades y vistas | 5 User model y Portal role model |
+| Conversación y paridad autorizada | 6 Communication architecture y 9 OpenClaw |
+| Herramientas y autoridad | 7 Tool architecture y 12 Data platform ownership |
+| Avance y mejora | 14 Proactive improvement y 21 Executive brain mindset |
+| Estado y construcción | 15 Current Target Next Future y 16 Roadmap y 17 Queue |
+| Brain y entrada móvil | 22 Visual Brain and product experience |
+| Portabilidad y adopción | 16A Product Proof y Alignment update de 29 septiembre |
+| Definición detallada y P01 a P40 | 23 Finished product definition integrada en este Plan General |
+
+### Fuentes y puertas de entrada
+
+Plan General canónico: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_GENERAL_PLAN.md
+
+Constitución: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_CONSTITUTION.md
+
+Arquitectura maestra: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
+
+Dashboard de once módulos: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_DASHBOARD_V1.md
+
+Visual Brain: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
+
+Agent Steward y estrategia visual M01 a M20: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
+
+Readiness: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/NEW_BUSINESS_READINESS_GATE.md
+
+Notion del programa: https://app.notion.com/p/3dff5169a39a81b8bf89d06a75a91462?pvs=204
+
+Notion de Dashboard: https://app.notion.com/p/3e6f5169a39a810f810adefdcd4851e7?pvs=204
+
+Referencias estructuradas leídas: `toro_dashboard_surface_v1`, `toro_brain_taxonomy_v1` y `toro_product_capability_registry_v1`, en el runtime Supabase canónico. La lectura íntegra del Plan General conserva todo su contenido previo e incorpora esta definición con los estados separados.
+
