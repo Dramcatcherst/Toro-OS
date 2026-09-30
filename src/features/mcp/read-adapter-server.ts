@@ -39,6 +39,11 @@ type ReadInput = Record<string, unknown> & {
 export type ToroMcpReadRuntime = {
   context?: ToroResolvedContext;
   supabase?: SupabaseClient;
+  error?: {
+    code: ToroMcpErrorCode;
+    message: string;
+    retryable: boolean;
+  };
 };
 
 function errorResponse(
@@ -86,6 +91,19 @@ async function resolveReadContext(
   | { ok: true; context: ToroResolvedContext & { orgId: string } }
   | { ok: false; response: ToroMcpResponse<never> }
 > {
+  if (runtime.error) {
+    return {
+      ok: false,
+      response: errorResponse(
+        tool,
+        input,
+        runtime.error.code,
+        runtime.error.message,
+        runtime.error.retryable,
+      ),
+    };
+  }
+
   let context: ToroResolvedContext | null = null;
 
   if (runtime.context || runtime.supabase) {
