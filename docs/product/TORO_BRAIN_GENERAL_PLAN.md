@@ -478,6 +478,9 @@ Workflow logic should call generic capabilities rather than hard-code vendors wh
 
 ### ChatGPT App + MCP interface — approved 2026-09-30
 
+**Canonical subordinate contract:** `docs/product/TORO_CHATGPT_MCP_CONTRACT_V1.md`  
+
+
 TORO is platform-first and interface-agnostic. ChatGPT is one official interface to TORO alongside Portal, mobile, WhatsApp/OpenClaw and future surfaces; it is not a second Brain, database, permission system or execution ledger.
 
 Canonical path:
