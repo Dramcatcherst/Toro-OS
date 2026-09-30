@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createHash } from "node:crypto";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -216,12 +217,11 @@ export function projectCanonicalBrainReadSlice(input: {
   };
 }
 
-export async function loadCanonicalBrainReadSlice(
+export async function loadCanonicalBrainReadSliceWithClient(
   context: ToroResolvedContext,
+  supabase: SupabaseClient,
 ): Promise<CanonicalBrainReadSlice> {
   assertOrganizationContext(context);
-
-  const supabase = await createServerSupabaseClient();
 
   const [
     organizationResult,
@@ -299,4 +299,12 @@ export async function loadCanonicalBrainReadSlice(
     domainGovernance: (governanceResult.data ?? []) as DomainGovernanceRow[],
     krossHealth: (krossResult.data ?? []) as KrossHealthRow[],
   });
+}
+
+
+export async function loadCanonicalBrainReadSlice(
+  context: ToroResolvedContext,
+): Promise<CanonicalBrainReadSlice> {
+  const supabase = await createServerSupabaseClient();
+  return loadCanonicalBrainReadSliceWithClient(context, supabase);
 }
