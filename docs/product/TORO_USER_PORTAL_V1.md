@@ -60,6 +60,8 @@ Cross-context actions require an explicit transition.
 
 ## 4. Personal Home
 
+TARGET entry direction (2026-09-30): this and the work/owner Home blocks below describe the initial **focus inside the same permission-filtered Brain**, not separate landing products. Personal remains private; a context switch must clear prior-scope nodes, counts, actions and cached detail before showing the new projection. Map and list expose the same authorized objects. Today/Attention is available without leaving the shared shell. Current runtime is unchanged pending reviewed implementation.
+
 Primary question:
 **What matters to me now?**
 

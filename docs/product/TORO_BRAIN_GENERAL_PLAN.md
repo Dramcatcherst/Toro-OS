@@ -104,6 +104,7 @@ Canonical contract:
 - `docs/product/TORO_DASHBOARD_V1.md`
 
 Core navigation:
+- Brain (role- and scope-filtered entry);
 - Today / Attention
 - Money
 - Studio
@@ -121,15 +122,17 @@ Rules:
 - modules do not create parallel databases, task systems, approvals or notification centers;
 - role visibility comes from the shared identity/membership/capability model;
 - every material widget exposes source authority, freshness, attention state and next action;
-- default home is Today/Attention, not the technical cockpit;
-- TARGET owner composition: Today/Attention remains the home function; Brain becomes the dominant owner visual area with immediate decisions and next actions. Other roles retain work-first homes. Section 23 details the eleven modules without creating a twelfth module or another task/approval store.
+- TARGET default internal home is the authorized Brain composition, not Today/Attention or the technical cockpit; each role receives a useful initial focus and an equivalent list, while Today remains one-tap operational attention;
+- TARGET role composition: Brain is the entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. Today/Attention is the operational subview. Section 23 details the eleven modules without creating a twelfth module or another task/approval store.
 - mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
 
-MVP order:
+Existing Dashboard v1 implementation order (not the final entry route):
 1. Today / Attention;
 2. Money / PayFlow;
 3. Studio;
 4. then remaining modules using the same contracts.
+
+**Owner product decision, 2026-09-30:** the final Portal starts in the connected Brain for every authenticated profile, filtered before projection by identity, context and capability. This changes the entry contract, not the inside-out build order or present runtime state. Brain, Today, Plan/Projects and the other modules are views of one TORO with shared object IDs and governed actions. A compact, viewport-oriented shell uses progressive detail; long evidence, forms, accessibility zoom and small screens may scroll normally. The public site remains a separate, sanitized projection. The reviewable interaction contract is in `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`; subordinate Dashboard and User Portal v1 entry wording is superseded accordingly. A visible node, listed connector or button is not proof of a live integration or permission to act.
 
 ### Owner Attention + PayFlow contract — 2026-09-28
 
@@ -2645,9 +2648,9 @@ Cada resultado muestra qué cambió, dónde verlo, quién intervino, qué prueba
 
 ### Una sola plataforma y dos maneras de trabajar
 
-La composición recomendada combina Brain y operación. El Brain es protagonista en la pantalla del dueño, acompañado de Atención y de un acceso inmediato a decisiones y pendientes. Hoy sigue siendo la función de entrada del Dashboard; el Brain es su composición visual para el dueño. Recepción, mantenimiento, finanzas y otros roles entran a la vista que les sirve para trabajar, con acceso al mismo mapa cuando ayuda a entender relaciones.
+La portada interna final es el Cerebro conectado para toda identidad autenticada, siempre filtrado por ámbito y permisos. El dueño ve el portafolio autorizado con Atención y decisiones a mano; Recepción, mantenimiento, finanzas y los demás perfiles ven un foco inicial de Cerebro adaptado a su trabajo y su siguiente acción permitida. «Hoy» sigue siendo la vista operativa de atención, accesible en un toque, no una portada distinta. La edición pública es una demostración saneada y separada.
 
-Un inicio basado solo en el Brain favorecería la exploración, pero dificultaría tareas repetitivas. Un inicio formado solo por tarjetas facilitaría la rutina, pero perdería la visión del conjunto. La composición conjunta conserva la red visible y permite pasar a listas, formularios y acciones concretas sobre los mismos objetos.
+La portada combina mapa y lista equivalente sobre los mismos objetos, con señales de atención y acciones en contexto. No obliga a explorar el grafo para una tarea repetitiva: búsqueda, «Hoy» y acceso directo al objeto conservan ámbito y selección. La experiencia prioriza pantallas compactas con detalle progresivo; el contenido largo, la ampliación de texto y las excepciones pueden desplazarse con scroll normal.
 
 Los once módulos visibles son Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Brain, conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones son capacidades comunes. Los subsistemas internos pueden ser más numerosos que los módulos del menú; cada uno tiene un propietario de capacidad y comparte identidad, permisos y estado.
 
@@ -2901,8 +2904,8 @@ Esta serie nueva P01 a P40 concreta esta definición TARGET. Son criterios de ac
 | P02 | Una entrada sencilla | En móvil dirige al Portal oficial, separa demo y operación y no transfiere credenciales ni datos privados por URL. |
 | P03 | Identidad individual | Cambio de usuario y revocación impiden conservar el acceso anterior. |
 | P04 | Alcance visible | Pantalla y acción identifican negocio y contexto; otra organización no accede al objeto. |
-| P05 | Inicio útil por rol | Dueño encuentra Brain y Atención; cada trabajador encuentra su siguiente acción autorizada. |
-| P06 | Brain protagonista | El dueño explora la red y alcanza una decisión sin perder el contexto global. |
+| P05 | Cerebro como inicio por rol | Toda identidad autenticada entra a un Cerebro filtrado; el foco inicial y la siguiente acción autorizada se adaptan al perfil. Hoy queda a un toque. |
+| P06 | Brain protagonista y accesible | El usuario explora mapa o lista equivalente y alcanza una decisión sin perder el contexto global. |
 | P07 | Red localizable completa | Inventario y búsqueda cubren lo autorizado con denominadores y fuentes inspectables. |
 | P08 | Zoom con orientación | Expansión, filtros y retorno conservan selección y relaciones del ámbito. |
 | P09 | Conexiones explicables | Cada línea indica tipo y procedencia; pertenencia no se presenta como integración. |
