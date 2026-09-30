@@ -4,7 +4,7 @@ import type { OperationalStatus, RiskLevel } from "@/lib/toro-types";
 const en = {
   title: "Brain", subtitle: "Your connected context", today: "Today", plan: "Plan", portfolio: "Portfolio",
   navigation: "Explore context", search: "Search this context", clear: "Clear search", map: "Map", list: "List",
-  demo: "DEMO · Synthetic data", readOnly: "READ ONLY · Authorized context", unavailable: "Data unavailable",
+  demo: "Demonstration · sample data", readOnly: "READ ONLY · Authorized context", unavailable: "We could not verify this data",
   demoNote: "Examples, not live operations. No external actions.", readOnlyNote: "Source coverage only. No external actions.",
   unavailableNote: "Context could not be verified. No records are displayed; this does not mean zero activity.",
   scope: "Scope", partial: "Partial coverage", coverage: "Coverage reported by source", attention: "Needs attention",
@@ -32,7 +32,7 @@ const en = {
 const es: typeof en = {
   title: "Cerebro", subtitle: "Tu contexto conectado", today: "Hoy", plan: "Plan", portfolio: "Portafolio",
   navigation: "Explorar contexto", search: "Buscar en este contexto", clear: "Limpiar búsqueda", map: "Mapa", list: "Lista",
-  demo: "DEMO · Datos sintéticos", readOnly: "SOLO LECTURA · Contexto autorizado", unavailable: "Datos no disponibles",
+  demo: "Demostración · datos de ejemplo", readOnly: "SOLO LECTURA · Contexto autorizado", unavailable: "No pudimos verificar estos datos",
   demoNote: "Ejemplos, no operación real. Sin acciones externas.", readOnlyNote: "Solo cobertura de las fuentes. Sin acciones externas.",
   unavailableNote: "No se pudo verificar el contexto. No se muestran registros; esto no significa actividad cero.",
   scope: "Ámbito", partial: "Cobertura parcial", coverage: "Cobertura declarada por la fuente", attention: "Requiere atención",
