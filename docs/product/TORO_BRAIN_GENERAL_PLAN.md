@@ -2607,3 +2607,95 @@ Verified after the initial 2026-09-29 alignment:
 - W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
+
+
+## Dreamcatcher — distribución, agencias y ventas de grupos · 30/09/2026
+
+**Ámbito:** Dreamcatcher Hotel, dentro del frente comercial existente D14 / F023; dependencias D18 (web), D20 (marketing) y D13 (TERE). No crea otro proyecto ni plan maestro.
+**Responsables propuestos:** TORO Revenue/Channels (distribución), TORO Growth/SKY (captación), TORO Guests/TERE (seguimiento), TORO Comms (correo), RICO (operación) y FIONA (margen). Son responsabilidades, no agentes nuevos activados.
+
+### CURRENT — inventario y evidencia
+- Booking, Expedia, Airbnb y Agoda: activos según el propietario; pendientes de auditoría completa.
+- Vrbo: iniciado, pendiente de terminar. Google: existe pero no funciona según el propietario; diagnosticar ficha, motor, enlaces de reserva y atribución.
+- Trip.com: sin cuenta directa según el propietario; una ficha pública no prueba contrato ni conexión directa. Revisar también Despegar y BringFido antes de crear duplicados.
+- La matriz general ya recoge el programa de grupos en 18_Gestion, filas 40–62, y sus fuentes en 17_Fuentes, filas 35–39.
+- Recuperación de la base institucional: pendiente en el ámbito privado del hotel; conservar procedencia y no publicar destinatarios.
+
+### TARGET — cuatro líneas comerciales
+- Retiros: ofrecer sede a organizadores de yoga, surf y bienestar; distinguir alquiler de sede de retiro organizado por el hotel.
+- Empresas: estancias y encuentros de equipo de 2–3 noches, priorizando días entre semana.
+- Instituciones/embajadas: alojamiento de equipos, delegaciones y visitas profesionales.
+- Grupos privados: familias, celebraciones y villas; validar configuración, exclusividad y logística para cada solicitud.
+
+### NEXT — secuencia de 90 días
+1. Días 1–14: auditar canales actuales, terminar Vrbo y diagnosticar Google. Preparar ficha comercial ES/EN con fotos verificadas, distribución de habitaciones, servicios, condiciones y solicitud de cotización.
+2. Días 15–30: evaluar Trip.com y agencias por demanda incremental, comisión, cobro y compatibilidad con Kross; elegir los primeros canales compatibles. Revalidar contactos históricos y preparar tres propuestas: retiros, empresas e instituciones.
+3. Días 31–60: evaluar plataformas de retiros/surf; preparar candidatura según producto y elegibilidad. Piloto propuesto: 10 contactos validados, 3 propuestas comerciales y 2 cotizaciones. Son objetivos, no resultados.
+4. Días 61–90: comparar consultas, reservas confirmadas y margen por canal; ampliar solo lo que aporte demanda rentable y carga operativa sostenible.
+
+### Criterios de auditoría y alta
+Cada canal debe registrar URL, propietario de cuenta, estado declarado, evidencia pública/privada, conexión directa o redistribuida, comisión/costos, cobro, sincronización Kross, fotos/textos, políticas, incidencias y siguiente acción.
+Comprobar nombres/unidades, camas y baños, capacidad de alojamiento, galería, descripción ES/EN, tarifas/restricciones, cancelación, disponibilidad y recorrido de reserva. No aplicar comisiones o políticas históricas como vigentes. Kross conserva autoridad sobre reservas, precios y disponibilidad.
+No prometer salón, AV, WiFi para trabajo, alternativa de lluvia, traslado o exclusividad sin verificar. Capacidad de evento no equivale a plazas de alojamiento.
+
+### Correo, redes y seguimiento
+Recuperar la base de embajadas desde el mensaje original; conservar origen/fecha, organización, cargo, relevancia y estado de consentimiento/baja; depurar duplicados y direcciones inválidas.
+Separar contacto B2B personalizado de newsletter de suscriptores. Un CC histórico no incorpora automáticamente a una campaña masiva.
+Preparar borradores por segmento y un seguimiento B2B propuesto a los 7–10 días; newsletter mensual propuesta para suscriptores. No se enviaron correos ni se activaron campañas.
+Redes, dossier, web y correo usarán los mismos activos y una solicitud de grupo con fechas, noches, personas, habitaciones, presupuesto y servicios. Medir contacto → respuesta → lead calificado → cotización → depósito → estancia → margen.
+
+### Enlaces de trabajo
+- [Trip.com — alta de alojamiento](https://www.trip.com/list-your-property/)
+- [HBX / Hotelbeds — registro](https://www.hbxgroup.com/register)
+- [Horizontes — contacto de agencia](https://horizontes.com/contact-us/)
+- [Camino Travel](https://caminotravel.com/)
+- [Swiss Travel](https://www.swisstravelcr.com/travelideas/index.php/about-us/)
+- [BookRetreats — anfitriones](https://bookretreats.com/hosts)
+- [BookYogaRetreats](https://www.bookyogaretreats.com/)
+- [BookSurfCamps — socios](https://www.booksurfcamps.com/partners)
+
+**Aceptación:** cada incorporación tendrá ficha auditada y conexión confirmada; cada oferta de grupo tendrá capacidad, operación y margen validados; campañas y contactos tendrán procedencia y resultados. La presencia de un enlace no acredita alta, publicación ni integración.
+
+**Portal:** recursos públicos en los módulos existentes Growth/Channels/Revenue. La página privada de planificación conserva la evidencia de correo; no se incorporan destinatarios a código público.
+
+### Agencias de viajes — preparación secundaria; lanzamiento después de la nueva web
+
+**Orden vigente del propietario · 29/09/2026 23:17 CR:** la publicación verificada de la nueva web de Dreamcatcher precede al lanzamiento de agencias, Hotelbeds, grupos y campañas de este frente. Prioridad relativa menor dentro del Plan General: preparación documental ahora; activación comercial diferida. Podemos investigar, depurar bases, preparar catálogo/fotos/condiciones y diseñar herramientas internas. No enviar correos, mensajes, dossiers ni campañas; no ejecutar altas comerciales. Publicar la web no dispara envíos automáticamente: después se revisará la preparación y el siguiente paso.
+Este canal reunirá alojamiento, grupos y experiencias. La secuencia de 90 días queda subordinada a la web nueva publicada y no obliga a lanzar ni contactar.
+
+**Orden de trabajo y condiciones para avanzar**
+1. Investigación: reactivar conocimiento de relaciones previas; contrastar agencias receptivas/DMC de Costa Rica, especialistas en surf/bienestar, organizadores de grupos y compradores internacionales. Horizontes, Camino Travel y Swiss Travel son candidatos de investigación, no socios confirmados. Evaluar mercado emisor, Santa Teresa en sus rutas, tipo/tamaño de cliente, estacionalidad, alojamiento buscado, forma de reserva y compatibilidad operativa.
+2. Producto: definir qué pueden revender sin ambigüedad. Fichas separadas para habitaciones/villas, grupos y cada experiencia; indicar duración, idioma, mínimo/máximo, inclusiones/exclusiones, transporte, anticipación, accesibilidad/restricciones, clima, cancelación y operador responsable. Servicios propios y terceros claramente identificados. No presentar una actividad como disponible o incluida antes de validarla.
+3. Economía: decidir por producto tarifa neta para reventa o tarifa comisionable; evitar sumar ambos beneficios por defecto. Definir moneda, impuestos, vigencia, temporadas, suplemento, pago/cobro, comisión y liquidación, no-show, cambios y cancelación. Medir ingreso recibido menos costos de distribución/cobro y costos incrementales de alojamiento/experiencias. No aprobar un descuento sin comprobar margen.
+4. Herramientas: preparar el kit ES/EN y probar solicitud → cotización → aceptación → disponibilidad vigente → confirmación Kross → voucher → prestación → liquidación. Una solicitud, presupuesto u opción no equivale a reserva confirmada.
+5. Piloto posterior: seleccionar pocas agencias con buen encaje y contactos validados; preparar mensajes individuales y conversación sobre sus necesidades. Lanzamiento solo después de tener fichas, condiciones, responsables y flujo probado. Escalar a partir de resultados, sin envío masivo inicial.
+
+**Kit útil para que una agencia venda fácilmente**
+- Presentación breve ES/EN: para quién sirve el hotel y sus diferencias verificadas.
+- Fichas por producto, plano/rooming list validado y galería descargable con derechos de uso.
+- Hoja comercial privada, versionada y con vigencia; acceso según agencia, no tarifas netas en web pública.
+- Catálogo de experiencias propias y de aliados confirmados; paquetes como propuestas mientras falte validar operación y costos.
+- Formulario sencillo: agencia/referencia, fechas, noches, adultos/niños y edades relevantes, unidades, experiencia, presupuesto, idioma y necesidades.
+- Modelo de cotización/voucher, condiciones y pasos de modificación/cancelación; contacto comercial y soporte operativo.
+- Preguntas frecuentes, logística de llegada/traslado y un enlace único a documentación vigente. Evitar adjuntos antiguos que compitan con el original.
+
+**Beneficios a diseñar, no comprometidos todavía:** remuneración comercial clara, materiales listos para su cliente, paquetes adaptables, respuesta predecible y seguimiento sin repetir datos. Beneficios por volumen, fechas especiales, visita de familiarización o valor agregado se evalúan por margen y capacidad; no prometer upgrades, exclusividad, crédito o descuento general.
+
+**Hotelbeds / HBX — evaluar distribución mayorista en paralelo**
+Su oferta oficial permite distribución B2B y conexión mediante Partner Portal, API o channel manager. Su guía general publicada indica mínimo 10 habitaciones, mapeo de unidades/tarifas, contenido en inglés y lengua local, capacidades/servicios y al menos 12 fotos de ancho mínimo 800 px. Son requisitos de la guía, no aceptación del hotel.
+Antes de alta: validar alcance de propiedad e inventario elegible; confirmar compatibilidad exacta con Kross y costo; revisar contrato, tarifas netas/margen, impuestos, cobro/plazos, modificaciones/cancelaciones, responsabilidad, cupos/release/stop-sales y canales de redistribución. Confirmar cómo controlar exposición de tarifas B2B y solapamiento con canales existentes.
+La pertenencia de experiencias al ecosistema HBX no significa que el alta hotelera permita distribuir nuestras actividades. Investigar ese proceso por separado. No asumir integración nativa disponible ni crear API propia antes de comprobar el conector existente.
+Fuentes: [soluciones para hoteles](https://www.hbxgroup.com/solutions/hoteliers), [guía general de conexión](https://www.hbxgroup.com/solutions/hoteliers/channel-manager-guidelines-other), [registro](https://www.hbxgroup.com/register).
+
+**Base de agencias dentro del TORO existente**
+Reutilizar CRM/contactos y seguimiento actuales. Campos propuestos: organización, web/fuente, país/mercado/idioma, segmento, contacto/cargo y canal profesional, fecha de verificación, relación histórica, productos de interés, estado comercial, permiso/baja, condiciones/versión, responsable, última interacción y siguiente paso. No publicar personas/contactos en repositorios ni mezclar base institucional y newsletter sin propósito y permiso.
+
+**Automatización gradual, siempre canalizada por TORO**
+- Preparación: TORO revisa fuentes, clasifica consultas, deduplica, detecta faltantes y prepara respuesta con evidencia. No activa correos ni conexiones en esta fase.
+- Piloto supervisado posterior: un solo hilo y registro por solicitud; respuesta/seguimiento revisados, escalamiento a TERE cuando haya negociación, duda o excepción.
+- Automatización futura: acuses y respuestas de información validada solo con identidad, permisos, reglas aprobadas, bajas, registro, límites y pruebas. Cotizaciones necesitan precios/disponibilidad frescos de Kross; confirmar y modificar reservas conserva su flujo autorizado.
+- Cierre: RICO verifica prestación, FIONA valida liquidación/margen y Growth mide. TORO aprende de resultados dentro del ámbito hotelero; no crea otro CRM, bandeja o motor de reservas.
+
+**Medición:** agencias verificadas y activas, consultas calificadas, tiempo de respuesta, cotizaciones aceptadas, noches confirmadas por temporada, ingreso/margen por alojamiento y experiencias, repetición, cancelaciones y carga manual. No confundir contactos/enlaces con socios activos ni reservas vendidas.
+
+**Próxima unidad:** inventario de información y herramientas disponibles/faltantes, matriz de selección de agencias y preguntas para Hotelbeds. Aún no elaborar condiciones finales ni enviar información comercial.

@@ -51,6 +51,31 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ i
           </div>
         </section>
 
+
+        {["campaigns", "channel", "revenue"].includes(id) ? (
+          <section className="mt-5 border border-cyan-400/12 bg-slate-950/80 p-5" aria-labelledby="dreamcatcher-sales-resources">
+            <h2 id="dreamcatcher-sales-resources" className="text-xl font-semibold text-white">Dreamcatcher · Canales y ventas de grupos</h2>
+            <p className="mt-2 text-base leading-7 text-slate-300">Optimizar los canales actuales, evaluar nuevas altas y preparar ofertas para retiros, empresas e instituciones. Los enlaces son recursos de trabajo; cada alta y oferta requiere validación.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {[
+                ["Plan General · programa comercial", "https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_GENERAL_PLAN.md#dreamcatcher--distribución-agencias-y-ventas-de-grupos--30092026"],
+                ["Planificación y seguimiento privado", "https://app.notion.com/p/3dff5169a39a81b8bf89d06a75a91462"],
+                ["Trip.com · alta de alojamiento", "https://www.trip.com/list-your-property/"],
+                ["HBX / Hotelbeds · registro", "https://www.hbxgroup.com/register"],
+                ["Horizontes · agencias", "https://horizontes.com/contact-us/"],
+                ["Camino Travel · agencias", "https://caminotravel.com/"],
+                ["Swiss Travel · agencias", "https://www.swisstravelcr.com/travelideas/index.php/about-us/"],
+                ["BookRetreats · anfitriones", "https://bookretreats.com/hosts"],
+                ["BookYogaRetreats · retiros", "https://www.bookyogaretreats.com/"],
+                ["BookSurfCamps · socios", "https://www.booksurfcamps.com/partners"],
+              ].map(([label, href]) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="rounded border border-slate-700 p-4 text-base text-cyan-200 hover:border-cyan-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">{label}</a>
+              ))}
+            </div>
+            <p className="mt-4 text-base leading-7 text-slate-400">Siguiente paso: dossier ES/EN, capacidad y margen de las tres ofertas, contactos validados y diagnóstico de Google. El acceso a la planificación privada conserva los permisos de Notion.</p>
+          </section>
+        ) : null}
+
         <section className="mt-5 grid gap-5 lg:grid-cols-3">
           <div className="border border-cyan-400/12 bg-slate-950/80 p-5">
             <h2 className="font-semibold text-white">Primary Objects</h2>
