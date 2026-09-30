@@ -321,7 +321,31 @@ Motion must respect reduced-motion preferences.
 
 ## 7. Operational views
 
-The graph is one view, not the whole product.
+The graph is one representation, not the whole product. The TARGET Portal entry is the same Brain composition for every authenticated role, with scope- and capability-filtered initial focus; Today remains a one-tap operational view. This 2026-09-30 owner direction supersedes older Today-first or owner-only Brain landing language. Current Stage B synthetic and Stage C gated states do not become live through this specification.
+
+### Brain-first entry: reviewable interaction contract
+
+```text
+DESKTOP  TORO | Scope | Search / command | Source state
+         Attention signals (only authorized, evidenced)
+         Views | Brain map / list | Selected object + safe action
+         Today | Plan | Money | Comms | other permitted modules
+
+MOBILE   TORO | Scope | Search
+         One focus + actionable signals
+         Map / list -> selected-object bottom sheet
+         Brain | Today | Modules | Command
+```
+
+Desktop target (1440×900): a compact top bar holds TORO, active authorized scope, search/command and source-state access. A small attention strip shows only actionable, evidenced signals. The main area has a map/list toggle and focused Brain projection; selecting an object opens a contextual detail panel with type, authority, freshness, evidence, uncertainty and next permitted action. A timeline/receipt control stays reachable without expanding a permanent technical cockpit. Navigation to Today, Plan/Projects, PayFlow, Comms and other authorized modules preserves object ID, selection and scope. Detail belongs in panels/modal views, not explanatory paragraphs on the opening screen.
+
+Mobile target (390×844): one primary focus at a time, compact scope/search bar, legible prioritized objects and a persistent route to Today and modules. Selection opens a dismissible bottom sheet; closing it restores focus and position. The list is a full alternative to pan/zoom, not an inferior fallback. Content may scroll for evidence, enlarged text, forms and smaller viewports; never force an entire long document into one viewport or hijack normal scrolling. Motion is restrained, optional and reduced-motion aware.
+
+At any viewport, containment, documented relationship, verified connector capability and receipt-backed current activity use distinct labels and visual treatments. Synthetic/demo, unknown, stale, blocked, no-permission and empty states must be distinguishable without color alone. The server filters nodes, edges, counts, search hits and actions before delivery; changing scope clears the previous projection. Public mode never reuses private payloads. A button and a prompt enter the same governed action path: resolve target/scope -> show effect and source -> assess permission/risk -> preview or request approval -> execute only if authorized -> verify and issue a receipt. Rendering an action does not authorize payment, messaging, contract acceptance, reservation changes or production writes.
+
+Initial focus examples, not new authority: owner -> permitted portfolio and decisions; reception -> active work, handoffs and guest-safe cases; finance -> obligations, billing/due dates and reconciliation; employee -> own shift and tasks; personal -> private projects and reminders. A PayFlow object may link to its provider, invoice, relevant email, payment portal or calendar event only when that exact URL and account/scope are verified and the role is allowed to open them. Calendar is a dated projection, Alegra fiscal/accounting truth and banks cash-movement truth; the Brain never merges these into an invented paid status.
+
+Review gates before implementation: compare the current candidate and this target at 390×844 and 1440×900 for useful information visible, steps to evidence and steps to a safe next action; do not claim an improvement before measurement. Check no horizontal overflow, controls at least 44px, financial numbers at least 14px, keyboard/focus, contrast, reduced motion, Spanish/English and official TORO identity. Negative cases: revoked/wrong-scope data and counts absent; connector failure never appears as zero; demo never looks live; view switch preserves selection; sensitive action stops at the approval gate. This is a specification for Mauricio's review, not implementation approval or authenticated Stage C QA.
 
 Required complementary views:
 
