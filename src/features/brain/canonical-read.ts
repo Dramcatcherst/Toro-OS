@@ -128,6 +128,10 @@ function stableProjectionRef(kind: string, canonicalId: string) {
   return `${kind}:${digest}`;
 }
 
+export function canonicalScopeRefForOrgId(orgId: string) {
+  return stableProjectionRef("scope", orgId);
+}
+
 function nullableNumber(value: number | string | null): number | null {
   if (value === null) return null;
   const number = typeof value === "number" ? value : Number(value);
@@ -165,7 +169,7 @@ export function projectCanonicalBrainReadSlice(input: {
   return {
     contractVersion: CANONICAL_BRAIN_READ_CONTRACT,
     generatedAt: input.generatedAt ?? new Date().toISOString(),
-    scopeRef: stableProjectionRef("scope", input.orgId),
+    scopeRef: canonicalScopeRefForOrgId(input.orgId),
     organization: {
       ref: stableProjectionRef("organization", input.organization.id),
       label: input.organization.name,
