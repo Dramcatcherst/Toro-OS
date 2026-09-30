@@ -2607,3 +2607,53 @@ Verified after the initial 2026-09-29 alignment:
 - W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
+
+
+## Dreamcatcher — distribución, agencias y ventas de grupos · 30/09/2026
+
+**Ámbito:** Dreamcatcher Hotel, dentro del frente comercial existente D14 / F023; dependencias D18 (web), D20 (marketing) y D13 (TERE). No crea otro proyecto ni plan maestro.
+**Responsables propuestos:** TORO Revenue/Channels (distribución), TORO Growth/SKY (captación), TORO Guests/TERE (seguimiento), TORO Comms (correo), RICO (operación) y FIONA (margen). Son responsabilidades, no agentes nuevos activados.
+
+### CURRENT — inventario y evidencia
+- Booking, Expedia, Airbnb y Agoda: activos según el propietario; pendientes de auditoría completa.
+- Vrbo: iniciado, pendiente de terminar. Google: existe pero no funciona según el propietario; diagnosticar ficha, motor, enlaces de reserva y atribución.
+- Trip.com: sin cuenta directa según el propietario; una ficha pública no prueba contrato ni conexión directa. Revisar también Despegar y BringFido antes de crear duplicados.
+- La matriz general ya recoge el programa de grupos en 18_Gestion, filas 40–62, y sus fuentes en 17_Fuentes, filas 35–39.
+- Recuperación de la base institucional: pendiente en el ámbito privado del hotel; conservar procedencia y no publicar destinatarios.
+
+### TARGET — cuatro líneas comerciales
+- Retiros: ofrecer sede a organizadores de yoga, surf y bienestar; distinguir alquiler de sede de retiro organizado por el hotel.
+- Empresas: estancias y encuentros de equipo de 2–3 noches, priorizando días entre semana.
+- Instituciones/embajadas: alojamiento de equipos, delegaciones y visitas profesionales.
+- Grupos privados: familias, celebraciones y villas; validar configuración, exclusividad y logística para cada solicitud.
+
+### NEXT — secuencia de 90 días
+1. Días 1–14: auditar canales actuales, terminar Vrbo y diagnosticar Google. Preparar ficha comercial ES/EN con fotos verificadas, distribución de habitaciones, servicios, condiciones y solicitud de cotización.
+2. Días 15–30: evaluar Trip.com y agencias por demanda incremental, comisión, cobro y compatibilidad con Kross; elegir los primeros canales compatibles. Revalidar contactos históricos y preparar tres propuestas: retiros, empresas e instituciones.
+3. Días 31–60: evaluar plataformas de retiros/surf; preparar candidatura según producto y elegibilidad. Piloto propuesto: 10 contactos validados, 3 propuestas comerciales y 2 cotizaciones. Son objetivos, no resultados.
+4. Días 61–90: comparar consultas, reservas confirmadas y margen por canal; ampliar solo lo que aporte demanda rentable y carga operativa sostenible.
+
+### Criterios de auditoría y alta
+Cada canal debe registrar URL, propietario de cuenta, estado declarado, evidencia pública/privada, conexión directa o redistribuida, comisión/costos, cobro, sincronización Kross, fotos/textos, políticas, incidencias y siguiente acción.
+Comprobar nombres/unidades, camas y baños, capacidad de alojamiento, galería, descripción ES/EN, tarifas/restricciones, cancelación, disponibilidad y recorrido de reserva. No aplicar comisiones o políticas históricas como vigentes. Kross conserva autoridad sobre reservas, precios y disponibilidad.
+No prometer salón, AV, WiFi para trabajo, alternativa de lluvia, traslado o exclusividad sin verificar. Capacidad de evento no equivale a plazas de alojamiento.
+
+### Correo, redes y seguimiento
+Recuperar la base de embajadas desde el mensaje original; conservar origen/fecha, organización, cargo, relevancia y estado de consentimiento/baja; depurar duplicados y direcciones inválidas.
+Separar contacto B2B personalizado de newsletter de suscriptores. Un CC histórico no incorpora automáticamente a una campaña masiva.
+Preparar borradores por segmento y un seguimiento B2B propuesto a los 7–10 días; newsletter mensual propuesta para suscriptores. No se enviaron correos ni se activaron campañas.
+Redes, dossier, web y correo usarán los mismos activos y una solicitud de grupo con fechas, noches, personas, habitaciones, presupuesto y servicios. Medir contacto → respuesta → lead calificado → cotización → depósito → estancia → margen.
+
+### Enlaces de trabajo
+- [Trip.com — alta de alojamiento](https://www.trip.com/list-your-property/)
+- [HBX / Hotelbeds — registro](https://www.hbxgroup.com/register)
+- [Horizontes — contacto de agencia](https://horizontes.com/contact-us/)
+- [Camino Travel](https://caminotravel.com/)
+- [Swiss Travel](https://www.swisstravelcr.com/travelideas/index.php/about-us/)
+- [BookRetreats — anfitriones](https://bookretreats.com/hosts)
+- [BookYogaRetreats](https://www.bookyogaretreats.com/)
+- [BookSurfCamps — socios](https://www.booksurfcamps.com/partners)
+
+**Aceptación:** cada incorporación tendrá ficha auditada y conexión confirmada; cada oferta de grupo tendrá capacidad, operación y margen validados; campañas y contactos tendrán procedencia y resultados. La presencia de un enlace no acredita alta, publicación ni integración.
+
+**Portal:** recursos públicos en los módulos existentes Growth/Channels/Revenue. La página privada de planificación conserva la evidencia de correo; no se incorporan destinatarios a código público.
