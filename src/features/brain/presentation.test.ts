@@ -91,6 +91,32 @@ describe("brain presentation", () => {
     expect(JSON.stringify(input)).toBe(before);
   });
 
+  it.each(["demo", "read-only"] as const)("never_client_event_is_absent_from_serialized_%s_props", mode => {
+    const input = fixture();
+    if (mode === "read-only") {
+      input.runtime = { ...input.runtime, mode: "canonical_read_only", realData: true, stage: "C" };
+      input.projection.synthetic = false;
+      input.projection.mode = "workspace";
+    }
+    const event = input.projection.recentEvents![0];
+    input.projection.recentEvents = [
+      { ...event, eventId: "hidden-event-id", redactionClass: "never_client",
+        summary: "hidden-summary", actorRef: "hidden-actor", correlationId: "hidden-correlation",
+        evidenceRefs: ["hidden-evidence"], parentEventId: "hidden-parent",
+        workflowRunRef: "hidden-workflow", actionRef: "hidden-action" },
+      { ...event, eventId: "allowed-event", redactionClass: "public_reference",
+        evidenceRefs: ["allowed-evidence"] },
+    ];
+    const before = JSON.stringify(input);
+    const view = toBrainClientView(input);
+    const serialized = JSON.stringify(view);
+    expect(view.mode).toBe(mode);
+    expect(serialized).not.toContain("hidden-");
+    expect(view.projection.recentEvents?.map(item => item.eventId)).toEqual(["allowed-event"]);
+    expect(view.projection.recentEvents?.[0].evidenceRefs).toEqual(["allowed-evidence"]);
+    expect(JSON.stringify(input)).toBe(before);
+  });
+
   it("orders_attention_by_risk_then_id_and_caps_four", () => {
     const projection = fixture().projection;
     const base = projection.nodes[0];

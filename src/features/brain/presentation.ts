@@ -48,7 +48,8 @@ export function toBrainClientView({ projection: p, layout, runtime }: BrainProje
         "verification", "freshness", "summary"])),
       sources: p.sources.map(source => pick(source, ["sourceSystem", "authoritySystem", "freshness",
         "verification", "observedAt", "authoritative"])),
-      recentEvents: p.recentEvents?.map(event => ({
+      // Enforce this before Client Component props are serialized, not just when rendering.
+      recentEvents: p.recentEvents?.filter(event => event.redactionClass !== "never_client").map(event => ({
         ...pick(event, ["eventId", "occurredAt", "scopeRef", "actorKind", "actorRef", "eventType", "entityKind",
           "entityRef", "summary", "sourceSystem", "authoritySystem", "risk", "approvalState", "executionState",
           "verificationState", "redactionClass", "correlationId", "parentEventId", "workflowRunRef", "actionRef"]),
