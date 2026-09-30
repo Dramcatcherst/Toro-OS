@@ -2618,13 +2618,15 @@ Verified after the initial 2026-09-29 alignment:
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
 
 
-# 23. Finished product definition — owner direction 2026-09-29
+# 23. VERSION FINAL — definición del producto terminado — owner direction 2026-09-29
 
 **Classification:** TARGET definition, proposed acceptance detail; not a runtime-completion claim.  
 **Source:** owner direction of 2026-09-29, constitution and existing General Plan/contracts.  
 **Scope:** existing TORO master product and authorized portfolio; no new master project/backlog.  
 **Delivery:** full product definition below; editable/presentation exports and a complete indexed General Plan reader are derived artifacts.  
 **Governance:** existing A0–A6 workflow authority, Autopilot caps, identity/privacy, budget, readiness, source and release gates remain effective.
+
+**R2 refinement — 2026-09-30:** Mauricio designates this section as **VERSION FINAL**: the canonical TARGET description of TORO as the finished product. The subordinate execution/design prompt is `docs/product/TORO_VERSION_FINAL_SUPERPROMPT_V1.md`. It strengthens the executive/general-manager layer, first-class mobile experience, event-driven execution, Same-Brain OpenClaw/WhatsApp architecture, Business DNA portability and the visual self-use loop in which TORO Business operates with TORO. Its VF01–VF40 refinements extend the product definition without replacing the existing P01–P40 acceptance criteria, R4 Human Layer controls, current queues, source authorities or runtime/release gates.
 
 
 ### Propósito y alcance
