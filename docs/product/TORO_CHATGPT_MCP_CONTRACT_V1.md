@@ -542,6 +542,14 @@ Read observability is not itself a business execution receipt.
 
 ---
 
+## 15A. P1-B implementation plan
+
+Canonical implementation plan: `docs/superpowers/plans/2026-09-30-toro-chatgpt-mcp-p1b.md`.
+
+It pins the current Next.js/Vercel transport approach, default-off feature gates, OAuth target, exact read-only tool exposure, preview acceptance and production promotion gates. Package versions are dated implementation choices and must be reverified before installation.
+
+---
+
 ## 16. Delivery stages
 
 ### P0 — CONTRACT
