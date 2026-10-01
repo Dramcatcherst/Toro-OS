@@ -126,5 +126,11 @@ export function resolveToroExecutionAuthorityLevel(input: {
 export function executionAuthorityRequiresHumanGate(
   level: ToroExecutionAuthorityLevel,
 ): boolean {
-  return level === "L3" || level === "L4";
+  return level === "L3";
+}
+
+export function isExecutionAuthorityProhibited(
+  level: ToroExecutionAuthorityLevel,
+): boolean {
+  return level === "L4";
 }
