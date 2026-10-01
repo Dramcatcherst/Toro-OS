@@ -3794,6 +3794,34 @@ Rules:
 - break-even engine consumes only classifications that have passed their required evidence gate.
 
 
+
+
+### Financial cost-classification wave 2 — maintenance and labor
+
+Maintenance:
+- recorded repairs Jan–Sep 2026: CRC 17,594,860.19;
+- CRC 14,992,933.09 (85.21%) is under CAPEX/fleet/other-property review:
+  - Ferretería CRC 8,301,475.72;
+  - vehicle repairs CRC 4,899,531.56;
+  - Santa Toro repairs CRC 1,791,925.81;
+- residual recurring-property candidate: CRC 2,601,927.10.
+- sensitivity only: if all reviewed amounts were proven outside recurring Dreamcatcher operating cost, current commission-only diagnostic break-even would move from ~CRC 21.48M to ~CRC 19.66M/month.
+
+Labor:
+- total personnel expense: CRC 65,953,460.46 = 24.83% of Jan–Sep sales;
+- admin payroll: CRC 20,262,901.46 = 7.63%;
+- reception: CRC 9,953,438 = 3.75%;
+- maintenance: CRC 11,020,318 = 4.15%;
+- housekeeping: CRC 14,102,196 = 5.31%;
+- reception + maintenance + housekeeping = CRC 35,075,952 = 13.21%.
+
+Model rule:
+- maintain separate **cash break-even** and **economic break-even** views;
+- economic view includes required management labor/replacement-value compensation;
+- owner/family compensation is not automatically excluded;
+- housekeeping/reception/maintenance are fixed/step-fixed by occupancy bands until real workload data supports a different model.
+
+
 ### Improvement loop
 
 Monthly:
