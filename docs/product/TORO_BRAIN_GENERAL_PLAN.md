@@ -3391,6 +3391,42 @@ This work is **DONE** only when:
 - at least three historical months are back-tested against realized accounting results;
 - alerts do not recommend a rate below the applicable management floor without an explicit, documented exception.
 
+### Verified accounting snapshot — Alegra, 2026-01-01 to 2026-09-30
+
+Read-only source check on 2026-09-30, cost center `DREAMCATCHER` / id `1`:
+
+- Sales / operating income: **CRC 265,585,084.46**
+- Operating expenses: **CRC 199,724,118.69**
+- Operating profit: **CRC 65,860,965.77**
+- Other income: **CRC 468,688.11**
+- Other expenses: **CRC 6,826.18**
+- Profit before taxes: **CRC 66,322,827.69**
+- Tax expense: **CRC 21,744,372.38**
+- Net income: **CRC 44,578,455.31**
+- OTA + travel-agency commissions: **CRC 23,430,005.60** (8.82% of revenue)
+  - OTA commissions: CRC 22,343,745.60
+  - Travel-agency commissions: CRC 1,086,260.00
+- Personnel expense: **CRC 65,953,460.46** (24.83%)
+- Maintenance expense: **CRC 17,550,267.03** (6.61%)
+- Financial expense: **CRC 6,550,492.76** (2.47%)
+- General expense: **CRC 71,602,373.82** (26.96%)
+- Marketing / advertising: **CRC 6,232,615.12** (2.35%)
+- Insurance / licenses: **CRC 2,048,563.01** (0.77%)
+- Online services: **CRC 3,286,922.70** (1.24%)
+
+**Data-quality caution:** Alegra currently reports zero Cost of Sales while room-level operating costs are posted largely through expense categories. Outgoing-payment review also shows transfers, shareholder/dividend-related categories, financing principal/interest and other categories that must not automatically be treated as hotel room operating cost. Therefore the accounting snapshot is useful evidence but **not yet a validated unit-cost model**.
+
+### Provisional accounting break-even — diagnostic only
+
+If commissions are treated as the only variable cost for a first diagnostic and all remaining operating expenses are treated as fixed/semi-fixed:
+
+- 9-month non-commission operating expense: **CRC 176,294,113.09**
+- average monthly fixed/semi-fixed proxy: **CRC 19,588,234.79**
+- contribution ratio after recorded sales commissions: **91.18%**
+- provisional monthly accounting break-even revenue: **~CRC 21,483,518**
+
+This is intentionally labeled **PROVISIONAL / NOT FOR RATE FLOOR DECISIONS**. It will move after classifying utilities, housekeeping/laundry, breakfast, card fees, maintenance, owner/partner items, financing, taxes and stay-level costs correctly, then reconciling occupied room-nights and ADR from PMS/Kross.
+
 ### Improvement loop
 
 Monthly:
