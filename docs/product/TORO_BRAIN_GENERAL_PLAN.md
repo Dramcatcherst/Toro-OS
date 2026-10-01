@@ -971,6 +971,170 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 ---
 
+
+## ChatGPT Dots — persistent executive workforce
+
+**Owner decision — 2026-09-30:** "Dot" is reserved for OpenAI ChatGPT Dots: always-on cloud agents that can own ongoing responsibility and continue making progress between conversations. TORO internal graph elements remain **nodes**; short-lived delegated executors remain **workers/subagents**. Do not use "dot" as a generic graph-node synonym.
+
+### Architectural role
+
+ChatGPT Dots are a first-class persistent workforce surface for TORO, not a second Brain, memory, permission system, backlog, source-of-truth layer or execution authority.
+
+Canonical relationship:
+
+`Mauricio -> TORO Brain / General Plan -> governed Dot portfolio -> TORO capabilities/work graph -> temporary workers/tools -> verification -> receipts -> canonical state`
+
+A Dot may:
+- maintain a bounded ongoing goal or program;
+- inspect permitted connected apps/sources;
+- plan and continue multi-step work between conversations;
+- create or delegate safe work through TORO's existing work model when capability exists;
+- consolidate progress across related projects;
+- detect blockers, stale evidence, duplicated work, cost leakage, service/revenue opportunities and safe automation candidates;
+- return verified results, partial progress and explicit uncertainty;
+- ask Mauricio only for decisions, access, information or approvals that cannot safely be resolved from valid existing context.
+
+A Dot may not:
+- become an independent source of business truth;
+- create a private permanent backlog that TORO cannot inspect;
+- bypass identity, scope, approval, budget, source-freshness or action ceilings;
+- treat its cloud-computer state as canonical business state;
+- silently duplicate memory, tasks, approvals, project plans or evidence;
+- claim completion without readback/evidence;
+- grant itself broader authority because it is always-on.
+
+### Initial Dot portfolio
+
+Keep the persistent Dot count small. Default target:
+
+1. **PUMBA — Portfolio / Executive Progress Dot**
+   - continuous responsibility: advance the General Plan and all authorized portfolio projects;
+   - reconcile work against objectives, dependencies and current evidence;
+   - choose the next highest-impact safe work;
+   - coordinate cross-domain progress without becoming the Brain;
+   - surface a compact "Necesito a Mauricio" batch only when owner judgment/access is actually required.
+
+2. **Optional FINANCE CONTROL Dot** — activate only when PUMBA cannot safely maintain the required finance cadence and separation.
+   - reconciliations, missing evidence, due obligations, anomaly queues and finance-control preparation;
+   - no autonomous money movement, fiscal filing, contract acceptance or destructive accounting writes.
+
+3. **Optional GROWTH / REVENUE Dot** — activate only when persistent commercial experimentation clearly exceeds PUMBA's effective span.
+   - website/SEO/reputation/distribution/direct-sales/revenue experiments;
+   - all price, availability, ad-spend and external publishing effects remain governed.
+
+4. **Optional BUILDER / SYSTEMS Dot** — activate only when persistent engineering throughput requires a dedicated lane.
+   - code, tests, observability, integration parity, technical debt, release preparation and recovery evidence;
+   - production writes/releases remain within TORO's current deployment/action contract.
+
+Do **not** create separate permanent Dots for TERE, RICO, FIONA, SKY and SOBRESITO by default. Those remain TORO specialist roles/capability routers. A dedicated Dot is justified only by measured workload, continuity or isolation needs.
+
+### PUMBA operating contract
+
+PUMBA's objective is not "do many tasks." It is to maximize verified portfolio progress while reducing Mauricio's management overhead.
+
+Priority function:
+`impact + urgency + dependency-unblocking + risk reduction + revenue/cost benefit - effort - owner interruption - duplication`
+
+Required loop:
+`REFRESH -> COMPARE TO OBJECTIVES -> FIND GAPS -> PRIORITIZE -> EXECUTE/PREPARE -> VERIFY -> RECEIPT -> UPDATE CANONICAL STATE -> CONTINUE`
+
+PUMBA should work across:
+- TORO product/platform;
+- Dreamcatcher reference implementation;
+- finance/control;
+- operations;
+- growth/revenue;
+- people;
+- legal/risk;
+- assets/properties;
+- integrations/systems;
+- approved owned projects in the General Plan.
+
+Before starting a new work item PUMBA must check:
+- whether equivalent work already exists;
+- whether another Dot/worker owns it;
+- whether a dependency makes it premature;
+- whether the source is fresh enough;
+- whether it can close or downgrade existing work instead of creating more;
+- whether Mauricio has already supplied the needed decision.
+
+### Objective graph
+
+Persistent work must map to:
+`OBJECTIVE -> KPI -> INITIATIVE -> PROJECT -> WORKSTREAM -> TASK -> ACTION -> RECEIPT -> OUTCOME`
+
+Dots optimize for outcomes and verified progress, not task count, messages, token use or visible activity.
+
+### Owner-interruption contract
+
+All Dots share one owner-attention rule.
+
+Escalate only when:
+- owner approval is required by policy;
+- access/login/MFA requires the owner;
+- evidence is genuinely missing and cannot be recovered;
+- two valid options require business judgment;
+- a material legal/financial/reputational commitment is proposed;
+- continuing would create disproportionate risk/cost.
+
+Batch non-urgent asks. Every ask must include:
+- what is blocked;
+- why the Dot cannot continue safely;
+- recommended option;
+- alternatives when material;
+- consequence/deadline;
+- exact response needed.
+
+Never re-ask for still-valid information already present in TORO.
+
+### Concurrency and coordination
+
+Dots may work concurrently only on separable scopes.
+
+Use:
+- canonical work-item IDs;
+- explicit ownership/lease;
+- dependency edges;
+- single-writer rules for sensitive resources;
+- idempotency keys for replayable effects;
+- cost/token/budget ceilings;
+- collision detection before writes;
+- verifier/readback before closeout.
+
+If two Dots discover the same work, keep one canonical item and merge evidence rather than duplicating execution.
+
+### Nodes and temporary workers
+
+TORO's internal operational topology remains:
+- **Brain** = executive intelligence/orchestrator;
+- **specialist nodes** = TERE, RICO, FIONA, SKY, SOBRESITO;
+- **domain nodes** = business/module/project/system/object representations;
+- **temporary workers/subagents** = bounded executors created for research, QA, reconciliation, coding, analysis, document classification, audits or other isolated work;
+- **Dots** = persistent OpenAI workers that may coordinate many canonical work items over time.
+
+Temporary workers return evidence/results and disappear. Dots persist, but their durable business outputs must still land in TORO's canonical state/evidence model.
+
+### Rollout gates
+
+CURRENT:
+- PUMBA exists in the user's ChatGPT Dot environment according to owner confirmation;
+- TORO does not yet have verified programmatic control over Dot creation, configuration or runtime state from the canonical repository/runtime.
+
+NEXT:
+1. use PUMBA as the single default portfolio Dot;
+2. give it this General Plan plus explicit goal, autonomy ceiling and owner-interruption contract;
+3. connect only apps required for current authorized work;
+4. require canonical receipts/progress updates rather than private-only Dot state;
+5. measure 7-day outcomes: verified items closed, dependencies unblocked, owner interruptions, duplicated work prevented, cost/usage and failed/retried actions;
+6. only then decide whether Finance, Growth or Builder deserves a separate Dot.
+
+SUCCESS:
+- meaningful verified work advances while Mauricio is operating elsewhere;
+- Mauricio receives fewer, better, batched decisions;
+- no parallel brain/backlog/source-of-truth emerges;
+- progress is visible from TORO regardless of whether work originated in Portal, WhatsApp/OpenClaw, ChatGPT or a Dot.
+
+
 # 14. Proactive improvement rule
 
 After every material task TORO evaluates:
