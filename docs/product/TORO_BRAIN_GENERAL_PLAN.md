@@ -3864,3 +3864,50 @@ Monthly:
 10. capture approved assumptions/version changes with evidence.
 
 Strategic principle: **occupancy by itself is not success. TORO should maximize sustainable contribution and profit, not simply fill rooms.**
+
+---
+
+## Cabuya + portfolio document governance — owner update 2026-10-01
+
+**Owner:** Mauricio / TORO + FIONA + Property/Corporate. **State:** CURRENT owner decision + P0 evidence reconciliation.
+
+### Cabuya — scope and owner clarification
+- Cabuya remains a property/legal/finance project separate from Casa Toro / Casa Santiago even though both relate to **Pomas y Poemas S.A.**
+- Owner statement 2026-10-01: the initial economic acquisition was **50% Joe / 50% Pomas y Poemas**; Joe reportedly paid his half in cash and Pomas has been paying **USD 5,000 monthly since April 2026**. This is a high-authority owner statement but must be reconciled against the executed purchase agreement, deed/adenda, receipts and bank evidence before it becomes registral/accounting truth.
+- Documentary conflict remains material: recovered purchase commitment totals USD 450,000 as USD45k + USD55k + USD150k + USD200k financed. If total price=USD450k and the economic split is exactly 50/50, each side=USD225k; 40×USD5k=USD200k leaves USD25k on the Pomas side to explain unless the executed/adended structure differs.
+- Monthly installment evidence Apr-Sep: Apr/Jun/Jul strong; Aug high/partial; Sep derived awaiting primary proof; May mentioned operationally but no unequivocal bank match yet. Direct payments by Margot outside Dreamcatcher must be incorporated only with evidence.
+- Physical/commercial objective: segregate the ~10,001 m² parent parcel into **two ~5,000 m² lots** and sell separately.
+- Current owner pricing rule: **first lot sold USD375,000; remaining/second lot USD395,000**. Do not publish this dynamic rule until reconciled with the signed 2026-07-30 brokerage agreement, whose text records USD375k for upper lot(s) and USD395k for lower lot.
+- Registral identifiers remain unresolved: purchase source `151446-000`; cadastral/rectification evidence references `615446-000`; signed brokerage document displays `6-00077346-000`. Obtain current literal/deed and do not merge identities by inference.
+- Signed brokerage evidence: Gmail Margot message `19fb547a9e7959c5`, 2026-07-30; Pomas y Poemas named as owner; Santa Teresa Real Estate; 5%+IVA broker-introduced commission, 0.6%+IVA direct sale using broker material, 12-month client tail. This agreement is not the executed purchase contract.
+
+### Casa Toro / Casa Santiago — separate asset
+- Same corporate family does not imply same property. Casa Toro / Casa de Habitación Santiago remains separate from Cabuya.
+- Current evidence references finca/localization `5-236616-000` / `236616`, municipal permit `078/2024`, CFIA `1110294`, authorized construction 373 m² and a separate water/well file.
+- Do not copy Cabuya payments, folios, well CY-123, segregation plans or sale claims into Casa Santiago, or vice versa.
+
+### Dropbox — master documentary rule
+Dropbox is the durable repository for original/backup documents across Dreamcatcher, entities, properties and authorized projects. TORO/Airtable/Supabase/Notion store indexes, normalized facts, provenance, decisions and status; they do not replace the source document.
+
+Rules:
+1. Every material contract, deed, cadastral/registral document, permit, plan, insurance policy, tax filing, bank/payment proof, invoice, purchase/sale document and other critical evidence must have a canonical Dropbox home.
+2. **Copy before move.** Do not delete or relocate originals merely to clean structure. Copy to the canonical destination, preserve original path/provenance, verify readback, then treat any later move/deletion as a separate human-gated action.
+3. Naming baseline: YYYY-MM-DD__ASSET_OR_ENTITY__TYPE__DESCRIPTION.ext.
+4. Canonical metadata must include Dropbox/source reference, review date, authority, sensitivity and current status.
+5. External/public packages must exclude banking identifiers, PII, private ownership details and personal-residence context unless explicitly authorized.
+6. A material document without a canonical Dropbox path + source reference is a **document-governance gap**.
+
+Proposed Cabuya canonical root — folder mutation remains human-confirmed:
+/REAL ESTATE/PROPIEDADES/CABUYA/
+with 00_EXPEDIENTE_MAESTRO, 01_COMPRA_Y_FINANCIAMIENTO, 02_REGISTRO_Y_CATASTRO, 03_POZO_Y_AGUA, 04_SEGREGACION_2_LOTES, 05_VENTA_LOTE_1, 06_VENTA_LOTE_2, 07_CORREDORES_Y_MARKETING, 08_COMPROBANTES_DE_PAGO, 09_FOTOS_MAPAS_Y_TOPOGRAFIA, 99_HISTORICO.
+
+### Closeout gate for Cabuya
+DONE only when:
+- executed acquisition/adenda explains Joe/Pomas 50/50 and all initial contributions;
+- Joe cash half and Pomas direct payments are evidenced;
+- every USD5k installment is matched and current seller/receiver balance obtained;
+- current literal/deed resolves 151446 / 615446 / 77346 and encumbrances;
+- two final segregation plans/new folios are verified;
+- well/concession package is complete;
+- brokerage/pricing terms are aligned with the current owner sale rule;
+- canonical Dropbox package exists with verified readback, while original provenance is preserved.
