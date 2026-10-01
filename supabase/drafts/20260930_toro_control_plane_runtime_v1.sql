@@ -141,6 +141,7 @@ alter table public.toro_execution_runs enable row level security;
 revoke all on public.toro_execution_runs from public;
 revoke all on public.toro_execution_runs from anon;
 revoke all on public.toro_execution_runs from authenticated;
+revoke all on public.toro_execution_runs from service_role;
 grant select, insert, update on public.toro_execution_runs to service_role;
 
 create table if not exists public.toro_execution_receipts (
@@ -234,6 +235,7 @@ alter table public.toro_execution_receipts enable row level security;
 revoke all on public.toro_execution_receipts from public;
 revoke all on public.toro_execution_receipts from anon;
 revoke all on public.toro_execution_receipts from authenticated;
+revoke all on public.toro_execution_receipts from service_role;
 grant select, insert on public.toro_execution_receipts to service_role;
 
 create or replace view public.toro_execution_run_queue_v1
@@ -274,6 +276,7 @@ order by r.priority_rank asc, r.available_at asc, r.created_at asc;
 revoke all on public.toro_execution_run_queue_v1 from public;
 revoke all on public.toro_execution_run_queue_v1 from anon;
 revoke all on public.toro_execution_run_queue_v1 from authenticated;
+revoke all on public.toro_execution_run_queue_v1 from service_role;
 grant select on public.toro_execution_run_queue_v1 to service_role;
 
 create or replace function public.toro_claim_execution_run_v1(
