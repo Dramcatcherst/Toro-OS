@@ -3511,6 +3511,46 @@ Two Alegra reporting surfaces disagree for Jan–Sep 2026:
 The difference is material and cannot be explained solely by the Dreamcatcher cost-center filter. Until document-level reconciliation identifies timing/status/document-type/cost-center treatment, use the **P&L cost-center figure for the provisional Dreamcatcher accounting model** and label the general-sales figure as unreconciled. Do not claim revenue completeness from either surface alone.
 
 
+
+
+### Breakfast economics — canonical master plan
+
+**Owner directive — 2026-09-30:** breakfast must be analyzed from real reservations and actual operating/accounting evidence, not hypothetical menu economics alone.
+
+Canonical subordinate contract:
+- `docs/product/DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md`
+
+Current verified baseline:
+- 33 mirrored reservations;
+- 9 marked breakfast included;
+- 4 marked breakfast not included;
+- 20 breakfast status unknown;
+- latest reservation snapshot 2026-09-21 09:28 UTC; source is stale/read-only;
+- 17 reservations contain detailed meal-plan day records;
+- 82 included breakfast units and 4 extra breakfast units are represented in that meal-plan detail;
+- 0 rows currently prove served/consumed status;
+- 0 rows currently prove extra-breakfast payment status;
+- `operations.breakfast_orders` currently has 0 rows;
+- Alegra Jan–Sep 2026 category `Desayunos/Almuerzos/Cenas` = CRC 5,562,520, but monthly posting coverage is incomplete/unreconciled.
+
+Decision rule:
+- do not infer profitability from breakfast inclusion alone;
+- compare actual room-only vs breakfast-inclusive reservations by room, channel, rate plan, guest count and stay length;
+- distinguish included, extra, house, included-not-consumed and unknown;
+- calculate package uplift, marginal breakfast cost, channel fee on uplift and resulting reservation contribution;
+- breakfast may be retained with low direct unit margin only when verified ADR/conversion/LOS/direct-share value offsets the subsidy.
+
+Break-even reduction is now a standing objective of TORO Finance / Revenue:
+- lower fixed operating cost where value-neutral;
+- reduce OTA leakage;
+- reduce utility base load;
+- improve labor productivity without lowering service quality;
+- eliminate waste / unsupported expenses;
+- renegotiate supplier economics;
+- increase contribution per occupied room-night;
+- measure every improvement against monthly break-even revenue and break-even occupancy.
+
+
 ### Improvement loop
 
 Monthly:
