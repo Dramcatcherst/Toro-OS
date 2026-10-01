@@ -86,6 +86,11 @@ create table if not exists operations.execution_runs (
   check (
     execution_authority_level <> 'L4'
     or status in ('blocked','dead_letter','cancelled','superseded')
+  ),
+  check (
+    status <> 'succeeded'
+    or execution_authority_level = 'L0'
+    or verification_status = 'passed'
   )
 );
 
@@ -165,7 +170,12 @@ create table if not exists operations.execution_receipts (
 
   created_at timestamptz not null default now(),
 
-  unique (org_id, id)
+  unique (org_id, id),
+  unique (org_id, idempotency_key),
+  check (
+    status <> 'verified'
+    or verification_status = 'passed'
+  )
 );
 
 create index if not exists execution_receipts_run_idx
