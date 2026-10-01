@@ -9,6 +9,20 @@
 
 ---
 
+## Autonomy consolidation + OpenAI surface strategy — 2026-10-01
+
+**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT cleanup / NEXT worker bridge.
+
+- **Legacy execution cleanup completed in ChatGPT Scheduled Tasks:** paused TORO Portfolio Coordinator, CONTROL Lane, OPERATE Lane and GROW Lane; BUILD Lane, Progress Watch and Finance Guard were already paused. The direct `Barrido financiero 2026` executor and direct PayFlow `Cierre diario TORO` executor were also paused because they can mutate canonical finance/accounting state outside the new Control Plane.
+- **Retained scheduled work is transitional:** read-only reports/monitors, personal watches and narrowly scoped domain workflows may remain scheduled while each is classified and migrated. A schedule is a trigger/report surface, not execution authority.
+- **Single execution invariant:** material autonomous work uses `canonical task -> public.toro_execution_runs -> lease/fencing -> bounded worker/agent -> verification -> public.toro_execution_receipts`. No Dot, Work thread, plugin, scheduled task or Codex session may own parallel task/run/completion state.
+- **Plan General invariant:** every material run maps to a canonical project/task/subsystem. Routine successful receipts do not bloat this document; material changes to architecture, objective, policy, dependency, risk or program direction do.
+- **Worker Runtime v1 preparation:** branch introduces a backend-only Supabase worker client preferring modern `sb_secret_*` configuration, plus typed claim/lease/transition/retry/receipt primitives. Runtime activation remains gated on backend secret configuration and CI/deployment proof.
+- **OpenAI surface map:** `docs/product/TORO_OPENAI_SURFACE_MAP_V1.md` defines Projects as human context hub, Work as substantial delegated executor, Dots as persistent mission workers, Plugins/Apps as capability packaging/connections, MCP as governed interoperability boundary, Agents SDK as code-first agent loop, tracing as observability, Codex as implementation worker, Scheduled Tasks as triggers/reports, and Sites as presentation.
+- **Recommended human front door:** one ChatGPT Project named `TORO`, using Chat for fast collaboration and Work for substantial tasks. This Project is not source-of-truth; Supabase/GitHub/domain systems remain canonical.
+- **Dot promotion rule:** PUMBA is the first persistent Control Dot. Finance/Operations/Guest-Revenue/Growth/Build remain candidates until workload and measurable value justify permanent Dots.
+- **NEXT:** CI the Worker Runtime branch; verify backend secret-key readiness without exposing secrets; deploy disabled-by-default worker primitives; run a safe L0/L1 worker cycle through the production Control Plane; correlate OpenAI trace/correlation IDs; then bridge PUMBA. Only after that migrate retained scheduled executors or promote another Dot.
+
 ## Control Plane runtime implementation — 2026-09-30
 
 **Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT architecture verified / NEXT pre-production runtime proof.
