@@ -145,6 +145,8 @@ Today/Attention and Money/PayFlow must project the same canonical exceptions to 
 
 Routine successful receipts remain evidence/digest unless another rule makes them actionable. No payment, contract acceptance, reservation/rate write, permission change, DNS/MX change or destructive mail action is implied by appearance in Owner Attention.
 
+**Local release hardening — 2026-09-30 (prepared, not deployed):** Owner Attention reads fail closed unless both server-only flags `TORO_BRAIN_CANONICAL_READ_ENABLED` and `TORO_OWNER_ATTENTION_READ_ENABLED` are exactly `true`. Missing, false or invalid values disable the route before context resolution/Supabase access; the direct provider independently enforces the same gate before creating a client. Disabled responses return HTTP503, `state: disabled`, `ownerAttentionAllowed: false`, with no projection or private diagnostics. Stage C v1 alone must not activate Finance; its existing scope remains Projects + Source Governance + Kross Health. Enabling both flags still requires the existing authenticated active organization membership and ADMIN/GERENCIA policy, then organization-scoped RLS reads. No flags, credentials, permissions or deployments are changed by this preparation. Synthetic regression coverage lives in `src/app/api/brain/owner-attention/route.test.ts` and the normal test command; production configuration and release authorization remain separate gates. This controls Owner Attention, not a certification that every project endpoint is demo-only.
+
 ---
 
 ## TORO Studio — governed creative & media capability

@@ -4,9 +4,20 @@ import { resolveToroContext } from "@/features/context/resolver";
 import {
   canViewOwnerAttention,
 } from "@/features/attention/owner-attention";
-import { loadOwnerAttentionProjection } from "@/features/attention/owner-attention-server";
+import {
+  loadOwnerAttentionProjection,
+  ownerAttentionReadEnabled,
+} from "@/features/attention/owner-attention-server";
 
 export async function GET() {
+  // Context resolution itself can use Supabase; demo mode must stop before it.
+  if (!ownerAttentionReadEnabled()) {
+    return NextResponse.json(
+      { state: "disabled", ownerAttentionAllowed: false },
+      { status: 503 },
+    );
+  }
+
   try {
     const context = await resolveToroContext({ mode: "organization" });
 

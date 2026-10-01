@@ -12,10 +12,23 @@ import {
   type OwnerAttentionProjection,
 } from "./owner-attention";
 
+/** Finance reads are a separate capability, not implied by Brain Stage C v1. */
+export function ownerAttentionReadEnabled(): boolean {
+  return (
+    process.env.TORO_BRAIN_CANONICAL_READ_ENABLED === "true" &&
+    process.env.TORO_OWNER_ATTENTION_READ_ENABLED === "true"
+  );
+}
+
 export async function loadOwnerAttentionProjection(
   context: ToroResolvedContext,
   input: { today?: string; limit?: number } = {},
 ): Promise<OwnerAttentionProjection> {
+  // Also guard direct callers, before creating a database client.
+  if (!ownerAttentionReadEnabled()) {
+    throw new Error("Owner Attention read is disabled.");
+  }
+
   if (!canViewOwnerAttention(context) || !context.orgId) {
     throw new Error("Owner Attention requires an authorized organization context.");
   }
