@@ -9,6 +9,19 @@
 
 ---
 
+## Control Plane runtime implementation — 2026-09-30
+
+**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT architecture verified / NEXT pre-production runtime proof.
+
+- **Canonical basis already verified in Supabase:** `operations.knowledge_items/toro_master_execution_contract_v1` defines one Supabase/TORO control plane, L0-L4 execution authority, evidence-first completion, bounded retries, single-writer behavior, leases/fencing, dead-letter handling and receipts. This lane implements that existing contract; it does not create a second plan or authority.
+- **Existing work selection remains canonical:** `operations.tasks`, `operations.toro_task_execution_v1`, `operations.toro_execution_actor_v1`, `operations.toro_autonomous_action_queue_v1` and `operations.toro_owner_attention_v1` continue to own task state, routing/selection and owner attention.
+- **Missing runtime slice:** durable execution attempts need explicit lease/fencing, retry/dead-letter state, verification and a global receipt envelope that can reference existing domain receipts without replacing them.
+- **Prepared branch:** `toro/control-plane-runtime-v1-20260930`. Contract: `docs/product/TORO_CONTROL_PLANE_RUNTIME_V1.md`. SQL remains under `supabase/drafts/` and is **not applied to production**.
+- **Risk model invariant:** business severity (`Low/Medium/High/Critical`) and execution authority (`L0-L4`) are separate dimensions. L3 remains human-gated; L4 is not claimable by autonomous workers.
+- **Dot invariant:** PUMBA/future Dots are persistent mission workers over this control plane. They may not own a parallel backlog, permission model, memory authority or completion state.
+- **NEXT gate:** static/CI validation -> reviewed schema validation -> non-external dry-run proving duplicate-claim prevention, stale-worker fencing, retry/dead-letter, append-only receipt and readback -> first real L1/L2 workflow -> only then Dot bridge/autonomy expansion.
+- **No production authority change:** no external write, money movement, reservation/rate change, publication, permission expansion or production schema apply is authorized by this entry.
+
 ## WhatsApp / OpenClaw repair intake — 2026-09-29
 
 **Owner:** TORO Comms, with TORO Identity, Operations, Finance and Systems. **State:** CURRENT gap / NEXT controlled implementation. This is part of the existing WhatsApp Same-Brain lane.
