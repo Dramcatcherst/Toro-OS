@@ -20,13 +20,23 @@
 --
 -- Initial posture:
 --   server mediated; service_role only.
+--
+-- Tenant-scope support indexes are intentionally redundant with global-id
+-- primary keys so composite foreign keys can enforce (org_id, id) consistency
+-- even for privileged server workers.
+
+create unique index if not exists toro_tasks_org_id_id_runtime_uq
+  on operations.tasks (org_id, id);
+
+create unique index if not exists toro_executive_decisions_org_id_id_runtime_uq
+  on operations.executive_decisions (org_id, id);
 
 create table if not exists operations.execution_runs (
   id uuid primary key default gen_random_uuid(),
   org_id uuid not null references public.organizations(id),
-  task_id uuid not null references operations.tasks(id),
-  decision_id uuid null references operations.executive_decisions(id),
-  parent_run_id uuid null references operations.execution_runs(id),
+  task_id uuid not null,
+  decision_id uuid null,
+  parent_run_id uuid null,
 
   run_key text not null,
   idempotency_key text not null,
@@ -83,6 +93,13 @@ create table if not exists operations.execution_runs (
   unique (org_id, run_key),
   unique (org_id, idempotency_key),
 
+  foreign key (org_id, task_id)
+    references operations.tasks(org_id, id),
+  foreign key (org_id, decision_id)
+    references operations.executive_decisions(org_id, id),
+  foreign key (org_id, parent_run_id)
+    references operations.execution_runs(org_id, id),
+
   check (
     execution_authority_level <> 'L4'
     or status in ('blocked','dead_letter','cancelled','superseded')
@@ -114,10 +131,10 @@ grant select, insert, update on operations.execution_runs to service_role;
 create table if not exists operations.execution_receipts (
   id uuid primary key default gen_random_uuid(),
   org_id uuid not null references public.organizations(id),
-  run_id uuid not null references operations.execution_runs(id),
-  task_id uuid not null references operations.tasks(id),
-  decision_id uuid null references operations.executive_decisions(id),
-  supersedes_receipt_id uuid null references operations.execution_receipts(id),
+  run_id uuid not null,
+  task_id uuid not null,
+  decision_id uuid null,
+  supersedes_receipt_id uuid null,
 
   receipt_type text not null
     check (receipt_type in (
@@ -172,6 +189,16 @@ create table if not exists operations.execution_receipts (
 
   unique (org_id, id),
   unique (org_id, idempotency_key),
+
+  foreign key (org_id, run_id)
+    references operations.execution_runs(org_id, id),
+  foreign key (org_id, task_id)
+    references operations.tasks(org_id, id),
+  foreign key (org_id, decision_id)
+    references operations.executive_decisions(org_id, id),
+  foreign key (org_id, supersedes_receipt_id)
+    references operations.execution_receipts(org_id, id),
+
   check (
     status <> 'verified'
     or verification_status = 'passed'
