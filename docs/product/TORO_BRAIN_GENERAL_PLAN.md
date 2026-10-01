@@ -3738,6 +3738,30 @@ Future milestone:
 **FINANCIAL OPTIMIZATION CHANGE DAY** — only after decision-ready analysis, with a coordinated list of approved rate, breakfast, channel, supplier, staffing, subscription, utility and accounting changes.
 
 
+
+
+### Dreamcatcher Financial Control Center — general page
+
+Canonical general page:
+- `docs/product/DREAMCATCHER_FINANCIAL_CONTROL_CENTER_V1.md`
+- Supabase: `operations.knowledge_items/dreamcatcher_financial_control_center_v1`
+- Dynamic parameter engine: `operations.knowledge_items/finance_room_unit_economics_engine_v1`
+
+Rules:
+- financial parameters are effective-dated and versioned; never overwrite historical meaning;
+- actual reconciled source values supersede estimates for the same scope/date;
+- formulas vary by reservation date, room, channel, guests, nights, breakfast, payment method, promotion and currency;
+- each calculation exposes source, freshness and actual/inferred/estimated status;
+- stale reservation mirrors may support historical analysis but not current rate decisions.
+
+Current allocation-review sensitivity:
+- explicitly named Santa Toro expenses inside DREAMCATCHER P&L: CRC 2,986,176.81 Jan–Sep 2026;
+- explicitly named Diex expenses inside DREAMCATCHER P&L: CRC 6,566,884.36 Jan–Sep 2026;
+- total flagged for benefiting-entity review: CRC 9,553,061.17;
+- if all were ultimately proven external to Dreamcatcher operating economics, the current commission-only monthly break-even diagnostic would fall from about CRC 21.48M to about CRC 20.32M.
+- **Do not reclassify or remove these expenses automatically.** Verify benefiting entity/shared-overhead treatment first.
+
+
 ### Improvement loop
 
 Monthly:
