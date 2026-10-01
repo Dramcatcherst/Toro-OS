@@ -39,5 +39,5 @@ export async function OPTIONS(request: Request) {
   const config = getToroMcpRuntimeConfig();
   if (!config) return unconfiguredResponse();
 
-  return metadataCorsOptionsRequestHandler()(request);
+  return metadataCorsOptionsRequestHandler()();
 }
