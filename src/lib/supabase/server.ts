@@ -1,4 +1,5 @@
 import "server-only";
+import { assertInternalRuntime } from "@/lib/server/public-demo";
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -6,6 +7,7 @@ import { cookies } from "next/headers";
 import { getSupabasePublicConfig } from "./env";
 
 export async function createServerSupabaseClient() {
+  assertInternalRuntime();
   const cookieStore = await cookies();
   const { url, publishableKey } = getSupabasePublicConfig();
 

@@ -9,6 +9,16 @@
 
 ---
 
+## Public Brain perimeter — local correction, 2026-09-30
+
+Same TORO portal; no second app or source of truth. Public presentation defaults to synthetic `/brain` and `/` redirects there. Server allowlist admits only GET/HEAD for that page and its static assets; other pages, APIs and mutation methods fail closed. Provider guards also prevent database, connector, session and approval-ledger I/O in demo, even if credentials/capability flags exist. This is not client-side hiding and not Vercel authentication.
+
+`TORO_DEPLOYMENT_MODE=internal` is an explicit server deployment decision, not authorization from a visitor. Unset, misspelled or other values remain public demo. Internal Brain/Owner Attention retain independent flags plus identity/scope/RLS; legacy connectors/ledger additionally require exact `TORO_LEGACY_OPERATIONS_ENABLED=true`; task persistence requires exact `TORO_INTERNAL_WORK_WRITE_ENABLED=true` plus its existing role/scope checks. None of these flags is configured by this change. Disabling the demo alone cannot activate these business reads/writes. Internal legacy routes still need a separate authentication review before any public internal-runtime deployment; this unit does not certify them.
+
+Local-only authorization: implementation, synthetic tests, build and review. No push, PR, merge, deployment, real data, production env, credentials or permission changes. Runtime promotion remains a separate gate and must rebuild/revalidate with production configuration. No schema migration. Reversal is the focused local commit, never a reset of the shared repository. Execution/receipt: Task 4 in the existing `TORO_CEREBRO_IMPLEMENTACION_2026-09-30.md` and BRAIN-LOCAL block of the canonical `CONTINUAR.md`; no runtime activation claimed here.
+
+Verified locally: 359 Vitest + 25 Node tests, validators, lint and production build pass; 112 HTTP checks include 11 built assets, anonymous/synthetic-cookie requests, blocked operational GET/POST and server-action paths, root redirect, Brain RSC and no outbound/ledger I/O attempts. Owner Attention preserves its exact 503/disabled response through the perimeter. Next data-path normalization is disabled for the perimeter; Brain is force-dynamic. Mutation of the demo guard produced 36 expected failures; restored before final verification. Independent review closed with no outstanding findings. Public hosting and real identity/RLS operation remain unverified by this unit.
+
 ## WhatsApp / OpenClaw repair intake — 2026-09-29
 
 **Owner:** TORO Comms, with TORO Identity, Operations, Finance and Systems. **State:** CURRENT gap / NEXT controlled implementation. This is part of the existing WhatsApp Same-Brain lane.

@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 import { randomUUID } from "node:crypto";
 
@@ -135,6 +136,9 @@ export async function runToroMcpReadTool(
   tool: ToroMcpCoreToolName,
   input: ReadInput = {},
 ): Promise<ToroMcpResponse<unknown>> {
+  if (isPublicDemo()) {
+    return errorResponse(tool, input, "capability_unavailable", "Operational reads are disabled in the public demo.", false);
+  }
   const resolved = await resolveReadContext(tool, input);
   if (!resolved.ok) return resolved.response;
 

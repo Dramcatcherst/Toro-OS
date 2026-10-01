@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -15,7 +16,7 @@ import {
 /** Finance reads are a separate capability, not implied by Brain Stage C v1. */
 export function ownerAttentionReadEnabled(): boolean {
   return (
-    process.env.TORO_BRAIN_CANONICAL_READ_ENABLED === "true" &&
+    internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED") &&
     process.env.TORO_OWNER_ATTENTION_READ_ENABLED === "true"
   );
 }

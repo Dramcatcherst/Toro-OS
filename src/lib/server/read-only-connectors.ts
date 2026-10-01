@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "./public-demo";
 
 export type ReadOnlyConnectorResult<T> = {
   configured: boolean;
@@ -13,6 +14,9 @@ export async function readAirtableRecords(input: {
   tableId: string;
   pageSize?: number;
 }): Promise<ReadOnlyConnectorResult<unknown>> {
+  if (!internalCapabilityEnabled("TORO_LEGACY_OPERATIONS_ENABLED")) {
+    return { configured: false, externalWrite: false, mode: "read_only", data: null, error: "Operational reads are disabled." };
+  }
   const token = process.env.AIRTABLE_TOKEN;
 
   if (!token) {
@@ -56,6 +60,9 @@ export async function readVercelDeployments(input: {
   projectId: string;
   teamId?: string;
 }): Promise<ReadOnlyConnectorResult<unknown>> {
+  if (!internalCapabilityEnabled("TORO_LEGACY_OPERATIONS_ENABLED")) {
+    return { configured: false, externalWrite: false, mode: "read_only", data: null, error: "Operational reads are disabled." };
+  }
   const token = process.env.VERCEL_TOKEN;
 
   if (!token) {

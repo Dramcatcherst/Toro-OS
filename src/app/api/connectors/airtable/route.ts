@@ -1,8 +1,11 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 import { airtableBase, airtableTables } from "@/lib/toro-data";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 
 export async function GET(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const { searchParams } = new URL(request.url);
   const tableId = searchParams.get("tableId");
   const liveRead = tableId

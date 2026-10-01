@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -135,6 +136,7 @@ async function resolveEmployeeContext(
 export const resolveToroContext: ResolveToroContext = async (
   request: ToroContextRequest = {},
 ) => {
+  if (isPublicDemo()) return null;
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },

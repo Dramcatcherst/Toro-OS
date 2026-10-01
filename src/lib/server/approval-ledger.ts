@@ -1,4 +1,5 @@
 import "server-only";
+import { assertLegacyOperationsEnabled } from "./public-demo";
 
 import { get, put } from "@vercel/blob";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -145,6 +146,7 @@ async function resolveBackend(): Promise<LedgerBackend> {
 }
 
 export async function getApprovalLedger() {
+  assertLegacyOperationsEnabled();
   const backend = await resolveBackend();
   let state: LedgerState | null = null;
 
@@ -175,6 +177,7 @@ export function applyApprovalUpdate(approvals: ApprovalRecord[], id: string, sta
 }
 
 export async function persistApprovalLedger(approvals: ApprovalRecord[], responseCookies?: ResponseCookies) {
+  assertLegacyOperationsEnabled();
   const backend = await resolveBackend();
   const state: LedgerState = {
     approvals,

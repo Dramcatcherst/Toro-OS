@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { resolveToroContext } from "@/features/context/resolver";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -63,6 +64,9 @@ function normalizeTask(row: SupabaseTaskRow) {
 export async function createToroInternalWork(
   input: unknown,
 ): Promise<ToroInternalWorkResult> {
+  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
+    return { state: "unavailable", error: "Internal work writes are disabled." };
+  }
   const parsed = validateToroInternalWorkRequest(input);
   if (!parsed.ok) return { state: "invalid", error: parsed.error };
 

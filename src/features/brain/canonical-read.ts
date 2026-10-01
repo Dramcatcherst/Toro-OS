@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { createHash } from "node:crypto";
 
@@ -219,6 +220,9 @@ export function projectCanonicalBrainReadSlice(input: {
 export async function loadCanonicalBrainReadSlice(
   context: ToroResolvedContext,
 ): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
   assertOrganizationContext(context);
 
   const supabase = await createServerSupabaseClient();

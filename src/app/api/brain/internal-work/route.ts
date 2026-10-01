@@ -1,8 +1,11 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 
 import { createToroInternalWork } from "@/features/actions/internal-work-server";
 
 export async function POST(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const body = await request.json().catch(() => null);
   const result = await createToroInternalWork(body);
 
