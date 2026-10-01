@@ -21,6 +21,15 @@
 -- Initial posture:
 --   server mediated; service_role only.
 --
+-- Runtime storage is deliberately in public.toro_* rather than the operations
+-- schema. Production preflight on 2026-09-30 verified that service_role has
+-- PUBLIC schema usage but does NOT have operations schema usage. Granting
+-- service_role USAGE on all of operations would broaden access to unrelated
+-- operational objects. The public.toro_* objects therefore act as a narrowly
+-- permissioned server-only Data API surface: RLS enabled, no client policies,
+-- anon/authenticated revoked, and service_role granted only the capabilities
+-- required by the worker runtime.
+--
 -- Tenant-scope support indexes are intentionally redundant with global-id
 -- primary keys so composite foreign keys can enforce (org_id, id) consistency
 -- even for privileged server workers.
@@ -31,7 +40,7 @@ create unique index if not exists toro_tasks_org_id_id_runtime_uq
 create unique index if not exists toro_executive_decisions_org_id_id_runtime_uq
   on operations.executive_decisions (org_id, id);
 
-create table if not exists operations.execution_runs (
+create table if not exists public.toro_execution_runs (
   id uuid primary key default gen_random_uuid(),
   org_id uuid not null references public.organizations(id),
   task_id uuid not null,
@@ -98,7 +107,7 @@ create table if not exists operations.execution_runs (
   foreign key (org_id, decision_id)
     references operations.executive_decisions(org_id, id),
   foreign key (org_id, parent_run_id)
-    references operations.execution_runs(org_id, id),
+    references public.toro_execution_runs(org_id, id),
 
   check (
     execution_authority_level <> 'L4'
@@ -106,29 +115,35 @@ create table if not exists operations.execution_runs (
   ),
   check (
     status <> 'succeeded'
-    or execution_authority_level = 'L0'
-    or verification_status = 'passed'
+    or (
+      execution_authority_level = 'L0'
+      and verification_status in ('passed','not_required')
+    )
+    or (
+      execution_authority_level in ('L1','L2','L3')
+      and verification_status = 'passed'
+    )
   )
 );
 
-create index if not exists execution_runs_claim_idx
-  on operations.execution_runs
+create index if not exists toro_execution_runs_claim_idx
+  on public.toro_execution_runs
   (org_id, status, available_at, lease_expires_at, priority_rank, created_at);
 
-create index if not exists execution_runs_task_idx
-  on operations.execution_runs (org_id, task_id, created_at desc);
+create index if not exists toro_execution_runs_task_idx
+  on public.toro_execution_runs (org_id, task_id, created_at desc);
 
-create index if not exists execution_runs_correlation_idx
-  on operations.execution_runs (org_id, correlation_id);
+create index if not exists toro_execution_runs_correlation_idx
+  on public.toro_execution_runs (org_id, correlation_id);
 
-alter table operations.execution_runs enable row level security;
+alter table public.toro_execution_runs enable row level security;
 
-revoke all on operations.execution_runs from public;
-revoke all on operations.execution_runs from anon;
-revoke all on operations.execution_runs from authenticated;
-grant select, insert, update on operations.execution_runs to service_role;
+revoke all on public.toro_execution_runs from public;
+revoke all on public.toro_execution_runs from anon;
+revoke all on public.toro_execution_runs from authenticated;
+grant select, insert, update on public.toro_execution_runs to service_role;
 
-create table if not exists operations.execution_receipts (
+create table if not exists public.toro_execution_receipts (
   id uuid primary key default gen_random_uuid(),
   org_id uuid not null references public.organizations(id),
   run_id uuid not null,
@@ -191,13 +206,13 @@ create table if not exists operations.execution_receipts (
   unique (org_id, idempotency_key),
 
   foreign key (org_id, run_id)
-    references operations.execution_runs(org_id, id),
+    references public.toro_execution_runs(org_id, id),
   foreign key (org_id, task_id)
     references operations.tasks(org_id, id),
   foreign key (org_id, decision_id)
     references operations.executive_decisions(org_id, id),
   foreign key (org_id, supersedes_receipt_id)
-    references operations.execution_receipts(org_id, id),
+    references public.toro_execution_receipts(org_id, id),
 
   check (
     status <> 'verified'
@@ -205,23 +220,23 @@ create table if not exists operations.execution_receipts (
   )
 );
 
-create index if not exists execution_receipts_run_idx
-  on operations.execution_receipts (org_id, run_id, created_at desc);
+create index if not exists toro_execution_receipts_run_idx
+  on public.toro_execution_receipts (org_id, run_id, created_at desc);
 
-create index if not exists execution_receipts_task_idx
-  on operations.execution_receipts (org_id, task_id, created_at desc);
+create index if not exists toro_execution_receipts_task_idx
+  on public.toro_execution_receipts (org_id, task_id, created_at desc);
 
-create index if not exists execution_receipts_correlation_idx
-  on operations.execution_receipts (org_id, correlation_id, created_at desc);
+create index if not exists toro_execution_receipts_correlation_idx
+  on public.toro_execution_receipts (org_id, correlation_id, created_at desc);
 
-alter table operations.execution_receipts enable row level security;
+alter table public.toro_execution_receipts enable row level security;
 
-revoke all on operations.execution_receipts from public;
-revoke all on operations.execution_receipts from anon;
-revoke all on operations.execution_receipts from authenticated;
-grant select, insert on operations.execution_receipts to service_role;
+revoke all on public.toro_execution_receipts from public;
+revoke all on public.toro_execution_receipts from anon;
+revoke all on public.toro_execution_receipts from authenticated;
+grant select, insert on public.toro_execution_receipts to service_role;
 
-create or replace view operations.execution_run_queue_v1
+create or replace view public.toro_execution_run_queue_v1
 with (security_invoker = true)
 as
 select
@@ -248,7 +263,7 @@ select
   r.fencing_token,
   r.lease_expires_at,
   r.created_at
-from operations.execution_runs r
+from public.toro_execution_runs r
 where r.status in ('queued','retry_wait')
   and r.execution_authority_level in ('L0','L1','L2')
   and r.available_at <= now()
@@ -256,17 +271,17 @@ where r.status in ('queued','retry_wait')
   and r.attempt_count < r.max_attempts
 order by r.priority_rank asc, r.available_at asc, r.created_at asc;
 
-revoke all on operations.execution_run_queue_v1 from public;
-revoke all on operations.execution_run_queue_v1 from anon;
-revoke all on operations.execution_run_queue_v1 from authenticated;
-grant select on operations.execution_run_queue_v1 to service_role;
+revoke all on public.toro_execution_run_queue_v1 from public;
+revoke all on public.toro_execution_run_queue_v1 from anon;
+revoke all on public.toro_execution_run_queue_v1 from authenticated;
+grant select on public.toro_execution_run_queue_v1 to service_role;
 
-create or replace function operations.claim_execution_run_v1(
+create or replace function public.toro_claim_execution_run_v1(
   p_org_id uuid,
   p_worker_id text,
   p_lease_seconds integer default 120
 )
-returns setof operations.execution_runs
+returns setof public.toro_execution_runs
 language plpgsql
 security invoker
 set search_path = ''
@@ -284,7 +299,7 @@ begin
 
   select r.id
     into v_run_id
-  from operations.execution_runs r
+  from public.toro_execution_runs r
   where r.org_id = p_org_id
     and r.status in ('queued','retry_wait')
     and r.execution_authority_level in ('L0','L1','L2')
@@ -300,7 +315,7 @@ begin
   end if;
 
   return query
-  update operations.execution_runs r
+  update public.toro_execution_runs r
      set status = 'claimed',
          lease_owner = p_worker_id,
          fencing_token = r.fencing_token + 1,
@@ -313,16 +328,16 @@ begin
 end;
 $$;
 
-revoke all on function operations.claim_execution_run_v1(uuid,text,integer)
+revoke all on function public.toro_claim_execution_run_v1(uuid,text,integer)
   from public;
-revoke all on function operations.claim_execution_run_v1(uuid,text,integer)
+revoke all on function public.toro_claim_execution_run_v1(uuid,text,integer)
   from anon;
-revoke all on function operations.claim_execution_run_v1(uuid,text,integer)
+revoke all on function public.toro_claim_execution_run_v1(uuid,text,integer)
   from authenticated;
-grant execute on function operations.claim_execution_run_v1(uuid,text,integer)
+grant execute on function public.toro_claim_execution_run_v1(uuid,text,integer)
   to service_role;
 
-create or replace function operations.renew_execution_lease_v1(
+create or replace function public.toro_renew_execution_lease_v1(
   p_run_id uuid,
   p_worker_id text,
   p_fencing_token bigint,
@@ -340,7 +355,7 @@ begin
     raise exception 'lease_seconds_out_of_range';
   end if;
 
-  update operations.execution_runs r
+  update public.toro_execution_runs r
      set lease_expires_at = now() + make_interval(secs => p_lease_seconds),
          updated_at = now()
    where r.id = p_run_id
@@ -354,16 +369,16 @@ begin
 end;
 $$;
 
-revoke all on function operations.renew_execution_lease_v1(uuid,text,bigint,integer)
+revoke all on function public.toro_renew_execution_lease_v1(uuid,text,bigint,integer)
   from public;
-revoke all on function operations.renew_execution_lease_v1(uuid,text,bigint,integer)
+revoke all on function public.toro_renew_execution_lease_v1(uuid,text,bigint,integer)
   from anon;
-revoke all on function operations.renew_execution_lease_v1(uuid,text,bigint,integer)
+revoke all on function public.toro_renew_execution_lease_v1(uuid,text,bigint,integer)
   from authenticated;
-grant execute on function operations.renew_execution_lease_v1(uuid,text,bigint,integer)
+grant execute on function public.toro_renew_execution_lease_v1(uuid,text,bigint,integer)
   to service_role;
 
-create or replace function operations.transition_execution_run_v1(
+create or replace function public.toro_transition_execution_run_v1(
   p_run_id uuid,
   p_worker_id text,
   p_fencing_token bigint,
@@ -391,7 +406,7 @@ begin
     raise exception 'invalid_execution_transition';
   end if;
 
-  update operations.execution_runs r
+  update public.toro_execution_runs r
      set status = p_next_status,
          verification_status = coalesce(p_verification_status, r.verification_status),
          verifying_at = case
@@ -427,16 +442,16 @@ begin
 end;
 $$;
 
-revoke all on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
+revoke all on function public.toro_transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
   from public;
-revoke all on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
+revoke all on function public.toro_transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
   from anon;
-revoke all on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
+revoke all on function public.toro_transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
   from authenticated;
-grant execute on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
+grant execute on function public.toro_transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
   to service_role;
 
-create or replace function operations.resolve_failed_execution_run_v1(
+create or replace function public.toro_resolve_failed_execution_run_v1(
   p_run_id uuid,
   p_fencing_token bigint,
   p_retry_at timestamptz default null
@@ -453,7 +468,7 @@ declare
 begin
   select r.attempt_count, r.max_attempts
     into v_attempt_count, v_max_attempts
-  from operations.execution_runs r
+  from public.toro_execution_runs r
   where r.id = p_run_id
     and r.status = 'failed'
     and r.fencing_token = p_fencing_token
@@ -465,7 +480,7 @@ begin
 
   if v_attempt_count < v_max_attempts then
     v_next_status := 'retry_wait';
-    update operations.execution_runs r
+    update public.toro_execution_runs r
        set status = v_next_status,
            available_at = coalesce(p_retry_at, now()),
            updated_at = now()
@@ -474,7 +489,7 @@ begin
        and r.fencing_token = p_fencing_token;
   else
     v_next_status := 'dead_letter';
-    update operations.execution_runs r
+    update public.toro_execution_runs r
        set status = v_next_status,
            finished_at = coalesce(r.finished_at, now()),
            updated_at = now()
@@ -487,16 +502,16 @@ begin
 end;
 $$;
 
-revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+revoke all on function public.toro_resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
   from public;
-revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+revoke all on function public.toro_resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
   from anon;
-revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+revoke all on function public.toro_resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
   from authenticated;
-grant execute on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+grant execute on function public.toro_resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
   to service_role;
 
-create or replace function operations.prevent_execution_receipt_mutation_v1()
+create or replace function public.toro_prevent_execution_receipt_mutation_v1()
 returns trigger
 language plpgsql
 security invoker
@@ -507,15 +522,15 @@ begin
 end;
 $$;
 
-drop trigger if exists execution_receipts_append_only
-  on operations.execution_receipts;
+drop trigger if exists toro_execution_receipts_append_only
+  on public.toro_execution_receipts;
 
-create trigger execution_receipts_append_only
-before update or delete on operations.execution_receipts
-for each row execute function operations.prevent_execution_receipt_mutation_v1();
+create trigger toro_execution_receipts_append_only
+before update or delete on public.toro_execution_receipts
+for each row execute function public.toro_prevent_execution_receipt_mutation_v1();
 
-comment on table operations.execution_runs is
-  'TORO durable execution-attempt envelope below operations.tasks. Server-mediated; leases coordinate workers but do not grant business authority.';
+comment on table public.toro_execution_runs is
+  'TORO durable execution-attempt envelope below operations.tasks. Server-only public surface: RLS on, client grants revoked. Leases coordinate workers but do not grant business authority.';
 
-comment on table operations.execution_receipts is
-  'Append-only TORO canonical receipt envelope. Domain-specific receipts remain authoritative detail and may be referenced here.';
+comment on table public.toro_execution_receipts is
+  'Append-only TORO canonical receipt envelope. Server-only public surface: RLS on, client grants revoked. Domain-specific receipts remain authoritative detail and may be referenced here.';
