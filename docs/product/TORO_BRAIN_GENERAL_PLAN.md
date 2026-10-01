@@ -3481,6 +3481,36 @@ These are **diagnostic bounds, not pricing floors**. Case B and Case C intention
 Current analytical implication: the hotel-level accounting break-even appears to be roughly in the **CRC 20M–21.5M monthly revenue zone before a proper occupancy-linked split**, but this range must not be used as a rate decision until Kross/PMS occupied-room-nights, actual card fees, breakfast consumption and non-operating/accounting anomalies are reconciled.
 
 
+
+
+### Monthly behavior check — sales proxy
+
+A month-by-month Jan–Sep 2026 readback was run against Alegra P&L for cost center `DREAMCATCHER`. Until Kross occupied-room-nights are reconciled, monthly sales are used only as a **provisional activity proxy**, not as occupancy.
+
+Observed relationships:
+
+- **Electricity:** weak relationship to sales (R² ≈ 0.10). Treat predominantly as base/mixed utility until occupancy-level evidence says otherwise.
+- **Water:** very weak relationship to sales (R² ≈ 0.05). Do not allocate all water as per-room variable.
+- **Internet:** essentially no positive relationship to sales (R² ≈ 0.02). Treat as FIXED_OPERATING.
+- **Cleaning products:** moderate relationship to sales (R² ≈ 0.50). Split into base/common-area + occupancy-driven component.
+- **Housekeeping payroll:** moderate relationship to sales (R² ≈ 0.54). Treat as STEP_FIXED / capacity-linked, not a simple per-room-night cost.
+- **Maintenance payroll:** stronger relationship to sales (R² ≈ 0.71), likely reflecting staffing/seasonality; still classify as STEP_FIXED unless payroll structure proves per-room compensation.
+- **Repairs:** noisy/moderate relationship (R² ≈ 0.35). Do not use as direct nightly variable cost; separate property repair, vehicles, projects and replacement reserve.
+- **OTA commissions:** relationship to sales is material but not stable month-to-month because channel mix changes. Use reservation/channel data directly rather than a single blended percentage.
+
+**Breakfast data-quality flag:** the Alegra category `Desayunos/Almuerzos/Cenas` totals CRC 5,562,520 for Jan–Sep, but postings appear concentrated in only Jan, Feb, Jun and Jul in the monthly P&L. Zero months must be treated as **missing/unclassified or genuinely zero only after source reconciliation**. Do not infer zero breakfast cost from the accounting category alone.
+
+### Sales-source reconciliation flag
+
+Two Alegra reporting surfaces disagree for Jan–Sep 2026:
+
+- P&L, cost center DREAMCATCHER: **CRC 265,585,084.46** sales.
+- P&L, unfiltered: **CRC 265,650,674.46** sales.
+- General sales-documents report, before taxes: **CRC 273,350,269.55**.
+
+The difference is material and cannot be explained solely by the Dreamcatcher cost-center filter. Until document-level reconciliation identifies timing/status/document-type/cost-center treatment, use the **P&L cost-center figure for the provisional Dreamcatcher accounting model** and label the general-sales figure as unreconciled. Do not claim revenue completeness from either surface alone.
+
+
 ### Improvement loop
 
 Monthly:
