@@ -3427,6 +3427,60 @@ If commissions are treated as the only variable cost for a first diagnostic and 
 
 This is intentionally labeled **PROVISIONAL / NOT FOR RATE FLOOR DECISIONS**. It will move after classifying utilities, housekeeping/laundry, breakfast, card fees, maintenance, owner/partner items, financing, taxes and stay-level costs correctly, then reconciling occupied room-nights and ADR from PMS/Kross.
 
+
+
+### Expense evidence policy — canonical rule
+
+**Owner directive — 2026-09-30:** every legitimate business expense reported to TORO with an invoice, electronic invoice, receipt, payment proof or equivalent support must enter the accounting workflow. **Alegra is the accounting system of record.** Dropbox is the durable documentary backup where needed, and Supabase/TORO Finance stores normalized metadata, provenance, reconciliation state and receipts.
+
+Canonical subordinate contract:
+- `docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md`
+
+Rules:
+- do not mark an expense DONE merely because the file exists in Dropbox;
+- before any Alegra write, run duplicate checks on issuer, document number, date, amount, currency and existing references;
+- if already represented in Alegra, reconcile/link evidence rather than duplicate the expense;
+- attach evidence in Alegra when supported; otherwise preserve the original in Dropbox and retain a durable reference;
+- owner-paid expenses require verified business purpose and correct reimbursement/shareholder-current-account treatment;
+- internal transfers, loan principal, shareholder distributions and personal expenses are not room operating cost;
+- every reconciled expense receives a separate management-cost behavior classification for the room-cost / break-even model.
+
+### Room-cost source classification — verified Alegra categories, Jan–Sep 2026
+
+Current cost-center readback identifies the following major categories relevant to the room economics model:
+
+| Category | Jan–Sep 2026 | Management treatment now |
+|---|---:|---|
+| OTA + travel-agency commissions | CRC 23,430,005.60 | VARIABLE_PER_SALE — verified |
+| Breakfast / lunch / dinner category | CRC 5,562,520.00 | VARIABLE/PACKAGE candidate — requires meal-level split |
+| Cleaning products | CRC 4,543,979.40 | MIXED — room occupancy + common-area base |
+| Electricity | CRC 10,864,460.00 | MIXED — fixed base + occupancy-driven component |
+| Water | CRC 5,495,692.46 | MIXED — fixed base + occupancy-driven component |
+| Gas | CRC 201,020.00 | MIXED — source/use split required |
+| Housekeeping payroll | CRC 14,102,196.00 | STEP_FIXED / capacity-linked, not automatically per-room variable |
+| Maintenance payroll | CRC 11,020,318.00 | FIXED/STEP_FIXED |
+| Repairs | CRC 17,594,860.19 | MIXED; separate maintenance reserve vs vehicle/property/project work |
+| Room replacement / dotation | CRC 2,311,436.59 | REPLACEMENT_RESERVE candidate |
+| Internet | CRC 973,438.41 | primarily FIXED_OPERATING |
+| Online software | CRC 3,286,922.70 | FIXED_OPERATING unless transaction-priced |
+| Insurance / licenses | CRC 2,048,563.01 | FIXED_OPERATING / risk layer |
+| Financial expense | CRC 6,550,492.76 | FINANCING; exclude from cash room-floor, show separately in full-owner economics |
+
+**Important:** accounting category and management cost behavior are not the same thing. Electricity, water, cleaning, payroll and maintenance must be split analytically rather than assigned 100% to each occupied room-night.
+
+### Break-even diagnostic range — accounting-only, still provisional
+
+Using Jan–Sep 2026 Alegra data:
+
+- **Case A — commissions are the only variable cost:** monthly break-even revenue ≈ **CRC 21.48M**.
+- **Case B — commissions + all recorded meals + cleaning products + electricity + water + gas treated as variable:** monthly break-even revenue ≈ **CRC 20.49M**.
+- **Case C — Case B + all housekeeping payroll treated as variable:** monthly break-even revenue ≈ **CRC 19.86M**.
+
+These are **diagnostic bounds, not pricing floors**. Case B and Case C intentionally overstate variable treatment for utilities/payroll and therefore serve only as sensitivity checks. The final model must estimate fixed base vs incremental usage using occupancy / occupied-room-nights and monthly costs.
+
+Current analytical implication: the hotel-level accounting break-even appears to be roughly in the **CRC 20M–21.5M monthly revenue zone before a proper occupancy-linked split**, but this range must not be used as a rate decision until Kross/PMS occupied-room-nights, actual card fees, breakfast consumption and non-operating/accounting anomalies are reconciled.
+
+
 ### Improvement loop
 
 Monthly:
