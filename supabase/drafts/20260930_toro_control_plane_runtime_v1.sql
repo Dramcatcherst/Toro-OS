@@ -81,7 +81,12 @@ create table if not exists operations.execution_runs (
 
   unique (org_id, id),
   unique (org_id, run_key),
-  unique (org_id, idempotency_key)
+  unique (org_id, idempotency_key),
+
+  check (
+    execution_authority_level <> 'L4'
+    or status in ('blocked','dead_letter','cancelled','superseded')
+  )
 );
 
 create index if not exists execution_runs_claim_idx
@@ -208,6 +213,7 @@ select
   r.created_at
 from operations.execution_runs r
 where r.status in ('queued','retry_wait')
+  and r.execution_authority_level in ('L0','L1','L2')
   and r.available_at <= now()
   and (r.lease_expires_at is null or r.lease_expires_at <= now())
   and r.attempt_count < r.max_attempts
@@ -244,6 +250,7 @@ begin
   from operations.execution_runs r
   where r.org_id = p_org_id
     and r.status in ('queued','retry_wait')
+    and r.execution_authority_level in ('L0','L1','L2')
     and r.available_at <= now()
     and (r.lease_expires_at is null or r.lease_expires_at <= now())
     and r.attempt_count < r.max_attempts
@@ -336,12 +343,15 @@ set search_path = ''
 as $$
 declare
   v_updated integer;
+  v_transition_allowed boolean := false;
 begin
-  if p_next_status not in (
-    'running','verifying','succeeded','blocked','failed',
-    'retry_wait','dead_letter','cancelled'
-  ) then
-    raise exception 'invalid_next_status';
+  v_transition_allowed :=
+    (p_expected_status = 'claimed' and p_next_status in ('running','blocked','failed','cancelled'))
+    or (p_expected_status = 'running' and p_next_status in ('verifying','blocked','failed','cancelled'))
+    or (p_expected_status = 'verifying' and p_next_status in ('succeeded','blocked','failed','cancelled'));
+
+  if not v_transition_allowed then
+    raise exception 'invalid_execution_transition';
   end if;
 
   update operations.execution_runs r
@@ -352,25 +362,21 @@ begin
            else r.verifying_at
          end,
          finished_at = case
-           when p_next_status in ('succeeded','blocked','dead_letter','cancelled')
+           when p_next_status in ('succeeded','blocked','cancelled')
              then coalesce(r.finished_at, now())
            else r.finished_at
          end,
          error_class = p_error_class,
          error_redacted = p_error_redacted,
          lease_owner = case
-           when p_next_status in ('succeeded','blocked','failed','retry_wait','dead_letter','cancelled')
+           when p_next_status in ('succeeded','blocked','failed','cancelled')
              then null
            else r.lease_owner
          end,
          lease_expires_at = case
-           when p_next_status in ('succeeded','blocked','failed','retry_wait','dead_letter','cancelled')
+           when p_next_status in ('succeeded','blocked','failed','cancelled')
              then null
            else r.lease_expires_at
-         end,
-         available_at = case
-           when p_next_status = 'retry_wait' then greatest(r.available_at, now())
-           else r.available_at
          end,
          updated_at = now()
    where r.id = p_run_id
@@ -391,6 +397,66 @@ revoke all on function operations.transition_execution_run_v1(uuid,text,bigint,t
 revoke all on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
   from authenticated;
 grant execute on function operations.transition_execution_run_v1(uuid,text,bigint,text,text,text,text,text)
+  to service_role;
+
+create or replace function operations.resolve_failed_execution_run_v1(
+  p_run_id uuid,
+  p_fencing_token bigint,
+  p_retry_at timestamptz default null
+)
+returns text
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+declare
+  v_attempt_count integer;
+  v_max_attempts integer;
+  v_next_status text;
+begin
+  select r.attempt_count, r.max_attempts
+    into v_attempt_count, v_max_attempts
+  from operations.execution_runs r
+  where r.id = p_run_id
+    and r.status = 'failed'
+    and r.fencing_token = p_fencing_token
+  for update;
+
+  if not found then
+    return null;
+  end if;
+
+  if v_attempt_count < v_max_attempts then
+    v_next_status := 'retry_wait';
+    update operations.execution_runs r
+       set status = v_next_status,
+           available_at = coalesce(p_retry_at, now()),
+           updated_at = now()
+     where r.id = p_run_id
+       and r.status = 'failed'
+       and r.fencing_token = p_fencing_token;
+  else
+    v_next_status := 'dead_letter';
+    update operations.execution_runs r
+       set status = v_next_status,
+           finished_at = coalesce(r.finished_at, now()),
+           updated_at = now()
+     where r.id = p_run_id
+       and r.status = 'failed'
+       and r.fencing_token = p_fencing_token;
+  end if;
+
+  return v_next_status;
+end;
+$$;
+
+revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+  from public;
+revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+  from anon;
+revoke all on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
+  from authenticated;
+grant execute on function operations.resolve_failed_execution_run_v1(uuid,bigint,timestamptz)
   to service_role;
 
 create or replace function operations.prevent_execution_receipt_mutation_v1()
