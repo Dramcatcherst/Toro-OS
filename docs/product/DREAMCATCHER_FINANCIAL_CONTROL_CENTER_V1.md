@@ -339,3 +339,113 @@ Supabase:
 
 This registry is analytical only. It does **not** rewrite Alegra categories.
 
+
+
+## 13. New findings — maintenance and labor wave
+
+### Maintenance / repairs split
+
+Alegra `Reparaciones` total Jan–Sep 2026: **CRC 17,594,860.19**.
+
+Amounts requiring extraordinary/scope review:
+- Ferretería: **CRC 8,301,475.72**
+- Vehicle repairs: **CRC 4,899,531.56**
+- Santa Toro repairs: **CRC 1,791,925.81**
+- Total under review: **CRC 14,992,933.09**
+- Share of repair category: **85.21%**
+
+Residual recurring-property candidate:
+- Reparaciones varias: **CRC 1,591,605.00**
+- Artículos de piscina: **CRC 1,010,322.10**
+- Residual: **CRC 2,601,927.10**
+
+Interpretation:
+- the accounting repair category is not a clean proxy for recurring room-maintenance cost;
+- vehicle, other-property, CAPEX/expansion and ordinary maintenance must remain separate;
+- no amount is removed from Alegra merely because it is under analytical review.
+
+Sensitivity only:
+if all CRC 14.99M under review were ultimately proven outside recurring Dreamcatcher operating cost, the commission-only monthly break-even diagnostic would move from about **CRC 21.48M to CRC 19.66M**. This is not an approved reclassification or pricing floor.
+
+### Labor structure
+
+Alegra Jan–Sep 2026:
+- total personnel expense: **CRC 65,953,460.46** = **24.83% of sales**
+- salaries/wages: **CRC 64,651,470.46**
+- administrative payroll: **CRC 20,262,901.46** = **7.63% of sales**
+- reception payroll: **CRC 9,953,438.00** = **3.75%**
+- maintenance payroll: **CRC 11,020,318.00** = **4.15%**
+- housekeeping payroll: **CRC 14,102,196.00** = **5.31%**
+- reception + maintenance + housekeeping: **CRC 35,075,952.00** = **13.21%**
+- CCSS: **CRC 5,985,933.00** = **2.25%**
+
+Monthly averages:
+- administration: ~CRC 2.25M
+- reception: ~CRC 1.11M
+- maintenance: ~CRC 1.22M
+- housekeeping: ~CRC 1.57M
+
+Model rule:
+- **cash break-even** uses actual unavoidable payroll cash outflow;
+- **economic break-even** also reflects required management labor / reasonable replacement-value compensation;
+- owner/family compensation is not automatically excluded merely because of ownership relationship;
+- housekeeping/reception/maintenance are modeled as fixed/step-fixed by occupancy bands, not simple linear room-night costs.
+
+Next labor gate:
+- map staffing by month against occupancy;
+- isolate expansion/project labor;
+- identify overtime/extra shifts;
+- establish occupancy thresholds where extra staffing is actually needed;
+- calibrate housekeeping workload weights to real cleaning minutes.
+
+
+
+## 14. Scenarios — Current / Clean / Target
+
+Supabase analytical contract:
+- `operations.knowledge_items/dreamcatcher_break_even_scenarios_2026_ytd_v1`
+
+### CURRENT — provisional accounting diagnostic
+
+- monthly fixed/semi-fixed proxy: **CRC 19.59M**
+- contribution ratio after recorded sales commissions: **91.18%**
+- provisional monthly break-even revenue: **CRC 21.48M**
+
+This is the current diagnostic baseline, not a rate floor.
+
+### CLEAN — sensitivity only
+
+Candidate amounts already identified for verification:
+- explicit other-property lines (Santa Toro + Diex): **CRC 9.553M**
+- Ferretería CAPEX/project candidate: **CRC 8.301M**
+- vehicle repairs / fleet candidate: **CRC 4.900M**
+- unique candidate total: **CRC 22.754M** across Jan–Sep.
+
+If all of these are ultimately proven outside recurring Dreamcatcher operating cost:
+- clean fixed/semi-fixed proxy: ~**CRC 17.06M/month**
+- break-even if bank fees remain fixed: ~**CRC 18.71M/month**
+- break-even if bank fees are confirmed variable payment-processing cost: ~**CRC 19.21M/month**
+
+The range differs because moving payment-processing fees from fixed to variable lowers the fixed-cost base but also lowers the contribution ratio.
+
+### TARGET — hypothetical planning scenarios
+
+Using the CLEAN sensitivity as a base and treating payment processing as variable, additional controllable fixed-cost reductions would imply approximately:
+
+| Scenario | Additional controllable fixed-cost reduction | Monthly break-even |
+|---|---:|---:|
+| TARGET 5 | 5% | ~CRC 18.25M |
+| TARGET 10 | 10% | ~CRC 17.29M |
+| TARGET 15 | 15% | ~CRC 16.32M |
+
+These are **planning scenarios only**. They are not budgets, commitments or approved cuts.
+
+### Guardrails
+
+- Accounting cleanup is not automatically cash savings.
+- CAPEX reclassification does not reduce future cash unless project spend actually stops or falls.
+- Moving bank fees to variable cost changes contribution economics; it does not make the fees disappear.
+- Labor/service cuts are not assumed.
+- Savings count only after implementation + verification/readback.
+- Changes must protect guest experience, revenue, asset life and operational resilience.
+
