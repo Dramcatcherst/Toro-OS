@@ -398,3 +398,54 @@ Next labor gate:
 - establish occupancy thresholds where extra staffing is actually needed;
 - calibrate housekeeping workload weights to real cleaning minutes.
 
+
+
+## 14. Scenarios — Current / Clean / Target
+
+Supabase analytical contract:
+- `operations.knowledge_items/dreamcatcher_break_even_scenarios_2026_ytd_v1`
+
+### CURRENT — provisional accounting diagnostic
+
+- monthly fixed/semi-fixed proxy: **CRC 19.59M**
+- contribution ratio after recorded sales commissions: **91.18%**
+- provisional monthly break-even revenue: **CRC 21.48M**
+
+This is the current diagnostic baseline, not a rate floor.
+
+### CLEAN — sensitivity only
+
+Candidate amounts already identified for verification:
+- explicit other-property lines (Santa Toro + Diex): **CRC 9.553M**
+- Ferretería CAPEX/project candidate: **CRC 8.301M**
+- vehicle repairs / fleet candidate: **CRC 4.900M**
+- unique candidate total: **CRC 22.754M** across Jan–Sep.
+
+If all of these are ultimately proven outside recurring Dreamcatcher operating cost:
+- clean fixed/semi-fixed proxy: ~**CRC 17.06M/month**
+- break-even if bank fees remain fixed: ~**CRC 18.71M/month**
+- break-even if bank fees are confirmed variable payment-processing cost: ~**CRC 19.21M/month**
+
+The range differs because moving payment-processing fees from fixed to variable lowers the fixed-cost base but also lowers the contribution ratio.
+
+### TARGET — hypothetical planning scenarios
+
+Using the CLEAN sensitivity as a base and treating payment processing as variable, additional controllable fixed-cost reductions would imply approximately:
+
+| Scenario | Additional controllable fixed-cost reduction | Monthly break-even |
+|---|---:|---:|
+| TARGET 5 | 5% | ~CRC 18.25M |
+| TARGET 10 | 10% | ~CRC 17.29M |
+| TARGET 15 | 15% | ~CRC 16.32M |
+
+These are **planning scenarios only**. They are not budgets, commitments or approved cuts.
+
+### Guardrails
+
+- Accounting cleanup is not automatically cash savings.
+- CAPEX reclassification does not reduce future cash unless project spend actually stops or falls.
+- Moving bank fees to variable cost changes contribution economics; it does not make the fees disappear.
+- Labor/service cuts are not assumed.
+- Savings count only after implementation + verification/readback.
+- Changes must protect guest experience, revenue, asset life and operational resilience.
+
