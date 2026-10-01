@@ -19,8 +19,8 @@ Canonical responsibilities:
 - `operations.tasks`: business work object / portfolio task.
 - `operations.toro_autonomous_action_queue_v1`: selection of safe eligible work.
 - `operations.toro_owner_attention_v1`: single owner-attention projection.
-- `operations.execution_runs`: one durable logical execution attempt envelope for a task/action.
-- `operations.execution_receipts`: append-only canonical receipt envelope that may reference domain-specific receipts.
+- `public.toro_execution_runs`: one durable logical execution attempt envelope for a task/action.
+- `public.toro_execution_receipts`: append-only canonical receipt envelope that may reference domain-specific receipts.
 - domain receipts such as `finance.payflow_write_receipts`, `integrations.communication_channel_receipts` and `public.employee_action_receipts`: retain domain detail and authority.
 - Dots: persistent mission workers that consume governed work; they do not own state.
 - agents/workers: bounded executors for one run.
@@ -158,7 +158,7 @@ Unknown provider state after a timeout is not a retry signal. It is a reconcilia
 
 ## 8. Receipt envelope
 
-`operations.execution_receipts` is an append-only global envelope.
+`public.toro_execution_receipts` is an append-only global envelope.
 
 It does not replace specialist receipts. It references them.
 
@@ -225,14 +225,21 @@ A run may reference the applicable decision/gate. A future generic approval migr
 
 ## 12. Security posture
 
-Initial tables are server-mediated:
+Initial runtime objects are exposed only as a **server-only public surface**:
 
-- RLS enabled;
-- no direct `anon`/`authenticated` DML grants;
-- worker RPCs executable only by `service_role`;
+- durable runtime tables are `public.toro_execution_runs` and `public.toro_execution_receipts`;
+- upstream work authority remains in `operations.tasks` and TORO's `operations.toro_*` selection/attention views;
+- production preflight verified that `service_role` has no `USAGE` on the `operations` schema; TORO intentionally does **not** broaden that schema permission just to run workers;
+- RLS enabled on both runtime tables;
+- no client RLS policies;
+- all table/view access revoked from `PUBLIC`, `anon` and `authenticated`;
+- only the minimum table privileges are granted to `service_role`;
+- worker RPCs live under `public.toro_*`, use `SECURITY INVOKER`, empty `search_path`, and are executable only by `service_role`;
 - no secrets/raw credentials in metadata, errors or receipts;
 - errors must be redacted;
 - evidence is referenced, not copied indiscriminately.
+
+Using `public` here does **not** mean public user access. It is a transport/exposure surface for the server runtime with explicit deny-by-default grants. This avoids granting `service_role` blanket schema access to unrelated operational objects.
 
 This follows the existing TORO pattern for sensitive runtime tables.
 
