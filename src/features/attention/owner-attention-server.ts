@@ -86,6 +86,15 @@ export async function loadOwnerAttentionProjection(
   context: ToroResolvedContext,
   input: { today?: string; limit?: number } = {},
 ): Promise<OwnerAttentionProjection> {
+  // Preserve the direct-provider gate before allocating any database client.
+  if (!ownerAttentionReadEnabled()) {
+    throw new Error("Owner Attention read is disabled.");
+  }
+
+  if (!canViewOwnerAttention(context) || !context.orgId) {
+    throw new Error("Owner Attention requires an authorized organization context.");
+  }
+
   const supabase = await createServerSupabaseClient();
   return loadOwnerAttentionProjectionWithClient(context, supabase, input);
 }
