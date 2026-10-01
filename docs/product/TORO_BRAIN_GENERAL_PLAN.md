@@ -3822,6 +3822,31 @@ Model rule:
 - housekeeping/reception/maintenance are fixed/step-fixed by occupancy bands until real workload data supports a different model.
 
 
+
+
+### Break-even scenarios — Current / Clean / Target
+
+Supabase:
+- `operations.knowledge_items/dreamcatcher_break_even_scenarios_2026_ytd_v1`
+
+Current diagnostic:
+- ~CRC 21.48M monthly break-even.
+
+Clean sensitivity:
+- ~CRC 18.71M/month if identified other-property/CAPEX/fleet candidates are ultimately proven outside recurring Dreamcatcher operating cost and bank fees remain fixed;
+- ~CRC 19.21M/month if those candidates are excluded from recurring cost and bank fees are confirmed variable payment-processing cost.
+
+Target planning scenarios from the clean/payment-processing-variable base:
+- 5% additional controllable fixed-cost reduction → ~CRC 18.25M/month;
+- 10% → ~CRC 17.29M/month;
+- 15% → ~CRC 16.32M/month.
+
+Guardrail:
+- accounting cleanup is not cash savings;
+- CAPEX reclassification is not recurring savings by itself;
+- target scenarios are hypotheses until a specific action is implemented and verified.
+
+
 ### Improvement loop
 
 Monthly:
