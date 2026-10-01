@@ -309,6 +309,9 @@ export async function loadCanonicalBrainReadSliceWithClient(
 export async function loadCanonicalBrainReadSlice(
   context: ToroResolvedContext,
 ): Promise<CanonicalBrainReadSlice> {
+  // Preserve the existing fail-closed contract: invalid scope must be rejected
+  // before any database client is created.
+  assertOrganizationContext(context);
   const supabase = await createServerSupabaseClient();
   return loadCanonicalBrainReadSliceWithClient(context, supabase);
 }
