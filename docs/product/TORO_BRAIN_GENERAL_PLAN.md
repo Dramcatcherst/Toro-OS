@@ -3762,6 +3762,25 @@ Current allocation-review sensitivity:
 - **Do not reclassify or remove these expenses automatically.** Verify benefiting entity/shared-overhead treatment first.
 
 
+
+
+### Financial cost-classification wave 1 — 2026-09-30
+
+Canonical analytical registry:
+- `operations.knowledge_items/dreamcatcher_cost_classification_2026_ytd_v1`
+
+New verified observations:
+- `Comisiones bancarias`: CRC 6,233,776.15 across 515 entries; ~2.35% of DREAMCATCHER P&L sales; strong payment-processing candidate, pending dataphone settlement reconciliation.
+- `Ferreteria`: CRC 8,301,475.72; 82.83% concentrated Jan–Apr; high-priority CAPEX/expansion vs recurring-maintenance review.
+- software/services reviewed: CRC 3,292,517.10 across 89 entries; largest vendors Simple Booking, WeSpeak, OpenAI and Alegra; audit for overlap/plan optimization before any cancellation.
+
+Rules:
+- this classification layer never rewrites Alegra automatically;
+- high-value review buckets require transaction-level evidence before reclassification;
+- realized savings are recorded only after verified change and readback;
+- break-even engine consumes only classifications that have passed their required evidence gate.
+
+
 ### Improvement loop
 
 Monthly:
