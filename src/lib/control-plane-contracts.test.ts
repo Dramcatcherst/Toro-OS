@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   canTransitionExecutionRun,
   executionAuthorityRequiresHumanGate,
+  isExecutionAuthorityProhibited,
   isTerminalExecutionRunStatus,
   resolveToroExecutionAuthorityLevel,
 } from "./control-plane-contracts";
@@ -81,11 +82,14 @@ describe("TORO control-plane contracts", () => {
     expect(isTerminalExecutionRunStatus("verifying")).toBe(false);
   });
 
-  it("requires a human gate for L3/L4 only", () => {
+  it("distinguishes human-gated L3 from prohibited L4", () => {
     expect(executionAuthorityRequiresHumanGate("L0")).toBe(false);
     expect(executionAuthorityRequiresHumanGate("L1")).toBe(false);
     expect(executionAuthorityRequiresHumanGate("L2")).toBe(false);
     expect(executionAuthorityRequiresHumanGate("L3")).toBe(true);
-    expect(executionAuthorityRequiresHumanGate("L4")).toBe(true);
+    expect(executionAuthorityRequiresHumanGate("L4")).toBe(false);
+
+    expect(isExecutionAuthorityProhibited("L3")).toBe(false);
+    expect(isExecutionAuthorityProhibited("L4")).toBe(true);
   });
 });
