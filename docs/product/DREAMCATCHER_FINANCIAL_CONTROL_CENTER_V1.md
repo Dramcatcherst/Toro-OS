@@ -265,3 +265,77 @@ No broad coordinated pricing/cost changes until:
 - `docs/product/DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md`
 - `docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md`
 
+
+
+## 12. New findings — cost classification wave 1
+
+### Bank / payment fees
+Alegra category `Comisiones bancarias` Jan–Sep 2026:
+- total: **CRC 6,233,776.15**
+- 515 ledger entries;
+- 100% recorded as `transactionOut`;
+- BAC: CRC 5,333,291.29;
+- Lafise: CRC 610,235.41;
+- BCR: CRC 265,966.25;
+- BN: CRC 12,708.60;
+- PayPal: CRC 4,929.60;
+- other: CRC 6,645.00.
+
+This equals approximately **2.35% of DREAMCATCHER P&L sales** for the period.
+
+Interpretation:
+- strong candidate for payment-processing / merchant-acquiring variable cost;
+- not yet proven entirely variable;
+- reconcile against dataphone/card processor settlements before promoting to `VARIABLE_PER_SALE`.
+
+### Ferretería / project-spend candidate
+Alegra category `Ferreteria`:
+- total Jan–Sep: **CRC 8,301,475.72**
+- 95 entries;
+- Jan–Apr spend: **CRC 6,876,157.92**
+- Jan–Apr share: **82.83%**.
+
+Largest suppliers:
+- Fercosta: CRC 2,838,328.86
+- EPA: CRC 1,945,295.00
+- Importadora Solis CR: CRC 855,609.86
+- Carbone: CRC 839,580.85
+- Construplaza: CRC 399,548.00
+- Novex: CRC 387,815.00
+
+Interpretation:
+- high-priority **CAPEX / expansion / major-maintenance split**;
+- transaction/project purpose must be verified before removing any amount from operating expenses.
+
+### Software / subscriptions
+Alegra software category reviewed:
+- total ledger review: **CRC 3,292,517.10**
+- 89 entries.
+
+Largest vendors:
+- Simple Booking: CRC 1,238,800
+- WeSpeak: CRC 795,880
+- OpenAI: CRC 487,558.01
+- Alegra: CRC 269,225
+- bizee.com: CRC 148,103
+- Dropbox: CRC 72,008.12
+- Perplexity: CRC 52,273.50
+- Airtable: CRC 49,440
+- Spotify: CRC 49,158.27
+- Quovis: CRC 46,375.20
+- Trysoro: CRC 35,802
+- Manus AI: CRC 20,000
+- Vercel: CRC 18,394
+- MyClaw AI: CRC 9,500
+
+Action:
+- no automatic cancellations;
+- audit purpose, active use, overlap, owner, annual-vs-monthly plan and dependency/rollback;
+- quantify realized monthly savings only after verified cancellation/downgrade.
+
+### Analytical classification registry
+Supabase:
+- `operations.knowledge_items/dreamcatcher_cost_classification_2026_ytd_v1`
+
+This registry is analytical only. It does **not** rewrite Alegra categories.
+
