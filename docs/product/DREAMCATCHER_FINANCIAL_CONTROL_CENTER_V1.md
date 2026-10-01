@@ -339,3 +339,62 @@ Supabase:
 
 This registry is analytical only. It does **not** rewrite Alegra categories.
 
+
+
+## 13. New findings — maintenance and labor wave
+
+### Maintenance / repairs split
+
+Alegra `Reparaciones` total Jan–Sep 2026: **CRC 17,594,860.19**.
+
+Amounts requiring extraordinary/scope review:
+- Ferretería: **CRC 8,301,475.72**
+- Vehicle repairs: **CRC 4,899,531.56**
+- Santa Toro repairs: **CRC 1,791,925.81**
+- Total under review: **CRC 14,992,933.09**
+- Share of repair category: **85.21%**
+
+Residual recurring-property candidate:
+- Reparaciones varias: **CRC 1,591,605.00**
+- Artículos de piscina: **CRC 1,010,322.10**
+- Residual: **CRC 2,601,927.10**
+
+Interpretation:
+- the accounting repair category is not a clean proxy for recurring room-maintenance cost;
+- vehicle, other-property, CAPEX/expansion and ordinary maintenance must remain separate;
+- no amount is removed from Alegra merely because it is under analytical review.
+
+Sensitivity only:
+if all CRC 14.99M under review were ultimately proven outside recurring Dreamcatcher operating cost, the commission-only monthly break-even diagnostic would move from about **CRC 21.48M to CRC 19.66M**. This is not an approved reclassification or pricing floor.
+
+### Labor structure
+
+Alegra Jan–Sep 2026:
+- total personnel expense: **CRC 65,953,460.46** = **24.83% of sales**
+- salaries/wages: **CRC 64,651,470.46**
+- administrative payroll: **CRC 20,262,901.46** = **7.63% of sales**
+- reception payroll: **CRC 9,953,438.00** = **3.75%**
+- maintenance payroll: **CRC 11,020,318.00** = **4.15%**
+- housekeeping payroll: **CRC 14,102,196.00** = **5.31%**
+- reception + maintenance + housekeeping: **CRC 35,075,952.00** = **13.21%**
+- CCSS: **CRC 5,985,933.00** = **2.25%**
+
+Monthly averages:
+- administration: ~CRC 2.25M
+- reception: ~CRC 1.11M
+- maintenance: ~CRC 1.22M
+- housekeeping: ~CRC 1.57M
+
+Model rule:
+- **cash break-even** uses actual unavoidable payroll cash outflow;
+- **economic break-even** also reflects required management labor / reasonable replacement-value compensation;
+- owner/family compensation is not automatically excluded merely because of ownership relationship;
+- housekeeping/reception/maintenance are modeled as fixed/step-fixed by occupancy bands, not simple linear room-night costs.
+
+Next labor gate:
+- map staffing by month against occupancy;
+- isolate expansion/project labor;
+- identify overtime/extra shifts;
+- establish occupancy thresholds where extra staffing is actually needed;
+- calibrate housekeeping workload weights to real cleaning minutes.
+
