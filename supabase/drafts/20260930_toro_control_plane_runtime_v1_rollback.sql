@@ -14,3 +14,6 @@ drop view if exists operations.execution_run_queue_v1;
 
 drop table if exists operations.execution_receipts;
 drop table if exists operations.execution_runs;
+
+drop index if exists operations.toro_executive_decisions_org_id_id_runtime_uq;
+drop index if exists operations.toro_tasks_org_id_id_runtime_uq;
