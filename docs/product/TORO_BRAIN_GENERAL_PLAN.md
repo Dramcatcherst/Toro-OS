@@ -3703,6 +3703,41 @@ Break-even reduction is now a standing objective of TORO Finance / Revenue:
 - measure every improvement against monthly break-even revenue and break-even occupancy.
 
 
+
+
+### Dreamcatcher Financial Deep-Dive — coordinated analysis before change day
+
+**Owner directive — 2026-09-30:** perform a broad financial analysis of the hotel from multiple angles before making coordinated pricing/cost/process changes. Collect and reconcile first; then simulate; then execute a controlled change day.
+
+Canonical subordinate contract:
+- `docs/product/DREAMCATCHER_FINANCIAL_DEEP_DIVE_MASTER_PLAN_V1.md`
+
+Scope:
+- hotel-level profitability;
+- room-level unit economics;
+- channel contribution;
+- breakfast economics;
+- labor productivity;
+- utilities/base load;
+- maintenance vs capex;
+- software/subscriptions;
+- supplier economics;
+- banking/payment fees;
+- tax/accounting classification;
+- direct vs OTA;
+- break-even revenue / occupancy / ADR;
+- continuous search for safe break-even reduction.
+
+Operating rule:
+- do not optimize for occupancy alone;
+- do not cut costs that protect revenue, conversion, reviews, asset life or service without measuring the tradeoff;
+- quantify expected monthly impact, confidence, implementation risk and rollback before a change;
+- maintain a master question backlog and resolve it progressively without blocking all analysis.
+
+Future milestone:
+**FINANCIAL OPTIMIZATION CHANGE DAY** — only after decision-ready analysis, with a coordinated list of approved rate, breakfast, channel, supplier, staffing, subscription, utility and accounting changes.
+
+
 ### Improvement loop
 
 Monthly:
