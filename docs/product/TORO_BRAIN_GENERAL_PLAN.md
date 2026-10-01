@@ -3103,3 +3103,306 @@ R4 is not runtime-complete until:
 - Kross/Alegra authority remains intact;
 - corrections persist across sessions/channels without copied parallel prompts.
 
+
+
+---
+
+## Dreamcatcher — Unit Economics, Room Cost & Break-even
+
+**Owner directive:** 2026-09-30  
+**Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations  
+**State:** PLAN GENERAL — required financial model; current example values are illustrative until reconciled against authoritative 2026 data.
+
+### Objective
+
+Build and maintain one canonical profitability model that answers, by room, rate, channel, occupancy scenario and package:
+
+- What does one occupied room-night actually cost?
+- What is the marginal cost of accepting one additional booking?
+- What is the fully loaded cost after fixed-cost allocation?
+- At what gross guest price does each room break even?
+- What is the absolute operational floor, the sustainable floor and the target selling price?
+- At what price does a sale destroy cash contribution or economic profit?
+- How do breakfast, OTA commission, payment fees, discounts, promotions, extra guests, children, pets, cleaning, laundry and taxes change the answer?
+- What hotel occupancy / ADR / RevPAR combination covers company fixed costs?
+- What are the break-even points for the hotel overall, each villa/business unit and material ancillary services?
+
+### Canonical cost layers
+
+TORO must separate these layers instead of mixing them:
+
+1. **Taxes / pass-through amounts**
+   - IVA and other applicable taxes.
+   - These are not hotel operating revenue when collected on behalf of the tax authority.
+
+2. **Marginal room-night cost**
+   - incremental housekeeping labor;
+   - laundry by textile load;
+   - guest amenities and consumables;
+   - incremental electricity, A/C and hot water;
+   - incremental water;
+   - incremental maintenance/wear reserve;
+   - incremental guest servicing attributable to the stay.
+
+3. **Channel / transaction cost**
+   - OTA commission;
+   - merchant/acquirer/card fee;
+   - payment gateway fee;
+   - promotion/discount;
+   - affiliate/agency commission where applicable.
+
+4. **Package / guest cost**
+   - breakfast when included;
+   - extra guest / child cost;
+   - pet-related incremental cost;
+   - included experiences/transport/other packaged value.
+
+5. **Allocated fixed operating cost**
+   - reception/administration;
+   - fixed payroll;
+   - maintenance base payroll;
+   - accounting;
+   - software/PMS;
+   - internet/communications;
+   - insurance;
+   - security;
+   - pool/jacuzzi/common-area baseline;
+   - licenses/patents;
+   - property-level fixed utilities;
+   - marketing baseline;
+   - depreciation/replacement reserve where useful for management economics.
+
+6. **Capital / owner economics**
+   - major replacements;
+   - long-term depreciation;
+   - financing/interest where relevant;
+   - target return hurdle.
+   - Keep this layer separate from cash operating break-even so management can see both.
+
+### Required price floors per room
+
+For every sellable room / configured combination, calculate:
+
+- **Cash floor:** guest price at which net revenue covers taxes/pass-throughs, channel cost and truly incremental stay cost.
+- **Contribution floor:** minimum price that still provides a defined positive contribution after marginal + channel/package costs.
+- **Operating break-even price:** price covering marginal costs plus the room's allocated share of fixed operating costs.
+- **Sustainable floor:** operating break-even plus maintenance/replacement reserve.
+- **Target price:** price required to achieve the target contribution/profit margin.
+- **Loss zone:** any rate below the cash floor.
+- **Economic-loss zone:** rate above cash floor but below the applicable sustainable/full-cost floor.
+
+Never collapse these floors into one number; they answer different decisions.
+
+### Scenario matrix
+
+The model must support at minimum:
+
+**Channel**
+- Direct SINPE/transfer
+- Direct card
+- Booking.com
+- Expedia / other OTA
+- Travel agency / wholesaler
+- Promotional/direct code
+
+**Occupancy / guests**
+- 1 guest
+- 2 guests
+- extra guests to room capacity
+- child where applicable
+- pet where applicable
+
+**Meal treatment**
+- room only
+- breakfast included
+- breakfast sold as extra
+- breakfast included but not consumed
+- breakfast comp / house
+- breakfast package with different supplier cost
+
+**Rate scenarios**
+- $40, $50, $60, $75, $90, $100, $125, $150, $200+ as relevant
+- percentage discount scenarios
+- national/TICOS promotions
+- long-stay/promotional packages
+- same-day / distress inventory decisions
+
+**Stay length**
+- 1 night
+- 2 nights
+- 3–4 nights
+- 5–7 nights
+- long stay
+
+Cleaning and acquisition costs that occur once per stay must be amortized across nights rather than blindly repeated per room-night.
+
+### Breakfast economics
+
+Breakfast must be modeled independently and then attached to the room package.
+
+For each breakfast type/source, calculate:
+- selling price;
+- tax treatment;
+- supplier/food cost;
+- labor if attributable;
+- payment/channel cost if sold separately;
+- waste/no-show treatment;
+- gross contribution per breakfast;
+- cost to hotel when breakfast is included in rate;
+- incremental break-even increase in room price when breakfast is bundled.
+
+Operational categories remain:
+- **included / prepaid**
+- **extra / paid**
+- **house**
+- **included not consumed**
+
+Included but not consumed breakfast must not be treated as consumed supplier cost unless the supplier agreement actually charges it.
+
+### Company / property break-even
+
+TORO Finance must also calculate monthly and daily hotel-level break-even:
+
+```text
+Contribution per occupied room-night
+= Net room revenue
+- marginal room cost
+- channel/payment cost
+- package cost
+
+Required occupied room-nights
+= Monthly fixed operating costs
+/ weighted-average contribution per occupied room-night
+
+Break-even occupancy %
+= Required occupied room-nights
+/ Available room-nights
+
+Break-even revenue
+= Fixed costs
+/ weighted contribution-margin ratio
+```
+
+Run this for:
+- Dreamcatcher total;
+- Dreamcatcher Villa / rooms #0–#6 where useful;
+- Makaiza #7–#11;
+- Toro Villa / rooms #21–#28;
+- individual rooms when cost structure materially differs;
+- business total consolidated.
+
+Do not assume every room should receive the same fixed-cost allocation. Maintain at least:
+- simple equal-room allocation for quick management view; and
+- weighted allocation by capacity / size / historical revenue / materially distinct resource use, with method labeled.
+
+### Data authority and reconciliation
+
+Target source authority:
+
+- **Kross / PMS:** sold rate, stay dates, room, guests, channel, discounts, reservation status.
+- **Alegra:** actual accounting expenses, vendors, taxes, recurring operating costs.
+- **Breakfast operational records / POS:** included, extras, house, no-consumption and supplier payable.
+- **Utilities / invoices:** electricity, water, internet and other services.
+- **Payroll / TORO People:** labor cost and allocation assumptions.
+- **Dropbox / invoices / supporting documents:** cost evidence and contracts.
+- **Supabase / TORO Finance:** normalized analytical model, assumptions, versions, calculated outputs and provenance.
+
+Every estimate must be labeled as estimate until reconciled with actual source data.
+
+### Required outputs
+
+TORO Revenue / Finance should expose:
+
+1. **Room Cost Card** for every room:
+   - marginal cost;
+   - fixed allocation;
+   - breakfast/package adjustment;
+   - cash floor;
+   - operating break-even;
+   - sustainable floor;
+   - target price;
+   - direct vs OTA comparison.
+
+2. **Rate Decision Table**
+   - requested selling rate;
+   - net revenue;
+   - contribution dollars;
+   - contribution margin %;
+   - fully loaded profit/loss;
+   - status: profitable / contribution-only / cash-loss.
+
+3. **Hotel Break-even Dashboard**
+   - fixed costs/month;
+   - variable cost/occupied room-night;
+   - ADR;
+   - occupancy;
+   - RevPAR;
+   - contribution margin;
+   - occupied nights required to break even;
+   - break-even occupancy;
+   - projected profit/loss at current pace.
+
+4. **Promotion simulator**
+   - old rate;
+   - discounted rate;
+   - channel;
+   - room;
+   - guests;
+   - breakfast;
+   - nights;
+   - resulting contribution and profit;
+   - maximum discount before each floor is crossed.
+
+5. **Exception alerts**
+   - rate below cash floor;
+   - OTA promotion makes booking cash-negative;
+   - breakfast/package pushes rate below contribution floor;
+   - room/channel combination below sustainable floor;
+   - material cost drift versus prior month.
+
+### Initial illustrative example — NOT source-of-truth
+
+For a room sold at **$100 gross**, 2 guests, 1 night, no breakfast:
+- gross guest payment: $100;
+- illustrative IVA included: $11.50;
+- illustrative net room revenue: $88.50;
+- illustrative marginal/variable room cost: $26;
+- illustrative contribution before channel: $62.50;
+- illustrative direct-card contribution at 3.5% transaction cost: $59;
+- illustrative OTA 15% contribution: $47.50;
+- illustrative fixed-cost allocation example: $20;
+- illustrative operating result: about $39 direct card / $27.50 at 15% OTA.
+
+These values are a teaching baseline only. TORO must replace them with reconciled Dreamcatcher values before using them as pricing rules.
+
+### Acceptance criteria
+
+This work is **DONE** only when:
+
+- all sellable rooms and canonical room combinations are represented;
+- actual 2026 cost sources are reconciled and dated;
+- breakfast economics is reconciled to supplier/POS/payment treatment;
+- direct, card, OTA and agency scenarios calculate correctly;
+- fixed and variable costs are explicitly separated;
+- one-night vs multi-night cleaning amortization works;
+- room-level cash floor, operating break-even, sustainable floor and target rate are available;
+- hotel-level break-even occupancy and revenue are available monthly;
+- outputs show source, freshness and whether a value is actual, inferred or estimated;
+- at least three historical months are back-tested against realized accounting results;
+- alerts do not recommend a rate below the applicable management floor without an explicit, documented exception.
+
+### Improvement loop
+
+Monthly:
+1. reconcile actual costs;
+2. compare forecast vs actual;
+3. update unit costs;
+4. detect cost drift;
+5. review minimum viable rates;
+6. review channel economics;
+7. review breakfast/package economics;
+8. update promotion limits;
+9. measure which rooms/channels create the strongest contribution;
+10. capture approved assumptions/version changes with evidence.
+
+Strategic principle: **occupancy by itself is not success. TORO should maximize sustainable contribution and profit, not simply fill rooms.**
