@@ -1,6 +1,6 @@
 # TORO Worker Canary v1
 
-**Status:** READY FOR DEPLOYMENT QA — DISABLED BY DEFAULT  
+**Status:** DATABASE PRIMITIVES VERIFIED IN PRODUCTION — HTTP CANARY DISABLED PENDING CANONICAL VERCEL  
 **Date:** 2026-10-01  
 **Canonical task:** `toro_surface_capability_parity_20260922`  
 **Execution authority:** L1 read/reconcile/verify only
@@ -79,6 +79,20 @@ PASS requires:
 Only after PASS:
 - begin authenticated MCP read isolation QA;
 - then bridge PUMBA to the Control Plane.
+
+## Production primitive proof
+
+Applied migration:
+`20261002003241_toro_targeted_worker_claim_v1_20261001`
+
+Readback confirms both new RPCs are SECURITY INVOKER, unavailable to anon/authenticated and executable by service_role only.
+
+A transaction-only production mechanics probe passed and rolled back. It created no durable canary row.
+
+Evidence:
+`docs/evidence/TORO_TARGETED_WORKER_PRODUCTION_READBACK_2026-10-01.md`
+
+This is database/runtime proof only. The deployed HTTP canary remains untested until the canonical Vercel target exists.
 
 ## Rollback
 
