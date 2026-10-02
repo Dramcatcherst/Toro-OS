@@ -152,6 +152,35 @@ export async function claimNextToroExecutionRun(
   return normalizeToroWorkerRun(first as ToroRunRow);
 }
 
+export async function claimToroExecutionRunById(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    workerId: string;
+    leaseSeconds?: number;
+  },
+): Promise<ToroWorkerRun | null> {
+  const { data, error } = await supabase.rpc(
+    "toro_claim_execution_run_by_id_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_worker_id: input.workerId,
+      p_lease_seconds: input.leaseSeconds ?? 120,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO targeted worker claim failed safely.");
+  }
+
+  const first = Array.isArray(data) ? data[0] : null;
+  if (!first || typeof first !== "object") return null;
+
+  return normalizeToroWorkerRun(first as ToroRunRow);
+}
+
 export async function renewToroExecutionLease(
   supabase: SupabaseClient,
   input: {
@@ -225,6 +254,44 @@ export async function resolveFailedToroExecutionRun(
 
   if (error) {
     throw new Error("TORO worker failure resolution failed safely.");
+  }
+
+  return typeof data === "string" ? data : null;
+}
+
+export async function completeToroExecutionRun(
+  supabase: SupabaseClient,
+  input: {
+    runId: string;
+    workerId: string;
+    fencingToken: number;
+    receipt?: {
+      external_reference?: string | null;
+      desired_state?: unknown;
+      observed_before?: unknown;
+      executed_state?: unknown;
+      observed_after?: unknown;
+      verification_method?: string | null;
+      evidence_refs?: string[];
+      source_receipt_system?: string | null;
+      source_receipt_kind?: string | null;
+      source_receipt_ref?: string | null;
+      integrity_hash?: string | null;
+    };
+  },
+): Promise<string | null> {
+  const { data, error } = await supabase.rpc(
+    "toro_complete_execution_run_v1",
+    {
+      p_run_id: input.runId,
+      p_worker_id: input.workerId,
+      p_fencing_token: input.fencingToken,
+      p_receipt: input.receipt ?? {},
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO worker atomic completion failed safely.");
   }
 
   return typeof data === "string" ? data : null;
