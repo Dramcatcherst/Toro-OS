@@ -271,6 +271,7 @@ export type ToroMcpPendingDecisionsInput = {
 export type ToroMcpExecutionReceiptsInput = {
   scopeRef?: string;
   correlationId?: string;
+  receiptCorrelationId?: string;
   actionRef?: string;
   workflowRunRef?: string;
   since?: string;

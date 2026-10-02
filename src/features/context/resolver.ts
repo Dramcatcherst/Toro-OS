@@ -1,5 +1,7 @@
 import "server-only";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { deriveToroContextPolicy } from "./policy";
@@ -80,7 +82,7 @@ type ResolvedEmployeeContext = {
 };
 
 async function resolveEmployeeContext(
-  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  supabase: SupabaseClient,
   userId: string,
   orgId: string,
 ): Promise<ResolvedEmployeeContext | null | undefined> {
@@ -132,14 +134,17 @@ async function resolveEmployeeContext(
  * Portal and agents can migrate to the final membership model without changing
  * their context contract.
  */
-export const resolveToroContext: ResolveToroContext = async (
+export async function resolveToroContextWithSupabase(
+  supabase: SupabaseClient,
   request: ToroContextRequest = {},
-) => {
-  const supabase = await createServerSupabaseClient();
+  accessToken?: string,
+) {
   const {
     data: { user },
     error: userError,
-  } = await supabase.auth.getUser();
+  } = accessToken
+    ? await supabase.auth.getUser(accessToken)
+    : await supabase.auth.getUser();
 
   if (userError || !user) return null;
 
@@ -269,4 +274,11 @@ export const resolveToroContext: ResolveToroContext = async (
     canUseOrganizationData: policy.canUseOrganizationData,
     requiresContextChoice: false,
   };
+}
+
+export const resolveToroContext: ResolveToroContext = async (
+  request: ToroContextRequest = {},
+) => {
+  const supabase = await createServerSupabaseClient();
+  return resolveToroContextWithSupabase(supabase, request);
 };
