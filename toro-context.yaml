@@ -102,6 +102,7 @@ canonical_product_specs:
   autonomy_action_model: docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md
   control_plane_runtime: docs/product/TORO_CONTROL_PLANE_RUNTIME_V1.md
   openai_surface_map: docs/product/TORO_OPENAI_SURFACE_MAP_V1.md
+  vercel_canonical_deployment: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
   dreamcatcher_cognitive_proof: docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
