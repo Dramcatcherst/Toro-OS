@@ -980,6 +980,98 @@ Technical project keys are retained for compatibility and do not redefine archit
 - toro_executive_control = TORO operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
 - business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
 
+### Task routing and open-work invariants — verified 2026-09-29
+
+Machine-state authority for task routing is Supabase.
+
+- `operations.tasks.project_id` is the canonical project home.
+- `canonical_module_key` may be that active project key or a registered `operations.admin_modules` submodule; free-form unknown module keys fail closed.
+- active non-terminal tasks without a project home may auto-resolve only when `canonical_module_key` exactly matches an active canonical project.
+- terminal task states force `active=false`.
+- workstream and strategic outcome derive from the project home; a submodule never creates a parallel project.
+- `operations.tasks_revalidation_queue` reuses the existing task surface and classifies `coordination_wrapper`, `needs_revalidation`, `overdue` and `stale_open` (>7 days without delta).
+- age alone never closes, cancels, reprioritizes or reassigns work.
+- coordination wrappers consume the result of one canonical executor and may not duplicate execution.
+- material Autopilot suppression must persist in the source task/gate or in deterministic queue logic; snapshot-only suppression is diagnostic, not a safety control.
+
+Current machine evidence after hardening:
+- `UNMAPPED=0`;
+- `project_module_mismatch=0`;
+- terminal-active contradictions = 0;
+- Katty/FEELIN external-action rows are persisted as `OWNER_GATE` and excluded from Autopilot;
+- routing guard tests passed for project-home autoresolution, terminal→inactive and rejection of invented module keys.
+
+Applied Supabase migrations:
+- `toro_task_routing_machine_guard_20260929`;
+- `extend_task_revalidation_stale_open_20260929`;
+- `classify_task_coordination_wrappers_20260929`.
+
+### Authenticated SECURITY DEFINER posture — verified 2026-09-29
+
+Current public inventory accessible to `authenticated` = 40 functions:
+- 36 have direct internal authorization/identity gates;
+- 1 wrapper, `replace_attendance_blocks_manual_v3`, delegates to a gated ADMIN/RRHH implementation;
+- 3 login/recovery rate-limit RPCs are intentionally also available to `anon` and are tracked as public auth-surface functions;
+- unresolved functions without a demonstrated gate = 0;
+- all 40 now use `search_path=''`.
+
+Hardening applied:
+- `revoke_user_sessions` preserves its API but fails closed for ambiguous multi-org target users and revokes only sessions in the single authorized `org_id`;
+- `resolve_toro_decision` and `search_toro` use empty search paths;
+- the curated `reception_attendance_overview` remains an explicit front-desk operational-hours decision and does not expose salaries, bank data or private employee profiles.
+
+Remaining multi-tenant portability gate before users may belong to multiple orgs:
+- `enforce_user_session` currently resolves the first active role org;
+- `record_access_event` currently records against the first active role org;
+- `search_toro` currently searches all active role orgs.
+Today production has one active org across the current user population, so no current cross-tenant exposure is evidenced. Multi-org rollout must introduce an explicit active-tenant context and rebase these three functions before claiming tenant-safe portability.
+
+Additional migrations:
+- `harden_revoke_user_sessions_tenant_scope_20260929`;
+- `harden_toro_security_definer_search_path_20260929`;
+- `lock_server_mediated_employee_tables_20260929`.
+
+RLS/no-policy posture:
+- no-policy business tables in finance/assets/facilities/risk/reporting/integrations/core/operations have no direct anon/authenticated grants in the audited set and remain fail closed;
+- all 12 `public` RLS/no-policy People tables now have zero direct SELECT/INSERT/UPDATE/DELETE grants for `anon` and `authenticated`;
+- two channel identity/enrollment tables were already server-only; ten employee AI/capability/experience/feedback/onboarding/reward/receipt tables were aligned to the same server-mediated pattern;
+- do not add permissive policies merely to clear an advisor. Add client access only with an explicit role/tenant contract.
+
+Performance posture verified 2026-09-29:
+- `auth_rls_initplan` improved from 1 to 0 by caching `auth.uid()` in the organization-membership self-read policy;
+- `multiple_permissive_policies` reduced from 77 to 36 without removing self/manager/HR capabilities: one workload-profile overlap and 54 canonical HR `FOR ALL` policies were split into write-only actions while SELECT remains under existing read policies;
+- the remaining 36 warnings represent deliberate role/self/manager overlap and require role-specific negative tests before consolidation;
+- `unindexed_foreign_keys` and `unused_index` remain informational; do not mass-create or drop indexes from advisor counts alone;
+- benchmark of the recurring `pms_payments` org/property/reservation lookup was ~0.43 ms over ~2.1k rows, so no premature index was added.
+
+Additional performance migrations:
+- `optimize_org_memberships_self_read_rls_20260929`;
+- `split_room_workload_profiles_rls_20260929`;
+- `split_canonical_hr_write_rls_20260929`.
+
+### Access-first control model — verified 2026-09-29
+
+TORO separates **technical access** from **human account control**.
+
+- `CONNECTED` means a live authorized connector/session proves only the bounded capability stated for that system.
+- Repository/project/calendar/base/accounting read access does not by itself prove account ownership, MFA, recovery, billing or primary-admin authority.
+- Calendar `owner` on a primary calendar does not prove Google Workspace ownership.
+- GitHub repository admin permission does not prove GitHub account MFA/recovery.
+- Airtable base `create` permission does not prove workspace ownership.
+- Alegra document/accounting reads do not prove the legal account owner.
+- Supabase project health/admin connector capability does not prove organization human-admin roster.
+- Vercel team/project inventory does not prove RBAC or production-promotion authority.
+- If a connector cannot expose ownership/MFA/recovery/RBAC, preserve its technical-access evidence and stop using that connector to infer human-control state. Resume only through the provider's authoritative account/admin surface.
+- **ACCESS FIRST / ROTATION LATER:** preserve working authorized access while ownership/recovery is mapped; change passwords, MFA, recovery, billing or roles only after evidence and the applicable owner/security gate.
+
+Current P0 live-read evidence without Mauricio:
+- GitHub repository permissions verified; CURRENT risk: `main` is unprotected, required status checks are off and repository rulesets are empty. Canonical task `github_main_branch_protection_gate_20260929` holds the OWNER_GATE. Proposed minimum: PR-required + `TORO Brain CI / validate` + conversation resolution + block force-push/delete; no repository-setting write without explicit approval;
+- Supabase canonical project and recovery sandbox visible; `toro-auth-pilot` observed INACTIVE but not authorized for deletion;
+- Vercel team/project inventory visible, RBAC still partial;
+- hotel/personal Google Drive connector identities verified;
+- hotel Gmail connector read verified.
+Calendar, Contacts, Airtable and Alegra add P1 supporting evidence under the same non-inference rule.
+
 ## Canonical
 - Dramcatcherst/Toro-OS
 
