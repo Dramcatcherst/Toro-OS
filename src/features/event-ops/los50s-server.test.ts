@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import type { ToroResolvedContext } from "@/features/context/types";
+import type { ToroCanonicalRole, ToroResolvedContext } from "@/features/context/types";
 
 import { canReadLos50sEventOps } from "./los50s-server";
 
-function context(roles: string[]): ToroResolvedContext {
+function context(roles: ToroCanonicalRole[]): ToroResolvedContext {
   return {
     userId: "user-1",
     email: "admin@example.com",
@@ -16,9 +16,7 @@ function context(roles: string[]): ToroResolvedContext {
       membershipId: null,
       membershipType: "owner",
       status: "active",
-      roles: roles as ToroResolvedContext["membership"] extends infer M
-        ? M extends { roles: infer R } ? R : never
-        : never,
+      roles,
       employeeId: null,
       source: "legacy_user_roles",
     },
