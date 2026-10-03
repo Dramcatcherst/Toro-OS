@@ -43,6 +43,33 @@ export type Los50sOpsParticipant = {
   status: string;
 };
 
+export type Los50sOpsRoom = {
+  ref: string;
+  roomCode: string | null;
+  bedLabel: string | null;
+  status: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  notes: string | null;
+  preferredBed: string | null;
+  preferredAccommodation: string | null;
+};
+
+export type Los50sOpsTransport = {
+  ref: string;
+  leg: string;
+  route: string | null;
+  travelDate: string | null;
+  pickupTime: string | null;
+  pickupLocation: string | null;
+  dropoffLocation: string | null;
+  vehicleRef: string | null;
+  driverRef: string | null;
+  status: string;
+  luggageCount: number;
+  specialLuggage: string | null;
+};
+
 export type Los50sEventOpsView =
   | { state: "unauthenticated" }
   | { state: "forbidden"; actor: string }
@@ -53,6 +80,8 @@ export type Los50sEventOpsView =
       orgId: string;
       summary: Los50sOpsSummary;
       participants: Los50sOpsParticipant[];
+      rooms: Los50sOpsRoom[];
+      transport: Los50sOpsTransport[];
     };
 
 export function canReadLos50sEventOps(context: ToroResolvedContext) {
@@ -104,7 +133,7 @@ export async function loadLos50sEventOps(): Promise<Los50sEventOpsView> {
     return { state: "unavailable", error: "Event Ops backend credential is unavailable." };
   }
 
-  const [summaryResult, participantResult] = await Promise.all([
+  const [summaryResult, participantResult, roomResult, transportResult] = await Promise.all([
     worker
       .from("los50s_ops_dashboard")
       .select("*")
@@ -121,9 +150,24 @@ export async function loadLos50sEventOps(): Promise<Los50sEventOpsView> {
       .neq("participant_status", "cancelled")
       .order("is_group_leader", { ascending: false })
       .order("display_name", { ascending: true }),
+    worker
+      .from("los50s_room_assignments")
+      .select("participant_ref,room_code,bed_label,assignment_status,check_in,check_out,accommodation_notes,preferred_bed,preferred_accommodation")
+      .eq("org_id", context.orgId!)
+      .eq("event_key", EVENT_KEY)
+      .order("assignment_status", { ascending: true })
+      .order("participant_ref", { ascending: true }),
+    worker
+      .from("los50s_transport_manifest")
+      .select("participant_ref,leg,route_choice,travel_date,pickup_time,pickup_location,dropoff_location,vehicle_ref,driver_ref,status,luggage_count,special_luggage")
+      .eq("org_id", context.orgId!)
+      .eq("event_key", EVENT_KEY)
+      .order("travel_date", { ascending: true })
+      .order("leg", { ascending: true })
+      .order("participant_ref", { ascending: true }),
   ]);
 
-  if (summaryResult.error || participantResult.error) {
+  if (summaryResult.error || participantResult.error || roomResult.error || transportResult.error) {
     return { state: "unavailable", error: "Event Ops read failed safely." };
   }
 
@@ -172,11 +216,53 @@ export async function loadLos50sEventOps(): Promise<Los50sEventOpsView> {
     }];
   });
 
+  const rooms = (roomResult.data ?? []).flatMap((candidate) => {
+    const item = candidate as Record<string, unknown>;
+    const ref = textOrNull(item.participant_ref);
+    if (!ref) return [];
+
+    return [{
+      ref,
+      roomCode: textOrNull(item.room_code),
+      bedLabel: textOrNull(item.bed_label),
+      status: textOrNull(item.assignment_status) ?? "unassigned",
+      checkIn: textOrNull(item.check_in),
+      checkOut: textOrNull(item.check_out),
+      notes: textOrNull(item.accommodation_notes),
+      preferredBed: textOrNull(item.preferred_bed),
+      preferredAccommodation: textOrNull(item.preferred_accommodation),
+    }];
+  });
+
+  const transport = (transportResult.data ?? []).flatMap((candidate) => {
+    const item = candidate as Record<string, unknown>;
+    const ref = textOrNull(item.participant_ref);
+    const leg = textOrNull(item.leg);
+    if (!ref || !leg) return [];
+
+    return [{
+      ref,
+      leg,
+      route: textOrNull(item.route_choice),
+      travelDate: textOrNull(item.travel_date),
+      pickupTime: textOrNull(item.pickup_time),
+      pickupLocation: textOrNull(item.pickup_location),
+      dropoffLocation: textOrNull(item.dropoff_location),
+      vehicleRef: textOrNull(item.vehicle_ref),
+      driverRef: textOrNull(item.driver_ref),
+      status: textOrNull(item.status) ?? "planned",
+      luggageCount: numberValue(item.luggage_count),
+      specialLuggage: textOrNull(item.special_luggage),
+    }];
+  });
+
   return {
     state: "ready",
     actor: context.displayName,
     orgId: context.orgId!,
     summary,
     participants,
+    rooms,
+    transport,
   };
 }
