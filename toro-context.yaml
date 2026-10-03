@@ -21,6 +21,9 @@ general_plan_governance:
     toro_executive_control: TORO operating/execution module; TORO OS is a technical legacy alias only
     business_truth_bible: Dreamcatcher Data & Integrations module; not the global Bible
   canonical_general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  canonical_surface_registry_contract: docs/product/TORO_SOURCE_SURFACE_REGISTRY.md
+  canonical_surface_registry_runtime: operations.toro_system_surfaces_v1
+  canonical_naming_migration_tracker: docs/product/TORO_NAMING_MIGRATION_STATUS.md
   canonical_name: TORO General Plan
   aliases:
     - Plan General
