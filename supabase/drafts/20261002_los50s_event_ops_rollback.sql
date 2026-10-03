@@ -17,4 +17,5 @@ alter table public.los50s_registrations
   drop column if exists leader_person_ref,
   drop column if exists leader_whatsapp,
   drop column if exists member_count,
-  drop column if exists group_estimate;
+  drop column if exists group_estimate,
+  drop column if exists org_id;
