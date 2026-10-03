@@ -3270,6 +3270,20 @@ Mauricio directed TORO to recover and preserve the durable personality, communic
 - Alegra retains fiscal/accounting authority; TORO may analyze/reconcile/prepare, but material accounting writes remain governed.
 - Dropbox remains the original-evidence/backup home where governed, but a fresh Dropbox audit was **BLOCKED** in this pass by the current connector search/schema conflict; do not describe it as re-audited.
 
+### WeSpeak stay-length cutoff and reception alerts — owner directive 2026-10-02
+
+**Scope:** Dreamcatcher guest conversations; existing TERE / TORO Guests + TORO Comms lane, with TORO Revenue, TORO Operations and TORO Systems.  
+**State:** CURRENT owner-reported gap, runtime verification pending / TARGET approved behavior / NEXT controlled diagnosis and correction. **Priority:** P1, guest continuity and reception review.
+
+- **Reported problem:** the owner reports that WeSpeak stops TERE conversations when a guest requests more than 8 days and does not send the case to reception. This is a user report, not an independently verified runtime threshold, incident count or delivery failure.
+- **TARGET duration rule:** continue assisting and quoting stays of **30 days or fewer**, including 9–30 days; **only more than 30 days** triggers a human handoff because of stay length. Before configuring the threshold, verify whether the active runtime counts days or nights and how check-in/check-out dates map to that unit; do not silently convert the owner's wording.
+- **Quote authority remains unchanged:** quote only from authorized current rates/availability. If live truth is unavailable, continue through the existing official Kross booking handoff or governed human path; never fabricate a price, reuse stale rates or represent a booking link as a verified TORO live quote.
+- **Mandatory alert for every stop:** whenever TERE/WeSpeak halts a conversation, for any reason, create an actionable alert in the **existing reception review channel** and preserve the human handoff with minimum necessary verified context, stop reason, unresolved need and requested next action. Legitimate safety, payment, reservation-change, service or source-authority stops remain permitted and must also alert. A stopped bot alone is not a successful handoff.
+- **NEXT diagnosis:** inspect the active WeSpeak configuration and all stop/escalation branches, identify the effective version/hash, and reconcile recent stopped conversations against reception alerts and handoff records. Resolve and reuse the current reception destination, canonical work item and notification/handoff mechanism; do not create a parallel inbox, backlog or source of authority. Record inaccessible evidence and gaps explicitly.
+- **Implementation gate:** preserve the pre-change configuration and a scoped rollback; correct the duration rule and missing-alert paths only through separately authorized runtime work. This plan update changes no live configuration, database, notification routing or guest conversation.
+- **Acceptance evidence:** isolated synthetic boundary cases at **8, 9, 30 and 31 days**, with the verified runtime unit/date interpretation recorded. Cases at 8/9/30 continue without a duration-based stop; 31 produces the reception handoff and alert. Exercise **every identified stop reason**, including other legitimate stops at any stay length, and notification failure/retry paths without duplicate actionable cases or silent loss.
+- **Closure gate:** for each stop test, retain timestamped, correlated evidence of the stop reason, consumed config version/hash, actual alert delivery/visibility in reception's existing channel, and the linked human handoff/review item. Bot-stop status or configuration presence alone cannot pass. Do not mark the defect fixed or runtime behavior verified until end-to-end evidence passes the existing TERE runtime acceptance gate.
+
 ### R4 improvement package
 
 The subordinate contract applies **50 net-new improvements** on top of the existing I01–I20 agent/skill controls, grouped into:
