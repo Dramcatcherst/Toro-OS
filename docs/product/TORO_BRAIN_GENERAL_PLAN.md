@@ -113,6 +113,7 @@ Internal capabilities:
 - TORO People
 - TORO Comms
 - TORO Guests
+- TORO Concierge
 - TORO Operations
 - TORO Finance
 - TORO Revenue
@@ -130,6 +131,44 @@ Internal capabilities:
 - TORO Systems
 - TORO Builder
 - TORO Exchange (conditional experiment)
+
+## TORO Concierge — group & event coordination
+
+**Owner decision — 2026-10-01:** TORO Concierge is a reusable subsystem of the single TORO product for coordinating multi-person trips, events, retreats, family groups and hotel-hosted experiences. **Los 50s de Caro** is the first live design/pilot. It is not a separate brain, task system, payment system or communication authority.
+
+Pilot scope:
+- participant identity and roster intake;
+- self-selected teams/groups with exclusive membership at a given planning stage; no fixed leader required by default;
+- allow a participant to create a provisional missing invitee for review;
+- itinerary, transport legs, lodging, rooms, meals, activities, polls/preferences and day-by-day coordination;
+- public sanitized event portal plus private participant profile/survey;
+- group-wide and segmented messaging/reminders through TORO Comms/Channels;
+- daily run-of-show, checklists, incidents, changes, receipts and follow-up;
+- budget scenarios by participant count/age tier, fixed-vs-variable costs and source quotes;
+- transparent common **group-favor fund** for shared extras/improvements with final reconciliation rules;
+- separate **voluntary solidarity contribution** flow (e.g. 100/200/other) to help participants who need support. Public/group display may be anonymous, but TORO/admin retains minimum accounting traceability. It is not represented as a tax-deductible charitable donation;
+- playful social layer such as event nicknames: nickname may be changed during the experience while the real participant identity remains visible in secondary text, with moderation/opt-out and audit history. Nicknames never replace canonical/legal identity.
+
+Los 50s survey/portal interaction target:
+1. choose who you are from the canonical participant list;
+2. load known non-sensitive data and ask only for missing/correctable fields;
+3. choose team members; a person already assigned to an active team cannot be claimed by another team without an explicit move/release;
+4. no leader badge is imposed in the public flow unless the team itself selects one;
+5. Costa Rica residents can mark flight legs as not applicable;
+6. activity interest is explicitly not a reservation or charge;
+7. private fields (phones, flights, allergies, payments, internal notes, support status) never appear in the public portal.
+
+Architecture rules:
+- reuse TORO Identity, People, Guests, Comms, Finance, Projects, Knowledge, Channels, Assets and Governance;
+- Supabase/control-plane remains canonical for TORO-owned runtime/workflow state; domain systems retain their own authority;
+- Airtable may remain the transitional structured source for the Los 50s pilot while mappings are explicit;
+- messaging, purchases, reservations, refunds, money movement and external commitments follow existing TORO action ceilings and approval policy;
+- every material action follows **Intent → Policy → Approval → Execution → Verification → Receipt → Memory**;
+- the public event site is a sanitized projection, never an authority or private-data store.
+
+Future reuse target: Dreamcatcher groups, weddings, retreats, birthdays, corporate groups and other authorized TORO-managed experiences, without duplicating concierge logic per event.
+
+---
 
 ## TORO Dashboard — unified product surface
 
