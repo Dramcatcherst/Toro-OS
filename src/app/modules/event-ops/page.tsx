@@ -27,6 +27,15 @@ function ageLabel(value: string | null) {
   return "—";
 }
 
+function legLabel(value: string) {
+  if (value === "sjo_to_direct") return "SJO → Santa Teresa";
+  if (value === "sjo_to_manuel_antonio") return "SJO → Manuel Antonio";
+  if (value === "manuel_antonio_to_st") return "Manuel Antonio → Santa Teresa";
+  if (value === "st_to_sjo") return "Santa Teresa → San José";
+  if (value === "sjo_hotel_to_airport") return "Hotel SJO → Aeropuerto";
+  return "Traslado especial";
+}
+
 export default async function Los50sEventOpsPage() {
   const view = await loadLos50sEventOps();
 
@@ -70,6 +79,7 @@ export default async function Los50sEventOpsPage() {
 
   const s = view.summary;
   const outstanding = Math.max(0, s.chargesUsd - s.creditsUsd);
+  const participantNames = new Map(view.participants.map((person) => [person.ref, person.name]));
 
   return (
     <main className="min-h-screen bg-[#030712] p-4 text-slate-100 md:p-6">
@@ -165,6 +175,75 @@ export default async function Los50sEventOpsPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mt-7 grid gap-5 xl:grid-cols-2">
+          <div className="border border-violet-400/15 bg-slate-950/80">
+            <div className="border-b border-slate-800 p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Habitaciones</h2>
+                  <p className="mt-1 text-xs text-slate-500">Preferencias y estado interno. La asignación pública sigue deshabilitada.</p>
+                </div>
+                <span className="text-xs font-semibold text-violet-300">{s.roomAssignmentsPending} pendientes</span>
+              </div>
+            </div>
+            <div className="divide-y divide-slate-900">
+              {view.rooms.length === 0 ? (
+                <div className="p-5 text-sm text-slate-500">Sin filas de habitación.</div>
+              ) : view.rooms.map((room) => (
+                <article key={room.ref} className="grid gap-3 p-4 sm:grid-cols-[1.2fr_.8fr]">
+                  <div>
+                    <div className="font-semibold text-white">{participantNames.get(room.ref) ?? "Participante"}</div>
+                    <div className="mt-1 text-xs text-slate-500">{room.preferredBed ?? "Cama sin preferencia"} · {room.preferredAccommodation ?? "Sin preferencia de zona"}</div>
+                    {room.notes && <div className="mt-1 text-xs text-amber-200">{room.notes}</div>}
+                  </div>
+                  <div className="text-right text-xs">
+                    <div className="font-semibold text-violet-200">{room.status}</div>
+                    <div className="mt-1 text-slate-400">{room.roomCode ? `Hab. ${room.roomCode}` : "Sin asignar"}{room.bedLabel ? ` · ${room.bedLabel}` : ""}</div>
+                    {(room.checkIn || room.checkOut) && <div className="mt-1 text-slate-600">{room.checkIn ?? "—"} → {room.checkOut ?? "—"}</div>}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="border border-sky-400/15 bg-slate-950/80">
+            <div className="border-b border-slate-800 p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-bold text-white">Manifiesto de transporte</h2>
+                  <p className="mt-1 text-xs text-slate-500">Tramos planificados; vehículo/conductor todavía pueden estar pendientes.</p>
+                </div>
+                <span className="text-xs font-semibold text-sky-300">{s.transportLegsPlanned} planificados</span>
+              </div>
+            </div>
+            <div className="max-h-[680px] divide-y divide-slate-900 overflow-y-auto">
+              {view.transport.length === 0 ? (
+                <div className="p-5 text-sm text-slate-500">Sin tramos de transporte.</div>
+              ) : view.transport.map((leg) => (
+                <article key={`${leg.ref}:${leg.leg}`} className="p-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="font-semibold text-white">{participantNames.get(leg.ref) ?? "Participante"}</div>
+                      <div className="mt-1 text-xs text-sky-200">{legLabel(leg.leg)}</div>
+                    </div>
+                    <div className="text-right text-xs">
+                      <div className="font-semibold text-slate-200">{leg.travelDate ?? "Fecha pendiente"}{leg.pickupTime ? ` · ${leg.pickupTime}` : ""}</div>
+                      <div className="mt-1 text-slate-500">{leg.status}</div>
+                    </div>
+                  </div>
+                  <div className="mt-2 grid gap-2 text-xs text-slate-400 sm:grid-cols-2">
+                    <div>{leg.pickupLocation ?? "Pickup pendiente"} → {leg.dropoffLocation ?? "Destino por confirmar"}</div>
+                    <div className="sm:text-right">{leg.vehicleRef ?? "Vehículo pendiente"} · {leg.driverRef ?? "Conductor pendiente"}</div>
+                  </div>
+                  <div className="mt-2 text-xs text-slate-500">
+                    Equipaje: {leg.luggageCount} pieza(s){leg.specialLuggage ? ` · ${leg.specialLuggage}` : ""}
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
