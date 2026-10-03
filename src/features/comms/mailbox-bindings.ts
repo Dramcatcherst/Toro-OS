@@ -50,6 +50,9 @@ export type ToroMailboxVerificationStatus =
 export type ToroMailboxBinding = {
   id: string;
   orgId: string;
+  // Resolved by the authoritative scope graph, not inferred from the address.
+  // The draft binding table has no business_id yet, so live reads fail closed.
+  businessId: string | null;
   propertyId: string | null;
   channel: ToroMailboxChannel;
   provider: string;
@@ -69,6 +72,21 @@ export type ToroMailboxBinding = {
   lastEventAt: string | null;
   lastErrorCode: string | null;
   active: boolean;
+};
+
+export const TORO_MAIL_METADATA_READ_CAPABILITY = "comms.mail.metadata.read";
+
+/** Server-issued, scoped decision. Never construct this from request parameters. */
+export type ToroMailboxMetadataReadGrant = {
+  capability: typeof TORO_MAIL_METADATA_READ_CAPABILITY;
+  actorId: string;
+  membershipId: string;
+  orgId: string;
+  businessId: string;
+  propertyId: string | null;
+  bindingId: string;
+  provider: string;
+  status: "active" | "revoked";
 };
 
 export type ToroMailboxHealth =
@@ -123,7 +141,8 @@ export function mailboxBindingHealth(
 
   if (
     binding.authStatus !== "connected" ||
-    binding.verificationStatus === "unverified"
+    binding.verificationStatus !== "verified" ||
+    !["healthy", "syncing"].includes(binding.ingestionStatus)
   ) {
     return "unverified";
   }
@@ -133,33 +152,37 @@ export function mailboxBindingHealth(
 
 export function isMailboxBindingReadable(binding: ToroMailboxBinding) {
   if (!binding.active || binding.channel !== "email") return false;
-  if (!binding.readEnabled || binding.authStatus !== "connected") return false;
-  if (
-    binding.ingestionStatus === "not_configured" ||
-    binding.ingestionStatus === "paused"
-  ) {
-    return false;
-  }
-  if (
-    binding.verificationStatus === "unverified" ||
-    binding.verificationStatus === "conflict"
-  ) {
-    return false;
-  }
-  return true;
+  return binding.readEnabled && mailboxBindingHealth(binding) === "healthy";
 }
 
 export function canUseMailboxBinding(
   context: ToroResolvedContext,
   binding: ToroMailboxBinding,
+  grant?: ToroMailboxMetadataReadGrant | null,
 ) {
   return Boolean(
     context.mode === "organization" &&
+      typeof context.userId === "string" &&
+      context.userId.length > 0 &&
       context.orgId &&
       context.orgId === binding.orgId &&
       context.membership?.status === "active" &&
+      context.membership.source === "organization_memberships" &&
+      typeof context.membership.membershipId === "string" &&
+      context.membership.membershipId.length > 0 &&
+      context.membership.orgId === binding.orgId &&
       context.canUseOrganizationData &&
       !context.requiresContextChoice &&
+      binding.businessId &&
+      grant?.capability === TORO_MAIL_METADATA_READ_CAPABILITY &&
+      grant.status === "active" &&
+      grant.actorId === context.userId &&
+      grant.membershipId === context.membership.membershipId &&
+      grant.orgId === binding.orgId &&
+      grant.businessId === binding.businessId &&
+      grant.propertyId === binding.propertyId &&
+      grant.bindingId === binding.id &&
+      grant.provider === binding.provider &&
       isMailboxBindingReadable(binding),
   );
 }

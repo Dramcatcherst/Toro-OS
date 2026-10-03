@@ -8,12 +8,15 @@ import {
   mailboxBindingHealth,
   normalizeMailboxEndpoint,
   projectMailboxBindingStatus,
+  TORO_MAIL_METADATA_READ_CAPABILITY,
   type ToroMailboxBinding,
+  type ToroMailboxMetadataReadGrant,
 } from "./mailbox-bindings";
 
 const baseBinding: ToroMailboxBinding = {
   id: "binding-1",
   orgId: "org-1",
+  businessId: "business-1",
   propertyId: null,
   channel: "email",
   provider: "gmail",
@@ -43,7 +46,7 @@ const orgContext: ToroResolvedContext = {
   orgId: "org-1",
   membership: {
     orgId: "org-1",
-    membershipId: null,
+    membershipId: "membership-1",
     membershipType: "owner",
     status: "active",
     roles: ["ADMIN"],
@@ -53,7 +56,7 @@ const orgContext: ToroResolvedContext = {
     positionCode: null,
     positionName: null,
     workArea: null,
-    source: "legacy_user_roles",
+    source: "organization_memberships",
   },
   availableOrgIds: ["org-1"],
   allowedDataScopes: ["work_org"],
@@ -61,6 +64,18 @@ const orgContext: ToroResolvedContext = {
   canUsePersonalVault: false,
   canUseOrganizationData: true,
   requiresContextChoice: false,
+};
+
+const readGrant: ToroMailboxMetadataReadGrant = {
+  capability: TORO_MAIL_METADATA_READ_CAPABILITY,
+  actorId: "user-1",
+  membershipId: "membership-1",
+  orgId: "org-1",
+  businessId: "business-1",
+  propertyId: null,
+  bindingId: "binding-1",
+  provider: "gmail",
+  status: "active",
 };
 
 describe("normalizeMailboxEndpoint", () => {
@@ -88,20 +103,26 @@ describe("mailbox operational policy", () => {
     [{ authStatus: "disconnected" as const }, "unavailable"],
     [{ authStatus: "pending" as const }, "unverified"],
     [{ ingestionStatus: "paused" as const }, "degraded"],
+    [{ ingestionStatus: "degraded" as const }, "degraded"],
+    [{ ingestionStatus: "backfill_pending" as const }, "unverified"],
     [{ verificationStatus: "conflict" as const }, "degraded"],
+    [{ verificationStatus: "partial" as const }, "unverified"],
+    [{ lastErrorCode: "sync_failure" }, "degraded"],
   ])("fails closed for %o", (patch, health) => {
     const binding = { ...baseBinding, ...patch };
     expect(isMailboxBindingReadable(binding)).toBe(false);
     expect(mailboxBindingHealth(binding)).toBe(health);
   });
 
-  it("requires matching active organization context", () => {
-    expect(canUseMailboxBinding(orgContext, baseBinding)).toBe(true);
+  it("requires a server-issued grant for the exact actor and mailbox scope", () => {
+    expect(canUseMailboxBinding(orgContext, baseBinding)).toBe(false);
+    expect(canUseMailboxBinding(orgContext, baseBinding, readGrant)).toBe(true);
 
     expect(
       canUseMailboxBinding(
         { ...orgContext, orgId: "other-org" },
         baseBinding,
+        readGrant,
       ),
     ).toBe(false);
 
@@ -109,8 +130,61 @@ describe("mailbox operational policy", () => {
       canUseMailboxBinding(
         { ...orgContext, canUseOrganizationData: false },
         baseBinding,
+        readGrant,
       ),
     ).toBe(false);
+  });
+
+  it("denies transitional legacy role membership even with an exact grant", () => {
+    expect(
+      canUseMailboxBinding(
+        {
+          ...orgContext,
+          membership: {
+            ...orgContext.membership!,
+            source: "legacy_user_roles",
+          },
+        },
+        baseBinding,
+        readGrant,
+      ),
+    ).toBe(false);
+  });
+
+  it("denies an unverified canonical membership identifier", () => {
+    expect(
+      canUseMailboxBinding(
+        {
+          ...orgContext,
+          membership: { ...orgContext.membership!, membershipId: null },
+        },
+        baseBinding,
+        readGrant,
+      ),
+    ).toBe(false);
+  });
+
+  it.each([
+    ["another actor", { actorId: "another-user" }],
+    ["another membership", { membershipId: "membership-2" }],
+    ["another organization", { orgId: "org-2" }],
+    ["another business", { businessId: "business-2" }],
+    ["another property", { propertyId: "property-2" }],
+    ["another binding", { bindingId: "binding-2" }],
+    ["another provider", { provider: "outlook" }],
+    ["revoked grant", { status: "revoked" as const }],
+    ["obsolete hotel capability", { capability: "comms.hotel.metadata.read" }],
+  ])("denies %s", (_label, patch) => {
+    expect(canUseMailboxBinding(orgContext, baseBinding, { ...readGrant, ...patch } as ToroMailboxMetadataReadGrant)).toBe(false);
+  });
+
+  it("denies personal, unscoped and inactive memberships", () => {
+    expect(canUseMailboxBinding({ ...orgContext, mode: "personal" }, baseBinding, readGrant)).toBe(false);
+    expect(canUseMailboxBinding(orgContext, { ...baseBinding, businessId: null }, readGrant)).toBe(false);
+    expect(canUseMailboxBinding(orgContext, { ...baseBinding, propertyId: "property-1" }, readGrant)).toBe(false);
+    expect(canUseMailboxBinding(orgContext, { ...baseBinding, verificationStatus: "partial" }, readGrant)).toBe(false);
+    expect(canUseMailboxBinding({ ...orgContext, membership: { ...orgContext.membership!, status: "suspended" } }, baseBinding, readGrant)).toBe(false);
+    expect(canUseMailboxBinding({ ...orgContext, membership: { ...orgContext.membership!, orgId: "org-2" } }, baseBinding, readGrant)).toBe(false);
   });
 
   it("projects only non-secret operational status fields", () => {
