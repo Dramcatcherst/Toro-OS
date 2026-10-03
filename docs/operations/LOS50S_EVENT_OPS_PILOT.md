@@ -93,3 +93,26 @@ No payment charges were auto-created.
 6. Budget-vs-actual and fund closeout.
 
 The pilot should later generalize to weddings, retreats, birthdays, concerts and hotel groups without cloning event-specific logic.
+
+
+## Organization scope
+
+All live Los 50s operational rows are scoped to:
+
+- organization: **Dreamcatcher Hotel & Villas**
+- `org_id`: `595801ce-2895-4d91-81ae-e8d1d5cc8593`
+- event key: `los50s-caro-2026`
+
+Unique operational identities are now organization + event + participant, so future TORO businesses cannot collide with Dreamcatcher event data.
+
+## Intake runtime
+
+Current live Supabase Edge Function:
+- slug: `los50s-intake`
+- live version at documentation update: **v7**
+- inserts Dreamcatcher `org_id`;
+- persists registration first;
+- then invokes `los50s_materialize_registration()`;
+- registration success is preserved even if downstream ops materialization needs retry.
+
+The worker/materializer is org-scoped and remains service-role only.
