@@ -9,6 +9,43 @@
 
 ---
 
+## Rentabilidad y conversión sostenibles — directiva de Mauricio 2026-10-06
+
+**Scope:** cada negocio autorizado y aislado en TORO; piloto Dreamcatcher Hotel / Toro by Dreamcatcher.  
+**Owners:** TORO Revenue + TORO Finance + TORO Channels; TERE para conversión.  
+**Existing project:** `revenue_booking_stack`. **State:** CURRENT política aprobada / NEXT verificación por canal.
+
+TORO debe buscar de forma continua oportunidades verificables para aumentar la rentabilidad, utilidad y conversión del negocio dentro de su alcance autorizado. Priorizar contribución y utilidad sostenible sobre ocupación, tarifa de lista o ingresos brutos aislados. Comparar ingresos después de descuentos financiados por el hotel, comisiones, cobros de pago, costos incrementales de desayuno/servicio, cancelaciones y reembolsos; separar impuestos por remitir. No inventar costos, ahorro o mejora de utilidad. Medir el resultado antes de declarar una optimización exitosa.
+
+### Contrato de suplementos de Dreamcatcher
+
+Autoridad: instrucción directa del dueño de 2026-10-06. Supabase `content.hotel_facts/additional_person_pricing` contiene el contrato estructurado; Kross y cada canal conservan autoridad sobre su configuración y cotización vigentes.
+
+| Categoría tarifaria | Fracción a pagar del suplemento adulto | Objetivo adicional sin desayuno | Objetivo adicional con desayuno | Lista RO / BB si reducción efectiva = 70% |
+| --- | ---: | ---: | ---: | ---: |
+| Adulto desde 11 años | 100% | US$15 | US$30 | US$50 / US$100 |
+| Niño 4–10 años | 75% | US$11,25 | US$22,50 | US$37,50 / US$75 |
+| Bebé 0–3 años | 50% | US$7,50 | US$15 | US$25 / US$50 |
+
+Importes por persona adicional y noche en temporada baja. Son objetivos comerciales, no cotizaciones en vivo ni utilidad neta. El 75%/50% significa porcentaje a pagar, no descuento. Fecha final de temporada baja y base fiscal aún pendientes; no extender importes de lista a todas las fechas o canales por defecto.
+
+- Calcular lista = objetivo / multiplicador marginal comprobado. Solo multiplicar los factores de promociones cuando realmente apliquen al mismo suplemento; no sumar descuentos ni asumir que desayuno, menores y extras reciben la misma promoción que la habitación.
+- Comparar la misma unidad, fecha, canal, régimen y condiciones con ocupación base y con un adulto/niño/bebé adicional, incluyendo los límites de edad 3/4 y 10/11. Verificar ocupación incluida, redondeo, moneda y tratamiento fiscal.
+- No duplicar el cargo de persona o desayuno. La cama física gratuita no exime del suplemento por persona; mantener capacidad máxima y confirmar cama/cuna.
+- Conservar nombres, IDs, slugs y enlaces de habitaciones Kross. Una optimización de contenido no autoriza renombrarlos.
+- Para grupos, ofrecer otras villas o habitaciones complementarias con disponibilidad simultánea confirmada, hasta tres opciones útiles y enlaces verificados permitidos por el canal. Nunca sumar una villa y sus habitaciones integrantes ni prometer exclusividad sin evidencia.
+- Optimizar fotos, etiquetas y amenities únicamente contra evidencia de la propiedad/unidad correcta. Medir conversión hasta reserva e ingreso confirmado; una visita, etiqueta o cambio de configuración no demuestra más ventas.
+- Mantener datos de política en Supabase y su referencia humana en Airtable con procedencia, fecha, discrepancia y estado por canal. Registrar canal/conexión no equivale a feed validado.
+- Aprender capacidades reales de cada herramienta mediante configuración observada, pruebas acotadas y lectura posterior. Registrar límites y correcciones reutilizables sin copiar datos privados entre negocios ni declarar dominio experto por documentación.
+
+### Mejora continua y control
+
+Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -> ejecutar dentro de autorización -> verificar -> medir -> conservar o revertir. La directiva no reactiva ejecutores suspendidos, no crea otro plan/base/agente/scheduler y no amplía permisos, presupuesto o envíos externos. La siguiente ejecución debe cerrar el primer bloqueo material con evidencia, sin repetir una auditoría completa.
+
+**Aceptación del despliegue tarifario:** suplemento final comprobado por canal y régimen en fechas autorizadas; evidencia de guardado y lectura posterior; costos/margen identificados o marcados desconocidos; ningún nombre Kross alterado; reservas existentes respetadas. Una política guardada o texto WeSpeak actualizado no demuestra que el motor de precios u OTA ya esté alineado.
+
+---
+
 ## Autonomy consolidation + OpenAI surface strategy — 2026-10-01
 
 **Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT cleanup / NEXT worker bridge.
