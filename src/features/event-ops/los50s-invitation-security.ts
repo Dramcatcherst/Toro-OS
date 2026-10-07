@@ -144,7 +144,7 @@ export function nextLos50sInviteState(
     | { type: "revoked" }
     | { type: "expired" },
 ): Los50sInviteState {
-  if (event.type === "revoked") return state === "verified" ? state : "revoked";
+  if (event.type === "revoked") return "revoked";
   if (event.type === "expired") return state === "issued" ? "expired" : state;
   if (event.type === "token_claimed") {
     if (state !== "issued") throw new Error("invalid_invitation_transition");
