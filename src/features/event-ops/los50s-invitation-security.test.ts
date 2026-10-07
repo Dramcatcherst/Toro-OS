@@ -88,6 +88,13 @@ describe("Los 50s invitation and identity security contract", () => {
     })).toBe("verified");
   });
 
+  it("can revoke an issued, claimed, or verified invite but cannot reactivate it by claiming", () => {
+    for (const state of ["issued","claimed_pending_verification","verified"] as const) {
+      expect(nextLos50sInviteState(state, { type: "revoked" })).toBe("revoked");
+    }
+    expect(() => nextLos50sInviteState("revoked", { type: "token_claimed" })).toThrow();
+  });
+
   it("fails closed on replay or token state corruption", () => {
     expect(() => nextLos50sInviteState("claimed_pending_verification", {
       type: "token_claimed",
