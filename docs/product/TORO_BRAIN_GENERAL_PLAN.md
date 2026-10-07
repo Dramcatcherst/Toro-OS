@@ -27,7 +27,7 @@ Autoridad: instrucción directa del dueño de 2026-10-06. Supabase `content.hote
 | Niño 4–10 años | 75% | US$11,25 | US$22,50 | US$37,50 / US$75 |
 | Bebé 0–3 años | 50% | US$7,50 | US$15 | US$25 / US$50 |
 
-Importes por persona adicional y noche en temporada baja. Son objetivos comerciales, no cotizaciones en vivo ni utilidad neta. El 75%/50% significa porcentaje a pagar, no descuento. Fecha final de temporada baja y base fiscal aún pendientes; no extender importes de lista a todas las fechas o canales por defecto.
+Importes por persona adicional y noche. Aclaración posterior del dueño, 2026-10-06: mantener los suplementos de lista US$50/100 para todas las fechas por ahora, con niños al 75% y bebés al 50%. Los objetivos finales US$15/30 corresponden a una reducción efectiva del 70%; no son una cotización garantizada en todos los canales ni utilidad neta. El 75%/50% significa porcentaje a pagar, no descuento. La base fiscal y el efecto de cada promoción deben verificarse. Aplicar al horizonte de fechas configurable y documentar su límite, sin modificar reservas existentes.
 
 - Calcular lista = objetivo / multiplicador marginal comprobado. Solo multiplicar los factores de promociones cuando realmente apliquen al mismo suplemento; no sumar descuentos ni asumir que desayuno, menores y extras reciben la misma promoción que la habitación.
 - Comparar la misma unidad, fecha, canal, régimen y condiciones con ocupación base y con un adulto/niño/bebé adicional, incluyendo los límites de edad 3/4 y 10/11. Verificar ocupación incluida, redondeo, moneda y tratamiento fiscal.
