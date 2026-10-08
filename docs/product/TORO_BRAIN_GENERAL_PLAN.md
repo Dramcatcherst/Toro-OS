@@ -17,26 +17,34 @@
 
 TORO debe buscar de forma continua oportunidades verificables para aumentar la rentabilidad, utilidad y conversión del negocio dentro de su alcance autorizado. Priorizar contribución y utilidad sostenible sobre ocupación, tarifa de lista o ingresos brutos aislados. Comparar ingresos después de descuentos financiados por el hotel, comisiones, cobros de pago, costos incrementales de desayuno/servicio, cancelaciones y reembolsos; separar impuestos por remitir. No inventar costos, ahorro o mejora de utilidad. Medir el resultado antes de declarar una optimización exitosa.
 
-### Contrato de suplementos de Dreamcatcher
+### Contrato de ocupación, desayuno y suplementos de Dreamcatcher — 2026-10-07
 
-Autoridad: instrucción directa del dueño de 2026-10-06. Supabase `content.hotel_facts/additional_person_pricing` contiene el contrato estructurado; Kross y cada canal conservan autoridad sobre su configuración y cotización vigentes.
+Autoridad: aclaraciones y aceptación de Mauricio del 2026-10-07. Este contrato sustituye la tabla de objetivos/lista del 2026-10-06; aquella queda como evidencia histórica de configuración, no como política futura obligatoria. Supabase `content.hotel_facts/additional_person_pricing`, `guest_age_categories` y `breakfast_price` conservan el contrato estructurado; Airtable mantiene su referencia humana. Kross y cada canal siguen siendo autoridad sobre configuración aplicada y cotización vigente.
 
-| Categoría tarifaria | Fracción a pagar del suplemento adulto | Objetivo adicional sin desayuno | Objetivo adicional con desayuno | Lista RO / BB si reducción efectiva = 70% |
-| --- | ---: | ---: | ---: | ---: |
-| Adulto desde 11 años | 100% | US$15 | US$30 | US$50 / US$100 |
-| Niño 4–10 años | 75% | US$11,25 | US$22,50 | US$37,50 / US$75 |
-| Bebé 0–3 años | 50% | US$7,50 | US$15 | US$25 / US$50 |
+| Regla | Criterio aprobado o estado |
+| --- | --- |
+| Moneda objetivo | USD; cambio de moneda de propiedad Agoda solicitado, todavía pendiente de confirmación |
+| Ocupación incluida | 2 personas en habitaciones y 12 en villas; no equivale a la capacidad máxima |
+| Edades | Bebés 0–3, niños 4–10, adultos desde 11; todos cuentan dentro de la capacidad |
+| Desayuno | US$15 finales por persona y desayuno; separado del alojamiento y protegido frente a descuentos del alojamiento |
+| Tarifa con desayuno | Incluye a adultos y niños; para bebés solo a solicitud, a US$15 por desayuno. No duplicar cargos |
+| Capacidad Dreamcatcher Villa | 27 personas, habitaciones 0–6; no ofrecer una plaza 28 sin nueva verificación |
+| Otras villas | Makaiza 7–11, capacidad 17; Toro 21–28, capacidad 29. No duplicar villa y componentes |
+| Mascotas | Hasta 10 kg; cualquier cargo y condiciones adicionales requieren su fuente vigente |
 
-Importes por persona adicional y noche. Aclaración posterior del dueño, 2026-10-06: mantener los suplementos de lista US$50/100 para todas las fechas por ahora, con niños al 75% y bebés al 50%. Los objetivos finales US$15/30 corresponden a una reducción efectiva del 70%; no son una cotización garantizada en todos los canales ni utilidad neta. El 75%/50% significa porcentaje a pagar, no descuento. La base fiscal y el efecto de cada promoción deben verificarse. Aplicar al horizonte de fechas configurable y documentar su límite, sin modificar reservas existentes.
+Conflicto de implementación pendiente: `src/lib/toro-data.ts`, objeto `mkz`, todavía describe Makaiza para 15–20 personas. Es un descriptor anterior que contradice el máximo 17 coincidente en Airtable/Supabase; no debe usarse para prometer capacidad. Este lote documental registra la discrepancia, sin acreditar corrección de la interfaz ni publicación comercial. El registro Airtable de hotel completo también requiere conciliación: declara 20 habitaciones/74 personas, pero enlaza 19 y omite la 22.
 
-- Calcular lista = objetivo / multiplicador marginal comprobado. Solo multiplicar los factores de promociones cuando realmente apliquen al mismo suplemento; no sumar descuentos ni asumir que desayuno, menores y extras reciben la misma promoción que la habitación.
-- Comparar la misma unidad, fecha, canal, régimen y condiciones con ocupación base y con un adulto/niño/bebé adicional, incluyendo los límites de edad 3/4 y 10/11. Verificar ocupación incluida, redondeo, moneda y tratamiento fiscal.
-- No duplicar el cargo de persona o desayuno. La cama física gratuita no exime del suplemento por persona; mantener capacidad máxima y confirmar cama/cuna.
-- Conservar nombres, IDs, slugs y enlaces de habitaciones Kross. Una optimización de contenido no autoriza renombrarlos.
-- Para grupos, ofrecer otras villas o habitaciones complementarias con disponibilidad simultánea confirmada, hasta tres opciones útiles y enlaces verificados permitidos por el canal. Nunca sumar una villa y sus habitaciones integrantes ni prometer exclusividad sin evidencia.
-- Optimizar fotos, etiquetas y amenities únicamente contra evidencia de la propiedad/unidad correcta. Medir conversión hasta reserva e ingreso confirmado; una visita, etiqueta o cambio de configuración no demuestra más ventas.
-- Mantener datos de política en Supabase y su referencia humana en Airtable con procedencia, fecha, discrepancia y estado por canal. Registrar canal/conexión no equivale a feed validado.
+Recomendación de alojamiento elegida bajo la delegación del dueño: niño 75% del suplemento adulto de **alojamiento**; bebé sin suplemento si no necesita cama extra, pero contando en capacidad. El desayuno completo no recibe ese porcentaje. El importe adulto de alojamiento y el tratamiento fiscal aún requieren costos, margen y prueba por canal. Estas reglas registradas no prueban que Kross, WeSpeak ni las OTA hayan cambiado; conservar términos de reservas confirmadas.
+
+- Para cada canal, comparar la misma unidad, fecha, ocupación, régimen y condiciones antes/después de promociones, incluyendo límites de edad 3/4 y 10/11, redondeo y tratamiento fiscal. Comprobar que desayuno suma US$15 por servicio al total final; una derivación porcentual fija no lo garantiza.
+- Calcular un suplemento de lista mediante el multiplicador marginal solo cuando se haya demostrado qué descuentos/impuestos le aplican. No reutilizar US$50/100 ni suponer 70% de descuento como receta universal.
+- **Agoda bloqueado:** mantener inactivos RO 24359579 y BB 24531249 hasta confirmar USD, importes/ocupación y recepción desde Kross. Solicitud en caso 1120368076318197504; no duplicarla ni reactivar para resolver un error de plan inactivo.
+- Conservar nombres, IDs, slugs y enlaces Kross. No cambiar camas, capacidades o fotos por inferencia; las seis correspondencias Agoda provisionales requieren prueba de identidad.
+- Para grupos, ofrecer hasta tres combinaciones útiles con disponibilidad simultánea y enlaces permitidos por el canal; no prometer exclusividad sin evidencia.
+- Mantener una sola política versionada con fuente, aprobación, evidencia y estado por canal. Supabase conserva datos/control; Airtable referencia; Dropbox originales; no crear nuevas bases, monitores o planes paralelos.
+- Optimizar fotos, etiquetas y amenities únicamente contra evidencia de la unidad correcta. Medir conversión hasta reserva e ingreso confirmado; visitas o etiquetas no demuestran más ventas.
 - Aprender capacidades reales de cada herramienta mediante configuración observada, pruebas acotadas y lectura posterior. Registrar límites y correcciones reutilizables sin copiar datos privados entre negocios ni declarar dominio experto por documentación.
+- Priorizar contribución neta y conversión verificables. Ningún cambio documental demuestra incremento de utilidad ni publicación comercial.
 
 ### Mejora continua y control
 
