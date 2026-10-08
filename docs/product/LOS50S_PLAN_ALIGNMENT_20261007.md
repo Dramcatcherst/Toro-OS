@@ -1,90 +1,87 @@
 # Los 50s de Caro — alineación al Plan General de TORO
 
-Fecha de revisión: 2026-10-07, America/Costa_Rica. Corte HTTP: 20:24.
-Horizonte de esta ficha: CURRENT diagnóstico / NEXT ejecución acotada.
-Estado de liberación: NOT RELEASED — piloto privado, sin autorización de invitaciones.
-Esta ficha es subordinada a `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; no crea otro plan, proyecto, base, agente ni scheduler.
+Fecha de revisión: 2026-10-07, America/Costa_Rica. Cortes: Supabase 21:18; preview candidato 21:32.
+Horizonte: CURRENT evidencia / NEXT ejecución acotada. Liberación: NOT RELEASED — piloto privado.
+Ficha subordinada a `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; no crea otro plan, proyecto, base, agente ni scheduler. El historial previo permanece en Git.
 
-## Alcance, autoridad y tareas existentes
+## Alcance y autoridad
 
-- Scope: proyecto familiar privado Los 50s de Caro; separado de la operación comercial del hotel.
-- Subsistemas existentes: TORO Systems, Identity, Comms y Event Ops. Issue de ejecución: TORO #246. OpenClaw/SOBRESITO son ejecutores solo donde haya capacidad y permisos verificados.
-- GitHub conserva código y contratos; Supabase, datos operativos, identidad, permisos y receipts; Airtable, referencia y control humano transicional; Vercel, evidencia de despliegue. Kross conserva autoridad sobre inventario y reservas reales.
-- Se verificaron CINCO tareas Airtable con `linked_entity_key=LOS50K`: `LOS50K-PORTAL-V2`, `LOS50K-DATA-COMPLETE`, `LOS50K-ROOMING`, `LOS50K-TRANSPORT` y `LOS50K-OPENCLAW`. Reutilizar sus responsables y claves; no inventar fechas de compromiso ni duplicar backlog.
-- La web continúa en `Dramcatcherst/dreamcatcher-website-vnext`, rama `codex/website-progress-20260924`. La aprobación de un PR no implica publicación ni autorización para contactar familiares.
+- Proyecto familiar privado, separado de la operación comercial del hotel. Subsistemas existentes: TORO Systems, Identity, Comms y Event Ops; seguimiento #246 y PR documental #252.
+- GitHub: código y contratos. Supabase: datos operativos, identidad, permisos y receipts. Airtable: control humano transicional. Vercel: despliegue. Kross: inventario y reservas reales.
+- Reutilizar las cinco tareas Airtable `LOS50K-PORTAL-V2`, `LOS50K-DATA-COMPLETE`, `LOS50K-ROOMING`, `LOS50K-TRANSPORT`, `LOS50K-OPENCLAW`; responsables, prioridades y estados existentes. Sus notas no demuestran registro en la cola canónica.
+- Web base: `Dramcatcherst/dreamcatcher-website-vnext`, rama `codex/website-progress-20260924`, SHA observado `c23a674ee1e9140f5bd9d9c82ce236411d966562`. No usar la rama default histórica como destino por inercia.
 
-## CURRENT — evidencia y límites
+## CURRENT — corrección del diagnóstico anterior
 
-### P0 / REL-01 — producción y preview son versiones distintas
+### DATE-01 / P0: la base de datos instalada ya tiene las fechas 29/30
 
-- Alias `dreamcatcherhotel.com` observado en Vercel: `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn`, target production, SHA `5f54e720f89c641e0b1d54c7446430a7fa5d3695`.
-- GET mediante el conector Vercel a `https://dreamcatcherhotel.com/los50sdecaro`: HTTP 404; HTML identifica ese mismo deployment. Corte 2026-10-08T02:24:06Z.
-- Preview reciente: `dpl_3wVE317TiR8Ra5DGQDs4gmveSrEy`, SHA `c23a674ee1e9140f5bd9d9c82ce236411d966562`, READY, target null. GET autenticado a su ruta `/los50sdecaro`: HTTP 200 a 2026-10-08T02:23:09Z.
-- Este 200 acredita entrega HTML del preview protegido; NO acredita inscripción, persistencia, identidad, permisos, móvil ni E2E.
-- Las rutas de navegación observadas son `/los50sdecaro/inscripcion`, `/los50sdecaro/comunidad` y `/los50sdecaro/invitacion`; no confundirlas con `/inscripcion` o `/comunidad` en la raíz.
-- El preview histórico `dreamcatcher-los50s-preview-p0` no es la línea de liberación. No promover, reasignar alias ni borrar proyectos desde esta ficha.
+Lectura directa, solo SELECT, de `public.los50s_materialize_registration(uuid)` y del manifiesto del evento el 2026-10-08T03:18:47Z:
+- La función instalada genera salidas de SJO el 29 nov, MA→Santa Teresa el 30 nov, regreso a SJO el 5 dic y salida al aeropuerto el 6 dic.
+- Los tramos existentes observados tienen esas fechas; cero discrepancias contra esta línea. Su estado planned NO prueba proveedor, cupo, reserva o traslado confirmado.
+- La función instalada incluye `org_id` en sus conflictos únicos. Fingerprint técnico MD5 de `pg_get_functiondef`: `51796012fddd59641b9690fbdbaf1542`.
+- El archivo `supabase/drafts/20261002_los50s_event_ops_applied.sql` de TORO main conserva fechas 28/29 y una implementación anterior. NO reaplicarlo sobre producción; el nombre applied no acredita paridad.
 
-### P0 / DATE-01 — tres representaciones incompatibles
+**Sustituye la instrucción anterior de corregir/backfill por defecto:** no se requiere backfill de fechas para las filas observadas. Cualquier reparación futura exige una discrepancia nueva comprobada, snapshot, prueba y rollback. Conservar la función instalada; recuperar después su procedencia versionada sin perder aislamiento por organización.
 
-1. Plan de referencia / PR web #92 / supuestos de Airtable: llegada oficial y salida de SJO el 29 nov; Manuel Antonio → Santa Teresa el 30 nov.
-2. Código web actual `src/data/los50s-public.ts` en SHA `c23a674`: noche en San José el 29 nov; salida a Manuel Antonio el 30 nov; parque y llegada a Santa Teresa el 1 dic. El HTML del preview reproduce esta variante.
-3. Fuente SQL en `main`, `supabase/drafts/20261002_los50s_event_ops_applied.sql`, líneas 348–395, blob `a4a2c7cdd788783831f66dae7a1246635ac84555`: genera `sjo_to_direct` y `sjo_to_manuel_antonio` el 28 nov y `manuel_antonio_to_st` el 29 nov.
+La Library devolvió `Los50K_Presupuesto_Itinerario_v2_2026-09-30.xlsx`: salida el 29, parque/traslado el 30 y noche inicial SJO eliminada, con referencia a decisión del usuario del 30-sep. PR web #92 coincide. No se recuperó el chat original más reciente: esta evidencia permite preparar un candidato reversible, no autorizar una publicación ni compromisos de viaje.
 
-El estado de la función realmente instalada y de sus filas en Supabase NO se verificó en esta ronda. El sufijo `applied` del archivo no demuestra paridad con producción. Tampoco se asume que el código web más reciente sustituya una decisión de negocio por su fecha de commit.
+### REL-01 / P0: candidato nuevo, no publicación
 
-Dependencia: recuperar la última decisión explícita del propietario y resolver la discrepancia con evidencia. No cambiar silenciosamente el itinerario, fusionar #92 a ciegas ni corregir solo la pantalla. La fiesta del 4 dic y el cierre del 6 dic no resuelven el conflicto de noches, comidas y traslados intermedios.
+- Producción observada previamente a 20:24 CR: dominio `dreamcatcherhotel.com` → `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn`, SHA `5f54e720`; `/los50sdecaro` devolvió 404. No se reasignó el dominio ni se promovió un despliegue.
+- NUEVO PR web #96, borrador: rama `los50s/align-installed-itinerary-20261007`, commit `cd0cf359ab06bb870429c99f4ece2b5bb29e9931`, sobre c23a674. Solo modifica tres entradas de itinerario y añade un archivo de pruebas.
+- Candidato: 29 nov llegada + salida el mismo día a MA o directo ST; 30 nov parque MA + ST; 1 dic hotel. Las tarifas por edad/ruta, reglas cama/asiento, fondo incluido, solidaridad y fechas de fiesta/salida no cambiaron.
+- Vercel `dpl_79EcDvATqvcgBnvfLrxtfKyrf4qw` READY, target null, SHA exacto del candidato. GET autenticado `/los50sdecaro` a 2026-10-08T03:32:39Z devolvió 200 y HTML con las fechas corregidas.
+- Se ejecutaron seis pruebas sobre el módulo real: original 4 PASS/2 FAIL por las fechas; candidato 6 PASS/0 FAIL. Typecheck del archivo PASS. Copia local verificada por hash Git; no fue checkout completo.
+- GitHub Actions consultado para ese SHA devolvió cero runs. `npm run verify` completo, QA móvil y flujo extremo a extremo siguen SIN CERTIFICAR. READY y HTML 200 no sustituyen esos gates.
+- Rutas correctas: `/los50sdecaro`, `/los50sdecaro/inscripcion`, `/los50sdecaro/comunidad`, `/los50sdecaro/invitacion`.
 
-### P0 / DATA-01 — inscripción no equivale a identidad
+### DATA-01 / P0: registros, identidades y tareas son métricas distintas
 
-- El documento V4 de TORO #249 registra PR #247 y #248 integrados: invitaciones criptográficas y autorización de miembros reutilizando `auth.users/public.app_users`.
-- Los SQL de invitaciones y membresías siguen REVIEW-ONLY según ese documento. No repetir esas implementaciones ni aplicarlas por inferencia.
-- Los conteos históricos de invitados, formularios, perfiles, usuarios generales y pagos son métricas distintas. No presentarlos como conteos actuales de miembros verificados sin nueva lectura de Supabase.
-- OpenClaw permanece sin prueba de host/canal/ACK/receipt en la evidencia revisada. Ningún comentario GitHub es un receipt de ejecución del Gateway.
+- La lectura directa distingue formularios repetidos, referencias únicas de participantes, perfiles materializados y habitaciones sin asignar. No sumar las menciones de personas entre formularios para contar invitados.
+- Conteos detallados y evidencia operativa permanecen en el seguimiento privado; no publicar payloads, teléfonos, vuelos, alergias, pagos ni identificadores de invitación.
+- RLS y privilegios revisados no conceden SELECT directo a anon/authenticated sobre los objetos Los50s consultados; la función materializadora es ejecutable por service_role, no por clientes. Esta revisión de metadatos NO certifica toda la API ni la autorización de extremo a extremo.
+- No se encontraron las cinco tareas Airtable por sus source_record_id o claves LOS50K en `operations.tasks`, ni un proyecto Los50s en la búsqueda acotada de `operations.projects`. Una coincidencia de tarea de publicación de la web no acredita ese mapping. Estado: MAPPING_NOT_VERIFIED; no dispatch ni cierre canónico acreditado.
 
-### P0 / PRICE-01 — presupuesto y alcance deben conciliarse juntos
+### PRICE-01 / P0 e identidad/comunicaciones
 
-- Referencias públicas observadas: adulto Directo USD 800 / Manuel Antonio USD 1,000; fondo común USD 100 ya incluido una sola vez; solidario voluntario separado.
-- Los 12 escenarios de Airtable consultados siguen marcados `Requiere recotización`. Costos internos y gaps quedan en la superficie privada, no en este repositorio público.
-- No tratar precio público como costo validado, sumar otra vez el fondo ni ajustar precios automáticamente. Conciliar noches, comidas, transporte, edades y cuotas con el itinerario que resulte autorizado.
+- Adulto Directo USD 800 / MA USD 1,000 siguen como referencias; fondo USD 100 incluido una sola vez, solidaridad voluntaria aparte. Los doce escenarios Airtable requieren recotización. No cambiar precios ni tratar modelos como costos conciliados.
+- PRs #247/#248 y V4/#249 son fundamentos existentes; los borradores de invitaciones/membresía no prueban activación en base de datos. Reutilizar Auth/app_users; no identidad paralela.
+- OpenClaw sigue sin prueba en host real, canal, ACK y receipt durante esta ronda. No inferir ejecución por un comentario, PR o nota Airtable.
 
-## TARGET — resultado de aceptación, todavía no acreditado
+## TARGET — aceptación pendiente
 
-Una persona verifica su identidad, reclama una invitación una sola vez y queda vinculada a su registro existente; consulta solo su grupo, habitación y saldo. Dos miembros autorizados comparten comentario/foto/like persistentes y un tercero no autorizado es rechazado. La operación usa fechas y totales coherentes. El propietario completa una prueba WhatsApp con ACK y receipt. Todo funciona sin regresión de hotel ni datos privados expuestos.
+Un invitado verifica identidad, reclama una invitación una sola vez y queda vinculado a su registro existente; solo ve el alcance permitido. Dos miembros comparten texto/foto/like persistentes; un tercero es rechazado. Datos, itinerario y costos quedan coherentes; el propietario prueba WhatsApp con ACK y receipt. Ninguna regresión de hotel ni publicación de datos privados.
 
-## NEXT — ejecución por dependencia sobre las cinco tareas
+## NEXT — trabajo acotado sobre las tareas existentes
 
-| Orden / prioridad | Tarea y responsable existente | Acción siguiente | Dependencia y criterio de terminado |
-| --- | --- | --- | --- |
-| 1 / P0 | PORTAL-V2 — TORO Brain | Resolver DATE-01 mediante fuente del propietario; comparar #92 con el código activo y preparar una corrección mínima, no un merge de versiones antiguas completo. | Itinerario, noches, comidas y precios conciliados con DATA/TRANSPORT; pruebas negativas de datos privados, rutas anidadas, móvil 390/412/1440 y hotel `/es`, `/es/stays`. HTTP 200 solo no cierra. |
-| 2 / P0 | DATA-COMPLETE — TERE / encargados de familia; implementación técnica por TORO | Leer función instalada y manifiestos actuales; comparar con SQL versionado; preparar corrección del materializador y backfill acotado de filas existentes. Reconciliar personas/grupos sin contacto externo. | DATE-01 resuelto; snapshot previo; fixture sintético nuevo y repetido produce legs correctos sin duplicados; backfill idempotente, auditoría before/after y rollback. Aplicación real requiere revisión y autorización aplicables. |
-| 3 / P0 | TRANSPORT — RICO / Mauricio | Reconciliar fechas por ruta, vuelos, equipaje y proveedor; cruzar escenarios privados de costos y alcance. | DATA-01/DATE-01; manifiesto por persona sin tramos obsoletos; precio, cupos y proveedor aprobados. Ninguna compra, reserva de bote o cambio de precio automático. |
-| 4 / P0 | ROOMING — RICO / Mauricio | Revisar noches, capacidad, cama, grupo y posibles conflictos con reservas comerciales. | Fechas conciliadas y personas identificadas; asignación sin duplicación, evidencia de capacidad y aprobación antes de cambios Kross. Preferencia no es reserva. |
-| 5 / P0 de habilitación | OPENCLAW — TORO Brain / Mauricio | Reanudar V4 sin recrear #247/#248: claim atómico, Auth/OTP y membresía; en paralelo, diagnóstico del host autorizado y canal aislado. | Pruebas de doble submit/un ganador, expiración/replay/revocación, usuario/org/evento ajeno y tutor; migraciones aún no aplicadas; host real, remitente verificado y prueba owner-only con ACK + receipt antes de uso externo. |
+| Prioridad / tarea | Responsable existente | Siguiente acción y criterio de terminado |
+| --- | --- | --- |
+| P0 / PORTAL-V2 | TORO Brain | Revisar PR96, ejecutar verify completo y QA móvil/renderizado. Corregir inclusiones hardcodeadas, noches/comidas y promesa de bote aún pendientes en Los50sPortal.tsx; no fusionar #92 completo. Terminado con CI/QA, alcance aprobado y publicación verificada tras aprobación específica. |
+| P0 / DATA-COMPLETE | TERE / encargados, implementación TORO | Reconciliar revisiones de formularios y registro de identidad sin duplicar. Verificar la ruta de intake a materialización y mapear las cinco tareas humanas a la cola existente con scope/procedencia correctos, sin activar trabajo no autorizado. NO ejecutar backfill de fechas innecesario. |
+| P0 / TRANSPORT | RICO / Mauricio | Mantener baseline instalado 29/30/5/6; validar vuelos, equipaje, cupos, modalidad, horarios y cotización de proveedor. Planned no equivale a contratado. Sin compra ni cambio automático. |
+| P0 / ROOMING | RICO / Mauricio | Alinear noches y grupos; validar capacidad/disponibilidad real Kross antes de asignar o bloquear. Preferencia o placeholder no es habitación confirmada. |
+| P0 de habilitación / OPENCLAW | TORO Brain / Mauricio | Completar claim atómico, OTP y permisos reutilizando #247/#248; en paralelo auditoría host autorizada. Probar un ganador ante doble submit, expiración/replay/revocación, terceros y tutor; owner-only con ACK/receipt antes de invitados. |
 
-Las filas son paquetes dependientes, no fechas prometidas. El trabajo técnico aislado de identidad puede avanzar en paralelo a la conciliación de negocio, pero ninguna liberación omite ambos gates.
+El mapping a Control Plane es dependencia del dispatch autónomo, no motivo para otro tablero/base. Las tareas no se marcan DONE por esta auditoría.
 
-## FUTURE — posterior a gates P0
+## FUTURE / P1 — después de los gates
 
-- P1: comunidad persistente, fotos privadas, comentarios, likes, moderación y admin con roles; depende de identidad, permisos y prueba de aislamiento.
-- P1: piloto con propietario y segundo usuario controlado/consentido; acceso de tercero denegado, rollback y regresión del hotel; después, autorización específica de comunicación familiar.
-- No añadir Slack, otra base, otro motor de identidad ni nuevos agentes para este piloto. No ampliar funciones sociales mientras sigan abiertos los bloqueos de datos y publicación.
+Comunidad persistente, fotos privadas y moderación; admin auditado; piloto con owner y segundo usuario controlado/consentido; aprobación de comunicación familiar. No añadir Slack, agentes, bases o schedulers paralelos ni ampliar funciones sociales mientras sigan abiertos P0.
 
-## Verificación, recuperación y cierre
+## Verificación, recuperación y límites
 
-- Toda acción material automatizada conserva el ciclo del Control Plane: tarea canónica → lease/fencing → ejecución acotada → verificación → receipt → estado. Esta ficha y las notas de auditoría NO son receipts de ese runtime.
-- No marcar tareas DONE por documentos, tests estáticos o READY. No declarar registros, pagos, comunidad ni WhatsApp operativos sin prueba correspondiente.
-- Cambio de esta ronda limitado a documentación y seguimiento. No SQL aplicado, permisos ampliados, datos familiares modificados, alias cambiado ni mensaje externo enviado.
-- El PR #252 permanece sujeto a revisión, CI y reconciliación con main; no forzar merge. Los hallazgos de revisión se incorporan al plan, no se declaran reparaciones de runtime.
-- Recuperación del cambio documental: restaurar la versión previa del archivo mediante commit/PR, sin reescribir historia. Antes de corregir datos reales: snapshot acotado, transacción/prueba reversible y rollback revisado.
-- Regla reutilizable: acreditar por separado código, build, alias efectivo, ruta HTTP, comportamiento, persistencia y autorización. Una marca READY no propaga aprobación al siguiente nivel.
+Ciclo de ejecución autónoma: tarea canónica → lease/fencing → acción acotada → verificación → receipt. Las notas y pruebas de esta ronda no son receipts de OpenClaw/Control Plane.
+
+Esta ronda creó un candidato de código privado y actualizó seguimiento; NO cambió datos del evento, función instalada, permisos, reservas, pagos ni dominio de producción. No envió invitaciones. Revertir el candidato o cerrar PR96 recupera el estado previo del código sin rollback de datos. El PR documental #252 sigue separado de la integración de código y sujeto a revisión; no forzar merge.
+
+Aprendizaje: distinguir archivo SQL histórico de función instalada; distinguir cuatro formularios de cuatro altas únicas; distinguir Airtable de tarea canónica; y distinguir build, HTTP, comportamiento, persistencia y autorización. No volver a aplicar migraciones para corregir una diferencia que solo está en el código archivado.
 
 ## Referencias
 
 - https://github.com/Dramcatcherst/Toro-OS/issues/246
 - https://github.com/Dramcatcherst/Toro-OS/pull/249
 - https://github.com/Dramcatcherst/Toro-OS/pull/252
+- https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/96
 - https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/92
-- https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/95
-- https://github.com/Dramcatcherst/dreamcatcher-website-vnext/blob/c23a674ee1e9140f5bd9d9c82ce236411d966562/src/data/los50s-public.ts
-- https://github.com/Dramcatcherst/Toro-OS/blob/main/supabase/drafts/20261002_los50s_event_ops_applied.sql
-- https://vercel.com/dreamcatcher-s-projects/dreamcatcher-website-vnext-media-p0/3wVE317TiR8Ra5DGQDs4gmveSrEy
+- https://github.com/Dramcatcherst/dreamcatcher-website-vnext/blob/cd0cf359ab06bb870429c99f4ece2b5bb29e9931/src/data/los50s-public.ts
+- https://vercel.com/dreamcatcher-s-projects/dreamcatcher-website-vnext-media-p0/79EcDvATqvcgBnvfLrxtfKyrf4qw
