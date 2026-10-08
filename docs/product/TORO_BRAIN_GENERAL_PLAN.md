@@ -410,7 +410,8 @@ TORO
     │   └── other owned projects
     └── external relationships
         ├── client business
-        └── ally
+        ├── ally
+        └── partner project
 ```
 
 TORO may cross-analyze owned/authorized scopes when useful.
