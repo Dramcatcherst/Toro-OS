@@ -72,3 +72,17 @@ Fuentes: https://www.hotelswaps.com/members ; https://www.hotelswaps.com/news/ba
 - Marriott corporativo y programa HotelHelp: https://serve360.marriott.com/wp-content/uploads/2024/06/Marriott_Statement_2024.pdf
 
 **Regla de gobierno:** esta nota es snapshot de investigación; todas las decisiones, acciones, respaldos, permisos y estados futuros pertenecen al módulo canónico TORO OS, nunca a un registro paralelo. No ejecutar depósitos, retiros, pagos, compras de coins ni reservas outbound sin prueba autenticada y aprobación según controles vigentes.
+
+
+## Benchmark de precios en efectivo (Booking.com, corte 7 de octubre de 2026)
+
+Cotizaciones de alojamiento para **2 adultos, 1 habitación, tres noches**. Precios totales devueltos en USD por el conector de Booking.com; verificar condiciones/impuestos al confirmar. **NO son cotizaciones HotelSwaps ni demuestran que los hoteles estén afiliados.** Fechas de prueba, no itinerario comprometido:
+
+| Ciudad | Fechas 2026 | Ejemplo | Total USD |
+|---|---|---|---:|
+| Seúl | 30 oct–02 nov | November Myeongdong | 272.63 |
+| Bangkok | 02–05 nov | Villa Bangkok | 126.95 |
+| Ho Chi Minh | 04–07 nov | Chez Mimosa Petite | 153.01 |
+| Bali | 10–13 nov | The Vira Bali Boutique | 179.71 |
+
+Estos alojamientos NO son comparables en categoría con Karma Kandara ni Bach Suites; la ventaja final se mide hotel contra hotel equivalente, mismas fechas y políticas, descontando los coins requeridos y las tarifas reales.
