@@ -410,8 +410,7 @@ TORO
     │   └── other owned projects
     └── external relationships
         ├── client business
-        ├── ally
-        └── partner project
+        └── ally
 ```
 
 TORO may cross-analyze owned/authorized scopes when useful.
@@ -1043,6 +1042,50 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 ## Channel implementation
 - Dreamcatcher public website CURRENT canonical runtime is Vercel project `dreamcatcher-website-vnext-media-p0` / `prj_iX2eCBZkd6cmkX3AlfcpYOpkOOur`; verified production deployment `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn` is READY and owns custom aliases `dreamcatcherhotel.com` and `www.dreamcatcherhotel.com`. Historical parallel website builds remain reference-only until domain/env/rollback parity is documented; do not delete them merely because the public domain has converged.
+
+### Dreamcatcher V2 — nuevo build integrado al Plan General — 2026-10-07
+
+**Owner direction:** Mauricio autorizó incorporar el plan `DC-BUILD-20261007-R1` al Plan General. La autorización corresponde a dirección, secuencia y documentación; no aprueba la composición visual final ni una publicación de la web.
+**Scope:** `dreamcatcher_website` → `dreamcatcher_hotel_master`; TORO Channels/Growth coordina, con SKY como responsable operativo registrado y Systems/Builder para implementación autorizada. Se conserva la prioridad high/P1 del módulo sin desplazar los P0 transversales de identidad, seguridad y verdad comercial.
+**Single operational dossier:** `operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2` → `structured_content.build_action_plan_20261007_r1`. Los paquetes siguientes son entregables del expediente existente, no siete proyectos ni una segunda cola.
+
+#### CURRENT
+
+- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El último head observado para el plan fue `5e2d7eca75237ac770d80d964818919dc71e9d04`, abierto/draft/sin merge; revalidar antes de ejecutar. Un deployment READY o pruebas de otro SHA no certifican el candidato actual.
+- El plan está registrado y aprobado para integración; su implementación nueva sigue NOT_STARTED. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por este documento.
+- `DC2-022` y Channel Truth conservan el bloqueo de publicación. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+
+#### TARGET
+
+Una home ES/EN fotográfica, luminosa, compacta y orientada a elegir y reservar. Flow conserva la exploración, pero disponibilidad y navegación convencional no requieren aprender controles ni cerrar un tutorial. La paleta concreta y el copy pasan revisión visual, sin declarar otra marca oficial. Primera entrega acotada: portada → explorador → entrada a ficha → disponibilidad.
+
+#### NEXT — secuencia única
+
+| Paquete | Resultado y criterio de aceptación | Trabajo existente |
+| --- | --- | --- |
+| B0 | Reconciliar candidato/base/producción, deltas ya incorporados, CI del SHA exacto, configuración de publicación y rollback. Desconocidos y bloqueos quedan explícitos; no repetir el parche de nombre `BOOKING_BASE_URL`, ya corregido en el candidato analizado. | DC2-022 |
+| B1 | Corregir fecha local `America/Costa_Rica`, salida posterior y continuidad de fechas, ocupación, edades y moneda donde Kross lo soporte. Probar cruces de día/mes/año y edades 3/4 y 10/11; no inventar parámetros ni calcular tarifas en el frontend. | DC2-022; consume revenue_booking_stack |
+| B2 | Sustituir lenguaje de prototipo por información de huésped; fotografía dominante, jerarquía clara y reserva accesible. Capturas móvil/escritorio del mismo SHA y revisión del dueño; no publicación implícita. | Website issue #79 / PR #80 |
+| B3 | Comparar hasta tres alojamientos con capacidad, camas, baño, cocina, escaleras y vista verificadas. Mapping de unidad solo cuando esté validado; prueba con cinco personas todavía pendiente, no un resultado declarado. | DC2-028 |
+| B4 | Resolver derechos y correspondencia de medios, categorías y elegibilidad; reutilizar galería/footer/rutas. QA bloquea medios inválidos y un fallo runtime no elimina toda ruta de reserva/contacto. | media_six_finalists_rights_reconciliation_2026_09 |
+| B5 | QA ES/EN, móvil/escritorio, teclado, zoom, consentimiento y movimiento reducido; medición sin PII ni eventos duplicados. Separar intención/handoff de reserva confirmada; Chromium no acredita Safari/iPhone. | DC2-022; DC2-030 permanece absorbida |
+| B6 | Presentar evidencia y riesgos, obtener autorización específica de publicación, liberar el artefacto exacto y comprobar rutas críticas con rollback disponible. | DC2-022 |
+
+Las correcciones verificadas de otros PR se preservan por comparación, no por mezcla ciega ni reimplementación. Un solo ejecutor autorizado modifica los archivos compartidos. No iniciar workers, reactivar ejecutores suspendidos ni crear un scheduler por registrar esta secuencia; la ejecución material utiliza el Control Plane y los recibos existentes.
+
+#### Verdad comercial, aceptación y medición
+
+Kross conserva tarifa, disponibilidad y reserva; Supabase conserva política/contenido/estado; GitHub conserva código y contratos; Vercel aporta evidencia del artefacto; Dropbox conserva originales y derechos; Airtable sigue como referencia transitoria. Aplicar el contrato de ocupación, desayuno y suplementos actualizado el **2026-10-07** en este mismo Plan General, no restaurar los objetivos tarifarios anteriores del día 6. No cambiar IDs/slugs Kross, sumar villas con sus habitaciones ni prometer disponibilidad por un catálogo. Santa Toro sigue fuera de la navegación comercial; la publicación independiente de Makaiza requiere reconciliar elegibilidad y correspondencia con Kross, aunque su capacidad descriptiva ya tenga fuente.
+
+Aceptación mínima propuesta: escritorio 1366×768 y 1440×900 al 100%; móvil 360×800, 390×844 y 430×932; 320 px/reflow y zoom 200%; controles no tapados por consentimiento/menú/Compass/Tere; paridad ES/EN y alternativa convencional accesible. Objetivos de rendimiento de campo p75: LCP ≤2,5 s, INP ≤200 ms y CLS ≤0,1; son objetivos, no mediciones obtenidas ni inferencias desde laboratorio. Un P0 impide publicar aunque la puntuación agregada sea alta.
+
+Medir reservas directas confirmadas y contribución atribuible con evidencia, separando descuentos, comisiones, costos incrementales, reembolsos e impuestos. Clics y handoff son señales intermedias, no ventas ni utilidad. No prometer mejora porcentual sin baseline comparable y cobertura de atribución.
+
+#### FUTURE / aplazado
+
+Slack queda aplazado por decisión del dueño. No crear otra web, CMS, repositorio, biblioteca o plan maestro; no restaurar AgoVersion como base ni mezclar este lanzamiento con nueva API de mareas, audio/video pesados, expansión masiva de Flow, cambios tarifarios o limpieza destructiva. Las propuestas futuras no bloquean B0–B2. Los bloqueos de derechos y datos se resuelven en sus tareas originales.
+
+**Traceability:** seguimiento existente `Dramcatcherst/Toro-OS#28`, comentario `6049201914`; el detalle B0–B6 del expediente y el plan de implementación de 7 de octubre permanecen subordinados a este archivo. Esta sección completa la incorporación al documento rector cuando su PR documental sea integrado; no acredita ejecución o publicación del nuevo build.
 
 ## Experiment
 - dreamauro / RicoSky -> potential TORO Exchange
