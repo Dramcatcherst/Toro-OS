@@ -54,6 +54,22 @@ Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -
 
 ---
 
+## Correos y PayFlow — continuidad permanente 2026-10-07
+
+**Decisión de Mauricio:** mantener de forma indefinida el análisis de correos y la conciliación del calendario de pagos, ampliando la extracción de información útil. Reutilizar **una única tarea diaria existente** (`TORO Correos y Pagos`, 08:00 America/Costa_Rica, RRULE diario sin fecha de fin), el control `PayFlow Semanal` de los lunes y el forecast mensual a 90 días; no crear un segundo Finance Guard, plan, bandeja o scheduler ni reactivar escritores financieros suspendidos.
+
+**CURRENT observado 07/10:** tres buzones Gmail y uno Outlook autorizados para lectura selectiva; censo/checkpoints en `integrations.mail_ingest_*` con historia **incompleta**. Google Calendar vinculado de `admin@dreamcatcherhotel.com` sigue como interfaz de pagos existente, sin calendario separado `TORO PayFlow · Dreamcatcher`. Se verificaron y crearon tres eventos privados de control basados en facturas/recibos, y se corrigió el estado documentado de un evento previo de Alegra. Los identificadores por factura, período y evento permanecen en el seguimiento operacional, no en este plan rector. Crear eventos manuales con evidencia no certifica un sincronizador persistente.
+
+**Alcance de extracción:** recibidos y enviados; nuevos y lote histórico desde checkpoints; facturas PDF/XML, montos, vencimientos, emisor/receptor, propiedad/entidad, comprobantes, bancos, servicios/NISE, comisiones y reservas OTA, suscripciones/renovaciones, contratos, seguros, CCSS/impuestos/permisos, mantenimiento, incidencias de servicio, atención de huéspedes, oportunidades comerciales, seguridad y fallos de sistemas. Separar alcance hotelero, otras propiedades y datos personales. Aplicar ID por buzón+mensaje/hilo, documento y período; no reiniciar backfill, duplicar obligaciones, persistir secretos ni prometer 100% sin censo completo.
+
+**Contrato del calendario:** documento/proveedor gobierna la fecha de factura y vencimiento; banco/procesador gobierna salida de caja; Alegra gobierna asiento; Kross gobierna reserva/tarifa. Supabase PayFlow conserva obligación/estado/observación, y Google Calendar es proyección humana. Cada entrada diferencia emisión, vencimiento oficial, fecha interna de control y pago acreditado. Identidad idempotente `tenant + obligation_key + period + event_role`: buscar primero y actualizar **el mismo evento** cuando llegue evidencia nueva; una factura reemplaza el pronóstico del mismo ciclo. Diferenciar CONFIRMADO, ESTIMADO_POR_HISTORIAL, REQUIERE_VERIFICACION y PAGO_CONFIRMADO_POR_PROVEEDOR (aún sin conciliación bancaria). No registrar estimados de 90 días como deudas definitivas ni proyectar datos personales/otras propiedades al calendario hotelero.
+
+**GATE de automatización:** la tarea diaria revisa, clasifica, detecta vencidos/riesgos y prepara diffs; **no escribe automáticamente al Calendar ni a Supabase Finance** sin worker autorizado, idempotencia, lease/fencing, verificación y receipt del Control Plane. La actualización manual expresamente solicitada el 07/10 se realizó sobre eventos privados después de buscar duplicados y leer facturas; esa intervención no prueba auto-sincronización futura. Avisos a Mauricio/Carolina por WhatsApp requieren identidad, canal OpenClaw y envío verificados aparte. No pagos, asientos, envíos de correo, cancelaciones, cambios de reservas/servicios, permisos ni destrucción desde esta tarea.
+
+**NEXT:** (1) consolidar nuevos correos desde último checkpoint sin avanzar cursores por solo lectura; (2) reconciliar facturas/recibos contra obligaciones, cuentas y eventos existentes, incluyendo incidencias con posible corte y saldos disputados, sin duplicar; (3) comprobar y habilitar solo mediante su tarea canónica una proyección Calendar idempotente del Finance Worker, con readback y rollback antes de llamarla automática. El lunes se presentan vencimientos de 7/21/90 días por entidad y moneda. Actualizar este Plan General únicamente si cambian política, arquitectura, riesgos o dependencias; el detalle rutinario queda en receipts y calendario.
+
+---
+
 ## Autonomy consolidation + OpenAI surface strategy — 2026-10-01
 
 **Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT cleanup / NEXT worker bridge.
