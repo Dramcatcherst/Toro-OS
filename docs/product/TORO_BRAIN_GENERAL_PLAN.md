@@ -32,14 +32,18 @@ Autoridad: aclaraciones y aceptación de Mauricio del 2026-10-07. Este contrato 
 | Otras villas | Makaiza 7–11, capacidad 17; Toro 21–28, capacidad 29. No duplicar villa y componentes |
 | Mascotas | Hasta 10 kg; cualquier cargo y condiciones adicionales requieren su fuente vigente |
 
+Conflicto de implementación pendiente: `src/lib/toro-data.ts`, objeto `mkz`, todavía describe Makaiza para 15–20 personas. Es un descriptor anterior que contradice el máximo 17 coincidente en Airtable/Supabase; no debe usarse para prometer capacidad. Este lote documental registra la discrepancia, sin acreditar corrección de la interfaz ni publicación comercial. El registro Airtable de hotel completo también requiere conciliación: declara 20 habitaciones/74 personas, pero enlaza 19 y omite la 22.
+
 Recomendación de alojamiento elegida bajo la delegación del dueño: niño 75% del suplemento adulto de **alojamiento**; bebé sin suplemento si no necesita cama extra, pero contando en capacidad. El desayuno completo no recibe ese porcentaje. El importe adulto de alojamiento y el tratamiento fiscal aún requieren costos, margen y prueba por canal. Estas reglas registradas no prueban que Kross, WeSpeak ni las OTA hayan cambiado; conservar términos de reservas confirmadas.
 
-- Para cada canal, comparar la misma unidad, fecha, ocupación y condiciones antes/después de promociones. Comprobar que desayuno suma US$15 por servicio al total final; una derivación porcentual fija no lo garantiza.
+- Para cada canal, comparar la misma unidad, fecha, ocupación, régimen y condiciones antes/después de promociones, incluyendo límites de edad 3/4 y 10/11, redondeo y tratamiento fiscal. Comprobar que desayuno suma US$15 por servicio al total final; una derivación porcentual fija no lo garantiza.
 - Calcular un suplemento de lista mediante el multiplicador marginal solo cuando se haya demostrado qué descuentos/impuestos le aplican. No reutilizar US$50/100 ni suponer 70% de descuento como receta universal.
 - **Agoda bloqueado:** mantener inactivos RO 24359579 y BB 24531249 hasta confirmar USD, importes/ocupación y recepción desde Kross. Solicitud en caso 1120368076318197504; no duplicarla ni reactivar para resolver un error de plan inactivo.
 - Conservar nombres, IDs, slugs y enlaces Kross. No cambiar camas, capacidades o fotos por inferencia; las seis correspondencias Agoda provisionales requieren prueba de identidad.
 - Para grupos, ofrecer hasta tres combinaciones útiles con disponibilidad simultánea y enlaces permitidos por el canal; no prometer exclusividad sin evidencia.
 - Mantener una sola política versionada con fuente, aprobación, evidencia y estado por canal. Supabase conserva datos/control; Airtable referencia; Dropbox originales; no crear nuevas bases, monitores o planes paralelos.
+- Optimizar fotos, etiquetas y amenities únicamente contra evidencia de la unidad correcta. Medir conversión hasta reserva e ingreso confirmado; visitas o etiquetas no demuestran más ventas.
+- Aprender capacidades reales de cada herramienta mediante configuración observada, pruebas acotadas y lectura posterior. Registrar límites y correcciones reutilizables sin copiar datos privados entre negocios ni declarar dominio experto por documentación.
 - Priorizar contribución neta y conversión verificables. Ningún cambio documental demuestra incremento de utilidad ni publicación comercial.
 
 ### Mejora continua y control
