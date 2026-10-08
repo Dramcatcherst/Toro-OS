@@ -9,6 +9,22 @@
 
 ---
 
+## Reporte de recepción integrado y preparación operativa 2026 10 08
+
+**DIRECTIVA APROBADA por Mauricio el 08/10/2026.** [REPORTE RECEPCION](https://chatgpt.com/space/page_a6890f7962f88191abe44f53672fd8d4) es la vista operativa del hotel: huéspedes y canales comprobados, notas y antecedentes, cobros diferenciados, tareas/criterios de cierre, preparación hoy/mañana/7/30/90 días, Calendar y fechas especiales, MTD y comparación anual. No es otra fuente transaccional, CRM, cola o cerebro.
+
+**HECHO:** Page ampliada y leída; Gmail hotel, Calendar y Contacts consultados; reservas TORO: 33 filas, snapshot 21/09, 0 live y 0 estancias 2025. Automatización `Alertas del reporte recepción` habilitada y vinculada a la Page por nuevos correos relevantes de admin@dreamcatcherhotel.com; filtra asuntos de reservas/OTA/WeSpeak/huéspedes/pagos/facturas/comprobantes y verifica relevancia antes de actuar. Primera ejecución por evento todavía NO VERIFICADA. No reactivar la alerta anterior pausada. No duplicar ingesta/cursors de TORO Correos y Pagos. La tarea actualiza Page y notifica internamente; no envía WhatsApp ni email a terceros.
+
+**AUTORIDADES:** Kross conserva reservas, unidad, notas y condiciones; bancos/procesador verifican pagos; Alegra conserva contabilidad; TORO tasks/followups conserva acciones empresariales bajo Control Plane; Calendar conserva eventos; Contacts solo resuelve contacto; Tasks/Keep siguen sin adapter E2E verificado. Page preserva cambios humanos y cierres y deduplica por reserva/conversación/tipo de asunto más message_id. Teléfono internacional corroborado para wa.me; códigos de acceso, tarjetas, documentos y secretos no se publican.
+
+**PREPARACIÓN:** usar Calendar existente y feriados conectados; separar celebración/día festivo/efecto laboral y confirmar eventos locales antes de alertar. Revisar hitos 7/3/1 días antes; aviso por delta material, plazo crítico o fallo nuevo. El worker por correo no garantiza revisión diaria de Calendar ni cambios exclusivos de Kross. Incorporar revisión de preparación y alertas al Team Brief y Cierre Diario existentes, sin scheduler paralelo.
+
+**MTD Y 2025:** días completos del 1 de mes hasta ayer; parcial de hoy separado. Comparar mismo intervalo/propiedad/unidades/capacidad diaria/moneda/impuestos. Separar ingreso por estancia, cobros, cortesías/canjes y on-the-books. ADR=ingreso alojamiento/noches vendidas; RevPAR=ingreso/noches disponibles; ocupación=noches vendidas/disponibles. Ampliación de inventario requiere conjunto comparable. Sin datos históricos completos o snapshot a igual lead time: SIN DATOS, nunca porcentaje inventado.
+
+**BLOQUEOS:** nueva consulta Kross requiere login en el navegador de Work; notas internas, nombres/contactos restantes y saldos sin completar. WhatsApp/OpenClaw sin receipt E2E; histórico 2025 y espejo actual insuficientes. No marcar recepción sincronizada ni MTD calculado. **Prioridad:** lectura Kross vigente y relevo de habitación 21 → conciliación de pendientes actuales → histórico comparable → verificación del primer evento automático. El catálogo de 100 controles adicionales en la Page es preparación priorizada, no 100 integraciones ejecutadas.
+
+---
+
 ## Google Workspace operativo — Google Tasks, Keep, Calendar y servicios conectados (2026-10-07)
 
 **DIRECTIVA APROBADA (Mauricio, 07/10/2026).** Integrar progresivamente los servicios oficiales de Google Workspace de `admin@dreamcatcherhotel.com` para capturar ideas, convertir solicitudes verificadas en trabajo, ejecutar/consultar desde TORO Portal/WhatsApp y mejorar colaboración, productividad y recuperación de información. Este texto amplía el plan **único**, no crea un segundo backlog, una nueva base, un nuevo administrador, un nuevo scheduler ni autoriza gasto o delegación de dominio. TORO Brain/Control Plane sigue la única autoridad de orquestación y aprobación empresarial.
