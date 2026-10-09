@@ -111,3 +111,111 @@ Si falta acceso, documenta exactamente la evidencia ausente sin exportar chats/P
 Prepara lote sintético acotado, rollback y owner aceptante. Entrega una solicitud
 G3 concreta únicamente cuando ese entorno esté identificado y aislado. Sin
 campañas, permisos, migraciones, scheduler, merge/deploy ni piloto por inferencia.”
+
+
+## Checkpoint G3 de preparación — 09/10/2026, 03:06 Costa Rica
+
+Marcador CRM-TERE-EXPERIENCIAS-20261008-V1; delta documental, sin ejecución externa.
+Ámbito: Dreamcatcher / proyecto canónico abtyrbqlqbsastmridzp.
+Techo autorizado de esta revisión: A0 metadatos + A2 propuesta y documentación
+en la misma rama aprobada. Mauricio conserva la decisión G3; responsable técnico
+del entorno y owner aceptante de QA siguen sin acreditarse.
+
+### Evidencia actual y confianza
+
+| Objeto / fuente | Fecha de fuente | Resultado observado | Confianza / límite |
+| --- | --- | --- | --- |
+| PR #258, commit remoto 6e78a903baa1575b3ad174d77fcfbbc0db1621df | Publicado 09/10 | Draft, abierto, no merged; árbol idéntico al local probado | Alta para repositorio; no acredita instalación productiva |
+| GitHub Workstation health tests #214, run 37900293128 | Commit G2 | completed / success | PASS CI de ese commit |
+| GitHub TORO Brain CI #926, run 37900293148 | Commit G2 | completed / success | PASS CI de ese commit; no E2E WeSpeak |
+| private.tere_configuration / tere-identity-short-core | updated_at 23/09/2026 23:03:36.614864 UTC | Active, título Tere Identity & Operating Voice V5; MD5 content 0cab1a8be477f9bc6f25ceaeb5df56c7 | Alta para configuración almacenada; leído de nuevo, no hash consumido |
+| private.tere_configuration / tere-social-chemistry-playfulness-r4-20260930 | updated_at 30/09/2026 08:04:49.106524 UTC | Active; MD5 content 1335e9216e988c4da929b50332862691 | Alta para existencia de capa posterior; no acredita despliegue ni precedencia efectiva |
+| operations.knowledge_items / journey y compact v1 | updated_at 23/09/2026 13:23:26.959656 UTC | verified/active; runtime_consumption UNVERIFIED; compact CONFIG_RECONCILED_RUNTIME_UNVERIFIED | Alta para estado almacenado; campos consultados expected/observed hash, runtime_version y environment_id nulos |
+| Snapshot referido por ambos knowledge_items | Referencia histórica 23/09 | docs/evidence/TORO_AGENT_RUNTIME_KNOWLEDGE_PRECHANGE_2026-09-23.json existe en checkout | Solo existencia comprobada; no rollback WeSpeak probado |
+
+Conclusión: el hash V5 del runbook coincide con el contenido V5 almacenado, pero
+solo cubre esa pieza. R4 y central/tags/embudos/Información Extra requieren un
+manifiesto conjunto vigente y precedencia revisada. No sustituirlo por un MD5
+parcial ni asumir que content updated_at es applied_at del runtime externo.
+
+Consulta acotada de las siete tareas: 7/7 conservan el marcador; no se duplicaron
+ni se cambiaron estados, responsables o fechas. Estados leídos:
+- in_progress: toro_core_relationship_work_abstraction_20260929.
+- blocked: wespeak_crm_reactivation_attribution_20260826,
+  wespeak_apply_compact_tere_context_2026_09, wespeak_weekly_conversation_qa.
+- planned: knowledge_sweep_tere_2026_09,
+  toro_connector_learning_runtime_20260929,
+  owner_attention_comms_payflow_portal_openclaw_20260928.
+Las tareas compact y QA mencionan V4 y V5: historial, no permiso para elegir
+arbitrariamente una como objetivo de aceptación. DC2-040 sigue sin mapping
+independiente acreditado por esta revisión.
+
+### Paquete de evidencia faltante — BLOCKED
+
+| Gate | Evidencia mínima para desbloquear | Responsable / siguiente acción | Estado |
+| --- | --- | --- | --- |
+| Entorno | ID de workspace/runtime de prueba existente, tenant/propiedad, versión y canal sintético | Responsable técnico por designar: proporcionar metadatos del entorno autorizado | BLOCKED |
+| Aislamiento | Control verificable de salidas, campañas, reservas, cobros y proveedores; evidencia de estado antes de pruebas | Responsable técnico: demostrar confinamiento sin enviar ni modificar durante discovery | BLOCKED |
+| Versión consumida | Manifiesto de central/tags/embudos/Extra/controles nativos, versiones, hashes, precedencia, applied_at y readback del runtime | Editor único por designar: reconciliar fuente y lectura externa | BLOCKED |
+| Reversión | Snapshot de esos objetos, procedimiento de restauración y detención, owner aceptante y evidencia de ensayo autorizado | Responsable técnico + owner aceptante: presentar procedimiento | BLOCKED |
+| Autorización | Entorno, ventana, lote final, responsables y rollback concretos aprobados por Mauricio | TORO presenta solicitud G3 únicamente al completar lo anterior | NOT_READY |
+
+No hay evidencia directa del entorno WeSpeak aislado en las fuentes consultadas.
+Eso no prueba que no exista. No se abrió simulador ni se contactó al proveedor.
+El sandbox Supabase de otros contratos no acredita aislamiento WeSpeak.
+
+### Lote propuesto — máximo 17 conversaciones sintéticas, NO EJECUTADO
+
+Reutilizar las cinco claves canónicas first_contact, quote_without_live_truth,
+in_stay_problem, payment_sensitive y navigation_shortcuts. Los IDs TERE-V4-RT
+en el paquete V5 se conservan como identificadores históricos: no son prueba de
+versión consumida. Usar turnos ES/EN en la misma cohorte sin duplicar conversaciones.
+
+| Conversaciones | Negativos adicionales a los cinco casos canónicos | Criterio de terminado |
+| --- | --- | --- |
+| 6–8 | Teléfono compartido/reciclado; agencia frente a huésped; empleado cliente y grupo | Sin merge por teléfono/nombre, sin autoridad por rol comercial ni convertir grupo en persona |
+| 9 | Dos tenants y vista 360 por rol | Cero exposición cruzada; referencias mínimas y permisos server-side |
+| 10 | Opt-out, reimportación, merge/split y revocación concurrente | Supresión conservada; split no restaura permisos ni revocaciones antiguas |
+| 11 | Tag vencido y conocimiento obsoleto | No otorga permiso/descuento/consentimiento; conflicto/frescura visibles |
+| 12 | Pago mencionado sin reserva verificable | No ganado/venta nueva ni pago confirmado por conversación |
+| 13 | Experiencia sin cupo | Interés/solicitud/aceptación/reserva/servicio separados; sin confirmar plaza ni exponer datos internos |
+| 14 | Villa frente a evento y TICOS sin residencia acreditada | No confundir uso ni inferir residencia; términos Kross requieren autoridad vigente |
+| 15 | Edades 11/12 y pérdida de edad web | Adults 11+ según Kross; conflicto nativo visible; captura/confirmación antes de cotizar |
+| 16 | Fronteras 8/9/30/31 noches | Hasta 30 inclusive; 31 handoff, sin falsa cotización |
+| 17 | Handoff >2h, ráfaga 10s y replay entre canales | Caso humano no se libera por temporizador; owner/aceptación/acción/retorno; una acción canónica y sin duplicados |
+
+Los rangos agrupan turnos dentro de conversaciones, no multiplican el límite.
+No fijar resultados PASS ni flags de aislamiento como defaults. Receipt externo
+debe incluir evento/correlación, evidencia mínima, entorno, hash/versión,
+timestamps, aceptación y resultado PASS/FAIL/BLOCKED/NOT_RUN por caso.
+Medir sobre la misma cohorte los numeradores/denominadores del prompt maestro;
+cuando no haya prueba, NO MEDIDO. La suite local no cambia esos valores.
+
+Criterio de stop propuesto: cualquier fuga de tenant/PII, acción o envío fuera de
+alcance, hash distinto/desconocido, pérdida de supresión o rollback no seguro
+detiene la prueba y sus pasos dependientes. Continuación manual por canales
+operativos existentes y autoridad Kross/finanzas; sin redirigir alertas de otros
+flujos a Recepción. Sin publicar cambios web ni decidir políticas en conflicto.
+
+### Decisión y próximo superprompt
+
+HECHO: código y CI G2 PASS. PROPUESTO: lote acotado y paquete mínimo de evidencia.
+BLOCKED: preparación material del gate G3 externo. NOT_RUN: WhatsApp E2E,
+supresión técnica, integración/concurrencia real, pruebas externas y piloto.
+NO MEDIDO: rendimiento comercial/operativo.
+
+Aprendizaje candidato para Connector Learning existente: un hash de contenido
+central coincidente no prueba consumo del conjunto de capas. Se documenta aquí
+como control de evidencia; no se activa regla, agente o cadencia nueva.
+
+“Continúa CRM-TERE-EXPERIENCIAS-20261008-V1 desde este checkpoint G3 y PR #258.
+Relee la rama y las siete tareas sin duplicarlas. Inspecciona exclusivamente los
+metadatos del entorno WeSpeak de prueba existente que se identifique: ID,
+tenant, versión, manifiesto central/tags/embudos/Extra/controles nativos,
+applied_at y hash/versión consumidos, aislamiento y rollback. No usar simulador,
+enviar, contactar huéspedes/proveedores ni modificar configuración. Mantén el
+lote propuesto de máximo 17 conversaciones sintéticas sin ejecutarlo. Solo
+cuando existan entorno, controles y responsables acreditados, presenta G3
+concreto a Mauricio. Si faltan, actualiza únicamente evidencia y gaps en este
+receipt y tareas autorizadas, conservando estados/fechas/owners y rutas ajenas.
+Sin SQL, permisos, conexiones, campañas, cron, merge/deploy ni piloto.”
