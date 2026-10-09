@@ -219,3 +219,93 @@ cuando existan entorno, controles y responsables acreditados, presenta G3
 concreto a Mauricio. Si faltan, actualiza únicamente evidencia y gaps en este
 receipt y tareas autorizadas, conservando estados/fechas/owners y rutas ajenas.
 Sin SQL, permisos, conexiones, campañas, cron, merge/deploy ni piloto.”
+
+
+## Delta de discovery — 09/10/2026, 15:06 Costa Rica
+
+CRM-TERE-EXPERIENCIAS-20261008-V1. No cambia código, tareas, responsables,
+calendarios ni configuración operativa. Reutiliza este receipt ya enlazado por
+el Plan General; no añade otra base, cola, página de seguimiento o documento.
+
+### CI de la revisión documental
+
+Commit d2aa013cc1fbbe0ba83036adb3f70f46aa37f298:
+- PASS: Workstation health tests #215, run 37909481150, completed/success.
+- PASS: TORO Brain CI #930, run 37909481131, completed/success.
+Fuente GitHub Actions, leída el 09/10. El PR #258 sigue draft y no merged.
+No repetir pruebas locales por una revisión exclusivamente documental.
+
+### Contrato reutilizable encontrado y alcance comprobado
+
+Fuente: operations.knowledge_items /
+toro_runtime_config_consumption_contract_2026_09_v1.
+updated_at 29/09/2026 09:27:24.918179 UTC; lectura actual solo de metadatos.
+Confianza alta para estado almacenado; verificación runtime sigue pendiente.
+
+| Campo observado | Valor | Consecuencia |
+| --- | --- | --- |
+| schema_version | 1.1 | Reutilizar semántica de evidencia existente antes de diseñar otro ACK |
+| ack_fields | runtime_id, loaded_at, acknowledged_config_version, acknowledged_config_hash, status, safe_error_code | Campos candidatos para el paquete de evidencia, sin incorporar secretos |
+| hash_format | sha256: seguido de 64 hex minúsculos | Identidad canónica del contrato Human Layer; no convierte los MD5 de TERE en ese hash |
+| canonical_pointer | toro_human_layer_runtime_config_current | Su objeto es Human Layer, no manifiesto completo WeSpeak |
+| current_config_version | TORO-HUMAN-LAYER-v1.5 | No confundir con Tere Identity & Operating Voice V5 |
+| runtime_targets | TORO Portal, OpenClaw WhatsApp, future governed surfaces | No se observa WeSpeak como target explícito |
+| current_implementation_status | DRAFT_ACK_HANDSHAKE_VERIFIED_V15_NOT_RUNTIME_CONSUMED | Un handshake preparado no demuestra consumo directo |
+| state_persistence_implemented | false | No afirmar receipt persistente por este contrato |
+| operational_status_is_runtime_ack | false | Estado operativo no sustituye ACK |
+| ack_transport | estados match/mismatch/not_reported/invalid_report/source_unverified; no persiste ni refleja identidad reportada | Un futuro adapter requiere validación y gate propios |
+
+El hash almacenado en este contrato identifica Human Layer. No se usará como
+expected_config_hash del paquete de TERE. La aplicación a WeSpeak sigue
+PROPUESTA, no conectada ni instalada por esta revisión. Mantener el intake y
+evaluador TERE existentes; no crear otro motor de aceptación.
+
+### Cobertura de búsqueda y fallo observado
+
+- GitHub main: búsqueda acotada “WeSpeak sandbox” devuelve documentación que
+  exige QA aislado, no un entorno de prueba identificado.
+- Checkout docs/data: búsqueda de referencias WeSpeak con sandbox/workspace/test
+  environment no aportó identificación. Esto no prueba inexistencia.
+- Supabase: inventario mínimo de títulos/fechas de knowledge_items runtime,
+  connector y WeSpeak, seguido de selección de campos del contrato anterior.
+  No se leyeron chats, contactos, contenido financiero ni secretos.
+- Dropbox: búsqueda por nombre WeSpeak, máximo 10 resultados, NO COMPLETADA.
+  Error del servicio: exige link_id no expuesto en el esquema disponible.
+  No inventar ese ID, no afirmar que Dropbox carezca de documentación y no
+  reintentar otra vía sin resolver la conexión permitida.
+
+Impacto: sin referencia del workspace/runtime no puede acreditarse su aislamiento,
+su config aplicada ni la restauración. G3 externo continúa BLOCKED; campañas,
+envíos, reservas, pagos y piloto NOT_RUN. No hay nuevos resultados comerciales:
+NO MEDIDO. No se ha contactado al proveedor.
+
+### Paquete mínimo para el responsable del entorno — borrador, NO ENVIADO
+
+Objetivo: obtener metadatos para preparar G3, sin realizar todavía QA.
+
+“Necesitamos identificar el entorno de prueba existente de WeSpeak para
+Dreamcatcher: enlace o ID del workspace/runtime, versión y responsable técnico.
+Indicar qué controles impiden enviar a huéspedes/proveedores y modificar
+campañas, reservas o pagos; aportar referencia de su estado, no secretos.
+Indicar qué versión/manifiesto central+tags+embudos+Información Extra+controles
+nativos está aplicada y dónde se observa el hash/versión consumidos y applied_at.
+Indicar referencia del snapshot y procedimiento de restauración/detención.
+Si algún campo no es observable, declararlo desconocido. No usar el simulador,
+enviar mensajes, alterar configuración ni contactar huéspedes para responder.
+No adjuntar chats, contactos, tokens, contraseñas ni datos de pago.”
+
+Responsable técnico: por identificar, sin asignación inferida.
+Decisión de autorización G3: Mauricio, después de revisar entorno/lote/rollback.
+Criterio de terminado de discovery: cada campo esencial con fuente, fecha,
+objeto, evidencia y reviewer; contradicciones conservadas y sin efectos externos.
+
+### Próximo SP condicionado al dato que falta
+
+“Continúa CRM-TERE-EXPERIENCIAS-20261008-V1 con la referencia del entorno WeSpeak
+de prueba aportada. Lee solo metadatos autorizados; compara alcance del
+manifiesto TERE con Human Layer sin intercambiar hashes. Completa entorno,
+responsable, aislamiento, applied_at, config consumida y rollback. Conserva
+el límite de 17 conversaciones propuestas sin ejecutarlas. Presenta G3 concreto
+para aprobación solo si la evidencia es suficiente. Si no hay referencia nueva,
+evita otra ronda idéntica: informa del campo faltante. Sin simulador, envíos,
+código nuevo, SQL, permisos, campañas, cron, merge/deploy ni piloto.”
