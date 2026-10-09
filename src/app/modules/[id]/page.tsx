@@ -21,7 +21,7 @@ export default async function ModuleDetailPage({ params }: { params: Promise<{ i
     <main className="min-h-screen bg-[#030712] p-6 text-slate-100">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link href="/modules" className="text-xs uppercase tracking-[0.18em] text-cyan-300">TORO OS / Modules</Link>
+          <Link href="/modules" className="text-xs uppercase tracking-[0.18em] text-cyan-300">TORO / Modules</Link>
           <Link href="/" className="text-xs text-slate-400 hover:text-white">Back to Command Home</Link>
         </div>
 
