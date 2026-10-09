@@ -4131,3 +4131,14 @@ Strategic principle: **occupancy by itself is not success. TORO should maximize 
 - **Verificación documental/datos:** IDs únicos, coincidencia de IDs/URLs entre catálogo y proyección, referencias de inicio/alias existentes y protocolos permitidos. No se atribuye QA autenticado, pruebas de aislamiento runtime ni Portal publicado.
 - Plan de esta rama reconstruido sobre el contenido vigente de `main` (blob e1e8e7edc57018176686752187a5ae5ecf565713) conservando sus cambios concurrentes y la sección documental de este carril. La integración a `main` permanece pendiente de revisión/merge; no se declara el plan publicado.
 - Recuperación: snapshot previo de la proyección en `work/alignment-20261009-before.json`; revertir únicamente esa clave después de comparar updated_at. Para documentación, revertir el commit del carril; nunca sobrescribir otros cambios.
+
+
+### Guía compacta de herramientas — 2026-10-09
+
+**CURRENT:** prototipo local `TORO-DASHBOARD-LINKS.html` actualizado, 243 fichas preservadas en 44 grupos / 10 áreas; seis tareas diarias, detalles plegables, búsqueda, filtros, favoritos locales, copiar e impresión. Nueve iconos de marca de Simple Icons; emojis en el resto. Las 50 simplificaciones están enumeradas en la guía local y en `portal_navigation_proposal.compact_view` v3.0 del mismo registro Supabase.
+
+- Proyección local, no Portal publicado ni conexión viva. Catálogo/proyección v2.0 conservados. `compact_view` almacena distribución por IDs, tareas, procedencia de iconos, guía y pruebas; no crea otra base. SINAMOT localizado en su web oficial queda como overlay de presentación sobre LINK-159, sin afirmar alertas en vivo ni cerrar otros pendientes.
+- Inicio compacto: reservas LINK-048, cotizar LINK-002, mensajes LINK-178, equipo LINK-086, agenda LINK-056, documentos LINK-131. Facturación permanece en Dinero y trámites. Los favoritos locales son solo de demostración; integración debe usar preferencias existentes.
+- **Evidencia local:** 243 IDs, seis accesos de inicio, búsqueda, filtro de favoritos/persistencia, estado vacío, cero errores JS y sin desborde horizontal a 390 px. Revisión visual escritorio/móvil. No implica accesos autenticados ni pruebas de aislamiento en producción.
+- **TARGET/NEXT:** implementar en sección existente de TORO tras validar los seis destinos, identidad/rol/scope en servidor y preferencias canónicas. Portal es puerta, TORO Brain relaciona tareas/sistemas/proyectos/fuentes, Supabase guarda catálogo; autoridades transaccionales permanecen Kross/Alegra. Mantener permisos y separar Santa Toro, patrimonio y hotel.
+- No merge/deploy implícito; completar favoritos Chrome y otros pendientes con investigación focalizada, sin reconstruir el inventario.
