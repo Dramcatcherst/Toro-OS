@@ -25,6 +25,23 @@ const passing = {
 };
 
 describe("evaluateTereRuntimeAcceptance", () => {
+  it("rejects duplicated contradictory evidence even when a later pass would overwrite a failure", () => {
+    const result = evaluateTereRuntimeAcceptance({
+      ...passing,
+      scenarios: [{ key: "first_contact", passed: false }, ...passing.scenarios],
+    });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain("scenario_suite");
+  });
+
+  it("rejects an extra unrecognized scenario at the direct evaluation boundary", () => {
+    const result = evaluateTereRuntimeAcceptance({
+      ...passing,
+      scenarios: [...passing.scenarios, { key: "injected" as "first_contact", passed: true }],
+    });
+    expect(result.passed).toBe(false);
+  });
+
   it("verifies the current config only when runtime identity, hash, timing and scenario suite pass", () => {
     const result = evaluateTereRuntimeAcceptance(passing);
 

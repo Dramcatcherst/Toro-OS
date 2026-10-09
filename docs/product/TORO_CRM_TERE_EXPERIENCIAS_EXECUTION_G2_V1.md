@@ -1,7 +1,9 @@
 # TORO CRM–TERE–Experiencias: plan y método de ejecución G2
 Marcador: CRM-TERE-EXPERIENCIAS-20261008-V1
 Fecha: 09/10/2026, America/Costa_Rica.
-Estado: PROPUESTO PARA APROBACIÓN G2. No ejecución técnica autorizada por este documento.
+Estado: G2 APROBADO por Mauricio («Si»), 09/10/2026 01:07 Costa Rica, exclusivamente Paquete A local.
+
+Registro posterior: [receipt del Paquete A](../evidence/TORO_CRM_TERE_G2_LOCAL_20261009.md). El texto siguiente conserva la propuesta presentada; los estados de la sección 9 son el corte previo a aprobación, no el estado actual.
 
 ## Aprobación recibida
 Mauricio respondió «Si apruebo» el 09/10/2026 a las 00:54, hora Costa Rica, a la solicitud de aprobación G1 de la especificación presentada en PR #258. Se registra G1 APROBADO, limitado a esa especificación. No concede G2, QA real, piloto, producción, permisos ni acciones comerciales.

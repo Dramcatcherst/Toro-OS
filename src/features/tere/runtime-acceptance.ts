@@ -64,9 +64,10 @@ export function evaluateTereRuntimeAcceptance(
   const scenarioMap = new Map(
     input.scenarios.map((scenario) => [scenario.key, scenario]),
   );
-  const allRequiredScenariosPass = REQUIRED_SCENARIOS.every(
-    (key) => scenarioMap.get(key)?.passed === true,
-  );
+  const allRequiredScenariosPass =
+    input.scenarios.length === REQUIRED_SCENARIOS.length &&
+    scenarioMap.size === REQUIRED_SCENARIOS.length &&
+    REQUIRED_SCENARIOS.every((key) => scenarioMap.get(key)?.passed === true);
 
   const checks: TereRuntimeAcceptanceCheck[] = [
     {
