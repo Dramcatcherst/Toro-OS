@@ -13,9 +13,10 @@ import {
 
 import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
+import { canReadHotelDirectory } from "@/features/tools/directory";
 
 const profileLabels: Record<string, string> = {
-  owner_executive: "Owner / Ejecutivo",
+  owner_executive: "Dirección",
   manager: "Gerencia",
   reception: "Recepción",
   housekeeping: "Aseo",
@@ -50,16 +51,16 @@ export default async function MyToroPage({
       <main className="min-h-screen bg-[#030712] px-5 py-10 text-slate-100">
         <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-800 bg-slate-950/80 p-7">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-amber-100">
-            <LockKeyhole className="h-4 w-4" /> Contexto no resuelto
+            <LockKeyhole className="h-4 w-4" /> Acceso a tu cuenta
           </div>
           <h1 className="text-3xl font-black tracking-[-0.04em] text-white">
             Entra a TORO para ver tu experiencia.
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Esta vista usa tu identidad y permisos reales. No muestra un menú genérico si no puede resolver tu sesión.
+            Usa tu correo de trabajo. Al entrar verás las opciones que ya permite tu cuenta.
           </p>
           <Link
-            href="/login"
+            href="/login?next=/my-toro"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950"
           >
             <LogIn className="h-4 w-4" /> Iniciar sesión
@@ -109,10 +110,10 @@ export default async function MyToroPage({
                 </span>
               </div>
               <h1 className="text-3xl font-black tracking-[-0.04em] text-white md:text-5xl">
-                {view.preferredDisplayName}, esto es lo más útil para tu contexto.
+                Tu espacio de trabajo
               </h1>
               <p className="mt-4 text-sm leading-6 text-slate-400 md:text-base">
-                TORO resolvió tu experiencia desde tu sesión, roles y puesto. Esta vista demuestra personalización real; las capacidades todavía no se consideran operativas hasta probar su fuente y permiso.
+                Sesión: {view.context.email ?? view.preferredDisplayName}. Abre tu turno del hotel para encontrar sus herramientas. Las opciones marcadas «Por activar» todavía no están disponibles.
               </p>
             </div>
             <div className="rounded-2xl border border-slate-800 bg-black/25 px-4 py-3 text-sm">
@@ -125,12 +126,17 @@ export default async function MyToroPage({
                 href="/onboarding"
                 className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-200 hover:text-white"
               >
-                <RotateCcw className="h-3.5 w-3.5" /> Rehacer onboarding
+                <RotateCcw className="h-3.5 w-3.5" /> Revisar mi perfil
               </Link>
             </div>
           </div>
         </header>
 
+        {canReadHotelDirectory(view.context) ? (
+          <Link href="/my-toro/herramientas" className="mt-5 inline-flex rounded-2xl border border-cyan-300/30 px-5 py-3 font-semibold text-cyan-200">
+            🏨 Abrir mi turno del hotel →
+          </Link>
+        ) : null}
         {menu?.items.length ? (
           <MyToroCommandBar
             menu={menu}

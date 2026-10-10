@@ -18,6 +18,7 @@ import { runToroMcpReadTool } from "@/features/mcp/read-adapter-server";
 import { resolveToroMcpBearerRuntime, verifyToroMcpBearerToken } from "@/features/mcp/auth";
 import { isToroMcpEnabled } from "@/features/mcp/config";
 import { loadLos50sEventOps } from "@/features/event-ops/los50s-server";
+import { loadHotelDirectory } from "@/features/tools/server";
 import { claimNextToroExecutionRun, claimToroExecutionRunById, renewToroExecutionLease,
   transitionToroExecutionRun, resolveFailedToroExecutionRun, completeToroExecutionRun,
   appendToroExecutionReceipt } from "@/features/control-plane/worker-runtime";
@@ -87,6 +88,10 @@ describe.each([undefined, "public-demo", "INTERNAL"])("runtime seams in demo mod
   });
   it("Event Ops cannot obtain identity or query the backend", async () => {
     expect(await loadLos50sEventOps()).toMatchObject({ state: "unauthenticated" });
+    noIo();
+  });
+  it("hotel directory denies access without identity, RPC or account disclosure", async () => {
+    expect(await loadHotelDirectory()).toEqual({ state: "denied", links: [] });
     noIo();
   });
 });
