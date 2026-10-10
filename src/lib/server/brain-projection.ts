@@ -1,7 +1,12 @@
 import "server-only";
 import { internalCapabilityEnabled } from "./public-demo";
 
-import { loadCanonicalBrainReadSlice } from "@/features/brain/canonical-read";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+import {
+  loadCanonicalBrainReadSlice,
+  loadCanonicalBrainReadSliceWithClient,
+} from "@/features/brain/canonical-read";
 import {
   buildCanonicalBrainLayout,
   buildCanonicalBrainProjection,
@@ -50,6 +55,59 @@ function syntheticView(reason: string): BrainProjectionView {
 
 function canonicalReadEnabled() {
   return internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED");
+}
+
+export async function loadBrainProjectionViewForContext(
+  context: import("@/features/context/types").ToroResolvedContext,
+  supabase: SupabaseClient,
+): Promise<BrainProjectionView> {
+  if (!canonicalReadEnabled()) {
+    return syntheticView(
+      "Canonical read path is prepared but disabled until authenticated Stage C QA passes.",
+    );
+  }
+
+  try {
+    if (context.requiresContextChoice) {
+      return syntheticView(
+        "Canonical read gate is enabled, but the authenticated user must choose an organization.",
+      );
+    }
+
+    if (
+      context.mode !== "organization" ||
+      !context.orgId ||
+      !context.membership ||
+      context.membership.status !== "active" ||
+      context.membership.orgId !== context.orgId ||
+      !context.canUseOrganizationData
+    ) {
+      return syntheticView(
+        "Canonical read gate is enabled, but organization data access is denied by context policy.",
+      );
+    }
+
+    const slice = await loadCanonicalBrainReadSliceWithClient(context, supabase);
+    const projection = buildCanonicalBrainProjection(slice);
+    const layout = buildCanonicalBrainLayout(projection);
+
+    return {
+      projection,
+      layout,
+      runtime: {
+        mode: "canonical_read_only",
+        realData: true,
+        externalWrite: false,
+        stage: "C",
+        reason:
+          "Authenticated, RLS-scoped canonical read projection. External writes remain disabled.",
+      },
+    };
+  } catch {
+    return syntheticView(
+      "Canonical read failed closed; synthetic projection retained and no private data exposed.",
+    );
+  }
 }
 
 /**

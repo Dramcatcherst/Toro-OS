@@ -2,6 +2,7 @@ import "server-only";
 import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { createHash } from "node:crypto";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -128,6 +129,10 @@ function stableProjectionRef(kind: string, canonicalId: string) {
   return `${kind}:${digest}`;
 }
 
+export function canonicalScopeRefForOrgId(orgId: string) {
+  return stableProjectionRef("scope", orgId);
+}
+
 function nullableNumber(value: number | string | null): number | null {
   if (value === null) return null;
   const number = typeof value === "number" ? value : Number(value);
@@ -165,7 +170,7 @@ export function projectCanonicalBrainReadSlice(input: {
   return {
     contractVersion: CANONICAL_BRAIN_READ_CONTRACT,
     generatedAt: input.generatedAt ?? new Date().toISOString(),
-    scopeRef: stableProjectionRef("scope", input.orgId),
+    scopeRef: canonicalScopeRefForOrgId(input.orgId),
     organization: {
       ref: stableProjectionRef("organization", input.organization.id),
       label: input.organization.name,
@@ -217,15 +222,14 @@ export function projectCanonicalBrainReadSlice(input: {
   };
 }
 
-export async function loadCanonicalBrainReadSlice(
+export async function loadCanonicalBrainReadSliceWithClient(
   context: ToroResolvedContext,
+  supabase: SupabaseClient,
 ): Promise<CanonicalBrainReadSlice> {
   if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
     throw new Error("Canonical Brain read is disabled.");
   }
   assertOrganizationContext(context);
-
-  const supabase = await createServerSupabaseClient();
 
   const [
     organizationResult,
@@ -303,4 +307,18 @@ export async function loadCanonicalBrainReadSlice(
     domainGovernance: (governanceResult.data ?? []) as DomainGovernanceRow[],
     krossHealth: (krossResult.data ?? []) as KrossHealthRow[],
   });
+}
+
+
+export async function loadCanonicalBrainReadSlice(
+  context: ToroResolvedContext,
+): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
+  // Preserve the existing fail-closed contract: invalid scope must be rejected
+  // before any database client is created.
+  assertOrganizationContext(context);
+  const supabase = await createServerSupabaseClient();
+  return loadCanonicalBrainReadSliceWithClient(context, supabase);
 }

@@ -161,6 +161,8 @@ export function executionReceiptsFromProjection(
     correlationId?: string;
     actionRef?: string;
     workflowRunRef?: string;
+    since?: string;
+    until?: string;
     limit?: number;
   } = {},
 ): ToroMcpExecutionReceipt[] {
@@ -175,6 +177,8 @@ export function executionReceiptsFromProjection(
       (event) =>
         !input.workflowRunRef || event.workflowRunRef === input.workflowRunRef,
     )
+    .filter((event) => !input.since || event.occurredAt >= input.since)
+    .filter((event) => !input.until || event.occurredAt <= input.until)
     .slice(0, boundedLimit(input.limit))
     .map((event) => ({
       receiptRef: event.eventId,

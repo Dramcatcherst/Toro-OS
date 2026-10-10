@@ -2,11 +2,15 @@ import "server-only";
 import { isPublicDemo } from "@/lib/server/public-demo";
 
 import { randomUUID } from "node:crypto";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import {
   canViewOwnerAttention,
 } from "@/features/attention/owner-attention";
-import { loadOwnerAttentionProjection } from "@/features/attention/owner-attention-server";
+import {
+  loadOwnerAttentionProjection,
+  loadOwnerAttentionProjectionWithClient,
+} from "@/features/attention/owner-attention-server";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import {
@@ -18,7 +22,10 @@ import {
   projectionHasReceiptSource,
   searchToroProjection,
 } from "@/features/mcp/read-adapter";
-import { loadBrainProjectionView } from "@/lib/server/brain-projection";
+import {
+  loadBrainProjectionView,
+  loadBrainProjectionViewForContext,
+} from "@/lib/server/brain-projection";
 import {
   TORO_MCP_CONTRACT_VERSION,
   type ToroMcpCoreToolName,
@@ -28,6 +35,16 @@ import {
 
 type ReadInput = Record<string, unknown> & {
   correlationId?: string;
+};
+
+export type ToroMcpReadRuntime = {
+  context?: ToroResolvedContext;
+  supabase?: SupabaseClient;
+  error?: {
+    code: ToroMcpErrorCode;
+    message: string;
+    retryable: boolean;
+  };
 };
 
 function errorResponse(
@@ -70,12 +87,41 @@ function validOrganizationContext(
 async function resolveReadContext(
   tool: ToroMcpCoreToolName,
   input: ReadInput,
+  runtime: ToroMcpReadRuntime,
 ): Promise<
   | { ok: true; context: ToroResolvedContext & { orgId: string } }
   | { ok: false; response: ToroMcpResponse<never> }
 > {
+  if (runtime.error) {
+    return {
+      ok: false,
+      response: errorResponse(
+        tool,
+        input,
+        runtime.error.code,
+        runtime.error.message,
+        runtime.error.retryable,
+      ),
+    };
+  }
+
   let context: ToroResolvedContext | null = null;
-  try {
+
+  if (runtime.context || runtime.supabase) {
+    if (!runtime.context || !runtime.supabase) {
+      return {
+        ok: false,
+        response: errorResponse(
+          tool,
+          input,
+          "runtime_unconfigured",
+          "TORO MCP authenticated runtime is incomplete.",
+          false,
+        ),
+      };
+    }
+    context = runtime.context;
+  } else try {
     context = await resolveToroContext({ mode: "organization" });
   } catch {
     return {
@@ -135,18 +181,21 @@ async function resolveReadContext(
 export async function runToroMcpReadTool(
   tool: ToroMcpCoreToolName,
   input: ReadInput = {},
+  runtime: ToroMcpReadRuntime = {},
 ): Promise<ToroMcpResponse<unknown>> {
   if (isPublicDemo()) {
     return errorResponse(tool, input, "capability_unavailable", "Operational reads are disabled in the public demo.", false);
   }
-  const resolved = await resolveReadContext(tool, input);
+  const resolved = await resolveReadContext(tool, input, runtime);
   if (!resolved.ok) return resolved.response;
 
   const correlationId = input.correlationId ?? randomUUID();
 
   let view;
   try {
-    view = await loadBrainProjectionView();
+    view = runtime.supabase
+      ? await loadBrainProjectionViewForContext(resolved.context, runtime.supabase)
+      : await loadBrainProjectionView();
   } catch {
     return errorResponse(
       tool,
@@ -225,6 +274,16 @@ export async function runToroMcpReadTool(
   }
 
   if (tool === "get_priorities") {
+    if (typeof input.horizon === "string" && input.horizon !== "now") {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "capability_unavailable",
+        "Only the current/now priority horizon is exposed in MCP v1.",
+        false,
+      );
+    }
+
     if (!canViewOwnerAttention(resolved.context)) {
       return errorResponse(
         tool,
@@ -236,9 +295,17 @@ export async function runToroMcpReadTool(
     }
 
     try {
-      const attention = await loadOwnerAttentionProjection(resolved.context, {
-        limit: typeof input.limit === "number" ? input.limit : undefined,
-      });
+      const attention = runtime.supabase
+        ? await loadOwnerAttentionProjectionWithClient(
+            resolved.context,
+            runtime.supabase,
+            {
+              limit: typeof input.limit === "number" ? input.limit : undefined,
+            },
+          )
+        : await loadOwnerAttentionProjection(resolved.context, {
+            limit: typeof input.limit === "number" ? input.limit : undefined,
+          });
 
       return {
         ...base,
@@ -302,8 +369,8 @@ export async function runToroMcpReadTool(
       data: {
         items: executionReceiptsFromProjection(projection, {
           correlationId:
-            typeof input.filterCorrelationId === "string"
-              ? input.filterCorrelationId
+            typeof input.receiptCorrelationId === "string"
+              ? input.receiptCorrelationId
               : undefined,
           actionRef:
             typeof input.actionRef === "string" ? input.actionRef : undefined,
@@ -311,6 +378,8 @@ export async function runToroMcpReadTool(
             typeof input.workflowRunRef === "string"
               ? input.workflowRunRef
               : undefined,
+          since: typeof input.since === "string" ? input.since : undefined,
+          until: typeof input.until === "string" ? input.until : undefined,
           limit: typeof input.limit === "number" ? input.limit : undefined,
         }),
       },

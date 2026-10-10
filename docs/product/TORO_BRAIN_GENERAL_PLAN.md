@@ -15,9 +15,201 @@ Same TORO portal; no second app or source of truth. Public presentation defaults
 
 `TORO_DEPLOYMENT_MODE=internal` is an explicit server deployment decision, not authorization from a visitor. Unset, misspelled or other values remain public demo. Internal Brain/Owner Attention retain independent flags plus identity/scope/RLS; legacy connectors/ledger additionally require exact `TORO_LEGACY_OPERATIONS_ENABLED=true`; task persistence requires exact `TORO_INTERNAL_WORK_WRITE_ENABLED=true` plus its existing role/scope checks. None of these flags is configured by this change. Disabling the demo alone cannot activate these business reads/writes. Internal legacy routes still need a separate authentication review before any public internal-runtime deployment; this unit does not certify them.
 
-Local-only authorization: implementation, synthetic tests, build and review. No push, PR, merge, deployment, real data, production env, credentials or permission changes. Runtime promotion remains a separate gate and must rebuild/revalidate with production configuration. No schema migration. Reversal is the focused local commit, never a reset of the shared repository. Execution/receipt: Task 4 in the existing `TORO_CEREBRO_IMPLEMENTACION_2026-09-30.md` and BRAIN-LOCAL block of the canonical `CONTINUAR.md`; no runtime activation claimed here.
+Initial 30/09 authorization was local only. On 10/10 Mauricio accepted reconciliation against current main, synthetic tests and the previously authorized PR/protected preview. Remote merge, production, real data, env, credentials and permission changes remain excluded. Runtime promotion is a separate gate and must rebuild/revalidate with production configuration. No schema migration. Reversal is the focused own delta, never a reset of the shared repository. Execution/receipt: Tasks 4–5 in the existing `TORO_CEREBRO_IMPLEMENTACION_2026-09-30.md` and BRAIN-LOCAL block of `CONTINUAR.md`; no runtime activation claimed here.
 
 Verified locally: 359 Vitest + 25 Node tests, validators, lint and production build pass; 112 HTTP checks include 11 built assets, anonymous/synthetic-cookie requests, blocked operational GET/POST and server-action paths, root redirect, Brain RSC and no outbound/ledger I/O attempts. Owner Attention preserves its exact 503/disabled response through the perimeter. Next data-path normalization is disabled for the perimeter; Brain is force-dynamic. Mutation of the demo guard produced 36 expected failures; restored before final verification. Independent review closed with no outstanding findings. Public hosting and real identity/RLS operation remain unverified by this unit.
+Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, injected-client entry points, Worker client and write primitives, health/canary routes and OAuth metadata. Event Ops keeps its existing identity path, covered by the same no-I/O regression. Existing internal capability, role and scope contracts are preserved; demo guards do not grant internal authority. Local combination against `1acae2652f478d5770c556fe1dc713526b6dfff6`: 432 Vitest + 25 Node tests and 132 HTTP checks pass, with zero outbound/ledger attempts in the synthetic HTTP harness. Build passes. ESLint has no errors; the existing unused OAuth OPTIONS request warning remains. Review/remote evidence belongs in the same execution receipt; this paragraph is not a claim of publication or real RLS verification.
+
+## Reporte de recepción integrado y preparación operativa 2026 10 08
+
+
+**ACTUALIZACIÓN AUTORIZADA 09/10/2026 — entrega personal por OpenClaw/WhatsApp:** Mauricio solicita recibir estas alertas por el canal privado existente y preparar su ejecución en Work. Encargo integrado en [issue #209](https://github.com/Dramcatcherst/Toro-OS/issues/209), con dependencias #122 (identidad) y #170 (lectura); no crear segundo backlog ni scheduler. Work/Codex es ejecutor acotado bajo TORO Comms + Sobresito y el Control Plane, no nueva autoridad. La autorización cubre una prueba no sensible y futuras alertas materiales/urgentes al propietario verificado; no grupos, huéspedes, nuevos gastos ni acciones financieras/comerciales. El worker de recepción conserva su Page, casos, deduplicación y triggers completos; adaptar solo entrega mediante el puente existente. Estado: encargo documentado, sesión de Work adicional no iniciada, autenticación y envío actuales sin prueba. Antes de declarar operativo: verificar host/sesión/identidad, obtener referencia de entrega de una prueba y una alerta real, probar replay sin duplicados y denegación por identidad/scope incorrectos. Mensajes “🧪 PRUEBA · Recepción”, máximo 120 palabras y enlace Page; sin novedades, no notificar. Ante fallo o resultado ambiguo conservar alerta aquí, verificar estado antes de reintentar y no anunciar envío. Reversión acotada al adapter de entrega, sin pausar el webhook ni alterar corte Kross o cierres humanos.
+
+
+**DIRECTIVA APROBADA por Mauricio el 08/10/2026.** [REPORTE RECEPCION](https://chatgpt.com/space/page_a6890f7962f88191abe44f53672fd8d4) es la vista operativa del hotel: huéspedes y canales comprobados, notas y antecedentes, cobros diferenciados, tareas/criterios de cierre, preparación hoy/mañana/7/30/90 días, Calendar y fechas especiales, MTD y comparación anual. No es otra fuente transaccional, CRM, cola o cerebro.
+
+**HECHO:** Page ampliada y leída; Gmail hotel, Calendar y Contacts consultados; reservas TORO: 33 filas, snapshot 21/09, 0 live y 0 estancias 2025. Automatización `Alertas del reporte recepción` habilitada y vinculada a la Page por nuevos correos relevantes de admin@dreamcatcherhotel.com; filtra asuntos de reservas/OTA/WeSpeak/huéspedes/pagos/facturas/comprobantes y verifica relevancia antes de actuar. Primera ejecución por evento todavía NO VERIFICADA. No reactivar la alerta anterior pausada. No duplicar ingesta/cursors de TORO Correos y Pagos. La tarea actualiza Page y notifica internamente; no envía WhatsApp ni email a terceros.
+
+**AUTORIDADES:** Kross conserva reservas, unidad, notas y condiciones; bancos/procesador verifican pagos; Alegra conserva contabilidad; TORO tasks/followups conserva acciones empresariales bajo Control Plane; Calendar conserva eventos; Contacts solo resuelve contacto; Tasks/Keep siguen sin adapter E2E verificado. Page preserva cambios humanos y cierres y deduplica por reserva/conversación/tipo de asunto más message_id. Teléfono internacional corroborado para wa.me; códigos de acceso, tarjetas, documentos y secretos no se publican.
+
+**PREPARACIÓN:** usar Calendar existente y feriados conectados; separar celebración/día festivo/efecto laboral y confirmar eventos locales antes de alertar. Revisar hitos 7/3/1 días antes; aviso por delta material, plazo crítico o fallo nuevo. El worker por correo no garantiza revisión diaria de Calendar ni cambios exclusivos de Kross. Incorporar revisión de preparación y alertas al Team Brief y Cierre Diario existentes, sin scheduler paralelo.
+
+**MTD Y 2025:** días completos del 1 de mes hasta ayer; parcial de hoy separado. Comparar mismo intervalo/propiedad/unidades/capacidad diaria/moneda/impuestos. Separar ingreso por estancia, cobros, cortesías/canjes y on-the-books. ADR=ingreso alojamiento/noches vendidas; RevPAR=ingreso/noches disponibles; ocupación=noches vendidas/disponibles. Ampliación de inventario requiere conjunto comparable. Sin datos históricos completos o snapshot a igual lead time: SIN DATOS, nunca porcentaje inventado.
+
+**BLOQUEOS:** nueva consulta Kross requiere login en el navegador de Work; notas internas, nombres/contactos restantes y saldos sin completar. WhatsApp/OpenClaw sin receipt E2E; histórico 2025 y espejo actual insuficientes. No marcar recepción sincronizada ni MTD calculado. **Prioridad:** lectura Kross vigente y relevo de habitación 21 → conciliación de pendientes actuales → histórico comparable → verificación del primer evento automático. El catálogo de 100 controles adicionales en la Page es preparación priorizada, no 100 integraciones ejecutadas.
+
+---
+
+## Google Workspace operativo — Google Tasks, Keep, Calendar y servicios conectados (2026-10-07)
+
+**DIRECTIVA APROBADA (Mauricio, 07/10/2026).** Integrar progresivamente los servicios oficiales de Google Workspace de `admin@dreamcatcherhotel.com` para capturar ideas, convertir solicitudes verificadas en trabajo, ejecutar/consultar desde TORO Portal/WhatsApp y mejorar colaboración, productividad y recuperación de información. Este texto amplía el plan **único**, no crea un segundo backlog, una nueva base, un nuevo administrador, un nuevo scheduler ni autoriza gasto o delegación de dominio. TORO Brain/Control Plane sigue la única autoridad de orquestación y aprobación empresarial.
+
+### Identidades y estado observado
+
+- **HECHO / conexión de ChatGPT validada 07/10:** Gmail, Google Drive, Google Calendar y Google Contacts operan bajo la identidad conectada `admin@dreamcatcherhotel.com`; Calendar principal tiene rol `owner`. En esa cuenta hay **solo un calendario editable propio** visible, los demás son suscripciones de feriados/fases lunares (sin otro calendario dedicado PayFlow/Operaciones confirmado). Gmail cuenta con etiquetas TORO/finanzas y HotelSwaps; estas etiquetas no son tasks. Google Contacts responde bajo la identidad hotelera; una coincidencia en «otros contactos» no prueba directorio corporativo, CRM completo ni autorización para enviar mensajes. Drive del hotel contiene documentación mixta: no realizar migraciones en masa ni confundirlo con la cuenta personal.
+- **POR INTEGRAR / sin acceso de lectura/escritura verificado:** Google Tasks y Google Keep **no están expuestos como conectores directos disponibles en esta sesión de ChatGPT**. La conexión exitosa de Calendar NO demuestra acceso a Google Tasks, ni Drive a Keep. Las API oficiales existen, pero el estado de credenciales/scopes, edición y ejecución del adapter TORO sigue `NOT_VERIFIED`; nunca afirmar sincronización, inventariar listas/notas ni cerrar acciones sin una lectura real.
+- **Identidad y límites:** `admin@dreamcatcherhotel.com` es el principal institucional; `mauricio.fernandez.toro@gmail.com` y otros buzones conectados son ámbitos separados. No copiar notas privadas, contactos personales, invitaciones, correo o tareas entre organizaciones/propiedades. La condición Super Admin observada en Workspace no concede permiso implícito para impersonación o domain-wide delegation. Priorizar OAuth por usuario y consentimiento granular. Mantener el mapa Workspace user/alias/grupo/routing existente, sin crear licencias nuevas por defecto.
+
+### Contrato de autoridad: una acción, varias superficies
+
+| Superficie | Función aprobada | Autoridad y regla anti-duplicación |
+| --- | --- | --- |
+| `operations.tasks` + Control Plane/Owner Attention | Tarea empresarial canónica, responsable, prioridad, fechas, bloqueos, ejecución, aprobación y receipt | **TORO único escritor lógico**. Consultar primero identidad existente, no crear segundo backlog en Airtable/Google Tasks/WhatsApp. |
+| **Google Tasks** | Lista rápida del responsable, capturas, recordatorios y acciones humanas simples | Superficie personal/de cuenta y **proyección opcional** ligada al `toro_task_id`, o ingesta candidata. Sin mapeo no convertirla en compromiso empresarial. Las tareas creadas desde Docs/Chat pueden ser asignadas y de escritura restringida; conservar origen. |
+| **Google Keep (Notes)** | Captura de ideas/notas de voz/texto, listas de compra preliminares, inspiración, incidencias preliminares | **Fuente de nota**, no ticket ejecutado ni memoria corporativa. Clasificar y extraer candidatos al mismo `operations.tasks` o `operations.knowledge_items` solo con alcance, consentimiento y verificación. Conservar `keep_note_name`/fuente; no subir todos los apuntes indiscriminadamente. |
+| **Google Calendar** | Reuniones, bloques de tiempo, controles de pago y vencimientos previamente verificados | Proyección temporal de TORO/PayFlow. Eventos existentes son únicos por entidad+obligación+período+rol. No crear eventos de Calendar para cada Google Task ni duplicar facturas/forecast. Las tareas visibles dentro de Calendar siguen siendo tareas, no eventos consultables como los eventos de Calendar. |
+| **Gmail** | Fuente de comunicación, facturas y evidencias de solicitudes | Gmail manda en mensaje, remitente, hora, adjunto e hilo; una etiqueta/correo/promesa NO crea automáticamente una tarea. Verificar enviado/contestación y consulta Kross/Alegra según dominio. Continuar mail_ingest vigente, sin scheduler nuevo. |
+| **Google Drive/Docs/Sheets/Forms** | Documentación colaborativa, plantillas, formularios y evidencia | Drive conserva archivo/ACL; TORO guarda enlace/hash/provenancia, no duplica todos los binarios ni reemplaza Dropbox como archivo original en flujos acordados. Docs permite minuta/acción propuesta; Google Forms, si se usa, debe alimentar staging y control antes de abrir tarea, sin crear segunda base operativa en Sheets. |
+| **Google Contacts** | Localización de direcciones y roles para seguimiento autorizado | Directorio/contacto y su procedencia, **no CRM maestro** ni verificación de identidad del empleado. Dedupe por ID Google + email normalizado/entidad y cotejo explícito con TORO People; no enviar ni invitar sin alcance. |
+| **Google Chat, Meet, Apps Script, Admin, Business Profile, Search Console, Analytics/Ads/Hotels** | Colaboración, reuniones, automatización de bajo código, seguridad, descubrimiento/marketing | Solo cuando existan cuentas, APIs y permisos reales y caso de uso rentable. Cada uno es un adapter/capacidad en catálogo existente, no otro sistema de mando, CRM ni scheduler. Mantener autoridad comercial de Kross. |
+
+**Mapeo mínimo sin nuevo esquema:** usar `integrations.source_authority_rules`, `integrations.external_dependency_registry`, `operations.tasks`, `operations.knowledge_items`, `operations.communication_followups` y capacidades existentes. Enlazar `tenant/org_id`, `account_email`, `source_system`, `source_object_id` (`tasklist_id+task_id` para Tasks o `notes/*` para Keep), `toro_task_id`, `origin`, `modified_at/etag`, `last_seen`, `sync_direction`, `permissions`, `evidence/receipt` donde la estructura existente admita esos datos de forma segura. No alterar tablas por esta directiva; diseñar mapping y comprobar unicidad/RLS antes de cualquier cambio estructural.
+
+**Flujo:** observación/captura → identificar actor y empresa → clasificar nota/mensaje/tarea/calendario → resolver autoridad y duplicados → propuesta de task/knowledge existente → aprobación cuando corresponda → `task → toro_execution_run → lease/fencing → worker → readback → receipt` → estado presentado en Portal/WhatsApp y, si permitido, proyección a Google. Si el usuario marca completada una tarea proyectada en Google, registrar **señal de posible cierre**; cerrar en TORO solo con criterios/evidencia y autorizaciones. Evitar bucles de eco mediante `source_object_id+version/etag+origin` y reconciliación incremental. Prohibir replay destructivo, borrados en cascada y ciclos de sincronización no reversibles.
+
+**Limitaciones de API verificadas en documentación de Google:** Google Tasks expone listas, tareas y actualización por `tasks.googleapis.com`, pero `due` API representa fecha, no hora ni deadline; no prometer sincronización horaria/recordatorios exactos a través de ese campo. Google Keep API (`keep.googleapis.com`) está orientada a administración empresarial; ofrece crear/listar/consultar/borrar notas y modificar permisos, **no un método general de edición/patch de nota existente**. Diseñar Keep como lectura/captura/no destructivo, no espejo bidireccional editable. Verificar elegibilidad Workspace/scopes antes de implementación; evitar domain-wide delegation como atajo. Referencias: https://developers.google.com/workspace/tasks/reference/rest ; https://developers.google.com/workspace/tasks/reference/rest/v1/tasks ; https://developers.google.com/workspace/keep/api/guides ; https://developers.google.com/workspace/keep/api/reference/rest/v1/notes .
+
+### Entrega por fases y criterios de aceptación
+
+1. **P0 — Inventario y seguridad:** en el proyecto/tarea existente `google_control_plane_readonly_map_20260826` / `toro_surface_capability_parity_20260922`, registrar estado de conexión por servicio, identidad hotelera, scopes mínimos, restricciones Google Tasks/Keep, accesos reales por rol y dependencias. Primero inventariar listas/notas **solo tras OAuth funcional**; contar objetos sin exponer material privado; establecer baseline de duplicados y no crear listas nuevas. Gate PASS: listado de cuentas/scopes/list IDs o evidencia explícita de bloqueo y mapa de autoridades aprobado.
+2. **P1 — Piloto Google Tasks:** habilitar Tasks API desde el conector corporativo existente (no un segundo gateway), OAuth read-only inicial, muestrear máximo 20 tareas relevantes y contrastar con `operations.tasks`/tareas Kross. Seleccionar un único caso reversible de tarea humana: TORO → Google Tasks y actualización de vuelta como señal, comprobando `task_id`, `etag`, identidad, separación de ámbitos y cero duplicados. Solo pasar a escritura luego de autorización/gate + receipts. Gate PASS: 1 caso E2E verificado, 0 duplicados/0 cierres falsos y manejo de reintento/edición concurrente.
+3. **P2 — Piloto Keep:** verificar que API empresarial y consentimiento funcionen para esta cuenta. Capturar selectivamente 10 notas **de trabajo** con origen y sin secretos; agrupar ideas repetidas, extraer máximo 3 acciones candidatas, enlazar a tarea/knowledge existente o dejar revisión humana. No importar notas personales ni borrar/sobrescribir Keep. Gate PASS: 10/10 con fuente/tenant, 0 filtraciones y candidatos aceptados/rechazados con trazabilidad; si Keep API no es elegible, mantener uso manual + Docs como alternativa de notas editables institucionales, no pagar plataforma nueva.
+4. **P2 — Productividad Google completa:** mejorar Gmail → seguimiento/recepción sin automatizar respuestas; Calendar → horarios existentes/PayFlow sin duplicación; Contacts → mapeo proveedores/empleados respetando identidades; Drive/Docs/Forms → evidencias/minutas y formularios con ACL. No aplicar cambios masivos de Google Ads/GBP/Hotel Center ni crear usuarios Shared Drives/administradores hasta diagnóstico por sistema y efecto económico.
+5. **Monitoreo permanente SIN tarea nueva:** agregar revisión compacta de `Google Workspace connector health, scopes, errores, tasa de tareas duplicadas, pendientes críticos Google/TORO, uso real y costo marginal` al **reporte semanal existente `Estado semanal TORO` de los viernes 17:00 Costa Rica**. Distinguir CONNECTED, READ_ONLY, WRITE_GATED, NOT_CONFIGURED, AUTH_REQUIRED, ERROR; exigir fuente/fecha y delta frente al corte previo. Usar `TORO Correos y Pagos` diario para extraer acciones de mensajes existentes, no reanalizar en paralelo ni escribir Google Tasks/Keep sin worker. Solo escalar fallos que comprometan tareas críticas, privacidad, costos o ingresos.
+
+**Indicadores objetivos:** tareas nuevas candidatas / aprobadas / duplicadas; % tareas humanas críticas con owner y fecha; desfase detección→triage; % cierres con readback+receipt; notas útiles procesadas (denominador inspeccionado); contactos duplicados reales; correos accionables sin respuesta; Calendar eventos PayFlow huérfanos; gasto adicional por integración (objetivo `$0` hasta justificar licencias/API o coste real). No contar documentación o conexión como ahorro/rentabilidad ni declarar sincronización LIVE por existir un plan.
+
+**Estado de ejecución al cierre de esta decisión:** plan/documentación APROBADA; los conectores Gmail/Calendar/Drive/Contacts leídos y verificados; Tasks y Keep `NOT_CONFIGURED/NO_DIRECT_CONNECTOR`; adapter y E2E `NOT_STARTED/UNVERIFIED`. No se crearon Google Tasks, notas Keep, calendarios, usuarios, permisos, nuevos backlogs ni tareas programadas en este paso.
+
+---
+
+## Rentabilidad y conversión sostenibles — directiva de Mauricio 2026-10-06
+
+**Scope:** cada negocio autorizado y aislado en TORO; piloto Dreamcatcher Hotel / Toro by Dreamcatcher.  
+**Owners:** TORO Revenue + TORO Finance + TORO Channels; TERE para conversión.  
+**Existing project:** `revenue_booking_stack`. **State:** CURRENT política aprobada / NEXT verificación por canal.
+
+TORO debe buscar de forma continua oportunidades verificables para aumentar la rentabilidad, utilidad y conversión del negocio dentro de su alcance autorizado. Priorizar contribución y utilidad sostenible sobre ocupación, tarifa de lista o ingresos brutos aislados. Comparar ingresos después de descuentos financiados por el hotel, comisiones, cobros de pago, costos incrementales de desayuno/servicio, cancelaciones y reembolsos; separar impuestos por remitir. No inventar costos, ahorro o mejora de utilidad. Medir el resultado antes de declarar una optimización exitosa.
+
+### Avisos materiales de canales — corte 2026-10-07
+
+**CURRENT — aviso de Booking.com, todavía no verificable como liquidación aplicada:** el comunicado recibido por Atrapasueños el 07/10/2026 anuncia que desde **17/11/2026** el IVA/GST o impuesto de ventas equivalente formará parte de la **base sobre la cual Booking.com calcula su comisión**. Según el mismo aviso, las reservas creadas antes de esa fecha mantienen el cálculo anterior. Esto no confirma un porcentaje nuevo de comisión ni acredita la aceptación, contrato actualizado o cargos efectivamente liquidados. Fuente: correo Booking.com `1a11563e0ee53505`. **NEXT:** TORO Revenue/Finance debe revisar el anexo y el ejemplo real en la Extranet durante noviembre, comparar antes/después por fecha de reserva y alojamiento, y recalcular contribución neta sin cambiar tarifas, Kross, descuentos, contratos o pagos por este aviso. Fecha de control en Google Calendar: 17/11/2026, no vencimiento de factura.
+
+### HotelSwaps — canal de intercambio gobernado / piloto Asia 2026
+
+**ACTUALIZACIÓN 07/10/2026:** Mauricio confirma mantener las tres habitaciones ya depositadas (#1811446), sin añadir ni retirar noches. No se ha modificado HotelSwaps ni Kross; sigue pendiente conciliar disponibilidad para prevenir sobreventas. Alerta existente de ChatGPT ampliada a HotelSwaps, Booking.com, Expedia, Airbnb, Agoda, Kross y mensajes urgentes de huéspedes, con lectura horaria de Gmail y deduplicación; no es sincronización ni alerta instantánea. Para revisar el portal, la sesión móvil no se comparte; el navegador conectado necesita inicio de sesión propio. No incurrir en servicios web automatizados de pago sin aprobación.
+
+
+
+**ALCANCE Y OBJETIVO (owner 07/10/2026):** Se integra de manera PERMANENTE a `revenue_booking_stack` de Dreamcatcher Hotel como canal de intercambio complementario, NO como segunda OTA monetaria ni proyecto independiente. Objetivo a corto plazo: financiar noches de alojamiento de 2 adultos durante viaje de finales octubre–noviembre 2026 en Tailandia, Vietnam, Camboya, Bali/Indonesia, Seúl/Corea. Crear valor real de habitaciones con baja probabilidad de venta en octubre, protegiendo ventas monetarias, precio y categoría. **Decisión:** continuar Basic (sin fee anual) y no comprar Premium hasta resultado neto comprobado. La nota de investigación y evidencia (NO autoridad normativa) está en [HOTELSWAPS_EVALUACION_Y_PILOTO_ASIA_20261007.md](../research/HOTELSWAPS_EVALUACION_Y_PILOTO_ASIA_20261007.md).
+
+**Cuenta e identidad (observado):** administración identificada en portal con cuenta `admin@dreamcatcherhotel.com`, Hotel Manager Mauricio Fernández, Dreamcatcher Hotel, membresía Basic ID `1888663`; el contrato permite que Hotel Manager desempeñe Swap Manager sin crear otro usuario. Capturas del propietario (07/10) muestran 0 Coins balance hotel; 0 Coins balance Guest; texto **1000 Coins available for transfer** (contradicción operativa NO resuelta: no contabilizar como saldo real, no transferir sin prueba). Portal autenticado NO accesible desde conectores actuales: navegador móvil no comparte sesión; Opera Browser Connector desconectado; TinyFish sin cookies signed-in para hotelswaps.com. Ningún QA privado ni consulta de reservas Asia se declara HECHO por la captura.
+
+**Estado de depósito y riesgo P0 (evidencia):** correo Gmail `1a114c1203b601db` comunica depósito `1811446` de 3 habitaciones 06–18/oct/2026, equivalente a 36 habitaciones-noche ofertadas si cupo uniforme. Pantalla 08–17/oct muestra 3 room(s) deposited/día, sin referencias de huésped en filas visibles (no certifica otras fechas). En depósitos, cualquier miembro con saldo puede RESERVAR EN EL ACTO; contrato exige honrar reservas. **Control obrigatório:** comparar cada día + la reserva con Kross autoritativo y proteger capacidad/cupo estándar doble equivalente para evitar OTA doble venta desde antes de publicar. Si no hay cupo protegido, retirar solo noches NO reservadas; nunca retirar/cancelar noches ya confirmadas sin flujo de huésped y políticas. Las solicitudes sin depósito son no vinculantes hasta aceptar, permiten aprobación/rechazo previa consulta Kross. No compartir acceso o automatizar mutaciones sin gate humano y receipt.
+
+**Unidades y categoría:** el contrato limita depósitos/reservas a habitaciones dobles estándar. Preselección analítica no vinculante #2, #5, #9, #10, #7 según catálogo canónico y Kross real. Excluir suites premium #25/#26, #11 familiar/apartamento, #21/#22 familiar, villas, Mini (staging) y Santa Toro (negocio separado). Mapping físico NO confirmado; todas las ofertas equivalen a estándar doble prometida a otro miembro y deben cumplir requisitos publicitados. Fotos, nombre, servicios, baños/camas, ubicación, políticas desayunos, impuestos, acceso, check-in/out, cancelación y capacidad requieren QA de `Your hotel account`.
+
+**Economía y contabilidad:** Basic genera 75% de HotelCoin Schedule para **reservas entrantes CONFIRMADAS**; depósito por sí solo genera 0. Coins hotel no vencen mientras membresía; Guest transferidos o comprados 2 años, con política de cancelación de reservante por plazos, fees no reembolsables. Cuota outbound Basic GBP 0.08/EUR 0.09/USD 0.10 por coin; compra externa USD 0.50/coin según proveedor, sin valor de caja garantizado. No confundir coin, ingreso/cobro, tarifa ADR, reserva, crédito y cash; Finance/Alegra solo con tratamiento fiscal/contable validado; KPI principal ahorro real de hotel Asia vs pago efectivo equivalente, neto fees, costo variable anfitrión y ventas desplazadas. Cualquier valor ~1USD/coin es reivindicación del proveedor, no liquidez garantizada.
+
+**Test de destinos 07/10/2026 (VERDAD ESPECÍFICA):** catálogo público identifica Karma Kandara (Bali) desde **420 HotelCoins/noche**, SIN disponibilidad real en noviembre; compra hipotética de todos los 420 coins y fee básico en USD = USD 252/noche, excluyendo impuestos extras, si aplica precio publicado. Histórico NO confirma activo: Bach Suites Saigon (Ho Chi Minh, 2018), 4 Rivers Floating Lodge (Tatai Camboya, 2014), Paradise Beach Resort (Koh Samui Tailandia, 2014), Hotel Mera Mare (Pattaya Tailandia, 2017). Para Bach Suites un sitio OTA informa referencia USD 196 impuestos incluidos, 2 adultos, 02/11/2026, sujeto a cambios; HotelCoin desconocido. Bangkok, Chiang Mai, Phuket, Seúl, Hanói, Siem Reap: SIN oferta privada comprobada, no declarar ausencia. NEXT: en la sesión autenticada buscar destinos (también request-only), fechas 2 pax dentro 30/10–20/11/2026, capturar pantalla de precio exacto HotelCoins, fee, cuarto, disponibilidad instant/request, condiciones y comparar con hotel oficial/OTA mismas fechas. Reservar solo mediante aprobación y evidencia.
+
+**Reputación/experiencia:** HotelSwaps declara ~436-437 miembros en 73/74 países; no significa reservas, ni disponibilidad en objetivo. Marriott documenta colaboración tecnológica de HotelSwaps para HotelHelp 2024, distinta del éxito del mercado privado de HotelCoins. Escasez de opiniones independientes recientes, testimonios propietarios autoseleccionados 2017; no inventar tasa de conversión ni recomendar Premium por promociones. Validar demanda real local y tiempo promedio del depósito con soporte.
+
+**Operación, integraciones y alertas:** Gmail etiqueta existente `60.1 · HOTELSWAPS` y `Viaje Tailandia 2026 / Canjes`; borrador en hilo `1a110fb6527231a2` requiere envío humano, estado DRAFT al 07/10, no presentarlo como proveedor contactado. Ya existe ChatGPT watch `HotelSwaps alertas urgentes` HOURLY (correo Gmail), no enviar duplicado y no presentarlo como instantáneo ni WhatsApp. Los avisos accionables de reservas/cancelaciones/solicitudes/coins van a TORO Comms -> Owner Attention -> ejecución gobernada; Kross sigue escritor único comercial. Registrar recepción, confirmación, chequeo PMS, bloqueo, check-in/out, acreditación y canje con IDs y readback. Roles: owner/aprobación Mauricio; revisión operativa recepción solo en alcance autorizado; TERE no oferta disponibilidad no confirmada. Dropbox almacena originales si hay documentos verificables nuevos, sin carpeta/archivo duplicado o secretos. No añadir Crexi al channel stack: es plataforma de venta/compra de inmuebles comerciales, tema separado del canal de intercambio.
+
+**Backlog canónico SIN DUPLICAR:** Airtable fuente `DC-HOTELSWAPS-CHANNEL`, tareas `HOTELSWAPS-1811446-RECONCILIATION` (P0, cupos Kross, fechas y saldo), `HOTELSWAPS-PILOT-GUARDRAILS` (P1 categoría+Asia+economía y políticas); no crear nuevas tareas, worker, dashboard ni base. Fases/Done: 1) snapshot autenticado de portal y comparación Kross por cada día 06–18/oct con 0 oversell; 2) revisión completa perfil hotel, permisos, balance real vs 1000, depósitos/reservas y políticas; 3) al menos 3 pruebas de destino con fechas/fees y 1 estadía asiática reservable/solicitud aceptada demostrada; 4) piloto 30 días: coins netos recibidos, canjes concretos confirmados, ahorro neto demostrado; en ausencia de canjes, reducir exposición y mantener Basic pasivo. Semanales reportar solo deltas materiales, no newsletters.
+
+**Fuentes y procedimientos:** https://www.hotelswaps.com/hotel-terms-conditions ; https://www.hotelswaps.com/about-us-faq-hotels ; https://www.hotelswaps.com/about-us-faq-guests ; https://www.hotelswaps.com/membership-options ; https://www.hotelswaps.com/members ; https://serve360.marriott.com/wp-content/uploads/2024/06/Marriott_Statement_2024.pdf . Capturas owner y Gmail son evidencia operativa, no transacción confirmada.
+
+
+### Contrato de ocupación, desayuno y suplementos de Dreamcatcher — 2026-10-07
+
+Autoridad: aclaraciones y aceptación de Mauricio del 2026-10-07. Este contrato sustituye la tabla de objetivos/lista del 2026-10-06; aquella queda como evidencia histórica de configuración, no como política futura obligatoria. Supabase `content.hotel_facts/additional_person_pricing`, `guest_age_categories` y `breakfast_price` conservan el contrato estructurado; Airtable mantiene su referencia humana. Kross y cada canal siguen siendo autoridad sobre configuración aplicada y cotización vigente.
+
+| Regla | Criterio aprobado o estado |
+| --- | --- |
+| Moneda objetivo | USD; cambio de moneda de propiedad Agoda solicitado, todavía pendiente de confirmación |
+| Ocupación incluida | 2 personas en habitaciones y 12 en villas; no equivale a la capacidad máxima |
+| Edades | Bebés 0–3, niños 4–10, adultos desde 11; todos cuentan dentro de la capacidad |
+| Desayuno | US$15 finales por persona y desayuno; separado del alojamiento y protegido frente a descuentos del alojamiento |
+| Tarifa con desayuno | Incluye a adultos y niños; para bebés solo a solicitud, a US$15 por desayuno. No duplicar cargos |
+| Capacidad Dreamcatcher Villa | 27 personas, habitaciones 0–6; no ofrecer una plaza 28 sin nueva verificación |
+| Otras villas | Makaiza 7–11, capacidad 17; Toro 21–28, capacidad 29. No duplicar villa y componentes |
+| Mascotas | Hasta 10 kg; cualquier cargo y condiciones adicionales requieren su fuente vigente |
+
+Conflicto de implementación pendiente: `src/lib/toro-data.ts`, objeto `mkz`, todavía describe Makaiza para 15–20 personas. Es un descriptor anterior que contradice el máximo 17 coincidente en Airtable/Supabase; no debe usarse para prometer capacidad. Este lote documental registra la discrepancia, sin acreditar corrección de la interfaz ni publicación comercial. El registro Airtable de hotel completo también requiere conciliación: declara 20 habitaciones/74 personas, pero enlaza 19 y omite la 22.
+
+Recomendación de alojamiento elegida bajo la delegación del dueño: niño 75% del suplemento adulto de **alojamiento**; bebé sin suplemento si no necesita cama extra, pero contando en capacidad. El desayuno completo no recibe ese porcentaje. El importe adulto de alojamiento y el tratamiento fiscal aún requieren costos, margen y prueba por canal. Estas reglas registradas no prueban que Kross, WeSpeak ni las OTA hayan cambiado; conservar términos de reservas confirmadas.
+
+- Para cada canal, comparar la misma unidad, fecha, ocupación, régimen y condiciones antes/después de promociones, incluyendo límites de edad 3/4 y 10/11, redondeo y tratamiento fiscal. Comprobar que desayuno suma US$15 por servicio al total final; una derivación porcentual fija no lo garantiza.
+- Calcular un suplemento de lista mediante el multiplicador marginal solo cuando se haya demostrado qué descuentos/impuestos le aplican. No reutilizar US$50/100 ni suponer 70% de descuento como receta universal.
+- **Agoda bloqueado:** mantener inactivos RO 24359579 y BB 24531249 hasta confirmar USD, importes/ocupación y recepción desde Kross. Solicitud en caso 1120368076318197504; no duplicarla ni reactivar para resolver un error de plan inactivo.
+- Conservar nombres, IDs, slugs y enlaces Kross. No cambiar camas, capacidades o fotos por inferencia; las seis correspondencias Agoda provisionales requieren prueba de identidad.
+- Para grupos, ofrecer hasta tres combinaciones útiles con disponibilidad simultánea y enlaces permitidos por el canal; no prometer exclusividad sin evidencia.
+- Mantener una sola política versionada con fuente, aprobación, evidencia y estado por canal. Supabase conserva datos/control; Airtable referencia; Dropbox originales; no crear nuevas bases, monitores o planes paralelos.
+- Optimizar fotos, etiquetas y amenities únicamente contra evidencia de la unidad correcta. Medir conversión hasta reserva e ingreso confirmado; visitas o etiquetas no demuestran más ventas.
+- Aprender capacidades reales de cada herramienta mediante configuración observada, pruebas acotadas y lectura posterior. Registrar límites y correcciones reutilizables sin copiar datos privados entre negocios ni declarar dominio experto por documentación.
+- Priorizar contribución neta y conversión verificables. Ningún cambio documental demuestra incremento de utilidad ni publicación comercial.
+
+### Mejora continua y control
+
+Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -> ejecutar dentro de autorización -> verificar -> medir -> conservar o revertir. La directiva no reactiva ejecutores suspendidos, no crea otro plan/base/agente/scheduler y no amplía permisos, presupuesto o envíos externos. La siguiente ejecución debe cerrar el primer bloqueo material con evidencia, sin repetir una auditoría completa.
+
+**Aceptación del despliegue tarifario:** suplemento final comprobado por canal y régimen en fechas autorizadas; evidencia de guardado y lectura posterior; costos/margen identificados o marcados desconocidos; ningún nombre Kross alterado; reservas existentes respetadas. Una política guardada o texto WeSpeak actualizado no demuestra que el motor de precios u OTA ya esté alineado.
+
+---
+
+## Correos y PayFlow — continuidad permanente 2026-10-07
+
+**Decisión de Mauricio:** mantener de forma indefinida el análisis de correos y la conciliación del calendario de pagos, ampliando la extracción de información útil. Reutilizar **una única tarea diaria existente** (`TORO Correos y Pagos`, 08:00 America/Costa_Rica, RRULE diario sin fecha de fin), el control `PayFlow Semanal` de los lunes y el forecast mensual a 90 días; no crear un segundo Finance Guard, plan, bandeja o scheduler ni reactivar escritores financieros suspendidos.
+
+**CURRENT observado 07/10:** tres buzones Gmail y uno Outlook autorizados para lectura selectiva; censo/checkpoints en `integrations.mail_ingest_*` con historia **incompleta**. Google Calendar vinculado de `admin@dreamcatcherhotel.com` sigue como interfaz de pagos existente, sin calendario separado `TORO PayFlow · Dreamcatcher`. Se verificaron y crearon tres eventos privados de control basados en facturas/recibos, y se corrigió el estado documentado de un evento previo de Alegra. Los identificadores por factura, período y evento permanecen en el seguimiento operacional, no en este plan rector. Crear eventos manuales con evidencia no certifica un sincronizador persistente.
+
+**Alcance de extracción:** recibidos y enviados; nuevos y lote histórico desde checkpoints; facturas PDF/XML, montos, vencimientos, emisor/receptor, propiedad/entidad, comprobantes, bancos, servicios/NISE, comisiones y reservas OTA, suscripciones/renovaciones, contratos, seguros, CCSS/impuestos/permisos, mantenimiento, incidencias de servicio, atención de huéspedes, oportunidades comerciales, seguridad y fallos de sistemas. Separar alcance hotelero, otras propiedades y datos personales. Aplicar ID por buzón+mensaje/hilo, documento y período; no reiniciar backfill, duplicar obligaciones, persistir secretos ni prometer 100% sin censo completo.
+
+**Contrato del calendario:** documento/proveedor gobierna la fecha de factura y vencimiento; banco/procesador gobierna salida de caja; Alegra gobierna asiento; Kross gobierna reserva/tarifa. Supabase PayFlow conserva obligación/estado/observación, y Google Calendar es proyección humana. Cada entrada diferencia emisión, vencimiento oficial, fecha interna de control y pago acreditado. Identidad idempotente `tenant + obligation_key + period + event_role`: buscar primero y actualizar **el mismo evento** cuando llegue evidencia nueva; una factura reemplaza el pronóstico del mismo ciclo. Diferenciar CONFIRMADO, ESTIMADO_POR_HISTORIAL, REQUIERE_VERIFICACION y PAGO_CONFIRMADO_POR_PROVEEDOR (aún sin conciliación bancaria). No registrar estimados de 90 días como deudas definitivas ni proyectar datos personales/otras propiedades al calendario hotelero.
+
+**GATE de automatización:** la tarea diaria revisa, clasifica, detecta vencidos/riesgos y prepara diffs; **no escribe automáticamente al Calendar ni a Supabase Finance** sin worker autorizado, idempotencia, lease/fencing, verificación y receipt del Control Plane. La actualización manual expresamente solicitada el 07/10 se realizó sobre eventos privados después de buscar duplicados y leer facturas; esa intervención no prueba auto-sincronización futura. Avisos a Mauricio/Carolina por WhatsApp requieren identidad, canal OpenClaw y envío verificados aparte. No pagos, asientos, envíos de correo, cancelaciones, cambios de reservas/servicios, permisos ni destrucción desde esta tarea.
+
+**NEXT:** (1) consolidar nuevos correos desde último checkpoint sin avanzar cursores por solo lectura; (2) reconciliar facturas/recibos contra obligaciones, cuentas y eventos existentes, incluyendo incidencias con posible corte y saldos disputados, sin duplicar; (3) comprobar y habilitar solo mediante su tarea canónica una proyección Calendar idempotente del Finance Worker, con readback y rollback antes de llamarla automática. El lunes se presentan vencimientos de 7/21/90 días por entidad y moneda. Actualizar este Plan General únicamente si cambian política, arquitectura, riesgos o dependencias; el detalle rutinario queda en receipts y calendario.
+
+---
+
+## Autonomy consolidation + OpenAI surface strategy — 2026-10-01
+
+**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT cleanup / NEXT worker bridge.
+
+- **Legacy execution cleanup completed in ChatGPT Scheduled Tasks:** paused TORO Portfolio Coordinator, CONTROL Lane, OPERATE Lane and GROW Lane; BUILD Lane, Progress Watch and Finance Guard were already paused. The direct `Barrido financiero 2026` executor and direct PayFlow `Cierre diario TORO` executor were also paused because they can mutate canonical finance/accounting state outside the new Control Plane.
+- **Retained scheduled work is transitional:** read-only reports/monitors, personal watches and narrowly scoped domain workflows may remain scheduled while each is classified and migrated. A schedule is a trigger/report surface, not execution authority.
+- **Single execution invariant:** material autonomous work uses `canonical task -> public.toro_execution_runs -> lease/fencing -> bounded worker/agent -> verification -> public.toro_execution_receipts`. No Dot, Work thread, plugin, scheduled task or Codex session may own parallel task/run/completion state.
+- **Plan General invariant:** every material run maps to a canonical project/task/subsystem. Routine successful receipts do not bloat this document; material changes to architecture, objective, policy, dependency, risk or program direction do.
+- **Worker Runtime v1:** merged to current `main` in commit `c6dc1822f41d84d6c57ccd4aa1948240892e8050`; backend-only Supabase worker client prefers modern `sb_secret_*` configuration and exposes typed claim/lease/transition/retry/receipt primitives. Application-level activation remains gated on canonical Vercel deployment/config proof.
+- **TORO MCP read runtime:** merged to current `main` in commit `fd4806307f0950a2b501c3aab37acf78987a91be` as a disabled-by-default authenticated read bridge for ChatGPT/Work/Dots/Plugins. It exposes permission-filtered Brain/search/priorities/business status/decisions/receipts only; no Control Plane write/claim tool is enabled. Activation remains gated on canonical deployment, OAuth/resource URL configuration and authenticated isolation tests. Stale PR #222 is superseded.
+- **OpenAI surface map:** `docs/product/TORO_OPENAI_SURFACE_MAP_V1.md` defines Projects as human context hub, Work as substantial delegated executor, Dots as persistent mission workers, Plugins/Apps as capability packaging/connections, MCP as governed interoperability boundary, Agents SDK as code-first agent loop, tracing as observability, Codex as implementation worker, Scheduled Tasks as triggers/reports, and Sites as presentation.
+- **Actor/surface registry:** `docs/product/TORO_ACTOR_AND_SURFACE_REGISTRY_V1.md` is the classification contract for Dots, specialists, temporary workers, Scheduled Tasks and interfaces. Scheduled work is trigger/report/watch by default; only documented transitional exceptions may write outside the Control Plane, and those must migrate.
+- **Recommended human front door:** one ChatGPT Project named `TORO`, using Chat for fast collaboration and Work for substantial tasks. This Project is not source-of-truth; Supabase/GitHub/domain systems remain canonical.
+- **Dot promotion rule:** PUMBA is the first persistent Control Dot. Finance/Operations/Guest-Revenue/Growth/Build remain candidates until workload and measurable value justify permanent Dots.
+- **Vercel deployment audit:** current Vercel `toro-os` is observed as Vite/manual legacy; `toro-os-v03` deployment metadata points to legacy repo `Dramcatcherst/toro-os-v88-new`. Neither is accepted as deployment authority for canonical Next.js repo `Dramcatcherst/Toro-OS`. Contract: `docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md`.
+- **Worker canary contract:** `docs/runbooks/TORO_WORKER_CANARY_V1.md` prepares a disabled-by-default, authenticated L1 deployment probe mapped to existing task `toro_surface_capability_parity_20260922`. It uses a targeted run-id claim and atomic verified completion so a deployment smoke test cannot lease unrelated work or finish without its receipt.
+- **Worker canary sandbox proof:** targeted claim isolation + atomic receipt/completion + rollback all PASS with zero persistence. Evidence: `docs/evidence/TORO_TARGETED_WORKER_CANARY_SANDBOX_VALIDATION_2026-10-01.md`.
+- **Worker canary production primitives:** migration `20261002003241_toro_targeted_worker_claim_v1_20261001` applied; targeted claim + atomic verified completion are service-role-only and read back correctly. Transaction-only production probe PASS and rolled back to the pre-existing run/receipt state. Evidence: `docs/evidence/TORO_TARGETED_WORKER_PRODUCTION_READBACK_2026-10-01.md`. HTTP canary remains disabled pending canonical Vercel deployment.
+- **MCP/PUMBA activation contract:** `docs/runbooks/TORO_MCP_PUMBA_ACTIVATION_V1.md` defines authenticated negative isolation QA, read-only PUMBA entry, receipt/trace separation, 10-cycle L0/L1 observation gate and kill switches before any L2 consideration.
+- **NEXT:** establish one canonical Vercel project sourced from `Dramcatcherst/Toro-OS`, configure backend/public Supabase variables without exposing values, verify `/api/system/runtime-health` with MCP disabled, deploy exact current-main SHA, run a safe L0/L1 worker cycle through the production Control Plane, correlate trace/correlation IDs, then bridge PUMBA. Only after that migrate the remaining transitional executor or promote another Dot.
+
+## Control Plane runtime implementation — 2026-09-30
+
+**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT production Control Plane active / NEXT application worker deployment.
+
+- **Canonical basis already verified in Supabase:** `operations.knowledge_items/toro_master_execution_contract_v1` defines one Supabase/TORO control plane, L0-L4 execution authority, evidence-first completion, bounded retries, single-writer behavior, leases/fencing, dead-letter handling and receipts. This lane implements that existing contract; it does not create a second plan or authority.
+- **Existing work selection remains canonical:** `operations.tasks`, `operations.toro_task_execution_v1`, `operations.toro_execution_actor_v1`, `operations.toro_autonomous_action_queue_v1` and `operations.toro_owner_attention_v1` continue to own task state, routing/selection and owner attention.
+- **Durable runtime active:** production now has execution runs + receipt envelopes with lease/fencing, bounded retry/dead-letter and verification constraints; upstream task/selection authority remains separate.
+- **Production-surface hardening:** preflight verified `service_role` has no `USAGE` on `operations`; TORO will not broaden that schema. Runtime envelopes/RPCs are therefore narrowed to `public.toro_execution_*` with RLS on, no client policies, `anon/authenticated` revoked and minimum `service_role` grants. Upstream task/selection authority remains in `operations`.
+- **Sandbox verification:** exact narrowed draft PASS for duplicate-claim prevention, fencing, retry, verification gates, L4 blocking, cross-tenant FK isolation and minimum privileges; exact rollback script also PASS. All sandbox transactions were rolled back. Evidence: `docs/evidence/TORO_CONTROL_PLANE_PUBLIC_RUNTIME_SANDBOX_VALIDATION_2026-09-30.md`.
+- **Production migration:** `20261001051843_toro_control_plane_runtime_v1_20260930` is applied in canonical Supabase. Current runtime tables are `public.toro_execution_runs` and `public.toro_execution_receipts`; current verified evidence includes at least one L2 run with `succeeded/passed` plus its verification receipt. Contract: `docs/product/TORO_CONTROL_PLANE_RUNTIME_V1.md`.
+- **Risk model invariant:** business severity (`Low/Medium/High/Critical`) and execution authority (`L0-L4`) are separate dimensions. L3 remains human-gated; L4 is not claimable by autonomous workers.
+- **Dot invariant:** PUMBA/future Dots are persistent mission workers over this control plane. They may not own a parallel backlog, permission model, memory authority or completion state.
+- **NEXT gate:** canonical Vercel project/config -> protected runtime-health readback -> exact-main deployment -> safe L0/L1 application Worker run + verified receipt -> authenticated MCP read QA -> PUMBA bridge -> only then wider Dot/autonomy expansion.
+- **Authority ceiling unchanged:** production Control Plane storage is active, but no external write, money movement, reservation/rate change, publication or permission expansion is authorized merely by runtime availability.
 
 ## WhatsApp / OpenClaw repair intake — 2026-09-29
 
@@ -972,6 +1164,50 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 ## Channel implementation
 - Dreamcatcher public website CURRENT canonical runtime is Vercel project `dreamcatcher-website-vnext-media-p0` / `prj_iX2eCBZkd6cmkX3AlfcpYOpkOOur`; verified production deployment `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn` is READY and owns custom aliases `dreamcatcherhotel.com` and `www.dreamcatcherhotel.com`. Historical parallel website builds remain reference-only until domain/env/rollback parity is documented; do not delete them merely because the public domain has converged.
+
+### Dreamcatcher V2 — nuevo build integrado al Plan General — 2026-10-07
+
+**Owner direction:** Mauricio autorizó incorporar el plan `DC-BUILD-20261007-R1` al Plan General. La autorización corresponde a dirección, secuencia y documentación; no aprueba la composición visual final ni una publicación de la web.
+**Scope:** `dreamcatcher_website` → `dreamcatcher_hotel_master`; TORO Channels/Growth coordina, con SKY como responsable operativo registrado y Systems/Builder para implementación autorizada. Se conserva la prioridad high/P1 del módulo sin desplazar los P0 transversales de identidad, seguridad y verdad comercial.
+**Single operational dossier:** `operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2` → `structured_content.build_action_plan_20261007_r1`. Los paquetes siguientes son entregables del expediente existente, no siete proyectos ni una segunda cola.
+
+#### CURRENT
+
+- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El último head observado para el plan fue `5e2d7eca75237ac770d80d964818919dc71e9d04`, abierto/draft/sin merge; revalidar antes de ejecutar. Un deployment READY o pruebas de otro SHA no certifican el candidato actual.
+- El plan está registrado y aprobado para integración; su implementación nueva sigue NOT_STARTED. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por este documento.
+- `DC2-022` y Channel Truth conservan el bloqueo de publicación. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+
+#### TARGET
+
+Una home ES/EN fotográfica, luminosa, compacta y orientada a elegir y reservar. Flow conserva la exploración, pero disponibilidad y navegación convencional no requieren aprender controles ni cerrar un tutorial. La paleta concreta y el copy pasan revisión visual, sin declarar otra marca oficial. Primera entrega acotada: portada → explorador → entrada a ficha → disponibilidad.
+
+#### NEXT — secuencia única
+
+| Paquete | Resultado y criterio de aceptación | Trabajo existente |
+| --- | --- | --- |
+| B0 | Reconciliar candidato/base/producción, deltas ya incorporados, CI del SHA exacto, configuración de publicación y rollback. Desconocidos y bloqueos quedan explícitos; no repetir el parche de nombre `BOOKING_BASE_URL`, ya corregido en el candidato analizado. | DC2-022 |
+| B1 | Corregir fecha local `America/Costa_Rica`, salida posterior y continuidad de fechas, ocupación, edades y moneda donde Kross lo soporte. Probar cruces de día/mes/año y edades 3/4 y 10/11; no inventar parámetros ni calcular tarifas en el frontend. | DC2-022; consume revenue_booking_stack |
+| B2 | Sustituir lenguaje de prototipo por información de huésped; fotografía dominante, jerarquía clara y reserva accesible. Capturas móvil/escritorio del mismo SHA y revisión del dueño; no publicación implícita. | Website issue #79 / PR #80 |
+| B3 | Comparar hasta tres alojamientos con capacidad, camas, baño, cocina, escaleras y vista verificadas. Mapping de unidad solo cuando esté validado; prueba con cinco personas todavía pendiente, no un resultado declarado. | DC2-028 |
+| B4 | Resolver derechos y correspondencia de medios, categorías y elegibilidad; reutilizar galería/footer/rutas. QA bloquea medios inválidos y un fallo runtime no elimina toda ruta de reserva/contacto. | media_six_finalists_rights_reconciliation_2026_09 |
+| B5 | QA ES/EN, móvil/escritorio, teclado, zoom, consentimiento y movimiento reducido; medición sin PII ni eventos duplicados. Separar intención/handoff de reserva confirmada; Chromium no acredita Safari/iPhone. | DC2-022; DC2-030 permanece absorbida |
+| B6 | Presentar evidencia y riesgos, obtener autorización específica de publicación, liberar el artefacto exacto y comprobar rutas críticas con rollback disponible. | DC2-022 |
+
+Las correcciones verificadas de otros PR se preservan por comparación, no por mezcla ciega ni reimplementación. Un solo ejecutor autorizado modifica los archivos compartidos. No iniciar workers, reactivar ejecutores suspendidos ni crear un scheduler por registrar esta secuencia; la ejecución material utiliza el Control Plane y los recibos existentes.
+
+#### Verdad comercial, aceptación y medición
+
+Kross conserva tarifa, disponibilidad y reserva; Supabase conserva política/contenido/estado; GitHub conserva código y contratos; Vercel aporta evidencia del artefacto; Dropbox conserva originales y derechos; Airtable sigue como referencia transitoria. Aplicar el contrato de ocupación, desayuno y suplementos actualizado el **2026-10-07** en este mismo Plan General, no restaurar los objetivos tarifarios anteriores del día 6. No cambiar IDs/slugs Kross, sumar villas con sus habitaciones ni prometer disponibilidad por un catálogo. Santa Toro sigue fuera de la navegación comercial; la publicación independiente de Makaiza requiere reconciliar elegibilidad y correspondencia con Kross, aunque su capacidad descriptiva ya tenga fuente.
+
+Aceptación mínima propuesta: escritorio 1366×768 y 1440×900 al 100%; móvil 360×800, 390×844 y 430×932; 320 px/reflow y zoom 200%; controles no tapados por consentimiento/menú/Compass/Tere; paridad ES/EN y alternativa convencional accesible. Objetivos de rendimiento de campo p75: LCP ≤2,5 s, INP ≤200 ms y CLS ≤0,1; son objetivos, no mediciones obtenidas ni inferencias desde laboratorio. Un P0 impide publicar aunque la puntuación agregada sea alta.
+
+Medir reservas directas confirmadas y contribución atribuible con evidencia, separando descuentos, comisiones, costos incrementales, reembolsos e impuestos. Clics y handoff son señales intermedias, no ventas ni utilidad. No prometer mejora porcentual sin baseline comparable y cobertura de atribución.
+
+#### FUTURE / aplazado
+
+Slack queda aplazado por decisión del dueño. No crear otra web, CMS, repositorio, biblioteca o plan maestro; no restaurar AgoVersion como base ni mezclar este lanzamiento con nueva API de mareas, audio/video pesados, expansión masiva de Flow, cambios tarifarios o limpieza destructiva. Las propuestas futuras no bloquean B0–B2. Los bloqueos de derechos y datos se resuelven en sus tareas originales.
+
+**Traceability:** seguimiento existente `Dramcatcherst/Toro-OS#28`, comentario `6049201914`; el detalle B0–B6 del expediente y el plan de implementación de 7 de octubre permanecen subordinados a este archivo. Esta sección completa la incorporación al documento rector cuando su PR documental sea integrado; no acredita ejecución o publicación del nuevo build.
 
 ## Experiment
 - dreamauro / RicoSky -> potential TORO Exchange
@@ -3789,6 +4025,59 @@ Rules:
 - high-value review buckets require transaction-level evidence before reclassification;
 - realized savings are recorded only after verified change and readback;
 - break-even engine consumes only classifications that have passed their required evidence gate.
+
+
+
+
+### Financial cost-classification wave 2 — maintenance and labor
+
+Maintenance:
+- recorded repairs Jan–Sep 2026: CRC 17,594,860.19;
+- CRC 14,992,933.09 (85.21%) is under CAPEX/fleet/other-property review:
+  - Ferretería CRC 8,301,475.72;
+  - vehicle repairs CRC 4,899,531.56;
+  - Santa Toro repairs CRC 1,791,925.81;
+- residual recurring-property candidate: CRC 2,601,927.10.
+- sensitivity only: if all reviewed amounts were proven outside recurring Dreamcatcher operating cost, current commission-only diagnostic break-even would move from ~CRC 21.48M to ~CRC 19.66M/month.
+
+Labor:
+- total personnel expense: CRC 65,953,460.46 = 24.83% of Jan–Sep sales;
+- admin payroll: CRC 20,262,901.46 = 7.63%;
+- reception: CRC 9,953,438 = 3.75%;
+- maintenance: CRC 11,020,318 = 4.15%;
+- housekeeping: CRC 14,102,196 = 5.31%;
+- reception + maintenance + housekeeping = CRC 35,075,952 = 13.21%.
+
+Model rule:
+- maintain separate **cash break-even** and **economic break-even** views;
+- economic view includes required management labor/replacement-value compensation;
+- owner/family compensation is not automatically excluded;
+- housekeeping/reception/maintenance are fixed/step-fixed by occupancy bands until real workload data supports a different model.
+
+
+
+
+### Break-even scenarios — Current / Clean / Target
+
+Supabase:
+- `operations.knowledge_items/dreamcatcher_break_even_scenarios_2026_ytd_v1`
+
+Current diagnostic:
+- ~CRC 21.48M monthly break-even.
+
+Clean sensitivity:
+- ~CRC 18.71M/month if identified other-property/CAPEX/fleet candidates are ultimately proven outside recurring Dreamcatcher operating cost and bank fees remain fixed;
+- ~CRC 19.21M/month if those candidates are excluded from recurring cost and bank fees are confirmed variable payment-processing cost.
+
+Target planning scenarios from the clean/payment-processing-variable base:
+- 5% additional controllable fixed-cost reduction → ~CRC 18.25M/month;
+- 10% → ~CRC 17.29M/month;
+- 15% → ~CRC 16.32M/month.
+
+Guardrail:
+- accounting cleanup is not cash savings;
+- CAPEX reclassification is not recurring savings by itself;
+- target scenarios are hypotheses until a specific action is implemented and verified.
 
 
 ### Improvement loop

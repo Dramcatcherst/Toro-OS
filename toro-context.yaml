@@ -3,7 +3,7 @@ product:
   name: TORO
   visible_brand: TORO
   category: AI Portfolio and Business Operating Brain
-  context_version: "2026.09.23-agent-skill-v1"
+  context_version: "2026.10.10-pumba-dot-v1"
   status: internal_proof
   external_business_onboarding: blocked
   legacy_operating_aliases:
@@ -100,6 +100,11 @@ canonical_product_specs:
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
   cognitive_operating_model: docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md
   autonomy_action_model: docs/product/TORO_AUTONOMY_AND_ACTION_MODEL_V1.md
+  control_plane_runtime: docs/product/TORO_CONTROL_PLANE_RUNTIME_V1.md
+  openai_surface_map: docs/product/TORO_OPENAI_SURFACE_MAP_V1.md
+  vercel_canonical_deployment: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
+  actor_and_surface_registry: docs/product/TORO_ACTOR_AND_SURFACE_REGISTRY_V1.md
+  mcp_pumba_activation_runbook: docs/runbooks/TORO_MCP_PUMBA_ACTIVATION_V1.md
   dreamcatcher_cognitive_proof: docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md
   scope_graph: docs/product/TORO_SCOPE_GRAPH_V1.md
   systems_auditor: docs/product/TORO_SYSTEMS_AUDITOR_V1.md
@@ -126,6 +131,9 @@ canonical_product_specs:
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
+  pumba_dot_operating_brief: docs/product/PUMBA_CHATGPT_DOT_OPERATING_BRIEF_V1.md
+  pumba_dot_bootstrap_prompt: docs/product/PUMBA_DOT_BOOTSTRAP_PROMPT_V1.md
+  pumba_dot_7_day_scorecard: docs/product/PUMBA_DOT_7_DAY_SCORECARD_V1.md
 
 canonical_sources:
   product_constitution: github

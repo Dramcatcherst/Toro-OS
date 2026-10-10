@@ -1,6 +1,8 @@
 import "server-only";
 import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -21,11 +23,11 @@ export function ownerAttentionReadEnabled(): boolean {
   );
 }
 
-export async function loadOwnerAttentionProjection(
+export async function loadOwnerAttentionProjectionWithClient(
   context: ToroResolvedContext,
+  supabase: SupabaseClient,
   input: { today?: string; limit?: number } = {},
 ): Promise<OwnerAttentionProjection> {
-  // Also guard direct callers, before creating a database client.
   if (!ownerAttentionReadEnabled()) {
     throw new Error("Owner Attention read is disabled.");
   }
@@ -33,8 +35,6 @@ export async function loadOwnerAttentionProjection(
   if (!canViewOwnerAttention(context) || !context.orgId) {
     throw new Error("Owner Attention requires an authorized organization context.");
   }
-
-  const supabase = await createServerSupabaseClient();
 
   const [followupsResult, obligationsResult, invoicesResult] = await Promise.all([
     supabase
@@ -81,4 +81,21 @@ export async function loadOwnerAttentionProjection(
     today,
     limit: input.limit,
   });
+}
+
+export async function loadOwnerAttentionProjection(
+  context: ToroResolvedContext,
+  input: { today?: string; limit?: number } = {},
+): Promise<OwnerAttentionProjection> {
+  // Preserve the direct-provider gate before allocating any database client.
+  if (!ownerAttentionReadEnabled()) {
+    throw new Error("Owner Attention read is disabled.");
+  }
+
+  if (!canViewOwnerAttention(context) || !context.orgId) {
+    throw new Error("Owner Attention requires an authorized organization context.");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  return loadOwnerAttentionProjectionWithClient(context, supabase, input);
 }
