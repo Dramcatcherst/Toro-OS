@@ -1037,6 +1037,8 @@ Transitional/reference estate while dependencies are removed.
 ## Dropbox
 Files/media/evidence/archive.
 
+La custodia financiera se rige por la sección [Alegra](#alegra) y el diseño existente de Connector v2. Conservar originales, derivados vinculados, versiones y prueba de restauración en las raíces autorizadas; no crear otro plan de respaldo. Los identificadores nativos, hashes y rutas privadas pertenecen al manifiesto restringido. No realizar reorganización masiva, sobreescrituras, borrados, compartición ni cambios de permisos como parte de esta revisión documental.
+
 ## Notion
 Narrative planning/research/working memory.
 
@@ -1048,6 +1050,33 @@ Live PMS authority.
 
 ## Alegra
 Fiscal/accounting authority.
+
+### Integración y custodia documental — revisión 2026-10-10
+
+**Alcance:** Accounting & Tax dentro de TORO Finance, Connector Fabric y Governance & Resilience. FIONA mantiene el contrato financiero; SOBRESITO mantiene conectores, integridad y recuperación. Se conserva el carril existente de controles financieros y FIN-01. El diseño subordinado es [Alegra Connector v2](../superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md#document-custody-and-platform-optimization--2026-10-10).
+
+**CURRENT — verificado:** el conector expone 218 herramientas de lectura. No expone creación/edición de comprobantes ni carga de adjuntos. Los scripts existentes preparan respaldos JSON y manifiestos; no prueban custodia binaria de PDF, XML o fotografías. La revisión acotada de Dropbox encontró evidencia contable y paquetes históricos, sin certificar cobertura completa, hashes de los originales o restauración actual. Dos conexiones a la misma cuenta no constituyen respaldo independiente. Existe preparación de escritura controlada en el carril de implementación previo; su disponibilidad parcial no acredita un escritor operativo. La cobertura financiera vigente de Kross y la sincronización persistente requieren pruebas separadas.
+
+**TARGET — aprobado como dirección documental, sin activación:**
+
+- Alegra conserva la autoridad fiscal/contable; Kross conserva reservas y contexto operativo; bancos conservan liquidaciones. Supabase conserva identidad, relaciones, estados, permisos y recibos; Dropbox conserva originales. Airtable ofrece revisión humana. Portal TORO y WhatsApp consultan el mismo estado y contrato de acciones.
+- Cada expediente identifica empresa, entidad, propiedad, tipo, emisor, referencia fiscal, fecha, moneda y procedencia. Un comprobante puede tener varios activos: XML emitido, respuesta fiscal, PDF nativo, foto original y representación optimizada. No se confunde documento, archivo, factura o pago.
+- Reutilizar `integrations.document_manifest`, `finance.evidence_documents` y `finance.invoice_sources`. Los vínculos y versiones adicionales se diseñan sobre sus metadatos existentes; esta revisión no despliega migraciones.
+- Los bytes originales se conservan inmutables en Dropbox, con versión, tamaño, SHA-256, identificador nativo y revisión. Alegra recibe la copia permitida después de custodia y validación. El Portal muestra enlaces protegidos y estado de evidencia. Las rutas privadas y referencias de facturas quedan fuera de este repositorio público.
+- Alegra documenta adjuntos de hasta 2 MB por archivo; cantidad, formatos y cuota deben verificarse en esta cuenta y plan. Conservar el original incluso cuando una foto necesite copia optimizada. El XML firmado nunca se comprime con pérdida ni se reconstruye como sustituto.
+- Los estados de respaldo siguen `PREPARED -> EXTERNAL_UPLOADED -> INTEGRITY_VERIFIED -> RESTORE_TESTED`. Preparar, listar o encontrar un ZIP no certifica integridad o recuperación. Cada transición exige recibo y evidencia.
+- Definir una copia recuperable fuera del mismo dominio de fallo de Dropbox, dentro de destinos ya autorizados y con acceso restringido. Los respaldos de base de datos de Supabase no incluyen los archivos binarios de Storage.
+- Objetivos propuestos: custodiar el original antes de habilitar contabilización; capturar cambios en el ciclo existente con cierre diario verificable; recuperar un expediente validado en un día hábil. Son objetivos de diseño, pendientes de aceptación, capacidad y prueba, no SLA ni automatizaciones ya activadas.
+
+**Optimización nativa:** evaluar primero buzón de comprobantes XML de proveedores, importación de ventas ya emitidas, catálogo/CABYS, centros de costo, conciliación bancaria desde XLSX, exportables y recurrencias pertinentes a Costa Rica. Verificar función, plan, permisos y configuración por cuenta. No activar todas las herramientas por cantidad ni aplicar funciones fiscales/nómina de otros países. La aceptación/rechazo fiscal, emisión y registro de pagos requieren su propio alcance aprobado.
+
+**Automatización:** reutilizar el trabajador y el Control Plane existentes. Un disparador de Kross, correo, Dropbox o WhatsApp crea una entrada gobernada; conserva identidad, cursor, deduplicación, aprobación y recibo persistente. Make y Zapier tienen integraciones publicadas; n8n puede utilizar HTTP Request. Son alternativas investigadas, no adoptadas ni prueba de permisos/adjuntos. Ninguna debe crear un segundo registro financiero o saltarse los controles de TORO.
+
+**NEXT — una unidad verificable:** cerrar un solo expediente de prueba del carril existente con JSON, PDF, XML y foto simulados, manifiesto versionado, duplicado multicanal, fallo de integridad y restauración aislada. Integrar esta prueba en el carril de escritura existente manteniendo el escritor deshabilitado por defecto. Luego verificar, por separado y con autorización específica, una operación real de bajo impacto y lectura posterior.
+
+**Criterio de terminado:** Plan y diseño alineados; manifiesto y hashes verificables; reintento sin duplicado; fallo sin avanzar cursor; recuperación aislada; vínculo comprobante–activos–origen; estado idéntico en las superficies. No se declara operación autónoma, adjunto cargado, recuperación o emisión hasta contar con recibo real.
+
+**FUTURE:** escritura repetitiva limitada por tipo y umbral, vigilancia de excepciones y recuperación periódica dentro de la infraestructura existente; cada ampliación depende de pruebas de país, entidad, permisos y reversibilidad.
 
 ## WeSpeak
 Active guest communication runtime.
