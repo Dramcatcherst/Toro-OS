@@ -9,6 +9,19 @@
 
 ---
 
+## CRM, TERE, conocimiento y experiencias — especificación para revisión
+
+**Receipt G2 local:** [código preparado, pruebas y propuesta G3](../evidence/TORO_CRM_TERE_G2_LOCAL_20261009.md). Contratos puros sin consumidor productivo; aceptación TERE endurecida contra escenarios duplicados/extras. QA externo/piloto NOT_RUN, G3 NOT_READY por falta de entorno aislado y hash consumido acreditados. Mantener gates y rutas de otras lanes.
+
+**CRM-TERE-EXPERIENCIAS-20261008-V1 · 08/10/2026 · G1 APROBADO por Mauricio el 09/10/2026 00:54 Costa Rica; G2 APROBADO por Mauricio el 09/10/2026 01:07 Costa Rica, solo Paquete A local.** [Especificación escrita](TORO_CRM_TERE_EXPERIENCIAS_SPEC_V1.md) amplía los contratos Core existentes sin activarlos. Reutiliza guests, guest_consents, reservations/stays, communication_followups, tasks, knowledge_items y catálogo/solicitudes/fulfillment existentes. Supabase canónico; Kross comercial; Airtable proyección; Dropbox soporte. No nuevo CRM/inbox/scheduler.
+
+Diagnóstico acotado: 33 guests/33 reservas mirror, 0 live, snapshot 21/09; guest_consents 0 filas. 85 experiencias activas: 7 ready/verified, 76 review/needs_verification, 2 review/verified; no acreditan precio/cupo vigente. Core parties/relationships/external_references presentes en sandbox y ausentes del catálogo operativo. Siete tareas existentes ya contienen el marcador: no duplicar anexos ni modificar estados/responsables/fechas. DC2-040 no localizado como tarea independiente; mapping pendiente.
+
+Gates: especificación G1 aprobada → [plan y método G2 para revisión](TORO_CRM_TERE_EXPERIENCIAS_EXECUTION_G2_V1.md) → QA sintético aislado autorizado → piloto específicamente autorizado. G2 aprobado limita la primera ejecución a desarrollo/pruebas locales en rama; no SQL remoto, cambios de permisos, WeSpeak, producción ni envíos. Sin tablas/código/migraciones/permisos/conexiones/campañas/envíos/publicación por inferencia. Identidad y grants no derivan de conversación o tags; opt-out persiste; merge/split reversible sin cross-tenant. Handoff humano no se libera por temporizador. Solo Recepción aplica únicamente al lote WeSpeak autorizado, no a otras rutas.
+
+Lectura actual del servicio de automatizaciones disponible: cadencias existentes registradas habilitadas, next_run_time=null; ejecución futura y delivery no probados. Mantener QA semanal/mensual, Connector Learning y correos sin scheduler paralelo. Gates pendientes: hash consumido, supresión técnica, Kross vigente, edades 11/12, web/CTA y política 50/50-7 días vs 100%-5 días. QA/piloto NOT_RUN; métricas NO MEDIDO. Detalles de fuentes, aceptación, privacidad/retención y rollback en la especificación.
+
+
 ## Reporte de recepción integrado y preparación operativa 2026 10 08
 
 
