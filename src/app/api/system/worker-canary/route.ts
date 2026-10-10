@@ -1,3 +1,4 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { randomUUID } from "node:crypto";
 
 import {
@@ -48,6 +49,8 @@ async function failRunSafely(input: {
 }
 
 export async function POST(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   if (!isToroWorkerCanaryEnabled(process.env)) {
     return new Response(null, { status: 404, headers: noStoreHeaders() });
   }

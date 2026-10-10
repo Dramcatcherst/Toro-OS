@@ -9,6 +9,8 @@ import { getApprovalLedger } from "@/lib/server/approval-ledger";
 import { getConnectorHealth } from "@/lib/server/connector-health";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 import type { SourceMeta } from "@/lib/toro-types";
+import { redirect } from "next/navigation";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 const navIcons = [Activity, Brain, Blocks, Bot, CircleDollarSign, Megaphone, FileText, Search, RadioTower, Send, Workflow, Layers3, Database, ShieldCheck, ClipboardCheck, Monitor, Code2, Settings];
 
@@ -101,6 +103,7 @@ async function getBlueprintFeed() {
 }
 
 export default async function Home() {
+  if (isPublicDemo()) redirect("/brain");
   const approvalLedger = await getApprovalLedger();
   const connectorHealth = await getConnectorHealth();
   const criticalQueue = queuedActions.filter((action) => action.risk === "Critical").length;

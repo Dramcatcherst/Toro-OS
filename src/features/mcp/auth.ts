@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 import { Buffer } from "node:buffer";
 
@@ -75,6 +76,13 @@ export async function resolveToroMcpBearerRuntime(
   bearerToken: string,
   scopeRef?: string,
 ): Promise<ToroMcpReadRuntime> {
+  if (isPublicDemo()) {
+    return { error: {
+      code: "capability_unavailable",
+      message: "Operational reads are disabled in the public demo.",
+      retryable: false,
+    } };
+  }
   const client = createBearerSupabaseClient(bearerToken);
 
   let context = await resolveToroContextWithSupabase(

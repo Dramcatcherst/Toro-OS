@@ -1,3 +1,4 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { createWorkerSupabaseClient } from "@/lib/supabase/worker";
 import {
   buildToroRuntimeHealthConfig,
@@ -12,6 +13,8 @@ function noStoreHeaders() {
 }
 
 export async function GET(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   if (!isToroRuntimeHealthEnabled(process.env)) {
     return new Response(null, {
       status: 404,

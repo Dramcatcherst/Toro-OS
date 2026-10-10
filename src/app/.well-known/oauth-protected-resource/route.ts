@@ -1,3 +1,4 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import {
   metadataCorsOptionsRequestHandler,
   protectedResourceHandler,
@@ -20,6 +21,8 @@ function unconfiguredResponse() {
 }
 
 export async function GET(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   if (!isToroMcpEnabled()) return disabledResponse();
 
   const config = getToroMcpRuntimeConfig();
@@ -34,6 +37,8 @@ export async function GET(request: Request) {
 }
 
 export async function OPTIONS(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   if (!isToroMcpEnabled()) return disabledResponse();
 
   const config = getToroMcpRuntimeConfig();

@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "./public-demo";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -53,7 +54,7 @@ function syntheticView(reason: string): BrainProjectionView {
 }
 
 function canonicalReadEnabled() {
-  return process.env.TORO_BRAIN_CANONICAL_READ_ENABLED === "true";
+  return internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED");
 }
 
 export async function loadBrainProjectionViewForContext(

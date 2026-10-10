@@ -1,4 +1,5 @@
 import "server-only";
+import { assertInternalRuntime } from "@/lib/server/public-demo";
 
 import { createClient } from "@supabase/supabase-js";
 
@@ -6,6 +7,7 @@ import { getSupabasePublicConfig } from "./env";
 import { resolveSupabaseWorkerSecret } from "./worker-config";
 
 export function createWorkerSupabaseClient() {
+  assertInternalRuntime();
   const { url } = getSupabasePublicConfig();
   const resolved = resolveSupabaseWorkerSecret(process.env);
 

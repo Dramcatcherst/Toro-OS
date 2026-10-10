@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -182,6 +183,9 @@ export async function runToroMcpReadTool(
   input: ReadInput = {},
   runtime: ToroMcpReadRuntime = {},
 ): Promise<ToroMcpResponse<unknown>> {
+  if (isPublicDemo()) {
+    return errorResponse(tool, input, "capability_unavailable", "Operational reads are disabled in the public demo.", false);
+  }
   const resolved = await resolveReadContext(tool, input, runtime);
   if (!resolved.ok) return resolved.response;
 

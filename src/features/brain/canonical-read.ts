@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -225,6 +226,9 @@ export async function loadCanonicalBrainReadSliceWithClient(
   context: ToroResolvedContext,
   supabase: SupabaseClient,
 ): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
   assertOrganizationContext(context);
 
   const [
@@ -309,6 +313,9 @@ export async function loadCanonicalBrainReadSliceWithClient(
 export async function loadCanonicalBrainReadSlice(
   context: ToroResolvedContext,
 ): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
   // Preserve the existing fail-closed contract: invalid scope must be rejected
   // before any database client is created.
   assertOrganizationContext(context);
