@@ -1,21 +1,27 @@
 import { describe, expect, it } from "vitest";
 import type { ToroResolvedContext } from "@/features/context/types";
-import { canReadHotelDirectory, DIRECTORY_SCOPE, projectHotelLinks } from "./directory";
+import { canReadHotelDirectory, projectHotelLinks } from "./directory";
+import { authorizedContext, quoteEntry as entry, readKross, sourceRow as row } from "./fixtures.test-utils";
 
-const context = { mode: "organization", orgId: DIRECTORY_SCOPE.orgId,
-  requiresContextChoice: false, canUseOrganizationData: true,
-  membership: { orgId: DIRECTORY_SCOPE.orgId, status: "active", roles: ["GERENCIA"] },
-} as ToroResolvedContext;
-const entry = { id: "LINK-002", url: "https://dreamcatcherhotel.kross.travel/", email: "private@example.test" };
-const row = { org_id: DIRECTORY_SCOPE.orgId, property_id: DIRECTORY_SCOPE.propertyId,
-  knowledge_key: DIRECTORY_SCOPE.key, visibility: "internal",
-  structured_content: { link_directory: { entries: [entry], accounts: [{ email: "private@example.test" }] } } };
+const context = authorizedContext();
 
 describe("hotel directory boundary", () => {
-  it("exposes only reviewed link fields, not accounts or evidence", () => {
-    expect(projectHotelLinks(context, row)).toEqual([{id: "LINK-002", label: "💬 Cotizar estancia", url: entry.url}]);
+  it("reads only the approved navigation without creating connector grants", () => {
+    const candidate = { ...context, allowedTools: [] };
+    expect(canReadHotelDirectory(candidate)).toBe(true);
+    expect(projectHotelLinks(candidate, row)).toEqual([{id:"LINK-002",label:"💬 Cotizar estancia",url:entry.url}]);
+    expect(candidate.allowedTools).toEqual([]);
   });
-  it.each([null, {...context, mode: "personal"}, {...context, requiresContextChoice: true},
+  it("does not let connector grants authorize the directory in another org", () => {
+    const candidate = {...context,orgId:"other",allowedTools:[readKross]};
+    expect(canReadHotelDirectory(candidate)).toBe(false);
+    expect(projectHotelLinks(candidate,row)).toEqual([]);
+  });
+  it("exposes only link fields, not accounts or evidence", () => {
+    expect(projectHotelLinks(context,row)).toEqual([{id:"LINK-002",label:"💬 Cotizar estancia",url:entry.url}]);
+  });
+  it.each([null, {...context, userId: ""}, {...context, userId: " "}, {...context, allowedDataScopes: ["personal"]},
+    {...context, mode: "personal"}, {...context, requiresContextChoice: true},
     {...context, canUseOrganizationData: false}, {...context, orgId: "other"},
     {...context, membership: {...context.membership, orgId: "other"}},
     {...context, membership: {...context.membership, status: "suspended"}},
