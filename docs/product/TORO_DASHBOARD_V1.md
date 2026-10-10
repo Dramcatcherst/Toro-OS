@@ -19,20 +19,20 @@ Modules are role-aware views and actions over canonical capabilities and sources
 
 ## Navigation
 
-1. Brain
-2. Today / Attention
-3. Money
-4. Studio
-5. Customers
-6. Operations
-7. People
-8. Growth
-9. Legal & Risk
-10. Assets & Spaces
-11. Projects
-12. Systems
+0. Cerebro / Brain (cross-cutting visible module)
+1. Today / Attention
+2. Money
+3. Studio
+4. Customers
+5. Operations
+6. People
+7. Growth
+8. Legal & Risk
+9. Assets & Spaces
+10. Projects
+11. Systems
 
-TARGET default internal home: **Brain**, filtered by identity, context and capability, with a role-specific initial focus and equivalent list. **Today / Attention** remains one-tap operational focus. The eleven domain modules remain eleven; Brain is their shared entry/view, not a twelfth subsystem or authority. This 2026-09-30 owner direction supersedes the earlier Today-first landing rule; it is not a claim that the current route has changed.
+TARGET default internal home: **Cerebro / Brain**, visible Module 0, filtered by identity, context and capability, with a role-specific initial focus and equivalent list. **Today / Attention** remains one-tap operational focus. The eleven domain modules remain unchanged; Cerebro creates no separate subsystem, engine, memory or authority. The 2026-10-10 owner direction changes visible classification only and supersedes the earlier no-twelfth-menu wording. It is not a runtime activation or migration of existing technical IDs.
 Technical cockpit: **Systems/Admin only**.
 
 ## Progressive disclosure
