@@ -15,5 +15,12 @@ it.each(["denied","unavailable"])("never renders supplied links in %s state", as
   load.mockResolvedValue({state,links:[{id:"private",label:"private",url:"https://private.example/"}]});
   const markup=renderToStaticMarkup(await ToolsPage());
   expect(markup).not.toContain("private.example");
-  expect(markup).toContain("/login");
+  expect(markup).toContain(state === "denied" ? "/login?next=/my-toro/herramientas" : "/my-toro");
+});
+it("recognizes a signed-in account without sending it back to login on a connection failure", async () => {
+  load.mockResolvedValue({state:"unavailable",links:[],account:"admin@example.test",reason:"connection_pending"});
+  const markup=renderToStaticMarkup(await ToolsPage());
+  expect(markup).toContain("admin@example.test");
+  expect(markup).toContain("Tu acceso está bien");
+  expect(markup).not.toContain('href="/login');
 });

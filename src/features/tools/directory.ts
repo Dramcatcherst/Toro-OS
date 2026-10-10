@@ -37,7 +37,14 @@ export function projectHotelLinks(context: ToroResolvedContext | null, input: un
     row.knowledge_key !== DIRECTORY_SCOPE.key || row.visibility !== "internal") return [];
   const directory = object(object(row.structured_content)?.link_directory);
   if (!directory || !Array.isArray(directory.entries)) return [];
-  const entries: unknown[] = directory.entries;
+  return projectToolRows(context, directory.entries);
+}
+
+// The scoped security-invoker RPC returns only id/url; recheck destinations
+// before rendering, including duplicate IDs and unreviewed redirects.
+export function projectToolRows(context: ToroResolvedContext | null, input: unknown): ToolLink[] {
+  if (!canReadHotelDirectory(context) || !Array.isArray(input)) return [];
+  const entries: unknown[] = input;
   // Only explicitly reviewed destinations leave the server. Account metadata,
   // unrelated projects, raw evidence and the rest of the mixed registry stay out.
   return tasks.flatMap(([id, label, expectedUrl]) => {

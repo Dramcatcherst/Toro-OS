@@ -5,19 +5,34 @@ vi.mock("@/lib/supabase/server", () => ({ createServerSupabaseClient: mocks.clie
 import { loadHotelDirectory } from "./server";
 import { DIRECTORY_SCOPE } from "./directory";
 beforeEach(() => vi.resetAllMocks());
+const context = {mode:"organization",orgId:DIRECTORY_SCOPE.orgId,canUseOrganizationData:true,email:"admin@example.test",
+  membership:{orgId:DIRECTORY_SCOPE.orgId,status:"active",roles:["ADMIN"]}};
 it("never queries the registry without authorized context", async () => {
   mocks.context.mockResolvedValue(null);
   expect(await loadHotelDirectory()).toEqual({state:"denied",links:[]});
   expect(mocks.client).not.toHaveBeenCalled();
 });
-it("filters the RLS client by org, property, key and visibility and fails closed on query error", async () => {
-  mocks.context.mockResolvedValue({mode:"organization",orgId:DIRECTORY_SCOPE.orgId,canUseOrganizationData:true,
-    membership:{orgId:DIRECTORY_SCOPE.orgId,status:"active",roles:["ADMIN"]}});
-  const q={select:vi.fn().mockReturnThis(),eq:vi.fn().mockReturnThis(),maybeSingle:vi.fn().mockResolvedValue({error:{message:"denied"},data:null})};
-  const from=vi.fn().mockReturnValue(q); const schema=vi.fn().mockReturnValue({from});mocks.client.mockResolvedValue({schema});
-  expect(await loadHotelDirectory()).toEqual({state:"unavailable",links:[]});
-  expect(schema).toHaveBeenCalledWith("operations");expect(from).toHaveBeenCalledWith("knowledge_items");
-  expect(q.eq.mock.calls).toEqual([["org_id",DIRECTORY_SCOPE.orgId],["property_id",DIRECTORY_SCOPE.propertyId],["knowledge_key",DIRECTORY_SCOPE.key],["visibility","internal"]]);
+it("uses only the scoped RPC with the session client, and distinguishes a missing connection from login", async () => {
+  mocks.context.mockResolvedValue(context);
+  const rpc=vi.fn().mockResolvedValue({error:{code:"PGRST202",message:"private details"},data:null});
+  mocks.client.mockResolvedValue({rpc});
+  expect(await loadHotelDirectory()).toEqual({state:"unavailable",links:[],account:"admin@example.test",reason:"connection_pending"});
+  expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_links_v1");
+});
+it("projects reviewed destinations and discards other fields and unknown links", async () => {
+  mocks.context.mockResolvedValue(context);
+  const rpc=vi.fn().mockResolvedValue({error:null,data:[
+    {id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",private:"hidden"},
+    {id:"other",url:"https://private.example/"},
+  ]});
+  mocks.client.mockResolvedValue({rpc});
+  expect(await loadHotelDirectory()).toEqual({state:"ready",account:"admin@example.test",
+    links:[{id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",label:"💬 Cotizar estancia"}]});
+});
+it.each([null,[],[{id:"LINK-002",url:"javascript:alert(1)"}]])("fails closed on invalid RPC data", async data => {
+  mocks.context.mockResolvedValue(context);
+  mocks.client.mockResolvedValue({rpc:vi.fn().mockResolvedValue({error:null,data})});
+  expect((await loadHotelDirectory()).state).toBe("unavailable");
 });
 it("does not return internal exception details", async () => {
   mocks.context.mockRejectedValue(new Error("private connection details"));
