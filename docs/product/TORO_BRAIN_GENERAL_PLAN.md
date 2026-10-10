@@ -4142,3 +4142,14 @@ Strategic principle: **occupancy by itself is not success. TORO should maximize 
 - **Evidencia local:** 243 IDs, seis accesos de inicio, búsqueda, filtro de favoritos/persistencia, estado vacío, cero errores JS y sin desborde horizontal a 390 px. Revisión visual escritorio/móvil. No implica accesos autenticados ni pruebas de aislamiento en producción.
 - **TARGET/NEXT:** implementar en sección existente de TORO tras validar los seis destinos, identidad/rol/scope en servidor y preferencias canónicas. Portal es puerta, TORO Brain relaciona tareas/sistemas/proyectos/fuentes, Supabase guarda catálogo; autoridades transaccionales permanecen Kross/Alegra. Mantener permisos y separar Santa Toro, patrimonio y hotel.
 - No merge/deploy implícito; completar favoritos Chrome y otros pendientes con investigación focalizada, sin reconstruir el inventario.
+
+
+### Herramientas del hotel — integración local acotada
+
+**CURRENT local, no publicado:** `/my-toro/herramientas` y entrada en Mi TORO preparados en el checkout del carril, commit local `d4a851909c76686603efe87a07271076ae266e8e` sobre `73e8dc17b40a048a1324b750383da5daa44fd99d`. Código no empujado; patch y evidencia en outputs del checkpoint. Esta actualización remota es documental.
+
+- Lector server-side con sesión, contexto canónico, organización/propiedad exactas, membresía activa y los roles existentes de lectura de knowledge_items. Cliente Supabase de sesión con RLS, sin service-role, sin ampliar permisos.
+- Seis destinos explícitos cotejados con catálogo; cambio de URL, ID duplicado, otro scope o fallo de lectura no entrega ese enlace. No expone cuentas, evidencia privada ni el catálogo de proyectos mezclados. El catálogo completo de 243 fichas permanece intacto.
+- **Evidencia:** 24 pruebas nuevas + 29 de contexto/menú, TypeScript, lint del cambio y build PASS. Servidor local sin configuración: cero links externos y sin desborde móvil390. No equivale a prueba autenticada/RLS viva.
+- **Bloqueadores del alcance completo:** falta prueba de sesión real; no se encontró contrato persistente de favoritos en las tablas/implementación consultadas; fichas restantes sin política de scope/rol validada. No migrar localStorage ni crear base de preferencias paralela.
+- **NEXT único:** prueba autenticada de los seis accesos en entorno autorizado; resolver preferencias y permisos existentes antes de ampliar. Sin push del código/merge/despliegue en este corte. Recuperación: revertir commit local; no hubo migración.
