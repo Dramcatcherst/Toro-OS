@@ -309,3 +309,119 @@ el límite de 17 conversaciones propuestas sin ejecutarlas. Presenta G3 concreto
 para aprobación solo si la evidencia es suficiente. Si no hay referencia nueva,
 evita otra ronda idéntica: informa del campo faltante. Sin simulador, envíos,
 código nuevo, SQL, permisos, campañas, cron, merge/deploy ni piloto.”
+
+
+## Delta de catálogo — 09/10/2026, 22:51 Costa Rica
+
+CRM-TERE-EXPERIENCIAS-20261008-V1. Diagnóstico A0/A2, sin modificar catálogo,
+vistas, proveedores, precios, permisos o contenido externo.
+Fuente: Supabase abtyrbqlqbsastmridzp, catalog y metadatos private fulfillment.
+Ámbito explícito: org 595801ce-2895-4d91-81ae-e8d1d5cc8593 /
+property 7ac9e46e-3b56-44d6-96f9-9d0b63bc943b.
+Lectura fechada 10/10/2026 04:53:37 UTC = 09/10 22:53:37 Costa Rica.
+Confianza alta para conteos/definiciones; disponibilidad y cumplimiento actuales
+NO MEDIDOS. No exportación de contactos, chats, costes o comisiones.
+
+### Reutilización confirmada
+
+Además de experiences y experience_categories existen las vistas
+experience_review_queue, experience_publish_gate y experience_publication_readiness.
+Reutilizarlas como referencias de revisión; no proponer otra cola.
+Las fuentes y fulfillment existentes conservan su autoridad y alcance.
+
+85 experiencias activas: 7 ready/verified, 76 review/needs_verification,
+2 review/verified, sin variación frente al baseline. Separadamente se observaron
+45 local_recommendations activas (42 review/verified, 3 review/needs_verification)
+y 3 dining_services activos (2 ready/verified, 1 review/needs_verification).
+No sumar estos objetos como experiencias ni como cupos/ofertas disponibles.
+
+### Completitud almacenada — mismo denominador 85
+
+| Campo observado | Registros con campo / 85 | Límite |
+| --- | --- | --- |
+| Nombres y descripción corta ES/EN | 85 / 85 | Presencia no verifica hechos ni aprobación vigente |
+| Duración numérica mínima o etiqueta ES | 33 / 85 | No mide rango confirmado ni validez |
+| Horarios completos ES/EN | 0 / 85 | Ausencia en esos campos, no prueba de que no exista horario en otra fuente |
+| Ubicación general | 41 / 85 | No prueba recogida ni punto de encuentro |
+| Precio numérico desde + moneda | 8 / 85 | No verifica impuestos, vigencia, disponibilidad ni precio final |
+| Inclusiones completas ES/EN | 0 / 85 | Arrays sin completar en ambas lenguas |
+| Exclusiones completas ES/EN | 0 / 85 | Misma limitación de campo |
+| Cancelación ES/EN | 6 / 85 | No verifica términos aplicables |
+| max_group_size | 0 / 85 | Capacidad actual NO MEDIDA |
+| last_verified | 10 / 85 | Fechas almacenadas entre 22/05 y 11/09/2026 |
+| next_verification | 1 / 85 | Esa única revisión está vencida al 09/10; ausencia no significa vigencia |
+
+Los ceros anteriores son conteos medidos de presencia en campos, nunca cero
+disponibilidad, cero reservas o cero consentimiento. Otros documentos o tablas
+pueden contener información adicional aún no verificada.
+
+Cola existente: 76 flags verification, 55 hero_image, 32 public_price_or_quote_rule,
+26 fulfillment, 19 duration y 10 photo_readiness. Son flags de su propia lógica,
+pueden solaparse y no equivalen al inventario de campos del prompt maestro.
+Fulfillment scoped: 42 enlaces activos para 15 experiencias; solo 4/42 tienen
+last_verified y 2/42 next_verification. Tener un partner fechado no confirma
+la vigencia del servicio concreto. Idioma consta en el partner de 10/42 enlaces;
+no prueba idioma de la salida, guía o fecha solicitada.
+
+### Conflicto material entre vistas — FAIL de coherencia de gates
+
+experience_publish_gate.can_publish admite 7/85;
+experience_publication_readiness.publication_ready admite 8/85.
+El desacuerdo es atv-waterfall-adventure:
+- estado review/verified;
+- publication_ready true, 3 referencias de fuente y 5 fulfillment activos;
+- can_publish false, fresh_verified_primary_fulfillment_required.
+
+Definiciones leídas: publication_readiness cuenta enlaces activos; publish_gate
+exige para bookable_experience un primary activo con partner activo,
+booking_instructions presentes, last_verified dentro de 120 días y
+next_verification no vencida (o nula). Ninguna de estas vistas comprueba por sí
+sola todos los campos/confirmaciones requeridos por este prompt.
+No resolver por mayoría de fuentes ni interpretar el booleano amplio como
+aprobación de publicación. La elección/unificación del gate queda PROPUESTA.
+No se aplicó SQL ni se cambió ningún estado.
+CURRENT_DATE del servidor es UTC 10/10; checks de vencimiento de este diagnóstico
+usan corte explícito 09/10 Costa Rica. Una futura corrección deberá definir
+zona/fecha de negocio, no cambiarla por inferencia.
+
+### Selección curada propuesta para revisión, NO oferta
+
+Prioridad de revisión de contenido y responsables, sin asignar nuevos owners:
+1. private-surf-lesson: surf; evidencia de elegibilidad, instructor, condiciones,
+   horario/idioma, capacidad y alternativa fuera del agua.
+2. private-chef-dinner: gastronomía; cocina/servicio, menú, inclusiones, impuestos,
+   capacidad y condiciones, sin garantizar manejo dietario no confirmado.
+3. couples-massage: wellness; alcance/practicante, idioma, privacidad y condiciones,
+   sin promesas médicas. No convertirlo en yoga por compartir dominio.
+4. horseback-riding-beach: naturaleza; operador, elegibilidad, ruta, condiciones,
+   emergencia y cancelación.
+Todos son candidatos existentes ready/verified; fechas de ficha 17/07 para
+surf/cabalgata y 11/09 para cena/masaje. No equivalen a proveedores aprobados,
+servicios reservables o capacidad vigente.
+Yoga y transporte siguen como dominios propuestos; no se identificó aquí una
+ficha concreta aprobada ni se eligió proveedor. No crear duplicados para llenarlos.
+Los otros tres ready/verified (honeymoon, celebration, sunset picnic) se aplazan
+a una segunda revisión: fichas del 22/05, sin next_verification.
+
+Terminado de cada revisión: responsable y proveedor scoped, fuente/fecha/vigencia,
+duración, horario/idioma/lugar/cupo, inclusiones/exclusiones, precio/moneda/impuestos,
+cancelación y condiciones, revisión ES/EN y aprobación de contenido. No inventar
+precio ni rellenar desconocidos con texto genérico.
+Economía: costes y resultado NO MEDIDOS; rentabilidad no acreditada.
+Fallback propuesto: si no se verifica la opción, conservar el interés declarado
+y ofrecer buscar alternativa; toda alternativa requiere su propia comprobación.
+No reservar, compartir datos, contactar proveedor ni cobrar con esta propuesta.
+Handoffs propuestos: revisión de contenido a dominio Experiencias/TERE,
+factibilidad a Operaciones, economía interna a Finanzas y corrección de gates
+al responsable técnico, usando tareas existentes y sin asignaciones inferidas.
+
+### Siguiente SP
+
+“Continúa el delta de catálogo de CRM-TERE-EXPERIENCIAS-20261008-V1 desde PR #258.
+Reutiliza experience_review_queue y los contratos fuente/fulfillment existentes.
+Revisa una ficha candidata a la vez, solo documentación y evidencia mínima,
+sin contactos internos ni costes en salida pública. Preserva el conflicto de
+gates atv-waterfall-adventure hasta revisión técnica aprobada. Completa propuesta
+ES/EN con desconocidos visibles y decisión de contenido por owner; no publicar,
+contactar proveedores/huéspedes, reservar, cobrar, aplicar SQL o activar upsell.
+Si llega referencia WeSpeak aislada, prepara G3 sin ejecutarlo.”
