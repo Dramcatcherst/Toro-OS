@@ -13,6 +13,7 @@ import {
 
 import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
+import { canReadHotelDirectory } from "@/features/tools/directory";
 
 const profileLabels: Record<string, string> = {
   owner_executive: "Owner / Ejecutivo",
@@ -131,6 +132,11 @@ export default async function MyToroPage({
           </div>
         </header>
 
+        {canReadHotelDirectory(view.context) ? (
+          <Link href="/my-toro/herramientas" className="mt-5 inline-flex rounded-2xl border border-cyan-300/30 px-5 py-3 font-semibold text-cyan-200">
+            🧰 Herramientas del hotel
+          </Link>
+        ) : null}
         {menu?.items.length ? (
           <MyToroCommandBar
             menu={menu}
