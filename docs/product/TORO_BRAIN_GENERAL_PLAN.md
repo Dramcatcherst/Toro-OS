@@ -314,7 +314,7 @@ Rules:
 - role visibility comes from the shared identity/membership/capability model;
 - every material widget exposes source authority, freshness, attention state and next action;
 - TARGET default internal home is the authorized Brain composition, not Today/Attention or the technical cockpit; each role receives a useful initial focus and an equivalent list, while Today remains one-tap operational attention;
-- TARGET role composition: Brain is the entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. Today/Attention is the operational subview. Section 23 details the eleven modules without creating a twelfth module or another task/approval store.
+- TARGET role composition: Cerebro is visible Module 0 and the shared entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. The eleven domain modules retain their identities and order 1–11. Cerebro introduces no separate Brain, subsystem, task store or approval authority. The owner direction of 2026-10-10 supersedes the earlier restriction on a twelfth visible menu entry, not the single-Brain architecture.
 - mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
 
 Existing Dashboard v1 implementation order (not the final entry route):
@@ -3083,7 +3083,7 @@ La portada interna final es el Cerebro conectado para toda identidad autenticada
 
 La portada combina mapa y lista equivalente sobre los mismos objetos, con señales de atención y acciones en contexto. No obliga a explorar el grafo para una tarea repetitiva: búsqueda, «Hoy» y acceso directo al objeto conservan ámbito y selección. La experiencia prioriza pantallas compactas con detalle progresivo; el contenido largo, la ampliación de texto y las excepciones pueden desplazarse con scroll normal.
 
-Los once módulos visibles son Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Brain, conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones son capacidades comunes. Los subsistemas internos pueden ser más numerosos que los módulos del menú; cada uno tiene un propietario de capacidad y comparte identidad, permisos y estado.
+La navegación visible reúne **Cerebro, módulo 0 transversal**, y los once módulos de dominio existentes, del 1 al 11: Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Cerebro muestra y coordina sus relaciones sobre los mismos objetos, permisos y estado. Conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones siguen siendo capacidades comunes. Esta clasificación TARGET del 10 de octubre de 2026 no renumera IDs técnicos ni activa otro subsistema.
 
 ### ChatGPT como interfaz oficial de TORO
 
@@ -3150,6 +3150,18 @@ Las fichas comparten atención, responsable, dependencias, historial, enlaces y 
 La interfaz admite español e inglés. Fechas, moneda, números y zona horaria se resuelven por usuario y ámbito. Los documentos conservan idioma y procedencia originales.
 
 Los módulos se habilitan según disponibilidad comprobada, configuración del negocio y capacidades del usuario. El núcleo de identidad, aislamiento, seguridad, autoridad de fuentes y auditoría no es opcional. Un módulo todavía no implementado se describe en esta visión final y conserva su estado real en la matriz de ejecución.
+
+### Módulo 0 Cerebro
+
+Cerebro es la entrada visible a la inteligencia y coordinación de TORO. El usuario entiende el conjunto, encuentra el asunto que cambia una decisión, consulta las relaciones y pide trabajo dentro de su ámbito. Utiliza la misma proyección, contexto, permisos, memoria, tareas, decisiones, ejecuciones y recibos de TORO; no mantiene copias independientes.
+
+La vista del dueño combina una red global autorizada con Atención, búsqueda, comando y un inspector. El negocio TORO Business aparece junto a los demás ámbitos permitidos y muestra cómo su producto, calidad, soporte, costo y mejoras se relacionan. La vista de un empleado conserva ese lenguaje con un foco práctico y solo los objetos autorizados. Un negocio, un proyecto, una herramienta y una ejecución tienen tipos distintos.
+
+Desde un nodo se puede consultar el motivo de su estado, fuente y fecha, abrir evidencia, entrar al módulo responsable o preparar una acción disponible. Una relación muestra qué significa y qué la respalda. Cada acción conserva su objeto y versión; una aprobación no concede permiso general. Si una capacidad no está conectada o probada, la ficha lo indica y ofrece el relevo existente.
+
+La red representa contexto y dependencias; el pulso representa un evento vigente autorizado. Salud, actividad e historial usan señales distintas. El mapa, la lista equivalente y la línea de tiempo comparten objetos y resultados. En móvil se puede resolver una consulta sin depender del gesto de arrastrar ni de una animación.
+
+Responsabilidad funcional: TORO Core compone la experiencia; Data proyecta; Governance autoriza; Projects vincula objetivos y trabajo; Agents aporta ejecución; Systems aporta salud; Knowledge aporta respaldo. Cerebro está terminado para una versión cuando un usuario puede recorrer contexto, asunto, evidencia y siguiente acción permitida, con aislamiento probado y recuperación del foco. Su éxito se mide por tiempo y errores al decidir o localizar evidencia, no por cantidad de luces.
 
 ### Módulo 1 Hoy y Atención
 
@@ -3445,6 +3457,330 @@ Referencias estructuradas leídas: `toro_dashboard_surface_v1`, `toro_brain_taxo
 
 
 ---
+
+### Ampliación del producto final: Cerebro, 25 frentes y 100 mejoras — 2026-10-10
+
+**Autoridad:** solicitud del propietario y continuación del 10 de octubre de 2026. **Clasificación:** TARGET de producto y NEXT de diseño/documentación; cada capacidad conserva su gate real. Las cien mejoras de este paquete son refinamientos de especificación y aceptación incorporados al Plan General. No son cien funciones instaladas ni cien trabajos terminados. Se mantienen P01–P40, VF y los criterios previos: este paquete M001–M100 desarrolla sus huecos concretos, sin sustituirlos ni sumarlos como beneficio.
+
+#### Resultado final que guía la construcción
+
+TORO se abre en Cerebro. El usuario entiende qué negocios controla, qué sucede, qué necesita atención y qué cambió. La interfaz combina una red global orientada, una acción siguiente clara y evidencia que se puede abrir. La experiencia del dueño muestra Dreamcatcher, Santa Toro, Vista Alegre, Cabuya y TORO Business cuando su identidad y fuentes los autorizan. La madre del propietario y Carolina reciben sus alcances individuales; ningún vínculo familiar sustituye ese contrato.
+
+En escritorio, el mapa es protagonista de la zona central, con un launcher compacto de Cerebro y once dominios, búsqueda/comando y un inspector lateral. La primera lectura de un nodo responde qué sucede, cómo afecta al objetivo y qué se puede hacer. El detalle técnico se despliega solo cuando ayuda. Al abrir un proyecto o evidencia se conserva el contexto del portafolio; el usuario vuelve al mismo objeto sin reconstruir su recorrido.
+
+En celular, Cerebro adapta agrupación y detalle, mantiene alcance y siguiente acción a mano y permite completar el mismo trabajo mediante lista. La navegación funciona con una mano, controles de al menos 44 píxeles y texto financiero legible. Zoom, búsqueda, lista/mapa, tema y ES/EN que ya existen se conservan: no se vuelven a contar como entregas nuevas. La sesión expirada, la fuente antigua, un dato desconocido, un permiso insuficiente y un fallo de transporte tienen mensajes diferentes.
+
+La dirección visual usa profundidad sobria, tipografía clara, contraste, capas y movimiento con significado. Los nodos pueden crecer o iluminarse durante eventos vigentes; el indicador de salud es diferente al indicador de trabajo. La reproducción histórica lleva fecha visible. No se publican luces aleatorias como prueba de ejecución, ni una forma atractiva como prueba de conexión. La marca utiliza los masters oficiales; una imagen conceptual no reemplaza el logo aprobado. Herramientas de 3D, video o animación solo se incorporan si mejoran una interacción concreta dentro del presupuesto existente; una librería nueva no es requisito de esta definición.
+
+TORO Business tiene su nodo de producto, proyectos, calidad, soporte y costo. El recorrido de mejora muestra problema, propuesta, prueba, release, resultado y conservar/revertir. Se relaciona con el Brain como negocio usuario, sin privilegio para aprobar su propio acceso a otros ámbitos. «Cahuya» en una transcripción se conserva como antecedente: el nombre documentado del Plan es Cabuya hasta resolver una identidad diferente con evidencia.
+
+#### Límites y prioridades de ejecución
+
+1. Prioridad operativa: comprobar y reparar el camino real de WhatsApp/OpenClaw hacia el mismo TORO. Acceso amplio del dueño significa acceso a todo su ámbito autorizado mediante capacidades y consultas pertinentes; no descargar todas las bases en un prompt ni entregar credenciales al navegador. Codex implementa y verifica cambios; no sustituye al backend persistente ni a la autoridad de cada fuente.
+2. Prioridad de producto: definir y representar Cerebro, producto final, estados y módulos. La red global es localizable por completo dentro de la cobertura autorizada, con agregación y paginación; no obliga a dibujar cada fila simultáneamente.
+3. Prioridad comercial: revisar el release actual del rediseño Dreamcatcher y continuar el carril existente. No reconstruir la home a partir de un pendiente histórico ya entregado.
+
+Los 25 frentes son resultados distintos dentro de los carriles existentes, no 25 proyectos, Dots, bases, chats o automatizaciones. Antes de cada ejecución se resuelve su task/proyecto canónico y su capacidad. Si falta mapping, se registra el hueco sin crear otra cola. Los propietarios siguientes son funciones del sistema; no asignaciones laborales ni aceptación inferida de una persona.
+
+Cinco tandas ordenan dependencias. Trabajo independiente puede avanzar mientras otro frente espera: F11 documental y lectura de F18 no requieren que el host de F01 ya esté disponible. Un worker no permanece ocupado con un bloqueo. Una ejecución termina, registra verificación y receipt, y permite reclamar la siguiente unidad elegible dentro de capacidad y presupuesto. No se promete trabajo continuo por dejar un navegador abierto.
+
+Cada run conserva task, scope, autorización, versión, presupuesto, checkpoint, lease/fencing, resultado, prueba y receipt. Las tandas no reactivan CONTROL, OPERATE, GROW ni escritores financieros pausados; no habilitan API Kross, onboarding externo ni mantenimiento físico automatizado. Publicación, efectos externos, datos, permisos y producción mantienen el gate concreto de su carril. La autonomía ya concedida se conserva, sin pedir de nuevo decisiones resueltas.
+
+#### Tanda 1 — Diagnóstico, identidad y camino real de ejecución
+
+##### F01 — Diagnóstico privado del host OpenClaw
+
+**Carril existente:** auditoría runtime OpenClaw. **Propietario funcional:** TORO Systems + Comms. **Fuentes:** host observado, contrato GitHub y configuración Supabase. **Prioridad:** P0. **Dependencia:** acceso al host autorizado. **Terminado:** perfil/worktree consumido observado y causa reproducida o bloqueo exacto fechado. Reutilizar el diagnóstico saneado existente.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M001 | Identificar host, perfil y worktree realmente consumidos; evidencia saneada del proceso observado, no una ruta supuesta. |
+| M002 | Contrastar versión consumida con el contrato esperado; el reporte distingue coincidencia, drift y versión desconocida. |
+| M003 | Diferenciar probe vivo de configuración guardada; ninguna etiqueta connected/verified sustituye la ejecución observada. |
+| M004 | Vincular el fallo a una referencia de diagnóstico saneada; otro revisor puede seguir causa y fecha sin recibir secretos. |
+
+##### F02 — Identidad comprobada por transporte
+
+**Carril existente:** Identity + Comms. **Propietario:** TORO Identity + Governance. **Fuente:** identidad/membership canónicas y host. **Prioridad:** P0. **Dependencia:** F01. **Terminado:** identidad real validada y casos negativos de baja y cambio de ámbito comprobados; no enlazar por nombre ni conceder permisos nuevos.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M005 | Corroborar cuenta y remitente con la identidad canónica; el mismo nombre visible no permite impersonación. |
+| M006 | Validar membership vigente al resolver la solicitud; una sesión antigua no amplía el acceso actual. |
+| M007 | Probar identidad revocada sin revelar existencia de datos; el rechazo no muestra conteos, nombres ni enlaces privados. |
+| M008 | Comprobar separación personal/hotel durante cambio de contexto; no sobreviven objetos ni acciones del ámbito anterior. |
+
+##### F03 — Reparación dirigida de Capability unavailable
+
+**Carril:** WhatsApp Same-Brain. **Propietario:** TORO Tools + Systems. **Fuentes:** host, adapter/contrato GitHub y registro de capacidades. **Prioridad:** P0. **Dependencias:** F01–F02. **Terminado:** un fallo reproducido se resuelve o conserva bloqueo causal comprobado. Reutilizar clasificador existente.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M009 | Capturar la capability exacta solicitada; la incidencia no se reduce a «WhatsApp no sirve». |
+| M010 | Distinguir ausente, denegada, degradada y obsoleta; cada causa produce estado y relevo apropiados. |
+| M011 | Detectar desajuste entre adapter, worktree y contrato consumido; se prueba la versión que atiende, no solo el archivo editado. |
+| M012 | Ofrecer siguiente paso específico para la causa; no pedir credenciales cuando el problema es una capacidad no instalada. |
+
+##### F04 — Paridad real de lectura Portal/WhatsApp
+
+**Carril:** Same-Brain/source capability parity. **Propietario:** TORO Data + Comms. **Fuentes:** Supabase, fuente de dominio y host. **Prioridad:** P0. **Dependencias:** F02–F03. **Terminado:** paridad acotada observada para la misma identidad, ámbito y dato, con huecos explícitos. API Kross permanece pausada.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M013 | Matriz por capability ya concedida para Portal y WhatsApp; cobertura autorizada no se infiere del número de conectores. |
+| M014 | Cotejar un dato permitido con su fuente; la respuesta conserva dato, autoridad, fecha y limitación de cobertura. |
+| M015 | Comparar la misma identidad y scope entre superficies; no se usa una cuenta administradora para certificar al empleado. |
+| M016 | Abstenerse ante fuente caducada y permitir referencia histórica etiquetada; información vieja nunca aparece como dato de hoy. |
+
+##### F05 — Primer worker observado desde la aplicación
+
+**Carril:** canary/Control Plane. **Propietario:** TORO Core + Systems. **Fuentes:** GitHub, Vercel y Supabase. **Prioridad:** P0. **Dependencias:** identidad y release verificable. **Terminado:** canary de aplicación pasa en entorno autorizado; prueba backend o transacción revertida no acredita consumo de la aplicación.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M017 | Acreditar SHA y presencia de configuración del consumidor sin valores secretos; el artefacto coincide con lo probado. |
+| M018 | Utilizar claim dirigido existente; el intento solo reclama el trabajo elegible autorizado. |
+| M019 | Obtener readback y receipt del intento desde aplicación; un status succeeded aislado no demuestra el flujo completo. |
+| M020 | Probar que un trabajo ajeno queda intacto; canary no drena la cola ni modifica otras entidades. |
+
+#### Tanda 2 — Persistencia y comunicación útil
+
+##### F06 — Lista persistente capturada en WhatsApp
+
+**Carril:** Comms durable channel ledger/repair intake. **Propietario:** TORO Comms + Operations. **Fuentes:** Supabase y host. **Prioridad:** P0/P1. **Dependencias:** F02/F03/F05 para el flujo elegido; F04 solo si ese caso necesita lectura de dominio. **Terminado:** lista inocua recuperable después de compaction y reinicio, sin duplicados. No activar trabajo físico de mantenimiento.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M021 | Vincular captura al objeto canónico existente; Portal y WhatsApp abren la misma lista. |
+| M022 | Consultar después de compaction; el contexto durable no depende del texto disponible en el chat. |
+| M023 | Recuperar después de reinicio; el objeto conserva autoría, alcance, edición y estado. |
+| M024 | Preservar edición concurrente mediante versión/origen; replay no pisa una corrección humana posterior. |
+
+##### F07 — Entrega comprobada al dueño
+
+**Carril:** alertas existentes de Recepción/Owner Attention. **Propietario:** TORO Comms. **Fuentes:** Page/caso, Supabase y host/proveedor. **Prioridad:** P0/P1. **Dependencias:** F01–F02. **Terminado:** prueba no sensible y alerta autorizada con receipt; sin otro scheduler ni destinatario supuesto.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M025 | Enlazar Page y caso con su alerta existente; una actualización de formato no crea otra notificación. |
+| M026 | Acreditar referencia del mensaje del proveedor; preparar texto no cuenta como enviarlo. |
+| M027 | Diferenciar programado, enviado, entregado y ambiguo; solo se muestra el nivel respaldado por evidencia. |
+| M028 | Conciliar resultado ambiguo antes de reintentar; timeout no autoriza un segundo envío ciego. |
+
+##### F08 — Audio e imagen con procedencia
+
+**Carril:** Comms + Assets/Knowledge. **Propietario:** TORO Assets + Knowledge + Comms. **Fuentes:** original Dropbox y objeto Supabase. **Prioridad:** P1. **Dependencias:** F02/F06 y capability media real. **Terminado:** un original autorizado, extracción y correcciones quedan relacionados.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M029 | Conservar original y hash; el derivado puede rastrearse sin alterar el archivo recibido. |
+| M030 | Mostrar extracción pendiente o fallida; una foto recibida no se presenta como documento entendido. |
+| M031 | Admitir corrección vinculada al original; la transcripción anterior conserva su procedencia y versión. |
+| M032 | Impedir que extracción fallida cierre tareas o contabilice hechos; fallos y dudas requieren evidencia nueva. |
+
+##### F09 — Recuperación de conversación y efectos
+
+**Carril:** replay/health/Control Plane. **Propietario:** TORO Systems + Core + Comms. **Fuentes:** Supabase y host. **Prioridad:** P1. **Dependencias:** F05–F07. **Terminado:** interrupción/replay controlados conservan un objeto y una sola consecuencia. Reutilizar lease/fencing existentes.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M033 | Ensayar transporte interrumpido; usuario ve pendiente/fallo en lugar de una confirmación ficticia. |
+| M034 | Ensayar evento duplicado simultáneo; el segundo intento no produce otro objeto ni efecto. |
+| M035 | Ensayar lease perdido; un ejecutor vencido no puede aplicar una escritura tardía. |
+| M036 | Recuperar objeto y correlación; el relevo continúa desde el checkpoint probado y concilia efectos inciertos. |
+
+##### F10 — DreamTeam como contactos útiles
+
+**Carril:** People + Comms. **Propietario:** TORO People + Comms. **Fuente:** identidad/contacto autorizado Supabase. **Prioridad:** P1. **Dependencias:** F02 y mapping People/destino. **Terminado:** un botón abre un contacto verificado y su baja impide acceso futuro; no inferir teléfonos de empleados.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M037 | Relacionar botón con identidad aprobada; no se usa una cadena de nombre como registro de empleado. |
+| M038 | Limitar destino al contacto permitido del scope; no se exponen contactos privados de otro ámbito. |
+| M039 | Distinguir abrir WhatsApp de enviar mediante TORO; el usuario sabe quién ejecutará el mensaje. |
+| M040 | Retirar acceso tras baja sin borrar historial autorizado; el botón y la acción fallan con el mismo permiso revocado. |
+
+#### Tanda 3 — Cerebro visible y verificable
+
+##### F11 — Cerebro como módulo transversal
+
+**Carril:** Visual Brain/Dashboard/User Portal. **Propietario:** TORO Core + User Portal. **Fuentes:** contratos GitHub y proyección Supabase. **Prioridad:** P1. **Dependencia:** ninguno para definición; runtime conserva su gate. **Terminado:** acceso propio Cerebro junto a los once dominios, sin nuevo backend.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M041 | Exponer Cerebro como módulo 0 en la navegación conceptual; conservar nombres, orden e IDs de los once dominios. |
+| M042 | Distinguir Cerebro del negocio TORO Business; no reasignar el id legado brain de toro-data.ts. |
+| M043 | Volver desde un módulo al mismo contexto del grafo; selección y orientación no se pierden. |
+| M044 | Mostrar alcance definido, preparado, publicado, verificado y medido; una maqueta no se presenta como operación privada. |
+
+##### F12 — Red completa con zoom semántico
+
+**Carril:** scope graph/canonical projection. **Propietario:** TORO Data + Governance. **Fuentes:** relaciones canónicas y contrato GitHub. **Prioridad:** P1. **Dependencias:** F11 y relaciones disponibles. **Terminado:** panorama completo de cobertura autorizada y detalle paginado bajo presupuesto; no descargar toda la base.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M045 | Mostrar panorama agregado del portafolio autorizado; no revelar nombres ni conteos de ámbitos prohibidos. |
+| M046 | Utilizar relaciones reales y tipadas; una estrella visual por conveniencia no acredita dependencia o propiedad. |
+| M047 | Expandir detalle paginado conservando la vista global; el recorrido no fragmenta el mapa en pantallas inconexas. |
+| M048 | Indicar cobertura parcial con denominador/fuente/fecha cuando existan; desconocido no equivale a cero. |
+
+##### F13 — TORO se mejora utilizando TORO
+
+**Carril:** TORO Business/self-use/Projects. **Propietario:** TORO Projects + Core. **Fuentes:** GitHub, Supabase y release Vercel. **Prioridad:** P1. **Dependencias:** F05/F11–F12. **Terminado:** ciclo real de mejora navegable con receipt, sin crear un proyecto raíz.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M049 | Mostrar TORO Business separado del Core; negocio usuario e inteligencia del producto tienen roles comprensibles. |
+| M050 | Enlazar trabajos existentes de producto; crear una visualización no genera tareas duplicadas. |
+| M051 | Enlazar release y medición de una mejora; commit, deploy, uso y beneficio permanecen distintos. |
+| M052 | Mostrar resultado que retroalimenta producto sin autoautorizarse; el evaluador material conserva independencia. |
+
+##### F14 — Neuronas activadas por trabajo real
+
+**Carril:** Event Spine/Agents/Control Plane. **Propietario:** TORO Data + Agents + Core. **Fuente:** runs/receipts canónicos. **Prioridad:** P1. **Dependencias:** F05/F11. **Terminado:** un run muestra actividad y fin comprobables, con alternativa sin movimiento.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M053 | Proyectar eventos de runs existentes; la mera existencia de una sesión de lectura o conexión no acredita trabajo activo. Una consulta ejecutada y respaldada por evento/receipt sí puede generar actividad legítima. |
+| M054 | Mantener pulso solo durante evento autorizado vigente; movimiento reducido preserva texto y estado. |
+| M055 | Apagar o corregir al expirar lease, fallar o revocarse permiso; una neurona no queda «trabajando» indefinidamente. |
+| M056 | Reproducir secuencia por correlación con resumen seguro y fecha; historial nunca se confunde con actividad presente. |
+
+##### F15 — Evidencia y estado confiables
+
+**Carril:** Brain semantics/source governance. **Propietario:** TORO Data + Governance + Knowledge. **Fuentes:** Supabase, sistema de dominio y original documental. **Prioridad:** P1. **Dependencias:** F11/F14 y permisos de evidencia. **Terminado:** estados soportan datos incompletos, antiguos o contradictorios.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M057 | No convertir ausencia de needsRevalidation en prueba de verificación; afirmación verified exige evidencia de ese objeto. |
+| M058 | Separar fecha del dato de fecha de consulta; refrescar pantalla no rejuvenece la fuente. |
+| M059 | Abrir evidencia autorizada del mismo objeto; referencias ausentes o denegadas no producen botones ficticios. |
+| M060 | Mostrar contradicción y faltante sin verde automático; el usuario conoce autoridad y corrección necesaria. |
+
+#### Tanda 4 — Portal móvil y rediseño web
+
+##### F16 — Sesión móvil para operar
+
+**Carril:** Portal/Human Experience. **Propietario:** TORO User Portal + Identity. **Fuentes:** Supabase, código y runtime Vercel. **Prioridad:** P1. **Dependencias:** F02/F11 y release Portal. **Terminado:** ida/vuelta y expiración en móvil conservan el objeto permitido; se preserva lo ya implementado.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M061 | Conservar contexto al regresar del proveedor; la sesión no cambia silenciosamente de negocio. |
+| M062 | Volver al objeto desde una notificación; el enlace respeta la identidad actual y su autorización. |
+| M063 | Distinguir sesión vencida de falta de datos; renovar acceso no se presenta como recuperación de información perdida. |
+| M064 | Mostrar snapshot/offline sin ejecutar sobre estado viejo; la reconexión confirma versión antes de efectos. |
+
+##### F17 — Entrada común dreamcatcherhotel.com/toro
+
+**Carril:** Channels/routing/login. **Propietario:** TORO Channels + Governance + Identity. **Fuentes:** repositorio, dominio/release y sesión. **Prioridad:** P1. **Dependencias:** F11/F16 y destino canónico verificado. **Terminado:** ruta común abre el destino correcto bajo autorización de release; sin contraseña compartida.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M065 | Definir un destino canónico registrado para el enlace; no promocionar una URL antigua solo porque contiene TORO. |
+| M066 | Mantener zona pública segura y operación privada autenticada; la entrada común no hace públicos los datos. |
+| M067 | Recuperar deep link permitido después de login; destino de retorno no permite redirección externa arbitraria. |
+| M068 | Probar usuario no autorizado; no aparecen datos, conteos ni destinos privados antes o después del login. |
+
+##### F18 — Estado real del rediseño Dreamcatcher
+
+**Carril:** Fase 2/DC2-022/B0–B6. **Propietario:** TORO Channels + Systems. **Fuentes:** repositorio y artefacto publicado. **Prioridad:** P1. **Dependencia:** inspección del release vigente. **Terminado:** dossier de publicación y siguiente delta único; no reconstruir la home desde un plan antiguo.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M069 | Conciliar trabajo reciente con SHA publicado; el preview no se confunde con producción. |
+| M070 | Retirar del siguiente paso los parches entregados con prueba; conservar su historia y no repetírselos al dueño. |
+| M071 | Revisar regresión por delta del release; una corrección acotada no obliga a repetir toda la auditoría sin motivo. |
+| M072 | Mostrar evidencia de preview y producción por separado en TORO; cada enlace conserva artefacto y corte. |
+
+##### F19 — Continuidad comercial demostrada
+
+**Carril:** booking stack/B1/B3. **Propietario:** TORO Revenue + Channels. **Fuentes:** motor/PMS permitido, código y release. **Prioridad:** P1. **Dependencias:** F18 y fuente comercial vigente. **Terminado:** handoff actual probado y conflictos resueltos o bloqueados; sin API Kross nueva.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M073 | Probar fecha/ocupación desde un enlace móvil real; no afirmar prefill porque el link contiene parámetros. |
+| M074 | Contrastar ficha y motor sin calcular tarifa local; reservas, precios y disponibilidad conservan su autoridad. |
+| M075 | Señalar diferencias de política que impiden publicar; una tarifa anterior no se convierte en regla vigente. |
+| M076 | Conservar vía convencional si falla Flow; el huésped puede continuar por el camino comercial oficial. |
+
+##### F20 — Calidad después de publicación
+
+**Carril:** B5/medición web. **Propietario:** TORO Channels + Growth + Systems. **Fuentes:** artefacto y medición vigentes. **Prioridad:** P1. **Dependencias:** F18/F19. **Terminado:** evidencia comparable del release actual y ausencia de P0; no atribuir ventas a clics.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M077 | Tomar baseline del artefacto publicado; comparación utiliza mismo alcance/dispositivo y un corte trazable. |
+| M078 | Comparar comportamiento con consentimiento activo; no ampliar tracking ni recolectar datos por este paquete. |
+| M079 | Revisar interacción móvil representativa, incluido Safari cuando esté disponible; plataforma no probada se declara pendiente. |
+| M080 | Diferenciar CWV de campo, laboratorio e intención comercial; no fabricar lift ni mezclar denominadores. |
+
+#### Tanda 5 — Más avance con menos coordinación
+
+##### F21 — Cobertura de cada módulo
+
+**Carril:** producto final/capability registry. **Propietario:** TORO Core + Projects + Tools. **Fuentes:** código, contratos y catálogo canónicos. **Prioridad:** P1/P2. **Dependencias:** F11–F20 según capability. **Terminado:** matriz de Cerebro y once dominios con evidencia y próximos deltas, sin más módulos por contar funciones.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M081 | Cotejar cada módulo con código vigente; el nombre de una pantalla no acredita su flujo completo. |
+| M082 | Separar preparado, live y verificado por capability; una verificación no cubre automáticamente todo el módulo. |
+| M083 | Colocar huecos en la task y propietario existentes; no crear otro backlog con la misma incidencia. |
+| M084 | Detectar dependencia transversal que desbloquea módulos; se prioriza resultado útil por esfuerzo y riesgo. |
+
+##### F22 — Tandas con relevo real
+
+**Carril:** PUMBA/Control Plane/Projects. **Propietario:** TORO Core + Agents + Projects. **Fuente:** task/run/receipt canónicos. **Prioridad:** P1/P2. **Dependencias:** F05/F09. **Terminado:** dos tandas completadas con receipts y sin colisión; no nuevo scheduler ni executores suspendidos.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M085 | Vincular ejecución con frente y task existentes; el frente es etiqueta de resultado, no autoridad nueva. |
+| M086 | Continuar a siguiente unidad elegible después del receipt; no esperar un reloj si capacidad y presupuesto están disponibles. |
+| M087 | Liberar worker cuando hay bloqueo pendiente; registrar disparador y continuar trabajo independiente. |
+| M088 | Detectar inanición de carril elegible por prioridad permanente; aplicar la política vigente sin inventar urgencias. |
+
+##### F23 — Consumo por resultado
+
+**Carril:** worker budget/scorecard. **Propietario:** TORO Agents + Systems + Finance. **Fuentes:** ejecución y consumo observado del proveedor. **Prioridad:** P1/P2. **Dependencias:** F05/F22. **Terminado:** costo y denominadores reales, o NO MEDIDO; sin gasto nuevo automático ni presupuesto inferido.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M089 | Registrar costo observado por resultado; suscripción, costo marginal y ahorro permanecen separados. |
+| M090 | Reutilizar checkpoint verificado antes de una auditoría total; solo evidencia nueva o gate cambiado justifica repetir. |
+| M091 | Detener bucle sin cambio material; los reintentos comparten límites y no generan reportes de avance ficticio. |
+| M092 | Medir espera elegible y costo de reintento antes de aumentar capacidad; número de agentes no sustituye productividad. |
+
+##### F24 — Sesión de decisiones del dueño
+
+**Carril:** Owner Attention/reportes existentes. **Propietario:** TORO Core + Comms + Projects. **Fuentes:** decisiones, Pages y receipts autorizados. **Prioridad:** P1. **Dependencias:** F07/F21–F23 para delivery completo; preparación documental puede avanzar antes. **Terminado:** paquete accionable y resumen entregado o fallo explícito.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M093 | Agrupar solo decisiones que el dueño puede resolver; no transferirle rutina del equipo ni acceso no necesario. |
+| M094 | Vincular respuesta con objeto, versión y evidencia; un sí contextual no es aprobación global de efectos nuevos. |
+| M095 | Reutilizar respuestas vigentes; no pedir de nuevo autorización resuelta por fragmentación entre chats. |
+| M096 | Resumir resultados, bloqueos y enlaces con delivery separado de programación; hasta tres asuntos, 120 palabras y aviso PRUEBA vigente. |
+
+##### F25 — Aprendizaje y retiro sin pérdida
+
+**Carril:** Knowledge/Governance/Systems. **Propietario:** TORO Knowledge + Governance + Systems. **Fuentes:** contrato/código, evidencia y contexto autorizado. **Prioridad:** P2. **Dependencias:** F21–F24 según objeto. **Terminado:** mejora evaluada y candidato de archivo documentado; no afirmar chats archivados sin capability y prueba.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M097 | Convertir error repetido en regla o prueba concreta; indicar fuente, versión y criterio de conservar/revertir. |
+| M098 | Abstraer patrón sin datos privados; otro negocio recibe método y configuración, no memoria ajena. |
+| M099 | Revisar regresión después de aplicar mejora; el ejecutor no modifica su propio evaluador para aprobarse. |
+| M100 | Inventariar chats y artefactos redundantes antes de archivar; referencia recuperable y contexto útil conservados, sin eliminación automática. |
+
+#### Compatibilidad, verificación y siguiente superprompt
+
+La declaración de Cerebro no migra los IDs del catálogo legado `src/lib/toro-data.ts`: su `brain` denominado TORO Business contiene fixtures operacionales y no es el nodo de autouso definido aquí. No reasignarlo ni modificar menús/permisos por una clasificación conceptual. `/brain` conserva su provider único, y Stage C–G conserva QA, aislamiento y release gates.
+
+La revisión inicial de este paquete es acotada a contratos y huecos de TORO; el release del hotel, sesión privada multinegocio, transporte WhatsApp, consumo del host y beneficio económico requieren evidencia de sus frentes. La presencia de una herramienta instalada no prueba adopción ni un costo autorizado. El archivo de chats queda BLOQUEADO si no existe inventario/capability; no eliminar conversaciones por similitud de títulos.
+
+Aceptación documental: módulo 0 y once dominios coherentes en contratos, F01–F25 distintos, M001–M100 únicos y consecutivos, dependencias/propietarios/fuentes/terminado explícitos, decisiones pausadas conservadas y ningún secreto en la proyección pública. Aceptación de runtime: prueba propia de cada frente y receipt del flujo real. Publicar documentos no acredita cien capacidades ni veinticinco ejecutores activos.
+
+**Próximo superprompt:** «Retoma el Plan General único de TORO y la ampliación del 10/10/2026. Lee el estado y receipts actuales antes de actuar. Primero resuelve el acceso al host F01 y la causa exacta F03; si siguen bloqueados, avanza F11 y la revisión del release F18 dentro de sus carriles existentes. Reutiliza IDs y checkpoints. Entrega una unidad completa con fuente, prueba, enlace, siguiente paso y límite real. Mantén API Kross, escritores y lanes suspendidas; no conviertas diseño en operación ni reabras decisiones resueltas. Solo escala una intervención del dueño cuando desbloquee trabajo material. Después del receipt continúa con la siguiente unidad elegible dentro del presupuesto y capacidad comprobados.»
+
 
 ## Human Layer / TERE / DreamTeam R4 — owner directive 2026-09-30
 
