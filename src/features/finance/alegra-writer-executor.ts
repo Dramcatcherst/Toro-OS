@@ -1,4 +1,5 @@
 import {
+  captureAlegraWriteAuthorization,
   validateAlegraWriteApproval,
   verifyAlegraReadback,
   type AlegraReadback,
@@ -53,12 +54,33 @@ export type AlegraWriterReceipt = {
   verified: boolean;
   reasons: string[];
   createdAt: string;
+  durableReceiptId?: string | null;
+};
+
+export type AlegraExecutionGate = {
+  // The canonical worker must atomically admit this action and persist its dispatch marker.
+  beforeDispatch(input: { intent: AlegraWriteIntent; approval: AlegraWriteApproval }): Promise<boolean>;
+  persistReceipt(receipt: AlegraWriterReceipt): Promise<string | null>;
+};
+
+type AlegraExecutionInput = {
+  intent: AlegraWriteIntent;
+  approval: AlegraWriteApproval | null | undefined;
+  duplicateDecision: AlegraDuplicateDecision;
+  transport: AlegraWriteTransport;
+  priorReceipt?: AlegraWriterReceipt | null;
+  /** Compatibility for earlier, non-deployed callers; uncertain receipts are blocked too. */
+  priorVerifiedReceipt?: AlegraWriterReceipt | null;
+  writerEnabled?: boolean;
+  gate?: AlegraExecutionGate;
+  now: string;
 };
 
 export type AlegraWriterExecutionResult = {
   ok: boolean;
   executedProviderMutation: boolean;
   receipt: AlegraWriterReceipt;
+  admitted?: boolean;
 };
 
 function blockedReceipt(input: {
@@ -83,14 +105,25 @@ function blockedReceipt(input: {
   };
 }
 
-export async function executeApprovedAlegraIntent(input: {
-  intent: AlegraWriteIntent;
-  approval: AlegraWriteApproval | null | undefined;
-  duplicateDecision: AlegraDuplicateDecision;
-  transport: AlegraWriteTransport;
-  priorVerifiedReceipt?: AlegraWriterReceipt | null;
-  now: string;
-}): Promise<AlegraWriterExecutionResult> {
+export async function executeApprovedAlegraIntent(input: AlegraExecutionInput): Promise<AlegraWriterExecutionResult> {
+  input = { ...input, ...captureAlegraWriteAuthorization(input.intent, input.approval) };
+  if (input.writerEnabled !== true || !input.gate) {
+    return { ok: false, executedProviderMutation: false,
+      receipt: blockedReceipt({ ...input, reason: "WRITER_DISABLED" }) };
+  }
+  const result = await executeWithGate(input);
+  if (!result.executedProviderMutation && !result.admitted) return result;
+  try {
+    const receiptId = await input.gate.persistReceipt(result.receipt);
+    if (!receiptId) throw new Error("Missing durable receipt");
+    return { ...result, receipt: { ...result.receipt, durableReceiptId: receiptId } };
+  } catch {
+    return { ...result, ok: false, receipt: { ...result.receipt, verified: false,
+      verificationState: "PROVIDER_STATE_UNKNOWN", reasons: [...result.receipt.reasons, "RECEIPT_PERSISTENCE_UNCERTAIN"] } };
+  }
+}
+
+async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWriterExecutionResult> {
   const approvalDecision = validateAlegraWriteApproval(input.intent, input.approval);
   if (!approvalDecision.ok) {
     return {
@@ -103,6 +136,16 @@ export async function executeApprovedAlegraIntent(input: {
         now: input.now,
       }),
     };
+  }
+
+  const prior = input.priorReceipt ?? input.priorVerifiedReceipt;
+  if (prior?.verified && prior.idempotencyKey === input.intent.idempotencyKey && !prior.durableReceiptId) {
+    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "PRIOR_RECEIPT_NOT_DURABLE" }) };
+  }
+  if (prior?.idempotencyKey === input.intent.idempotencyKey &&
+      (!prior.verified || prior.payloadHash !== input.intent.payloadHash)) {
+    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
+      reason: "PRIOR_EFFECT_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
   }
 
   if (!input.duplicateDecision.clear || input.duplicateDecision.state !== "CLEAR") {
@@ -119,26 +162,42 @@ export async function executeApprovedAlegraIntent(input: {
   }
 
   if (
-    input.priorVerifiedReceipt?.verified &&
-    input.priorVerifiedReceipt.idempotencyKey === input.intent.idempotencyKey &&
-    input.priorVerifiedReceipt.payloadHash === input.intent.payloadHash
+    prior?.verified &&
+    prior.idempotencyKey === input.intent.idempotencyKey &&
+    prior.payloadHash === input.intent.payloadHash
   ) {
     return {
       ok: true,
       executedProviderMutation: false,
       receipt: {
-        ...input.priorVerifiedReceipt,
+        ...prior,
         executionState: "replayed_verified",
-        reasons: [...input.priorVerifiedReceipt.reasons, "IDEMPOTENT_REPLAY"],
+        reasons: [...prior.reasons, "IDEMPOTENT_REPLAY"],
         createdAt: input.now,
       },
     };
   }
 
-  const createResult = await input.transport.create({
-    intent: input.intent,
-    idempotencyKey: input.intent.idempotencyKey,
-  });
+  try {
+    if (!input.approval || !await input.gate!.beforeDispatch({ intent: input.intent, approval: input.approval })) {
+      return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "EXECUTION_GATE_NOT_ACQUIRED" }) };
+    }
+  } catch {
+    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "EXECUTION_GATE_UNAVAILABLE" }) };
+  }
+
+  const revalidated = validateAlegraWriteApproval(input.intent, input.approval);
+  if (!revalidated.ok) {
+    return { ok: false, executedProviderMutation: false, admitted: true,
+      receipt: blockedReceipt({ ...input, reason: revalidated.reason }) };
+  }
+
+  let createResult: AlegraProviderCreateResult;
+  try {
+    createResult = await input.transport.create({ intent: input.intent, idempotencyKey: input.intent.idempotencyKey });
+  } catch {
+    createResult = { state: "ambiguous" };
+  }
 
   let nativeId: string | null = null;
   let executionState: AlegraWriterReceipt["executionState"] = "provider_created";
@@ -164,10 +223,12 @@ export async function executeApprovedAlegraIntent(input: {
   }
 
   if (createResult.state === "ambiguous") {
-    const lookup = await input.transport.findByIdempotencyKey({
-      intent: input.intent,
-      idempotencyKey: input.intent.idempotencyKey,
-    });
+    let lookup: AlegraProviderLookupResult;
+    try {
+      lookup = await input.transport.findByIdempotencyKey({ intent: input.intent, idempotencyKey: input.intent.idempotencyKey });
+    } catch {
+      lookup = { state: "unavailable" };
+    }
 
     if (lookup.state !== "found") {
       return {
@@ -206,11 +267,19 @@ export async function executeApprovedAlegraIntent(input: {
     };
   }
 
-  const readback = await input.transport.readback({
-    intent: input.intent,
-    nativeId,
-  });
+  let readback: AlegraReadback;
+  try {
+    readback = await input.transport.readback({ intent: input.intent, nativeId });
+  } catch {
+    return { ok: false, executedProviderMutation: true, receipt: { ...blockedReceipt({ ...input,
+      reason: "READBACK_UNAVAILABLE", verificationState: "PROVIDER_STATE_UNKNOWN" }), nativeId } };
+  }
   const verification = verifyAlegraReadback(input.intent, readback);
+  if (readback.nativeId !== nativeId) {
+    verification.ok = false;
+    verification.state = "READBACK_MISMATCH";
+    verification.mismatches.push("NATIVE_ID");
+  }
 
   return {
     ok: verification.ok,

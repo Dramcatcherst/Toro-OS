@@ -27,6 +27,7 @@ export type AlegraWritePayload = {
   targetType: AlegraWriteType;
   documentNumber?: string | null;
   sourceBillNativeId?: string | null;
+  paymentMovementRef?: string | null;
   supplierNativeId?: string | null;
   issuerTaxId?: string | null;
   receiverTaxId?: string | null;
@@ -93,7 +94,21 @@ export type AlegraReadback = {
   accountNativeId?: string | null;
   costCenterNativeId?: string | null;
   paymentAccountNativeId?: string | null;
+  sourceBillNativeId?: string | null;
+  paymentMovementRef?: string | null;
 };
+
+// Capture authority before any asynchronous boundary; callbacks cannot replace the
+// approved actor, payload, or evidence while the canonical run is being admitted.
+export function captureAlegraWriteAuthorization(intent: AlegraWriteIntent, approval: AlegraWriteApproval | null | undefined) {
+  const captured = structuredClone({ intent, approval });
+  function freeze(value: object) {
+    for (const child of Object.values(value)) if (child && typeof child === "object") freeze(child);
+    Object.freeze(value);
+  }
+  freeze(captured);
+  return captured;
+}
 
 export type AlegraReadbackVerification = {
   ok: boolean;
@@ -136,8 +151,15 @@ function normalizeCurrency(value: string): string {
 }
 
 function isPositiveAmount(value: string): boolean {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0;
+  return value.length <= 128 && /^\d+(?:\.\d+)?$/.test(value) && /[1-9]/.test(value);
+}
+
+function sumMatches(subtotal: string, tax: string, total: string) {
+  const values = [subtotal, tax, total];
+  if (values.some(v => v.length > 128 || !/^\d+(?:\.\d+)?$/.test(v))) return false;
+  const scale = Math.max(...values.map(v => v.split(".")[1]?.length ?? 0));
+  const units = (v: string) => { const [whole, fraction = ""] = v.split("."); return BigInt(whole + fraction.padEnd(scale, "0")); };
+  return units(subtotal) + units(tax) === units(total);
 }
 
 function actionFor(targetType: AlegraWriteType): AlegraWriteIntent["action"] {
@@ -165,6 +187,10 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
 
   if (!normalizeCurrency(payload.currency)) errors.push("CURRENCY_REQUIRED");
   if (!isPositiveAmount(payload.total)) errors.push("POSITIVE_TOTAL_REQUIRED");
+  if (payload.subtotal || payload.tax) {
+    if (!payload.subtotal || !payload.tax) errors.push("AMOUNT_COMPONENTS_INCOMPLETE");
+    else if (!sumMatches(payload.subtotal, payload.tax, payload.total)) errors.push("AMOUNT_COMPONENTS_MISMATCH");
+  }
 
   if (payload.targetType === "purchase_bill") {
     if (!normalizeText(payload.documentNumber)) errors.push("DOCUMENT_NUMBER_REQUIRED");
@@ -178,6 +204,7 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
 
   if (payload.targetType === "outgoing_payment") {
     if (!normalizeText(payload.sourceBillNativeId)) errors.push("SOURCE_BILL_REQUIRED");
+    if (!normalizeText(payload.paymentMovementRef)) errors.push("PAYMENT_MOVEMENT_REFERENCE_REQUIRED");
     if (!normalizeText(payload.paymentAccountNativeId)) errors.push("PAYMENT_ACCOUNT_REQUIRED");
   }
 
@@ -189,20 +216,19 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
 }
 
 function duplicateIdentity(input: AlegraWriteIntentInput): Record<string, unknown> {
-  const { scope, evidence, payload } = input;
+  const { scope, payload } = input;
 
   return {
     tenantId: normalizeText(scope.tenantId),
     orgId: normalizeText(scope.orgId),
     legalEntityKey: normalizeText(scope.legalEntityKey),
     targetType: payload.targetType,
-    documentNumber: normalizeText(payload.documentNumber),
-    sourceBillNativeId: normalizeText(payload.sourceBillNativeId),
-    supplierNativeId: normalizeText(payload.supplierNativeId),
-    issuerTaxId: normalizeText(payload.issuerTaxId),
-    evidenceHash: normalizeText(evidence.evidenceHash),
-    currency: normalizeCurrency(payload.currency),
-    total: normalizeText(payload.total),
+    businessReference: payload.targetType === "outgoing_payment"
+      ? normalizeText(payload.paymentMovementRef)
+      : normalizeText(payload.documentNumber),
+    issuer: payload.targetType === "purchase_bill"
+      ? normalizeText(payload.issuerTaxId) || normalizeText(payload.supplierNativeId)
+      : null,
   };
 }
 
@@ -226,6 +252,7 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
       ...input.payload,
       documentNumber: normalizeText(input.payload.documentNumber) || null,
       sourceBillNativeId: normalizeText(input.payload.sourceBillNativeId) || null,
+      paymentMovementRef: normalizeText(input.payload.paymentMovementRef) || null,
       supplierNativeId: normalizeText(input.payload.supplierNativeId) || null,
       issuerTaxId: normalizeText(input.payload.issuerTaxId) || null,
       receiverTaxId: normalizeText(input.payload.receiverTaxId) || null,
@@ -276,7 +303,11 @@ export function validateAlegraWriteApproval(
   intent: AlegraWriteIntent,
   approval: AlegraWriteApproval | null | undefined,
 ): { ok: boolean; reason: string } {
-  if (!intent.validation.ready) {
+  const current = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: intent.payload });
+  if (current.payloadHash !== intent.payloadHash || current.idempotencyKey !== intent.idempotencyKey) {
+    return { ok: false, reason: "INTENT_CHANGED_AFTER_PREPARATION" };
+  }
+  if (!intent.validation.ready || !current.validation.ready) {
     return { ok: false, reason: "INTENT_NOT_READY" };
   }
 
@@ -324,6 +355,12 @@ export function verifyAlegraReadback(
   }
 
   if (intent.targetType === "outgoing_payment") {
+    if (normalizeText(readback.sourceBillNativeId) !== normalizeText(intent.payload.sourceBillNativeId)) {
+      mismatches.push("SOURCE_BILL");
+    }
+    if (normalizeText(readback.paymentMovementRef) !== normalizeText(intent.payload.paymentMovementRef)) {
+      mismatches.push("PAYMENT_MOVEMENT_REFERENCE");
+    }
     if (
       normalizeText(readback.paymentAccountNativeId) !== normalizeText(intent.payload.paymentAccountNativeId)
     ) {

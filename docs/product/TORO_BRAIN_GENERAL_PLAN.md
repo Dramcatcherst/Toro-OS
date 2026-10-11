@@ -314,7 +314,7 @@ Rules:
 - role visibility comes from the shared identity/membership/capability model;
 - every material widget exposes source authority, freshness, attention state and next action;
 - TARGET default internal home is the authorized Brain composition, not Today/Attention or the technical cockpit; each role receives a useful initial focus and an equivalent list, while Today remains one-tap operational attention;
-- TARGET role composition: Brain is the entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. Today/Attention is the operational subview. Section 23 details the eleven modules without creating a twelfth module or another task/approval store.
+- TARGET role composition: Cerebro is visible Module 0 and the shared entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. The eleven domain modules retain their identities and order 1–11. Cerebro introduces no separate Brain, subsystem, task store or approval authority. The owner direction of 2026-10-10 supersedes the earlier restriction on a twelfth visible menu entry, not the single-Brain architecture.
 - mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
 
 Existing Dashboard v1 implementation order (not the final entry route):
@@ -1037,6 +1037,8 @@ Transitional/reference estate while dependencies are removed.
 ## Dropbox
 Files/media/evidence/archive.
 
+La custodia financiera se rige por la sección [Alegra](#alegra) y el diseño existente de Connector v2. Conservar originales, derivados vinculados, versiones y prueba de restauración en las raíces autorizadas; no crear otro plan de respaldo. Los identificadores nativos, hashes y rutas privadas pertenecen al manifiesto restringido. No realizar reorganización masiva, sobreescrituras, borrados, compartición ni cambios de permisos como parte de esta revisión documental.
+
 ## Notion
 Narrative planning/research/working memory.
 
@@ -1048,6 +1050,35 @@ Live PMS authority.
 
 ## Alegra
 Fiscal/accounting authority.
+
+### Integración y custodia documental — revisión 2026-10-10
+
+**Alcance:** Accounting & Tax dentro de TORO Finance, Connector Fabric y Governance & Resilience. FIONA mantiene el contrato financiero; SOBRESITO mantiene conectores, integridad y recuperación. Se conserva el carril existente de controles financieros y FIN-01. El diseño subordinado es [Alegra Connector v2](../superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md#document-custody-and-platform-optimization--2026-10-10).
+
+**CURRENT — verificado:** el catálogo expone 218 herramientas, predominantemente de consulta. No expone creación/edición de comprobantes contables ni carga de sus adjuntos. Una operación de URL de carga de Nómina está marcada como escritura y requiere aprobación propia; no habilita facturas/pagos/asientos ni se ejecutó. Los scripts originales preparan respaldos JSON y manifiestos; no prueban custodia binaria productiva de PDF, XML o fotografías. La revisión acotada de Dropbox encontró evidencia contable y paquetes históricos, sin certificar cobertura completa, hashes de los originales o restauración actual. Dos conexiones a la misma cuenta no constituyen respaldo independiente. La cobertura financiera vigente de Kross y la sincronización persistente requieren pruebas separadas.
+
+**CURRENT — candidato preparado en PR228, 2026-10-11:** el carril existente se reconcilió con main y corrige tipos de transporte, identidad de negocio separada de contenido, aprobación frente a cambios, totales decimales y reintento incierto. Incorpora gate apagado por defecto, binding a los runs/receipts y fencing existentes, y custodia/restauración de un paquete local simulado JSON/PDF/XML/foto con manifiesto persistido y verificado. La revisión independiente identificó cuatro fallos importantes; se corrigieron con regresiones: autoridad capturada antes de esperas, referencias de almacenamiento confinadas, factura/movimiento del pago comprobados y dedupe nativo independiente del importe/moneda. El adapter legado recuperado conserva ventas draft/servicios; no se trasplanta a compras/pagos. Pruebas de contrato y fixture no acreditan autorización server-side, transporte nativo, carga en Dropbox/Alegra, activación del Portal o entrega WhatsApp. El estado continúa PREPARADO, pendiente de aceptación de runtime.
+
+**TARGET — aprobado como dirección documental, sin activación:**
+
+- Alegra conserva la autoridad fiscal/contable; Kross conserva reservas y contexto operativo; bancos conservan liquidaciones. Supabase conserva identidad, relaciones, estados, permisos y recibos; Dropbox conserva originales. Airtable ofrece revisión humana. Portal TORO y WhatsApp consultan el mismo estado y contrato de acciones.
+- Cada expediente identifica empresa, entidad, propiedad, tipo, emisor, referencia fiscal, fecha, moneda y procedencia. Un comprobante puede tener varios activos: XML emitido, respuesta fiscal, PDF nativo, foto original y representación optimizada. No se confunde documento, archivo, factura o pago.
+- Reutilizar `integrations.document_manifest`, `finance.evidence_documents` y `finance.invoice_sources`. Los vínculos y versiones adicionales se diseñan sobre sus metadatos existentes; esta revisión no despliega migraciones.
+- Los bytes originales se conservan inmutables en Dropbox, con versión, tamaño, SHA-256, identificador nativo y revisión. Alegra recibe la copia permitida después de custodia y validación. El Portal muestra enlaces protegidos y estado de evidencia. Las rutas privadas y referencias de facturas quedan fuera de este repositorio público.
+- Alegra documenta adjuntos de hasta 2 MB por archivo; cantidad, formatos y cuota deben verificarse en esta cuenta y plan. Conservar el original incluso cuando una foto necesite copia optimizada. El XML firmado nunca se comprime con pérdida ni se reconstruye como sustituto.
+- Los estados de respaldo siguen `PREPARED -> EXTERNAL_UPLOADED -> INTEGRITY_VERIFIED -> RESTORE_TESTED`. Preparar, listar o encontrar un ZIP no certifica integridad o recuperación. Cada transición exige recibo y evidencia.
+- Definir una copia recuperable fuera del mismo dominio de fallo de Dropbox, dentro de destinos ya autorizados y con acceso restringido. Los respaldos de base de datos de Supabase no incluyen los archivos binarios de Storage.
+- Objetivos propuestos: custodiar el original antes de habilitar contabilización; capturar cambios en el ciclo existente con cierre diario verificable; recuperar un expediente validado en un día hábil. Son objetivos de diseño, pendientes de aceptación, capacidad y prueba, no SLA ni automatizaciones ya activadas.
+
+**Optimización nativa:** evaluar primero buzón de comprobantes XML de proveedores, importación de ventas ya emitidas, catálogo/CABYS, centros de costo, conciliación bancaria desde XLSX, exportables y recurrencias pertinentes a Costa Rica. Verificar función, plan, permisos y configuración por cuenta. No activar todas las herramientas por cantidad ni aplicar funciones fiscales/nómina de otros países. La aceptación/rechazo fiscal, emisión y registro de pagos requieren su propio alcance aprobado.
+
+**Automatización:** reutilizar el trabajador y el Control Plane existentes. Un disparador de Kross, correo, Dropbox o WhatsApp crea una entrada gobernada; conserva identidad, cursor, deduplicación, aprobación y recibo persistente. Make y Zapier tienen integraciones publicadas; n8n puede utilizar HTTP Request. Son alternativas investigadas, no adoptadas ni prueba de permisos/adjuntos. Ninguna debe crear un segundo registro financiero o saltarse los controles de TORO.
+
+**NEXT — una unidad verificable:** cerrar un solo expediente de prueba del carril existente con JSON, PDF, XML y foto simulados, manifiesto versionado, duplicado multicanal, fallo de integridad y restauración aislada. Integrar esta prueba en el carril de escritura existente manteniendo el escritor deshabilitado por defecto. Luego verificar, por separado y con autorización específica, una operación real de bajo impacto y lectura posterior.
+
+**Criterio de terminado:** Plan y diseño alineados; manifiesto y hashes verificables; reintento sin duplicado; fallo sin avanzar cursor; recuperación aislada; vínculo comprobante–activos–origen; estado idéntico en las superficies. No se declara operación autónoma, adjunto cargado, recuperación o emisión hasta contar con recibo real.
+
+**FUTURE:** escritura repetitiva limitada por tipo y umbral, vigilancia de excepciones y recuperación periódica dentro de la infraestructura existente; cada ampliación depende de pruebas de país, entidad, permisos y reversibilidad.
 
 ## WeSpeak
 Active guest communication runtime.
@@ -3083,7 +3114,7 @@ La portada interna final es el Cerebro conectado para toda identidad autenticada
 
 La portada combina mapa y lista equivalente sobre los mismos objetos, con señales de atención y acciones en contexto. No obliga a explorar el grafo para una tarea repetitiva: búsqueda, «Hoy» y acceso directo al objeto conservan ámbito y selección. La experiencia prioriza pantallas compactas con detalle progresivo; el contenido largo, la ampliación de texto y las excepciones pueden desplazarse con scroll normal.
 
-Los once módulos visibles son Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Brain, conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones son capacidades comunes. Los subsistemas internos pueden ser más numerosos que los módulos del menú; cada uno tiene un propietario de capacidad y comparte identidad, permisos y estado.
+La navegación visible reúne **Cerebro, módulo 0 transversal**, y los once módulos de dominio existentes, del 1 al 11: Hoy y Atención, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Cerebro muestra y coordina sus relaciones sobre los mismos objetos, permisos y estado. Conversación, búsqueda, evidencia, aprobaciones, enlaces y notificaciones siguen siendo capacidades comunes. Esta clasificación TARGET del 10 de octubre de 2026 no renumera IDs técnicos ni activa otro subsistema.
 
 ### ChatGPT como interfaz oficial de TORO
 
@@ -3150,6 +3181,18 @@ Las fichas comparten atención, responsable, dependencias, historial, enlaces y 
 La interfaz admite español e inglés. Fechas, moneda, números y zona horaria se resuelven por usuario y ámbito. Los documentos conservan idioma y procedencia originales.
 
 Los módulos se habilitan según disponibilidad comprobada, configuración del negocio y capacidades del usuario. El núcleo de identidad, aislamiento, seguridad, autoridad de fuentes y auditoría no es opcional. Un módulo todavía no implementado se describe en esta visión final y conserva su estado real en la matriz de ejecución.
+
+### Módulo 0 Cerebro
+
+Cerebro es la entrada visible a la inteligencia y coordinación de TORO. El usuario entiende el conjunto, encuentra el asunto que cambia una decisión, consulta las relaciones y pide trabajo dentro de su ámbito. Utiliza la misma proyección, contexto, permisos, memoria, tareas, decisiones, ejecuciones y recibos de TORO; no mantiene copias independientes.
+
+La vista del dueño combina una red global autorizada con Atención, búsqueda, comando y un inspector. El negocio TORO Business aparece junto a los demás ámbitos permitidos y muestra cómo su producto, calidad, soporte, costo y mejoras se relacionan. La vista de un empleado conserva ese lenguaje con un foco práctico y solo los objetos autorizados. Un negocio, un proyecto, una herramienta y una ejecución tienen tipos distintos.
+
+Desde un nodo se puede consultar el motivo de su estado, fuente y fecha, abrir evidencia, entrar al módulo responsable o preparar una acción disponible. Una relación muestra qué significa y qué la respalda. Cada acción conserva su objeto y versión; una aprobación no concede permiso general. Si una capacidad no está conectada o probada, la ficha lo indica y ofrece el relevo existente.
+
+La red representa contexto y dependencias; el pulso representa un evento vigente autorizado. Salud, actividad e historial usan señales distintas. El mapa, la lista equivalente y la línea de tiempo comparten objetos y resultados. En móvil se puede resolver una consulta sin depender del gesto de arrastrar ni de una animación.
+
+Responsabilidad funcional: TORO Core compone la experiencia; Data proyecta; Governance autoriza; Projects vincula objetivos y trabajo; Agents aporta ejecución; Systems aporta salud; Knowledge aporta respaldo. Cerebro está terminado para una versión cuando un usuario puede recorrer contexto, asunto, evidencia y siguiente acción permitida, con aislamiento probado y recuperación del foco. Su éxito se mide por tiempo y errores al decidir o localizar evidencia, no por cantidad de luces.
 
 ### Módulo 1 Hoy y Atención
 
@@ -3445,6 +3488,330 @@ Referencias estructuradas leídas: `toro_dashboard_surface_v1`, `toro_brain_taxo
 
 
 ---
+
+### Ampliación del producto final: Cerebro, 25 frentes y 100 mejoras — 2026-10-10
+
+**Autoridad:** solicitud del propietario y continuación del 10 de octubre de 2026. **Clasificación:** TARGET de producto y NEXT de diseño/documentación; cada capacidad conserva su gate real. Las cien mejoras de este paquete son refinamientos de especificación y aceptación incorporados al Plan General. No son cien funciones instaladas ni cien trabajos terminados. Se mantienen P01–P40, VF y los criterios previos: este paquete M001–M100 desarrolla sus huecos concretos, sin sustituirlos ni sumarlos como beneficio.
+
+#### Resultado final que guía la construcción
+
+TORO se abre en Cerebro. El usuario entiende qué negocios controla, qué sucede, qué necesita atención y qué cambió. La interfaz combina una red global orientada, una acción siguiente clara y evidencia que se puede abrir. La experiencia del dueño muestra Dreamcatcher, Santa Toro, Vista Alegre, Cabuya y TORO Business cuando su identidad y fuentes los autorizan. La madre del propietario y Carolina reciben sus alcances individuales; ningún vínculo familiar sustituye ese contrato.
+
+En escritorio, el mapa es protagonista de la zona central, con un launcher compacto de Cerebro y once dominios, búsqueda/comando y un inspector lateral. La primera lectura de un nodo responde qué sucede, cómo afecta al objetivo y qué se puede hacer. El detalle técnico se despliega solo cuando ayuda. Al abrir un proyecto o evidencia se conserva el contexto del portafolio; el usuario vuelve al mismo objeto sin reconstruir su recorrido.
+
+En celular, Cerebro adapta agrupación y detalle, mantiene alcance y siguiente acción a mano y permite completar el mismo trabajo mediante lista. La navegación funciona con una mano, controles de al menos 44 píxeles y texto financiero legible. Zoom, búsqueda, lista/mapa, tema y ES/EN que ya existen se conservan: no se vuelven a contar como entregas nuevas. La sesión expirada, la fuente antigua, un dato desconocido, un permiso insuficiente y un fallo de transporte tienen mensajes diferentes.
+
+La dirección visual usa profundidad sobria, tipografía clara, contraste, capas y movimiento con significado. Los nodos pueden crecer o iluminarse durante eventos vigentes; el indicador de salud es diferente al indicador de trabajo. La reproducción histórica lleva fecha visible. No se publican luces aleatorias como prueba de ejecución, ni una forma atractiva como prueba de conexión. La marca utiliza los masters oficiales; una imagen conceptual no reemplaza el logo aprobado. Herramientas de 3D, video o animación solo se incorporan si mejoran una interacción concreta dentro del presupuesto existente; una librería nueva no es requisito de esta definición.
+
+TORO Business tiene su nodo de producto, proyectos, calidad, soporte y costo. El recorrido de mejora muestra problema, propuesta, prueba, release, resultado y conservar/revertir. Se relaciona con el Brain como negocio usuario, sin privilegio para aprobar su propio acceso a otros ámbitos. «Cahuya» en una transcripción se conserva como antecedente: el nombre documentado del Plan es Cabuya hasta resolver una identidad diferente con evidencia.
+
+#### Límites y prioridades de ejecución
+
+1. Prioridad operativa: comprobar y reparar el camino real de WhatsApp/OpenClaw hacia el mismo TORO. Acceso amplio del dueño significa acceso a todo su ámbito autorizado mediante capacidades y consultas pertinentes; no descargar todas las bases en un prompt ni entregar credenciales al navegador. Codex implementa y verifica cambios; no sustituye al backend persistente ni a la autoridad de cada fuente.
+2. Prioridad de producto: definir y representar Cerebro, producto final, estados y módulos. La red global es localizable por completo dentro de la cobertura autorizada, con agregación y paginación; no obliga a dibujar cada fila simultáneamente.
+3. Prioridad comercial: revisar el release actual del rediseño Dreamcatcher y continuar el carril existente. No reconstruir la home a partir de un pendiente histórico ya entregado.
+
+Los 25 frentes son resultados distintos dentro de los carriles existentes, no 25 proyectos, Dots, bases, chats o automatizaciones. Antes de cada ejecución se resuelve su task/proyecto canónico y su capacidad. Si falta mapping, se registra el hueco sin crear otra cola. Los propietarios siguientes son funciones del sistema; no asignaciones laborales ni aceptación inferida de una persona.
+
+Cinco tandas ordenan dependencias. Trabajo independiente puede avanzar mientras otro frente espera: F11 documental y lectura de F18 no requieren que el host de F01 ya esté disponible. Un worker no permanece ocupado con un bloqueo. Una ejecución termina, registra verificación y receipt, y permite reclamar la siguiente unidad elegible dentro de capacidad y presupuesto. No se promete trabajo continuo por dejar un navegador abierto.
+
+Cada run conserva task, scope, autorización, versión, presupuesto, checkpoint, lease/fencing, resultado, prueba y receipt. Las tandas no reactivan CONTROL, OPERATE, GROW ni escritores financieros pausados; no habilitan API Kross, onboarding externo ni mantenimiento físico automatizado. Publicación, efectos externos, datos, permisos y producción mantienen el gate concreto de su carril. La autonomía ya concedida se conserva, sin pedir de nuevo decisiones resueltas.
+
+#### Tanda 1 — Diagnóstico, identidad y camino real de ejecución
+
+##### F01 — Diagnóstico privado del host OpenClaw
+
+**Carril existente:** auditoría runtime OpenClaw. **Propietario funcional:** TORO Systems + Comms. **Fuentes:** host observado, contrato GitHub y configuración Supabase. **Prioridad:** P0. **Dependencia:** acceso al host autorizado. **Terminado:** perfil/worktree consumido observado y causa reproducida o bloqueo exacto fechado. Reutilizar el diagnóstico saneado existente.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M001 | Identificar host, perfil y worktree realmente consumidos; evidencia saneada del proceso observado, no una ruta supuesta. |
+| M002 | Contrastar versión consumida con el contrato esperado; el reporte distingue coincidencia, drift y versión desconocida. |
+| M003 | Diferenciar probe vivo de configuración guardada; ninguna etiqueta connected/verified sustituye la ejecución observada. |
+| M004 | Vincular el fallo a una referencia de diagnóstico saneada; otro revisor puede seguir causa y fecha sin recibir secretos. |
+
+##### F02 — Identidad comprobada por transporte
+
+**Carril existente:** Identity + Comms. **Propietario:** TORO Identity + Governance. **Fuente:** identidad/membership canónicas y host. **Prioridad:** P0. **Dependencia:** F01. **Terminado:** identidad real validada y casos negativos de baja y cambio de ámbito comprobados; no enlazar por nombre ni conceder permisos nuevos.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M005 | Corroborar cuenta y remitente con la identidad canónica; el mismo nombre visible no permite impersonación. |
+| M006 | Validar membership vigente al resolver la solicitud; una sesión antigua no amplía el acceso actual. |
+| M007 | Probar identidad revocada sin revelar existencia de datos; el rechazo no muestra conteos, nombres ni enlaces privados. |
+| M008 | Comprobar separación personal/hotel durante cambio de contexto; no sobreviven objetos ni acciones del ámbito anterior. |
+
+##### F03 — Reparación dirigida de Capability unavailable
+
+**Carril:** WhatsApp Same-Brain. **Propietario:** TORO Tools + Systems. **Fuentes:** host, adapter/contrato GitHub y registro de capacidades. **Prioridad:** P0. **Dependencias:** F01–F02. **Terminado:** un fallo reproducido se resuelve o conserva bloqueo causal comprobado. Reutilizar clasificador existente.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M009 | Capturar la capability exacta solicitada; la incidencia no se reduce a «WhatsApp no sirve». |
+| M010 | Distinguir ausente, denegada, degradada y obsoleta; cada causa produce estado y relevo apropiados. |
+| M011 | Detectar desajuste entre adapter, worktree y contrato consumido; se prueba la versión que atiende, no solo el archivo editado. |
+| M012 | Ofrecer siguiente paso específico para la causa; no pedir credenciales cuando el problema es una capacidad no instalada. |
+
+##### F04 — Paridad real de lectura Portal/WhatsApp
+
+**Carril:** Same-Brain/source capability parity. **Propietario:** TORO Data + Comms. **Fuentes:** Supabase, fuente de dominio y host. **Prioridad:** P0. **Dependencias:** F02–F03. **Terminado:** paridad acotada observada para la misma identidad, ámbito y dato, con huecos explícitos. API Kross permanece pausada.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M013 | Matriz por capability ya concedida para Portal y WhatsApp; cobertura autorizada no se infiere del número de conectores. |
+| M014 | Cotejar un dato permitido con su fuente; la respuesta conserva dato, autoridad, fecha y limitación de cobertura. |
+| M015 | Comparar la misma identidad y scope entre superficies; no se usa una cuenta administradora para certificar al empleado. |
+| M016 | Abstenerse ante fuente caducada y permitir referencia histórica etiquetada; información vieja nunca aparece como dato de hoy. |
+
+##### F05 — Primer worker observado desde la aplicación
+
+**Carril:** canary/Control Plane. **Propietario:** TORO Core + Systems. **Fuentes:** GitHub, Vercel y Supabase. **Prioridad:** P0. **Dependencias:** identidad y release verificable. **Terminado:** canary de aplicación pasa en entorno autorizado; prueba backend o transacción revertida no acredita consumo de la aplicación.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M017 | Acreditar SHA y presencia de configuración del consumidor sin valores secretos; el artefacto coincide con lo probado. |
+| M018 | Utilizar claim dirigido existente; el intento solo reclama el trabajo elegible autorizado. |
+| M019 | Obtener readback y receipt del intento desde aplicación; un status succeeded aislado no demuestra el flujo completo. |
+| M020 | Probar que un trabajo ajeno queda intacto; canary no drena la cola ni modifica otras entidades. |
+
+#### Tanda 2 — Persistencia y comunicación útil
+
+##### F06 — Lista persistente capturada en WhatsApp
+
+**Carril:** Comms durable channel ledger/repair intake. **Propietario:** TORO Comms + Operations. **Fuentes:** Supabase y host. **Prioridad:** P0/P1. **Dependencias:** F02/F03/F05 para el flujo elegido; F04 solo si ese caso necesita lectura de dominio. **Terminado:** lista inocua recuperable después de compaction y reinicio, sin duplicados. No activar trabajo físico de mantenimiento.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M021 | Vincular captura al objeto canónico existente; Portal y WhatsApp abren la misma lista. |
+| M022 | Consultar después de compaction; el contexto durable no depende del texto disponible en el chat. |
+| M023 | Recuperar después de reinicio; el objeto conserva autoría, alcance, edición y estado. |
+| M024 | Preservar edición concurrente mediante versión/origen; replay no pisa una corrección humana posterior. |
+
+##### F07 — Entrega comprobada al dueño
+
+**Carril:** alertas existentes de Recepción/Owner Attention. **Propietario:** TORO Comms. **Fuentes:** Page/caso, Supabase y host/proveedor. **Prioridad:** P0/P1. **Dependencias:** F01–F02. **Terminado:** prueba no sensible y alerta autorizada con receipt; sin otro scheduler ni destinatario supuesto.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M025 | Enlazar Page y caso con su alerta existente; una actualización de formato no crea otra notificación. |
+| M026 | Acreditar referencia del mensaje del proveedor; preparar texto no cuenta como enviarlo. |
+| M027 | Diferenciar programado, enviado, entregado y ambiguo; solo se muestra el nivel respaldado por evidencia. |
+| M028 | Conciliar resultado ambiguo antes de reintentar; timeout no autoriza un segundo envío ciego. |
+
+##### F08 — Audio e imagen con procedencia
+
+**Carril:** Comms + Assets/Knowledge. **Propietario:** TORO Assets + Knowledge + Comms. **Fuentes:** original Dropbox y objeto Supabase. **Prioridad:** P1. **Dependencias:** F02/F06 y capability media real. **Terminado:** un original autorizado, extracción y correcciones quedan relacionados.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M029 | Conservar original y hash; el derivado puede rastrearse sin alterar el archivo recibido. |
+| M030 | Mostrar extracción pendiente o fallida; una foto recibida no se presenta como documento entendido. |
+| M031 | Admitir corrección vinculada al original; la transcripción anterior conserva su procedencia y versión. |
+| M032 | Impedir que extracción fallida cierre tareas o contabilice hechos; fallos y dudas requieren evidencia nueva. |
+
+##### F09 — Recuperación de conversación y efectos
+
+**Carril:** replay/health/Control Plane. **Propietario:** TORO Systems + Core + Comms. **Fuentes:** Supabase y host. **Prioridad:** P1. **Dependencias:** F05–F07. **Terminado:** interrupción/replay controlados conservan un objeto y una sola consecuencia. Reutilizar lease/fencing existentes.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M033 | Ensayar transporte interrumpido; usuario ve pendiente/fallo en lugar de una confirmación ficticia. |
+| M034 | Ensayar evento duplicado simultáneo; el segundo intento no produce otro objeto ni efecto. |
+| M035 | Ensayar lease perdido; un ejecutor vencido no puede aplicar una escritura tardía. |
+| M036 | Recuperar objeto y correlación; el relevo continúa desde el checkpoint probado y concilia efectos inciertos. |
+
+##### F10 — DreamTeam como contactos útiles
+
+**Carril:** People + Comms. **Propietario:** TORO People + Comms. **Fuente:** identidad/contacto autorizado Supabase. **Prioridad:** P1. **Dependencias:** F02 y mapping People/destino. **Terminado:** un botón abre un contacto verificado y su baja impide acceso futuro; no inferir teléfonos de empleados.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M037 | Relacionar botón con identidad aprobada; no se usa una cadena de nombre como registro de empleado. |
+| M038 | Limitar destino al contacto permitido del scope; no se exponen contactos privados de otro ámbito. |
+| M039 | Distinguir abrir WhatsApp de enviar mediante TORO; el usuario sabe quién ejecutará el mensaje. |
+| M040 | Retirar acceso tras baja sin borrar historial autorizado; el botón y la acción fallan con el mismo permiso revocado. |
+
+#### Tanda 3 — Cerebro visible y verificable
+
+##### F11 — Cerebro como módulo transversal
+
+**Carril:** Visual Brain/Dashboard/User Portal. **Propietario:** TORO Core + User Portal. **Fuentes:** contratos GitHub y proyección Supabase. **Prioridad:** P1. **Dependencia:** ninguno para definición; runtime conserva su gate. **Terminado:** acceso propio Cerebro junto a los once dominios, sin nuevo backend.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M041 | Exponer Cerebro como módulo 0 en la navegación conceptual; conservar nombres, orden e IDs de los once dominios. |
+| M042 | Distinguir Cerebro del negocio TORO Business; no reasignar el id legado brain de toro-data.ts. |
+| M043 | Volver desde un módulo al mismo contexto del grafo; selección y orientación no se pierden. |
+| M044 | Mostrar alcance definido, preparado, publicado, verificado y medido; una maqueta no se presenta como operación privada. |
+
+##### F12 — Red completa con zoom semántico
+
+**Carril:** scope graph/canonical projection. **Propietario:** TORO Data + Governance. **Fuentes:** relaciones canónicas y contrato GitHub. **Prioridad:** P1. **Dependencias:** F11 y relaciones disponibles. **Terminado:** panorama completo de cobertura autorizada y detalle paginado bajo presupuesto; no descargar toda la base.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M045 | Mostrar panorama agregado del portafolio autorizado; no revelar nombres ni conteos de ámbitos prohibidos. |
+| M046 | Utilizar relaciones reales y tipadas; una estrella visual por conveniencia no acredita dependencia o propiedad. |
+| M047 | Expandir detalle paginado conservando la vista global; el recorrido no fragmenta el mapa en pantallas inconexas. |
+| M048 | Indicar cobertura parcial con denominador/fuente/fecha cuando existan; desconocido no equivale a cero. |
+
+##### F13 — TORO se mejora utilizando TORO
+
+**Carril:** TORO Business/self-use/Projects. **Propietario:** TORO Projects + Core. **Fuentes:** GitHub, Supabase y release Vercel. **Prioridad:** P1. **Dependencias:** F05/F11–F12. **Terminado:** ciclo real de mejora navegable con receipt, sin crear un proyecto raíz.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M049 | Mostrar TORO Business separado del Core; negocio usuario e inteligencia del producto tienen roles comprensibles. |
+| M050 | Enlazar trabajos existentes de producto; crear una visualización no genera tareas duplicadas. |
+| M051 | Enlazar release y medición de una mejora; commit, deploy, uso y beneficio permanecen distintos. |
+| M052 | Mostrar resultado que retroalimenta producto sin autoautorizarse; el evaluador material conserva independencia. |
+
+##### F14 — Neuronas activadas por trabajo real
+
+**Carril:** Event Spine/Agents/Control Plane. **Propietario:** TORO Data + Agents + Core. **Fuente:** runs/receipts canónicos. **Prioridad:** P1. **Dependencias:** F05/F11. **Terminado:** un run muestra actividad y fin comprobables, con alternativa sin movimiento.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M053 | Proyectar eventos de runs existentes; la mera existencia de una sesión de lectura o conexión no acredita trabajo activo. Una consulta ejecutada y respaldada por evento/receipt sí puede generar actividad legítima. |
+| M054 | Mantener pulso solo durante evento autorizado vigente; movimiento reducido preserva texto y estado. |
+| M055 | Apagar o corregir al expirar lease, fallar o revocarse permiso; una neurona no queda «trabajando» indefinidamente. |
+| M056 | Reproducir secuencia por correlación con resumen seguro y fecha; historial nunca se confunde con actividad presente. |
+
+##### F15 — Evidencia y estado confiables
+
+**Carril:** Brain semantics/source governance. **Propietario:** TORO Data + Governance + Knowledge. **Fuentes:** Supabase, sistema de dominio y original documental. **Prioridad:** P1. **Dependencias:** F11/F14 y permisos de evidencia. **Terminado:** estados soportan datos incompletos, antiguos o contradictorios.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M057 | No convertir ausencia de needsRevalidation en prueba de verificación; afirmación verified exige evidencia de ese objeto. |
+| M058 | Separar fecha del dato de fecha de consulta; refrescar pantalla no rejuvenece la fuente. |
+| M059 | Abrir evidencia autorizada del mismo objeto; referencias ausentes o denegadas no producen botones ficticios. |
+| M060 | Mostrar contradicción y faltante sin verde automático; el usuario conoce autoridad y corrección necesaria. |
+
+#### Tanda 4 — Portal móvil y rediseño web
+
+##### F16 — Sesión móvil para operar
+
+**Carril:** Portal/Human Experience. **Propietario:** TORO User Portal + Identity. **Fuentes:** Supabase, código y runtime Vercel. **Prioridad:** P1. **Dependencias:** F02/F11 y release Portal. **Terminado:** ida/vuelta y expiración en móvil conservan el objeto permitido; se preserva lo ya implementado.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M061 | Conservar contexto al regresar del proveedor; la sesión no cambia silenciosamente de negocio. |
+| M062 | Volver al objeto desde una notificación; el enlace respeta la identidad actual y su autorización. |
+| M063 | Distinguir sesión vencida de falta de datos; renovar acceso no se presenta como recuperación de información perdida. |
+| M064 | Mostrar snapshot/offline sin ejecutar sobre estado viejo; la reconexión confirma versión antes de efectos. |
+
+##### F17 — Entrada común dreamcatcherhotel.com/toro
+
+**Carril:** Channels/routing/login. **Propietario:** TORO Channels + Governance + Identity. **Fuentes:** repositorio, dominio/release y sesión. **Prioridad:** P1. **Dependencias:** F11/F16 y destino canónico verificado. **Terminado:** ruta común abre el destino correcto bajo autorización de release; sin contraseña compartida.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M065 | Definir un destino canónico registrado para el enlace; no promocionar una URL antigua solo porque contiene TORO. |
+| M066 | Mantener zona pública segura y operación privada autenticada; la entrada común no hace públicos los datos. |
+| M067 | Recuperar deep link permitido después de login; destino de retorno no permite redirección externa arbitraria. |
+| M068 | Probar usuario no autorizado; no aparecen datos, conteos ni destinos privados antes o después del login. |
+
+##### F18 — Estado real del rediseño Dreamcatcher
+
+**Carril:** Fase 2/DC2-022/B0–B6. **Propietario:** TORO Channels + Systems. **Fuentes:** repositorio y artefacto publicado. **Prioridad:** P1. **Dependencia:** inspección del release vigente. **Terminado:** dossier de publicación y siguiente delta único; no reconstruir la home desde un plan antiguo.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M069 | Conciliar trabajo reciente con SHA publicado; el preview no se confunde con producción. |
+| M070 | Retirar del siguiente paso los parches entregados con prueba; conservar su historia y no repetírselos al dueño. |
+| M071 | Revisar regresión por delta del release; una corrección acotada no obliga a repetir toda la auditoría sin motivo. |
+| M072 | Mostrar evidencia de preview y producción por separado en TORO; cada enlace conserva artefacto y corte. |
+
+##### F19 — Continuidad comercial demostrada
+
+**Carril:** booking stack/B1/B3. **Propietario:** TORO Revenue + Channels. **Fuentes:** motor/PMS permitido, código y release. **Prioridad:** P1. **Dependencias:** F18 y fuente comercial vigente. **Terminado:** handoff actual probado y conflictos resueltos o bloqueados; sin API Kross nueva.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M073 | Probar fecha/ocupación desde un enlace móvil real; no afirmar prefill porque el link contiene parámetros. |
+| M074 | Contrastar ficha y motor sin calcular tarifa local; reservas, precios y disponibilidad conservan su autoridad. |
+| M075 | Señalar diferencias de política que impiden publicar; una tarifa anterior no se convierte en regla vigente. |
+| M076 | Conservar vía convencional si falla Flow; el huésped puede continuar por el camino comercial oficial. |
+
+##### F20 — Calidad después de publicación
+
+**Carril:** B5/medición web. **Propietario:** TORO Channels + Growth + Systems. **Fuentes:** artefacto y medición vigentes. **Prioridad:** P1. **Dependencias:** F18/F19. **Terminado:** evidencia comparable del release actual y ausencia de P0; no atribuir ventas a clics.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M077 | Tomar baseline del artefacto publicado; comparación utiliza mismo alcance/dispositivo y un corte trazable. |
+| M078 | Comparar comportamiento con consentimiento activo; no ampliar tracking ni recolectar datos por este paquete. |
+| M079 | Revisar interacción móvil representativa, incluido Safari cuando esté disponible; plataforma no probada se declara pendiente. |
+| M080 | Diferenciar CWV de campo, laboratorio e intención comercial; no fabricar lift ni mezclar denominadores. |
+
+#### Tanda 5 — Más avance con menos coordinación
+
+##### F21 — Cobertura de cada módulo
+
+**Carril:** producto final/capability registry. **Propietario:** TORO Core + Projects + Tools. **Fuentes:** código, contratos y catálogo canónicos. **Prioridad:** P1/P2. **Dependencias:** F11–F20 según capability. **Terminado:** matriz de Cerebro y once dominios con evidencia y próximos deltas, sin más módulos por contar funciones.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M081 | Cotejar cada módulo con código vigente; el nombre de una pantalla no acredita su flujo completo. |
+| M082 | Separar preparado, live y verificado por capability; una verificación no cubre automáticamente todo el módulo. |
+| M083 | Colocar huecos en la task y propietario existentes; no crear otro backlog con la misma incidencia. |
+| M084 | Detectar dependencia transversal que desbloquea módulos; se prioriza resultado útil por esfuerzo y riesgo. |
+
+##### F22 — Tandas con relevo real
+
+**Carril:** PUMBA/Control Plane/Projects. **Propietario:** TORO Core + Agents + Projects. **Fuente:** task/run/receipt canónicos. **Prioridad:** P1/P2. **Dependencias:** F05/F09. **Terminado:** dos tandas completadas con receipts y sin colisión; no nuevo scheduler ni executores suspendidos.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M085 | Vincular ejecución con frente y task existentes; el frente es etiqueta de resultado, no autoridad nueva. |
+| M086 | Continuar a siguiente unidad elegible después del receipt; no esperar un reloj si capacidad y presupuesto están disponibles. |
+| M087 | Liberar worker cuando hay bloqueo pendiente; registrar disparador y continuar trabajo independiente. |
+| M088 | Detectar inanición de carril elegible por prioridad permanente; aplicar la política vigente sin inventar urgencias. |
+
+##### F23 — Consumo por resultado
+
+**Carril:** worker budget/scorecard. **Propietario:** TORO Agents + Systems + Finance. **Fuentes:** ejecución y consumo observado del proveedor. **Prioridad:** P1/P2. **Dependencias:** F05/F22. **Terminado:** costo y denominadores reales, o NO MEDIDO; sin gasto nuevo automático ni presupuesto inferido.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M089 | Registrar costo observado por resultado; suscripción, costo marginal y ahorro permanecen separados. |
+| M090 | Reutilizar checkpoint verificado antes de una auditoría total; solo evidencia nueva o gate cambiado justifica repetir. |
+| M091 | Detener bucle sin cambio material; los reintentos comparten límites y no generan reportes de avance ficticio. |
+| M092 | Medir espera elegible y costo de reintento antes de aumentar capacidad; número de agentes no sustituye productividad. |
+
+##### F24 — Sesión de decisiones del dueño
+
+**Carril:** Owner Attention/reportes existentes. **Propietario:** TORO Core + Comms + Projects. **Fuentes:** decisiones, Pages y receipts autorizados. **Prioridad:** P1. **Dependencias:** F07/F21–F23 para delivery completo; preparación documental puede avanzar antes. **Terminado:** paquete accionable y resumen entregado o fallo explícito.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M093 | Agrupar solo decisiones que el dueño puede resolver; no transferirle rutina del equipo ni acceso no necesario. |
+| M094 | Vincular respuesta con objeto, versión y evidencia; un sí contextual no es aprobación global de efectos nuevos. |
+| M095 | Reutilizar respuestas vigentes; no pedir de nuevo autorización resuelta por fragmentación entre chats. |
+| M096 | Resumir resultados, bloqueos y enlaces con delivery separado de programación; hasta tres asuntos, 120 palabras y aviso PRUEBA vigente. |
+
+##### F25 — Aprendizaje y retiro sin pérdida
+
+**Carril:** Knowledge/Governance/Systems. **Propietario:** TORO Knowledge + Governance + Systems. **Fuentes:** contrato/código, evidencia y contexto autorizado. **Prioridad:** P2. **Dependencias:** F21–F24 según objeto. **Terminado:** mejora evaluada y candidato de archivo documentado; no afirmar chats archivados sin capability y prueba.
+
+| Mejora | Refinamiento y prueba requerida |
+| --- | --- |
+| M097 | Convertir error repetido en regla o prueba concreta; indicar fuente, versión y criterio de conservar/revertir. |
+| M098 | Abstraer patrón sin datos privados; otro negocio recibe método y configuración, no memoria ajena. |
+| M099 | Revisar regresión después de aplicar mejora; el ejecutor no modifica su propio evaluador para aprobarse. |
+| M100 | Inventariar chats y artefactos redundantes antes de archivar; referencia recuperable y contexto útil conservados, sin eliminación automática. |
+
+#### Compatibilidad, verificación y siguiente superprompt
+
+La declaración de Cerebro no migra los IDs del catálogo legado `src/lib/toro-data.ts`: su `brain` denominado TORO Business contiene fixtures operacionales y no es el nodo de autouso definido aquí. No reasignarlo ni modificar menús/permisos por una clasificación conceptual. `/brain` conserva su provider único, y Stage C–G conserva QA, aislamiento y release gates.
+
+La revisión inicial de este paquete es acotada a contratos y huecos de TORO; el release del hotel, sesión privada multinegocio, transporte WhatsApp, consumo del host y beneficio económico requieren evidencia de sus frentes. La presencia de una herramienta instalada no prueba adopción ni un costo autorizado. El archivo de chats queda BLOQUEADO si no existe inventario/capability; no eliminar conversaciones por similitud de títulos.
+
+Aceptación documental: módulo 0 y once dominios coherentes en contratos, F01–F25 distintos, M001–M100 únicos y consecutivos, dependencias/propietarios/fuentes/terminado explícitos, decisiones pausadas conservadas y ningún secreto en la proyección pública. Aceptación de runtime: prueba propia de cada frente y receipt del flujo real. Publicar documentos no acredita cien capacidades ni veinticinco ejecutores activos.
+
+**Próximo superprompt:** «Retoma el Plan General único de TORO y la ampliación del 10/10/2026. Lee el estado y receipts actuales antes de actuar. Primero resuelve el acceso al host F01 y la causa exacta F03; si siguen bloqueados, avanza F11 y la revisión del release F18 dentro de sus carriles existentes. Reutiliza IDs y checkpoints. Entrega una unidad completa con fuente, prueba, enlace, siguiente paso y límite real. Mantén API Kross, escritores y lanes suspendidas; no conviertas diseño en operación ni reabras decisiones resueltas. Solo escala una intervención del dueño cuando desbloquee trabajo material. Después del receipt continúa con la siguiente unidad elegible dentro del presupuesto y capacidad comprobados.»
+
 
 ## Human Layer / TERE / DreamTeam R4 — owner directive 2026-09-30
 
@@ -4084,3 +4451,108 @@ Monthly:
 10. capture approved assumptions/version changes with evidence.
 
 Strategic principle: **occupancy by itself is not success. TORO should maximize sustainable contribution and profit, not simply fill rooms.**
+
+## Directorio de enlaces y accesos — 2026-10-07
+
+**Scope:** TORO-owned authorized portfolio; Dreamcatcher reference implementation. **Owners:** TORO Systems + TORO Tools + TORO Knowledge; SOBRESITO for technical integration. **Existing project mapping:** `business_truth_bible` (Data & Integrations), `toro_executive_control` (operating surface). **Priority:** P1. **CURRENT:** source inventory stored in the existing Supabase directory. **TARGET:** Systems → Enlaces y accesos as a role/scope-filtered view of that same registry. **NEXT:** implement the section in the canonical Portal without duplicating data or deploying implicitly.
+
+- Preserve `operations.knowledge_items/dreamcatcher_system_database_directory_v1`, ID `50df0e7d-1aed-489a-a942-274715734dd0`. Existing canonical database, 14 Airtable links and runtime references remain intact; additive `structured_content.link_directory` contains 160 entries (154 URLs + 6 unresolved exact accesses), version 1.1. Count includes service surfaces, historical references, databases, private folder routes and 22 registered Kross unit links; it is not a count of 154 adopted systems or verified integrations.
+- Provenance: 208 current Airtable Central `source_objects`; 14 accessible Airtable bases; 3 current Supabase projects; `integrations.external_dependency_registry`; current General Plan; current channel checkpoint; complete shallow Dropbox root listing (17 entries); relevant existing browser tabs; narrowly checked official provider portals. Inventory presence and connector access are distinct from daily human usage, valid sessions and E2E capability.
+- No new database, table, master plan, agent or scheduler. `source_objects` and `external_dependency_registry` retain source/dependency roles; the directory is a navigation projection and does not replace their evidence. Kross, Alegra, banks and specialist authorities retain domain ownership.
+- Entry fields: stable directory ID, name, URL or unresolved state, category, purpose/limit, service state, link verification state, exact/generic/constructed link class, evidence, observation date, scope and visibility. Scope/role enforcement belongs to the existing TORO identity/capability model. Private metadata and folders must not enter public hotel navigation.
+- Human section: searchable external-system and owned-surface links together, filterable by business/category/state; visible distinctions for active, historical, sandbox, blocked and proposed destinations. Use existing preferences for favorites; do not create parallel state. Open links with safe target/rel attributes; do not prefetch private service data. Allow only validated HTTP(S) and explicitly needed mailto/tel protocols. Never store credentials, OAuth state, signed URLs, access tokens or guest payloads.
+- Explicit gaps: exact WeSpeak/TERE panel, Trip.com/Ctrip onboarding access, SimpleBooking current-use access, OpenClaw Gateway host/URL, SINAMOT and Evertec retention portal. Generic provider entrypoints and constructed Dropbox folder URLs are not certified account deep links. Tool availability from installed plugins is not adoption evidence. Historical TORO v03/five and desired `dreamcatcherhotel.com/toro` must not be promoted to canonical deployment by this directory.
+- **Verification in this unit:** Supabase readback confirms same row, internal visibility, all 14 previous Airtable links retained, canonical project unchanged and 160 entries / 154 URLs. A local searchable dashboard, Markdown, CSV and JSON are dated projections; the local dashboard does not query live Supabase or certify Portal integration. No schema/permission/production runtime change.
+- **DoD for NEXT:** authenticated canonical Portal reads this record, renders authorized links with source/state, search/filter and owned/external access coverage; negative role/tenant tests prevent cross-scope leakage; mobile/keyboard QA passes; all unresolved destinations remain visibly unresolved. Release requires its separate applicable gate.
+- **Rollback:** restore only the additive directory JSON and descriptive content from the saved pre-update snapshot after checking current version/concurrent edits; preserve unrelated fields. This document is proposed through a branch/PR and does not authorize merge, deployment or expanded access.
+
+### Enlaces por sistema, navegación operativa y Cotizar — 2026-10-07
+
+**Owner request:** organize principal systems and their derived links for hotel operations, review both Chrome profiles' bookmarks, and plan Portal buttons plus a quote widget. **CURRENT:** the same existing directory now stores additive `portal_navigation_proposal` (PROPOSED_NOT_PORTAL_IMPLEMENTED), grouping 160 entries into 38 principal-system groups and 9 process categories. These are navigation groups, not newly adopted services. **TARGET:** Enlaces y herramientas within Systems, reachable from Operations, with parent-system cards, derived-link expansion, search, role/scope filters and existing-preference favorites. **NEXT:** receive both exported bookmark HTML files, reconcile missing safe business links and then implement the canonical Portal section in its existing shell.
+
+- Recommended hotel home: Kross PMS, planner, Cotizar, direct booking engine, WeSpeak/TERE (exact URL pending), WhatsApp, Gmail, DreamTeam, Calendar, hotel Dropbox, Booking and Airbnb. Ordering is an operational recommendation, not measured usage. Finance/banks and system administration stay role-restricted; legacy/copies/previews/404/TARGET destinations go to Archive/Pending, and unrelated businesses remain scoped separately.
+- Bookmark review is explicitly **BLOCKED, 0/2 profiles reviewed**: browser policy rejects chrome://bookmarks and prohibits alternate retrieval to achieve the blocked action. Do not bypass via filesystem, raw CDP, browser commands or another browser surface. User-supplied HTML exports allow a materially safer local evidence review; preserve original bookmarks and omit unnecessary personal content.
+- Quote widget belongs to Operations/Revenue, with TORO Revenue/TERE and Kross authority. First release is a dates/occupancy/child-age/unit/RO-BB intake that opens the official Kross booking engine. Do not assume URL filter parameters work without proof. An internal live quote requires authorized official Kross read capability, origin/time/freshness, currency/tax/extra/occupancy/cancellation verification and parity against the engine. No price/availability inferred from cached Airtable/Supabase rates; no duplicate counting of villas and component rooms; no booking/payment/message effect by filling the widget.
+- A preview of buttons or saved specification is not Portal/runtime delivery. No API cost, access expansion, iframe banking/session capture, new app/base or deployment is authorized by this plan update. Relevant implementation tests: safe link protocols, role/tenant negative cases, parent/child consistency, search/filter/mobile/keyboard; live quote parity/error/stale-source handling only when that capability exists.
+
+
+### Directorio maestro ampliado y cuentas — 2026-10-08
+
+**CURRENT, verificado por escritura en el registro existente:** 243 fichas, 238 URLs únicas y 8 referencias de cuenta en `operations.knowledge_items / dreamcatcher_system_database_directory_v1`, versión 2.0. Se preservan las demás secciones del objeto. Texto completo del reporte guardado con los datos y hash SHA-256 del PDF local; el binario PDF no está alojado en Supabase.
+
+- Evidencia ampliada: historial enfocado de dos perfiles Chrome (229 resultados, no exhaustivo), Airtable/Dropbox ya consultados, cuatro chats Codex, Gmail hotel/Mauricio y espejo Notion. Dos chats ChatGPT devolvieron límite de solicitudes; favoritos siguen 0/2.
+- WeSpeak resuelto: https://app.wespeak.pro/dashboard y derivados de navegación observada. Trip.com: https://ebooking.trip.com, solicitud rechazada/incompleta según correo; no afirmar canal activo. HotelSwaps: panel/ficha/temporadas documentados por auditoría posterior al bloqueo que aún muestra Notion.
+- 20 mejoras aplicadas al directorio/modelo/documento: IDs, proveedor, parentesco, proyectos, categorías, etiquetas, tipo de enlace, prioridades, inicio propuesto, archivo, roles propuestos, cuentas relacionadas, distinción destinatario/login, tipo/estado de cuenta, IDs externos, procedencia, fechas diferenciadas, revisión, conflictos/cobertura y exportación reproducible.
+- Referencias de cuenta contienen correo y evidencia no secreta; destinatario no equivale a login, plan o permiso. RLS observada activa y lectura por roles de organización. No ampliar permisos. Agrupación por proveedor no prueba cuenta/propiedad compartida.
+- **TARGET sin implementación:** sección de enlaces en Portal y Cotizar conforme al contrato anterior. Proyección `portal_navigation_proposal` v1.2 sigue histórica (160); la fuente de fichas actual es `link_directory` v2.0 (243). Reconciliar navegación existente al implementar; no consumir una proyección vieja como censo actual.
+- **NEXT único:** validar principales diarios por rol/cuenta/propiedad y reconciliar la sección existente del Portal con el directorio v2.0, sin nuevo inventario, base, app ni despliegue. Esta PR permanece documental y sin merge.
+
+
+### Reconciliación de Plan y navegación — 2026-10-09
+
+**CURRENT:** el mismo registro Supabase mantiene `link_directory` v2.0 (243 fichas, 238 URLs únicas, 8 referencias de cuenta y 20 mejoras documentales) y ahora `portal_navigation_proposal` v2.0, reconciliada por los mismos 243 IDs y URLs. Este corte sustituye el estado de proyección histórica descrito arriba; los cortes anteriores se conservan como evidencia fechada.
+
+- Se preservaron el catálogo, cuentas, texto respaldado, hash del PDF y demás campos. La navegación conserva el contrato Cotizar y cobertura de favoritos. Se propusieron seis tareas de inicio por ID: reservas LINK-048, cotizar LINK-002, huéspedes LINK-178, equipo LINK-086, agenda LINK-056 y facturación LINK-067.
+- LINK-001 (cambio de contraseña PMS) queda fuera del inicio y bajo configuración restringida. WeSpeak deja de figurar como URL pendiente. El pendiente histórico Trip.com LINK-156 remite a LINK-241; eBooking localizado no significa canal activo.
+- **TARGET:** Portal autorizado consume la navegación sobre el registro existente; controles de rol/organización en servidor, sin inferir permisos a partir de etiquetas. **NEXT:** validar destinos y cuenta/propiedad de los seis accesos diarios antes de implementar la vista. **FUTURE:** Cotizar vivo solo con fuente oficial y pruebas del contrato.
+- **Verificación documental/datos:** IDs únicos, coincidencia de IDs/URLs entre catálogo y proyección, referencias de inicio/alias existentes y protocolos permitidos. No se atribuye QA autenticado, pruebas de aislamiento runtime ni Portal publicado.
+- Plan de esta rama reconstruido sobre el contenido vigente de `main` (blob e1e8e7edc57018176686752187a5ae5ecf565713) conservando sus cambios concurrentes y la sección documental de este carril. La integración a `main` permanece pendiente de revisión/merge; no se declara el plan publicado.
+- Recuperación: snapshot previo de la proyección en `work/alignment-20261009-before.json`; revertir únicamente esa clave después de comparar updated_at. Para documentación, revertir el commit del carril; nunca sobrescribir otros cambios.
+
+
+### Guía compacta de herramientas — 2026-10-09
+
+**CURRENT:** prototipo local `TORO-DASHBOARD-LINKS.html` actualizado, 243 fichas preservadas en 44 grupos / 10 áreas; seis tareas diarias, detalles plegables, búsqueda, filtros, favoritos locales, copiar e impresión. Nueve iconos de marca de Simple Icons; emojis en el resto. Las 50 simplificaciones están enumeradas en la guía local y en `portal_navigation_proposal.compact_view` v3.0 del mismo registro Supabase.
+
+- Proyección local, no Portal publicado ni conexión viva. Catálogo/proyección v2.0 conservados. `compact_view` almacena distribución por IDs, tareas, procedencia de iconos, guía y pruebas; no crea otra base. SINAMOT localizado en su web oficial queda como overlay de presentación sobre LINK-159, sin afirmar alertas en vivo ni cerrar otros pendientes.
+- Inicio compacto: reservas LINK-048, cotizar LINK-002, mensajes LINK-178, equipo LINK-086, agenda LINK-056, documentos LINK-131. Facturación permanece en Dinero y trámites. Los favoritos locales son solo de demostración; integración debe usar preferencias existentes.
+- **Evidencia local:** 243 IDs, seis accesos de inicio, búsqueda, filtro de favoritos/persistencia, estado vacío, cero errores JS y sin desborde horizontal a 390 px. Revisión visual escritorio/móvil. No implica accesos autenticados ni pruebas de aislamiento en producción.
+- **TARGET/NEXT:** implementar en sección existente de TORO tras validar los seis destinos, identidad/rol/scope en servidor y preferencias canónicas. Portal es puerta, TORO Brain relaciona tareas/sistemas/proyectos/fuentes, Supabase guarda catálogo; autoridades transaccionales permanecen Kross/Alegra. Mantener permisos y separar Santa Toro, patrimonio y hotel.
+- No merge/deploy implícito; completar favoritos Chrome y otros pendientes con investigación focalizada, sin reconstruir el inventario.
+
+
+### Herramientas del hotel — integración local acotada
+
+**CURRENT local, no publicado:** `/my-toro/herramientas` y entrada en Mi TORO preparados en el checkout del carril, commit local `d4a851909c76686603efe87a07271076ae266e8e` sobre `73e8dc17b40a048a1324b750383da5daa44fd99d`. Código no empujado; patch y evidencia en outputs del checkpoint. Esta actualización remota es documental.
+
+- Lector server-side con sesión, contexto canónico, organización/propiedad exactas, membresía activa y los roles existentes de lectura de knowledge_items. Cliente Supabase de sesión con RLS, sin service-role, sin ampliar permisos.
+- Seis destinos explícitos cotejados con catálogo; cambio de URL, ID duplicado, otro scope o fallo de lectura no entrega ese enlace. No expone cuentas, evidencia privada ni el catálogo de proyectos mezclados. El catálogo completo de 243 fichas permanece intacto.
+- **Evidencia:** 24 pruebas nuevas + 29 de contexto/menú, TypeScript, lint del cambio y build PASS. Servidor local sin configuración: cero links externos y sin desborde móvil390. No equivale a prueba autenticada/RLS viva.
+- **Bloqueadores del alcance completo:** falta prueba de sesión real; no se encontró contrato persistente de favoritos en las tablas/implementación consultadas; fichas restantes sin política de scope/rol validada. No migrar localStorage ni crear base de preferencias paralela.
+- **NEXT único:** prueba autenticada de los seis accesos en entorno autorizado; resolver preferencias y permisos existentes antes de ampliar. Sin push del código/merge/despliegue en este corte. Recuperación: revertir commit local; no hubo migración.
+
+### Publicación autorizada — Herramientas, 10/10/2026
+
+Mauricio autoriza publicar y continuar. Código conciliado con main y subido en la misma PR251, commit abed8e0c9fb879d1b9b3caa41aea55421e610c59. Vercel proyecto existente toro-pr11-preview: despliegue dpl_5rSEw7rMy1EsRK1pUcci26Sjd8vT READY; ruta /my-toro/herramientas. CI 38032517161: tests, lint y build PASS. Navegador sin sesión muestra contexto autorizado requerido, sin accesos externos del directorio.
+
+CURRENT: preview publicado, no producción ni merge. Falta sesión real autorizada para probar lectura del registro y seis accesos; AGENTS.md exige evidencia runtime antes del merge. La autorización de publicación permanece vigente para cerrar la misma entrega tras superar ese control, sin ampliar permisos. NEXT único: login manual del propietario en el preview, comprobar contexto/lectura y completar release existente. No copiar sesiones, crear usuarios, restablecer contraseña ni debilitar RLS. Catálogo de 243 fichas y fuente Supabase intactos. Reversión: revertir solo los siete archivos del commit funcional d4a8519; no migración de datos. No promover la maqueta HTML privada ni el catálogo completo.
+
+### Operación diaria y acceso claro — 10/10/2026
+
+Mauricio pide usar admin@dreamcatcherhotel.com y rediseñar según operación diaria. Cuenta Auth confirmada y ADMIN activo; sesión real observada en TORO local. El fallo anterior era PGRST106: operations no está expuesto a PostgREST, no credenciales incorrectas. Con autorización explícita, aplicada lectura pública acotada dreamcatcher_tool_links_v1: SECURITY INVOKER, RLS existente, scope fijo, solo seis IDs/URLs exactos; ejecución denegada a anon, sin cambiar usuarios/policies ni exponer operations. Navegador de la sesión del propietario muestra los seis accesos. Consulta sin roles devuelve cero; llamada HTTP anónima 42501.
+
+Vista existente /my-toro/herramientas organizada por Empezar turno, Atender huéspedes, Preparar habitaciones, Cotizar estancia, Revisar cobros y Cerrar/preparar mañana. Es guía de navegación basada en recepción y autoridades del Plan, no procedimiento de turnos validado ni tablero de estados vivos. Cobros sin accesos aprobados conserva pendiente explícito. Login con ayuda y mostrar contraseña; errores de catálogo ya no piden cambiar de usuario. No nuevas cuentas, copia de sesiones ni recuperación enviada. DreamTeam mantiene su login propio y misma autoridad de identidad; no se ha implementado SSO.
+
+TARGET/NEXT: contrastar con recepción responsable real por turno y accesos de caja/aseo/mantenimiento; conectar lecturas verificadas una por una. Preservar Kross, Alegra/bancos, DreamTeam, Team Brief y Cierre Diario existentes. No nueva cola, base, scheduler ni catálogo. Prueba local autenticada y negativas superadas; release sujeto a CI y readback de despliegue vigente. Revertir función sin CASCADE y cambio de UI si necesario; no datos alterados por la función.
+### Corrección del gate de Herramientas — 10/10/2026
+
+**CURRENT de seguridad:** una sesión con rol lector no basta para mostrar herramientas. El filtro exige identidad, `work_org`, contexto/membresía vigentes y permiso exacto en `allowedTools` (`provider`, `owner=organization`, misma `orgId`, acción `read`), antes de consultar el catálogo y al proyectar cada enlace. Las claves Kross, WeSpeak, Google Calendar y Dropbox proceden del catálogo existente; asignar la clave a un destino no concede el permiso. DreamTeam conserva LINK-086 pero queda fuera de la proyección hasta resolver su contrato de proveedor. El HTML privado y las 243 fichas no cambian.
+
+- El resolver actual siempre devuelve `allowedTools: []`; por ello la ruta corregida deniega también a ADMIN. No simular permisos para conseguir seis botones visibles. Cinco destinos tienen mapeo preparado; cero están habilitados por el resolver vigente.
+- La propiedad de la fila está filtrada, pero el contexto aún no representa autorización del actor por propiedad. Esto sigue bloqueando la activación. La inspección acotada de `integrations.external_dependency_registry` encontró metadatos de dependencias, no grants de usuario; no se alteró el esquema ni RLS.
+- Evidencia local: prueba roja previa (24 fallos de frontera), luego 90/90 pruebas de herramientas/contexto/menú; incluye el resolver real con transporte sintético y denegación directa, cambio de sesión y errores. Lint del cambio y build Next.js/TypeScript con Webpack PASS. Suite de herramientas incorporada a `npm test`. Revisión independiente sin hallazgos concretos. Esto no acredita sesión/RLS en vivo.
+- **NEXT único:** resolver en el contrato canónico los permisos reales por herramienta y propiedad, con mapeo validado, antes de la prueba de activación del equipo. Se conserva la autorización de publicación ya registrada; el gate anterior de solo login queda sustituido por este requisito técnico. Mantener PR251 en borrador, sin merge ni producción en este corte. Revertir únicamente el commit de esta corrección si es necesario, conservando cambios concurrentes y sin migración.
+
+### Conciliación del directorio de navegación — autorización específica 10/10/2026
+
+El propietario aprobó explícitamente crear una lectura que entregue únicamente los seis enlaces a cuentas con los roles actuales: «Sí, activar esa lectura limitada». Esto resuelve el conflicto con el gate del carril 4b6b6cb SOLO para lectura del directorio RLS existente. Abrir una URL no ejecuta read/search/execute en el proveedor ni concede un grant de integración. Mantener allowedTools vacío cuando no hay contrato; jamás llenarlo con permisos sintéticos. La entrada conserva identidad, work_org, contexto único, membresía activa, organización y propiedad exactas. public.properties confirma pertenencia de la propiedad a la organización y knowledge_items conserva su RLS por rol. No se crea autorización general por propiedad fuera de este registro.
+
+El requisito de allowedTools sigue vigente para futura operación de conectores, datos externos, ejecución o integración embebida; no hay tales acciones en esta vista. Se preservan las mejoras concurrentes de identidad/scope, tests de cambio de sesión, rechazo de URLs/duplicados y cobertura en npm test. Seis enlaces cotejados con lectura real de la cuenta actual; endpoint anónimo denegado. Esta decisión no activa los otros 237 registros ni habilita al equipo con roles no autorizados.
+
+### Inicio útil del hotel — 10/10/2026
+
+**CURRENT preparado y verificado localmente:** mejora de presentación en TORO Tools / Human Experience, referencia Dreamcatcher, sobre main 43aa4ba. `/my-toro` entrega los seis accesos revisados directamente desde el lector de sesión existente; solo aparecen en estado `ready` y con contexto autorizado. Conserva la guía de turno y agrupa pendientes y ayuda de cuenta en secciones plegables. El buscador describe navegación de menú, prioriza opciones utilizables y conserva entrada/salida de submenús. No añade datos, permisos, integraciones, estados operativos ni otra base.
+
+- Evidencia: 85 pruebas de herramientas/menú/contexto; TypeScript y lint del cambio. Sesión local real con seis enlaces, ayuda de cuenta, navegación a la guía y viewport móvil de 390 px sin desborde. La cuenta sintética sin sesión, de otra organización, suspendida o con elección pendiente no consulta el directorio; un fallo de lectura no expone URLs.
+- Criterio de entrega: inicio compacto, acciones útiles primero, pendientes sin falsos botones y seis destinos bajo los mismos controles. Recuperación mediante revert de este cambio de presentación; sin migración.
+- **NEXT único:** cerrar el release acotado en el proyecto Next.js existente. Producción permanece pendiente de separar el delta de otros módulos ya presente en main; no promover todo el proyecto ni activar nuevos permisos bajo esta mejora visual. Catálogo canónico conserva 243 fichas.

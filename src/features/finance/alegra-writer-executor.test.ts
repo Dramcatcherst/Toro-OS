@@ -49,6 +49,15 @@ const clearDuplicates = evaluateAlegraDuplicatePreflight({
   ],
 });
 
+const gate = {
+  beforeDispatch: async () => true,
+  persistReceipt: async () => "fixture-durable-receipt",
+};
+
+function executeCandidate(input: Parameters<typeof executeApprovedAlegraIntent>[0]) {
+  return executeApprovedAlegraIntent({ ...input, writerEnabled: true, gate });
+}
+
 function verifiedReadback(nativeId = "bill-1") {
   return {
     nativeId,
@@ -63,14 +72,93 @@ function verifiedReadback(nativeId = "bill-1") {
 }
 
 describe("Alegra Writer governed executor", () => {
+  it("does not replay an in-memory verification without a durable receipt ID", async () => {
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
+      priorReceipt: { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash,
+        approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created",
+        verificationState: "VERIFIED", verified: true, reasons: [], createdAt: "2026-10-11T00:00:00Z" }, now: "2026-10-11T00:00:00Z" });
+    expect(result.ok).toBe(false);
+    expect(result.receipt.reasons).toContain("PRIOR_RECEIPT_NOT_DURABLE");
+  });
+
+  it("executes only the frozen approval and content captured before admission", async () => {
+    const changed = structuredClone(intent);
+    const changedApproval = { ...approval };
+    const result = await executeApprovedAlegraIntent({ intent: changed, approval: changedApproval, duplicateDecision: clearDuplicates,
+      transport: { create: async ({ intent: captured }) => { expect(captured.payload.total).toBe("113.00"); return { state: "created", nativeId: "bill-1" }; }, findByIdempotencyKey: vi.fn(), readback: async () => verifiedReadback() }, writerEnabled: true,
+      gate: { ...gate, beforeDispatch: async (captured) => { expect(Object.isFrozen(captured.approval)).toBe(true); changed.payload.total = "999.00"; changedApproval.actorId = "other-actor"; changedApproval.approvalId = "other-approval"; return true; } }, now: "2026-10-11T00:00:00Z" });
+    expect(result.ok).toBe(true);
+    expect(result.receipt.actorId).toBe(approval.actorId);
+    expect(result.receipt.approvalId).toBe(approval.approvalId);
+  });
+  it("requires durable admission before dispatch", async () => {
+    const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
+      writerEnabled: true, gate: { ...gate, beforeDispatch: async () => false }, now: "2026-10-11T00:00:00Z" });
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("EXECUTION_GATE_NOT_ACQUIRED");
+  });
+
+  it("never reports success when saving the provider receipt fails", async () => {
+    const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: { create: async () => ({ state: "created", nativeId: "bill-1" }), findByIdempotencyKey: async () => ({ state: "not_found" }), readback: async () => verifiedReadback() },
+      writerEnabled: true, gate: { ...gate, persistReceipt: async () => { throw new Error("fixture store failure"); } }, now: "2026-10-11T00:00:00Z" });
+    expect(result.ok).toBe(false);
+    expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN");
+    expect(result.receipt.nativeId).toBe("bill-1");
+  });
+
+  it("reconciles a thrown create timeout without a blind second create", async () => {
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: { create: async () => { throw new Error("fixture timeout"); }, findByIdempotencyKey: async () => ({ state: "found", nativeId: "bill-1" }), readback: async () => verifiedReadback() }, now: "2026-10-11T00:00:00Z" });
+    expect(result.ok).toBe(true);
+    expect(result.receipt.executionState).toBe("provider_ambiguous_recovered");
+  });
+
+  it("is disabled unless the existing worker explicitly supplies its execution gate", async () => {
+    const transport: AlegraWriteTransport = {
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "created", nativeId: "bill-1" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
+      readback: vi.fn(async () => verifiedReadback()),
+    };
+    const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates, transport, now: "2026-10-11T00:00:00Z" });
+    expect(result.ok).toBe(false);
+    expect(result.receipt.reasons).toContain("WRITER_DISABLED");
+    expect(result.executedProviderMutation).toBe(false);
+  });
+
+  it("blocks a prior uncertain receipt instead of posting again", async () => {
+    const prior: AlegraWriterReceipt = {
+      version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey,
+      payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId,
+      nativeId: null, executionState: "blocked", verificationState: "PROVIDER_STATE_UNKNOWN",
+      verified: false, reasons: ["TIMEOUT"], createdAt: "2026-10-09T08:30:00Z",
+    };
+    const transport: AlegraWriteTransport = { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() };
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, priorReceipt: prior, now: "2026-10-11T00:00:00Z" });
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("PRIOR_EFFECT_REQUIRES_RECONCILIATION");
+  });
+
+  it("refuses a native readback belonging to a different created object", async () => {
+    const transport: AlegraWriteTransport = {
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "created", nativeId: "bill-1" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
+      readback: vi.fn(async () => verifiedReadback("another-bill")),
+    };
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, now: "2026-10-11T00:00:00Z" });
+    expect(result.receipt.verified).toBe(false);
+  });
+
   it("executes only after approval and verifies readback", async () => {
     const transport: AlegraWriteTransport = {
-      create: vi.fn(async () => ({ state: "created", nativeId: "bill-1" })),
-      findByIdempotencyKey: vi.fn(async () => ({ state: "not_found" })),
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "created", nativeId: "bill-1" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(async () => ({ state: "not_found" })),
       readback: vi.fn(async () => verifiedReadback()),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: clearDuplicates,
@@ -87,12 +175,12 @@ describe("Alegra Writer governed executor", () => {
 
   it("does not call the provider when approval payload does not match", async () => {
     const transport: AlegraWriteTransport = {
-      create: vi.fn(),
-      findByIdempotencyKey: vi.fn(),
+      create: vi.fn<AlegraWriteTransport["create"]>(),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval: { ...approval, payloadHash: "wrong" },
       duplicateDecision: clearDuplicates,
@@ -116,12 +204,12 @@ describe("Alegra Writer governed executor", () => {
       ],
     });
     const transport: AlegraWriteTransport = {
-      create: vi.fn(),
-      findByIdempotencyKey: vi.fn(),
+      create: vi.fn<AlegraWriteTransport["create"]>(),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: staleDuplicates,
@@ -136,12 +224,12 @@ describe("Alegra Writer governed executor", () => {
 
   it("recovers an ambiguous create by lookup instead of blind retry", async () => {
     const transport: AlegraWriteTransport = {
-      create: vi.fn(async () => ({ state: "ambiguous" })),
-      findByIdempotencyKey: vi.fn(async () => ({ state: "found", nativeId: "bill-ambiguous" })),
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "ambiguous" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(async () => ({ state: "found", nativeId: "bill-ambiguous" })),
       readback: vi.fn(async () => verifiedReadback("bill-ambiguous")),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: clearDuplicates,
@@ -157,12 +245,12 @@ describe("Alegra Writer governed executor", () => {
 
   it("blocks ambiguous state when lookup cannot prove the created object", async () => {
     const transport: AlegraWriteTransport = {
-      create: vi.fn(async () => ({ state: "ambiguous" })),
-      findByIdempotencyKey: vi.fn(async () => ({ state: "not_found" })),
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "ambiguous" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(async () => ({ state: "not_found" })),
       readback: vi.fn(),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: clearDuplicates,
@@ -185,6 +273,7 @@ describe("Alegra Writer governed executor", () => {
       approvalId: approval.approvalId,
       actorId: approval.actorId,
       nativeId: "bill-1",
+      durableReceiptId: "fixture-durable-receipt",
       executionState: "provider_created",
       verificationState: "VERIFIED",
       verified: true,
@@ -192,17 +281,17 @@ describe("Alegra Writer governed executor", () => {
       createdAt: "2026-10-09T08:30:00Z",
     };
     const transport: AlegraWriteTransport = {
-      create: vi.fn(),
-      findByIdempotencyKey: vi.fn(),
+      create: vi.fn<AlegraWriteTransport["create"]>(),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: clearDuplicates,
       transport,
-      priorVerifiedReceipt: prior,
+      priorReceipt: prior,
       now: "2026-10-09T09:00:00Z",
     });
 
@@ -214,12 +303,12 @@ describe("Alegra Writer governed executor", () => {
 
   it("never marks a material readback mismatch as verified", async () => {
     const transport: AlegraWriteTransport = {
-      create: vi.fn(async () => ({ state: "created", nativeId: "bill-1" })),
-      findByIdempotencyKey: vi.fn(),
+      create: vi.fn<AlegraWriteTransport["create"]>(async () => ({ state: "created", nativeId: "bill-1" })),
+      findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(async () => ({ ...verifiedReadback(), total: "114.00" })),
     };
 
-    const result = await executeApprovedAlegraIntent({
+    const result = await executeCandidate({
       intent,
       approval,
       duplicateDecision: clearDuplicates,

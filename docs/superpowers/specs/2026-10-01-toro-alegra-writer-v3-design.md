@@ -1,6 +1,6 @@
 # TORO Alegra Writer v3 — Controlled Accounting Write Design
 
-**Status:** APPROVED CONCEPT / SPEC FOR OWNER REVIEW — implementation not started  
+**Status:** APPROVED DESIGN; guarded candidate implemented in this PR; native runtime/pilot not accepted (2026-10-11)
 **Date:** 2026-10-01  
 **Canonical Brain path:** Money > Accounting & Tax > Alegra Writer  
 **Predecessor:** `docs/superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md`  
@@ -156,7 +156,9 @@ Any unresolved cross-entity case becomes `SCOPE_CONFLICT`, not an automatic post
 
 Every proposed write receives a deterministic idempotency key derived from the strongest available identity, for example:
 
-`tenant + legal_entity + document_type + tax_key/document_number + issuer + total + currency`
+`tenant + org + legal_entity + document_type + stable_fiscal_reference + issuer`
+
+For outgoing payments, require a stable movement reference distinct from the bill ID, so partial payments remain separate. Amount, currency, evidence bytes and channel are approval/verification content, not a new business identity. A correction must retain the business key and invalidate its exact-content approval. This supersedes the earlier amount-dependent example before production acceptance.
 
 Before execute:
 1. Search canonical TORO invoice/evidence records.

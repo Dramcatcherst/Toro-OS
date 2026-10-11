@@ -37,6 +37,44 @@ const baseInput = {
 };
 
 describe("TORO Alegra Writer v3 contract", () => {
+  it("verifies the exact source bill and stable movement reference for an outgoing payment", () => {
+    const payment = prepareAlegraWriteIntent({ ...baseInput, payload: { targetType: "outgoing_payment", sourceBillNativeId: "fixture-bill", paymentMovementRef: "fixture-movement", paymentAccountNativeId: "fixture-bank", currency: "USD", total: "10.00" } });
+    const readback = { nativeId: "fixture-payment", targetType: "outgoing_payment" as const, sourceBillNativeId: "fixture-bill", paymentMovementRef: "fixture-movement", paymentAccountNativeId: "fixture-bank", currency: "USD", total: "10.00" };
+    expect(verifyAlegraReadback(payment, readback).ok).toBe(true);
+    expect(verifyAlegraReadback(payment, { ...readback, sourceBillNativeId: "other-bill" }).state).toBe("READBACK_MISMATCH");
+    expect(verifyAlegraReadback(payment, { ...readback, paymentMovementRef: "other-movement" }).state).toBe("READBACK_MISMATCH");
+    expect(verifyAlegraReadback(payment, { ...readback, sourceBillNativeId: undefined, paymentMovementRef: undefined }).ok).toBe(false);
+  });
+  it("rejects monetary exponent notation and inconsistent decimal totals", () => {
+    expect(prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, total: "1e2" } }).validation.ready).toBe(false);
+    expect(prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, total: "114.00" } }).validation.errors).toContain("AMOUNT_COMPONENTS_MISMATCH");
+  });
+  it("keeps the business key when a corrected amount or another source file arrives", () => {
+    const original = prepareAlegraWriteIntent(baseInput);
+    const corrected = prepareAlegraWriteIntent({
+      ...baseInput,
+      evidence: { ...baseInput.evidence, evidenceHash: "sha256:other-file", sourceRefs: ["whatsapp:fixture"] },
+      payload: { ...baseInput.payload, total: "114.00" },
+    });
+    expect(corrected.idempotencyKey).toBe(original.idempotencyKey);
+    expect(corrected.payloadHash).not.toBe(original.payloadHash);
+  });
+
+  it("requires a stable payment movement reference to distinguish partial payments", () => {
+    const payment = prepareAlegraWriteIntent({ ...baseInput, payload: {
+      targetType: "outgoing_payment", sourceBillNativeId: "fixture-bill", paymentAccountNativeId: "fixture-bank",
+      currency: "USD", total: "10.00",
+    } });
+    expect(payment.validation.errors).toContain("PAYMENT_MOVEMENT_REFERENCE_REQUIRED");
+  });
+
+  it("rejects mutation of the intent after its approval hash was calculated", () => {
+    const prepared = prepareAlegraWriteIntent(baseInput);
+    const granted = { approvalId: "fixture-approval", actorId: "fixture-owner", approvedAt: "2026-10-11T00:00:00Z", state: "approved" as const, payloadHash: prepared.payloadHash };
+    prepared.payload.total = "999.00";
+    expect(validateAlegraWriteApproval(prepared, granted).ok).toBe(false);
+  });
+
   it("creates deterministic payload, duplicate and idempotency hashes", () => {
     const first = prepareAlegraWriteIntent(baseInput);
     const second = prepareAlegraWriteIntent({
@@ -88,6 +126,7 @@ describe("TORO Alegra Writer v3 contract", () => {
       payload: {
         ...baseInput.payload,
         total: "114.00",
+        tax: "14.00",
       },
     });
 

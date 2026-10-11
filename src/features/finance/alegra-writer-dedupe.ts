@@ -13,6 +13,7 @@ export type AlegraDuplicateCandidate = {
   total?: string | null;
   evidenceHash?: string | null;
   idempotencyKey?: string | null;
+  paymentMovementRef?: string | null;
 };
 
 export type AlegraDuplicateSourceState = {
@@ -48,10 +49,10 @@ function exactIdentityMatch(intent: AlegraWriteIntent, candidate: AlegraDuplicat
   const sameSupplier =
     eq(candidate.supplierNativeId, intent.payload.supplierNativeId) ||
     eq(candidate.issuerTaxId, intent.payload.issuerTaxId);
-  const sameCurrency = eq(candidate.currency, intent.payload.currency);
-  const sameTotal = eq(candidate.total, intent.payload.total);
-
-  return sameEntity && sameType && sameDocument && sameSupplier && sameCurrency && sameTotal;
+  const sameBusinessReference = intent.targetType === "outgoing_payment"
+    ? eq(candidate.paymentMovementRef, intent.payload.paymentMovementRef)
+    : sameDocument && sameSupplier;
+  return sameEntity && sameType && sameBusinessReference;
 }
 
 function probableIdentityMatch(intent: AlegraWriteIntent, candidate: AlegraDuplicateCandidate): boolean {

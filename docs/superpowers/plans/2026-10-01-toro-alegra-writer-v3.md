@@ -301,4 +301,40 @@ No Alegra API mutation, credential change, accounting entry, Supabase migration 
 
 ### Next technical gate
 
-Implement the provider-independent preparation + duplicate-search boundary, then bind it to current TORO policy/approval/receipt contracts. Only after those tests pass should a real Alegra write transport adapter be added behind a default-off feature gate.
+The provider-independent preparation, duplicate-search and canonical receipt boundary are implemented in the candidate below. The remaining gate is the real resource-specific transport and authenticated company/actor binding behind the default-off feature gate.
+
+## Safe candidate closure — 2026-10-11
+
+This closes one bounded unit from the existing General Plan/checkpoint. It does not authorize production writes, secret access, new schedulers, grants, outbound messages or a pilot. Functional v3 “Level 2” means approval-and-write; material accounting actions use the canonical **L3** authority gate.
+
+**Recovery correction:** the original legacy checkout was partially recovered. Its sales-draft/service adapter is not a supplier-bill/payment adapter. Preserve that source and its unrelated changes; do not transplant its HTTP operations into different resource types. No new ledger or control plane is created.
+
+### Task 1: Restore compilation and stable business identity
+
+- [x] Reconcile this PR with current main, preserving both package test lists.
+- [x] Reproduce TypeScript failure and type transport test doubles with their declared boundary.
+- [x] RED/GREEN: amount/file variants retain one business key; exact approval hash changes; altered cached intent is rejected; outgoing payments require a stable movement reference.
+- [x] RED/GREEN: decimal components reconcile using integer arithmetic, without exponent notation or floating-point totals.
+
+### Task 2: Guard execution through existing canonical receipts
+
+- [x] RED/GREEN: default OFF; durable admission; prior uncertain effect blocks another create; thrown timeout goes to lookup; native readback ID must match; persistence failure cannot report success.
+- [x] RED/GREEN: approval revalidated after admission; only a durable verified receipt can replay.
+- [x] Bind to existing fenced run renewal/transition, prepared receipt and atomic completion. A server-side authorization callback remains mandatory; no public route is enabled.
+- [x] Verify concurrent admission, wrong scope/key, expired lease and authority denial using a fixture client. These are contract tests, not proof of production database permissions.
+
+### Task 3: Preserve and restore the original binary package
+
+- [x] RED/GREEN: prepare JSON/PDF/XML/photo originals, independent hashes, source occurrences, immutable paths, attachment-limit/unsupported states.
+- [x] Write/read a local fixture package, verify all bytes, restore to a separate local destination and compare all originals.
+- [x] Reject corrupted readback, wrong entity, unsafe keys, secret-bearing JSON and restore to the same location.
+- [x] Persist and read back an immutable manifest alongside the original bytes; require its integrity and exact scoped references before restoring any asset.
+- [x] Run the full package test command, TypeScript, lint and full build; perform one independent whole-branch review and correct its four Important findings. Publication receipts are recorded in the current checkpoint.
+
+**Final review corrections:** authorize and execute the same frozen actor/approval/content captured before any await; reject manipulated storage references before reads; verify the source bill and stable movement on payment readback; block native document identity independently of changed amount/currency. Regression tests first reproduced these defects. The full local test command passes 430 tests, including 56 finance tests; lint has no errors and one inherited warning outside this change.
+
+**Reviewer declined to judge:** actual provider transport/credentials and effective production permissions; production run recovery and real authorization callback; fiscal document semantics; independent Dropbox/native attachments, Portal/WhatsApp delivery and native correction. These require native evidence and remain outside candidate acceptance.
+
+**Review Focus:** uncertain effect after a persistence failure; intent mutation across await boundaries; malicious manifest/path input; byte preservation versus semantic/fiscal document validity; existing run state/lease and server authority integration. No provider transport, native upload, autonomous execution or fiscal acceptance is claimed by this candidate.
+
+**Next gate after candidate acceptance:** validate the actual company binding, server-side actor authority, native resource transport/attachments and correction procedure, then prepare an exact low-impact pilot for owner review. A connector catalog or a local fixture never substitutes for that gate.

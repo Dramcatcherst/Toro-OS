@@ -36,7 +36,9 @@ export function MyToroCommandBar({
     (activeSubmenuKey && availableSubmenus[activeSubmenuKey]) || menu;
 
   const suggestions = activeMenu.items
-    .filter((item) => item.capability !== currentFocus)
+    .filter((item) => item.capability !== currentFocus && (
+      focusable.has(item.capability) || capabilityAlternatives[item.capability] || availableSubmenus[item.key]
+    ))
     .slice(0, currentFocus || activeSubmenuKey ? 2 : 3);
 
   function navigateToCapability(capability: string) {
@@ -63,7 +65,7 @@ export function MyToroCommandBar({
 
       if (next && next.capability !== currentFocus) {
         setFeedback(null);
-      setSafeAlternative(null);
+        setSafeAlternative(null);
         navigateToCapability(next.capability);
       } else {
         setFeedback("No hay otra lectura disponible ahora. Puedes volver al inicio.");
@@ -110,14 +112,14 @@ export function MyToroCommandBar({
       const submenu = availableSubmenus[resolution.item.key];
       if (!activeSubmenuKey && submenu) {
         setFeedback(null);
-      setSafeAlternative(null);
+        setSafeAlternative(null);
         setActiveSubmenuKey(resolution.item.key);
         return;
       }
 
       if (focusable.has(resolution.item.capability)) {
         setFeedback(null);
-      setSafeAlternative(null);
+        setSafeAlternative(null);
         navigateToCapability(resolution.item.capability);
         return;
       }
@@ -126,8 +128,8 @@ export function MyToroCommandBar({
       setSafeAlternative(alternative);
       setFeedback(
         alternative
-          ? `“${resolution.item.label}” todavía no puede resolverse dentro de TORO con fuente live. Puedes continuar en el canal oficial.`
-          : `“${resolution.item.label}” pertenece a tu menú, pero todavía no tiene una lectura actual habilitada en esta superficie.`,
+          ? `Puedes abrir “${resolution.item.label}” con la opción de abajo.`
+          : `“${resolution.item.label}” todavía no está disponible. Prueba una de las opciones que puedes abrir.`,
       );
       return;
     }
@@ -140,23 +142,23 @@ export function MyToroCommandBar({
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const value = input;
-    setInput("");
     handleValue(value);
   }
 
   return (
     <section className="mt-5 rounded-[2rem] border border-cyan-300/15 bg-slate-950/75 p-4 md:p-5">
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-200">
-        <MessageCircle className="h-4 w-4" /> Pregúntale a TORO
+        <MessageCircle className="h-4 w-4" /> Buscar una opción
       </div>
       <p className="mt-2 text-sm text-slate-400">
         {activeSubmenuKey
-          ? "Estás dentro de un submenú seguro. 9 vuelve un nivel."
-          : "Escribe un número, una palabra o una frase normal. Aquí solo navegamos lecturas autorizadas."}
+          ? "Elige una opción o pulsa Atrás para volver."
+          : "Escribe qué quieres consultar. Esta búsqueda abre las opciones de tu menú."}
       </p>
 
       <form onSubmit={submit} className="mt-4 flex gap-2">
         <input
+          aria-label="Buscar una opción de TORO"
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder='Ej.: "proyectos", "2" o "quiero ver decisiones"'
@@ -165,19 +167,19 @@ export function MyToroCommandBar({
         <button
           type="submit"
           className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cyan-300 text-slate-950 hover:bg-cyan-200"
-          aria-label="Enviar"
+          aria-label="Buscar"
         >
           <Send className="h-4 w-4" />
         </button>
       </form>
 
-      {suggestions.length || currentFocus ? (
+      {suggestions.length || currentFocus || activeSubmenuKey ? (
         <div className="mt-3 flex flex-wrap gap-2">
           {activeSubmenuKey ? (
             <button
               type="button"
               onClick={() => handleValue("9")}
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
             >
               ↩️ Atrás
             </button>
@@ -186,7 +188,7 @@ export function MyToroCommandBar({
             <button
               type="button"
               onClick={() => handleValue("inicio")}
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2 text-xs font-medium text-cyan-100 transition hover:border-cyan-300/40"
             >
               🏠 Inicio
             </button>
@@ -196,7 +198,7 @@ export function MyToroCommandBar({
               key={item.key}
               type="button"
               onClick={() => handleValue(String(item.index))}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:text-white"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:text-white"
             >
               <span>{item.emoji}</span>
               <span>{item.label}</span>
@@ -209,7 +211,7 @@ export function MyToroCommandBar({
             <button
               type="button"
               onClick={() => handleValue("continuar")}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:text-white"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-cyan-300/30 hover:text-white"
             >
               ➡️ Continuar
             </button>
@@ -218,7 +220,7 @@ export function MyToroCommandBar({
       ) : null}
 
       {feedback ? (
-        <div className="mt-3 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-100/80">
+        <div role="status" className="mt-3 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-100/80">
           <div>{feedback}</div>
           {safeAlternative ? (
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

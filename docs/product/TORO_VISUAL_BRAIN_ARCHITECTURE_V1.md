@@ -58,6 +58,8 @@ It implements the existing General Plan layers:
 
 Existing subsystem ownership remains authoritative.
 
+**Owner direction 2026-10-10 — visible Module 0:** Cerebro is a visible cross-cutting module and the shared Brain-first entry to the eleven unchanged domain modules. Its classification changes the product navigation contract, not the canonical projection, scope graph, database, identity, task/run/receipt state or subsystem ownership. Preserve existing runtime IDs and Stage C–G gates. The 25 fronts and 100 acceptance refinements in General Plan section 23 are subordinate TARGET design/work units, not a new scheduler or evidence of implementation.
+
 ### Ownership split
 
 - **TORO Core** — composition, routing and shared shell.

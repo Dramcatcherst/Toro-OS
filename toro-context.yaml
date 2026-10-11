@@ -3,7 +3,7 @@ product:
   name: TORO
   visible_brand: TORO
   category: AI Portfolio and Business Operating Brain
-  context_version: "2026.09.23-agent-skill-v1"
+  context_version: "2026.10.10-pumba-dot-v1"
   status: internal_proof
   external_business_onboarding: blocked
   legacy_operating_aliases:
@@ -11,6 +11,17 @@ product:
     - TORO OS
 
 north_star: "Deep inside. Simple outside."
+
+target_navigation:
+  decision_date: "2026-10-10"
+  visible_cross_cutting_module: "Cerebro"
+  ordinal: 0
+  existing_domain_module_count: 11
+  existing_domain_ids_preserved: true
+  separate_subsystem: false
+  runtime_activation: false
+  acceptance_authority: "docs/product/TORO_BRAIN_GENERAL_PLAN.md"
+  acceptance_section: 23
 
 general_plan_governance:
   owner: TORO
@@ -131,6 +142,9 @@ canonical_product_specs:
   visual_brain_stage_a_contracts: docs/product/TORO_VISUAL_BRAIN_STAGE_A_CONTRACTS_V1.md
   agent_steward_and_visual_strategy: docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
   agent_and_skill_system: docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md
+  pumba_dot_operating_brief: docs/product/PUMBA_CHATGPT_DOT_OPERATING_BRIEF_V1.md
+  pumba_dot_bootstrap_prompt: docs/product/PUMBA_DOT_BOOTSTRAP_PROMPT_V1.md
+  pumba_dot_7_day_scorecard: docs/product/PUMBA_DOT_7_DAY_SCORECARD_V1.md
 
 canonical_sources:
   product_constitution: github
@@ -539,10 +553,10 @@ cognitive_proving_ground:
       reservation_rows: 33
       live_reservation_rows: 0
       current_reservations_safe_rows: 0
-  current_safe_view_hardened: true
-  current_safe_view_requires_verified_quality: true
-  current_safe_view_requires_source_timestamp_not_future: true
-  current_safe_view_requires_sync_timestamp_not_future: true
+      current_safe_view_hardened: true
+      current_safe_view_requires_verified_quality: true
+      current_safe_view_requires_source_timestamp_not_future: true
+      current_safe_view_requires_sync_timestamp_not_future: true
       stay_rows: 0
       latest_reservation_snapshot: "2026-09-21T09:28:30.675Z"
       import_runs_rows: 6

@@ -33,6 +33,19 @@ const completeCoverage = [
 ];
 
 describe("Alegra writer duplicate preflight", () => {
+  it("blocks a reused payment movement while allowing a different partial payment reference", () => {
+    const payment = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: { targetType: "outgoing_payment", sourceBillNativeId: "fixture-bill", paymentMovementRef: "fixture-movement", paymentAccountNativeId: "fixture-bank", currency: "USD", total: "10.00" } });
+    const candidate = { source: "alegra" as const, sourceRef: "fixture-payment", confidence: "exact" as const, legalEntityKey: payment.scope.legalEntityKey, targetType: "outgoing_payment", paymentMovementRef: "fixture-movement", currency: "CRC", total: "999.00" };
+    expect(evaluateAlegraDuplicatePreflight({ intent: payment, sourceStates: completeCoverage, candidates: [candidate] }).clear).toBe(false);
+    expect(evaluateAlegraDuplicatePreflight({ intent: payment, sourceStates: completeCoverage, candidates: [{ ...candidate, paymentMovementRef: "fixture-partial-two" }] }).clear).toBe(true);
+  });
+  it("blocks a native document without a Writer key even when amount and currency differ", () => {
+    const result = evaluateAlegraDuplicatePreflight({ intent, sourceStates: completeCoverage,
+      candidates: [{ source: "alegra", sourceRef: "fixture-native", confidence: "exact", legalEntityKey: intent.scope.legalEntityKey,
+        targetType: "purchase_bill", documentNumber: intent.payload.documentNumber, supplierNativeId: intent.payload.supplierNativeId, currency: "CRC", total: "999.00" }] });
+    expect(result.clear).toBe(false);
+    expect(result.state).toBe("DUPLICATE_EXACT");
+  });
   it("blocks an exact prior idempotency receipt", () => {
     const result = evaluateAlegraDuplicatePreflight({
       intent,

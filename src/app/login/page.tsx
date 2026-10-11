@@ -9,7 +9,7 @@ export default function LoginPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">TORO</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">Entra a tu TORO</h1>
         <p className="mb-6 mt-2 text-sm leading-6 text-slate-600">
-          Entra y TORO te lleva directo a lo que corresponde a tu trabajo. No necesitas elegir módulos ni configurar agentes.
+          Usa tu cuenta de trabajo. Al entrar volverás a la pantalla que querías abrir.
         </p>
         <Suspense fallback={<p className="text-sm text-slate-500">Cargando acceso…</p>}>
           <LoginForm />
