@@ -6,6 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createToroReportingContext } from "@/lib/reporting-policy";
+import { readPortalAttentionRpc, portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
 
 import {
   buildOwnerAttentionProjection,
@@ -45,10 +46,19 @@ export async function loadOwnerAttentionProjectionWithClient(
     throw new Error("Owner Attention requires an authorized organization context.");
   }
 
-  const asOf = input.asOf ?? new Date();
-  const reportContext = createToroReportingContext(asOf, input.today);
+  let asOf = input.asOf ?? new Date();
+  let reportContext = createToroReportingContext(asOf, input.today);
 
-  const [followupsResult, obligationsResult, invoicesResult] = await Promise.all([
+  const bundle = portalReadRpcSelected() ? await readPortalAttentionRpc(context, supabase) : null;
+  if (bundle && !input.asOf) {
+    asOf = new Date(bundle.generatedAt);
+    reportContext = createToroReportingContext(asOf, input.today);
+  }
+  const [followupsResult, obligationsResult, invoicesResult] = bundle ? [
+    { data: bundle.sources.followups.rows, error: null },
+    { data: bundle.sources.obligations.rows, error: null },
+    { data: bundle.sources.invoices.rows, error: null },
+  ] : await Promise.all([
     supabase
       .schema("operations")
       .from("communication_followups")

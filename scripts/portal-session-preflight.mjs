@@ -41,6 +41,7 @@ export function classifyPortalEnvironment(env) {
     internalMode: env.TORO_DEPLOYMENT_MODE === "internal",
     canonicalReadGate: env.TORO_BRAIN_CANONICAL_READ_ENABLED === "true",
     ownerReadGate: env.TORO_OWNER_ATTENTION_READ_ENABLED === "true",
+    readTransportKnown: env.TORO_PORTAL_READ_TRANSPORT === undefined || ["direct", "rpc_v1"].includes(env.TORO_PORTAL_READ_TRANSPORT),
     legacyOperationsDisabled: env.TORO_LEGACY_OPERATIONS_ENABLED === undefined || env.TORO_LEGACY_OPERATIONS_ENABLED === "false",
     internalWritesDisabled: env.TORO_INTERNAL_WORK_WRITE_ENABLED === undefined || env.TORO_INTERNAL_WORK_WRITE_ENABLED === "false",
     privilegedKeysAbsent: ["SUPABASE_SECRET_KEY", "SUPABASE_SECRET_KEYS", "SUPABASE_SERVICE_ROLE_KEY"]

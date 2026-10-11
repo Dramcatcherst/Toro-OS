@@ -6,6 +6,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { readPortalBrainRpc, portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
 
 export const CANONICAL_BRAIN_READ_CONTRACT = "stage-c-read-v1" as const;
 
@@ -230,6 +231,19 @@ export async function loadCanonicalBrainReadSliceWithClient(
     throw new Error("Canonical Brain read is disabled.");
   }
   assertOrganizationContext(context);
+
+  if (portalReadRpcSelected()) {
+    const bundle = await readPortalBrainRpc(context, supabase);
+    if (bundle.sources.organization.rows.length !== 1) {
+      throw new Error("Canonical Brain organization source unavailable.");
+    }
+    return projectCanonicalBrainReadSlice({
+      orgId: context.orgId, generatedAt: new Date(bundle.generatedAt).toISOString(),
+      organization: bundle.sources.organization.rows[0], projects: bundle.sources.projects.rows,
+      sourceAuthority: bundle.sources.sourceAuthority.rows, domainGovernance: bundle.sources.domainGovernance.rows,
+      krossHealth: bundle.sources.krossHealth.rows,
+    });
+  }
 
   const [
     organizationResult,

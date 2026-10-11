@@ -12,6 +12,11 @@ const config = {
   TORO_OWNER_ATTENTION_READ_ENABLED: "true",
 };
 
+test("transport selection accepts only the existing direct path and reviewed rpc_v1", () => {
+  for (const mode of [undefined, "direct", "rpc_v1"]) assert.equal(classifyPortalEnvironment({ ...config, TORO_PORTAL_READ_TRANSPORT: mode }).checks.readTransportKnown, true);
+  for (const mode of ["true", "RPC_V1", "rpc_v1 ", ""]) assert.equal(classifyPortalEnvironment({ ...config, TORO_PORTAL_READ_TRANSPORT: mode }).checks.readTransportKnown, false);
+});
+
 test("accepts least-privilege configuration without implying authentication", () => {
   assert.equal(classifyPortalEnvironment(config).prepared, true);
 });
