@@ -1115,6 +1115,50 @@ Same-Brain code path exists; live Gateway/channel identity/capability parity rem
 
 ---
 
+## Dreamcatcher · Finanzas y Control — reporte hotelero V2 — actualizado 2026-09-29
+
+El reporte financiero hotelero V2 queda incorporado al único Plan General como evidencia ejecutiva parcial del período enero–agosto 2026. No crea un proyecto, una base, un libro contable ni una autoridad nueva.
+
+**HECHO:** [REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx](../../../output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx) conserva el reporte V1 y añade 20 mejoras, servicios Kross, separación de hotel/proyectos/socios/deuda/Santa Toro y un puente explícito de utilidad.
+
+**DATOS OPERATIVOS OBSERVADOS:** alojamiento enero–agosto 2026 `USD 537,609`; descarga Kross Servicios `768` líneas y total bruto `KROSS_REPORTED USD 240,456`; servicios no hospedaje, excluyendo hospedaje y el registro atípico, `USD 25,028`; registro `Recibo 15 / A la carte breakfast` del 08/07/2026 por `USD 212,415` en `PENDING_EVIDENCE`.
+
+**LECTURA CONTABLE:** gasto contable Dreamcatcher convertido analíticamente con CRC 500/USD `USD 419,666`; margen contable provisional `USD 117,943`. La utilidad real del hotel sigue `N/D` hasta reclasificar gastos no hoteleros línea por línea y conciliar Kross–Alegra–bancos. `N/D` no es cero. Kross conserva autoridad operativa; Alegra conserva autoridad fiscal/contable; bancos/procesadores conservan autoridad monetaria; Dropbox conserva originales; Supabase conserva estructura, correspondencias y recibos; Airtable queda como superficie humana/transicional.
+
+**ESTADO:** `PREPARADO · PARCIAL · READ-ONLY`. No se modifica Alegra, Kross, banco, Dropbox ni Airtable por este registro; no se crea factura, asiento, pago o deuda. La actualización de Supabase se limita al conocimiento y tarea existentes, con marcador idempotente `FIN-01-REPORTE-V2-20260929`.
+
+**ÚNICA SIGUIENTE:** cerrar la muestra focal de gastos materiales de Alegra y movimientos bancarios, empezando por Mauricio agosto, con cuenta, tercero, centro, fecha, moneda, comprobante, estado de pago y regla hotel/no hotel; actualizar el mismo reporte y checkpoint sin abrir otro expediente.
+
+**REFERENCIAS ESTRUCTURADAS:** `operations.knowledge_items/finance_accounting_rebuild_scope_2026_09_v1`; tarea `finance_ws_cash_accounting_current`; proyecto `finance_controls`; archivo Kross local `C:\Users\PERSONAL\Downloads\Export_2026-09-29 (1).xlsx`.
+
+**REGLA DE RESPALDO Y ALINEACIÓN:** Kross V1 conserva la autoridad operativa para reservas, cargos, producción y estados transaccionales; no se usa como repositorio de documentos financieros ni como sustituto de Alegra o bancos. Los reportes y originales se respaldan en Dropbox, la estructura y recibos en Supabase y cada resultado se alinea en este Plan General y `CONTINUAR.md`. Cualquier escritura en Kross requiere campo/registro exacto, autorización específica y prueba reversible.
+
+### FIN-01 · muestra focal Mauricio agosto 2026 — actualización 2026-09-29
+
+**HECHO:** la lectura de solo lectura de Alegra para el enlace hotelero `link_6aaa0c0cdbc88191a0fd5419d46efc73` encontró 3 salidas a `Mauricio Fernandez` durante agosto: 15/08, registro `6575` / comprobante `4580`, `USD 1,000` desde `$ BAC $`; 26/08, registro `6712` / comprobante `4665`, `CRC 20,000` desde `₡LAFISE₡`, observación `Pago ST en cuenta Mau`; y 31/08, registro `6945` / comprobante `4818`, `USD 247` desde `$ BAC $`. Los tres tienen centro `DREAMCATCHER`, categoría `Mauricio Fernandez` y estado `open` en Alegra.
+
+**GASTO CONTABLE CORREGIDO:** el estado de resultados de Alegra para agosto muestra `CRC 981,442` en la cuenta `5393`, pero la cuenta no es exclusiva de Mauricio. La evidencia FIN-01 separa `CRC 643,500` de los 3 pagos directos a Mauricio y aproximadamente `CRC 337,942` de seis pagos a terceros: Estadero Medellín, LicoExpress Medellín, Panadería Medellín, Bold Co RST VP, Drogas La Garantía y Restaurante El Carmen. No llamar salario individual al total de la cuenta 5393.
+
+**EQUIVALENTE ANALÍTICO:** los dos pagos en USD suman `USD 1,247`; con el tipo de cambio analítico 500 solicitado por Mauricio equivalen a `CRC 623,500`. Sumado al registro de `CRC 20,000`, el lote de pagos observado equivale analíticamente a `CRC 643,500`. Esta conversión es comparativa, no fiscal, bancaria ni asiento.
+
+**BANCO:** Dropbox contiene los estados corporativos BAC USD y BAC CRC de agosto, ambos con corte 31/08/2026. BAC USD (IBAN terminado `653588`) reporta 31 débitos y saldo final aproximado de `USD 8,443`, pero no muestra una coincidencia inequívoca para USD 1,000 del 15/08 ni USD 247 del 31/08. BAC CRC (IBAN terminado `653660`) está localizado, pero no prueba el pago de LAFISE CRC 20,000. No se localizó estado corporativo LAFISE CRC de agosto. Supabase mantiene `0` estados/movimientos de agosto cargados. La ejecución y conciliación siguen `PENDING_EVIDENCE`; `open` no se trató como prueba de pago bancario.
+
+**ESTADO:** `HECHO · MUESTRA CLASIFICADA Y CORREGIDA PARCIAL`; `BLOQUEADO · LAFISE CRC Y COINCIDENCIAS BAC INEQUÍVOCAS PENDIENTES`. El reporte V2 fue actualizado con la corrección de la cuenta 5393 y la evidencia BAC; nuevo SHA-256 DOCX `C80FB83FD09967CEE292F6C64E025B116A58B1B24EBDF1886277A48CDFA54E7C`. No se escribió Alegra, banco, Kross, Dropbox, Airtable ni Supabase en esta unidad.
+
+**ÚNICA SIGUIENTE:** obtener el estado de cuenta corporativo de agosto de BAC y LAFISE y enlazar esas tres referencias con soporte bancario antes de recalcular utilidad real o autorizar cualquier reclasificación.
+
+### FIN-01 · búsqueda final de soporte bancario primario — cierre de unidad 2026-09-29
+
+**HECHO:** se ejecutó una búsqueda focal de solo lectura en Dropbox y en la evidencia local por `CE-4665`, `4665`, `Pago ST en cuenta Mau`, `LAFISE CRC Agosto 2026`, `CE-4580` y `CE-4818`. No apareció ningún estado corporativo LAFISE CRC de agosto ni un comprobante bancario primario nuevo para `CE-4665 / ID 6712`. Las referencias CE encontradas corresponden a recibos FIN-01 ya derivados, no sustituyen el comprobante original. Tampoco apareció una referencia BAC inequívoca nueva para `CE-4580 / ID 6575` o `CE-4818 / ID 6945`.
+
+**CIERRE DE LA UNIDAD:** `HECHO · BÚSQUEDA FINAL EJECUTADA`; `BLOQUEADO · SOPORTE BANCARIO PRIMARIO FALTANTE`. La clasificación analítica de Mauricio no cambia: `CRC 643,500` de pagos directos y aproximadamente `CRC 337,942` de terceros excluidos de esa cifra. No se convirtió un estado `open` de Alegra en pago confirmado.
+
+**NO ESCRITURAS:** no se escribió en Alegra, Kross, bancos, Dropbox, Airtable ni Supabase; no se cargaron documentos, no se reclasificó, no se pagó y no se creó una fuente paralela. La utilidad real del hotel continúa `N/D` hasta completar la conciliación y la separación hotel/no hotel.
+
+**ÚNICA SIGUIENTE:** recibir o localizar el estado corporativo LAFISE CRC de agosto o el comprobante primario de `CE-4665 / ID 6712`; después enlazarlo línea a línea con Alegra y resolver las dos coincidencias BAC. Hasta entonces, no hay una acción documental adicional segura que cierre este frente.
+
+---
+
 ## DIEX / Villa Toro — intercompany legal-finance bridge — verified 2026-09-29
 
 DIEX remains inside the existing `Construcción / DIEX · Desarrollo y cierre documental` project. It is **not** a new master project or accounting brain.
@@ -3104,6 +3148,54 @@ Verified after the initial 2026-09-29 alignment:
 - W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
+
+### FIN-01 · auditoría ordenada de correos y extracción financiera — cierre 2026-09-29
+
+**OBJETIVO:** revisar el universo financiero y administrativo de correo de enero a agosto de 2026, extraer evidencia útil y aplicarla al expediente existente sin convertir mensajes, solicitudes o avisos en pagos confirmados.
+
+**COBERTURA VERIFICADA:** Gmail hotel `452/452` cuerpos completos; Gmail Mauricio `126/126` candidatos completos; Gmail Margot/Luz `554/554` candidatos completos; Outlook `2,713/2,713` mensajes inventariados por metadatos y `141/141` mensajes de alta prioridad leídos completos. No se leyó indiscriminadamente correo personal/promocional ajeno al alcance financiero; se excluyó por relevancia y privacidad. No hubo errores de lectura en los lotes completados.
+
+**HALLAZGOS PRINCIPALES:** se localizaron informes de Alegra de enero a julio: ingresos reportados `CRC 237,763,864` y gastos reportados `CRC 206,818,662`, redondeados a unidades completas. Agosto queda `PENDING_EVIDENCE` porque no apareció el informe mensual. La diferencia de febrero (`CRC 46,259,698` frente a `CRC 46,255,096` en una referencia posterior) queda abierta como diferencia de versión/corte. Se detectaron dos transferencias BAC candidatas GORIDE MOTO por `USD 121` y `USD 264`, pero requieren amarre con banco, Kross y Alegra. Las solicitudes S3 Ingenieros de `USD 146` y `USD 140` no se suman como cobros. El aviso Synerjoy/Booking de `USD 9,383` se conserva como obligación candidata y no como gasto pagado. Liberty e ICE/Kolbi quedan como servicios pendientes de entidad hotel/personal. WeSpeak queda como señal operativa, no prueba bancaria.
+
+**20 MEJORAS APLICADAS:** contrato de fuentes; cobertura explícita; lectura por relevancia; autoridad Kross/Alegra/bancos/Dropbox; separación hotel-personas; separación de proyectos; CRC/USD separados; pendiente distinto de cero; cobro distinto de solicitud; pago distinto de recordatorio; señal distinta de evidencia; tabla mensual; total controlado; duplicados; anomalías visibles; servicios por entidad; minimización de datos; trazabilidad; no escritura externa; siguiente unidad única. El anexo quedó en `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V3_CORREO.docx`, SHA-256 `D51341E4AF21B1FA7FA528B9AD432FED920C35983BDD5CC320D42B5B52D72D0C`; V2 se conserva como recuperación.
+
+**ESTADO:** `HECHO · COBERTURA EMAIL FINANCIERA COMPLETADA`; `PENDING_EVIDENCE · AGOSTO ALEGRA, ADJUNTOS BANCARIOS, AMARRES GORIDE, SERVICIOS Y ENTIDAD BOOKING`; `BLOQUEADO · ESCRITURAS O RECLASIFICACIONES EXTERNAS`. No se modificó Alegra, Kross, banco, Dropbox, Airtable ni Supabase.
+
+**ÚNICA SIGUIENTE:** extraer únicamente los adjuntos primarios identificados en mensajes BN/BAC/LAFISE/Liberty/ICE/Booking, calcular hash, cuenta, fecha, moneda, monto, referencia y entidad, y reconciliar solo los casos materiales sin crear otro expediente.
+
+**REVERSIÓN:** retirar el anexo V3 y esta sección documental; conservar V2, originales y fuentes externas sin cambios.
+
+### FIN-01 · corte agosto–septiembre y única estimación de planilla — 2026-09-29
+
+**OBJETIVO:** completar el reporte financiero del hotel con agosto y septiembre, separar hotel de proyectos/personas/propiedades externas y estimar únicamente la segunda quincena de la última planilla disponible.
+
+**HECHO VERIFICADO EN ALEGRA:** agosto: ingresos CRC 15,871,652, gastos operativos CRC 17,313,028, utilidad operativa CRC -1,441,376, resultado neto CRC -3,751,293; caja con entradas CRC 33,576,816, salidas CRC 42,774,278 y flujo neto CRC -9,197,462. Septiembre: corte de trabajo al 29/09; ingresos CRC 14,329,059, gastos operativos CRC 10,894,271, utilidad operativa CRC 3,434,788, resultado neto CRC 2,797,155; caja mensual devuelta por Alegra con entradas CRC 32,888,206, salidas CRC 32,083,489 y flujo neto CRC 805,717. Septiembre no se presenta como cierre definitivo.
+
+**PLANILLA:** agosto quedó preparado/revisión con bruto CRC 2,335,263 y neto CRC 2,304,371. Septiembre 01–15 quedó en revisión con bruto CRC 1,243,659 y neto CRC 1,092,996. Única estimación autorizada: septiembre 16–30 igual a la última planilla disponible, bruto CRC 1,243,659 y neto CRC 1,092,996. Total septiembre con estimación: bruto CRC 2,487,318 y neto CRC 2,185,992. No se estimaron otros rubros ni se interpretó planilla como pago.
+
+**SEPARACIÓN EXTERNA:** se incorporaron como lectura separada Cabuya CRC 2,500,000 de salida en agosto y septiembre; Santa Toro entradas CRC 1,383,095 en agosto y CRC 158,610 en septiembre, con salidas identificadas CRC 1,792,208 y CRC 809,630; DIEX, Vista Alegre, préstamos y personas vinculadas se conservan fuera de la utilidad operativa hasta reconciliar entidad y naturaleza.
+
+**CORREOS FALTANTES:** no es necesario leer todos los correos. Son necesarios solo adjuntos primarios o mensajes que puedan cambiar monto, moneda, entidad, fecha, obligación o prueba de pago: banco, planilla/CCSS, Booking con factura, Santa Toro, servicios y documentos de Alegra. No se incorporan newsletters, duplicados, avisos de exportación sin contenido, mensajes WeSpeak sin liquidación bancaria ni correo personal ajeno. Septiembre hotel tuvo 30 mensajes etiquetados en el alcance y 4 adjuntos identificados; el resto queda fuera por criterio de relevancia, no como “cero”.
+
+**BOOKING AÑADIDO:** se leyeron los dos adjuntos primarios de Booking del 06/09: factura 1663815593 para Santa Toro, periodo 01–31/08, comisión USD 156.39, vencimiento 19/09; factura 1663811248 para Atrapa Sueños, periodo 01–31/08, comisión USD 2,455.93, vencimiento 19/09. Total documental USD 2,612 redondeado; no se trata como pago confirmado ni se agrega a utilidad hasta conciliar Alegra/banco.
+
+**REPORTE:** `output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; SHA-256 `4E4A82A637CB58F89F8484BF2C2CD831494CE138D99A69DBC694E484FB605AB4`. Validación estructural: 51 tablas y 164 párrafos. La renderización visual sigue bloqueada por ausencia de `soffice.exe`.
+
+**ESTADO:** `HECHO · AGOSTO Y SEPTIEMBRE PARCIAL INCORPORADOS`; `PREPARADO · ÚNICA ESTIMACIÓN DE PLANILLA`; `PENDING_EVIDENCE · ADJUNTOS PRIMARIOS Y CONCILIACIÓN DE ENTIDADES`; `BLOQUEADO · ESCRITURAS EXTERNAS Y UTILIDAD CONSOLIDADA DEFINITIVA`. No se modificó Alegra, Kross, bancos, Dropbox, Airtable ni Supabase.
+
+**ÚNICA SIGUIENTE:** extraer y conciliar los adjuntos primarios de septiembre ya identificados (Booking, banco, servicios y planilla); cualquier correo que no cambie un monto/entidad/fecha o no pruebe un pago se mantiene excluido con razón documentada.
+
+**REVERSIÓN:** retirar solo el anexo V4 y esta sección; conservar V3, V2, originales y fuentes externas intactos.
+
+### CIERRE Y ALINEACIÓN CANÓNICA FIN-01 — 2026-09-30
+
+**PUNTERO ÚNICO:** para el reporte financiero del hotel, el documento vigente es `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; V3 y V2 quedan como histórico y recuperación. La sección FIN-01 de agosto–septiembre y el recibo correspondiente en `CONTINUAR.md` sustituyen cualquier estado anterior que aún describa agosto como pendiente sin consulta Alegra o que apunte a V3 como salida actual.
+
+**ESTADO FINAL DE ESTA UNIDAD:** `ALINEADO AL PLAN GENERAL / DOCUMENTACIÓN LOCAL CERRADA`. Agosto está incorporado; septiembre está incorporado como corte parcial al 29/09; solo la segunda quincena de la última planilla fue estimada; Booking queda documentado como obligación no pagada hasta conciliación; proyectos, Santa Toro, deuda y personas vinculadas permanecen separados del hotel.
+
+**PENDIENTES NO CERRADOS:** conciliación primaria de banco/planilla/CCSS/servicios/Booking y utilidad consolidada definitiva. Estos pendientes no se convierten en cero ni bloquean el cierre documental del chat. No se ejecutan escrituras externas ni respaldos Dropbox porque el gate de custodia/ACL y la autorización de destino no están confirmados en esta unidad.
+
+**CIERRE DEL CHAT:** no queda una tarea activa en este hilo. Si se reabre, debe comenzar desde este puntero y ejecutar solo la siguiente acción registrada en `CONTINUAR.md`; no repetir inventarios ni releer el historial completo.
 
 
 # 23. VERSION FINAL — definición del producto terminado — owner direction 2026-09-29
