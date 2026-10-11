@@ -60,6 +60,8 @@ Cross-context actions require an explicit transition.
 
 ## 4. Personal Home
 
+**Visible classification, 2026-10-10:** the shared entry is Cerebro / Brain, Module 0, alongside eleven unchanged domain modules. It introduces no extra personal or work memory, authority or identity. Existing context-change clearing, privacy and role-focused views still apply; the declaration is TARGET until its implementation is verified.
+
 TARGET entry direction (2026-09-30): this and the work/owner Home blocks below describe the initial **focus inside the same permission-filtered Brain**, not separate landing products. Personal remains private; a context switch must clear prior-scope nodes, counts, actions and cached detail before showing the new projection. Map and list expose the same authorized objects. Today/Attention is available without leaving the shared shell. Current runtime is unchanged pending reviewed implementation.
 
 Primary question:

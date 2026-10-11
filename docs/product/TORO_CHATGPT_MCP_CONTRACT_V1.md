@@ -312,7 +312,7 @@ MCP annotation:
 
 Input:
 - required or context-resolved `scopeRef`;
-- optional sections from the eleven visible modules.
+- optional sections from visible Module 0 Cerebro and the eleven unchanged domain modules; this presentation classification grants no new MCP capability or authority.
 
 Output:
 - scope identity;

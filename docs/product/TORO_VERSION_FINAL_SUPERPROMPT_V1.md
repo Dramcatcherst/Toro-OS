@@ -84,7 +84,9 @@ Cross-cutting capabilities used by all modules:
 
 These are capabilities, not extra visible modules.
 
-### Layer D — Eleven visible modules
+### Layer D — Visible Cerebro plus eleven domain modules
+
+0. Cerebro / Brain — cross-cutting entry and intelligence view; same canonical state and authority. Owner direction 2026-10-10 supersedes the earlier no-twelfth-menu wording without renumbering domain IDs or creating a subsystem.
 
 1. Hoy / Atención
 2. Dinero
@@ -138,7 +140,7 @@ TORO should proactively identify trends and anomalies, but must label forecasts,
 
 ## 5. Intelligence, analysis and suggestions
 
-Create one cross-cutting Intelligence layer, not a twelfth menu module.
+Expose Cerebro as visible Module 0 over the existing cross-cutting intelligence capabilities, without creating another Brain, engine, memory or authority. The eleven domain modules retain their identity.
 
 It contains:
 
@@ -169,7 +171,7 @@ The owner view is a premium interactive command center, not a decorative graph.
 ### Desktop composition
 
 - Global context bar: active portfolio/business, search, universal command, connection status.
-- Compact module rail: eleven modules, role filtered.
+- Compact module rail: Cerebro and the eleven domain modules, role filtered.
 - Brain canvas as the dominant visual area.
 - Attention/Decision rail: only material exceptions and owner gates.
 - Activity timeline: verified events/results with replay.
@@ -243,7 +245,7 @@ Recommended persistent surfaces:
 - Trabajo/Inbox;
 - Más/Perfil.
 
-The eleven modules remain available through the launcher, context and Brain.
+Cerebro and the eleven domain modules remain available through the launcher and authorized context. Module 0 is a visible composition of existing capabilities, not another execution engine.
 
 ### Mobile Brain
 
@@ -272,7 +274,9 @@ Individual identity, revocable sessions, re-authentication for sensitive actions
 
 ---
 
-## 8. The eleven modules — finished contract
+## 8. Cerebro and the eleven domain modules — finished contract
+
+Cerebro Module 0 follows the shared template below. Its complete definition and the 25-front / 100-refinement acceptance expansion live in section 23 of the General Plan. Preserve runtime IDs and existing gates; do not claim the design expansion is delivered functionality.
 
 Each module must be specified with the same template:
 - jobs-to-be-done;
@@ -422,7 +426,7 @@ Required controls:
 
 Scheduled tasks remain appropriate for inherently time-based duties, reports, watchdogs and fallback—not as the primary execution engine.
 
-Existing hourly lanes must not be paused until the persistent worker proves parity, recovery, budget control and rollback.
+Historical migration wording is superseded by the 2026-10-01 General Plan decision: legacy execution lanes and direct finance writers are already paused. Do not resume them through this prompt. Persistent execution requires the current Control Plane task/run/worker/verification/receipt path and proof of recovery, budget control and rollback. Scheduled reports and approved watches retain their own scope.
 
 ---
 

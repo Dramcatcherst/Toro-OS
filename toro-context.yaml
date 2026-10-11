@@ -12,6 +12,17 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+target_navigation:
+  decision_date: "2026-10-10"
+  visible_cross_cutting_module: "Cerebro"
+  ordinal: 0
+  existing_domain_module_count: 11
+  existing_domain_ids_preserved: true
+  separate_subsystem: false
+  runtime_activation: false
+  acceptance_authority: "docs/product/TORO_BRAIN_GENERAL_PLAN.md"
+  acceptance_section: 23
+
 general_plan_governance:
   owner: TORO
   portfolio_root_project_key: toro_os_portfolio_master
@@ -542,10 +553,10 @@ cognitive_proving_ground:
       reservation_rows: 33
       live_reservation_rows: 0
       current_reservations_safe_rows: 0
-  current_safe_view_hardened: true
-  current_safe_view_requires_verified_quality: true
-  current_safe_view_requires_source_timestamp_not_future: true
-  current_safe_view_requires_sync_timestamp_not_future: true
+      current_safe_view_hardened: true
+      current_safe_view_requires_verified_quality: true
+      current_safe_view_requires_source_timestamp_not_future: true
+      current_safe_view_requires_sync_timestamp_not_future: true
       stay_rows: 0
       latest_reservation_snapshot: "2026-09-21T09:28:30.675Z"
       import_runs_rows: 6
