@@ -11,16 +11,18 @@ import {
   loadOwnerAttentionProjection,
   loadOwnerAttentionProjectionWithClient,
 } from "@/features/attention/owner-attention-server";
+import { CANONICAL_BRAIN_SEARCH_READ_LIMITS } from "@/features/brain/canonical-projection";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import {
+  boundedMcpReadLimit,
   businessStatusFromProjection,
   executionReceiptsFromProjection,
   pendingDecisionsFromProjection,
   prioritiesFromOwnerAttention,
   projectionHasRealDecisionSource,
   projectionHasReceiptSource,
-  searchToroProjection,
+  searchToroProjectionResult,
 } from "@/features/mcp/read-adapter";
 import {
   loadBrainProjectionView,
@@ -190,12 +192,14 @@ export async function runToroMcpReadTool(
   if (!resolved.ok) return resolved.response;
 
   const correlationId = input.correlationId ?? randomUUID();
+  const asOf = new Date();
 
   let view;
   try {
+    const options = { purpose: tool === "search_toro" ? "search" as const : "visual" as const };
     view = runtime.supabase
-      ? await loadBrainProjectionViewForContext(resolved.context, runtime.supabase)
-      : await loadBrainProjectionView();
+      ? await loadBrainProjectionViewForContext(resolved.context, runtime.supabase, options)
+      : await loadBrainProjectionView(options);
   } catch {
     return errorResponse(
       tool,
@@ -220,7 +224,7 @@ export async function runToroMcpReadTool(
   const base = {
     contractVersion: TORO_MCP_CONTRACT_VERSION,
     tool,
-    generatedAt: new Date().toISOString(),
+    generatedAt: asOf.toISOString(),
     correlationId,
     context: {
       mode: "organization" as const,
@@ -259,9 +263,12 @@ export async function runToroMcpReadTool(
     return {
       ...base,
       partial: projection.partial,
-      data: {
-        hits: searchToroProjection(projection, { query, kinds, limit }),
-      },
+      generatedAt: projection.generatedAt,
+      data: searchToroProjectionResult(
+        projection,
+        { query, kinds, limit },
+        CANONICAL_BRAIN_SEARCH_READ_LIMITS,
+      ),
     };
   }
 
@@ -294,28 +301,34 @@ export async function runToroMcpReadTool(
       );
     }
 
+    const priorityLimit = boundedMcpReadLimit(
+      typeof input.limit === "number" ? input.limit : undefined,
+    );
     try {
       const attention = runtime.supabase
         ? await loadOwnerAttentionProjectionWithClient(
             resolved.context,
             runtime.supabase,
             {
-              limit: typeof input.limit === "number" ? input.limit : undefined,
+              asOf,
+              limit: priorityLimit,
             },
           )
         : await loadOwnerAttentionProjection(resolved.context, {
-            limit: typeof input.limit === "number" ? input.limit : undefined,
+            asOf,
+            limit: priorityLimit,
           });
 
       return {
         ...base,
+        generatedAt: attention.generatedAt,
         partial: true,
         data: {
-          items: prioritiesFromOwnerAttention(
-            attention,
-            typeof input.limit === "number" ? input.limit : undefined,
-          ),
+          items: prioritiesFromOwnerAttention(attention, priorityLimit),
           sourceContract: attention.contractVersion,
+          reportContext: attention.reportContext,
+          selection: attention.selection,
+          coverage: attention.coverage,
         },
       };
     } catch {

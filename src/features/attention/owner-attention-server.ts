@@ -5,6 +5,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createToroReportingContext } from "@/lib/reporting-policy";
 
 import {
   buildOwnerAttentionProjection,
@@ -14,6 +15,14 @@ import {
   type ObligationRow,
   type OwnerAttentionProjection,
 } from "./owner-attention";
+
+export type OwnerAttentionReadInput = {
+  /** Existing internal date-only override; not exposed by HTTP or MCP. */
+  today?: string;
+  limit?: number;
+  /** Internal request instant; never read from untrusted tool arguments. */
+  asOf?: Date;
+};
 
 /** Finance reads are a separate capability, not implied by Brain Stage C v1. */
 export function ownerAttentionReadEnabled(): boolean {
@@ -26,7 +35,7 @@ export function ownerAttentionReadEnabled(): boolean {
 export async function loadOwnerAttentionProjectionWithClient(
   context: ToroResolvedContext,
   supabase: SupabaseClient,
-  input: { today?: string; limit?: number } = {},
+  input: OwnerAttentionReadInput = {},
 ): Promise<OwnerAttentionProjection> {
   if (!ownerAttentionReadEnabled()) {
     throw new Error("Owner Attention read is disabled.");
@@ -35,6 +44,9 @@ export async function loadOwnerAttentionProjectionWithClient(
   if (!canViewOwnerAttention(context) || !context.orgId) {
     throw new Error("Owner Attention requires an authorized organization context.");
   }
+
+  const asOf = input.asOf ?? new Date();
+  const reportContext = createToroReportingContext(asOf, input.today);
 
   const [followupsResult, obligationsResult, invoicesResult] = await Promise.all([
     supabase
@@ -45,6 +57,7 @@ export async function loadOwnerAttentionProjectionWithClient(
       )
       .eq("org_id", context.orgId)
       .eq("active", true)
+      .order("followup_key", { ascending: true })
       .limit(100),
     supabase
       .schema("operations")
@@ -54,6 +67,7 @@ export async function loadOwnerAttentionProjectionWithClient(
       )
       .eq("org_id", context.orgId)
       .eq("active", true)
+      .order("obligation_key", { ascending: true })
       .limit(150),
     supabase
       .schema("finance")
@@ -63,6 +77,7 @@ export async function loadOwnerAttentionProjectionWithClient(
       )
       .eq("org_id", context.orgId)
       .eq("active", true)
+      .order("invoice_key", { ascending: true })
       .limit(200),
   ]);
 
@@ -72,20 +87,63 @@ export async function loadOwnerAttentionProjectionWithClient(
     }
   }
 
-  const today = input.today ?? new Date().toISOString().slice(0, 10);
+  if (
+    !Array.isArray(followupsResult.data) ||
+    !Array.isArray(obligationsResult.data) ||
+    !Array.isArray(invoicesResult.data)
+  ) {
+    throw new Error("Owner Attention source unavailable.");
+  }
 
-  return buildOwnerAttentionProjection({
-    followups: (followupsResult.data ?? []) as CommunicationFollowupRow[],
-    obligations: (obligationsResult.data ?? []) as ObligationRow[],
-    invoices: (invoicesResult.data ?? []) as InvoiceRow[],
-    today,
+  const projection = buildOwnerAttentionProjection({
+    followups: followupsResult.data as CommunicationFollowupRow[],
+    obligations: obligationsResult.data as ObligationRow[],
+    invoices: invoicesResult.data as InvoiceRow[],
+    today: reportContext.reportingDate,
+    generatedAt: reportContext.asOf,
     limit: input.limit,
   });
+
+  return {
+    ...projection,
+    reportContext,
+    coverage: {
+      contractVersion: "owner-attention-coverage-v1",
+      scope: { kind: "organization", orgId: context.orgId },
+      sources: [
+        {
+          source: "operations.communication_followups",
+          rowsRead: followupsResult.data.length,
+          limit: 100,
+          limitReached: followupsResult.data.length >= 100,
+          completeness: "unverified",
+        },
+        {
+          source: "operations.obligations",
+          rowsRead: obligationsResult.data.length,
+          limit: 150,
+          limitReached: obligationsResult.data.length >= 150,
+          completeness: "unverified",
+        },
+        {
+          source: "finance.invoices",
+          rowsRead: invoicesResult.data.length,
+          limit: 200,
+          limitReached: invoicesResult.data.length >= 200,
+          completeness: "unverified",
+        },
+      ],
+      // A bounded read is neither a census nor a transactionally consistent snapshot.
+      totalInOrganization: null,
+      partial: true,
+      snapshot: "non_transactional",
+    },
+  };
 }
 
 export async function loadOwnerAttentionProjection(
   context: ToroResolvedContext,
-  input: { today?: string; limit?: number } = {},
+  input: OwnerAttentionReadInput = {},
 ): Promise<OwnerAttentionProjection> {
   // Preserve the direct-provider gate before allocating any database client.
   if (!ownerAttentionReadEnabled()) {

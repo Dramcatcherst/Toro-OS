@@ -1,4 +1,5 @@
 import type { ToroResolvedContext } from "@/features/context/types";
+import type { ToroReportingContext } from "@/lib/reporting-policy";
 
 export const OWNER_ATTENTION_CONTRACT_VERSION = "owner-attention-v1" as const;
 
@@ -22,6 +23,27 @@ export type OwnerAttentionItem = {
   mailbox: string | null;
 };
 
+export type OwnerAttentionSelection = {
+  matchedInReadBatch: number;
+  displayedCount: number;
+  truncated: boolean;
+};
+
+export type OwnerAttentionCoverage = {
+  contractVersion: "owner-attention-coverage-v1";
+  scope: { kind: "organization"; orgId: string };
+  sources: Array<{
+    source: "operations.communication_followups" | "operations.obligations" | "finance.invoices";
+    rowsRead: number;
+    limit: number;
+    limitReached: boolean;
+    completeness: "unverified";
+  }>;
+  totalInOrganization: null;
+  partial: true;
+  snapshot: "non_transactional";
+};
+
 export type OwnerAttentionProjection = {
   contractVersion: typeof OWNER_ATTENTION_CONTRACT_VERSION;
   generatedAt: string;
@@ -30,6 +52,10 @@ export type OwnerAttentionProjection = {
   high: number;
   normal: number;
   items: OwnerAttentionItem[];
+  /** Additive fields: absent on older producers; absence never means complete. */
+  reportContext?: ToroReportingContext;
+  selection?: OwnerAttentionSelection;
+  coverage?: OwnerAttentionCoverage;
 };
 
 export type CommunicationFollowupRow = {
@@ -81,7 +107,8 @@ const PRIORITY_RANK: Record<OwnerAttentionPriority, number> = {
 };
 
 function parseNumber(value: number | string | null): number | null {
-  if (value === null) return null;
+  if (typeof value !== "number" && typeof value !== "string") return null;
+  if (typeof value === "string" && value.trim() === "") return null;
   const parsed = typeof value === "number" ? value : Number(value);
   return Number.isFinite(parsed) ? parsed : null;
 }
@@ -298,7 +325,12 @@ export function buildOwnerAttentionProjection(input: {
       const priorityDelta =
         PRIORITY_RANK[b.priority] - PRIORITY_RANK[a.priority];
       if (priorityDelta !== 0) return priorityDelta;
-      return dueSortValue(a.dueDate) - dueSortValue(b.dueDate);
+      const aDue = dueSortValue(a.dueDate);
+      const bDue = dueSortValue(b.dueDate);
+      if (aDue < bDue) return -1;
+      if (aDue > bDue) return 1;
+      // Stable tie-break, including when both due dates are unknown.
+      return a.dedupeRef < b.dedupeRef ? -1 : a.dedupeRef > b.dedupeRef ? 1 : 0;
     })
     .slice(0, input.limit ?? 50);
 
@@ -310,5 +342,10 @@ export function buildOwnerAttentionProjection(input: {
     high: items.filter((item) => item.priority === "high").length,
     normal: items.filter((item) => item.priority === "normal").length,
     items,
+    selection: {
+      matchedInReadBatch: deduped.size,
+      displayedCount: items.length,
+      truncated: deduped.size > items.length,
+    },
   };
 }

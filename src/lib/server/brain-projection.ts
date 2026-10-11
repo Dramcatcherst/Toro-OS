@@ -10,6 +10,7 @@ import {
 import {
   buildCanonicalBrainLayout,
   buildCanonicalBrainProjection,
+  type CanonicalBrainProjectionOptions,
 } from "@/features/brain/canonical-projection";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { BrainProjection } from "@/lib/brain-contracts";
@@ -60,6 +61,7 @@ function canonicalReadEnabled() {
 export async function loadBrainProjectionViewForContext(
   context: import("@/features/context/types").ToroResolvedContext,
   supabase: SupabaseClient,
+  options: CanonicalBrainProjectionOptions = {},
 ): Promise<BrainProjectionView> {
   if (!canonicalReadEnabled()) {
     return syntheticView(
@@ -88,8 +90,8 @@ export async function loadBrainProjectionViewForContext(
     }
 
     const slice = await loadCanonicalBrainReadSliceWithClient(context, supabase);
-    const projection = buildCanonicalBrainProjection(slice);
-    const layout = buildCanonicalBrainLayout(projection);
+    const projection = buildCanonicalBrainProjection(slice, options);
+    const layout = options.purpose === "search" ? {} : buildCanonicalBrainLayout(projection);
 
     return {
       projection,
@@ -120,7 +122,9 @@ export async function loadBrainProjectionViewForContext(
  * context resolver proves an active organization context. All reads continue
  * through the authenticated Supabase client + RLS.
  */
-export async function loadBrainProjectionView(): Promise<BrainProjectionView> {
+export async function loadBrainProjectionView(
+  options: CanonicalBrainProjectionOptions = {},
+): Promise<BrainProjectionView> {
   if (!canonicalReadEnabled()) {
     return syntheticView(
       "Canonical read path is prepared but disabled until authenticated Stage C QA passes.",
@@ -156,8 +160,8 @@ export async function loadBrainProjectionView(): Promise<BrainProjectionView> {
     }
 
     const slice = await loadCanonicalBrainReadSlice(context);
-    const projection = buildCanonicalBrainProjection(slice);
-    const layout = buildCanonicalBrainLayout(projection);
+    const projection = buildCanonicalBrainProjection(slice, options);
+    const layout = options.purpose === "search" ? {} : buildCanonicalBrainLayout(projection);
 
     return {
       projection,

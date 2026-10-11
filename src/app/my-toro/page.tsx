@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { Suspense } from "react";
+
+import { canViewOwnerAttention } from "@/features/attention/owner-attention";
+import { OwnerAttentionPanel } from "@/features/attention/owner-attention-panel";
 import {
   ArrowRight,
   LockKeyhole,
@@ -117,6 +121,12 @@ export default async function MyToroPage({
           </div>
           <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
+
+        {canViewOwnerAttention(view.context) ? (
+          <Suspense fallback={<p role="status" className="mt-5 text-sm text-slate-300">Cargando prioridades…</p>}>
+            <OwnerAttentionPanel context={view.context} />
+          </Suspense>
+        ) : null}
 
         {hotelAllowed ? <section aria-labelledby="hotel-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/70 p-4 md:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">

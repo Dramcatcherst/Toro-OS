@@ -872,7 +872,25 @@ Do not duplicate:
 - approvals
 - identity
 
-Current identity evidence:
+### Dreamcatcher People — owner direction, 2026-10-01
+
+Scope: Dreamcatcher Hotel; owner Mauricio; TORO People owns personnel/attendance, TORO Finance reconciles payroll evidence, TORO Assets preserves originals, TORO Identity/Governance enforce access. Priority is completing the current payroll; broader changes follow its review. These directions extend the existing implementation and shared database, not a second HR app or identity system.
+
+**CURRENT — urgent manual attendance correction:** DreamTeam now has a create-day path for active employees with no clock punches. ADMIN/RRHH must supply a date, one or two complete chronological schedules and a reason; the transaction preserves the raw clock records, records author/reason and leaves attendance pending review. Duplicate employee/date creates and closed payroll periods are rejected. Migration `20261001231135_create_attendance_day_manual` applied to the canonical Supabase project; Vercel production `dpl_EZ1wLBsq7z6tf97wCQ7LFtBQCLcK`, commit `b9cf10606f410a0e6a6cdb5162dac1b735230a27`, READY and assigned to the existing DreamTeam domain. Synthetic SQL/UI tests 14/14 and production build passed. HTTP site read passed; authenticated production save remains unverified because the browser session requires sign-in. No actual hours, payroll approval or payment were entered by the agent. Rollback: prior production `dpl_bd1Vyo1jTXZHHv8pNRDs55Ef2LVj`; drop only the new RPC if needed, retaining recorded days/audit.
+
+**NEXT — close the current payroll:** authorized HR enters confirmed missing hours, reviews incomplete/identity incidents and reconciles the draft. A manually created day may update a draft; pending attendance review is not proof of payroll approval or payment. No fabricated exits, bulk historical overwrite or closed-period reopening by inference.
+
+**TARGET — job-profile permissions:** derive ordinary operational permissions from canonical job profiles (housekeeping, maintenance, reception and administration), with verified employment/organization membership. Reuse existing roles/capabilities and test self-only/team/HR scopes. Do not replace this with arbitrary per-user grants. Reassignment and termination must update/revoke the corresponding capabilities.
+
+**TARGET — restricted assistant:** only individually verified Ana Carolina and Mauricio may use the proposed DreamTeam/TORO assistant. This owner direction supersedes the earlier ADMIN/GERENCIA/partner-wide proposal. A job profile alone must not grant assistant access. Reuse TORO's engine and central permissions; first pilot is consultation/preparation after payroll closure. No assistant activation, provider cost or permission expansion is asserted here.
+
+**TARGET — one personnel history and dossier:** reuse canonical employee IDs and existing document records. Preserve CCSS, INS, payroll versions, contracts and identity documents in restricted existing Dropbox HR structures; link stable file IDs/revisions to the employee record and collect only required missing documents through the existing form. Employee CCSS sections/folders are logical parts of the existing dossier, not duplicate originals or a public archive. Preserve DreamTeam's preferred visual language for internal hotel tools while reusing TORO components.
+
+**NEXT — historical reconciliation intake:** first metadata search found `/ATRAPASUEÑOS-CAROLINA/CCSS/Planilla CCSS Agosto 2026.pdf` (file `id:RAP-nKYFY_UAAAAAAALx4w`, revision `65bc9ad39dec5262f86ce`), CCSS billing/payment files and multiple July 1–15 DreamTeam payroll versions in the existing accounting archive. These are source candidates only; contents, employee identity, authoritative version and bank settlement are not yet reconciled. Preserve originals and source IDs. Build one matrix per employee/period distinguishing internally prepared payroll, CCSS-declared amount, INS coverage and bank-confirmed payment; payroll-transfer spreadsheets alone do not prove payment. Compare disputed versions before importing verified history into the existing model; never infer clock punches from payroll/bank amounts or auto-link people by name. No historical data has been imported in this increment.
+
+**FUTURE — CCSS retrieval:** verify authorized access to the Caja portal and acquire missing employer/employee documents with user-mediated authentication. Portal access is presently unknown; no credentials are copied into TORO or Dropbox. Regulatory filing and money movement retain their own explicit authority gates.
+
+Current identity evidence (historical snapshot; not refreshed by the 2026-10-01 increment):
 - 12 active employees;
 - 1 terminated;
 - 4 employee records linked to active user/role;
