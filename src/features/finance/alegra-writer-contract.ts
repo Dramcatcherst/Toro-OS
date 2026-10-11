@@ -42,6 +42,7 @@ export type AlegraWritePayload = {
   costCenterNativeId?: string | null;
   paymentAccountNativeId?: string | null;
   businessPurpose?: string | null;
+  purchaseTax?: { nativeId: string; percentage: string } | null;
 };
 
 export type AlegraWriteIntentInput = {
@@ -264,6 +265,9 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
       costCenterNativeId: normalizeText(input.payload.costCenterNativeId) || null,
       paymentAccountNativeId: normalizeText(input.payload.paymentAccountNativeId) || null,
       businessPurpose: normalizeText(input.payload.businessPurpose) || null,
+      ...(input.payload.purchaseTax !== undefined ? { purchaseTax: input.payload.purchaseTax ? {
+        nativeId: normalizeText(input.payload.purchaseTax.nativeId), percentage: normalizeText(input.payload.purchaseTax.percentage),
+      } : null } : {}),
     },
   };
 
@@ -334,7 +338,7 @@ export function verifyAlegraReadback(
 
   if (readback.targetType !== intent.targetType) mismatches.push("TARGET_TYPE");
   if (normalizeCurrency(readback.currency) !== normalizeCurrency(intent.payload.currency)) mismatches.push("CURRENCY");
-  if (normalizeText(readback.total) !== normalizeText(intent.payload.total)) mismatches.push("TOTAL");
+  if (!sumMatches(normalizeText(readback.total), "0", normalizeText(intent.payload.total))) mismatches.push("TOTAL");
 
   if (intent.targetType === "purchase_bill") {
     if (normalizeText(readback.documentNumber) !== normalizeText(intent.payload.documentNumber)) {

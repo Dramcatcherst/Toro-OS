@@ -37,6 +37,10 @@ const baseInput = {
 };
 
 describe("TORO Alegra Writer v3 contract", () => {
+  it("compares monetary value independently of native decimal display formatting", () => {
+    const prepared = prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, issueDate: undefined, dueDate: undefined } });
+    expect(verifyAlegraReadback(prepared, { nativeId: "fixture-bill", targetType: "purchase_bill", documentNumber: "INV-100", supplierNativeId: "supplier-42", currency: "USD", total: "113", accountNativeId: "expense-software", costCenterNativeId: "dreamcatcher" }).ok).toBe(true);
+  });
   it("verifies the exact source bill and stable movement reference for an outgoing payment", () => {
     const payment = prepareAlegraWriteIntent({ ...baseInput, payload: { targetType: "outgoing_payment", sourceBillNativeId: "fixture-bill", paymentMovementRef: "fixture-movement", paymentAccountNativeId: "fixture-bank", currency: "USD", total: "10.00" } });
     const readback = { nativeId: "fixture-payment", targetType: "outgoing_payment" as const, sourceBillNativeId: "fixture-bill", paymentMovementRef: "fixture-movement", paymentAccountNativeId: "fixture-bank", currency: "USD", total: "10.00" };

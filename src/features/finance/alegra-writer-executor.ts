@@ -9,6 +9,7 @@ import {
 import type { AlegraDuplicateDecision } from "./alegra-writer-dedupe";
 
 export type AlegraProviderCreateResult =
+  | { state: "blocked"; code: string }
   | { state: "created"; nativeId: string }
   | { state: "ambiguous"; nativeId?: string | null; detail?: string | null }
   | { state: "failed"; code: string; retryable: boolean; detail?: string | null };
@@ -201,6 +202,11 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
 
   let nativeId: string | null = null;
   let executionState: AlegraWriterReceipt["executionState"] = "provider_created";
+
+  if (createResult.state === "blocked") {
+    return { ok: false, executedProviderMutation: false, admitted: true,
+      receipt: blockedReceipt({ ...input, reason: createResult.code }) };
+  }
 
   if (createResult.state === "failed") {
     return {
