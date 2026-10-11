@@ -12,6 +12,9 @@ import type { SourceMeta } from "@/lib/toro-types";
 import { redirect } from "next/navigation";
 import { internalCapabilityEnabled, isPublicDemo } from "@/lib/server/public-demo";
 
+// Resolve deployment/capability policy per request, never from a cached legacy view.
+export const dynamic = "force-dynamic";
+
 const navIcons = [Activity, Brain, Blocks, Bot, CircleDollarSign, Megaphone, FileText, Search, RadioTower, Send, Workflow, Layers3, Database, ShieldCheck, ClipboardCheck, Monitor, Code2, Settings];
 
 function classNames(...values: Array<string | false | null | undefined>) {
