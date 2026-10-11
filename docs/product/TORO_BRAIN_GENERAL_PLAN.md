@@ -4690,3 +4690,13 @@ El requisito de allowedTools sigue vigente para futura operación de conectores,
 **NEXT:** QA autenticado requiere un entorno interno y una sesión legítima autorizados. Publicación, CI/preview y aceptación operativa requieren su propio alcance.
 
 **Límites y recuperación:** solo integración y pruebas locales. PUMBA conserva A1 Prepare; Kross API, mantenimiento automático, Gateway y WhatsApp quedan fuera de esta unidad. Se preserva Recepción `2adc9fa` / C01–C30. No hay push, merge remoto, deploy, consultas a datos remotos, activaciones, credenciales, permisos, instalaciones ni nuevos fixtures. La rama original permanece en `0f31223`; un snapshot local y respaldo íntegro permiten recuperación sin reset ni borrados.
+
+### Corrección local de dependencias del Portal — 11/10/2026, 15:01 Costa Rica
+
+**CURRENT local, sin publicar:** sobre `7cabb88`, Next y eslint-config-next pasan de 16.3.6 a 16.3.8; sharp de 0.35.4 a 0.35.5 y source-map-js de 1.2.1 a 1.2.2. El lockfile cambia únicamente las familias previstas, con resolved/integrity oficiales. No cambian fuentes de Hoy/Buscar, identidad, flags, gates, permisos, datos ni contribuciones anteriores del Plan.
+
+**Evidencia posterior al cambio:** audit runtime exit 0 y cero avisos; audit completo exit 1 con cinco paquetes de desarrollo que heredan un único aviso de braces. 534/534 pruebas controladas en siete componentes y tres validadores; TypeScript, lint de 14 archivos y build Next 16.3.8/Turbopack aprobados, 45 páginas y dos workers. ESLint completo: 190 archivos, cero errores y un aviso de variable sin uso en un archivo sin cambios. Seis GET al servidor local validaron el perímetro público fail-closed; el servidor de prueba se detuvo. No es sesión autenticada, QA móvil/teclado, RLS vivo ni CI/preview.
+
+**Pendiente y NEXT único:** entorno interno existente del mismo candidato con sesión legítima autorizada para entrada → Hoy → Buscar → evidencia → retorno, identidad/ámbito y móvil/teclado. Braces conserva un aviso sin parche upstream; no es una aceptación de riesgo aprobada. No rebajar ESLint, retirar gates o instalar datos ficticios para cerrar el aviso. El portal integrado sigue sin publicar.
+
+Recibo y recuperación: `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\security-unit\receipt.json`; respaldo de package/lock/Plan en su carpeta `backup`; base `7cabb88` y snapshot histórico `6151a4a` conservados. Recuperación solo de este delta tras verificar cambios posteriores, sin reset/clean ni sobrescribir aportes ajenos. Este bloque no autoriza publicación, despliegue, nuevas lecturas o permisos.
