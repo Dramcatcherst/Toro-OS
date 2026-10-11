@@ -4675,3 +4675,16 @@ El requisito de allowedTools sigue vigente para futura operación de conectores,
 - Evidencia: 85 pruebas de herramientas/menú/contexto; TypeScript y lint del cambio. Sesión local real con seis enlaces, ayuda de cuenta, navegación a la guía y viewport móvil de 390 px sin desborde. La cuenta sintética sin sesión, de otra organización, suspendida o con elección pendiente no consulta el directorio; un fallo de lectura no expone URLs.
 - Criterio de entrega: inicio compacto, acciones útiles primero, pendientes sin falsos botones y seis destinos bajo los mismos controles. Recuperación mediante revert de este cambio de presentación; sin migración.
 - **NEXT único:** cerrar el release acotado en el proyecto Next.js existente. Producción permanece pendiente de separar el delta de otros módulos ya presente en main; no promover todo el proyecto ni activar nuevos permisos bajo esta mejora visual. Catálogo canónico conserva 243 fichas.
+
+
+### Conciliación local del portal — 2026-10-11
+
+**Ámbito y autoridad:** portal existente, Human Experience, Cerebro y TORO Finance/People; este documento sigue siendo el único Plan General. La conciliación local autorizada conserva PR262 `7837ae9`, main `6992dfe`, los deltas aprobados de Hoy/Buscar/test y los aportes humanos People/FIN01. No crea otro proyecto ni integra el checkout separado de DreamTeam.
+
+**CURRENT — código local:** Hoy en Mi TORO conserva un único instante, `America/Costa_Rica`, fuente/cobertura, conteos coherentes, importe desconocido distinto de cero y enlace de evidencia. `search_toro` filtra la lectura canónica acotada antes del límite de resultados; máximo 101 objetos cargados, diez resultados por defecto y máximo 25. Informa conteos y truncamiento, `complete=false` y totalidad autorizada desconocida. Mi TORO mantiene su búsqueda de opciones del menú. Roles, flags, gates y perímetro demo de PR262 se conservan; esto no acredita operación autenticada ni RLS vivo.
+
+**TARGET:** búsqueda con mayor cobertura y evidencia verificable, subordinada a P07/P13 y a fuentes realmente autorizadas. Las 100 mejoras de Cerebro conservan su clasificación documental; conciliarlas no las declara ejecutadas. Alegra/custodia y los cortes históricos FIN01 mantienen sus fechas, autoridad y límites; People conserva su dirección humana sin nuevos grants.
+
+**NEXT:** verificar el estado conciliado con las pruebas existentes — incluida `brain-context-sequence.test.ts` —, tipos, lint y build; conservar recibos y hashes fuera del repositorio. Después, QA autenticado requiere un entorno interno y una sesión legítima autorizados. Publicación, CI/preview y aceptación operativa requieren su propio alcance.
+
+**Límites y recuperación:** solo integración y pruebas locales. PUMBA conserva A1 Prepare; Kross API, mantenimiento automático, Gateway y WhatsApp quedan fuera de esta unidad. Se preserva Recepción `2adc9fa` / C01–C30. No hay push, merge remoto, deploy, consultas a datos remotos, activaciones, credenciales, permisos, instalaciones ni nuevos fixtures. La rama original permanece en `0f31223`; un snapshot local y respaldo íntegro permiten recuperación sin reset ni borrados.
