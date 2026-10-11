@@ -1,21 +1,23 @@
 import Link from "next/link";
 import { loadHotelDirectory } from "@/features/tools/server";
+import { PortalHeader } from "@/features/portal/portal-header";
 
 export const dynamic = "force-dynamic";
 
 const shiftSteps = [
-  { title: "🌅 Empezar el turno", text: "Lee el relevo. Revisa llegadas, salidas, solicitudes y agenda.", ids: ["LINK-048", "LINK-056"] },
-  { title: "🛎️ Atender a los huéspedes", text: "Consulta la reserva y responde las solicitudes en su canal.", ids: ["LINK-178"] },
-  { title: "🧹 Preparar habitaciones", text: "Confirma con el equipo el aseo, las averías y las habitaciones listas.", ids: ["LINK-086"] },
-  { title: "💬 Cotizar una estancia", text: "Consulta fechas y condiciones en el motor de reservas.", ids: ["LINK-002"] },
-  { title: "💰 Revisar cobros", text: "Distingue saldo pendiente, comprobante, pago confirmado y factura.", ids: [] },
-  { title: "🌙 Cerrar y preparar mañana", text: "Deja cada pendiente con responsable y siguiente paso en el relevo existente.", ids: ["LINK-131"] },
+  { title: "Empezar el turno", text: "Lee el relevo. Revisa llegadas, salidas, solicitudes y agenda.", ids: ["LINK-048", "LINK-056"] },
+  { title: "Atender a los huéspedes", text: "Consulta la reserva y responde las solicitudes en su canal.", ids: ["LINK-178"] },
+  { title: "Preparar habitaciones", text: "Confirma con el equipo el aseo, las averías y las habitaciones listas.", ids: ["LINK-086"] },
+  { title: "Cotizar una estancia", text: "Consulta fechas y condiciones en el motor de reservas.", ids: ["LINK-002"] },
+  { title: "Revisar cobros", text: "Distingue saldo pendiente, comprobante, pago confirmado y factura.", ids: [] },
+  { title: "Cerrar y preparar mañana", text: "Deja cada pendiente con responsable y siguiente paso en el relevo existente.", ids: ["LINK-131"] },
 ];
 
 export default async function ToolsPage() {
   const view = await loadHotelDirectory();
   const links = view.state === "ready" ? view.links : [];
-  return <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100">
+  return <>{view.account || view.state === "ready" ? <PortalHeader current="tools" scopeLabel="Dreamcatcher" /> : null}
+    <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100">
     <div className="mx-auto max-w-5xl">
       <Link href="/my-toro" className="text-cyan-200 underline">← Mi TORO</Link>
       <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-cyan-200">Dreamcatcher · Operación del hotel</p>
@@ -46,5 +48,5 @@ export default async function ToolsPage() {
         </details>
       </> : null}
     </div>
-  </main>;
+  </main></>;
 }

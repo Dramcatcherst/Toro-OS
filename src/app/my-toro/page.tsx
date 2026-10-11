@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
+import { PortalHeader } from "@/features/portal/portal-header";
+import { hasPortalOrganizationContext } from "@/features/portal/model";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 import { canReadHotelDirectory } from "@/features/tools/directory";
 import { loadHotelDirectory } from "@/features/tools/server";
@@ -112,12 +114,15 @@ export default async function MyToroPage({
   const actionClass = "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200";
 
   return (
-    <main className="min-h-screen bg-[#030712] text-slate-100">
+    <>
+    {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
+    <main className="min-h-screen bg-[#0d1728] text-slate-100">
       <div className="mx-auto max-w-5xl px-4 py-5 md:px-8 md:py-8">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-cyan-200">Mi TORO{hotelAllowed ? " · Dreamcatcher" : ""}</p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight md:text-3xl">¿Qué necesitas hacer?</h1>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Portal TORO · Espacio personal</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Mi TORO</h1>
+            <p className="mt-2 text-sm text-slate-300">Tu trabajo, tus prioridades y tus accesos en el mismo Portal.</p>
           </div>
           <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
@@ -128,13 +133,13 @@ export default async function MyToroPage({
           </Suspense>
         ) : null}
 
-        {hotelAllowed ? <section aria-labelledby="hotel-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/70 p-4 md:p-6">
+        {hotelAllowed ? <section aria-labelledby="hotel-heading" className="mt-5 rounded-xl border border-slate-700 bg-slate-900/70 p-4 md:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 id="hotel-heading" className="text-xl font-bold">🏨 Tu hotel, a mano</h2>
+              <h2 id="hotel-heading" className="text-xl font-semibold">Tu hotel, a mano</h2>
               <p className="mt-1 text-sm text-slate-300">Abre el sistema y sigue trabajando allí.</p>
             </div>
-            <Link href="/my-toro/herramientas" className={actionClass + " bg-cyan-300 text-slate-950 hover:bg-cyan-200"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/my-toro/herramientas" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
           </div>
           {hotelLinks.length ? <>
             <nav aria-label="Herramientas del hotel" className="mt-4 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 lg:grid-cols-3">
@@ -173,14 +178,14 @@ export default async function MyToroPage({
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {available.map(item => <Link key={item.key} href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
               className="rounded-2xl border border-slate-700 p-4 hover:border-cyan-300/50 focus-visible:outline-2 focus-visible:outline-cyan-200">
-              <span className="font-semibold">{item.emoji} {item.label} →</span>
+              <span className="font-semibold">{item.label} →</span>
               <p className="mt-1 text-xs leading-5 text-slate-300">Consultar información disponible para tu cuenta.</p>
             </Link>)}
             {alternatives.map(item => {
               const alternative = view.capabilityAlternatives[item.capability];
               return <a key={item.key} href={alternative.href} target={alternative.external ? "_blank" : undefined} rel={alternative.external ? "noopener noreferrer" : undefined}
                 className="rounded-2xl border border-slate-700 p-4 hover:border-cyan-300/50 focus-visible:outline-2 focus-visible:outline-cyan-200">
-                <span className="font-semibold">{item.emoji} {alternative.label} →</span>
+                <span className="font-semibold">{alternative.label} →</span>
                 <p className="mt-1 text-xs leading-5 text-slate-300">{alternative.note}</p>
               </a>;
             })}
@@ -194,7 +199,7 @@ export default async function MyToroPage({
           <details className="rounded-2xl border border-slate-700 bg-slate-900/30 p-4">
             <summary className="min-h-11 cursor-pointer content-center font-semibold">Qué falta por conectar{pending.length ? ` · ${pending.length} opciones` : ""}</summary>
             <p className="mt-2 text-sm leading-6 text-slate-300">{hotelAllowed ? "Cobros y facturación siguen pendientes de validar. Para ocupación, pagos y habitaciones listas, consulta el sistema y confirma con el equipo." : "Aquí aparecerán las opciones cuando estén disponibles para tu cuenta."}</p>
-            {pending.length ? <ul className="mt-3 flex flex-wrap gap-2">{pending.map(item => <li key={item.key} className="rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-300">{item.emoji} {item.label} · pendiente</li>)}</ul> : null}
+            {pending.length ? <ul className="mt-3 flex flex-wrap gap-2">{pending.map(item => <li key={item.key} className="rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-300">{item.label} · pendiente</li>)}</ul> : null}
             {!menu ? <p className="mt-3 text-sm text-amber-100">Todavía no hay opciones asignadas a tu perfil de trabajo.</p> : null}
           </details>
           <details id="mi-cuenta" className="scroll-mt-4 rounded-2xl border border-slate-700 bg-slate-900/30 p-4">
@@ -217,5 +222,6 @@ export default async function MyToroPage({
         </section>
       </div>
     </main>
+    </>
   );
 }

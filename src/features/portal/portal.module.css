@@ -1,0 +1,36 @@
+.header { background: #0b1425; border-bottom: 1px solid #253247; color: #e2e8f0; }
+.headerInner { max-width: 1240px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.brand { display: flex; gap: 12px; align-items: center; text-decoration: none; }
+.brand strong { color: #f8fafc; font-size: 23px; letter-spacing: .11em; font-weight: 750; }
+.brand span { color: #a6b6cc; font-size: 12px; border-left: 1px solid #40516a; padding-left: 12px; line-height: 1.5; }
+.scope { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #b9c6d8; margin: 0; }
+.scopeDot { background: #8da9ca; width: 6px; height: 6px; border-radius: 50%; }
+.navigation { display: flex; gap: 6px; margin-left: auto; }
+.navigation a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.navigation a[aria-current] { background: #1d3554; color: #d5e8ff; }
+.navigation a:hover { background: #192a40; }
+.header a:focus-visible, .page a:focus-visible { outline: 2px solid #9acbff; outline-offset: 4px; }
+.page { background: #0d1728; min-height: calc(100vh - 80px); color: #e2e8f0; }
+.content { max-width: 1240px; margin: 0 auto; padding: 40px 32px 48px; }
+.eyebrow { color: #a3bfdf; font-size: 11px; font-weight: 650; letter-spacing: .16em; text-transform: uppercase; }
+.hero { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; }
+.hero h1 { margin: 12px 0; color: #f8fafc; font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -.035em; }
+.hero p { max-width: 680px; font-size: 14px; line-height: 1.8; color: #aebdd0; }
+.personalLink { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; border: 1px solid #5d7fa9; background: #25486f; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.contextNote { margin-top: 28px; border: 1px solid #31425b; border-left: 3px solid #8aadd5; padding: 14px 18px; border-radius: 8px; background: #122139; color: #b9c8dc; font-size: 13px; line-height: 1.7; }
+.sectionTitle { font-weight: 600; font-size: 18px; color: #f1f5f9; margin-top: 34px; }
+.sectionNote { font-size: 13px; color: #9fafc3; line-height: 1.8; margin-top: 6px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.card { display: flex; flex-direction: column; min-width: 0; background: #111e31; border: 1px solid #2a3b53; border-radius: 12px; padding: 22px; }
+.cardTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.icon { display: inline-flex; color: #9fbcde; padding: 10px; border: 1px solid #3c536e; background: #192c45; border-radius: 8px; }
+.number { color: #8c9db4; font-size: 11px; letter-spacing: .08em; }
+.card h3 { color: #edf3fb; margin-top: 16px; font-size: 17px; font-weight: 600; }
+.description { margin-top: 6px; color: #adbed3; font-size: 13px; line-height: 1.7; flex: 1; }
+.status { margin-top: 18px; color: #bfcee0; font-size: 11px; font-weight: 600; letter-spacing: .025em; }
+.note { margin-top: 5px; color: #91a4bd; font-size: 12px; line-height: 1.6; }
+.cardLink { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; margin-top: 16px; border-top: 1px solid #2e435c; padding-top: 12px; color: #b7d9ff; font-size: 12px; font-weight: 600; }
+.connectionNote { display: flex; align-items: flex-start; gap: 10px; margin-top: 26px; font-size: 12px; line-height: 1.8; color: #9baec8; }
+.connectionNote svg { flex-shrink: 0; margin-top: 3px; }
+@media (max-width: 1000px) { .headerInner { gap: 14px; } .scope { margin-left: auto; } .navigation { width: 100%; margin-left: 0; } .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .headerInner { padding: 16px; gap: 14px; } .brand { gap: 9px; } .brand span { padding-left: 9px; font-size: 11px; } .scope { margin-left: 0; } .navigation { gap: 4px; } .navigation a { flex: 1; justify-content: center; gap: 5px; padding: 10px 7px; font-size: 12px; } .content { padding: 28px 16px 36px; } .hero { align-items: flex-start; flex-direction: column; gap: 16px; } .grid { grid-template-columns: 1fr; } .card { padding: 20px; } }
