@@ -16,6 +16,7 @@ import { hasPortalOrganizationContext } from "@/features/portal/model";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 import { canReadHotelDirectory } from "@/features/tools/directory";
 import { loadHotelDirectory } from "@/features/tools/server";
+import styles from "./my-toro.module.css";
 
 const profileLabels: Record<string, string> = {
   owner_executive: "Dirección",
@@ -107,7 +108,7 @@ export default async function MyToroPage({
     "LINK-048": { system: "Kross", detail: "Llegadas, salidas y reservas" },
     "LINK-002": { system: "Motor de reservas", detail: "Fechas, precios y condiciones" },
     "LINK-178": { system: "WeSpeak", detail: "Conversaciones con huéspedes" },
-    "LINK-086": { system: "DreamTeam", detail: "Entrar al portal del equipo" },
+    "LINK-086": { system: "DreamTeam · TORO People", detail: "Equipo · sesión propia" },
     "LINK-056": { system: "Google Calendar", detail: "Consultar la agenda" },
     "LINK-131": { system: "Dropbox", detail: "Archivos del hotel" },
   };
@@ -117,7 +118,7 @@ export default async function MyToroPage({
     <>
     {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
     <main className="min-h-screen bg-[#0d1728] text-slate-100">
-      <div className="mx-auto max-w-5xl px-4 py-5 md:px-8 md:py-8">
+      <div className={styles.content}>
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Portal TORO · Espacio personal</p>
@@ -127,66 +128,16 @@ export default async function MyToroPage({
           <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
 
-        {canViewOwnerAttention(view.context) ? (
-          <Suspense fallback={<p role="status" className="mt-5 text-sm text-slate-300">Cargando prioridades…</p>}>
-            <OwnerAttentionPanel context={view.context} />
-          </Suspense>
-        ) : null}
-
-        {hotelAllowed ? <section aria-labelledby="hotel-heading" className="mt-5 rounded-xl border border-slate-700 bg-slate-900/70 p-4 md:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 id="hotel-heading" className="text-xl font-semibold">Tu hotel, a mano</h2>
-              <p className="mt-1 text-sm text-slate-300">Abre el sistema y sigue trabajando allí.</p>
-            </div>
-            <Link href="/my-toro/herramientas" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
-          </div>
-          {hotelLinks.length ? <>
-            <nav aria-label="Herramientas del hotel" className="mt-4 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 lg:grid-cols-3">
-              {hotelLinks.map(link => <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                className="group min-w-0 rounded-2xl border border-slate-700 bg-slate-950/60 p-4 transition hover:border-cyan-300/60 hover:bg-cyan-950/40 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="font-semibold text-white">{link.label}</span><span aria-label="abre otra pestaña" className="text-cyan-300">↗</span>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-slate-300">{quickInfo[link.id]?.detail}</p>
-                <p className="mt-2 text-xs text-cyan-200">{quickInfo[link.id]?.system}</p>
-              </a>)}
-            </nav>
-            <p className="mt-3 text-xs leading-5 text-slate-400">Estos botones abren tus herramientas. Cada una puede pedir su propia sesión.</p>
-          </> : <div role="status" className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-4">
-            <p className="font-semibold text-amber-100">{directory?.state === "denied" ? "Los accesos no están habilitados para esta sesión." : "La lista de accesos no está disponible ahora."}</p>
-            <p className="mt-1 text-sm text-slate-300">Puedes abrir la guía del turno y volver a intentar cargar los accesos.</p>
-          </div>}
-        </section> : null}
-
-        {view.focus ? <section aria-labelledby="focus-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/60 p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div><p className="text-xs text-cyan-200">Consulta</p><h2 id="focus-heading" className="mt-1 text-xl font-bold">{view.focus.label}</h2></div>
-            <Link href="/my-toro#available-heading" prefetch={false} className={actionClass + " border border-slate-700"}>Volver al menú</Link>
-          </div>
-          {view.focus.coverage ? <p role="status" className="mt-3 text-sm text-slate-300">{view.focus.coverage}</p> : null}
-          {view.focus.items.length ? <div className="mt-4 grid gap-3">
-            {view.focus.items.map((item, index) => <article key={index} className="rounded-2xl border border-slate-700 p-4">
-              <h3 className="font-semibold">{item.title}</h3>
-              {item.meta ? <p className="mt-1 text-xs text-cyan-200">{item.meta}</p> : null}
-              {item.detail ? <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p> : null}
-              {item.evidence ? <details className="mt-3 rounded-xl border border-slate-700 p-3">
-                <summary className="min-h-11 cursor-pointer content-center font-semibold focus-visible:outline-2 focus-visible:outline-cyan-200">Evidencia permitida · {item.title}</summary>
-                <dl className="mt-3 space-y-2 break-words text-sm text-slate-300">
-                  <div><dt>Fuente autorizada</dt><dd>{item.evidence.source}</dd></div>
-                  <div><dt>Origen declarado por el registro</dt><dd>{item.evidence.reportedSource}</dd></div>
-                  <div><dt>Actualización del registro</dt><dd>{item.evidence.observedAt}</dd></div>
-                  <div><dt>Lectura del lote</dt><dd>{item.evidence.readAt}</dd></div>
-                </dl>
-                <p className="mt-3 text-xs leading-5 text-slate-400">Esta evidencia describe el registro autorizado. La fecha de lectura no certifica su vigencia ni abre documentos originales.</p>
-              </details> : null}
-            </article>)}
-          </div> : <p className="mt-4 text-sm text-slate-300">No hay elementos visibles para tu cuenta en esta consulta.</p>}
-        </section> : null}
-
-        {available.length || alternatives.length || submenuParents.length ? <section aria-labelledby="available-heading" className="mt-6">
-          <h2 id="available-heading" className="text-lg font-bold">También puedes abrir</h2>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <nav aria-label="Accesos de Mi TORO" className={styles.jump}>
+          {menu ? <a href="#available-heading">Buscar y proyectos</a> : null}
+          {canViewOwnerAttention(view.context) ? <a href="#owner-attention-heading">Hoy y Finance</a> : null}
+          {hotelAllowed ? <a href="#hotel-heading">Equipo y herramientas</a> : null}
+        </nav>
+        <div className={styles.layout}>
+          <div className={styles.primary}>
+        {available.length || alternatives.length || submenuParents.length ? <section aria-labelledby="available-heading" className={styles.panel}>
+          <h2 id="available-heading" tabIndex={-1} className="text-lg font-bold">Buscar y consultas</h2>
+          <div className={styles.menu}>
             {available.map(item => <Link key={item.key} href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
               className="rounded-2xl border border-slate-700 p-4 hover:border-cyan-300/50 focus-visible:outline-2 focus-visible:outline-cyan-200">
               <span className="font-semibold">{item.label} →</span>
@@ -206,8 +157,67 @@ export default async function MyToroPage({
             capabilityAlternatives={view.capabilityAlternatives} /> : null}
         </section> : null}
 
-        <section className="mt-5 space-y-3" aria-label="Ayuda y opciones pendientes">
-          <details className="rounded-2xl border border-slate-700 bg-slate-900/30 p-4">
+        {view.focus ? <section aria-labelledby="focus-heading" className={styles.panel}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div><p className="text-xs text-cyan-200">Consulta</p><h2 id="focus-heading" tabIndex={-1} className="mt-1 text-xl font-bold">{view.focus.label}</h2></div>
+            <Link href="/my-toro#available-heading" prefetch={false} className={actionClass + " border border-slate-700"}>Volver al menú</Link>
+          </div>
+          {view.focus.coverage ? <p role="status" className="mt-3 text-sm text-slate-300">{view.focus.coverage}</p> : null}
+          {view.focus.items.length ? <div className={styles.projectGrid}>
+            {view.focus.items.map((item, index) => <article key={index} className={styles.project}>
+              <h3 className="font-semibold">{item.title}</h3>
+              {item.meta ? <p className="mt-1 text-xs text-cyan-200">{item.meta}</p> : null}
+              {item.detail ? <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p> : null}
+              {item.evidence ? <details className={styles.evidence}>
+                <summary className="min-h-11 cursor-pointer content-center font-semibold focus-visible:outline-2 focus-visible:outline-cyan-200">Evidencia permitida · {item.title}</summary>
+                <dl className={styles.fields}>
+                  <div><dt>Fuente autorizada</dt><dd>{item.evidence.source}</dd></div>
+                  <div><dt>Origen declarado por el registro</dt><dd>{item.evidence.reportedSource}</dd></div>
+                  <div><dt>Actualización del registro</dt><dd>{item.evidence.observedAt}</dd></div>
+                  <div><dt>Lectura del lote</dt><dd>{item.evidence.readAt}</dd></div>
+                </dl>
+                <p className="mt-3 text-xs leading-5 text-slate-400">Esta evidencia describe el registro autorizado. La fecha de lectura no certifica su vigencia ni abre documentos originales.</p>
+              </details> : null}
+            </article>)}
+          </div> : <p className="mt-4 text-sm text-slate-300">No hay elementos visibles para tu cuenta en esta consulta.</p>}
+        </section> : null}
+
+        {canViewOwnerAttention(view.context) ? (
+          <Suspense fallback={<p role="status" className="mt-5 text-sm text-slate-300">Cargando prioridades…</p>}>
+            <OwnerAttentionPanel context={view.context} />
+          </Suspense>
+        ) : null}
+          </div>
+          <aside className={styles.sidebar} aria-label="Accesos y cuenta">
+
+        {hotelAllowed ? <section aria-labelledby="hotel-heading" className={styles.panel}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="hotel-heading" className="text-xl font-semibold">Equipo y herramientas</h2>
+              <p className="mt-1 text-sm text-slate-300">Accesos revisados para tu contexto.</p>
+            </div>
+            <Link href="/my-toro/herramientas" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+          {hotelLinks.length ? <>
+            <nav aria-label="Herramientas del hotel" className={styles.links}>
+              {hotelLinks.map(link => <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
+                className={styles.tool}>
+                <div className="flex items-start justify-between gap-2">
+                  <strong>{link.label}</strong><span aria-label="abre otra pestaña" className="text-cyan-300">↗</span>
+                </div>
+                <small>{quickInfo[link.id]?.detail}</small>
+                <small>{quickInfo[link.id]?.system}</small>
+              </a>)}
+            </nav>
+            <p className={styles.note}>Estos botones abren tus herramientas. Cada una puede pedir su propia sesión.</p>
+          </> : <div role="status" className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-4">
+            <p className="font-semibold text-amber-100">{directory?.state === "denied" ? "Los accesos no están habilitados para esta sesión." : "La lista de accesos no está disponible ahora."}</p>
+            <p className="mt-1 text-sm text-slate-300">Puedes abrir la guía del turno y volver a intentar cargar los accesos.</p>
+          </div>}
+        </section> : null}
+
+        <section className="space-y-3" aria-label="Ayuda y opciones pendientes">
+          <details className={styles.panel}>
             <summary className="min-h-11 cursor-pointer content-center font-semibold">Qué falta por conectar{pending.length ? ` · ${pending.length} opciones` : ""}</summary>
             <p className="mt-2 text-sm leading-6 text-slate-300">{hotelAllowed ? "Cobros y facturación siguen pendientes de validar. Para ocupación, pagos y habitaciones listas, consulta el sistema y confirma con el equipo." : "Aquí aparecerán las opciones cuando estén disponibles para tu cuenta."}</p>
             {pending.length ? <ul className="mt-3 flex flex-wrap gap-2">{pending.map(item => <li key={item.key} className="rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-300">{item.label} · pendiente</li>)}</ul> : null}
@@ -231,6 +241,8 @@ export default async function MyToroPage({
             </details>
           </details>
         </section>
+          </aside>
+        </div>
       </div>
     </main>
     </>

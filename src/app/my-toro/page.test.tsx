@@ -43,7 +43,7 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   if (reason === "inactive") data.context.membership!.status = "suspended";
   if (reason === "context_choice") data.state = "context_choice_required";
   mocks.menu.mockResolvedValue(data);
-  expect(await render()).not.toContain("Tu hotel, a mano");
+  expect(await render()).not.toContain("Equipo y herramientas");
   expect(mocks.directory).not.toHaveBeenCalled();
 });
 
@@ -81,6 +81,14 @@ it("keeps available consultations and safe alternatives as separate anchors", as
   expect(html).toContain('href="/my-toro?focus=projects"');
   expect(html).not.toMatch(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a\b/);
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
+});
+
+it("keeps DreamTeam as reviewed navigation inside the compact Portal without claiming shared login", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({state:"ready",links:[{id:"LINK-086",label:"Ver equipo",url:"https://dream-team-public.vercel.app/dreamteam/ingresar"}]});
+  const html=await render();expect(html).toContain("DreamTeam · TORO People");
+  expect(html).toContain("Equipo · sesión propia");expect(html).toContain("Cada una puede pedir su propia sesión");
+  expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
 });
 
 it("keeps a usable submenu reachable even when its parent has no direct consultation", async () => {

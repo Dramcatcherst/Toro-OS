@@ -11,7 +11,7 @@
 .navigation a:hover { background: #192a40; }
 .header a:focus-visible, .page a:focus-visible { outline: 2px solid #9acbff; outline-offset: 4px; }
 .page { background: #0d1728; min-height: calc(100vh - 80px); color: #e2e8f0; }
-.content { max-width: 1240px; margin: 0 auto; padding: 40px 32px 48px; }
+.content { max-width: 1240px; margin: 0 auto; padding: 28px 24px 36px; }
 .eyebrow { color: #a3bfdf; font-size: 11px; font-weight: 650; letter-spacing: .16em; text-transform: uppercase; }
 .hero { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; }
 .hero h1 { margin: 12px 0; color: #f8fafc; font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -.035em; }
@@ -20,8 +20,8 @@
 .contextNote { margin-top: 28px; border: 1px solid #31425b; border-left: 3px solid #8aadd5; padding: 14px 18px; border-radius: 8px; background: #122139; color: #b9c8dc; font-size: 13px; line-height: 1.7; }
 .sectionTitle { font-weight: 600; font-size: 18px; color: #f1f5f9; margin-top: 34px; }
 .sectionNote { font-size: 13px; color: #9fafc3; line-height: 1.8; margin-top: 6px; }
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
-.card { display: flex; flex-direction: column; min-width: 0; background: #111e31; border: 1px solid #2a3b53; border-radius: 12px; padding: 22px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.card { display: flex; flex-direction: column; min-width: 0; background: #111e31; border: 1px solid #2a3b53; border-radius: 12px; padding: 16px; }
 .cardTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .icon { display: inline-flex; color: #9fbcde; padding: 10px; border: 1px solid #3c536e; background: #192c45; border-radius: 8px; }
 .number { color: #8c9db4; font-size: 11px; letter-spacing: .08em; }

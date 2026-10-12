@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { loadHotelDirectory } from "@/features/tools/server";
 import { PortalHeader } from "@/features/portal/portal-header";
+import styles from "../my-toro.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -17,8 +18,8 @@ export default async function ToolsPage() {
   const view = await loadHotelDirectory();
   const links = view.state === "ready" ? view.links : [];
   return <>{view.account || view.state === "ready" ? <PortalHeader current="tools" scopeLabel="Dreamcatcher" /> : null}
-    <main className="min-h-screen bg-slate-950 px-5 py-8 text-slate-100">
-    <div className="mx-auto max-w-5xl">
+    <main className="min-h-screen bg-[#0d1728] text-slate-100">
+    <div className={styles.content}>
       <Link href="/my-toro" className="text-cyan-200 underline">← Mi TORO</Link>
       <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-cyan-200">Dreamcatcher · Operación del hotel</p>
       <h1 className="mt-2 text-3xl font-bold">Tu turno, paso a paso</h1>
@@ -30,8 +31,8 @@ export default async function ToolsPage() {
         <Link className="mt-4 inline-block text-cyan-200 underline" href={view.state === "denied" ? "/login?next=/my-toro/herramientas" : "/my-toro"}>{view.state === "denied" ? "Entrar y volver aquí" : "Volver a Mi TORO"}</Link>
       </section> : null}
       {view.state === "ready" || view.account ? <>
-        <nav aria-label="Tareas del turno" className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {shiftSteps.map(step => <section key={step.title} className="flex flex-col rounded-2xl border border-slate-700 bg-slate-900 p-5">
+        <nav aria-label="Tareas del turno" className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {shiftSteps.map(step => <section key={step.title} className={styles.panel + " flex flex-col"}>
             <h2 className="text-lg font-bold">{step.title}</h2>
             <p className="mt-2 flex-1 text-sm leading-6 text-slate-300">{step.text}</p>
             <div className="mt-4 flex flex-col gap-3">{links.filter(link => step.ids.includes(link.id)).map(link => <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
