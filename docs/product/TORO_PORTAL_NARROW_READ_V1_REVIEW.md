@@ -1,6 +1,14 @@
 # Portal TORO: propuesta de lectura revisada
 
-**Decisión técnica: preparada para solicitar autorización acotada; NO APLICAR sin aprobación explícita.** Proyecto `abtyrbqlqbsastmridzp`. Este documento corrige y sustituye la propuesta anterior sobre Kross. Mi TORO conserva el Portal único, su Plan y la presentación corporativa.
+**Estado actual: SQL APLICADO con autorización humana; QA local de sesión real VERIFICADA — 11/10/2026, 19:45 Costa Rica.** Proyecto `abtyrbqlqbsastmridzp`. Este documento corrige y sustituye la propuesta anterior sobre Kross. Mi TORO conserva el Portal único, su Plan y la presentación corporativa.
+
+## Cierre autorizado vigente
+
+Respuesta recibida: «Autorizar SQL exacto y QA local». Aplicación exacta SHA-256 `921a2329976b5e6da8f2e14ea46dbca80c7e4717df28913a27188d79515b3b19`; migración `20261012012726` / `portal_narrow_read_v1_authorized_20261011` en el proyecto canónico. Las11 verificaciones de readback confirmaron cuerpos/roles/grants/RLS y Kross/helper intactos; sin escritores ni nuevas cuentas/filas. Las fuentes reales se probaron con la sesión existente Dirección/ADMIN y el transporte RPC temporal solo en127.0.0.1:3047. Hoy leyó47/72/148 filas con límites100/150/200,50 mostrados de145 seleccionados y cobertura parcial explícita; Cerebro cargó19 objetos/18 relaciones sin demo. Fecha CR11/10/2026, ambas vistas390px sin desborde, retorno al mismo Portal. Servidor detenido y viewport restaurado.
+
+Se conserva el código y las641 pruebas registradas/build/auditoría, sin repetir baterías. No se publicaron cambios del Portal. Siguen pendientes menú/Buscar/evidencia, segunda identidad real y aceptación global; no se guardaron importes/credenciales/contenido de huéspedes. El SQL aprobado conserva bytes y encabezado histórico de borrador; **no reejecutarlo**. Rollback preparado y probado localmente, no ejecutado contra Supabase.
+
+La siguiente unidad usa solo las RPC/permisos ya autorizados para cerrar el recorrido local permitido. Todo SQL/grant adicional requiere su alcance específico. Las secciones siguientes conservan el detalle técnico de la revisión previa; sus advertencias de autorización/aplicación pendiente son históricas y quedan sustituidas por este cierre.
 
 ## Corrección material del diagnóstico
 
