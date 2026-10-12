@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { resolveToroContextWithSupabase } from "@/features/context/resolver";
+import { resolveToroContextWithSupabase, type ToroContextFailure } from "@/features/context/resolver";
 import { isPortalDeployment } from "@/lib/server/public-demo";
 import { getSupabasePublicConfig } from "@/lib/supabase/env";
 import { safeNextPath } from "./safe-next";
@@ -14,6 +14,10 @@ import { safeNextPath } from "./safe-next";
 export const DREAMTEAM_LOGIN_ENDPOINT = "https://dream-team-public.vercel.app/dreamteam/api/auth/login";
 const CANONICAL_ORIGIN = "https://abtyrbqlqbsastmridzp.supabase.co";
 const COOKIE_NAME = /^sb-abtyrbqlqbsastmridzp-auth-token(?:\.[0-5])?$/;
+const verificationCodes: Record<ToroContextFailure, string> = {
+  auth_identity: "PV01", password_change: "PV02", session_transport: "PV03", session_policy: "PV04",
+  role_transport: "PV05", role_shape: "PV06", organization_membership: "PV07", employee_context: "PV08",
+};
 const input = z.object({
   identifier: z.string().trim().min(3).max(254).refine(value =>
     /^[a-zA-Z0-9._-]{3,64}$/.test(value) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)),
@@ -93,9 +97,14 @@ export async function dreamTeamLogin(request: Request) {
     } });
     // Validate against Auth, active roles and the existing DreamTeam session RPC
     // before making any provider cookie usable on this host.
-    const context = await resolveToroContextWithSupabase(supabase);
+    let verificationCode = "PV00";
+    const context = await resolveToroContextWithSupabase(supabase, {}, undefined, code => {
+      verificationCode = verificationCodes[code];
+    });
     if (!context || (!context.orgId && !context.requiresContextChoice)) {
-      return reply("No pudimos verificar tu acceso. Revisa tu sesión en DreamTeam.", 403);
+      // Only a fixed diagnostic code; never log identity, provider errors or cookies.
+      console.warn("[TORO portal login] verification failed", { code: verificationCode });
+      return reply(`La contraseña fue aceptada, pero TORO no pudo validar la sesión. Referencia: ${verificationCode}.`, 403);
     }
     const response = NextResponse.json({ ok: true, nextPath: safeNextPath(credentials.nextPath ?? null) },
       { headers: { "Cache-Control": "private, no-store, max-age=0" } });
