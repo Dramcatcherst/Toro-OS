@@ -18,6 +18,7 @@ import { canReadHotelDirectory } from "@/features/tools/directory";
 import { loadHotelDirectory } from "@/features/tools/server";
 import styles from "./my-toro.module.css";
 import { PortalToolLinks } from "@/features/tools/portal-tool-links";
+import { isPortalDeployment } from "@/lib/server/public-demo";
 
 const profileLabels: Record<string, string> = {
   owner_executive: "Dirección",
@@ -214,7 +215,7 @@ export default async function MyToroPage({
               <div><dt className="text-slate-400">Tu perfil</dt><dd className="mt-1">{roleLabel}</dd></div>
             </dl>
             <p className="mt-4 text-sm leading-6 text-slate-300">Ya tienes sesión en TORO. Si otra herramienta pide acceso, usa tu cuenta de ese servicio. Entrar aquí no inicia sesión automáticamente en las demás.</p>
-            <Link href="/onboarding" className={actionClass + " mt-3 border border-slate-700 text-cyan-200"}>Revisar mi perfil</Link>
+            {!isPortalDeployment() ? <Link href="/onboarding" className={actionClass + " mt-3 border border-slate-700 text-cyan-200"}>Revisar mi perfil</Link> : null}
             {view.profileSummary.length ? <details className="mt-4 border-t border-slate-700 pt-3">
               <summary className="min-h-11 cursor-pointer content-center text-sm text-slate-300">Información de mi perfil</summary>
               <dl className="mt-3 grid gap-3 sm:grid-cols-3">{view.profileSummary.map(item => <div key={item.label}><dt className="text-xs text-slate-400">{item.label}</dt><dd className="mt-1 font-semibold">{item.value}</dd>{item.detail ? <dd className="mt-1 text-xs text-slate-400">{item.detail}</dd> : null}</div>)}</dl>
