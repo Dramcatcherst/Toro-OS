@@ -23,6 +23,7 @@ it("does not query or expose the hotel directory without a session", async () =>
   expect(mocks.directory).not.toHaveBeenCalled();
   expect(html).toContain("/login?next=/my-toro");
   expect(html).not.toContain("Herramientas del hotel");
+  expect(html).not.toContain("Hoy en Santa Teresa");
 });
 
 it.each(["other_org", "inactive", "context_choice"])("does not load hotel links for %s", async reason => {
@@ -31,7 +32,9 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   if (reason === "inactive") data.context.membership!.status = "suspended";
   if (reason === "context_choice") data.state = "context_choice_required";
   mocks.menu.mockResolvedValue(data);
-  expect(await render()).not.toContain("Tu hotel, a mano");
+  const html = await render();
+  expect(html).not.toContain("Tu hotel, a mano");
+  expect(html).not.toContain("Hoy en Santa Teresa");
   expect(mocks.directory).not.toHaveBeenCalled();
 });
 
@@ -83,4 +86,14 @@ it("keeps a usable submenu reachable even when its parent has no direct consulta
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
   expect(html).toContain("Dinero QA</span>");
   expect(html).not.toContain("Dinero QA · pendiente");
+});
+
+it("shows the honest daily environment state only in the authorized hotel context", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = await render();
+  expect(html).toContain("Hoy en Santa Teresa");
+  expect(html).toContain("Sin reporte diario verificado");
+  expect(html).toContain("Mareas · MIO-CIMAR");
+  expect(html).not.toContain("Puntarenas · marea alta");
 });
