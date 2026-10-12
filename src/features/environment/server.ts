@@ -1,18 +1,21 @@
 import "server-only";
+import { emptyMoon, moonRequestDate, projectMoon, type MoonView } from "./moon";
+import { readBoundedText } from "./transport";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { canReadHotelDirectory, DIRECTORY_SCOPE } from "@/features/tools/directory";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { projectDates, type DatesView } from "./dates";
 import { emptyWeather, IMN_URLS, localDay, parseImnRegional, type WeatherView } from "./weather";
 
-export type DailyEnvironmentView = { weather: WeatherView; dates: DatesView };
+export type DailyEnvironmentView = { weather: WeatherView; dates: DatesView; moon: MoonView };
 export const emptyEnvironment = (): DailyEnvironmentView => ({
-  weather: emptyWeather(), dates: { state: "unavailable", items: [], truncated: false },
+  moon: emptyMoon(), weather: emptyWeather(), dates: { state: "unavailable", items: [], truncated: false },
 });
 type DateRead = { events: unknown[]; holidays: unknown[]; truncated: boolean };
 export type EnvironmentDependencies = {
   readDates: () => Promise<DateRead>;
   readWeather: (now: number) => Promise<WeatherView>;
+  readMoon?: (now: number) => Promise<MoonView>;
   now: () => number;
 };
 export async function loadDailyEnvironmentWithDependencies(
@@ -20,10 +23,12 @@ export async function loadDailyEnvironmentWithDependencies(
 ): Promise<DailyEnvironmentView | null> {
   if (!canReadHotelDirectory(context)) return null;
   const now = dependencies.now();
-  const [weather, dates] = await Promise.allSettled([
+  const [weather, dates, moon] = await Promise.allSettled([
     dependencies.readWeather(now), dependencies.readDates(),
+    dependencies.readMoon ? dependencies.readMoon(now) : Promise.resolve(emptyMoon()),
   ]);
   return {
+    moon: moon.status === "fulfilled" ? moon.value : emptyMoon(),
     weather: weather.status === "fulfilled" ? weather.value : emptyWeather(),
     dates: dates.status === "fulfilled" ? {
       state: "ready", truncated: dates.value.truncated,
@@ -40,25 +45,11 @@ async function readImn(now: number): Promise<WeatherView> {
   try {
     for (const source of IMN_URLS) {
       try {
-        const response = await fetch(source, { signal: controller.signal, redirect: "error", cache: "no-store" });
+        const response = await fetch(source, { signal: controller.signal, redirect: "error", next: { revalidate: 600 } });
         if (!response.ok || !response.headers.get("content-type")?.includes("text/html") || !response.body) continue;
-        const reader = response.body.getReader();
-        const chunks: Uint8Array[] = [];
-        let total = 0;
-        try {
-          while (true) {
-            const chunk = await reader.read();
-            if (chunk.done) break;
-            total += chunk.value.byteLength;
-            if (total > 1_000_000) { await reader.cancel(); break; }
-            chunks.push(chunk.value);
-          }
-        } finally { reader.releaseLock(); }
-        if (total > 1_000_000) continue;
-        const bytes = new Uint8Array(total);
-        let offset = 0;
-        for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-        const view = parseImnRegional(new TextDecoder().decode(bytes), source, now);
+        const html = await readBoundedText(response);
+        if (html === null) continue;
+        const view = parseImnRegional(html, source, now);
         if (view.state === "ready") return view;
         if (view.state === "stale") last = view;
       } catch { if (controller.signal.aborted) break; }
@@ -66,12 +57,27 @@ async function readImn(now: number): Promise<WeatherView> {
     return last;
   } finally { clearTimeout(timer); }
 }
+async function readMoon(now: number): Promise<MoonView> {
+  const requestedDate = moonRequestDate(now);
+  const url = "https://aa.usno.navy.mil/api/moon/phases/date?date=" + requestedDate + "&nump=12";
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 6000);
+  try {
+    const response = await fetch(url, { signal: controller.signal, redirect: "error",
+      next: { revalidate: 3600 } });
+    if (!response.headers.get("content-type")?.includes("json")) return emptyMoon();
+    const text = await readBoundedText(response, 100_000);
+    if (text === null) return emptyMoon();
+    return projectMoon(JSON.parse(text), requestedDate, now);
+  } catch { return emptyMoon(); }
+  finally { clearTimeout(timer); }
+}
 export async function loadDailyEnvironment(context: ToroResolvedContext | null): Promise<DailyEnvironmentView | null> {
   // Auth guard runs before any DB client or external request; uses existing grants.
   if (!canReadHotelDirectory(context)) return null;
   const now = Date.now();
   return loadDailyEnvironmentWithDependencies(context, {
-    now: () => now, readWeather: readImn,
+    now: () => now, readWeather: readImn, readMoon,
     readDates: async () => {
       const client = await createServerSupabaseClient(); // user session / RLS, never service role
       const today = localDay(now), through = localDay(now + 30 * 86_400_000);
