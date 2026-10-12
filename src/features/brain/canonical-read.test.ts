@@ -1,4 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+afterEach(() => vi.unstubAllEnvs());
 
 const { createServerSupabaseClientMock } = vi.hoisted(() => ({
   createServerSupabaseClientMock: vi.fn(),
@@ -233,6 +235,7 @@ function buildScopedClient() {
 
 describe("loadCanonicalBrainReadSlice isolation", () => {
   beforeEach(() => {
+    vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", "true");
     createServerSupabaseClientMock.mockReset();
   });
 

@@ -416,19 +416,22 @@ brand:
   generic_replacement_bull_allowed: false
   bullfighting_or_violent_imagery_allowed: false
   current_master_logo:
-    library_path: /TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png
+    asset_key: toro_logo_master_v1
+    authority: docs/product/TORO_BRAND_CONTRACT.md
+    library_path: /TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png
     dimensions: 1536x1536
-    sha256: 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98
-  current_master_isotype:
+    sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
+  historical_isotype_reference:
     library_path: /TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png
     dimensions: 1536x1536
     sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
+    status: historical_filename_reference_not_an_additional_current_master
   legacy_source_artwork:
     repository: Dramcatcherst/toro-os-v88-new
     asset: public/assets/toro-azul-logo.jpg
     registry_entry: BRAND-005
     status: historical_source_reference
-  brand_manifest: /TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
+  historical_brand_manifest: /TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
   palette_approximation_from_current_master:
     deep_navy: "#020C1E"
     midnight: "#010511"

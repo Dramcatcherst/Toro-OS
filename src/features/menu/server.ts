@@ -5,6 +5,9 @@ import toolboxManifest from "../../../data/toro_role_toolbox_v1.json";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
+import { loadCanonicalBrainReadSliceWithClient, type CanonicalBrainReadSlice } from "@/features/brain/canonical-read";
+import { portalProjectFocus } from "./portal-projects";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
@@ -320,12 +323,14 @@ export type ToroCapabilityFocusItem = {
   title: string;
   meta?: string;
   detail?: string;
+  evidence?: { source: string; reportedSource: string; observedAt: string; readAt: string };
 };
 
 export type ToroCapabilityFocus = {
   capability: string;
   label: string;
   items: ToroCapabilityFocusItem[];
+  coverage?: string;
 };
 
 const FOCUSABLE_CAPABILITIES = new Set([
@@ -842,8 +847,20 @@ export async function resolveCurrentToroReadOnlyMenu(
   };
 
   let supabase: SupabaseServerClient | null = null;
+  let rpcMode = false;
+  let projectSlice: CanonicalBrainReadSlice | null = null;
   try {
+    rpcMode = portalReadRpcSelected();
     supabase = await createServerSupabaseClient();
+    if (rpcMode) {
+      projectSlice = await loadCanonicalBrainReadSliceWithClient(context, supabase);
+      // The approved RPC contains projects, not tasks, cash or live reservations.
+      // Historical/partial rows are inspectable without claiming current readiness.
+      if ("projects.status" in baseline && projectSlice.projects.length > 0) {
+        capabilityStates = { ...baseline, "projects.status": "READ_ONLY" };
+        sourceReadiness = { readyReads: ["Proyectos · lectura parcial"], blockedReads: ["Otras fuentes de esta vista"] };
+      }
+    } else {
     const [snapshot, summary] = await Promise.all([
       loadMenuSourceSnapshot(context, supabase),
       loadProfileSummary(context, discoveryMenu?.profileId, supabase),
@@ -852,6 +869,7 @@ export async function resolveCurrentToroReadOnlyMenu(
     capabilityStates = evaluated.states;
     sourceReadiness = evaluated.readiness;
     profileSummary = summary;
+    }
   } catch {
     // Fail closed: identity can still resolve, but no capability becomes
     // readable when source probing itself is unavailable.
@@ -893,12 +911,17 @@ export async function resolveCurrentToroReadOnlyMenu(
       (candidate) => candidate.capability === focusCapability,
     );
     if (item) {
+      if (rpcMode) {
+        focus = item.capability === "projects.status" && projectSlice
+          ? portalProjectFocus(projectSlice, item.label) : null;
+      } else {
       focus = await loadCapabilityFocus(
         context,
         focusCapability,
         item.label,
         supabase,
       );
+      }
     }
   }
 
@@ -908,6 +931,9 @@ export async function resolveCurrentToroReadOnlyMenu(
       capabilityNote(item.capability, item.state),
     ]),
   );
+  if (rpcMode && capabilityStates["projects.status"] === "READ_ONLY") {
+    capabilityNotes["projects.status"] = "Proyectos del lote autorizado; cobertura parcial y vigencia por registro.";
+  }
   const capabilityAlternatives = buildSafeAlternatives(menu);
 
   return {

@@ -158,7 +158,7 @@ function Explorer({ view, scopeKey }: { view: BrainClientView; scopeKey: string 
     (opener.current?.isConnected ? opener.current : fallback.current)?.focus();
   }
   const navigation: [BrainFocus, string, typeof Compass][] = [["all", m.title, Compass], ["attention", m.today, CalendarDays], ["projects", m.plan, FolderKanban], ["portfolio", m.portfolio, Building2]];
-  return <main className={styles.shell} data-theme={theme ?? (dark ? "dark" : "light")} lang={locale}>
+  return <main id="portal-content" tabIndex={-1} className={styles.shell} data-theme={theme ?? (dark ? "dark" : "light")} lang={locale}>
     <header className={styles.header}>
       <strong className={styles.brand}>TORO</strong><h1>{m.title}</h1>
       <label className={styles.search}><Search size={18} aria-hidden="true" /><span className={styles.srOnly}>{m.search}</span>
