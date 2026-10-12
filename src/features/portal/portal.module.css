@@ -269,3 +269,6 @@
 .weatherLink { display:flex; align-items:center; gap:5px; min-height:44px; color:#d1e7f6; font-size:12px; text-decoration:none; }
 .weatherLink svg { color:#f0cb71; }
 @media(max-width:619px) { .headerUtilities { grid-column:2; grid-row:2; justify-content:flex-end; gap:8px; } .headerUtilities .clock { margin:0; } .headerUtilities .clock svg { display:none; } }
+
+.grid > :only-child { grid-column:1 / -1; }
+.grid:has(> :only-child) .cardTop { flex-direction:row; align-items:center; }
