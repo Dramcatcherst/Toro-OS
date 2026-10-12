@@ -1,7 +1,10 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 import { evaluatePolicy } from "@/lib/policy-engine";
 
 export async function POST(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const body = await request.json().catch(() => ({}));
   return NextResponse.json({
     mode: "read_only",

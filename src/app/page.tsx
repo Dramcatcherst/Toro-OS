@@ -9,6 +9,11 @@ import { getApprovalLedger } from "@/lib/server/approval-ledger";
 import { getConnectorHealth } from "@/lib/server/connector-health";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 import type { SourceMeta } from "@/lib/toro-types";
+import { redirect } from "next/navigation";
+import { internalCapabilityEnabled, isPublicDemo } from "@/lib/server/public-demo";
+
+// Resolve deployment/capability policy per request, never from a cached legacy view.
+export const dynamic = "force-dynamic";
 
 const navIcons = [Activity, Brain, Blocks, Bot, CircleDollarSign, Megaphone, FileText, Search, RadioTower, Send, Workflow, Layers3, Database, ShieldCheck, ClipboardCheck, Monitor, Code2, Settings];
 
@@ -101,6 +106,8 @@ async function getBlueprintFeed() {
 }
 
 export default async function Home() {
+  if (isPublicDemo()) redirect("/brain");
+  if (!internalCapabilityEnabled("TORO_LEGACY_OPERATIONS_ENABLED")) redirect("/my-toro");
   const approvalLedger = await getApprovalLedger();
   const connectorHealth = await getConnectorHealth();
   const criticalQueue = queuedActions.filter((action) => action.risk === "Critical").length;

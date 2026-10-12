@@ -42,7 +42,7 @@ export function MyToroCommandBar({
     .slice(0, currentFocus || activeSubmenuKey ? 2 : 3);
 
   function navigateToCapability(capability: string) {
-    router.push(`/my-toro?focus=${encodeURIComponent(capability)}`);
+    router.push(`/my-toro?focus=${encodeURIComponent(capability)}#focus-heading`);
   }
 
   function handleValue(raw: string) {
@@ -146,7 +146,7 @@ export function MyToroCommandBar({
   }
 
   return (
-    <section className="mt-5 rounded-[2rem] border border-cyan-300/15 bg-slate-950/75 p-4 md:p-5">
+    <section className="mt-3 border-t border-slate-700 pt-3">
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-200">
         <MessageCircle className="h-4 w-4" /> Buscar una opción
       </div>
@@ -156,17 +156,17 @@ export function MyToroCommandBar({
           : "Escribe qué quieres consultar. Esta búsqueda abre las opciones de tu menú."}
       </p>
 
-      <form onSubmit={submit} className="mt-4 flex gap-2">
+      <form onSubmit={submit} className="mt-3 flex gap-2">
         <input
           aria-label="Buscar una opción de TORO"
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder='Ej.: "proyectos", "2" o "quiero ver decisiones"'
-          className="min-w-0 flex-1 rounded-2xl border border-slate-700 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-cyan-300/40"
+          className="min-w-0 flex-1 rounded-lg border border-slate-700 bg-black/30 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
         />
         <button
           type="submit"
-          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cyan-300 text-slate-950 hover:bg-cyan-200"
+          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-cyan-300 text-slate-950 hover:bg-cyan-200"
           aria-label="Buscar"
         >
           <Send className="h-4 w-4" />
@@ -220,7 +220,7 @@ export function MyToroCommandBar({
       ) : null}
 
       {feedback ? (
-        <div role="status" className="mt-3 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-100/80">
+        <div role="status" className="mt-3 rounded-lg border border-amber-300/15 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-100/80">
           <div>{feedback}</div>
           {safeAlternative ? (
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

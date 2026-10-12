@@ -1,4 +1,4 @@
-import { expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/supabase/server", () => ({ createServerSupabaseClient: vi.fn() }));
 import { loadDailyEnvironmentWithDependencies, emptyEnvironment } from "./server";
@@ -30,4 +30,14 @@ it("does not turn a source outage into 'no events'", async () => {
     readDates: async () => { throw new Error("denied"); },
   });
   expect(result?.dates.state).toBe("unavailable");
+});
+
+beforeEach(() => vi.stubEnv("TORO_DEPLOYMENT_MODE", "internal"));
+afterEach(() => vi.unstubAllEnvs());
+it("rejects operational source reads in public demo even with supplied hotel context", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "public_demo");
+  const readDates = vi.fn(), readWeather = vi.fn(), now = vi.fn();
+  expect(await loadDailyEnvironmentWithDependencies(authorizedContext(), { readDates, readWeather, now })).toBeNull();
+  expect(readDates).not.toHaveBeenCalled();
+  expect(readWeather).not.toHaveBeenCalled();
 });

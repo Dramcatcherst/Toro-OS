@@ -1,6 +1,6 @@
 # TORO Brain Alegra Connector v2 — Design
 
-**Status:** Approved design; read-only tools verified; persistent sync, writer and document-custody runtime not accepted (2026-10-10)  
+**Status:** Approved design; read-only tools verified; persistent sync, writer and document-custody runtime not accepted (2026-10-10)\
 **Canonical Brain path:** Money > Accounting & Tax > Alegra Connector  
 **Canonical knowledge:** `operations.knowledge_items/toro_alegra_connector_v2`
 

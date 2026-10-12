@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -139,6 +140,7 @@ export async function resolveToroContextWithSupabase(
   request: ToroContextRequest = {},
   accessToken?: string,
 ) {
+  if (isPublicDemo()) return null;
   const {
     data: { user },
     error: userError,
@@ -279,6 +281,7 @@ export async function resolveToroContextWithSupabase(
 export const resolveToroContext: ResolveToroContext = async (
   request: ToroContextRequest = {},
 ) => {
+  if (isPublicDemo()) return null;
   const supabase = await createServerSupabaseClient();
   return resolveToroContextWithSupabase(supabase, request);
 };

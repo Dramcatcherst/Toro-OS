@@ -1,4 +1,5 @@
 import "server-only";
+import { isPublicDemo } from "@/lib/server/public-demo";
 import { emptyMoon, moonRequestDate, projectMoon, type MoonView } from "./moon";
 import { readBoundedText } from "./transport";
 import type { ToroResolvedContext } from "@/features/context/types";
@@ -21,7 +22,7 @@ export type EnvironmentDependencies = {
 export async function loadDailyEnvironmentWithDependencies(
   context: ToroResolvedContext | null, dependencies: EnvironmentDependencies,
 ): Promise<DailyEnvironmentView | null> {
-  if (!canReadHotelDirectory(context)) return null;
+  if (isPublicDemo() || !canReadHotelDirectory(context)) return null;
   const now = dependencies.now();
   const [weather, dates, moon] = await Promise.allSettled([
     dependencies.readWeather(now), dependencies.readDates(),
@@ -74,7 +75,7 @@ async function readMoon(now: number): Promise<MoonView> {
 }
 export async function loadDailyEnvironment(context: ToroResolvedContext | null): Promise<DailyEnvironmentView | null> {
   // Auth guard runs before any DB client or external request; uses existing grants.
-  if (!canReadHotelDirectory(context)) return null;
+  if (isPublicDemo() || !canReadHotelDirectory(context)) return null;
   const now = Date.now();
   return loadDailyEnvironmentWithDependencies(context, {
     now: () => now, readWeather: readImn, readMoon,

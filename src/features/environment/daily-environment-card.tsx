@@ -1,3 +1,4 @@
+import styles from "@/features/portal/portal.module.css";
 import type { DailyEnvironmentView } from "./server";
 
 // No geolocation or personal-calendar fallback. Parent mounts only after scoped auth.
@@ -8,7 +9,7 @@ export function DailyEnvironmentCard({ view }: { view?: DailyEnvironmentView | n
   const lunarTime = (at: string) => new Intl.DateTimeFormat("es-CR", { timeZone: "America/Costa_Rica", dateStyle: "short", timeStyle: "short" }).format(new Date(at));
   const partial = weather?.state === "ready" || moon?.state === "ready" || Boolean(dates?.items.length);
   return (
-    <section aria-labelledby="environment-heading" className="mt-5 rounded-3xl border border-slate-700 bg-slate-900/60 p-4 md:p-6">
+    <section aria-labelledby="environment-heading" className={styles.panel + " mt-4"}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 id="environment-heading" className="text-xl font-bold">Hoy en Santa Teresa</h2>

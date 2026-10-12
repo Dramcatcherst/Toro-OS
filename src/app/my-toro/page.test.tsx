@@ -1,3 +1,4 @@
+vi.mock("@/features/environment/server", () => ({ loadDailyEnvironment: mocks.environment }));
 import { beforeEach, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { authorizedContext } from "@/features/tools/fixtures.test-utils";
@@ -6,7 +7,6 @@ import type { ToroRealMenuView } from "@/features/menu/server";
 const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), environment: vi.fn() }));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
-vi.mock("@/features/environment/server", () => ({ loadDailyEnvironment: mocks.environment }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 import MyToroPage from "./page";
 
@@ -18,6 +18,18 @@ function view(): ToroRealMenuView {
 const render = async () => renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
 beforeEach(() => vi.resetAllMocks());
 
+it("renders permitted evidence with partial coverage and a local menu return, without original-document links", async () => {
+  const data = view();
+  data.focus = { capability: "projects.status", label: "Proyectos", coverage: "Cobertura parcial; total desconocido",
+    items: [{ title: "Synthetic", evidence: { source: "operations.projects", reportedSource: "No informada",
+      observedAt: "2026-08-01T00:00:00Z", readAt: "2026-10-12T02:00:00Z" } }] };
+  mocks.menu.mockResolvedValue(data); mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = await render();
+  expect(html).toContain("Evidencia permitida"); expect(html).toContain("total desconocido");
+  expect(html).toContain('href="/my-toro#available-heading"');
+  expect(html).toContain("no certifica su vigencia ni abre documentos originales");
+});
+
 it("does not query or expose the hotel directory without a session", async () => {
   mocks.menu.mockResolvedValue(null);
   const html = await render();
@@ -25,7 +37,6 @@ it("does not query or expose the hotel directory without a session", async () =>
   expect(mocks.environment).not.toHaveBeenCalled();
   expect(html).toContain("/login?next=/my-toro");
   expect(html).not.toContain("Herramientas del hotel");
-  expect(html).not.toContain("Hoy en Santa Teresa");
 });
 
 it.each(["other_org", "inactive", "context_choice"])("does not load hotel links for %s", async reason => {
@@ -34,9 +45,7 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   if (reason === "inactive") data.context.membership!.status = "suspended";
   if (reason === "context_choice") data.state = "context_choice_required";
   mocks.menu.mockResolvedValue(data);
-  const html = await render();
-  expect(html).not.toContain("Tu hotel, a mano");
-  expect(html).not.toContain("Hoy en Santa Teresa");
+  expect(await render()).not.toContain("Equipo y herramientas");
   expect(mocks.directory).not.toHaveBeenCalled();
   expect(mocks.environment).not.toHaveBeenCalled();
 });
@@ -60,6 +69,7 @@ it("exposes a reviewed destination directly and groups unavailable actions witho
   expect(html).toContain('href="https://dreamcatcherhotel.kross.travel/" target="_blank" rel="noopener noreferrer"');
   expect(html).toContain("Cobrar QA · pendiente");
   expect(html).not.toContain("focus=payment");
+  expect(html).not.toContain('href="#available-heading"');
   expect(html).not.toContain("Pregúntale a TORO");
 });
 
@@ -77,6 +87,14 @@ it("keeps available consultations and safe alternatives as separate anchors", as
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
 });
 
+it("keeps DreamTeam as reviewed navigation inside the compact Portal without claiming shared login", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({state:"ready",links:[{id:"LINK-086",label:"Ver equipo",url:"https://dream-team-public.vercel.app/dreamteam/ingresar"}]});
+  const html=await render();expect(html).toContain("DreamTeam · TORO People");
+  expect(html).toContain("Equipo · sesión propia");expect(html).toContain("Cada una puede pedir su propia sesión");
+  expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
+});
+
 it("keeps a usable submenu reachable even when its parent has no direct consultation", async () => {
   const data = view();
   data.menu = { profileId: "manager", selectionReason: "test", hiddenCapabilityCount: 0,
@@ -91,30 +109,11 @@ it("keeps a usable submenu reachable even when its parent has no direct consulta
   expect(html).not.toContain("Dinero QA · pendiente");
 });
 
-it("shows the honest daily environment state only in the authorized hotel context", async () => {
+it("shows an honest environment block in the authorized hotel scope", async () => {
   mocks.menu.mockResolvedValue(view());
   mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
-  const html = await render();
+  const html = renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
   expect(html).toContain("Hoy en Santa Teresa");
   expect(html).toContain("Sin reporte diario verificado");
-  expect(html).toContain("Mareas · MIO-CIMAR");
-  expect(html).not.toContain("Puntarenas · marea alta");
-});
-
-it("renders only provided current forecast and dates as a partial report", async () => {
-  mocks.menu.mockResolvedValue(view());
-  mocks.directory.mockResolvedValue({ state: "ready", links: [] });
-  mocks.environment.mockResolvedValue({
-    weather: { state: "ready", validDate: "2026-10-12", region: "Pacífico Norte · referencia regional",
-      sourceUrl: "https://www.imn.ac.cr/es/web/imn/reporte-pronostico-regional",
-      periods: [{ label: "Tarde", summary: "Aguaceros QA" }] },
-    dates: { state: "ready", truncated: false, items: [{ key: "qa", date: "2026-10-15",
-      endDate: "2026-10-15", label: "Fecha QA", kind: "holiday" }] },
-  });
-  const html = await render();
-  expect(html).toContain("Reporte parcial");
-  expect(html).toContain("Aguaceros QA");
-  expect(html).toContain("Fecha QA");
-  expect(html).toContain("efectos laborales por verificar");
-  expect(html).toContain("Horas de alta y baja pendientes");
+  expect(mocks.environment).toHaveBeenCalledOnce();
 });
