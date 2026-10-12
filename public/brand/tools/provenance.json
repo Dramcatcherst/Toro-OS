@@ -34,10 +34,19 @@
       "sha256": "48e1b1f129f5dd69a3897a2944c1a9531ad05efcd62e89feb17733a04e49cbd2",
       "bytes": 1315,
       "unchanged": true
+    },
+    {
+      "file": "wespeak.ico",
+      "source": "https://app.wespeak.pro/icon/dark/favicon.ico",
+      "sha256": "1278536f19fd91cd3910dfe92b6f1744504253580da912e06090bb05683a60be",
+      "bytes": 15406,
+      "dimensions": "16/32/48px, provider symbol observed in public login metadata",
+      "unchanged": true
     }
   ],
   "toro_master": "current master unavailable in local paths and exact Dropbox title search; no legacy substitution",
   "kross": "verified alternative observed in official home; original bold_w returned403 and was not retried",
   "google_asset": "Google generic brand, not Calendar-specific",
-  "module_symbols": "lucide navigation symbols, not official logos"
+  "module_symbols": "lucide navigation symbols, not official logos",
+  "runtime_unique_logo_bytes": 20387
 }

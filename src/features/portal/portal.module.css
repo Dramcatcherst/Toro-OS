@@ -64,7 +64,7 @@
 .toolCopy { min-width: 0; display: grid; gap: 4px; overflow-wrap: anywhere; }
 .toolCopy strong { color: #eff6ff; font-size: 13px; font-weight: 650; line-height: 1.4; }
 .toolBrand { font-size: 11px; line-height: 1.4; color: #c6dbf3; }
-.toolCopy small { color: #b4c8e1; font-size: 10px; line-height: 1.55; }
+.toolCopy small { color: #b4c8e1; font-size: 11px; line-height: 1.55; }
 .toolArrow { color: #b6d8ff; }
 .guideLink { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; margin-top: 14px; background: #254c75; border: 1px solid #7499c3; border-radius: 8px; padding: 12px; font-size: 12px; font-weight: 650; }
 .guideLink:hover { background: #32618f; }
