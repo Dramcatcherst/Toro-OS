@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Building2, Home, Network, UserRound, Wrench } from "lucide-react";
+import { ArrowUpRight, Building2, Home, Network, UserRound, Wrench, CloudSun } from "lucide-react";
 import { PortalClock } from "./portal-clock";
 import styles from "./portal.module.css";
 
@@ -23,7 +23,7 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
       <Link href="/my-toro#mi-cuenta" prefetch={false} className={styles.scope} aria-label={`Mi contexto: ${scopeLabel}`}>
         <Building2 size={16} aria-hidden="true" />{scopeLabel}
       </Link>
-      <PortalClock />
+      <div className={styles.headerUtilities}><PortalClock />{includeTools ? <a className={styles.weatherLink} href="https://www.google.com/search?q=clima+Santa+Teresa+Costa+Rica" target="_blank" rel="noopener noreferrer" aria-label="Consultar clima de Santa Teresa"><CloudSun size={17} aria-hidden="true" />Clima ↗</a> : null}</div>
       <nav aria-label="Portal TORO" className={styles.navigation}>
         {links.filter(link => includeTools || link.key !== "tools").map(({ key, href, label, Icon }) => <Link key={key} href={href} prefetch={false}
           aria-current={current === key ? "page" : undefined}>

@@ -8,6 +8,7 @@ const portalPages = new Set([
 ]);
 const portalReadApis = new Set(["/api/brain/context", "/api/brain/owner-attention"]);
 const portalAssets = new Set([
+  "/brand/tools/whatsapp-official.svg", "/brand/tools/alegra-official.svg", "/brand/tools/google-calendar-official.svg",
   "/favicon.ico", "/brand/tools/kross.png", "/brand/tools/wespeak.ico",
   "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg",
 ]);

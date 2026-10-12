@@ -8,11 +8,11 @@ export const portalToolBrands: Record<string, { name: string; title: string; det
   "LINK-002": { name: "Motor Kross", title: "Cotizar estancia", detail: "Fechas, precios y condiciones", Icon: BedDouble, logo: "/brand/tools/kross.png" },
   "LINK-178": { name: "WeSpeak", title: "Atender huéspedes", detail: "Conversaciones y solicitudes", Icon: MessagesSquare, logo: "/brand/tools/wespeak.ico" },
   "LINK-086": { name: "DreamTeam · TORO People", title: "Ver equipo", detail: "Equipo · sesión propia", Icon: Users, logo: "/brand/tools/dreamteam.svg" },
-  "LINK-056": { name: "Google Calendar", title: "Ver agenda", detail: "Agenda del hotel", Icon: CalendarDays, logo: "/brand/tools/google.svg" },
+  "LINK-056": { name: "Google Calendar", title: "Ver agenda", detail: "Agenda del hotel", Icon: CalendarDays, logo: "/brand/tools/google-calendar-official.svg" },
   "LINK-131": { name: "Dropbox", title: "Buscar documentos", detail: "Archivos del hotel", Icon: FolderOpen, logo: "/brand/tools/dropbox.svg" },
   "PORTAL-POS": { name: "Kross POS", title: "Abrir punto de venta", detail: "Consumos y cobros en Kross", Icon: CreditCard, logo: "/brand/tools/kross.png" },
-  "PORTAL-WHATSAPP": { name: "WhatsApp", title: "Abrir WhatsApp", detail: "Mensajes · envío manual", Icon: MessagesSquare, logo: null },
-  "PORTAL-ALEGRA": { name: "Alegra", title: "Abrir finanzas", detail: "Bancos, ingresos y gastos en Alegra", Icon: Wallet, logo: null },
+  "PORTAL-WHATSAPP": { name: "WhatsApp", title: "Abrir WhatsApp", detail: "Mensajes · envío manual", Icon: MessagesSquare, logo: "/brand/tools/whatsapp-official.svg" },
+  "PORTAL-ALEGRA": { name: "Alegra", title: "Abrir finanzas", detail: "Bancos, ingresos y gastos en Alegra", Icon: Wallet, logo: "/brand/tools/alegra-official.svg" },
   "PORTAL-GMAIL": { name: "Gmail", title: "Abrir correo", detail: "Notificaciones y reservas", Icon: Mail, logo: "/brand/tools/google.svg" },
   "PORTAL-DRIVE": { name: "Google Drive", title: "Abrir Drive", detail: "Documentos y hojas de cálculo", Icon: FolderOpen, logo: "/brand/tools/google.svg" },
   "PORTAL-HOME": { name: "Google Home", title: "Abrir Google Home", detail: "Dispositivos · funciones según tu cuenta", Icon: House, logo: "/brand/tools/google.svg" },
@@ -32,7 +32,7 @@ export function PortalToolLinks({ links, compact = false, wide = false, favorite
         <span className={styles.toolVisual + (brand.logo ? " " + styles.lightLogo : "")} aria-hidden="true">
           {brand.logo ? <Image src={brand.logo} alt="" width={72} height={64} unoptimized /> : <Icon size={38} strokeWidth={1.6} />}
         </span>
-        <span className={styles.toolCopy}><strong id={`${idPrefix}-${link.id}`}>{favorites ? brand.name : brand.title}</strong>
+        <span className={styles.toolCopy}><strong id={`${idPrefix}-${link.id}`}>{favorites ? brand.name.split(" ·")[0] : brand.title}</strong>
           {!favorites ? <span className={styles.toolBrand}>{brand.name}</span> : null}
           <small id={`${idPrefix}-note-${link.id}`}>{favorites ? `${brand.title} · otra pestaña` : `${brand.detail} · abre otra pestaña`}</small>
         </span>

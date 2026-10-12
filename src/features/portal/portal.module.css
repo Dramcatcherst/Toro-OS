@@ -263,3 +263,9 @@
 .loginBox [role="alert"] { color:#ffd2c6; }
 .loginBox :is(button,a,input,summary):focus-visible { outline:3px solid #f5cb76; outline-offset:3px; }
 @media (forced-colors:active) { .loginPage,.loginBox { background:Canvas; color:CanvasText; border-color:CanvasText; } }
+
+.favoriteCard .toolCopy small { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.headerUtilities { display:flex; align-items:center; gap:12px; }
+.weatherLink { display:flex; align-items:center; gap:5px; min-height:44px; color:#d1e7f6; font-size:12px; text-decoration:none; }
+.weatherLink svg { color:#f0cb71; }
+@media(max-width:619px) { .headerUtilities { grid-column:2; grid-row:2; justify-content:flex-end; gap:8px; } .headerUtilities .clock { margin:0; } .headerUtilities .clock svg { display:none; } }

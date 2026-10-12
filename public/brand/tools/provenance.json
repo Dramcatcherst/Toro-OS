@@ -42,11 +42,48 @@
       "bytes": 15406,
       "dimensions": "16/32/48px, provider symbol observed in public login metadata",
       "unchanged": true
+    },
+    {
+      "file": "whatsapp-official.svg",
+      "source": "https://static.whatsapp.net/rsrc.php/y1/r/FJbTMJqMap7.svg",
+      "sourcePage": "https://www.whatsapp.com/",
+      "sha256": "1ab6db0cc2eb55d911f151b0aa339c55b6b225efcceddb8ff2050cab1410e347",
+      "mime": "image/svg+xml",
+      "bytes": 1133,
+      "unchanged": true,
+      "originalColors": true,
+      "verifiedAt": "2026-10-12",
+      "discovery": "Published favicon link on official public website"
+    },
+    {
+      "file": "alegra-official.svg",
+      "source": "https://www.alegra.com/favicon.svg",
+      "sourcePage": "https://www.alegra.com/",
+      "sha256": "aa85f30fd739f7777dcb411564e4c40cf5a73de6927b41fdb5fd8a06ca64c396",
+      "mime": "image/svg+xml",
+      "bytes": 1790,
+      "unchanged": true,
+      "originalColors": true,
+      "verifiedAt": "2026-10-12",
+      "discovery": "Published favicon link on official public website"
+    },
+    {
+      "file": "google-calendar-official.svg",
+      "source": "https://www.gstatic.com/images/branding/productlogos/calendar_2026/v2/web/192px.svg",
+      "sourcePage": "https://workspace.google.com/products/calendar/",
+      "sha256": "7f55cd877b2261948168db3d2e9468c0cf3f07766789489e853a0f9931dff8ea",
+      "mime": "image/svg+xml",
+      "bytes": 3330,
+      "unchanged": true,
+      "originalColors": true,
+      "verifiedAt": "2026-10-12",
+      "discovery": "Calendar product logo img on official Google Workspace page"
     }
   ],
   "toro_master": "current master unavailable in local paths and exact Dropbox title search; no legacy substitution",
   "kross": "verified alternative observed in official home; original bold_w returned403 and was not retried",
-  "google_asset": "Google generic brand, not Calendar-specific",
+  "google_asset": "Original Google Calendar 2026 logo added from Google Workspace; prior generic google.svg retained",
   "module_symbols": "lucide navigation symbols, not official logos",
-  "runtime_unique_logo_bytes": 20387
+  "runtime_unique_logo_bytes": 26640,
+  "additional_original_logo_bytes": 6253
 }

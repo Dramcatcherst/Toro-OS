@@ -15,12 +15,12 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
       <Link href="/my-toro#owner-attention-heading" prefetch={false} className={styles.textLink}>Ver todas<ArrowRight size={15} aria-hidden="true" /></Link>
     </div>
     {ready ? <>
-      {projection.critical > 0 ? <p className={styles.criticalNote}>{projection.critical} con prioridad crítica en esta consulta</p> : null}
+      {projection.critical > 0 ? <p className={styles.criticalNote}>{projection.critical} señales críticas de la consulta · verificar estado en la fuente</p> : null}
       <div className={styles.pendingList}>{projection.items.slice(0, 2).map(item => {
         const href = safeEvidenceHref(item.sourceUrl);
         return <details key={item.dedupeRef} className={styles.pendingItem}>
-          <summary><span className={styles.priority} data-priority={item.priority}>{priorities[item.priority]}</span>
-            <span className={styles.pendingCopy}><strong>{item.title}</strong><small>{formatAttentionDate(item.dueDate)} · {item.state}</small></span>
+          <summary><span className={styles.priority} data-priority={item.state === "unknown" ? undefined : item.priority}>{item.state === "unknown" ? "Verificar" : priorities[item.priority]}</span>
+            <span className={styles.pendingCopy}><strong>{item.title}</strong><small>{formatAttentionDate(item.dueDate)} · {item.state === "unknown" ? "Estado por verificar" : item.state}</small></span>
             <ArrowRight size={16} aria-hidden="true" />
           </summary>
           <div className={styles.pendingDetail}>
