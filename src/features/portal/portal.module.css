@@ -217,6 +217,6 @@
   .panel, .card, .toolCard, .pendingList, .pendingItem, .scope, .searchEntry, .overviewRow, .krossSummary, .workspaceTabs button, .catalogSearch, .categorySelect select { border-color:CanvasText; }
   .cardAvailable, .toolCard, .header a, .page a, .textLink { color:LinkText; }
   .cardPending { border-style:dashed; }
-  .navigation a[aria-current], .workspaceTabs button[aria-selected="true"] { background:Highlight; color:HighlightText; border-color:Highlight; }
+  .navigation a[aria-current], .workspaceTabs button[aria-selected="true"] { background:Highlight; color:HighlightText; border-color:Highlight; forced-color-adjust:none; }
   .header a:focus-visible, .page :is(a,button,input,select,summary,[role="tabpanel"]):focus-visible { outline-color:Highlight; }
 }
