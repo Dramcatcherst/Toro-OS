@@ -66,6 +66,7 @@ it("exposes a reviewed destination directly and groups unavailable actions witho
   expect(html).toContain('href="https://dreamcatcherhotel.kross.travel/" target="_blank" rel="noopener noreferrer"');
   expect(html).toContain("Cobrar QA · pendiente");
   expect(html).not.toContain("focus=payment");
+  expect(html).not.toContain('href="#available-heading"');
   expect(html).not.toContain("Pregúntale a TORO");
 });
 

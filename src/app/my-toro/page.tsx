@@ -129,7 +129,7 @@ export default async function MyToroPage({
         </header>
 
         <nav aria-label="Accesos de Mi TORO" className={styles.jump}>
-          {menu ? <a href="#available-heading">Buscar y proyectos</a> : null}
+          {available.length || alternatives.length || submenuParents.length ? <a href="#available-heading">Buscar y proyectos</a> : null}
           {canViewOwnerAttention(view.context) ? <a href="#owner-attention-heading">Hoy y Finance</a> : null}
           {hotelAllowed ? <a href="#hotel-heading">Equipo y herramientas</a> : null}
         </nav>
