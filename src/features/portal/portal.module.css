@@ -75,6 +75,7 @@
 .toolsPanel { background: #102039; border: 1px solid #395775; border-top: 3px solid #39b2f0; border-radius: 12px; padding: 16px; min-width: 0; }
 .toolsCompact, .toolsGrid, .toolsWide { display: grid; gap: 10px; margin-top: 12px; }
 .toolsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.toolsCompact { grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); }
 .toolsWide { grid-template-columns: repeat(3,minmax(0,1fr)); }
 .toolCard { --accent: #81d6ff; display: grid; grid-template-columns: 80px minmax(0,1fr) 18px; gap: 12px; align-items: center; min-height: 110px; padding: 12px; background: #132c48; border: 1px solid #476687; border-left: 3px solid var(--accent); border-radius: 10px; text-decoration: none; transition: border-color .15s, background-color .15s; }
 .toolCard[data-tool="LINK-048"], .toolCard[data-tool="LINK-002"] { --accent: #82c5ff; }
@@ -104,7 +105,7 @@
   .headerInner { gap: 12px; }
   .scope { margin-left: auto; }
   .navigation { width: 100%; margin-left: 0; }
-  .grid, .toolsWide, .toolsCompact { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .grid, .toolsWide { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .hero { align-items: flex-start; }
   .contextNote small { display: block; margin: 4px 0 0; }
 }
