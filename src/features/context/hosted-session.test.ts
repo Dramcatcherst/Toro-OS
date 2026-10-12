@@ -23,6 +23,24 @@ function fixture({ force = false, roleRows = [{ org_id: orgA, roles: { code: "GE
 beforeEach(() => { vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal"); vi.stubGlobal("fetch", () => { throw new Error("network forbidden"); }); });
 afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 describe("Portal identity remains subject to DreamTeam session revocation", () => {
+  it("reports the failed verification boundary without account or provider data", async () => {
+    const test = fixture();
+    test.getUser.mockResolvedValue({ data: { user: null }, error: { message: "private exception" } });
+    const diagnostic = vi.fn();
+    expect(await resolveToroContextWithSupabase(test.client, {}, undefined, diagnostic)).toBeNull();
+    expect(diagnostic).toHaveBeenCalledExactlyOnceWith("auth_identity");
+  });
+  it("distinguishes a session transport failure from an explicit session denial", async () => {
+    const transport = fixture();
+    transport.rpc.mockResolvedValue({ data: null, error: { message: "private exception" } });
+    const transportDiagnostic = vi.fn();
+    expect(await resolveToroContextWithSupabase(transport.client, {}, undefined, transportDiagnostic)).toBeNull();
+    expect(transportDiagnostic).toHaveBeenCalledExactlyOnceWith("session_transport");
+    const denied = fixture({ allowed: false });
+    const denialDiagnostic = vi.fn();
+    expect(await resolveToroContextWithSupabase(denied.client, {}, undefined, denialDiagnostic)).toBeNull();
+    expect(denialDiagnostic).toHaveBeenCalledExactlyOnceWith("session_policy");
+  });
   it("checks Auth, session and active/non-revoked roles before resolving the organization", async () => {
     const test = fixture();
     const result = await resolveToroContextWithSupabase(test.client);

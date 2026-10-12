@@ -67,7 +67,7 @@ describe("fresh DreamTeam login adapter", () => {
     expect(options.signal).toBeInstanceOf(AbortSignal);
     expect(Object.keys(options.headers)).toEqual(["Content-Type", "User-Agent"]);
     expect(JSON.parse(options.body)).toEqual({ identifier: credentials.identifier, password: credentials.password, nextPath: "/" });
-    expect(mocks.context).toHaveBeenCalledWith(client);
+    expect(mocks.context).toHaveBeenCalledWith(client, {}, undefined, expect.any(Function));
     expect(await response.json()).toEqual({ ok: true, nextPath: "/portal" });
     expect(response.headers.get("cache-control")).toBe("private, no-store, max-age=0");
     const issued = response.cookies.getAll();
@@ -137,6 +137,22 @@ describe("fresh DreamTeam login adapter", () => {
   it("does not issue cookies when canonical identity/session/role verification rejects the fresh session", async () => {
     mocks.context.mockResolvedValue(null);
     await failure(await dreamTeamLogin(request()), 403);
+  });
+  it("identifies a post-password verification failure without blaming the password or leaking provider/account details", async () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    mocks.context.mockImplementation(async (_client, _request, _token, diagnose) => {
+      diagnose("auth_identity");
+      return null;
+    });
+    const response = await dreamTeamLogin(request());
+    expect(response.status).toBe(403);
+    const body = await response.json();
+    expect(body.error).toContain("La contraseña fue aceptada");
+    expect(body.error).toContain("PV01");
+    expect(JSON.stringify(body)).not.toContain(credentials.identifier);
+    expect(response.headers.get("set-cookie")).toBeNull();
+    expect(warning).toHaveBeenCalledExactlyOnceWith("[TORO portal login] verification failed", { code: "PV01" });
+    warning.mockRestore();
   });
   it("retains explicit multi-organization choice instead of selecting an organization", async () => {
     mocks.context.mockResolvedValue({ ...context, orgId: null, membership: null, requiresContextChoice: true, canUseOrganizationData: false });
