@@ -43,7 +43,38 @@ alter table operations.obligations enable row level security;
 grant select on operations.obligations to authenticated;
 grant insert,update,delete on operations.obligations to authenticated;
 create policy obligations_management_read on operations.obligations for select to authenticated using (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text, 'CONTABILIDAD'::text, 'AUDITOR'::text]));
-create table integrations.kross_snapshot_health (id uuid,org_id uuid,property_id uuid,source_name text,source_table text,snapshot_kind text,row_count integer,source_as_of timestamp with time zone,observed_at timestamp with time zone,live_required boolean,max_expected_age interval,use_as_current_state boolean,notes text,source_system text,freshness_status text,safe_for_current_state boolean);
+create table integrations.kross_snapshot_registry (id uuid,org_id uuid,property_id uuid,source_name text,source_table text,snapshot_kind text,row_count integer,source_as_of timestamp with time zone,observed_at timestamp with time zone,live_required boolean,max_expected_age interval,use_as_current_state boolean,notes text,source_system text);
+alter table integrations.kross_snapshot_registry enable row level security;
+grant select on integrations.kross_snapshot_registry to authenticated;
+create policy kross_snapshot_management_delete on integrations.kross_snapshot_registry for delete to authenticated using (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text]));
+create policy kross_snapshot_management_insert on integrations.kross_snapshot_registry for insert to authenticated with check (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text]));
+create policy kross_snapshot_management_read on integrations.kross_snapshot_registry for select to authenticated using (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text, 'JEFE_DEPARTAMENTO'::text, 'AUDITOR'::text]));
+create policy kross_snapshot_management_update on integrations.kross_snapshot_registry for update to authenticated using (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text])) with check (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text]));
+create view integrations.kross_snapshot_health with (security_invoker=true,security_barrier=true) as  SELECT id,
+    org_id,
+    property_id,
+    source_name,
+    source_table,
+    snapshot_kind,
+    row_count,
+    source_as_of,
+    observed_at,
+    live_required,
+    max_expected_age,
+    use_as_current_state,
+    notes,
+    source_system,
+        CASE
+            WHEN source_as_of IS NULL THEN 'unknown'::text
+            WHEN max_expected_age IS NULL THEN 'unbounded'::text
+            WHEN (now() - source_as_of) <= max_expected_age THEN 'fresh'::text
+            ELSE 'stale'::text
+        END AS freshness_status,
+        CASE
+            WHEN live_required AND (source_as_of IS NULL OR max_expected_age IS NULL OR (now() - source_as_of) > max_expected_age) THEN false
+            ELSE true
+        END AS safe_for_current_state
+   FROM integrations.kross_snapshot_registry k;
 grant select on integrations.kross_snapshot_health to authenticated;
 create table integrations.source_authority_rules (id uuid,org_id uuid,property_id uuid,domain text,official_source text,supporting_sources text,forbidden_sources text,reading_rule text,human_approval_required boolean,authority_level text,rule_status text,last_reviewed date,source_system text,source_table text,source_record_id text,created_at timestamp with time zone,updated_at timestamp with time zone);
 alter table integrations.source_authority_rules enable row level security;
@@ -55,3 +86,59 @@ grant select on integrations.domain_governance to authenticated;
 create policy domain_governance_read on integrations.domain_governance for select to authenticated using (private.has_org_role(org_id, ARRAY['ADMIN'::text, 'GERENCIA'::text, 'JEFE_DEPARTAMENTO'::text, 'AUDITOR'::text]));
 create table operations.communication_followups (id uuid,org_id uuid,property_id uuid,followup_key text,channel text,mailbox text,thread_id text,message_id text,sender text,subject text,received_at timestamp with time zone,followup_state text,priority text,owner_agent text,human_owner text,due_date date,related_obligation_key text,related_task_key text,source_url text,evidence text,notes text,last_checked_at timestamp with time zone,active boolean,created_at timestamp with time zone,updated_at timestamp with time zone);
 alter table operations.communication_followups enable row level security;
+
+-- Stress-only SELECT on communication_attention_v; real metadata has no grant.
+create view operations.communication_attention_v with (security_invoker=true) as  SELECT id,
+    org_id,
+    property_id,
+    followup_key,
+    channel,
+    mailbox,
+    thread_id,
+    message_id,
+    sender,
+    subject,
+    received_at,
+    followup_state,
+    priority,
+    owner_agent,
+    human_owner,
+    due_date,
+    related_obligation_key,
+    related_task_key,
+    source_url,
+    evidence,
+    notes,
+    last_checked_at,
+    active,
+        CASE
+            WHEN followup_state = ANY (ARRAY['needs_reply'::text, 'draft_ready'::text]) THEN true
+            WHEN followup_state = 'review'::text AND (priority = ANY (ARRAY['critical'::text, 'high'::text])) THEN true
+            ELSE false
+        END AS needs_human_action,
+        CASE
+            WHEN received_at IS NULL THEN NULL::integer
+            ELSE GREATEST(0, CURRENT_DATE - (received_at AT TIME ZONE 'America/Costa_Rica'::text)::date)
+        END AS age_days,
+        CASE priority
+            WHEN 'critical'::text THEN 1
+            WHEN 'high'::text THEN 2
+            WHEN 'normal'::text THEN 3
+            ELSE 4
+        END AS priority_rank
+   FROM operations.communication_followups
+  WHERE active = true AND (followup_state <> ALL (ARRAY['resolved'::text, 'no_reply_needed'::text]))
+  ORDER BY (
+        CASE priority
+            WHEN 'critical'::text THEN 1
+            WHEN 'high'::text THEN 2
+            WHEN 'normal'::text THEN 3
+            ELSE 4
+        END), (
+        CASE
+            WHEN followup_state = ANY (ARRAY['needs_reply'::text, 'draft_ready'::text]) THEN 1
+            WHEN followup_state = 'review'::text THEN 2
+            WHEN followup_state = 'waiting_on_them'::text THEN 3
+            ELSE 4
+        END), due_date, received_at;
+grant select on operations.communication_attention_v to authenticated;

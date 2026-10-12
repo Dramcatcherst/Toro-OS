@@ -5,6 +5,7 @@
 begin;
 set local lock_timeout = '3s';
 set local statement_timeout = '30s';
+set local search_path = '';
 do $preconditions$
 declare target text; expected_rls boolean;
 begin
@@ -34,26 +35,43 @@ begin
     raise exception 'Finance latent privileges changed: review before granting USAGE';
   end if;
   foreach target in array array['finance.invoices','operations.communication_followups'] loop
+    -- A new SELECT/USAGE must not revive a latent write permission.
+    if has_table_privilege('authenticated',target,'INSERT,UPDATE,DELETE,TRUNCATE') or exists (
+      select 1 from pg_catalog.pg_attribute a where a.attrelid=target::regclass and a.attnum>0 and not a.attisdropped
+        and has_column_privilege('authenticated',target,a.attname,'INSERT,UPDATE')) then
+      raise exception 'Target write privilege drift: %',target;
+    end if;
     if has_table_privilege('authenticated',target,'SELECT') or exists (
       select 1 from pg_catalog.pg_attribute a where a.attrelid=target::regclass and a.attnum>0 and not a.attisdropped
         and has_column_privilege('authenticated',target,a.attname,'SELECT')) then
       raise exception 'Column privilege baseline changed: %',target;
     end if;
   end loop;
-  if not exists (select 1 from pg_catalog.pg_class where oid='operations.projects'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.projects'; end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='operations.projects'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.projects'; end if;
   if (select count(*) from pg_catalog.pg_policies where schemaname='operations' and tablename='projects' and cmd in ('SELECT','ALL')) <> 1 then raise exception 'Read policy drift: operations.projects'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='finance.invoices'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: finance.invoices'; end if;
-  if (select count(*) from pg_catalog.pg_policies where schemaname='finance' and tablename='invoices' and cmd in ('SELECT','ALL')) <> 0 then raise exception 'Read policy drift: finance.invoices'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='operations.obligations'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.obligations'; end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='finance.invoices'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: finance.invoices'; end if;
+  if (select count(*) from pg_catalog.pg_policies where schemaname='finance' and tablename='invoices') <> 0 then raise exception 'Read policy drift: finance.invoices'; end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='operations.obligations'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.obligations'; end if;
   if (select count(*) from pg_catalog.pg_policies where schemaname='operations' and tablename='obligations' and cmd in ('SELECT','ALL')) <> 1 then raise exception 'Read policy drift: operations.obligations'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.kross_snapshot_health'::regclass and relrowsecurity=false and not relforcerowsecurity) then raise exception 'RLS drift: integrations.kross_snapshot_health'; end if;
-  if (select count(*) from pg_catalog.pg_policies where schemaname='integrations' and tablename='kross_snapshot_health' and cmd in ('SELECT','ALL')) <> 0 then raise exception 'Read policy drift: integrations.kross_snapshot_health'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.source_authority_rules'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: integrations.source_authority_rules'; end if;
+  -- Kross health is an existing invoker view, not an RLS table. Never alter it.
+  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.kross_snapshot_health'::regclass
+      and relkind='v' and reloptions @> array['security_invoker=true','security_barrier=true']::text[]) then
+    raise exception 'Kross invoker view drift';
+  end if;
+  if md5(regexp_replace(pg_catalog.pg_get_viewdef('integrations.kross_snapshot_health'::regclass,true),'[[:space:]]','','g')) <> '3351f33f4a4d540f02d5af078d092946' then
+    raise exception 'Kross view definition drift';
+  end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.kross_snapshot_registry'::regclass
+      and relkind='r' and relrowsecurity and not relforcerowsecurity) then raise exception 'Kross registry RLS drift'; end if;
+  if (select count(*) from pg_catalog.pg_policies where schemaname='integrations' and tablename='kross_snapshot_registry' and cmd in ('SELECT','ALL')) <> 1 then
+    raise exception 'Kross registry read policy drift';
+  end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.source_authority_rules'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: integrations.source_authority_rules'; end if;
   if (select count(*) from pg_catalog.pg_policies where schemaname='integrations' and tablename='source_authority_rules' and cmd in ('SELECT','ALL')) <> 1 then raise exception 'Read policy drift: integrations.source_authority_rules'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.domain_governance'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: integrations.domain_governance'; end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='integrations.domain_governance'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: integrations.domain_governance'; end if;
   if (select count(*) from pg_catalog.pg_policies where schemaname='integrations' and tablename='domain_governance' and cmd in ('SELECT','ALL')) <> 1 then raise exception 'Read policy drift: integrations.domain_governance'; end if;
-  if not exists (select 1 from pg_catalog.pg_class where oid='operations.communication_followups'::regclass and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.communication_followups'; end if;
-  if (select count(*) from pg_catalog.pg_policies where schemaname='operations' and tablename='communication_followups' and cmd in ('SELECT','ALL')) <> 0 then raise exception 'Read policy drift: operations.communication_followups'; end if;
+  if not exists (select 1 from pg_catalog.pg_class where oid='operations.communication_followups'::regclass and relkind='r' and relrowsecurity=true and not relforcerowsecurity) then raise exception 'RLS drift: operations.communication_followups'; end if;
+  if (select count(*) from pg_catalog.pg_policies where schemaname='operations' and tablename='communication_followups') <> 0 then raise exception 'Read policy drift: operations.communication_followups'; end if;
 end;
 $preconditions$;
 
@@ -64,11 +82,7 @@ create policy portal_narrow_followups_read_v1 on operations.communication_follow
 grant select (org_id,invoice_key,issuer_name,document_number,due_date,currency,total,payment_status,obligation_key,mailbox,source_url,active,id) on finance.invoices to authenticated;
 create policy portal_narrow_invoices_read_v1 on finance.invoices for select to authenticated using (private.has_org_role(org_id,array['ADMIN','GERENCIA']::text[]));
 
--- This restricts a pre-existing unprotected authenticated SELECT; it is a material
--- security change that requires separate approval and consumer parity checks.
-alter table integrations.kross_snapshot_health enable row level security;
-create policy portal_narrow_kross_read_v1 on integrations.kross_snapshot_health
-  for select to authenticated using (private.has_org_role(org_id,array['ADMIN','GERENCIA','JEFE_DEPARTAMENTO','AUDITOR']::text[]));
+-- Existing Kross invoker view and underlying registry RLS remain unchanged.
 
 create function public.toro_portal_brain_read_v1(p_org_id uuid,p_actor_id uuid)
 returns jsonb language plpgsql stable security invoker set search_path = ''

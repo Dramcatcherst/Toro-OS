@@ -1,69 +1,62 @@
-# Lectura acotada del Portal TORO: propuesta para revisión
+# Portal TORO: propuesta de lectura revisada
 
-**Preparado y verificado localmente; NO APLICADO en Supabase.** Proyecto objetivo `abtyrbqlqbsastmridzp`. Mi TORO, Cerebro y Hoy siguen dentro del Portal existente y del único Plan General. Esta propuesta resuelve el primer transporte de lectura; no certifica aún el recorrido operativo Hoy → Buscar → evidencia ni la segunda identidad real.
+**Decisión técnica: preparada para solicitar autorización acotada; NO APLICAR sin aprobación explícita.** Proyecto `abtyrbqlqbsastmridzp`. Este documento corrige y sustituye la propuesta anterior sobre Kross. Mi TORO conserva el Portal único, su Plan y la presentación corporativa.
 
-## Código local terminado
+## Corrección material del diagnóstico
 
-`src/lib/server/portal-read-rpc.ts` usa el cliente Supabase de la sesión existente, nunca una clave privilegiada. Rechaza modo público, contexto ambiguo/inactivo, identidad u organización inválida, roles insuficientes y respuestas incompletas, sobredimensionadas o con campos extra. Cada respuesta está ligada al actor y organización; al terminar el I/O revalida sesión y membresía con el resolver existente. Los errores externos se sustituyen por mensajes internos sin contenido sensible. Las proyecciones existentes conservan su reducción de campos/identificadores; el bundle sin proyectar permanece en servidor.
+La metadata actual identifica `integrations.kross_snapshot_health` como **vista**, con `security_invoker=true` y `security_barrier=true`. Lee `integrations.kross_snapshot_registry`, tabla con RLS y política SELECT para ADMIN/GERENCIA/JEFE_DEPARTAMENTO/AUDITOR activos del mismo org; authenticated tiene SELECT y ningún permiso de escritura. Su definición y ACL se consultaron sin filas operativas.
 
-Selector server-side `TORO_PORTAL_READ_TRANSPORT`: ausente o `direct` conserva el transporte anterior; **solo** `rpc_v1` selecciona la propuesta. Un valor desconocido falla. Requiere además modo `internal` y los gates de Cerebro y, para finanzas, Owner Attention. No se activó el selector. No hay archivos `.env` ni flags remotos nuevos. La autorización previa para QA local no autoriza los cambios SQL siguientes.
+La propuesta anterior confundió la vista con tabla y su fixture creó una tabla. Por eso, las15 pruebas SQL anteriores no demostraban que el DDL de Kross fuera aplicable. Se retiran el ALTER TABLE sobre la vista, la política nueva de Kross y la afirmación de acceso Kross desprotegido. **No se cambia Kross, su vista, grants, tabla ni políticas.** El SQL revisado exige el tipo/opciones/definición de vista observados y RLS activo en el registry, antes de todo grant nuevo. La auditoría npm terminada es independiente y permanece conservada.
 
-Los lectores existentes `canonical-read.ts` y `owner-attention-server.ts` reutilizan el adaptador. Hoy conserva su constructor, fecha Costa Rica, límites y reglas de cobertura: un total desconocido no se convierte en cero. El corte de la respuesta viene de PostgreSQL. Las comprobaciones del menú que dependen de esquemas directos y la búsqueda/evidencia canónica siguen pendientes; no se presentan como resueltas por estas dos RPC.
+## Cambios exactos propuestos
 
-## SQL exacto propuesto
+Aplicación: `supabase/drafts/20261011_portal_narrow_read_v1.sql`. Reversión: `supabase/drafts/20261011_portal_narrow_read_v1_rollback.sql`. Ambos son borradores, fuera de migraciones activas. Deben revisarse como una pareja; no usar las copias anteriores.
 
-Aplicación revisable: `supabase/drafts/20261011_portal_narrow_read_v1.sql`. Reversión funcional: `supabase/drafts/20261011_portal_narrow_read_v1_rollback.sql`. Permanecen fuera de la carpeta de migraciones aplicables; no se ejecutaron contra el proyecto real.
-
-Dos funciones nuevas en `public`: `toro_portal_brain_read_v1(uuid,uuid)` y `toro_portal_owner_attention_read_v1(uuid,uuid)`. Ambas son `SECURITY INVOKER`, con `search_path=''`, objetos cualificados y EXECUTE exclusivo para `authenticated` después de revocar PUBLIC/anon/service_role. Exigen que `auth.uid()` coincida con el actor y que el rol activo pertenezca a la organización solicitada. No exponen operations, integrations o finance en Data API. No crean tablas, usuarios, roles, filas operativas ni permisos de escritura.
-
-Autorización existente: se reutiliza **sin modificar** `private.has_org_role(uuid,text[])`, que actualmente es SECURITY DEFINER y comprueba `user_roles` activos/no revocados. Las funciones nuevas no eluden RLS. La precondición fija el cuerpo observado del helper mediante MD5 `c83c87aa1d6e6d946b7ca7a8511f470c` y rechaza un modelo de membresía distinto. Esto no certifica la auditoría integral del helper ni sustituye la aceptación de permisos reales.
-
-| Cambio propuesto | Alcance |
+| Objeto | Cambio propuesto |
 |---|---|
-| `USAGE` de finance a authenticated | Necesario para invoker. Guardas abortan si hubiera privilegios latentes de lectura/escritura/columnas en otros objetos financieros, funciones o secuencias. La consulta acotada actual encontró 27 relaciones sin esos privilegios; no garantiza un estado futuro. |
-| SELECT por columna en followups e invoices | Solo las columnas enumeradas abajo. Sin SELECT de tabla completa, notas privadas ni cambios de datos. |
-| `portal_narrow_followups_read_v1` y `portal_narrow_invoices_read_v1` | SELECT por organización para ADMIN/GERENCIA activos. |
-| RLS en `integrations.kross_snapshot_health` y `portal_narrow_kross_read_v1` | Restringe el SELECT authenticated preexistente, hoy sin RLS. ADMIN/GERENCIA/JEFE_DEPARTAMENTO/AUDITOR activos del mismo org. Cambio material: revisar consumidores antes de aprobar. |
-| EXECUTE de las dos RPC | Brain: esos cuatro roles. Owner Attention: ADMIN/GERENCIA. La validación se hace dentro de cada función y en el adaptador. |
+| `finance` | USAGE para authenticated, únicamente tras comprobar ausencia de privilegios financieros latentes en otros objetos. |
+| `operations.communication_followups`, `finance.invoices` | SELECT exclusivo de las columnas abajo y dos políticas SELECT por organización para ADMIN/GERENCIA activos. Sin notas, evidence, sender u otros campos privados ni permisos de escritura. |
+| `public.toro_portal_brain_read_v1(uuid,uuid)` | Nueva RPC SECURITY INVOKER, EXECUTE authenticated; actor=auth.uid(), org/rol activo ADMIN/GERENCIA/JEFE_DEPARTAMENTO/AUDITOR. |
+| `public.toro_portal_owner_attention_read_v1(uuid,uuid)` | Nueva RPC SECURITY INVOKER, EXECUTE authenticated; actor=auth.uid(), org/rol activo ADMIN/GERENCIA. |
+| Kross y otros objetos | Sin cambios; se comprueban sus precondiciones. No se expone un esquema completo, crea una cuenta, writer, fila o runtime nuevo. |
 
-Columnas nuevas de SELECT, incluyendo campos de filtro/orden:
+Columnas nuevas exactas, incluyendo filtro/orden:
 
 - `operations.communication_followups`: `org_id,followup_key,subject,followup_state,priority,owner_agent,human_owner,due_date,source_url,mailbox,related_obligation_key,active,id`.
 - `finance.invoices`: `org_id,invoice_key,issuer_name,document_number,due_date,currency,total,payment_status,obligation_key,mailbox,source_url,active,id`.
 
-Contrato de respuesta `portal-read-rpc-v1`; filtros de organización en todas las fuentes, active cuando lo exige el lector actual, orden estable y límite fijo sin parámetros para aumentarlo:
+Las RPC revocan EXECUTE de PUBLIC/anon/service_role antes de concederlo a authenticated, usan search_path vacío y objetos cualificados. Reutilizan sin cambios el helper existente `private.has_org_role`, SECURITY DEFINER, con cuerpo observado fijado por hash; no se añade un helper privilegiado. Los filtros de organización y topes siguen: Brain organización1, proyectos25, autoridad25, gobernanza25, Kross25; Hoy followups100, obligaciones150 e invoices200. Los topes pertenecen a las RPC; los grants por columna/RLS no son paginación ni una contabilidad completa.
 
-| Fuente | Tope de filas | Columnas devueltas |
-|---|---:|---|
-| `organization` / `public.organizations` | 1 | `id,name,status` |
-| `projects` / `operations.projects` | 25 | `org_id,id,project_name,priority,status,business_area,canonical_module_key,completion_pct,needs_revalidation,source_system,updated_at` |
-| `sourceAuthority` / `integrations.source_authority_rules` | 25 | `org_id,id,domain,official_source,human_approval_required,authority_level,rule_status,last_reviewed` |
-| `domainGovernance` / `integrations.domain_governance` | 25 | `org_id,id,domain,criticality,quality_target,current_quality_score,last_reviewed_at,next_review_at` |
-| `krossHealth` / `integrations.kross_snapshot_health` | 25 | `org_id,id,source_name,snapshot_kind,source_as_of,observed_at,live_required,freshness_status,safe_for_current_state` |
-| `followups` / `operations.communication_followups` | 100 | `org_id,followup_key,subject,followup_state,priority,owner_agent,human_owner,due_date,source_url,mailbox,related_obligation_key` |
-| `obligations` / `operations.obligations` | 150 | `org_id,obligation_key,obligation_name,counterparty,status,verification_status,next_due_date,next_review_date,current_amount,current_amount_currency,owner_agent,human_owner,source_system,source_path` |
-| `invoices` / `finance.invoices` | 200 | `org_id,invoice_key,issuer_name,document_number,due_date,currency,total,payment_status,obligation_key,mailbox,source_url` |
+Las guardas ahora rechazan también permisos de escritura de tabla/columna latentes en los dos objetos destino, cambios de tipo de relación, invoker/definición/RLS de Kross y cualquier política inesperada en las tablas financieras. Una deriva exige nueva revisión, nunca ampliar permisos para hacer pasar la prueba.
 
-Los topes acotan cada respuesta; no son paginación ni una contabilidad completa. El contrato exige organización exactamente presente. RLS o permisos ausentes producen error o rechazo; no se certifica una fuente inaccesible como lectura completa. En las fuentes financieras, alcanzar el tope mantiene la cobertura parcial de la proyección existente.
+## Consumidores comprobados
 
-## Verificación y límites
+| Consumidor | Resultado de esta revisión |
+|---|---|
+| `src/features/brain/canonical-read.ts` | RPC server-only opt-in reutiliza la proyección existente; Kross se lee por su vista invoker actual. |
+| `src/features/attention/owner-attention-server.ts` | Dos fuentes ahora inaccesibles reciben solo SELECT por columnas y RLS propuestos; obligaciones y su política existente no cambian. |
+| `src/features/menu/server.ts` | Mantiene sondas directas; el problema de esquemas no expuestos continúa. No se habilitan enlaces operativos sin prueba. |
+| `operations.communication_attention_v` | Vista invoker dependiente de followups, actualmente sin SELECT/write authenticated. No se le concede acceso. Prueba de estrés local incluso con SELECT ficticio de vista demuestra que las columnas privadas permanecen denegadas. |
+| Dependencias de base | No se encontraron funciones cuyo cuerpo mencione los tres objetos revisados; vista Kross depende del registry protegido. Es una búsqueda acotada, no prueba de ausencia de todos los consumidores externos. |
 
-**631/631 pruebas locales aprobadas**, cero fallos/saltos: 531 principal, 46 hotel, 25 Node existentes, 14 preflight y 15 PostgreSQL local. Incluyen todas las 579 anteriores. Tres validadores CLI, TypeScript y lint afectado aprobados. La auditoría ya terminada se conserva sin repetirla: runtime cero avisos en su corte; braces dev sigue abierto y sin aceptación. package.json y lockfile no cambian.
+El código de producción del adaptador/Portal no cambia en esta revisión. Conserva flags internos, sesión/actor/org/rol, validación estricta, revalidación tras I/O, errores sanitizados y proyecciones existentes. `TORO_PORTAL_READ_TRANSPORT` continúa ausente/default directo. No se inicia servidor ni obtiene sesión/clave privilegiada. La QA local de lectura ya autorizada sigue vigente; la aplicación de grants/RLS y activación RPC temporal requieren la decisión siguiente.
 
-Los 36 tests nuevos del adaptador comprueban gates, roles, actor/org, contrato estricto, revocación/cambio de sesión tras I/O, sanitización y proyección de los payloads generados por SQL local. PostgreSQL se ejecutó con PGlite 0.5.8 instalado solo en el directorio intermedio de QA. Sus 15 tests prueban invoker/permisos, dos organizaciones sintéticas, actor falsificado, empleado/anon, revocación, ausencia de SELECT, bloqueo de notas/escritura, Kross RLS, topes 25/100/150/200, reaplicación rechazada, rollback y privilegios financieros latentes.
+## Pruebas y evidencia
 
-Las fixtures se basan en columnas, tipos, grants y políticas observadas, con identidades/datos artificiales **solo en el PostgreSQL local aislado**; no reproducen todas las restricciones, extensiones o el runtime PostgREST real. No se insertó ninguna fixture en Supabase. Esta evidencia no equivale a dos identidades reales autorizadas, RLS vivo, contrato HTTP real o aceptación del Portal en producción. Build Next16.3.8/TypeScript y preflight16/16 aprobados sobre `bd1ec02ffe7acec1bb51846b8c38f6fc51d9ac06`; transporte RPC desactivado, sin iniciar servidor. La comprobación posterior de metadata en Supabase confirma cero funciones/políticas/column-grants propuestos; finance continúa sin USAGE y Kross aún sin RLS. El SQL remoto no se aplicó.
+**25/25 PostgreSQL locales y36/36 del adaptador ejecutadas en esta revisión**, sin fallos/saltos; lint del delta aprobado. La fixture Kross reproduce la vista y registry con definición/políticas observadas, incluyendo frescura calculada; los payloads del contrato se regeneraron con ese SQL. No hay filas sintéticas en Supabase.
 
-Para reproducir la prueba SQL, instalar PGlite 0.5.8 fuera de la app y proporcionar `TORO_PGLITE_MODULE` como URL file al módulo `dist/index.js`; ejecutar `node --test tests/portal-narrow-read-sql.test.mjs`. Los fixtures no se despliegan. Logs y recibos están en `work/narrow-read-unit` del chat indicado en el checkpoint.
+Los tests cubren dos org sintéticas, actor/anon/empleado, revocación, columnas/escritura, topes, aislamiento a través de la vista, permisos latentes, tipo/invoker/RLS incorrectos y rollback ante funciones/políticas/columnas/consumidores concurrentes. La prueba no replica PostgREST, todas las restricciones ni una segunda identidad real. Hay **641 pruebas aprobadas registradas**: principal531, hotel46, Node25, preflight14 y SQL25; SQL25 sustituye la evidencia SQL15 incorrecta sobre Kross. Se conservan las579 originales y la regresión completa anterior, sin relanzarla. Build/TypeScript/preflight16 del código anterior conservados: src, package/lock y presentación permanecen idénticos. Auditoría runtime cero avisos en su corte; braces dev abierto, sin aceptación.
 
-## Reversión exacta y decisión pendiente
+Reproducción SQL: PGlite0.5.8 instalado fuera de la app; `TORO_SQL_TEST_PGLITE_MODULE` debe apuntar mediante URL file al módulo `dist/index.js`; ejecutar `node --test tests/portal-narrow-read-sql.test.mjs`. Evidencia nueva en `work/narrow-read-review` del chat: metadata de vistas/consumidores, SQL25, RPC36 y decisión. No usar las antiguas fixtures/tablas como evidencia de runtime real.
 
-Antes de una aplicación futura se necesita aprobación explícita para estos grants, funciones y RLS, comprobación fresca de metadata/políticas y consumidores, y copia de su estado anterior. La transacción usa lock_timeout 3s/statement_timeout 30s y falla ante deriva; no reemplaza funciones existentes. No se aplica en esta tarea.
+## Aplicación futura y reversión
 
-Rollback: desactivar primero el selector RPC en el proceso autorizado; revisar dependencias y cambios concurrentes; ejecutar solo el archivo de rollback revisado. Retira las dos funciones, las dos políticas financieras, las dos listas exactas de SELECT y el USAGE financiero nuevo, en una transacción sin CASCADE. **Mantiene Kross RLS y su política restrictiva**: es reversión funcional de la capacidad nueva, no restauración byte por byte del acceso inseguro previo. Retirar esa protección requeriría una decisión de seguridad independiente. Si existen otros consumidores nuevos de esos grants/funciones/schema, no ejecutar este rollback hasta reconciliarlos.
+No se ejecuta SQL remoto en esta tarea. Antes de una aplicación futura: aprobación explícita de estos archivos exactos, lectura fresca de precondiciones, consumidores y estado anterior, ejecución transaccional autorizada y readback. lock_timeout3s/statement_timeout30s. Si el SQL cambia después de aprobarse, revalidar el alcance y hash.
 
-Rollback del código: revertir solo el commit local de este lote tras revisar cambios posteriores, conservando el Plan anterior y los otros trabajos; sin reset/clean ni borrados. Dependencias y auditoría permanecen iguales.
+Rollback: primero volver el selector a directo/detener el proceso RPC autorizado; comprobar consumidores concurrentes; aplicar el archivo emparejado. Sus guardas rechazan cambios en funciones, políticas, columnas/write-grants o nuevos consumidores financieros antes de borrar algo. Retira únicamente las dos RPC, las dos políticas SELECT, las dos listas de SELECT y el USAGE financiero nuevo, sin CASCADE. **No toca Kross**, que ya estaba protegido. Los clientes nuevos que dependan de los mismos grants exactos pueden no quedar registrados en catálogo: sigue siendo necesaria la revisión de consumidores antes de revocar. El rollback se verificó en PostgreSQL local.
 
-Única siguiente acción: revisión y decisión explícita sobre esta propuesta exacta. Tras aprobarla, una tarea distinta podrá aplicar/verificar dentro del alcance autorizado y retomar QA local de sesión real; la publicación sigue sin autorizar.
+Recuperación local: revertir solo este delta tras revisar cambios posteriores, conservando Plan/checkpoint como prefijo y backups; sin reset/clean/borrados. La propuesta anterior queda histórica y corregida, no aprobada para aplicación.
 
-Método contrastado con documentación oficial: [Database Functions](https://supabase.com/docs/guides/database/functions), [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security) y [PGlite](https://pglite.dev/docs/).
+**Única siguiente acción:** autorización explícita para aplicar este SQL exacto y activar RPC solo durante QA local de lectura con la sesión existente. No se autoriza publicación, nuevos usuarios o escritura operativa. Tras autorización: aplicar/readback acotado y QA Cerebro/Hoy; búsqueda/evidencia y menú todavía requieren su aceptación propia. Portal aún sin publicar.
+
+Referencia del comportamiento de vistas invoker y RLS: [documentación oficial de Supabase](https://supabase.com/docs/guides/database/postgres/row-level-security#expose-a-view-safely). La autoridad de tipos/grants/políticas es la metadata actual del proyecto canónico.

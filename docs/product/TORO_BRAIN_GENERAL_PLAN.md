@@ -4764,3 +4764,14 @@ Plan y trabajo People/Cerebro/Alegra/FIN01 preservados. Auditoría anterior term
 
 
 **Cierre de build de lectura acotada — 11/10/2026, 17:37 Costa Rica:** Next16.3.8/TypeScript exit0 y preflight16/16 sobre `bd1ec02ffe7acec1bb51846b8c38f6fc51d9ac06`. Configuración pública canónica solo en proceso de build; RPC opt-in desactivada, sin servidor ni nuevas lecturas de negocio. 631 pruebas locales incluyen las579 anteriores. Comprobación SELECT de metadata confirma cero funciones/políticas/grants nuevos y finance sin USAGE; SQL/RLS permanecen propuestos, no aplicados. Sin cambio de dependencias, UI corporativa o auditoría. Portal sin publicar. NEXT único: revisión/decisión explícita de la propuesta exacta antes de cualquier cambio remoto.
+
+
+### Corrección de propuesta SQL y revisión de consumidores — 11/10/2026, 18:21 Costa Rica
+
+**CURRENT verificado, sustituye el diagnóstico Kross anterior:** `integrations.kross_snapshot_health` es vista security_invoker/security_barrier sobre `integrations.kross_snapshot_registry`, tabla con RLS y SELECT organizacional existentes. La fixture anterior la modeló incorrectamente como tabla; sus15 tests no validaban el DDL propuesto para la vista. Se retira ese DDL/política adicional y la afirmación de acceso Kross desprotegido; no se modifica Kross. Nueva fixture reproduce vista/registry/políticas y cálculos de frescura. Auditoría npm y Portal corporativo no cambian.
+
+**Propuesta revisada, NO APLICADA:** únicamente dos RPC SECURITY INVOKER, USAGE finance, SELECT de columnas y RLS organizacional ADMIN/GERENCIA para followups/invoices. Guardas nuevas contra permisos writer latentes y deriva de tipo/invoker/RLS; rollback rechaza cambios concurrentes de función/políticas/columnas/consumidores financieros. Consumidores locales revisados: canonical-read, owner-attention y menú; vista communication_attention_v actualmente sin SELECT authenticated no recibe acceso. Borradores/revisión conservan sus rutas y sustituyen la versión anterior.
+
+**Verificación actual:** SQL25/25 y adaptador36/36, sin fallos/saltos; lint aprobado. 641 pruebas registradas:531 principal,46 hotel,25 Node,14 preflight,25 SQL. SQL25 sustituye la evidencia SQL15 incorrecta sobre Kross; resto de la regresión/build/TypeScript/auditoría conservado sin relanzar. Src y package/lock permanecen idénticos. No datos operativos, SQL remoto, usuarios, grants, RLS, flags o publicación aplicados. No sesión real ni PostgREST certificado.
+
+**Decisión técnica:** preparado para solicitar autorización específica; no es aprobación del propietario. NEXT único: autorización explícita para el SQL exacto revisado y RPC temporal durante la QA local ya autorizada. Después, readback y aceptación Cerebro/Hoy acotadas; menú/Buscar/evidencia siguen sin aceptación. Mantener el mismo checkpoint y Plan; no nuevas auditorías, inventarios o fuentes ajenas. Recuperación del delta local con revert tras revisar cambios posteriores, sin reset/borrados.

@@ -32,7 +32,7 @@ before(async()=>{
       insert into operations.projects (id,org_id,project_name,status,priority,active,needs_revalidation,updated_at,notes) values ('${id}','${org}','Synthetic ${suffix}','NOW','P0',true,false,'2026-10-11T00:00:00Z','private-sentinel');
       insert into integrations.source_authority_rules (id,org_id,domain,official_source,human_approval_required,rule_status) values ('${id}','${org}','synthetic','Synthetic authority',false,'active');
       insert into integrations.domain_governance (id,org_id,domain,criticality) values ('${id}','${org}','synthetic','high');
-      insert into integrations.kross_snapshot_health (id,org_id,source_name,snapshot_kind,observed_at,live_required,safe_for_current_state) values ('${id}','${org}','Synthetic snapshot','historical','2026-10-11T00:00:00Z',false,false);
+      insert into integrations.kross_snapshot_registry (id,org_id,source_name,snapshot_kind,observed_at,live_required) values ('${id}','${org}','Synthetic snapshot','historical','2026-10-11T00:00:00Z',true);
       insert into operations.communication_followups (id,org_id,followup_key,subject,followup_state,priority,active,notes) values ('${id}','${org}','followup-${suffix}','Synthetic followup','pending','high',true,'private-sentinel');
       insert into operations.obligations (id,org_id,obligation_key,obligation_name,counterparty,status,active,current_amount,current_amount_currency) values ('${id}','${org}','obligation-${suffix}','Synthetic obligation','Synthetic party','pending',true,25,'CRC');
       insert into finance.invoices (id,org_id,invoice_key,issuer_name,total,currency,active,notes) values ('${id}','${org}','invoice-${suffix}','Synthetic issuer',10,'CRC',true,'private-sentinel');
@@ -74,7 +74,7 @@ check("missing SELECT fails instead of becoming an empty financial success",asyn
 check("column grants cannot read private notes or mutate invoices",async()=>{
   await asUser(userA);await denied(()=>db.query("select notes from finance.invoices"));await denied(()=>db.query("update finance.invoices set total=999"));await denied(()=>db.query("select notes from operations.communication_followups"));
 });
-check("Kross RLS protects direct reads as well as RPC",async()=>{await asUser(userA);const r=await db.query("select org_id from integrations.kross_snapshot_health");assert.deepEqual(r.rows,[{org_id:orgA}]);});
+check("existing invoker view enforces registry RLS for direct and RPC reads",async()=>{await asUser(userA);const r=await db.query("select org_id from integrations.kross_snapshot_health");assert.deepEqual(r.rows,[{org_id:orgA}]);});
 check("SQL uses finite row caps under an oversized source",async()=>{
   await db.exec("reset role");await db.query("insert into operations.projects (id,org_id,project_name,active,needs_revalidation,updated_at) select md5(n::text)::uuid,$1::uuid,'Synthetic overflow',true,false,now() from generate_series(1,30) n",[orgA]);
   await asUser(userA);assert.equal((await read(rpcNames[0])).sources.projects.rows.length,25);
@@ -89,11 +89,32 @@ check("a second application fails closed without changing grants",async()=>{
   await db.exec("reset role");await assert.rejects(()=>db.exec(draft),/baseline changed|RLS drift|policy drift/);await db.exec("rollback");
   assert.equal((await db.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,true);
 });
-check("functional rollback removes new access but keeps Kross protected",async()=>{
+check("rollback refuses a modified RPC instead of deleting concurrent work",async()=>{
+  await db.exec("reset role");await db.exec("alter function public.toro_portal_brain_read_v1(uuid,uuid) security definer");
+  await assert.rejects(()=>db.exec(rollback),/Rollback function drift/);await db.exec("rollback");
+  assert.equal((await db.query("select count(*)::int as n from pg_proc where proname=any($1::text[])",[rpcNames])).rows[0].n,2);
+  await db.exec("alter function public.toro_portal_brain_read_v1(uuid,uuid) security invoker");
+});
+check("existing communication view cannot expose private fields through the new column grants",async()=>{
+  await asUser(userA);await denied(()=>db.query("select notes from operations.communication_attention_v"));
+});
+for(const kind of ["policy","columns","finance_consumer"]) check(`rollback refuses concurrent ${kind} drift before removing access`,async()=>{
+  await db.exec("reset role");
+  if(kind==="policy") await db.exec("alter policy portal_narrow_invoices_read_v1 on finance.invoices using (true)");
+  else if(kind==="columns") await db.exec("grant select(notes) on finance.invoices to authenticated");
+  else await db.exec("create table finance.concurrent_fixture (id integer); grant select on finance.concurrent_fixture to authenticated");
+  await assert.rejects(()=>db.exec(rollback),/Rollback (policy|column\/write|financial consumer) .*drift|Rollback financial consumer privilege drift/);await db.exec("rollback");
+  assert.equal((await db.query("select count(*)::int as n from pg_proc where proname=any($1::text[])",[rpcNames])).rows[0].n,2);
+  assert.equal((await db.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,true);
+  if(kind==="policy") await db.exec("alter policy portal_narrow_invoices_read_v1 on finance.invoices using (private.has_org_role(org_id,array['ADMIN','GERENCIA']::text[]))");
+  else if(kind==="columns") await db.exec("revoke select(notes) on finance.invoices from authenticated");
+  else await db.exec("drop table finance.concurrent_fixture");
+});
+check("functional rollback removes only new access and preserves existing Kross protection",async()=>{
   await db.exec("reset role");await db.exec(rollback);
   assert.equal((await db.query("select count(*)::int as n from pg_proc where proname=any($1::text[])",[rpcNames])).rows[0].n,0);
   assert.equal((await db.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,false);
-  assert.equal((await db.query("select relrowsecurity as yes from pg_class where oid='integrations.kross_snapshot_health'::regclass")).rows[0].yes,true);
+  assert.equal((await db.query("select relrowsecurity as yes from pg_class where oid='integrations.kross_snapshot_registry'::regclass")).rows[0].yes,true);
   await asUser(userA);await denied(()=>db.query("select invoice_key from finance.invoices"));await denied(()=>db.query("select subject from operations.communication_followups"));
   assert.deepEqual((await db.query("select org_id from integrations.kross_snapshot_health")).rows,[{org_id:orgA}]);
 });
@@ -106,4 +127,21 @@ check("proposal aborts before USAGE can activate unrelated financial privileges"
     await isolated.exec("rollback");
     assert.equal((await isolated.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,false);
   } finally {await isolated.close();}
+});
+
+for(const kind of ["table_write","column_write"]) check(`proposal refuses latent ${kind} on the invoice target`,async()=>{
+  const isolated=new PGlite();try {
+    await isolated.exec(sql("fixtures/portal-narrow-read-baseline.sql"));
+    await isolated.exec(kind==="table_write"?"grant update on finance.invoices to authenticated":"grant update(total) on finance.invoices to authenticated");
+    await assert.rejects(()=>isolated.exec(draft),/Target write privilege drift/);await isolated.exec("rollback");
+    assert.equal((await isolated.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,false);
+  }finally{await isolated.close();}
+});
+for(const kind of ["wrong_relation","definer_view","registry_rls"]) check(`proposal refuses Kross ${kind} baseline drift`,async()=>{
+  const isolated=new PGlite();try {
+    await isolated.exec(sql("fixtures/portal-narrow-read-baseline.sql"));
+    await isolated.exec(kind==="wrong_relation"?"drop view integrations.kross_snapshot_health; create table integrations.kross_snapshot_health (id uuid)":kind==="definer_view"?"alter view integrations.kross_snapshot_health set (security_invoker=false)":"alter table integrations.kross_snapshot_registry disable row level security");
+    await assert.rejects(()=>isolated.exec(draft),/Kross (invoker view|registry RLS) drift/);await isolated.exec("rollback");
+    assert.equal((await isolated.query("select has_schema_privilege('authenticated','finance','USAGE') as yes")).rows[0].yes,false);
+  }finally{await isolated.close();}
 });
