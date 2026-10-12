@@ -4,7 +4,9 @@ import type { DailyEnvironmentView } from "./server";
 export function DailyEnvironmentCard({ view }: { view?: DailyEnvironmentView | null }) {
   const weather = view?.weather;
   const dates = view?.dates;
-  const partial = weather?.state === "ready" || Boolean(dates?.items.length);
+  const moon = view?.moon;
+  const lunarTime = (at: string) => new Intl.DateTimeFormat("es-CR", { timeZone: "America/Costa_Rica", dateStyle: "short", timeStyle: "short" }).format(new Date(at));
+  const partial = weather?.state === "ready" || moon?.state === "ready" || Boolean(dates?.items.length);
   return (
     <section aria-labelledby="environment-heading" className="mt-5 rounded-3xl border border-slate-700 bg-slate-900/60 p-4 md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -30,7 +32,12 @@ export function DailyEnvironmentCard({ view }: { view?: DailyEnvironmentView | n
         </article>
         <article className="rounded-2xl border border-slate-700 p-4">
           <h3 className="font-semibold">Luna</h3>
-          <p className="mt-1 text-sm text-slate-300">Fase y próximos cambios pendientes de conectar.</p>
+          {moon?.state === "ready" ? <>
+            <p className="mt-1 text-sm text-slate-300">Última fase principal: {moon.previous?.label} · {moon.previous ? lunarTime(moon.previous.at) : ""}</p>
+            <ul className="mt-2 space-y-1 text-sm text-slate-300">{moon.next.map(phase =>
+              <li key={phase.at}>{phase.label} · {lunarTime(phase.at)}</li>)}</ul>
+            <p className="mt-2 text-xs text-slate-400">Próximas fases · horas de Costa Rica. No calcula salida, puesta ni iluminación.</p>
+          </> : <p className="mt-1 text-sm text-slate-300">No se pudieron verificar las fases lunares vigentes.</p>}
         </article>
         <article className="rounded-2xl border border-slate-700 p-4">
           <h3 className="font-semibold">Fechas especiales</h3>
@@ -53,6 +60,7 @@ export function DailyEnvironmentCard({ view }: { view?: DailyEnvironmentView | n
           {[
             ["Instituto Meteorológico Nacional", weather?.sourceUrl ?? "https://www.imn.ac.cr/"],
             ["Mareas · MIO-CIMAR", "https://miocimar.ucr.ac.cr/mareas"],
+            ["Luna · Observatorio Naval de EE. UU.", "https://aa.usno.navy.mil/data/MoonPhases"],
             ["Agenda", "https://calendar.google.com/"],
           ].map(([label, href]) => <a key={href} href={href} target="_blank" rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center rounded-xl border border-slate-700 px-4 py-3 text-sm text-cyan-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200">{label} ↗</a>)}
