@@ -5081,3 +5081,53 @@ No crear100tareas/proyectos ni ejecutar100cambios técnicos. Estos100criterios o
 - Google identidad/autorización: https://developers.google.com/identity/gsi/web/guides/migration#authentication_and_authorization ; OAuthservidor: https://developers.google.com/identity/protocols/oauth2/web-server#authorization-errors . Login no concede scopesWorkspace ni autoriza browserembebido.
 - Gmailpush: https://developers.google.com/workspace/gmail/api/guides/push ; Calendarpush: https://developers.google.com/workspace/calendar/api/guides/push ; Drivepush: https://developers.google.com/workspace/drive/api/guides/push . Señales referencian cambios, no payloadreserva completa; renovaciones ysincronización de recuperación conservan canales/worker existentes. Gmailwatch renovar antes de7días; no activado en diseño.
 Revisión acotada paralela confirmó contratoPeople/sesión separada actual y opcionesChromeGoogle. Sin consultarpersonas, crearagentes durables ni ampliarpermisos.100criterios contados yúnicos; código intacto. SSO/feed/recepciónreal/ejecuciónsemanal no certificados.
+
+## Render final V1: acceso modular, cotizador y mercadeo — 12/10/2026
+**Estado:** diseño final propuesto, sin construir. Autoridad: solicitud de Mauricio; misma dirección y Plan General, sección23. Refina V1-001–100, no reemplaza capacidades, SQL, identidad o gates. TORO sigue único producto; Dreamcatcher referencia, Personal privado, nuevos proyectos dentro del ámbito permitido.
+
+### Ajustes visuales finales
+- TORO tipográfico azul: candidato día#1358B8 y noche#68A9FF; descriptor pequeño OPERATION SYSTEM. El maestro oficial sigue ausente: esta elección de texto no recolorea, redibuja ni sustituye sus bytes. Cuando se recupere, preservar el archivo exacto.
+- Base día clara y noche carbón; bandas/acentos por sección: Atención coral, Cotizar turquesa, Operación ámbar, Dinero verde, Personas violeta, Mercadeo magenta/naranja, Mensajes turquesa y Reportes índigo. Logos externos conservan sus colores sobre soporte neutro.
+- Franja de agentes informativa más compacta, nombres legibles y señal por evento vigente. Sin señal no significa trabajando. Reducir espacio y repetición, no fuente bajo12px ni objetivos44px. El detalle se abre con un único control accesible.
+- Móvil primero y PC equivalente: favoritos en dos columnas cuando el ancho real lo permite; lectura principal en una columna; escritorio usa el ancho y paneles paralelos útiles. Sin zoom, alturas rígidas, desborde, CSS reorder o datos ocultos por truncamiento.
+- Urgencias y Cotizar son disclosures con nombre/estado/foco accesibles. Inicio cerrado/abierto según preferencia permitida; conservar campos al plegar, prioridad relevante al usuario y sin cifras inventadas. Plegar no oculta alertas críticas verificadas: el resumen conserva severidad/responsable/plazo cuando exista fuente.
+
+### Módulos y acceso
+CURRENT: model.ts devuelve00–11 a contexto organizacional activo, con varios destinos en preparación; no implementa todavía todo el catálogo filtrado por permisos efectivos. directory.ts permite seis destinos solo a ADMIN/GERENCIA/JEFE_DEPARTAMENTO/AUDITOR en Dreamcatcher; EMPLEADO no recibe esos enlaces automáticamente. El render de Gerencia no representa todos los perfiles ni amplía ese acceso.
+TARGET: menú=perfil/puesto/membresía/ámbito/permisos/capacidad/conector/frescura. Mostrar y ejecutar son permisos separados. La validación en servidor es obligatoria; ocultar tarjetas no es aislamiento. Pendientes descubribles solo si está autorizado descubrirlos. Personal no hereda datos hoteleros.
+| Perfil de diseño | Inicio y navegación prioritaria |
+|---|---|
+| Recepción | Entradas/salidas, preparación, cotización, reservas/POS, cobros permitidos y respuestas |
+| Aseo / Mantenimiento | Asignaciones, habitación/incidente, evidencia de cierre y mi turno |
+| Finanzas | Caja CRC/USD, comprobantes, cobros, conciliación y reportes permitidos |
+| Gerencia / Dueño | Urgencias/excepciones, operación, dinero y aprobaciones del ámbito |
+| Mercadeo | Campañas/contenido/reputación/redes/leads/promociones/resultados autorizados |
+| Personal | Mi espacio, proyectos y herramientas privadas |
+Cuatro entradas útiles y Más en móvil, adaptadas al perfil; no imponer Dinero a todos. Cerebro y módulos00–11 conservan identidad/rutas. Herramientas contiene el catálogo completo permitido, no solo favoritos. Reportes y Capacitación son vistas transversales existentes, sin nuevos módulos numerados.
+
+### Widget Kross: lectura real y diseño de búsqueda
+Nueva revisión autenticada del candidatoES6 en una pestaña separada: Opciones guardadas muestran Pedir n.habitaciones=activado, máximo5; Pedir n.huéspedes=activado, estándar2/mínimo1/máximo29; Pedir n.niños=activado, máximo10; apertura selector habitaciones/huéspedes tras período=activada. No se marcó ni guardó nada. La pestaña del usuario cambió a Planner durante la revisión inicial; el selector anterior falló por contexto cambiado, se diagnosticó y se pasó a pestaña propia sin interferir.
+Estos son límites configurados del buscador, no capacidad comercial de cada habitación ni validación de tarifas/disponibilidad. Publicación del widget, edades/reparto por habitación y resultado comercial E2E continúan pendientes. Reutilizar candidatosES6/EN7 y la instalación pública existente, no crear otro motor o widget duplicado.
+Render: fechas Entrada/Salida en dos campos; Habitaciones/Adultos y Niños/Edades en pares; detalle desplegable de reparto por habitación y edades requerido por el motor. No imponer nuevas edades/políticas por copy. Consultar Kross ejecuta búsqueda, nunca confirma reserva/cobro. Mostrar precio total, moneda, noches, impuestos, régimen, extras, condiciones y frescura solo cuando el motor los devuelve. Si el widget no admite cierto detalle, continuar dentro del flujo oficial o explicarlo, sin inventar comportamiento.
+
+### Mercadeo dentro del Plan
+Vista Mercadeo dentro de módulo7Crecimiento, propiedad SKY con colaboración Studio y TERE. No módulo13, base, marca o agente nuevo. Pestañas: Campañas, Contenido, Reputación, Redes y leads, Promociones, Resultados. Vincular precios/SP04, sitio/motor, activos/documentos, consultas y evidencia. Separar producción de contenido, aprobación, publicación, gasto, promoción aplicada y beneficio observado. Presupuesto, contratación, cambios de tarifa y publicaciones conservan autoridad. Las acciones de servicio/conversión de huéspedes permanecen con TERE; no duplicar tareas entre áreas.
+
+### Respuestas rápidas / mensajes pregrabados
+Vista en Clientes/Comms y acceso desde la utilidad de traducción/respuestas. TORO_COMMS_V1.md declara operations.guest_message_templates como recurso existente: esquema vivo, sesión, permisos y CRUD no verificados aquí. Reutilizar ese recurso después de comprobarlo; no crear biblioteca paralela.
+Catálogo por categoría/idioma/canal/ámbito: bienvenida/prellegada, ubicación/acceso, check-in/out, Wi-Fi, servicios, limpieza, incidencias, cotización, recordatorio de pago y solicitud de review. Texto y audio pregrabado se distinguen; grabación necesita origen/autoridad y no se presupone existente.
+Crear genera borrador; editar nueva versión; aprobar requiere responsable habilitado; usar prepara respuesta editable. Eliminar retira/archiva las utilizadas conservando historia y recibos; borrado físico conserva autoridad específica. Campos: título, propósito, idioma, canal, variables, fuente, vigencia, responsable, versión y estado Borrador/Aprobado/Archivado. Variables sensibles se validan antes de usar; datos faltantes se señalan. No introducir RRHH privado o información bancaria en biblioteca general. Pegar mensaje/audio/archivo prepara texto/transcripción/traducción con tono; enviar es una acción independiente autorizada y verificable, no consecuencia de Crear/Editar/Usar.
+
+### Cobertura revisada y aceptación pendiente
+| Área | Cobertura del diseño | Estado de implementación nueva |
+|---|---|---|
+| Identidad/contexto/proyectos/Personal | Común, autorizado, privacidad y limpieza de ámbito | TARGET; sesión recíproca no certificada |
+| Comando/adjuntos/audio/foto/respuestas | Multimodal con borrador y recibo por acción | TARGET |
+| Kross/POS/widget/operación/precios | Reutiliza fuentes/herramientas; límites de búsqueda leídos | Integración y E2E pendientes |
+| People/asistencia/turnos/capacitación | Personas dentro deTORO; vistas por rol | TARGET |
+| Dinero/comprobantes/caja/conciliación | CRC/USD separados, juntos en pantalla y desplegables | TARGET |
+| Mercadeo/Studio/Comms/mensajes | Vistas de módulos existentes y versionado | TARGET |
+| Herramientas/datos/fuentes/Google/Chrome | Catálogo autorizado y captura seleccionada | Feed/permisos/adapter pendientes |
+| Reportes/Cerebro00–11/mejora semanal | Misma información, cortes y resultados verificables | Runtime y automatización pendientes |
+No se omite ninguna categoría del pedido en la estructura; esto no declara exhaustiva la auditoría ni entregadas las capacidades. UI deberá pasar320/390/PC, ambos temas, teclado/disclosures/foco/44px/contraste y datos desconocidos/parciales.100criterios previos y641baseline se conservan; no reauditoría o suite de código por docs/render.
+**Única siguiente acción:** revisar este render final como dirección de presentación. Todavía no construir, conectar o activar CRUD. Al autorizar implementación, primero cerrar contrato de sesión común Portal/Personas y primer alcance de lectura en People vigente; conservar criterios de identidad/RLS/expiración/segunda identidad y rollback. SQL YA APLICADO, sin modificaciones.
