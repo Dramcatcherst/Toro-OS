@@ -38,7 +38,7 @@ export function classifyPortalEnvironment(env) {
     publicUrl: validPublicUrl(env.NEXT_PUBLIC_SUPABASE_URL),
     browserPublicKey: publicKeyKind(key) !== "invalid",
     serverBrowserKeyConsistent: serverKey === undefined || serverKey === key,
-    internalMode: env.TORO_DEPLOYMENT_MODE === "internal",
+    internalMode: ["internal", "portal"].includes(env.TORO_DEPLOYMENT_MODE),
     canonicalReadGate: env.TORO_BRAIN_CANONICAL_READ_ENABLED === "true",
     ownerReadGate: env.TORO_OWNER_ATTENTION_READ_ENABLED === "true",
     readTransportKnown: env.TORO_PORTAL_READ_TRANSPORT === undefined || ["direct", "rpc_v1"].includes(env.TORO_PORTAL_READ_TRANSPORT),

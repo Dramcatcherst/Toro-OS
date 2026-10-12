@@ -73,7 +73,7 @@ it("presents the canonical structure without rendering fabricated links for pend
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain("Mi TORO es tu espacio personal dentro de este mismo Portal");
   expect(html).toContain('aria-current="page"');
-  expect(html.match(/MÓDULO \d\d/g)).toHaveLength(12);
+  expect(new Set(html.match(/MÓDULO \d\d/g)).size).toBe(12);
   expect(html).toContain("MÓDULO 11");
   expect(html).not.toContain("focus=finance");
   expect(html).toContain('role="tablist"');

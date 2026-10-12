@@ -1,15 +1,21 @@
 import Image from "next/image";
-import { ArrowUpRight, CalendarDays, FolderOpen, MessagesSquare, Users, BedDouble } from "lucide-react";
+import { ArrowUpRight, CalendarDays, FolderOpen, MessagesSquare, Users, BedDouble, CreditCard, Wallet, Mail, House } from "lucide-react";
 import type { ToolLink } from "./directory";
 import styles from "@/features/portal/portal.module.css";
 
-export const portalToolBrands = {
+export const portalToolBrands: Record<string, { name: string; title: string; detail: string; Icon: typeof BedDouble; logo: string | null }> = {
   "LINK-048": { name: "Kross", title: "Ver reservas", detail: "Llegadas, salidas y reservas", Icon: BedDouble, logo: "/brand/tools/kross.png" },
   "LINK-002": { name: "Motor Kross", title: "Cotizar estancia", detail: "Fechas, precios y condiciones", Icon: BedDouble, logo: "/brand/tools/kross.png" },
   "LINK-178": { name: "WeSpeak", title: "Atender huéspedes", detail: "Conversaciones y solicitudes", Icon: MessagesSquare, logo: "/brand/tools/wespeak.ico" },
   "LINK-086": { name: "DreamTeam · TORO People", title: "Ver equipo", detail: "Equipo · sesión propia", Icon: Users, logo: "/brand/tools/dreamteam.svg" },
   "LINK-056": { name: "Google Calendar", title: "Ver agenda", detail: "Agenda del hotel", Icon: CalendarDays, logo: "/brand/tools/google.svg" },
   "LINK-131": { name: "Dropbox", title: "Buscar documentos", detail: "Archivos del hotel", Icon: FolderOpen, logo: "/brand/tools/dropbox.svg" },
+  "PORTAL-POS": { name: "Kross POS", title: "Abrir punto de venta", detail: "Consumos y cobros en Kross", Icon: CreditCard, logo: "/brand/tools/kross.png" },
+  "PORTAL-WHATSAPP": { name: "WhatsApp", title: "Abrir WhatsApp", detail: "Mensajes · envío manual", Icon: MessagesSquare, logo: null },
+  "PORTAL-ALEGRA": { name: "Alegra", title: "Abrir finanzas", detail: "Bancos, ingresos y gastos en Alegra", Icon: Wallet, logo: null },
+  "PORTAL-GMAIL": { name: "Gmail", title: "Abrir correo", detail: "Notificaciones y reservas", Icon: Mail, logo: "/brand/tools/google.svg" },
+  "PORTAL-DRIVE": { name: "Google Drive", title: "Abrir Drive", detail: "Documentos y hojas de cálculo", Icon: FolderOpen, logo: "/brand/tools/google.svg" },
+  "PORTAL-HOME": { name: "Google Home", title: "Abrir Google Home", detail: "Dispositivos · funciones según tu cuenta", Icon: House, logo: "/brand/tools/google.svg" },
 } as const;
 
 /** Presentation only: destinations must already be filtered by the approved directory reader. */

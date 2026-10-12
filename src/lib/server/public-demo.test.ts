@@ -18,6 +18,7 @@ import { loadCanonicalBrainReadSlice } from "@/features/brain/canonical-read";
 import { loadOwnerAttentionProjection } from "@/features/attention/owner-attention-server";
 import { createToroInternalWork } from "@/features/actions/internal-work-server";
 import { runToroMcpReadTool } from "@/features/mcp/read-adapter-server";
+import { assertInternalRuntime, internalCapabilityEnabled, isPortalDeployment, isPublicDemo } from "./public-demo";
 import type { ToroResolvedContext } from "@/features/context/types";
 import Home from "@/app/page";
 import { NextRequest } from "next/server";
@@ -139,6 +140,36 @@ it("internal write capability still requires authenticated identity", async () =
   expect(getUser).toHaveBeenCalledOnce();
   expect(io.fetch).not.toHaveBeenCalled();
   expect(io.blobPut).not.toHaveBeenCalled();
+});
+
+it("Portal mode admits only explicitly enabled existing read capabilities", () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  expect(isPortalDeployment()).toBe(true);
+  expect(isPublicDemo()).toBe(false);
+  expect(() => assertInternalRuntime()).not.toThrow();
+  for (const name of ["TORO_BRAIN_CANONICAL_READ_ENABLED", "TORO_OWNER_ATTENTION_READ_ENABLED"]) {
+    expect(internalCapabilityEnabled(name)).toBe(true);
+    for (const flag of [undefined, "false", "TRUE", " true "]) {
+      vi.stubEnv(name, flag);
+      expect(internalCapabilityEnabled(name)).toBe(false);
+    }
+  }
+  for (const name of ["TORO_LEGACY_OPERATIONS_ENABLED", "TORO_INTERNAL_WORK_WRITE_ENABLED", "TORO_MCP_ENABLED", "TORO_RUNTIME_HEALTH_ENABLED", "TORO_WORKER_CANARY_ENABLED", "TORO_FUTURE_WRITE_ENABLED"]) {
+    vi.stubEnv(name, "true");
+    expect(internalCapabilityEnabled(name)).toBe(false);
+  }
+  expectNoIo();
+});
+
+it.each(["portal", "PORTAL", " portal "])("mode %s cannot activate legacy reads, ledger persistence or internal task writes", async mode => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", mode);
+  expect((await readAirtableRecords({ baseId: "fake", tableId: "fake" })).data).toBeNull();
+  expect((await readVercelDeployments({ projectId: "fake" })).data).toBeNull();
+  await expect(getApprovalLedger()).rejects.toThrow("disabled");
+  await expect(persistApprovalLedger([])).rejects.toThrow("disabled");
+  const result = await createToroInternalWork({ action: "task.create", title: "Synthetic task", idempotencyKey: "demo-key-12345" });
+  expect(result.state).toBe("unavailable");
+  expectNoIo();
 });
 
 it.each(["ADMIN", "GERENCIA", "EMPLEADO"])("explicit internal write retains scoped role policy for %s", async (role) => {

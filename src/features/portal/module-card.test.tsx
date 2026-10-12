@@ -10,7 +10,9 @@ it("makes the full available card one named native link with its coverage descri
   const html = renderToStaticMarkup(<PortalModuleCard module={cardFixture} />);
   expect(html).toMatch(/^<a\b/);
   expect(html.match(/<a\b/g)).toHaveLength(1);
-  expect(html).toContain('aria-labelledby="portal-module-2"');
+  const headingId = html.match(/<h3 id="([^"]+)"/)?.[1];
+  expect(headingId).toBeTruthy();
+  expect(html).toContain(`aria-labelledby="${headingId}"`);
   expect(html).toContain('href="/my-toro#owner-attention-heading"');
   expect(html).toContain("Cobertura parcial");
   expect(html).not.toContain("<button");

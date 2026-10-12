@@ -21,6 +21,11 @@ test("accepts least-privilege configuration without implying authentication", ()
   assert.equal(classifyPortalEnvironment(config).prepared, true);
 });
 
+test("accepts the isolated hosted portal without granting write capabilities", () => {
+  assert.equal(classifyPortalEnvironment({ ...config, TORO_DEPLOYMENT_MODE: "portal", TORO_PORTAL_READ_TRANSPORT: "rpc_v1" }).prepared, true);
+  assert.equal(classifyPortalEnvironment({ ...config, TORO_DEPLOYMENT_MODE: "portal", TORO_INTERNAL_WORK_WRITE_ENABLED: "true" }).prepared, false);
+});
+
 test("server-only publishable key cannot satisfy browser configuration", () => {
   const env = { ...config, SUPABASE_PUBLISHABLE_KEY: config.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY };
   delete env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
