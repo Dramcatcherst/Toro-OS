@@ -33,7 +33,11 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
           setError(result.error || "No pudimos verificar tu acceso.");
           return;
         }
-        router.replace(safeNextPath(result.nextPath));
+        setPassword("");
+        // Cookies are issued by the server. Start a new document so an earlier
+        // anonymous Router Cache entry cannot survive a successful sign-in.
+        window.location.replace(safeNextPath(result.nextPath));
+        return;
       } else {
         const supabase = createBrowserSupabaseClient();
         const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });

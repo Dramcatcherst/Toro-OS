@@ -5487,6 +5487,10 @@ Dirección visual vigente: azul oscuro corporativo, TORO azul y descriptor peque
 
 NEXT único al publicar esta unidad: comprobar ingreso con el usuario habitual en toro.dreamcatcherhotel.com y contexto esperado; no pedir ni exportar contraseña, cookie o token. Estado final, SHA/deployment y límites quedan en el checkpoint canónico INTEGRACION_LOCAL_VALIDADA.md. Reversión selectiva por PR y despliegue previo; sin reset ni rollback de datos.
 
+## Acceso: configuración y navegación posteriores al ingreso — 12/10/2026
+CURRENT comprobado: un artefacto público anterior llevaba una clave publishable rechazada por Auth401. Se corrigió la variable existente con el valor público ya vigente del mismo proyecto, sin crear/rotar claves ni ampliar accesos. El nuevo bundle coincide y Auth devuelve200. Con el formulario existente, el acceso llegó a/portal; una carga completa mostró Inicio/Dreamcatcher. Evidencia focal y límites en docs/evidence/TORO_PORTAL_LOGIN_INCIDENT_2026-10-12.md; no se atribuyen todos los incidentes históricos a una misma causa.
+
+El éxito de DreamTeam abre ahora un documento nuevo para descartar una vista anónima conservada en Router Cache; mantiene safe-next y limpia el campo de contraseña. Legacy y diagnósticos de PR270 se conservan. Verificación local97pruebas de acceso/refresco/navegación, TypeScript/lint/build; entrada inmediata del candidato publicado todavía requiere aceptación. Reversión: reconstruir la referencia elegida con la configuración pública válida y verificar el ingreso; promover un bundle anterior puede restablecer el fallo. El estado final se registra en el checkpoint canónico existente; no hay nuevo sistema, base, scope ni autonomía activada.
 
 ## Portal completeness and document-based close — 2026-10-12
 
