@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DailyEnvironmentCard } from "@/features/environment/daily-environment-card";
 import {
   ArrowRight,
   LockKeyhole,
@@ -143,6 +144,8 @@ export default async function MyToroPage({
             <p className="mt-1 text-sm text-slate-300">Puedes abrir la guía del turno y volver a intentar cargar los accesos.</p>
           </div>}
         </section> : null}
+
+        {hotelAllowed ? <DailyEnvironmentCard /> : null}
 
         {view.focus ? <section aria-labelledby="focus-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/60 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
