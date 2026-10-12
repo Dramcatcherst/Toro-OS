@@ -5272,3 +5272,25 @@ Fuentes oficiales consultadas 12/10/2026:
 - [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli), [Codex app-server](https://learn.chatgpt.com/docs/app-server) y [OAuth RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html).
 
 **Única siguiente acción:** cerrar, en el contrato People/Identity existente, sesión común Portal–Personas y primer alcance de lectura con login Google como opción propuesta. Terminado cuando autoridad, vínculo usuario–empleado, contexto, permisos, expiración/revocación, segunda identidad, paridad y recuperación están definidos y sus pruebas de aceptación listas. Todavía no construir, crear cuentas/permisos, reejecutar SQL ni activar conexiones. Esta decisión documental no certifica dichas pruebas como ejecutadas.
+
+## Recomendación de simplificación y utilidad de MCP — 12/10/2026
+**Estado: PROPUESTO, sin implementación o activación.** Responde a Mauricio: quitar complejidad que no aporta valor y explicar qué controles sí benefician la operación. No modifica permisos, fuentes, baseline, SQL ni elegibilidad del asistente.
+
+**Recomendación principal:** Portal conecta directamente con los servicios existentes de TORO. MCP se conserva como adaptador opcional para que ChatGPT/Codex consulten esos mismos servicios con permisos; no interponerlo en cada pantalla ni condicionar el primer Portal a integrar Codex. Existe servidor local de seis herramientas de lectura, no runtime externo certificado. El contrato MCP P0 existente sigue TARGET: se propone desacoplar su entrega de la experiencia inicial, no eliminarlo ni declarar aprobado un nuevo alcance.
+
+- Conservar un producto, identidad/contexto, tareas, permisos y resultados; reutilizar el código existente y validar el contrato de sesión People. No microservicios, nueva cola o bases por programa.
+- Cada herramienta tiene solo el nivel necesario: abrir el original; leer datos si mejora una decisión; ejecutar una acción cuando el flujo está comprobado y autorizado. Un enlace útil no necesita adapter de escritura.
+- Usar lógica normal para calendario, tareas, caja/calculadora, filtros y plantillas. IA para interpretar reportes, traducir, resumir o preparar respuestas con contexto. Codex desarrolla/prueba mejoras; integración como operador general del hotel se aplaza.
+- Mostrar una lista de trabajo con vistas por rol, sección o programa. No convertir todos los módulos, agentes y herramientas en elementos visibles de Inicio.
+- Reutilizar widget Kross y DreamTeam; no rehacer sus motores ni duplicar planillas. Google Home/Chrome y proveedores empiezan con acceso contextual al original; lecturas/control dentro del Portal requieren beneficio concreto.
+- Automatizar reglas simples por eventos y cambios materiales antes de añadir agentes continuos. Revisión semanal prepara mejoras; no autoedita producción. Autonomía se gana por flujo verificable bajo el modelo A0–A6 vigente.
+
+**Controles que sí conviene conservar:** separación personal/hotel y nómina privada; identidad y permiso por acción; fuente/corte para tarifa/pago/ocupación; evitar efectos duplicados; distinguir preparado/enviado/verificado y recuperación ante fallo. Pueden resolverse una vez en servicios compartidos y actuar silenciosamente. Aprobación humana para lo que la requiere, sin pedir confirmación repetida de tareas ya autorizadas.
+
+**Cuándo vale MCP:** uso repetido desde ChatGPT/Codex para consultar prioridades, evidencia y resultados sin copiar reportes; clientes externos reutilizan las mismas herramientas. Si solo se usa el Portal, el adapter aporta poco al trabajo interno. No sustituye Kross/Alegra/Google ni elimina su autenticación, datos o verificación. Evaluar con un caso externo acotado de lectura y medir trabajo evitado, tiempo de respuesta, mantenimiento y fallos antes de ampliar.
+
+**Valor de la primera versión:** cerrar un flujo como reporte/incidencia → tarea única → responsable → evidencia → relevo/cierre, con accesos contextuales y datos faltantes visibles. Beneficio se mide en doble captura evitada, menos búsqueda, respuesta más rápida y pendientes realmente cerrados. No estimar ahorros o porcentajes sin medición.
+
+Fuente local actual: src/features/mcp/server.ts y contratos TORO_CHATGPT_MCP_CONTRACT_V1.md / TORO_AUTONOMY_AND_ACTION_MODEL_V1.md. Fuente oficial: https://developers.openai.com/plugins/build/mcp-server . Si se utiliza API para IA del Portal, su facturación es independiente de ChatGPT: https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform . Vías OAuth de uso del plan ChatGPT requieren elegibilidad y evaluación específica; no se presume cobertura de usuarios/runtime TORO: https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server . Nada contratado/activado.
+
+**Siguiente unidad conservada:** contrato de sesión común Portal–Personas y primer alcance de lectura, limitado a lo necesario. No resolver todos los conectores para empezar esa preparación. Todavía no construir.
