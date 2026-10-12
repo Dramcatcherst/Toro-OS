@@ -13,16 +13,16 @@ const brands = {
 } as const;
 
 /** Presentation only: destinations must already be filtered by the approved directory reader. */
-export function PortalToolLinks({ links, compact = false }: { links: ToolLink[]; compact?: boolean }) {
-  return <nav aria-label="Herramientas del hotel" className={compact ? styles.toolsCompact : styles.toolsGrid}>
+export function PortalToolLinks({ links, compact = false, wide = false }: { links: ToolLink[]; compact?: boolean; wide?: boolean }) {
+  return <nav aria-label="Herramientas del hotel" className={wide ? styles.toolsWide : compact ? styles.toolsCompact : styles.toolsGrid}>
     {links.map(link => {
       const brand = brands[link.id as keyof typeof brands];
       if (!brand) return null;
       const Icon = brand.Icon;
       return <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-        className={styles.toolCard} aria-labelledby={`tool-${link.id}`} aria-describedby={`tool-note-${link.id}`}>
+        className={styles.toolCard} data-tool={link.id} aria-labelledby={`tool-${link.id}`} aria-describedby={`tool-note-${link.id}`}>
         <span className={styles.toolVisual + (brand.logo ? " " + styles.lightLogo : "")} aria-hidden="true">
-          {brand.logo ? <Image src={brand.logo} alt="" width={56} height={56} unoptimized /> : <Icon size={38} strokeWidth={1.6} />}
+          {brand.logo ? <Image src={brand.logo} alt="" width={72} height={64} unoptimized /> : <Icon size={38} strokeWidth={1.6} />}
         </span>
         <span className={styles.toolCopy}><strong id={`tool-${link.id}`}>{brand.title}</strong>
           <span className={styles.toolBrand}>{brand.name}</span>

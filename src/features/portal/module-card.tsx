@@ -11,19 +11,20 @@ export function PortalModuleCard({ module }: { module: PortalModule }) {
   const Icon = icons[module.ordinal] ?? LayoutGrid;
   const id = `portal-module-${module.ordinal}`;
   const contents = <>
-    <div className={styles.cardTop}><span className={styles.icon} aria-hidden="true"><Icon size={32} strokeWidth={1.6} /></span>
-      <span className={styles.number}>MÓDULO {String(module.ordinal).padStart(2, "0")}</span></div>
-    <h3 id={id}>{module.label}</h3><p id={`${id}-description`} className={styles.description}>{module.description}</p>
+    <div className={styles.cardTop}><span className={styles.icon} aria-hidden="true"><Icon size={28} strokeWidth={1.7} /></span>
+      <div className={styles.cardTitle}><span className={styles.number}>MÓDULO {String(module.ordinal).padStart(2, "0")}</span>
+        <h3 id={id}>{module.label}</h3></div></div>
+    <p id={`${id}-description`} className={styles.description}>{module.description}</p>
     <div className={styles.cardBottom}><p id={`${id}-status`} className={styles.status}>{module.status}</p>
-      {module.href ? <ArrowRight size={18} aria-hidden="true" /> : <span className={styles.pendingLabel}>Pendiente</span>}</div>
+      {!module.href ? <span className={styles.pendingLabel}>Pendiente</span> : null}</div>
     <p id={`${id}-note`} className={styles.note}>{module.note}</p>
-    {module.action ? <span className={styles.cardAction}>{module.action}</span> : null}
+    {module.action ? <span className={styles.cardAction}>{module.action}<ArrowRight size={18} aria-hidden="true" /></span> : null}
   </>;
   const description = `${id}-description ${id}-status ${id}-note`;
   return module.href ? <Link href={module.href} prefetch={false}
-    className={styles.card + " " + styles.cardAvailable} aria-labelledby={id} aria-describedby={description}>
+    className={styles.card + " " + styles.cardAvailable} data-module={module.ordinal} aria-labelledby={id} aria-describedby={description}>
     {contents}
-  </Link> : <article className={styles.card + " " + styles.cardPending} aria-labelledby={id} aria-describedby={description}>
+  </Link> : <article className={styles.card + " " + styles.cardPending} data-module={module.ordinal} aria-labelledby={id} aria-describedby={description}>
     {contents}
   </article>;
 }

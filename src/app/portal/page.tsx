@@ -50,19 +50,19 @@ export default async function PortalPage() {
         <span> {availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación.</span>
         <small>Un destino disponible puede ser una consulta o una guía. Cada vista informa su cobertura.</small>
       </p>
-      <div className={hotelAllowed ? styles.portalLayout : undefined}>
+      <div className={styles.portalLayout}>
         <section aria-labelledby="portal-modules-heading" className={styles.moduleSection}>
           <div className={styles.sectionHeading}><h2 id="portal-modules-heading" tabIndex={-1}>Cerebro y módulos</h2><span>Plan General · 00–11</span></div>
           <p className={styles.sectionNote}>Abre una tarjeta completa para entrar. Los módulos en preparación conservan su lugar en el Plan.</p>
           <div className={styles.grid}>{modules.map(module => <PortalModuleCard key={module.ordinal} module={module} />)}</div>
         </section>
-        {hotelAllowed ? <aside className={styles.toolsPanel} aria-labelledby="portal-tools-heading">
+        {hotelAllowed ? <section className={styles.toolsPanel} aria-labelledby="portal-tools-heading">
           <div className={styles.sectionHeading}><h2 id="portal-tools-heading" tabIndex={-1}>Tu trabajo diario</h2><span>{links.length} accesos</span></div>
           <p className={styles.sectionNote}>Herramientas del hotel incorporadas al Portal.</p>
-          {links.length ? <PortalToolLinks links={links} compact /> : <p role="status" className={styles.contextNote}>La lista no está disponible ahora. Puedes consultar la guía del turno.</p>}
-          <Link className={styles.guideLink} href="/my-toro/herramientas" prefetch={false}>Guía de mi turno<ArrowRight size={18} aria-hidden="true" /></Link>
-          <p className={styles.note}>Cada herramienta conserva su sesión y permisos.</p>
-        </aside> : null}
+          {links.length ? <PortalToolLinks links={links} wide /> : <p role="status" className={styles.contextNote}>La lista no está disponible ahora. Puedes consultar la guía del turno.</p>}
+          <div className={styles.toolsFooter}><p className={styles.note}>Cada herramienta conserva su sesión y permisos.</p>
+            <Link className={styles.guideLink} href="/my-toro/herramientas" prefetch={false}>Guía de mi turno<ArrowRight size={18} aria-hidden="true" /></Link></div>
+        </section> : null}
       </div>
       <PortalConnectionNote />
     </div></main>

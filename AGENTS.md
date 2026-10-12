@@ -89,11 +89,13 @@ Canonical visual metaphor:
 - blue bull = the business / living organization;
 - integrated brain + microchip/circuit = biological intelligence + AI/computation coordinating the whole.
 
-Current masters:
-- `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
-  - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+Current master authority: `docs/product/TORO_BRAND_CONTRACT.md` (CURRENT, 2026-09-23).
+- `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`
   - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
+- The `8828b0d...` TORO BRAIN wordmark and TORO Brain filenames/manifests are historical references, not current masters.
+- A declared path/hash does not establish file availability. Verify exact bytes before incorporating it.
+
+For Portal presentation work, apply `docs/product/TORO_PORTAL_DESIGN_RULES.md` under the General Plan and brand contract. Do not change data, destinations or access gates to improve appearance.
 
 Legacy blue-bull artwork remains provenance/reference only. Do not generate, redraw, recolor or substitute another bull for official product identity. Do not use bullfighting/violent imagery. Do not present TORO OS as a parallel public-facing product; preserve old TORO OS names only when technically required for compatibility.
 
