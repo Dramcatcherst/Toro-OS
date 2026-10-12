@@ -162,13 +162,24 @@ export default async function MyToroPage({
         {view.focus ? <section aria-labelledby="focus-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/60 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div><p className="text-xs text-cyan-200">Consulta</p><h2 id="focus-heading" className="mt-1 text-xl font-bold">{view.focus.label}</h2></div>
-            <Link href="/my-toro" className={actionClass + " border border-slate-700"}>Cerrar consulta</Link>
+            <Link href="/my-toro#available-heading" prefetch={false} className={actionClass + " border border-slate-700"}>Volver al menú</Link>
           </div>
+          {view.focus.coverage ? <p role="status" className="mt-3 text-sm text-slate-300">{view.focus.coverage}</p> : null}
           {view.focus.items.length ? <div className="mt-4 grid gap-3">
             {view.focus.items.map((item, index) => <article key={index} className="rounded-2xl border border-slate-700 p-4">
               <h3 className="font-semibold">{item.title}</h3>
               {item.meta ? <p className="mt-1 text-xs text-cyan-200">{item.meta}</p> : null}
               {item.detail ? <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p> : null}
+              {item.evidence ? <details className="mt-3 rounded-xl border border-slate-700 p-3">
+                <summary className="min-h-11 cursor-pointer content-center font-semibold focus-visible:outline-2 focus-visible:outline-cyan-200">Evidencia permitida · {item.title}</summary>
+                <dl className="mt-3 space-y-2 break-words text-sm text-slate-300">
+                  <div><dt>Fuente autorizada</dt><dd>{item.evidence.source}</dd></div>
+                  <div><dt>Origen declarado por el registro</dt><dd>{item.evidence.reportedSource}</dd></div>
+                  <div><dt>Actualización del registro</dt><dd>{item.evidence.observedAt}</dd></div>
+                  <div><dt>Lectura del lote</dt><dd>{item.evidence.readAt}</dd></div>
+                </dl>
+                <p className="mt-3 text-xs leading-5 text-slate-400">Esta evidencia describe el registro autorizado. La fecha de lectura no certifica su vigencia ni abre documentos originales.</p>
+              </details> : null}
             </article>)}
           </div> : <p className="mt-4 text-sm text-slate-300">No hay elementos visibles para tu cuenta en esta consulta.</p>}
         </section> : null}

@@ -42,7 +42,7 @@ export function MyToroCommandBar({
     .slice(0, currentFocus || activeSubmenuKey ? 2 : 3);
 
   function navigateToCapability(capability: string) {
-    router.push(`/my-toro?focus=${encodeURIComponent(capability)}`);
+    router.push(`/my-toro?focus=${encodeURIComponent(capability)}#focus-heading`);
   }
 
   function handleValue(raw: string) {
@@ -162,7 +162,7 @@ export function MyToroCommandBar({
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder='Ej.: "proyectos", "2" o "quiero ver decisiones"'
-          className="min-w-0 flex-1 rounded-2xl border border-slate-700 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-cyan-300/40"
+          className="min-w-0 flex-1 rounded-2xl border border-slate-700 bg-black/30 px-4 py-3 text-sm text-white placeholder:text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-200"
         />
         <button
           type="submit"

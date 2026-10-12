@@ -17,6 +17,18 @@ function view(): ToroRealMenuView {
 const render = async () => renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
 beforeEach(() => vi.resetAllMocks());
 
+it("renders permitted evidence with partial coverage and a local menu return, without original-document links", async () => {
+  const data = view();
+  data.focus = { capability: "projects.status", label: "Proyectos", coverage: "Cobertura parcial; total desconocido",
+    items: [{ title: "Synthetic", evidence: { source: "operations.projects", reportedSource: "No informada",
+      observedAt: "2026-08-01T00:00:00Z", readAt: "2026-10-12T02:00:00Z" } }] };
+  mocks.menu.mockResolvedValue(data); mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = await render();
+  expect(html).toContain("Evidencia permitida"); expect(html).toContain("total desconocido");
+  expect(html).toContain('href="/my-toro#available-heading"');
+  expect(html).toContain("no certifica su vigencia ni abre documentos originales");
+});
+
 it("does not query or expose the hotel directory without a session", async () => {
   mocks.menu.mockResolvedValue(null);
   const html = await render();
