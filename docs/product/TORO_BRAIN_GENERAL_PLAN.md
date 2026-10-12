@@ -5486,3 +5486,12 @@ Verificación focal: RPC enforce_user_session existe en public, firma(text,text)
 Dirección visual vigente: azul oscuro corporativo, TORO azul y descriptor pequeño, bordes definidos, sin selector de tema ni rosa/morado propio. Altura natural, filas y accesos compactos; favoritos9,2columnas móvil/3PC. Procedencia/cobertura completas desplegables, manteniendo señal parcial visible. No tablas de habitaciones, agentes activos o integraciones simuladas. PMS/OTA/finanzas vivos, tareas persistentes/de equipo, IA/media, People completo y dispositivos mantienen su backlog original; este arreglo no los declara terminados.
 
 NEXT único al publicar esta unidad: comprobar ingreso con el usuario habitual en toro.dreamcatcherhotel.com y contexto esperado; no pedir ni exportar contraseña, cookie o token. Estado final, SHA/deployment y límites quedan en el checkpoint canónico INTEGRACION_LOCAL_VALIDADA.md. Reversión selectiva por PR y despliegue previo; sin reset ni rollback de datos.
+
+
+## Portal completeness and document-based close — 2026-10-12
+
+The owner requests a complete permitted tool catalogue, simpler task-based navigation and one governed document-to-close workflow across Portal, WhatsApp and email. This extends section23 Human Experience and existing TORO Tools / Comms / Finance, not a second master plan, registry, inbox, ledger or scheduler.
+
+Written specification: [Portal completeness and document close](../superpowers/specs/2026-10-12-portal-completeness-and-document-close-design.md). Status: PROPOSED_WRITTEN_SPECIFICATION, not implemented or activated. Recommended units: permitted catalogue/projection; navigation; original custody; saved close draft; verified WhatsApp intake; existing Alegra native writer acceptance; canonical-state convergence. Preserve source authority, scopes, roles, original currencies and evidence. No document receipt implicitly authorizes posting, payment or Finalize Day.
+
+Owner-login acceptance and metadata corrections are already evidenced separately. Runtime channel binding, current Kross financial sources, native accounting writer and private originals remain acceptance dependencies. The complete internal link inventory, private source identifiers and native financial evidence remain outside this public repository. Architectural implementation follows written-spec review and the existing plan/PR/verification path.
