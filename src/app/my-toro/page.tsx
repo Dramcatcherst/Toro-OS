@@ -1,3 +1,5 @@
+import { DailyEnvironmentCard } from "@/features/environment/daily-environment-card";
+import { loadDailyEnvironment } from "@/features/environment/server";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -93,7 +95,9 @@ export default async function MyToroPage({
   const menu = view.menu;
   const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
   const hotelAllowed = canReadHotelDirectory(view.context);
-  const directory = hotelAllowed ? await loadHotelDirectory() : null;
+  const [directory, environment] = hotelAllowed
+    ? await Promise.all([loadHotelDirectory(), loadDailyEnvironment(view.context)])
+    : [null, null];
   const hotelLinks = directory?.state === "ready" ? directory.links : [];
   const available = menu?.items.filter(item =>
     item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
@@ -174,6 +178,8 @@ export default async function MyToroPage({
             </article>)}
           </div> : <p className="mt-4 text-sm text-slate-300">No hay elementos visibles para tu cuenta en esta consulta.</p>}
         </section> : null}
+
+        {hotelAllowed ? <DailyEnvironmentCard view={environment} /> : null}
 
         {canViewOwnerAttention(view.context) ? (
           <Suspense fallback={<p role="status" className="mt-5 text-sm text-slate-300">Cargando prioridades…</p>}>

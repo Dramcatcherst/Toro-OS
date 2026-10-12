@@ -1,3 +1,5 @@
+import { DailyEnvironmentCard } from "@/features/environment/daily-environment-card";
+import { loadDailyEnvironment } from "@/features/environment/server";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
@@ -37,7 +39,7 @@ export default async function PortalPage() {
     try { return { state: "ready", projection: await loadOwnerAttentionProjection(view!.context) }; }
     catch { return { state: "unavailable", projection: null }; }
   }
-  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory() : Promise.resolve(null), readAttention()]);
+  const [directory, attention, environment] = await Promise.all([hotelAllowed ? loadHotelDirectory() : Promise.resolve(null), readAttention(), hotelAllowed ? loadDailyEnvironment(view.context) : Promise.resolve(null)]);
   const links = [...(directory?.state === "ready" ? directory.links : []), ...portalNavigation(view.context)];
   const availableCount = modules.filter(module => module.href).length;
   return <>
@@ -45,6 +47,7 @@ export default async function PortalPage() {
     <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={links} hotelAllowed={hotelAllowed} directoryAvailable={directory?.state === "ready"}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
+      {hotelAllowed ? <DailyEnvironmentCard view={environment} /> : null}
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
         <p>Mi TORO es tu espacio personal dentro de este mismo Portal. Accesos según tu cuenta.</p>

@@ -1,9 +1,10 @@
+vi.mock("@/features/environment/server", () => ({ loadDailyEnvironment: mocks.environment }));
 import { beforeEach, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { authorizedContext } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
 
-const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn() }));
+const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), environment: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn() }));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
 vi.mock("@/features/attention/owner-attention-server", () => ({ ownerAttentionReadEnabled: mocks.attentionEnabled, loadOwnerAttentionProjection: mocks.attention }));
@@ -30,6 +31,7 @@ it("shows login without private navigation to anonymous visitors", async () => {
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).not.toContain("Dreamcatcher");
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.environment).not.toHaveBeenCalled();
 });
 
 it.each(["denied", "unavailable"])("does not expose supplied directory rows when %s", async state => {
@@ -45,6 +47,7 @@ it("keeps the hotel tools out of another authorized organization", async () => {
   mocks.menu.mockResolvedValue(data);
   const html = renderToStaticMarkup(await PortalPage());
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.environment).not.toHaveBeenCalled();
   expect(html).not.toContain('aria-label="Herramientas del hotel"');
   expect(html).not.toContain("/my-toro/herramientas#equipo");
 });
@@ -110,4 +113,13 @@ it("names favorite and catalog references separately", async () => {
   expect(new Set(ids).size).toBe(ids.length);
   expect(html).toContain('aria-labelledby="favorite-LINK-086"');
   expect(html).toContain('aria-labelledby="catalog-LINK-086"');
+});
+
+it("shows an honest environment block in the authorized hotel scope", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = renderToStaticMarkup(await PortalPage());
+  expect(html).toContain("Hoy en Santa Teresa");
+  expect(html).toContain("Sin reporte diario verificado");
+  expect(mocks.environment).toHaveBeenCalledOnce();
 });

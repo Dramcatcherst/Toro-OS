@@ -1,9 +1,10 @@
+vi.mock("@/features/environment/server", () => ({ loadDailyEnvironment: mocks.environment }));
 import { beforeEach, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { authorizedContext } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
 
-const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn() }));
+const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), environment: vi.fn() }));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
@@ -33,6 +34,7 @@ it("does not query or expose the hotel directory without a session", async () =>
   mocks.menu.mockResolvedValue(null);
   const html = await render();
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.environment).not.toHaveBeenCalled();
   expect(html).toContain("/login?next=/my-toro");
   expect(html).not.toContain("Herramientas del hotel");
 });
@@ -45,6 +47,7 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   mocks.menu.mockResolvedValue(data);
   expect(await render()).not.toContain("Equipo y herramientas");
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.environment).not.toHaveBeenCalled();
 });
 
 it.each(["denied", "unavailable"])("does not render supplied links when the directory is %s", async state => {
@@ -104,4 +107,13 @@ it("keeps a usable submenu reachable even when its parent has no direct consulta
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
   expect(html).toContain("Dinero QA</span>");
   expect(html).not.toContain("Dinero QA · pendiente");
+});
+
+it("shows an honest environment block in the authorized hotel scope", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
+  expect(html).toContain("Hoy en Santa Teresa");
+  expect(html).toContain("Sin reporte diario verificado");
+  expect(mocks.environment).toHaveBeenCalledOnce();
 });
