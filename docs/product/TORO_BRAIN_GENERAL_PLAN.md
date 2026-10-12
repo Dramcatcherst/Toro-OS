@@ -5131,3 +5131,144 @@ Crear genera borrador; editar nueva versión; aprobar requiere responsable habil
 | Reportes/Cerebro00–11/mejora semanal | Misma información, cortes y resultados verificables | Runtime y automatización pendientes |
 No se omite ninguna categoría del pedido en la estructura; esto no declara exhaustiva la auditoría ni entregadas las capacidades. UI deberá pasar320/390/PC, ambos temas, teclado/disclosures/foco/44px/contraste y datos desconocidos/parciales.100criterios previos y641baseline se conservan; no reauditoría o suite de código por docs/render.
 **Única siguiente acción:** revisar este render final como dirección de presentación. Todavía no construir, conectar o activar CRUD. Al autorizar implementación, primero cerrar contrato de sesión común Portal/Personas y primer alcance de lectura en People vigente; conservar criterios de identidad/RLS/expiración/segunda identidad y rollback. SQL YA APLICADO, sin modificaciones.
+
+## Estructura operativa antes del build — decisión vigente 12/10/2026
+
+**Recomendación:** cerrar primero la estructura y el contrato de identidad, permisos y fuentes. El Portal será una entrada al trabajo del contexto activo; cada registro tendrá un origen y un responsable. La amplitud visual aprobada no acredita integraciones terminadas.
+
+**Alcance de este lote:** diseño y preparación documental. Mauricio detuvo nuevos renders y reiteró que no se construya. La última instrucción sustituye blanco por arena muy claro, elimina rosado/morado y prioriza densidad, pestañas, directorio y People completo. Se mantienen módulos 00–11, 100 criterios V1, fuentes, baseline 641 y SQL ya aplicado. Sin frontend, instalación, configuración, envío, scheduler ni publicación.
+
+### 1. Orden y formato común
+
+- **Cabecera:** TORO tipográfico azul + OPERATION SYSTEM pequeño; proyecto/contexto autorizado, usuario, tema, hora y clima compactos. En día tendrá fondo azul claro o arena más intenso; en noche fondo carbón y superficies azul pizarra más claras para dar contraste. La hora usa Costa Rica en Dreamcatcher y configuración por proyecto; clima requiere ubicación y corte, nunca datos inventados.
+- **Agentes:** una franja mínima con nombres, texto de estado y detalle desplegable; estado activo solo con evento vigente. No fijar múltiples barras altas que resten pantalla móvil. Sin señal comprobada, indicar Sin señal.
+- **Comando:** Pide o busca, con adjuntar archivo/foto/audio. Un único resultado puede abrir una reserva, tarea, documento o herramienta permitida. Buscar, preparar y ejecutar tienen resultados distintos; la petición no concede permisos ni confirma una acción.
+- **Navegación:** PC con menú horizontal y pestañas por sección. Móvil con cuatro destinos prioritarios por rol y Más; conservar las mismas rutas y contenido autorizado. Inicio siempre accesible. Más contiene destinos secundarios, Cerebro, Mi espacio y configuración según permiso.
+- **Formato de sección:** título breve + filtro/período + acciones en una línea cuando quepan; debajo, pestañas y lista compacta. En PC, lista/tabla y detalle lateral; en móvil, fila con icono + asunto + estado + plazo y detalle al tocar. No tarjetas enormes para cada dato, ni ocho paneles abiertos a la vez.
+- **Densidad:** columnas para accesos o datos cortos; lectura larga en una columna. Iconos con nombre accesible, controles de 44px y auxiliares de 12px como mínimo. Unir fecha, responsable y estado si son legibles; no ocultar moneda, fuente o riesgos. Preservar filtros, posición y borradores al regresar.
+
+### 2. Qué va en cada pantalla
+
+Estas son vistas del producto existente, no nuevos módulos, bases ni agentes.
+
+| Vista | Información principal | Detalle / herramientas | Fuente y alineación |
+|---|---|---|---|
+| **Inicio** | Pendiente: dos primeras tareas propias relevantes; nueve favoritos; widget oficial Kross; resumen operativo corto según rol | Ver todas, Crear tarea/Nota, añadir/ordenar favoritos, abrir caso | Atención 01, Operaciones 05, Tools; datos permitidos del contexto |
+| **Operación** | Pestañas Habitaciones, Entradas, Salidas, Nuevas, Aseo, Mantenimiento, Desayunos, Recepción y Tareas según perfil | Habitación/reserva/turno, preparación, incidencias, checklist, notas, evidencia, relevo y enlace original | Kross conserva PMS; TORO coordina tareas; RICO 05 y TERE 04 |
+| **Dinero** | Resumen, Bancos, Cobros, Gastos, Comprobantes, Caja, Conciliación | CRC/USD simultáneos, denominaciones desplegables, calculadora, comprobante original y diferencias | Alegra contabilidad; banco/procesador pagos; conteo físico con corte; FIONA 02 |
+| **Personas** | DreamTeam completo mediante vistas por rol: jornada, horarios, asistencia, solicitudes, equipo, planillas, capacitación y reportes | Día/Semana, cobertura publicada, incidencias, aprobación, evidencia, historial | People 06; no fuente paralela ni sustitución de contabilidad/banco |
+| **Mercadeo** | Campañas, Contenido, Reputación, Redes y leads, Promociones, Resultados | Borradores, recursos Studio, aprobación, publicación y medición separadas; SP04 como contexto de precios | Crecimiento 07, Studio 03, TERE 04; sin presupuesto/publicación implícitos |
+| **Herramientas** | Catálogo completo permitido, Favoritos, Directorio útil, Accesos y conexiones, Dispositivos | Buscar, abrir programa/original, añadir acceso personal, cuenta y permisos, Google Home | Tools/Sistemas 11; permisos efectivos, no catálogo idéntico para todos |
+| **Directorio útil** | Proveedores, técnicos, transporte, experiencias, servicios, emergencias y contactos de operación | Ficha: llamar, mapa, web, preparar WhatsApp, documentos y tareas vinculadas | Vista de Herramientas accesible también desde Operación; reutilizar contactos/empresas existentes |
+| **Reportes** | Operación, dinero, personas, comercial y sistemas; período, corte, cobertura y fuentes | Original, resumen, diferencias, hallazgos candidatos, vincular/confirmar nota o tarea, exportar con permiso | Misma información y cierres, sin segunda cola; fuentes originales y Reports transversal |
+| **Respuestas** | Mensaje original, traducción/transcripción y respuesta editable; biblioteca operativa | Texto/audio/archivo, idioma/tono, crear/editar/versionar/archivar plantilla, preparar WhatsApp | Clientes/Comms 04; recurso existente guest_message_templates sujeto a validación |
+| **Cerebro** | Prioridades, decisiones, tareas de agentes y recibos; módulos 00–11 y conexiones permitidas | Detalle de ejecución, aprobación, fallo, pausa/cancelación, límite de recursos | Control Plane 00/11; sin grafos o actividad ficticia |
+| **Mi espacio** | Tareas, notas, proyectos, archivos y herramientas personales privados | Compartir explícitamente, convertir nota en tarea, favoritos propios | Identity/User Vault y Proyectos 10; no hereda información hotelera |
+| **Capacitación** | Guías por rol/programa, versión vigente, práctica y avance propio | SOP original, asignación, evidencia de comprensión y mejora por incidentes | Knowledge/People; acceso desde Personas/ayuda contextual, sin módulo adicional |
+
+**Inicio no será todo el negocio comprimido.** Enseña qué atender y permite actuar. Horarios extensos, planillas, bancos, biblioteca de respuestas, configuración y reportes completos viven en su sección. Recepción ve entradas/preparación; aseo sus asignaciones; Finanzas caja/cobros; Gerencia excepciones; Mercadeo campañas; Personal su ámbito. Nueve favoritos es capacidad inicial visible, no obligación de mostrar accesos no autorizados.
+
+**Favoritos:** PC 3×3; móvil dos columnas cuando quepan, con noveno acceso y Añadir. Guardar más fácilmente, elegir los nueve de Inicio, ordenar con controles accesibles y ver la lista completa. Los seis destinos actuales no se amplían automáticamente. POS solicitado conserva https://dreamcatcherhotel.krossbooking.com/admin/pos. Añadir un enlace no otorga sesión, rol o capacidad de conector; URL desconocida queda pendiente, sin inventarla. TERE se abre por su canal existente cuando la ruta sea comprobada.
+
+### 3. Widget Kross y calendario único, también en la web
+
+Retirar la cabecera redundante Cotizar estancia y colocar el widget oficial en ese espacio. **Un solo control de fechas:** tocar el calendario una vez, elegir entrada y salida dentro de la misma apertura y ver rango/noches. Los dos valores se conservan explícitos; no abrir dos diálogos. PC puede mostrar meses contiguos; móvil un panel con selección de rango, mes navegable, editar y cancelación accesibles. Mantener selección al cambiar adultos/niños/habitaciones y al volver.
+
+Habitaciones, adultos y niños usan controles compactos; edades y reparto se despliegan según el comportamiento admitido por Kross. Reutilizar candidatos ES6/EN7; ES6 tiene habitaciones/niños activados según lectura previa. **La selección de rango y su personalización exacta no están verificadas.** Antes del build de ese componente, comprobar el flujo oficial y fechas/resultados de extremo a extremo. No modificar scripts del proveedor ni construir un motor alternativo para aparentar capacidad. Si un requisito no es admitido, usar el flujo oficial soportado y registrar la limitación.
+
+Aplicar el mismo contrato de fechas a la web Dreamcatcher existente; esta anotación no modifica su proyecto. Buscar produce una cotización, no una reserva ni un cobro. Precio y disponibilidad requieren respuesta vigente del motor, moneda, impuestos, régimen y condiciones. Habitaciones desocupadas físicamente no equivalen a unidades vendibles.
+
+### 4. Pendiente, notas, reportes y WhatsApp
+
+**Pendiente** sustituye Importante/Urgencias como bloque de Inicio. Mostrar dos tareas relevantes y Ver todas; conservar indicador visible de riesgo crítico aunque otra tarea ocupe las primeras filas. Una sola lista canónica, sin cola paralela de importantes ni listas por canal.
+
+Cada tarea: título, contexto, objeto/habitación/reserva/activo/turno, creador, responsable verificado, plazo, prioridad motivada, estado, fuente, checklist, comentarios y evidencia según necesidad. Menú contextual: Asignar, Adjuntar, Comentar, Registrar avance, Abrir original/Kross y Preparar WhatsApp. El cierre exige permiso y evidencia proporcional; terminado por el ejecutor y verificado pueden ser estados diferentes. Asignar a otro requiere alcance y aceptación/devolución; no se deriva un compromiso solo de una nota.
+
+Notas personales privadas, notas del caso compartidas y tareas son objetos distintos. Crear/editar/archivar es TARGET; nota → tarea o compartir es explícito. No copiar datos privados de empleados/huéspedes a una nota general. El intake local actual solo cubre ADMIN/GERENCIA, asigna al usuario activo y no ofrece destinatarios, privacidad ni CRUD completo: **cada persona crea para sí/otros aún requiere contrato e implementación.**
+
+Kross Housekeeping/Maintenance conserva identificador y autoridad. Vincular primero un registro existente; escritura futura necesita dirección permitida, mapping, versión, dedupe, readback y recibo. Estados Registrado en TORO / Pendiente Kross / Confirmado Kross / Falló separados. No se ha demostrado adapter de escritura de aseo/mantenimiento. Un vínculo ayuda a coordinar; no es un backup recuperable del PMS ni prueba de limpieza física.
+
+Aseo/desayunos/recepción: guardar referencia al reporte original y su autor/turno/corte. TORO extrae **hallazgos candidatos**, busca caso existente y propone nota/tarea/relevo. No convertir cada frase en tarea ni aceptar una interpretación como hecho. Desayuno incluido, servido, extra facturado y cobrado son estados distintos. Actualización incremental por eventos/cursor y revisión existente; mostrar último éxito, fuente, cobertura, error y próximo intento. No activar scheduler nuevo ni prometer tiempo real. Con datos vencidos: Desactualizado, no cero.
+
+WhatsApp útil en asignación/relevo, incidencia, ficha de proveedor/experiencia, respuesta a cliente, cotización y resumen autorizado. Preparar muestra destinatario verificado y borrador editable; copiar/abrir/enviar/entregado se distinguen. Envío automático solo por el canal ya autorizado y capacidad habilitada, con referencia del proveedor, dedupe y resultado. No enviar a terceros por diseñar el botón ni meter claves/datos sensibles en URL. Reportes privados requieren destinatario con el mismo alcance, no cualquier contacto.
+
+### 5. DreamTeam sin perder horarios ni planillas
+
+| Perfil | Entrada y pestañas prioritarias | Información adicional permitida |
+|---|---|---|
+| Empleado | Mi jornada, Horario, Solicitudes, Más | Asistencia propia, formación, perfil/documentos propios autorizados |
+| Jefe | Equipo, Cobertura, Pendientes, Más | Horarios/asistencia de equipo, solicitudes e incidencias bajo alcance |
+| RRHH / ADMIN | Personas, Horarios, Asistencia, Planilla | Expedientes, préstamos/adelantos/liquidaciones, reportes y configuración con permisos |
+| Contabilidad | Planilla permitida, Conciliación, Reportes | Versión revisada, soportes y diferencias; sin expedientes completos por defecto |
+| Gerencia / Auditor | Cobertura, Excepciones, Reportes | Resúmenes/evidencia del ámbito; auditoría de lectura cuando corresponda |
+
+Reutilizar EmployeeCenter, AttendanceCenter/Editor, ScheduleCenter, LeaveCenter, PayrollCenter, ReportCenter y PortalCenter según paridad vigente. Horario Día/Semana muestra publicado frente a borrador; cambios conservan historial. Asistencia mantiene marcaciones originales/correcciones y aprobación. Nómina Borrador/Revisada/Aprobada/Pagada separada; People prepara, Finance concilia y Alegra/banco conservan autoridad fiscal/de pago.
+
+Sesión común Portal/Personas sigue TARGET. Confirmar backend/orígenes, vínculo usuario–empleado, contexto/membresía y expiración/logout/revocación; probar segunda identidad y denegación cruzada. El Plan excluye EMPLEADO de RPC amplios de horario/asistencia: mantener lecturas propias autorizadas, no reabrirlos por montar la UI. El piloto de asistente tiene elegibilidad individual limitada; permitir consultas a todos será una ampliación por definir, no consecuencia del puesto. Conservar DreamTeam hasta paridad y recuperación verificadas. Perfil laboral privado no se mezcla con Mi espacio personal.
+
+### 6. Directorio, acceso Google y dispositivos
+
+**Directorio operativo:** categorías y búsqueda, favoritos por usuario y ficha verificable. Campos mínimos: nombre, categoría, ubicación/cobertura, contacto, horario, idioma si consta, fuente, última comprobación, responsable y notas del ámbito. Tarifas/comisiones/condiciones con vigencia y permisos; experiencias muestran disponibilidad solo si hay fuente. Emergencias permanecen localizables aunque falte un conector; contactos/protocolos críticos necesitan comprobación humana y versión. No cargar teléfonos inventados ni recomendar automáticamente un proveedor por una ficha antigua. Facturación de proveedor remite a su autoridad contable; directorio no autoriza contratación/pago. Separar contactos hotel, personal y fichas publicables para huéspedes.
+
+**Google y Chrome en la estructura:** Gmail alimenta comunicación/señales, Calendar agenda, Drive/Docs/Sheets documentos y Contacts ayuda a resolver contacto; no sustituyen PMS, tareas empresariales o CRM. Tasks/Keep se evalúan como captura/proyección del objeto canónico, no otra lista maestra. Estos accesos se agrupan en Herramientas/Accesos y se abren desde el caso que los necesita. Chrome captura solo página/selección elegida con URL/corte/ámbito mediante capacidad existente que debe comprobarse; conserva Abrir original. Un panel TORO junto a Chrome puede evaluarse después; no incrustar Chrome completo ni copiar cookies para integrar Kross. Legal y Riesgo, Activos y Espacios y Proyectos siguen localizables por Más/Cerebro según permisos, sin desaparecer de 00–11 ni crear otro portal.
+**Continuar con Google:** añadir como TARGET junto al acceso actual. El formulario inspeccionado usa contraseña y no incluye flujo Google. La identidad del proveedor se enlaza a un usuario canónico; no duplicar empleado ni otorgar acceso por coincidencia de nombre/correo o dominio. Primer acceso resuelve elegibilidad, vínculo y contexto. Login Google no concede Gmail/Drive/Calendar/Home; cada conexión necesita consentimiento independiente y cuenta/ámbito visibles. Recuperación/MFA, cierre en equipos compartidos y cambio de cuenta forman parte del contrato de identidad.
+
+**Google Home:** primera versión enlaza al servicio oficial, con acceso desde Herramientas → Dispositivos y favorito opcional. PC: https://home.google.com/; móvil: abrir app instalada mediante mecanismo oficial que deberá validarse por plataforma, con fallback web si no hay handoff soportado. Google confirma controles web limitados según dispositivo y cuenta; no se ha revisado la cuenta de Mauricio ni inventario/casas/equipos. Separar propiedad personal y hotelera. No presumir que iniciar sesión en TORO comparte esa sesión.
+
+Control dentro de TORO es una evolución: Home APIs Android/iOS, OAuth y permisos por estructura/tipo/dispositivo, compatibilidad y conectividad comprobadas. La documentación revisada no establece un SDK web equivalente para este Portal. Modelar dispositivo, ubicación, estado/corte, alcance y comando permitido; cámaras/cerraduras y otros comandos sensibles conservan autorización específica. No crear control, automatización, cámara embebida ni ampliar permisos ahora.
+
+**Accesos y conexiones, no una tabla de contraseñas:** cuenta enmascarada, Hotel/Personal, propietario, permisos, estado y última verificación; Abrir/Conectar/Reautenticar/Ver permisos según rol. Referenciar gestor de contraseñas existente, todavía desconocido. No almacenar claves en favoritos/notas/URL ni mostrar Copiar contraseña. User Vault es contexto personal, no password manager. OAuth/SSO oficial cuando proceda; secretos de integraciones solo servidor y referencias, nunca prompts, navegador o logs.
+
+### 7. Codex ↔ TORO y autonomía real
+
+| Dirección / alcance | Base actual | Complejidad relativa y condición |
+|---|---|---|
+| Codex → TORO: lectura | /api/mcp y seis herramientas de lectura ya existen localmente | Media: autenticar endpoint real y demostrar aislamiento; no conector operativo certificado |
+| Codex → TORO: intención/escritura gobernada | Intake interno y primitives de ejecución, sin herramienta MCP pública de escritura | Media-alta: autorización por capacidad, tarea canónica, idempotencia, verificación y recibo |
+| TORO → Codex: trabajar desde Portal | Modelo/contratos existentes; no puente integrado demostrado | Alta: host, sesión, eventos, aprobación, interrupción, recuperación, presupuesto y auth admitida |
+
+Seis herramientas actuales: get_brain_status, search_toro, get_priorities, get_business_status, get_pending_decisions y get_execution_receipts. El MCP resuelve organizaciones, no prueba datos personales. Bearer se valida con usuario/membresía, pero la inspección acotada no mostró comprobación explícita de audience del recurso y scope de lectura: requisito pendiente, no vulnerabilidad explotada. Verificar issuer/audience/expiración/scopes, recurso OAuth/callback/PKCE, token revocado, org incorrecta y segunda identidad antes de activar.
+
+MCP hace accesibles herramientas a Codex; no convierte al Portal en un ejecutor autónomo. Para interfaz cliente OpenAI documenta app-server; SDK para trabajos automáticos y modelo de autenticación admitido deben evaluarse sin reutilizar credenciales de ChatGPT en un servicio alojado. Las sesiones TORO/Codex/Kross son distintas; no copiar cookies. Reutilizar operations.tasks, runs/receipts, workers y registry existentes, no nueva cola.
+
+Flujo objetivo: petición → intención visible → validación de identidad/capacidad → preparación → autorización aplicable → ejecución limitada → verificación → recibo. Mostrar Preparado/Esperando aprobación/En curso/Verificado/Falló/Cancelado solo con evidencia. Actividad por eventos vigentes, sin parpadeos ficticios. Autonomía empieza con lectura y preparación; mensajes, reservas, cobros, publicación y cambios de precio conservan permisos específicos. Medir ciclos reales, fallos, dedupe, costos y recuperación antes de ampliar.
+
+### 8. Qué falta, qué sobra y qué puede pasar desapercibido
+
+**Falta cerrar antes de la integración funcional:**
+
+1. Sesión común, login Google, segundo usuario y matriz por puesto/membresía/ámbito; permisos para ver separados de ejecutar.
+2. Contrato de tareas/notas privadas, destinatarios, aceptar/devolver/reabrir/cerrar y adjuntos; el intake actual no cubre todo.
+3. Fuente real/formato/corte/responsable de cada reporte y IDs para habitación–reserva–turno–tarea; sin ello se duplicarán incidencias.
+4. Frescura y comportamiento ante fallo por fuente; caja/banco/contabilidad/precio/ocupación no pueden compartir un supuesto único de dato vivo.
+5. Widget oficial con rango, menores/reparto, impuestos/condiciones y resultado comprobados; paridad con la web.
+6. Directorio institucional actualizado, contactos verificados, dueño de cambios y separación de fichas publicables/privadas.
+7. Elegibilidad del asistente, conectores activos vs enlaces, WhatsApp por destinatario y recuperación de envíos ambiguos.
+8. MFA/recuperación/dispositivo compartido, revocación al salir del hotel, sesión caducada y continuidad segura de borradores.
+9. Edición simultánea/offline: no reenviar cobros/mensajes ni duplicar reservas por reintento; borrador local no operación confirmada.
+10. Presupuesto de consultas/modelos, cargas de audio/foto, almacenamiento/retención y atención a adjuntos no confiables; medir por tarea.
+11. Paridad People y recuperación antes de retirar DreamTeam; horario publicado no prueba asistencia, asistencia no aprueba planilla y planilla no prueba pago.
+12. Logo maestro exacto y assets nuevos verificados; renders no acreditan bytes, contraste ni QA. La revisión semanal propone mejoras y prueba deltas, no autoedita producción.
+
+**Sobra:** repetir todo en Inicio, otra cola Importante, contraseñas dentro de accesos, WhatsApp en cada campo, todos los programas en cada tarea, planillas en tarjetas generales, paneles gigantes, movimiento constante y sincronización bidireccional sin propietario. Reducir densidad decorativa antes de reducir letra o controles.
+
+**Límite honesto de preparación:** existe dirección y estructura suficiente para especificar pantallas; todavía faltan contratos/verificación para integrar todos los sistemas. Un catálogo con logos y enlaces no demuestra datos actualizados. El Plan no presume bancos/caja sincronizados, API Kross contratada, precios OTA comparados, Home conectado, SSO recíproco o automatización autónoma funcionando.
+
+### 9. Dirección visual que sustituye decisiones anteriores
+
+Arena muy claro como fondo de día; cabecera con fondo y acento azul. Noche carbón real con superficies azul pizarra más claras. Propuesta de tokens para futuro QA: arena #F7F3EA, cabecera #DCE9F6, tinta #183047, TORO azul #1358B8; noche base #101923, superficie #233A4D, tinta #EDF3F6. Son candidatos, no contraste probado.
+
+Secciones: azules/turquesas, verde salvia, ámbar/dorado y terracota suaves; **sin rosado, fucsia ni morado en UI propia**. Marcas externas mantienen colores originales, sin recolorear logos. Texturas discretas solo en fondos/bandas y sombras suaves; no detrás de lectura densa. Color guía área, estado siempre tiene texto. Pestañas/filas/disclosures compactos, nada esencial depende de animación. Primera versión debe probar 320px, móvil, PC, ambos temas, foco/teclado/contraste/reduced-motion y estados parciales.
+
+El render de Mercadeo que terminó al recibir la instrucción nueva pertenece al lote previo; su paleta rosa/morada está descartada. No se pidieron más imágenes tras esa instrucción. Las imágenes de este lote quedan como propuestas anteriores, no especificación vigente.
+
+### 10. Fuentes y siguiente unidad
+
+Revisión acotada, sin datos de huéspedes/empleados, escrituras operativas o nueva auditoría global. Fuentes locales: TORO_PEOPLE_DREAMTEAM_INTEGRATION.md, TORO_PEOPLE_CODE_MIGRATION_V1.md, TORO_TOOLS_V1.md, TORO_IDENTITY_USER_VAULT_V1.md, TORO_COMMS_V1.md, TORO_CHATGPT_MCP_CONTRACT_V1.md; runbooks TORO_MCP_PUMBA_ACTIVATION_V1.md y TORO_KROSS_FIRST_LIVE_READ_ACCEPTANCE_GATE.md; src/features/auth/login-form.tsx, actions/internal-work*.ts, mcp/server.ts, mcp/auth.ts, lib/supabase/bearer.ts, portal/model.ts y tools/directory.ts. El Plan registra fuentes/recepción y gobernanza Google previas; no se atribuye vigencia operativa a sus snapshots.
+
+Fuentes oficiales consultadas 12/10/2026:
+- [Google Identity: autenticación y autorización](https://developers.google.com/identity/gsi/web/guides/migration#authentication_and_authorization).
+- [Google Home para la web](https://support.google.com/googlehome/answer/9241220?hl=es), [Home APIs Android](https://developers.home.google.com/apis/android/get-started), [Home APIs iOS](https://developers.home.google.com/apis/ios/overview) y [permisos por estructura](https://developers.home.google.com/apis/android/permissions).
+- [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli), [Codex app-server](https://learn.chatgpt.com/docs/app-server) y [OAuth RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html).
+
+**Única siguiente acción:** cerrar, en el contrato People/Identity existente, sesión común Portal–Personas y primer alcance de lectura con login Google como opción propuesta. Terminado cuando autoridad, vínculo usuario–empleado, contexto, permisos, expiración/revocación, segunda identidad, paridad y recuperación están definidos y sus pruebas de aceptación listas. Todavía no construir, crear cuentas/permisos, reejecutar SQL ni activar conexiones. Esta decisión documental no certifica dichas pruebas como ejecutadas.
