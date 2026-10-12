@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowUpRight, Building2, Home, Network, UserRound, Wrench, CloudSun } from "lucide-react";
+import { ArrowUpRight, Building2, ChevronDown, Home, Network, UserRound, Wrench, CloudSun } from "lucide-react";
+import { PortalSignOut } from "@/features/auth/portal-sign-out";
 import { PortalClock } from "./portal-clock";
 import styles from "./portal.module.css";
 
@@ -24,23 +25,31 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
         <Building2 size={16} aria-hidden="true" />{scopeLabel}
       </Link>
       <div className={styles.headerUtilities}><PortalClock />{includeTools ? <a className={styles.weatherLink} href="https://www.google.com/search?q=clima+Santa+Teresa+Costa+Rica" target="_blank" rel="noopener noreferrer" aria-label="Consultar clima de Santa Teresa"><CloudSun size={17} aria-hidden="true" />Clima ↗</a> : null}</div>
-      <nav aria-label="Portal TORO" className={styles.navigation}>
+      <details className={styles.headerMenu}>
+        <summary><UserRound size={17} aria-hidden="true" />Menú<ChevronDown size={14} aria-hidden="true" /></summary>
+        <nav aria-label="Portal TORO">
         {links.filter(link => includeTools || link.key !== "tools").map(({ key, href, label, Icon }) => <Link key={key} href={href} prefetch={false}
           aria-current={current === key ? "page" : undefined}>
           <Icon size={17} aria-hidden="true" />{label}
         </Link>)}
-      </nav>
+          <PortalSignOut className={styles.textLink} />
+        </nav>
+      </details>
     </div>
-    <div className={styles.agentRail} aria-label="Especialistas TORO: sin señal de actividad">
+    {current !== "overview" ? <PortalAgents /> : null}
+  </header>;
+}
+
+export function PortalAgents() {
+  return <div className={styles.agentRail} aria-label="Especialistas TORO: sin señal de actividad">
       <span className={styles.agentCaption}>Agentes</span>
       {["TORO", "TERE", "RICO", "FIONA", "SKY", "SOBRESITO"].map(name => <span key={name} className={styles.agent}><i aria-hidden="true" /><span className={styles.agentFull}>{name}</span><abbr className={styles.agentShort} title={name}>{name.slice(0, 2)}</abbr></span>)}
       <span className={styles.agentSignal}>Sin señal</span>
-    </div>
-  </header>;
+    </div>;
 }
 
 export function PortalConnectionNote() {
   return <p className={styles.connectionNote}><ArrowUpRight size={16} aria-hidden="true" />
-    Las herramientas externas conservan sus sesiones y permisos. Sus enlaces no acreditan una integración completa.
+    Herramientas externas · sesión y permisos propios.
   </p>;
 }

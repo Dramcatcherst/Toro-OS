@@ -15,7 +15,7 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
       <Link href="/my-toro#owner-attention-heading" prefetch={false} className={styles.textLink}>Ver todas<ArrowRight size={15} aria-hidden="true" /></Link>
     </div>
     {ready ? <>
-      {projection.critical > 0 ? <p className={styles.criticalNote}>{projection.critical} señales críticas de la consulta · verificar estado en la fuente</p> : null}
+      {projection.critical > 0 ? <p className={styles.criticalNote}>{projection.critical} señales críticas · por verificar</p> : null}
       <div className={styles.pendingList}>{projection.items.slice(0, 2).map(item => {
         const href = safeEvidenceHref(item.sourceUrl);
         return <details key={item.dedupeRef} className={styles.pendingItem}>
@@ -24,6 +24,7 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
             <ArrowRight size={16} aria-hidden="true" />
           </summary>
           <div className={styles.pendingDetail}>
+            <p>{item.title}</p>
             <p>Fuente: {item.sourceSystem}</p>
             <p>Responsable: {item.humanOwner ?? item.ownerAgent ?? "Sin asignación verificada"}</p>
             {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmount(item.amount, item.currency)}</p> : null}
@@ -32,9 +33,10 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
         </details>;
       })}</div>
       {!projection.items.length ? <p role="status" className={styles.emptyNote}>Sin coincidencias en esta consulta. La cobertura parcial no confirma ausencia de pendientes.</p> : null}
-      <p className={styles.panelNote}>{Math.min(projection.items.length, 2)} de {projection.items.length} disponibles · cobertura parcial</p>
-      {projection.selection?.truncated ? <p className={styles.panelNote}>{projection.selection.matchedInReadBatch} coincidencias en el lote leído; la vista completa también está limitada.</p> : null}
-      <p className={styles.panelNote}>{formatAttentionCut(projection.generatedAt)}. Total de la organización no verificado.</p>
+      <details className={styles.subtleDisclosure}><summary>{Math.min(projection.items.length, 2)} de {projection.items.length} disponibles · cobertura parcial</summary>
+        {projection.selection?.truncated ? <p>{projection.selection.matchedInReadBatch} coincidencias en el lote leído; la vista completa también está limitada.</p> : null}
+        <p>{formatAttentionCut(projection.generatedAt)}. Total de la organización no verificado.</p>
+      </details>
     </> : <p role="status" className={styles.emptyNote}>{state === "disabled" ? "Fuente pendiente. Las prioridades no están habilitadas en este entorno." : "No disponible. No se pudieron comprobar las prioridades."}</p>}
   </section>;
 }

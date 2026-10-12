@@ -1,5 +1,6 @@
 import "server-only";
-import { isPublicDemo } from "@/lib/server/public-demo";
+import { isPortalDeployment, isPublicDemo } from "@/lib/server/public-demo";
+import { portalSessionAllowed } from "@/features/auth/portal-session";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -149,6 +150,7 @@ export async function resolveToroContextWithSupabase(
     : await supabase.auth.getUser();
 
   if (userError || !user) return null;
+  if (isPortalDeployment() && (user.app_metadata?.force_password_change || !await portalSessionAllowed(supabase))) return null;
 
   const mode = request.mode ?? "organization";
 

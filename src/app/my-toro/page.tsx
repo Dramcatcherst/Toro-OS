@@ -56,7 +56,7 @@ export default async function MyToroPage({
             Entra a TORO para ver tu experiencia.
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Usa tu correo de trabajo. Al entrar verás las opciones que ya permite tu cuenta.
+            {isPortalDeployment() ? "Usa tu usuario o correo de DreamTeam." : "Usa tu correo de trabajo."}
           </p>
           <Link
             href="/login?next=/my-toro"

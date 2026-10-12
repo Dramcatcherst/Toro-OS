@@ -15,10 +15,14 @@ export function PortalModuleCard({ module }: { module: PortalModule }) {
     <div className={styles.cardTop}><span className={styles.icon} aria-hidden="true"><Icon size={28} strokeWidth={1.7} /></span>
       <div className={styles.cardTitle}><span className={styles.number}>MÓDULO {String(module.ordinal).padStart(2, "0")}</span>
         <h3 id={id}>{module.label}</h3></div></div>
-    <p id={`${id}-description`} className={styles.description}>{module.description}</p>
+    {module.href ? <p id={`${id}-description`} className={styles.description}>{module.description}</p> : null}
     <div className={styles.cardBottom}><p id={`${id}-status`} className={styles.status}>{module.status}</p>
       {!module.href ? <span className={styles.pendingLabel}>Pendiente</span> : null}</div>
-    <p id={`${id}-note`} className={styles.note}>{module.note}</p>
+    {module.href ? <p id={`${id}-note`} className={styles.note}>{module.note}</p> : <details className={styles.subtleDisclosure}>
+      <summary>Detalle y cobertura</summary>
+      <p id={`${id}-description`} className={styles.description}>{module.description}</p>
+      <p id={`${id}-note`} className={styles.note}>{module.note}</p>
+    </details>}
     {module.action ? <span className={styles.cardAction}>{module.action}<ArrowRight size={18} aria-hidden="true" /></span> : null}
   </>;
   const description = `${id}-description ${id}-status ${id}-note`;

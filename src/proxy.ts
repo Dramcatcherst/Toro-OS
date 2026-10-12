@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isPortalDeployment, isPublicDemo } from "@/lib/server/public-demo";
+import { refreshPortalSession } from "@/lib/supabase/portal-refresh";
 
 const portalPages = new Set([
   "/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain",
@@ -26,6 +27,11 @@ function portalResponse(request: NextRequest) {
   // of letting a later router normalization change an allowlisted destination.
   const canonical = !/[\\%\u0000-\u0020\u007f]/.test(path) &&
     !path.split("/").some(segment => segment.startsWith("."));
+  if (canonical && path === "/api/auth/login" && request.method === "POST" && !request.headers.has("Next-Action")) {
+    // Only this bounded, same-origin authentication handler may accept a POST.
+    // It does not admit operational writers or Server Actions.
+    return privateResponse(NextResponse.next());
+  }
   if (readOnly && canonical && path === "/") {
     return privateResponse(NextResponse.redirect(new URL("/portal", request.url)));
   }
@@ -41,7 +47,7 @@ function portalResponse(request: NextRequest) {
 }
 
 /** Public surface allowlist, not a replacement for internal auth/RLS. */
-export function proxy(request: NextRequest) {
+export function publicSurfaceDecision(request: NextRequest) {
   if (isPortalDeployment()) return portalResponse(request);
   if (!isPublicDemo()) return NextResponse.next();
 
@@ -64,6 +70,18 @@ export function proxy(request: NextRequest) {
       : { state: "public_demo", operationalAccess: false },
     { status: 503, headers: { "Cache-Control": "no-store" } },
   );
+}
+
+export async function proxy(request: NextRequest) {
+  const response = publicSurfaceDecision(request);
+  const path = request.nextUrl.pathname;
+  if (isPortalDeployment() && response.headers.get("x-middleware-next") === "1" &&
+      (request.method === "GET" || request.method === "HEAD") &&
+      ((portalPages.has(path) && path !== "/login" && path !== "/booking-assist") || portalReadApis.has(path)) &&
+      request.cookies.getAll().some(cookie => /^sb-[a-z0-9]+-auth-token(?:\.\d+)?$/.test(cookie.name))) {
+    return refreshPortalSession(request, response);
+  }
+  return response;
 }
 
 // No exclusions: POST actions, API routes, unknown assets and data routes must be covered.
