@@ -49,6 +49,9 @@ export function MyToroCommandBar({
     const value = raw.trim();
     if (!value) return;
 
+    // An alternative belongs only to the latest non-empty request.
+    setSafeAlternative(null);
+
     const normalized = value.toLowerCase();
     if (
       currentFocus &&
