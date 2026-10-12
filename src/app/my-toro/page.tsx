@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DailyEnvironmentCard } from "@/features/environment/daily-environment-card";
+import { loadDailyEnvironment } from "@/features/environment/server";
 import {
   ArrowRight,
   LockKeyhole,
@@ -86,7 +87,9 @@ export default async function MyToroPage({
   const menu = view.menu;
   const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
   const hotelAllowed = canReadHotelDirectory(view.context);
-  const directory = hotelAllowed ? await loadHotelDirectory() : null;
+  const [directory, environment] = hotelAllowed
+    ? await Promise.all([loadHotelDirectory(), loadDailyEnvironment(view.context)])
+    : [null, null];
   const hotelLinks = directory?.state === "ready" ? directory.links : [];
   const available = menu?.items.filter(item =>
     item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
@@ -145,7 +148,7 @@ export default async function MyToroPage({
           </div>}
         </section> : null}
 
-        {hotelAllowed ? <DailyEnvironmentCard /> : null}
+        {hotelAllowed ? <DailyEnvironmentCard view={environment} /> : null}
 
         {view.focus ? <section aria-labelledby="focus-heading" className="mt-5 rounded-3xl border border-cyan-300/20 bg-slate-900/60 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
