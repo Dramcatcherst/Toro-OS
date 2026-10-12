@@ -5378,3 +5378,56 @@ Antes de código: confirmar estado/rama/aportes y main vigente solo en el delta 
 Terminado cuando el delta local existe, verificación apropiada pasa y hay evidencia sintética sin datos privados en320/390/PC, día/noche, teclado/foco, overflow, permisos y enlaces vigentes. Baseline641 es evidencia anterior conservada, no resultado nuevo. Cierre con mismo checkpoint/recibo y una siguiente acción. Publicación/Google/Peoplevivo/Krosswrite/WhatsAppconservan gates propios; no declarar Portal completo por maquetación.
 
 Fuentes oficiales: [dominio Vercel](https://vercel.com/docs/domains/set-up-custom-domain), [nameservers](https://vercel.com/docs/domains/working-with-nameservers), [protección](https://vercel.com/docs/deployment-protection), [uso comercial](https://vercel.com/docs/limits/fair-use-guidelines), [Google/Supabase](https://supabase.com/docs/guides/auth/social-login/auth-google), [redirecciones](https://supabase.com/docs/guides/auth/redirect-urls). Metadatos de proyecto/deployment fueron lecturas del conector Vercel; perfiles/calendarios de conectoresGoogle; código/contratos localmente revisados. No escrituras de proveedor.
+
+## Apps móviles, OpenClaw y estilo híbrido único — 12/10/2026
+**Decisión de Mauricio:** incluir Kross móvil, Pulse de Booking.com, Google Home y TTLock; investigar mejor uso de OpenClaw/Companion para después. En la próxima continuación iniciar el Portal. Afinar las cajas con bordes y aspecto corporativo; mezclar día/noche en un solo estilo elegante, tomando la segunda imagen nocturna como referencia. Esta sección supersede el selector y los dos temas de las propuestas anteriores; no elimina accesibilidad ni capacidades existentes.
+
+### Estilo vigente para el próximo build
+
+Un **estilo híbrido fijo**, sin selector día/noche ni cambio automático entre dos interfaces. Cabecera y navegación carbón/azul profundo; fondo azul pizarra; cajas mayormente azul pizarra más claro. Superficies arena/marfil reservadas a lectura intensiva, formularios o datos donde mejoren claridad, con texto oscuro. Mantener predominio y estructura de la referencia nocturna, evitando una mezcla arbitraria de tarjetas. TORO azul + OPERATION SYSTEM pequeño; sin rosado/morado en UI propia. Logos originales intactos.
+
+Bordes definidos y consistentes en tarjetas/cajas/campos; radios moderados, sombra discreta y bandas de sección sobrias. Controles y foco distinguibles del borde decorativo. Altura según contenido, sin vacíos forzados ni brillo/neón. Aplicar el mismo lenguaje en móvil: Pendiente2, Favoritos9 en dos columnas cuando quepan, calendario de rango, pestañas y detalles desplegables. PC aprovecha tabla/lista+detalle, sin cambiar el contenido permitido. Texto principal14px, auxiliar≥12px, objetivos≥44px; validar contraste/forced-colors/reduced-motion, teclado y320px. Los tokens concretos se comprobarán en UI, no se declaran validados por el render. No generar otra ronda de imágenes antes del código.
+
+### FUTURE: tres niveles de acceso, sin prometer apps nativas embebidas
+
+1. **Abrir original:** botón contextual que abre web o app móvil donde el proveedor admita enlaces oficiales, con fallback claro. No inventar esquemas kross://, pulse:// o ttlock://. Registrar destino, plataforma y fecha de prueba. App instalada/sesión externa no equivale a permiso TORO.
+2. **Mostrar información en TORO:** vistas propias con API/SDK oficiales, identidad y permisos por proveedor/dispositivo. Es la ruta preferida para datos útiles y consistentes; no requiere mostrar la pantalla completa de otra aplicación.
+3. **Pantalla/control remoto:** piloto de un dispositivo identificado y capacidades verificadas, si aporta una función que no existe por API/web. scrcpy permite reflejar/controlar Android desde Windows/Linux/macOS, pero integrar ese stream/control en el Portal requeriría transporte, sesión, permisos, privacidad y recuperación. No es iframe de app nativa ni función ya disponible.
+
+| Herramienta | Primera utilidad dentro de TORO | Evolución condicionada |
+|---|---|---|
+| Kross móvil | Abrir app/web autorizada; planner/reserva/POS desde contexto | Leer operación y enlazar objetos; API futura de nuestra cuenta, no contratada/activada. No rehacer PMS/widget ni asumir deep link de reserva |
+| Pulse Booking.com | Abrir Pulse en móvil y Extranet en PC; enlace desde reserva/mensaje/review | Mensajes/plantillas/reservas/reputación según conexión autorizada. Pulse instalado no concede Connectivity ni demuestra API de Pulse |
+| Google Home | Abrir Home/app/web oficial; acceso en Herramientas→Dispositivos | SDKAndroid/iOS, cuenta/casa/dispositivo, permisos y conectividad. No controlar dispositivos personales por pertenecer al hotel |
+| TTLock | Acceso a app oficial; fichas de cerraduras bajo Activos/Herramientas | API/SDK: alias/habitación, modelo, batería/corte, gateway/conectividad, incidencias y registros autorizados. Cuenta/región/modelos/gateway y alcance por verificar |
+
+Estas son vistas en Tools/Assets/Systems y vínculos a la operación, no nuevos módulos numerados, bases o proyectos. Mantener el mismo caso/reserva/tarea. Para tarifas/disponibilidad conservar una autoridad y dirección por campo: usar la relación existente con Kross cuando se verifique, evitando dos escritores automáticos Kross/Pulse. BookingConnectivity tiene onboarding y permisos/certificación propios; mensajes y reservas pueden tener alcances distintos.
+
+**TTLock requiere filtrado incluso en lectura.** Algunos payloads oficiales incluyen códigos/material de apertura. Un adapter futuro entrega solo campos permitidos y elimina secretos antes de UI/IA/logs. Vista normal muestra identificador, vigencia y estado, no PIN/llaves maestras. Bluetooth/gateway/modeloWi-Fi determinan alcance real; indicador de gateway no garantiza estado instantáneo y ausencia de registros puede significar falta de sincronización. Apertura, alta/baja de llaves, generación/cambio/envío de códigos y revocaciones requieren autorización humana específica por cerradura/reserva/plazo y verificación. No probar comandos físicos ni leer códigos reales en esta preparación.
+
+### FUTURE: sacar más provecho a OpenClaw sin duplicar TORO
+
+Flujo único: Portal → identidad/permiso TORO → tarea canónica → ejecutor OpenClaw existente → dispositivo/comando autorizado → verificación → comprobante. TORO mantiene verdad, política, aprobaciones y estado; OpenClaw es ejecutor, no otro Cerebro/cola/memoria maestra.
+
+Usos prioritarios a evaluar:
+- Chrome Relay para pestañas seleccionadas/elegibles y flujos web autorizados cuando no haya API adecuada; no navegador embebido ni acceso indiscriminado a un perfil.
+- Captura elegida de reporte/foto/audio y señal de notificación para proponer nota/tarea; no sustituir reserva Kross o pago por una notificación parcial.
+- Entrega por los canales existentes y autorizados, con destinatario verificado, dedupe y recibo; abrir/copiar no se declara enviado.
+- Ejecución acotada de tareas y diagnóstico de conexión con los workers/broker existentes, costo/tiempo/estado visibles; sin otro Gateway o scheduler.
+- Un nodo móvil por vez, inventario mínimo de capacidades permitidas y piloto de lectura. Desconexión, permiso retirado y comando no soportado fallan cerrado; no extender capacidades por personalidad/agente.
+
+La documentación actual de Android Companion incluye estado/info/permisos/salud, device.apps opcional, cámara/voz y notificaciones según permiso/configuración. **Inventariar apps no prueba control UI genérico** ni disponibilidad de app.launch. Los nodos anuncian capacidades concretas. OpenClaw Companion del plugin de escritorio y Android Companion no deben asumirse la misma instalación o sesión. Ningún emparejamiento, versión o capacidad efectiva de Mauricio se verificó en este lote.
+
+Reutilizar el lane mobile/broker ya documentado; la memoria conserva una inspección histórica de ADB/scrcpy, no un controller operativo actual. El checkout histórico toro-openclaw-integration se comprobó únicamente por existencia de carpeta; fuentes/branch/runtime deberán revalidarse antes de editarlo. No instalar, iniciar, emparejar, conceder permisos, ejecutar comandos o abrir apps del móvil ahora.
+
+OpenAI Developers: Computer Use puede ayudar a probar/automatizar interfaces web con resultado observable. La ruta AgentsAPI revisada usa navegador alojado, no control del teléfono del usuario. Evaluar solo si falta una capacidad en el ejecutor actual y hay beneficio/costo claros; no crear sandbox, sesión/API key ni cambiar arquitectura por mencionar el plugin. Skills agents y computer-use consultadas como guía; no automatizaciónWindows ejecutada.
+
+### Aceptación de cualquier piloto móvil futuro
+
+Identidad de dispositivo y propietario/ámbito; lista exacta de capacidades y permisos; cuenta del proveedor; un objeto de lectura no sensible; prueba negativa sin permiso; pérdida/reconexión; último éxito/corte/cobertura; comprobante y recuperación. Captura minimizada, sin claves/2FA/banca ni datos ajenos. Prioridad API/conector → capacidad nativa verificada → automatización semántica/selector → transporte → visión; no tocar por coordenadas como primera opción. La aprobación técnica de OpenClaw no reemplaza autoridad de negocio. Los comandos físicos TTLock mantienen su gate propio.
+
+### Fuentes y próximo paso
+
+Fuentes oficiales consultadas12/10/2026: [Kross](https://www.krossbooking.com/es), [Pulse](https://www.booking.com/propertyapp.en-gb.html), [Connectivity Booking](https://developers.booking.com/connectivity/docs/managing-endpoint-access), [HomeAndroid](https://developers.home.google.com/apis/android/overview), [HomeiOS](https://developers.home.google.com/apis/ios/overview), [TTLock guía](https://euopen.ttlock.com/documentPages/htmlPages/userGuide/getStartedEn.html), [dispositivos](https://euopen.ttlock.com/doc/api/v3/lock/list), [gateways](https://euopen.ttlock.com/doc/api/v3/gateway/list), [registros](https://euopen.ttlock.com/doc/api/v3/lockRecord/list), [códigos](https://euopen.ttlock.com/doc/api/v3/lock/listKeyboardPwd), [límitesTTLock](https://euopen.ttlock.com/documentPages/htmlPages/example/FAQEn.html), [nodosOpenClaw](https://docs.openclaw.ai/nodes), [AndroidCompanion](https://docs.openclaw.ai/platforms/android), [ChromeRelay](https://docs.openclaw.ai/tools/chrome-extension), [scrcpy](https://github.com/Genymobile/scrcpy), [AndroidAppLinks](https://developer.android.com/training/app-links/about), [OpenAIComputerUse](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use).
+
+CURRENT: investigación y ajuste documental. DESCONOCIDO: cuentas/capacidades/runtime móvil/TTLock efectivos. FUTURE: adapters y piloto; no activaciones por esta sección. NEXT único e independiente: próximo CONTINUAR inicia frontend local cabecera/navegación/Inicio y catálogo, ahora en estilo híbrido único con bordes. Mantener100criterios/00–11/baseline641/SQL y gates. No otra ronda de investigación/renders ni integrar móvil/OpenClaw/TTLock antes de cerrar ese primer lote probado.
