@@ -17,6 +17,7 @@ import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 import { canReadHotelDirectory } from "@/features/tools/directory";
 import { loadHotelDirectory } from "@/features/tools/server";
 import styles from "./my-toro.module.css";
+import { PortalToolLinks } from "@/features/tools/portal-tool-links";
 
 const profileLabels: Record<string, string> = {
   owner_executive: "Dirección",
@@ -104,31 +105,23 @@ export default async function MyToroPage({
   const pending = menu?.items.filter(item =>
     !available.includes(item) && !alternatives.includes(item) && !submenuParents.includes(item),
   ) ?? [];
-  const quickInfo: Record<string, { system: string; detail: string }> = {
-    "LINK-048": { system: "Kross", detail: "Llegadas, salidas y reservas" },
-    "LINK-002": { system: "Motor de reservas", detail: "Fechas, precios y condiciones" },
-    "LINK-178": { system: "WeSpeak", detail: "Conversaciones con huéspedes" },
-    "LINK-086": { system: "DreamTeam · TORO People", detail: "Equipo · sesión propia" },
-    "LINK-056": { system: "Google Calendar", detail: "Consultar la agenda" },
-    "LINK-131": { system: "Dropbox", detail: "Archivos del hotel" },
-  };
   const actionClass = "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200";
 
   return (
     <>
     {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
-    <main className="min-h-screen bg-[#0d1728] text-slate-100">
+    <main id="portal-content" tabIndex={-1} className="min-h-screen bg-[#0d1728] text-slate-100">
       <div className={styles.content}>
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Portal TORO · Espacio personal</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Mi TORO</h1>
-            <p className="mt-2 text-sm text-slate-300">Tu trabajo, tus prioridades y tus accesos en el mismo Portal.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Portal TORO · Mi espacio</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Mi espacio</h1>
+            <p className="mt-2 text-sm text-slate-300">Mi TORO reúne tu trabajo, prioridades y accesos dentro del Portal.</p>
           </div>
           <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
 
-        <nav aria-label="Accesos de Mi TORO" className={styles.jump}>
+        <nav aria-label="Accesos de Mi espacio" className={styles.jump}>
           {available.length || alternatives.length || submenuParents.length ? <a href="#available-heading">Buscar y proyectos</a> : null}
           {canViewOwnerAttention(view.context) ? <a href="#owner-attention-heading">Hoy y Finance</a> : null}
           {hotelAllowed ? <a href="#hotel-heading">Equipo y herramientas</a> : null}
@@ -199,16 +192,7 @@ export default async function MyToroPage({
             <Link href="/my-toro/herramientas" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
           </div>
           {hotelLinks.length ? <>
-            <nav aria-label="Herramientas del hotel" className={styles.links}>
-              {hotelLinks.map(link => <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                className={styles.tool}>
-                <div className="flex items-start justify-between gap-2">
-                  <strong>{link.label}</strong><span aria-label="abre otra pestaña" className="text-cyan-300">↗</span>
-                </div>
-                <small>{quickInfo[link.id]?.detail}</small>
-                <small>{quickInfo[link.id]?.system}</small>
-              </a>)}
-            </nav>
+            <PortalToolLinks links={hotelLinks} compact />
             <p className={styles.note}>Estos botones abren tus herramientas. Cada una puede pedir su propia sesión.</p>
           </> : <div role="status" className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-4">
             <p className="font-semibold text-amber-100">{directory?.state === "denied" ? "Los accesos no están habilitados para esta sesión." : "La lista de accesos no está disponible ahora."}</p>

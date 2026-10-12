@@ -1,0 +1,43 @@
+{
+  "assets": [
+    {
+      "file": "dropbox.svg",
+      "source": "Simple Icons 14.15.0, previously verified directory asset",
+      "sha256": "1c9ea4ac8e318f3f6a598568df1a38ece03b7bc52a3a72d48c9e760340d7aeec",
+      "bytes": 336,
+      "unchanged": true
+    },
+    {
+      "file": "google.svg",
+      "source": "Simple Icons 14.15.0, previously verified directory asset",
+      "sha256": "d8cf9fb2d5e234e03254f1d6400d8cc8160c309b010d031a64f37084b5a21d01",
+      "bytes": 457,
+      "unchanged": true
+    },
+    {
+      "file": "kross.png",
+      "source": "https://www.krossbooking.com/images/krosslogo_booking.png",
+      "sha256": "c9715d40dffd82071af32eb899e2c4da8bf3862db34c4f3393c1136eb6204ef6",
+      "bytes": 2873,
+      "unchanged": true
+    },
+    {
+      "file": "wespeak.png",
+      "source": "https://app.wespeak.pro/logo/darkWeSpeak-1.png",
+      "sha256": "30b81af5a849d79dc3762b29a61f1ef4eaa4947f610ccb2cb2a56b8f4d7cd434",
+      "bytes": 27071,
+      "unchanged": true
+    },
+    {
+      "file": "dreamteam.svg",
+      "source": "https://dream-team-public.vercel.app/dreamteam/dream-team-icon.svg",
+      "sha256": "48e1b1f129f5dd69a3897a2944c1a9531ad05efcd62e89feb17733a04e49cbd2",
+      "bytes": 1315,
+      "unchanged": true
+    }
+  ],
+  "toro_master": "current master unavailable in local paths and exact Dropbox title search; no legacy substitution",
+  "kross": "verified alternative observed in official home; original bold_w returned403 and was not retried",
+  "google_asset": "Google generic brand, not Calendar-specific",
+  "module_symbols": "lucide navigation symbols, not official logos"
+}

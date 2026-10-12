@@ -1,36 +1,77 @@
-.header { background: #0b1425; border-bottom: 1px solid #253247; color: #e2e8f0; }
-.headerInner { max-width: 1240px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.header { background: #0b1425; border-bottom: 1px solid #283950; color: #e2e8f0; }
+.headerInner { max-width: 1360px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
 .brand { display: flex; gap: 12px; align-items: center; text-decoration: none; }
-.brand strong { color: #f8fafc; font-size: 23px; letter-spacing: .11em; font-weight: 750; }
+.brand strong { color: #f8fafc; font-size: 25px; letter-spacing: .1em; font-weight: 750; }
 .brand span { color: #a6b6cc; font-size: 12px; border-left: 1px solid #40516a; padding-left: 12px; line-height: 1.5; }
-.scope { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #b9c6d8; margin: 0; }
-.scopeDot { background: #8da9ca; width: 6px; height: 6px; border-radius: 50%; }
+.scope { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c0cee0; margin: 0; }
+.scopeDot { background: #9ab9dd; width: 6px; height: 6px; border-radius: 50%; }
 .navigation { display: flex; gap: 6px; margin-left: auto; }
 .navigation a { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-.navigation a[aria-current] { background: #1d3554; color: #d5e8ff; }
+.navigation a[aria-current] { background: #243d5e; color: #d9ecff; box-shadow: inset 0 -2px #a8c9ee; }
 .navigation a:hover { background: #192a40; }
-.header a:focus-visible, .page a:focus-visible { outline: 2px solid #9acbff; outline-offset: 4px; }
+.header a:focus-visible, .page :is(a,summary):focus-visible { outline: 3px solid #a5d4ff; outline-offset: 4px; }
+.skipLink { position: absolute; left: 16px; top: 8px; z-index: 20; background: #f8fafc; color: #102035; padding: 12px 18px; border-radius: 8px; transform: translateY(-160%); }
+.skipLink:focus { transform: translateY(0); }
 .page { background: #0d1728; min-height: calc(100vh - 80px); color: #e2e8f0; }
-.content { max-width: 1240px; margin: 0 auto; padding: 28px 24px 36px; }
-.eyebrow { color: #a3bfdf; font-size: 11px; font-weight: 650; letter-spacing: .16em; text-transform: uppercase; }
-.hero { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; }
-.hero h1 { margin: 12px 0; color: #f8fafc; font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -.035em; }
-.hero p { max-width: 680px; font-size: 14px; line-height: 1.8; color: #aebdd0; }
-.personalLink { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; border: 1px solid #5d7fa9; background: #25486f; padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-.contextNote { margin-top: 28px; border: 1px solid #31425b; border-left: 3px solid #8aadd5; padding: 14px 18px; border-radius: 8px; background: #122139; color: #b9c8dc; font-size: 13px; line-height: 1.7; }
-.sectionTitle { font-weight: 600; font-size: 18px; color: #f1f5f9; margin-top: 34px; }
-.sectionNote { font-size: 13px; color: #9fafc3; line-height: 1.8; margin-top: 6px; }
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
-.card { display: flex; flex-direction: column; min-width: 0; background: #111e31; border: 1px solid #2a3b53; border-radius: 12px; padding: 16px; }
-.cardTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.icon { display: inline-flex; color: #9fbcde; padding: 10px; border: 1px solid #3c536e; background: #192c45; border-radius: 8px; }
-.number { color: #8c9db4; font-size: 11px; letter-spacing: .08em; }
-.card h3 { color: #edf3fb; margin-top: 16px; font-size: 17px; font-weight: 600; }
-.description { margin-top: 6px; color: #adbed3; font-size: 13px; line-height: 1.7; flex: 1; }
-.status { margin-top: 18px; color: #bfcee0; font-size: 11px; font-weight: 600; letter-spacing: .025em; }
-.note { margin-top: 5px; color: #91a4bd; font-size: 12px; line-height: 1.6; }
-.cardLink { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; margin-top: 16px; border-top: 1px solid #2e435c; padding-top: 12px; color: #b7d9ff; font-size: 12px; font-weight: 600; }
-.connectionNote { display: flex; align-items: flex-start; gap: 10px; margin-top: 26px; font-size: 12px; line-height: 1.8; color: #9baec8; }
-.connectionNote svg { flex-shrink: 0; margin-top: 3px; }
-@media (max-width: 1000px) { .headerInner { gap: 14px; } .scope { margin-left: auto; } .navigation { width: 100%; margin-left: 0; } .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 600px) { .headerInner { padding: 16px; gap: 14px; } .brand { gap: 9px; } .brand span { padding-left: 9px; font-size: 11px; } .scope { margin-left: 0; } .navigation { gap: 4px; } .navigation a { flex: 1; justify-content: center; gap: 5px; padding: 10px 7px; font-size: 12px; } .content { padding: 28px 16px 36px; } .hero { align-items: flex-start; flex-direction: column; gap: 16px; } .grid { grid-template-columns: 1fr; } .card { padding: 20px; } }
+.page :is(h2, [id]) { scroll-margin-top: 24px; }
+.content { max-width: 1360px; margin: 0 auto; padding: 24px 24px 32px; }
+.eyebrow { color: #b4cbea; font-size: 11px; font-weight: 650; letter-spacing: .13em; text-transform: uppercase; }
+.hero { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+.hero h1 { margin: 8px 0; color: #f8fafc; font-size: clamp(28px, 4vw, 36px); font-weight: 650; letter-spacing: -.035em; }
+.hero p { max-width: 700px; font-size: 14px; line-height: 1.65; color: #becbde; }
+.personalLink { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; border: 1px solid #789cc7; background: #274e79; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 650; white-space: nowrap; }
+.personalLink:hover { background: #32608f; }
+.sectionNav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.sectionNav a { display: flex; align-items: center; gap: 10px; min-height: 44px; border: 1px solid #334b68; border-radius: 8px; padding: 8px 12px; color: #cbe1fd; font-size: 12px; }
+.sectionNav a:hover { background: #1b304a; }
+.sectionNav span { min-width: 21px; background: #243b58; border-radius: 5px; text-align: center; font-variant-numeric: tabular-nums; }
+.contextNote { margin-top: 16px; border: 1px solid #31425b; border-left: 3px solid #b5a17a; padding: 12px 16px; border-radius: 9px; background: #122139; color: #c4d2e4; font-size: 12px; line-height: 1.65; }
+.contextNote small { display: block; color: #a7bcd6; font-size: 11px; margin-top: 3px; }
+.portalLayout { display: grid; grid-template-columns: minmax(0,1fr) 330px; gap: 18px; align-items: start; margin-top: 24px; }
+.moduleSection { min-width: 0; }
+.sectionHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sectionHeading h2 { font-weight: 650; font-size: 18px; color: #f1f5f9; }
+.sectionHeading > span { color: #c9b991; font-size: 11px; white-space: nowrap; }
+.sectionNote { font-size: 12px; color: #aebfd7; line-height: 1.6; margin-top: 6px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+.card { display: flex; flex-direction: column; min-width: 0; background: #111e31; border: 1px solid #344962; border-radius: 12px; padding: 16px; text-decoration: none; overflow-wrap: anywhere; }
+.cardAvailable { border-color: #547ca7; background: linear-gradient(150deg,#172b45,#112034); cursor: pointer; transition: border-color .15s, background-color .15s, box-shadow .15s; }
+.cardAvailable:hover { border-color: #acd4ff; box-shadow: 0 5px 18px #020b1755; background: #1b3453; }
+.cardAvailable:active { background: #234261; }
+.cardPending { background: #101b2c; border-style: dashed; }
+.cardTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.icon { display: inline-flex; color: #c1dcfc; width: 58px; height: 58px; align-items: center; justify-content: center; border: 1px solid #597b9f; background: #1c3552; border-radius: 12px; flex-shrink: 0; }
+.cardPending .icon { color: #a2b5cc; border-color: #364961; background: #18273b; }
+.number { color: #a9bdd6; font-size: 10px; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.card h3 { color: #f1f6fc; margin-top: 12px; font-size: 17px; font-weight: 650; line-height: 1.35; }
+.description { margin-top: 6px; color: #bed0e7; font-size: 12px; line-height: 1.65; flex: 1; }
+.cardBottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; color: #c5e1ff; }
+.status { display: inline-flex; color: #d6e8fd; background: #254665; border-radius: 6px; padding: 4px 7px; font-size: 10px; font-weight: 650; line-height: 1.45; }
+.cardPending .status { color: #c6bba2; background: #342f29; }
+.pendingLabel { color: #c0b7a3; font-size: 10px; }
+.note { margin-top: 7px; color: #b2c1d7; font-size: 11px; line-height: 1.6; }
+.cardAction { color: #c5e1ff; font-size: 11px; font-weight: 650; border-top: 1px solid #3a536e; padding-top: 9px; margin-top: 12px; }
+.toolsPanel { background: #111f32; border: 1px solid #3c506b; border-radius: 12px; padding: 16px; min-width: 0; }
+.toolsCompact, .toolsGrid { display: grid; gap: 9px; margin-top: 14px; }
+.toolsGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.toolCard { display: grid; grid-template-columns: 72px minmax(0,1fr) 18px; gap: 12px; align-items: center; min-height: 104px; padding: 12px; background: #15283f; border: 1px solid #476687; border-radius: 10px; text-decoration: none; transition: border-color .15s, background-color .15s; }
+.toolCard:hover { background: #213b59; border-color: #abd2ff; }
+.toolCard:active { background: #2b4b6b; }
+.toolCard:focus-visible { outline: 3px solid #a5d4ff; outline-offset: 3px; }
+.toolVisual { display: flex; align-items: center; justify-content: center; width: 72px; height: 64px; border: 1px solid #537296; border-radius: 10px; background: #203b59; color: #d9eaff; }
+.toolVisual img { object-fit: contain; width: 60px; height: 56px; }
+.lightLogo { background: #f5f7fb; border-color: #d7e0ed; }
+.toolCopy { min-width: 0; display: grid; gap: 4px; overflow-wrap: anywhere; }
+.toolCopy strong { color: #eff6ff; font-size: 13px; font-weight: 650; line-height: 1.4; }
+.toolBrand { font-size: 11px; line-height: 1.4; color: #c6dbf3; }
+.toolCopy small { color: #b4c8e1; font-size: 10px; line-height: 1.55; }
+.toolArrow { color: #b6d8ff; }
+.guideLink { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; margin-top: 14px; background: #254c75; border: 1px solid #7499c3; border-radius: 8px; padding: 12px; font-size: 12px; font-weight: 650; }
+.guideLink:hover { background: #32618f; }
+.connectionNote { display: flex; align-items: flex-start; gap: 10px; margin-top: 24px; font-size: 11px; line-height: 1.7; color: #b4c6de; }
+.connectionNote svg { flex-shrink: 0; margin-top: 2px; }
+@media (max-width: 1180px) { .portalLayout { grid-template-columns: minmax(0,1fr) 310px; gap: 14px; } .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 900px) { .headerInner { gap: 14px; } .scope { margin-left: auto; } .navigation { width: 100%; margin-left: 0; } .portalLayout { grid-template-columns: 1fr; } .toolsCompact { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-width: 600px) { .headerInner { padding: 12px 16px; gap: 12px; } .brand { gap: 9px; } .brand span { padding-left: 9px; font-size: 11px; } .scope { margin-left: 0; } .navigation { gap: 4px; } .navigation a { flex: 1; justify-content: center; gap: 5px; padding: 10px 7px; font-size: 12px; } .content { padding: 20px 16px 28px; } .hero { align-items: stretch; flex-direction: column; gap: 14px; } .personalLink { justify-content: space-between; white-space: normal; } .grid { grid-template-columns: 1fr; gap: 10px; } .card { padding: 16px; } .cardTop { gap: 16px; } .icon { width: 64px; height: 64px; } .toolsGrid, .toolsCompact { grid-template-columns: 1fr; } .portalLayout { margin-top: 20px; } .sectionHeading h2 { font-size: 17px; } .toolCard { min-height: 100px; } }
+@media (prefers-reduced-motion: reduce) { .cardAvailable, .toolCard { transition: none; } }
+@media (forced-colors: active) { .cardAvailable, .toolCard { border: 2px solid LinkText; } .cardPending { border: 1px dashed GrayText; } }

@@ -7,14 +7,15 @@ export function PortalHeader({ current, scopeLabel = "Organización activa" }: {
   scopeLabel?: string;
 }) {
   const links = [
-    { key: "overview", href: "/portal", label: "Vista general", Icon: LayoutGrid },
+    { key: "overview", href: "/portal", label: "Portal", Icon: LayoutGrid },
     { key: "brain", href: "/brain", label: "Cerebro", Icon: Network },
-    { key: "my-toro", href: "/my-toro", label: "Mi TORO", Icon: UserRound },
+    { key: "my-toro", href: "/my-toro", label: "Mi espacio", Icon: UserRound },
   ];
   return <header className={styles.header}>
+    <a className={styles.skipLink} href="#portal-content">Saltar al contenido</a>
     <div className={styles.headerInner}>
       <Link href="/portal" prefetch={false} className={styles.brand} aria-label="TORO · Portal empresarial">
-        <strong>TORO</strong><span>Portal empresarial</span>
+        <strong>TORO</strong><span>Tu Portal</span>
       </Link>
       <p className={styles.scope}><span aria-hidden="true" className={styles.scopeDot} />{scopeLabel}</p>
       <nav aria-label="Portal TORO" className={styles.navigation}>

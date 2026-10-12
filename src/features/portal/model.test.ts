@@ -26,12 +26,14 @@ it("does not turn a profile selection failure into a usable Portal", () => {
   expect(hasPortalOrganizationContext(null)).toBe(false);
 });
 
-it("offers a hotel guide without upgrading any financial or staff capability", () => {
+it("offers financial priorities and a team guide without upgrading financial or staff consultation capabilities", () => {
   const modules = resolvePortalModules(portalFixture());
   expect(modules).toHaveLength(12);
   expect(modules[5].href).toBe("/my-toro/herramientas");
-  expect(modules[2].href).toBeNull();
-  expect(modules[6].href).toBeNull();
+  expect(modules[2].href).toBe("/my-toro#owner-attention-heading");
+  expect(modules[2].note).toContain("no confirma pagos ni conciliación");
+  expect(modules[6].href).toBe("/my-toro/herramientas#equipo");
+  expect(modules[6].note).toContain("consulta de personal sigue pendiente");
   expect(modules[0].note).toContain("demostración");
 });
 
@@ -49,7 +51,7 @@ it("requires both source readiness and a permitted focus before offering a consu
     items: [{ index: 1, key: "projects", label: "Projects", emoji: "", aliases: [], capability: "projects.status", state: "READ_ONLY" }] };
   expect(resolvePortalModules(view)[10].href).toBeNull();
   view.focusableCapabilities = ["projects.status"];
-  expect(resolvePortalModules(view)[10].href).toBe("/my-toro?focus=projects.status");
+  expect(resolvePortalModules(view)[10].href).toBe("/my-toro?focus=projects.status#focus-heading");
 });
 
 it("keeps hotel access out of another organization and attention scoped to the active membership", () => {
@@ -57,4 +59,23 @@ it("keeps hotel access out of another organization and attention scoped to the a
   view.context.orgId = "another-org"; view.context.membership!.orgId = "another-org";
   expect(resolvePortalModules(view)[5].href).toBeNull();
   expect(resolvePortalModules(view)[1].href).toBe("/my-toro#owner-attention-heading");
+});
+
+it("prefers a permitted finance consultation to the partial priorities fallback", () => {
+  const view = portalFixture();
+  view.menu = { profileId: "manager", selectionReason: "synthetic", hiddenCapabilityCount: 0,
+    items: [{ index: 1, key: "finance", label: "Finance", emoji: "", aliases: [], capability: "finance.obligations", state: "READ_ONLY" }] };
+  view.focusableCapabilities = ["finance.obligations"];
+  expect(resolvePortalModules(view)[2].href).toBe("/my-toro?focus=finance.obligations#focus-heading");
+});
+
+it("does not offer owner attention to an auditor through the Dinero fallback", () => {
+  const view = portalFixture(); view.context.membership!.roles = ["AUDITOR"];
+  expect(resolvePortalModules(view)[2].href).toBeNull();
+  expect(resolvePortalModules(view)[6].href).toBe("/my-toro/herramientas#equipo");
+});
+
+it("does not offer a staff guide to a reception profile without directory access", () => {
+  const view = portalFixture(); view.context.membership!.roles = ["RECEPCION"];
+  expect(resolvePortalModules(view)[6].href).toBeNull();
 });

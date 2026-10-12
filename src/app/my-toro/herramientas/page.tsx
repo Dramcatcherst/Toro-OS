@@ -18,9 +18,9 @@ export default async function ToolsPage() {
   const view = await loadHotelDirectory();
   const links = view.state === "ready" ? view.links : [];
   return <>{view.account || view.state === "ready" ? <PortalHeader current="tools" scopeLabel="Dreamcatcher" /> : null}
-    <main className="min-h-screen bg-[#0d1728] text-slate-100">
+    <main id="portal-content" tabIndex={-1} className="min-h-screen bg-[#0d1728] text-slate-100">
     <div className={styles.content}>
-      <Link href="/my-toro" className="text-cyan-200 underline">← Mi TORO</Link>
+      <Link href="/my-toro" className="text-cyan-200 underline">← Mi espacio · Portal TORO</Link>
       <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-cyan-200">Dreamcatcher · Operación del hotel</p>
       <h1 className="mt-2 text-3xl font-bold">Tu turno, paso a paso</h1>
       <p className="mt-3 max-w-2xl text-slate-300">Empieza por lo que necesitas hacer. Aquí abres las herramientas; confirma los datos y termina cada tarea en su sistema.</p>
@@ -28,11 +28,11 @@ export default async function ToolsPage() {
       {view.state !== "ready" ? <section className="mt-6 rounded-2xl border border-slate-700 p-5">
         <h2 className="font-semibold">{view.state === "denied" ? "Entra con tu cuenta de trabajo" : view.reason === "connection_pending" ? "Tu acceso está bien. Falta conectar la lista." : "No pudimos cargar las herramientas"}</h2>
         <p className="mt-2 text-slate-300">{view.state === "denied" ? "Tus permisos actuales determinan qué puedes ver." : view.account ? "Tu sesión está reconocida. No necesitas cambiar de usuario ni de contraseña. La lista no está disponible ahora." : "No podemos comprobar el acceso ahora. Vuelve a intentarlo más tarde."}</p>
-        <Link className="mt-4 inline-block text-cyan-200 underline" href={view.state === "denied" ? "/login?next=/my-toro/herramientas" : "/my-toro"}>{view.state === "denied" ? "Entrar y volver aquí" : "Volver a Mi TORO"}</Link>
+        <Link className="mt-4 inline-block text-cyan-200 underline" href={view.state === "denied" ? "/login?next=/my-toro/herramientas" : "/my-toro"}>{view.state === "denied" ? "Entrar y volver aquí" : "Volver a Mi espacio"}</Link>
       </section> : null}
       {view.state === "ready" || view.account ? <>
         <nav aria-label="Tareas del turno" className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {shiftSteps.map(step => <section key={step.title} className={styles.panel + " flex flex-col"}>
+          {shiftSteps.map(step => <section key={step.title} id={step.ids.includes("LINK-086") ? "equipo" : undefined} className={styles.panel + " flex flex-col scroll-mt-6"}>
             <h2 className="text-lg font-bold">{step.title}</h2>
             <p className="mt-2 flex-1 text-sm leading-6 text-slate-300">{step.text}</p>
             <div className="mt-4 flex flex-col gap-3">{links.filter(link => step.ids.includes(link.id)).map(link => <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"

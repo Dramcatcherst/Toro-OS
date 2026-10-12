@@ -45,8 +45,14 @@ export function resolvePortalModules(view: ToroRealMenuView): PortalModule[] {
     const consultation = view.menu?.items.find(candidate => candidate.state === "READ_ONLY" &&
       view.focusableCapabilities.includes(candidate.capability) &&
       domain.capabilities.some(prefix => candidate.capability.startsWith(prefix)));
-    if (!consultation) return item;
-    return { ...item, status: "Consulta disponible", href: `/my-toro?focus=${encodeURIComponent(consultation.capability)}`,
-      action: "Consultar en Mi TORO", note: "Lectura disponible para tu perfil en el contexto activo." };
+    if (consultation) return { ...item, status: "Consulta disponible", href: `/my-toro?focus=${encodeURIComponent(consultation.capability)}#focus-heading`,
+      action: "Abrir consulta", note: "Lectura disponible para tu perfil en el contexto activo." };
+    if (domain.ordinal === 2 && canViewOwnerAttention(view.context)) return { ...item,
+      status: "Prioridades financieras", href: "/my-toro#owner-attention-heading", action: "Revisar prioridades",
+      note: "Obligaciones y facturas en la vista Hoy. Cobertura parcial; no confirma pagos ni conciliación." };
+    if (domain.ordinal === 6 && canReadHotelDirectory(view.context)) return { ...item,
+      status: "Guía de equipo", href: "/my-toro/herramientas#equipo", action: "Ver equipo y turno",
+      note: "DreamTeam se abre desde la guía con su propia sesión. La consulta de personal sigue pendiente." };
+    return item;
   });
 }

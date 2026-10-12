@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="DREAM TEAM">
+  <defs>
+    <linearGradient id="dt-orange" x1="60" x2="450" y1="40" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff8a3d"/>
+      <stop offset=".54" stop-color="#f05a00"/>
+      <stop offset="1" stop-color="#c94a00"/>
+    </linearGradient>
+    <linearGradient id="dt-green" x1="90" x2="420" y1="430" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#304828"/>
+      <stop offset="1" stop-color="#667a2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#fff9f4"/>
+  <circle cx="428" cy="90" r="150" fill="#fff0e5"/>
+  <circle cx="74" cy="438" r="150" fill="#eef3de"/>
+  <path d="M107 356c33-86 92-166 171-231 43-35 90-33 109-4 28 42-14 105-89 127-51 15-96 43-132 93-12 17-36 35-59 15Z" fill="url(#dt-orange)"/>
+  <path d="M165 376c52-66 116-107 190-124 40-9 67 27 47 63-31 56-112 89-224 97-23 2-29-15-13-36Z" fill="url(#dt-green)" opacity=".96"/>
+  <text x="87" y="225" font-family="Georgia, 'Times New Roman', serif" font-size="120" font-weight="700" fill="#241c18">DT</text>
+  <text x="92" y="280" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="8" fill="#f05a00">TEAM</text>
+</svg>
