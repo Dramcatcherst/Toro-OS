@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 // This installed Next version still exports the legacy test-helper name.
 import { unstable_doesMiddlewareMatch as unstable_doesProxyMatch } from "next/experimental/testing/server";
-import { config, proxy } from "./proxy";
+import { config, publicSurfaceDecision as proxy } from "./proxy";
 
 beforeEach(() => vi.stubEnv("TORO_DEPLOYMENT_MODE", undefined));
 afterEach(() => vi.unstubAllEnvs());

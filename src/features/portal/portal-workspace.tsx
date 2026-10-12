@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { ArrowRight, BookOpen, LayoutGrid, Search, Star, Users, BedDouble, Wallet, Megaphone, Wrench, ChartNoAxesCombined, Home } from "lucide-react";
+import { ArrowRight, LayoutGrid, Search, Star, Users, BedDouble, Wallet, Megaphone, Wrench, ChartNoAxesCombined, Home } from "lucide-react";
 import { PortalToolLinks, portalToolBrands } from "@/features/tools/portal-tool-links";
 import type { ToolLink } from "@/features/tools/directory";
 import { PortalModuleCard } from "./module-card";
@@ -9,6 +9,7 @@ import type { PortalModule } from "./model";
 import { PortalCashTools } from "./portal-cash-tools";
 import { PortalResponseTools } from "./portal-response-tools";
 import { PortalKrossWidget } from "./portal-kross-widget";
+import { PortalAgents } from "./portal-header";
 import styles from "./portal.module.css";
 type Tab = "home" | "operations" | "money" | "people" | "growth" | "tools" | "reports" | "modules";
 const categories: Record<string, string> = { "LINK-048": "Operación", "LINK-002": "Operación", "LINK-178": "Comunicación", "LINK-086": "Equipo", "LINK-056": "Google", "LINK-131": "Documentos", "PORTAL-POS": "Operación", "PORTAL-WHATSAPP": "Comunicación", "PORTAL-ALEGRA": "Dinero", "PORTAL-GMAIL": "Google", "PORTAL-DRIVE": "Google", "PORTAL-HOME": "Google" };
@@ -51,14 +52,16 @@ export function PortalWorkspace({ modules, links, hotelAllowed, attention, direc
   function panel(key: Tab, content: ReactNode) { return <div role="tabpanel" id={`${id}-panel-${key}`} aria-labelledby={`${id}-tab-${key}`} hidden={tab !== key} tabIndex={0} className={styles.tabPanel}>{content}</div>; }
   const peoplePanel = <section className={styles.panel + " " + styles.peoplePanel} aria-labelledby="portal-people-heading">
     <div className={styles.panelHeading}><h2 id="portal-people-heading"><Users size={20} aria-hidden="true" />Personas</h2>{people?.href ? <Link href={people.href} prefetch={false} className={styles.textLink}>Ver equipo<ArrowRight size={15} aria-hidden="true" /></Link> : null}</div>
-    <p className={styles.panelBody}>{people ? "Horarios · Asistencia · Planilla según acceso" : "Módulos y accesos disponibles para tu cuenta."}</p><p className={styles.panelNote}>{people?.note ?? "Selecciona Personas para consultar tu cobertura."}</p>
+    <p className={styles.panelBody}>{people ? "Horarios · Asistencia · Planilla" : "Accesos de equipo según tu cuenta"}</p>
+    <details className={styles.subtleDisclosure}><summary>Acceso y cobertura</summary><p>{people?.note ?? "Selecciona Personas para consultar tu cobertura."}</p></details>
   </section>;
   return <>
     <div role="tablist" aria-label="Vistas del Portal" className={styles.workspaceTabs}>{tabs.map((item, index) => <button key={item.key} ref={element => { controls.current[index] = element; }} type="button" role="tab" id={`${id}-tab-${item.key}`} aria-selected={tab === item.key} aria-controls={`${id}-panel-${item.key}`} tabIndex={tab === item.key ? 0 : -1} onClick={() => setTab(item.key)} onKeyDown={event => navigateTabs(event, index)}><item.Icon size={17} aria-hidden="true" />{item.label}</button>)}</div>
-    <div className={styles.workspaceToolbar}><h1>{tabs.find(item => item.key === tab)?.label}</h1><Link href="/my-toro" prefetch={false} className={styles.searchEntry}><Search size={18} aria-hidden="true" /><span>Consulta tu trabajo en TORO…</span><ArrowRight size={17} aria-hidden="true" /></Link></div>
+    <PortalAgents />
+    <div className={styles.workspaceToolbar}><h1 className={styles.srOnly}>{tabs.find(item => item.key === tab)?.label}</h1><Link href="/my-toro" prefetch={false} className={styles.searchEntry}><Search size={18} aria-hidden="true" /><span>Pide o busca…</span><ArrowRight size={17} aria-hidden="true" /></Link></div>
     {panel("home", <>
       <div className={styles.homeGrid} data-hotel={hotelAllowed} data-attention={Boolean(attention)}>
-        {attention ? <div className={styles.homeColumn}>{attention}</div> : null}
+        <div className={styles.homeColumn}>{attention}{peoplePanel}</div>
         {hotelAllowed ? <>
           <section className={styles.panel + " " + styles.favoritesPanel} aria-labelledby="portal-favorites-heading">
             <div className={styles.panelHeading}><h2 id="portal-favorites-heading"><Star size={20} aria-hidden="true" />Favoritos</h2><button type="button" className={styles.textLink} onClick={() => openTab("tools")}>Ver todas<ArrowRight size={15} aria-hidden="true" /></button></div>
@@ -66,9 +69,8 @@ export function PortalWorkspace({ modules, links, hotelAllowed, attention, direc
             {!directoryAvailable ? <p role="status" className={styles.panelNote}>La lista no está disponible ahora. Mostramos solo accesos públicos revisados.</p> : null}
             <details className={styles.subtleDisclosure}><summary>Personalizar · {favoritesLinks.length}/9</summary><p>Selecciona hasta nueve accesos para esta sesión.</p><div className={styles.favoriteOptions}>{links.map(link => <label key={link.id}><input type="checkbox" checked={favorites.includes(link.id)} disabled={!favorites.includes(link.id) && favorites.length >= 9} onChange={event => setFavorites(current => event.target.checked ? [...current, link.id].slice(0, 9) : current.filter(key => key !== link.id))} />{portalToolBrands[link.id]?.name ?? link.label}</label>)}</div></details>
           </section><PortalKrossWidget available={Boolean(motor)} motorUrl={motor?.url} />
-        </> : null}{peoplePanel}
+        </> : null}
       </div>
-      <section className={styles.overviewRow} aria-label="Accesos al trabajo"><div><BookOpen size={21} aria-hidden="true" /><span><strong>Un lugar para todo tu trabajo</strong><small>Consultas, herramientas y guías según tu cuenta</small></span></div><button type="button" className={styles.textLink} onClick={() => openTab("modules")}>Ver {modules.length} módulos<ArrowRight size={16} aria-hidden="true" /></button></section>
       <div className={styles.utilityRail}><button type="button" onClick={() => openTab("money")}><Wallet size={19} aria-hidden="true" /><span>Caja CRC + USD</span></button><button type="button" onClick={() => openTab("tools")}><Wrench size={19} aria-hidden="true" /><span>Mensajes y utilidades</span></button>{hotelAllowed ? <a href="https://home.google.com/" target="_blank" rel="noopener noreferrer"><Home size={19} aria-hidden="true" /><span>Google Home ↗</span></a> : null}<Link href="/brain" prefetch={false}><LayoutGrid size={19} aria-hidden="true" /><span>Cerebro TORO</span></Link></div>
     </>)}
     {hotelAllowed ? panel("operations", <section className={styles.panel}><div className={styles.sectionHeading}><h2>Operación del hotel</h2><span>Fuentes oficiales</span></div><p className={styles.sectionNote}>Reservas, entradas, salidas, cobros y seguimiento del turno.</p><PortalToolLinks links={toolsFor("Operación", "Comunicación")} wide idPrefix="operations" /><div className={styles.grid}>{modulesFor(1, 5, 9).map(module => <PortalModuleCard key={module.ordinal} module={module} />)}</div><p className={styles.panelNote}>La ocupación, habitaciones vacías y precios del día se consultan en Kross. Su resumen automático aún no está conectado al Portal.</p></section>) : null}

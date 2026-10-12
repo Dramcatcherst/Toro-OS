@@ -2,12 +2,13 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
 import { safeNextPath } from "./safe-next";
 
-export function LoginForm() {
+export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boolean }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -22,18 +23,27 @@ export function LoginForm() {
     setError(null);
 
     try {
-      const supabase = createBrowserSupabaseClient();
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-
-      if (signInError) {
-        setError("No pudimos entrar. Revisa tu correo y contraseña. No necesitas crear otra cuenta.");
-        return;
+      if (dreamTeamAccess) {
+        const response = await fetch("/api/auth/login", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identifier: email.trim(), password, nextPath: safeNextPath(searchParams.get("next")) }),
+        });
+        const result = await response.json();
+        if (!response.ok || result.ok !== true) {
+          setError(result.error || "No pudimos verificar tu acceso.");
+          return;
+        }
+        router.replace(safeNextPath(result.nextPath));
+      } else {
+        const supabase = createBrowserSupabaseClient();
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (signInError) {
+          setError("No pudimos entrar. Revisa tu correo y contraseña.");
+          return;
+        }
+        router.replace(safeNextPath(searchParams.get("next")));
       }
-
-      router.replace(safeNextPath(searchParams.get("next")));
+      setPassword("");
       router.refresh();
     } catch {
       setError("No pudimos iniciar sesión. Revisa la configuración e inténtalo de nuevo.");
@@ -43,49 +53,53 @@ export function LoginForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-3" onSubmit={handleSubmit}>
       <label className="block space-y-1">
-        <span className="text-sm font-medium">Correo</span>
+        <span className="text-sm font-medium">{dreamTeamAccess ? "Usuario o correo de DreamTeam" : "Correo"}</span>
         <input
           autoComplete="username"
           autoCapitalize="none"
           spellCheck={false}
-          placeholder="tu-correo@ejemplo.com"
-          className="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-slate-950 caret-slate-950 outline-none focus:border-slate-950"
+          placeholder={dreamTeamAccess ? "Tu usuario habitual" : "tu-correo@ejemplo.com"}
+          className="min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-slate-950 caret-slate-950 outline-none focus:border-sky-500"
           onChange={(event) => setEmail(event.target.value)}
           required
-          type="email"
+          type={dreamTeamAccess ? "text" : "email"}
+          maxLength={254}
           value={email}
         />
       </label>
       <label className="block space-y-1">
         <span className="text-sm font-medium">Contraseña</span>
+        <span className="relative block">
         <input
           autoComplete="current-password"
-          className="min-h-12 w-full rounded-xl border border-slate-300 bg-white px-3 text-slate-950 caret-slate-950 outline-none focus:border-slate-950"
+          className="min-h-11 w-full rounded-lg border border-slate-300 bg-white pl-3 pr-12 text-slate-950 caret-slate-950 outline-none focus:border-sky-500"
           onChange={(event) => setPassword(event.target.value)}
           required
           type={showPassword ? "text" : "password"}
           value={password}
+          maxLength={128}
         />
+        <button type="button" className="absolute inset-y-0 right-0 flex min-h-11 w-11 items-center justify-center text-slate-600"
+          aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}
+          onClick={() => setShowPassword(value => !value)}>
+          {showPassword ? <EyeOff aria-hidden="true" size={18} /> : <Eye aria-hidden="true" size={18} />}
+        </button>
+        </span>
       </label>
-      <button type="button" className="min-h-11 text-sm underline" aria-pressed={showPassword}
-        onClick={() => setShowPassword(value => !value)}>
-        {showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-      </button>
-      {error ? <p className="text-sm text-red-700" role="alert">{error}</p> : null}
+      {error ? <p className="text-sm text-amber-300" role="alert">{error}</p> : null}
       <button
-        className="min-h-12 w-full rounded-xl bg-slate-950 px-4 font-semibold text-white disabled:opacity-50"
+        className="min-h-11 w-full rounded-lg bg-slate-950 px-4 font-semibold text-white disabled:opacity-50"
         disabled={submitting}
         type="submit"
       >
         {submitting ? "Entrando…" : "Entrar a TORO"}
       </button>
-      <details className="rounded-xl border border-slate-200 p-3 text-sm">
-        <summary className="cursor-pointer font-medium">No sé qué cuenta usar</summary>
-        <p className="mt-2">Usa el correo de tu cuenta de trabajo. Si vienes de DreamTeam, empieza con el correo que usas allí. No necesitas inventar un usuario nuevo.</p>
-        <p className="mt-2">Cada sitio puede pedirte entrar por separado. Si no recuerdas tu contraseña, usa la recuperación de tu cuenta en DreamTeam. No la compartas por chat.</p>
-        <a className="mt-3 inline-block underline" href="https://dream-team-public.vercel.app/dreamteam/ingresar" target="_blank" rel="noopener noreferrer">Abrir el acceso de DreamTeam ↗</a>
+      <details className="rounded-lg border border-slate-600 px-3 text-sm">
+        <summary className="flex min-h-11 cursor-pointer items-center font-medium">Ayuda de acceso</summary>
+        <p className="mb-2">{dreamTeamAccess ? "Mismo usuario y contraseña. La sesión de este sitio se abre por separado." : "Usa tu correo de trabajo."}</p>
+        <a className="inline-flex min-h-11 items-center underline" href="https://dream-team-public.vercel.app/dreamteam/ingresar" target="_blank" rel="noopener noreferrer">Abrir DreamTeam ↗</a>
       </details>
     </form>
   );

@@ -18,7 +18,7 @@ it("keeps a two-item summary with critical signal, cutoff and explicit partial c
   expect(html).toContain("Revisar relevo");
   expect(html).toContain("Revisar mantenimiento");
   expect(html).not.toContain("Tercer detalle privado");
-  expect(html).toContain("1 señales críticas de la consulta");
+  expect(html).toContain("1 señales críticas · por verificar");
   expect(html).toContain("2 de 3 disponibles");
   expect(html).toContain("Costa Rica");
   expect(html).toContain("Total de la organización no verificado");

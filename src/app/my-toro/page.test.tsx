@@ -17,6 +17,17 @@ function view(): ToroRealMenuView {
 const render = async () => renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
 beforeEach(() => vi.resetAllMocks());
 
+it("keeps the account read surface without linking to blocked onboarding in hosted mode", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  try {
+    mocks.menu.mockResolvedValue(view());
+    const html = await render();
+    expect(html).toContain('id="mi-cuenta"');
+    expect(html).not.toContain('href="/onboarding"');
+    expect(html).toContain("Mi cuenta y ayuda para entrar");
+  } finally { vi.unstubAllEnvs(); }
+});
+
 it("renders permitted evidence with partial coverage and a local menu return, without original-document links", async () => {
   const data = view();
   data.focus = { capability: "projects.status", label: "Proyectos", coverage: "Cobertura parcial; total desconocido",
