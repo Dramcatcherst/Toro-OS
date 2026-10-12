@@ -1,10 +1,12 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { createHash } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { readPortalBrainRpc, portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
 
 export const CANONICAL_BRAIN_READ_CONTRACT = "stage-c-read-v1" as const;
 
@@ -225,7 +227,23 @@ export async function loadCanonicalBrainReadSliceWithClient(
   context: ToroResolvedContext,
   supabase: SupabaseClient,
 ): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
   assertOrganizationContext(context);
+
+  if (portalReadRpcSelected()) {
+    const bundle = await readPortalBrainRpc(context, supabase);
+    if (bundle.sources.organization.rows.length !== 1) {
+      throw new Error("Canonical Brain organization source unavailable.");
+    }
+    return projectCanonicalBrainReadSlice({
+      orgId: context.orgId, generatedAt: new Date(bundle.generatedAt).toISOString(),
+      organization: bundle.sources.organization.rows[0], projects: bundle.sources.projects.rows,
+      sourceAuthority: bundle.sources.sourceAuthority.rows, domainGovernance: bundle.sources.domainGovernance.rows,
+      krossHealth: bundle.sources.krossHealth.rows,
+    });
+  }
 
   const [
     organizationResult,
@@ -309,6 +327,9 @@ export async function loadCanonicalBrainReadSliceWithClient(
 export async function loadCanonicalBrainReadSlice(
   context: ToroResolvedContext,
 ): Promise<CanonicalBrainReadSlice> {
+  if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED")) {
+    throw new Error("Canonical Brain read is disabled.");
+  }
   // Preserve the existing fail-closed contract: invalid scope must be rejected
   // before any database client is created.
   assertOrganizationContext(context);

@@ -9,6 +9,17 @@
 
 ---
 
+## Public Brain perimeter — local correction, 2026-09-30
+
+Same TORO portal; no second app or source of truth. Public presentation defaults to synthetic `/brain` and `/` redirects there. Server allowlist admits only GET/HEAD for that page and its static assets; other pages, APIs and mutation methods fail closed. Provider guards also prevent database, connector, session and approval-ledger I/O in demo, even if credentials/capability flags exist. This is not client-side hiding and not Vercel authentication.
+
+`TORO_DEPLOYMENT_MODE=internal` is an explicit server deployment decision, not authorization from a visitor. Unset, misspelled or other values remain public demo. Internal Brain/Owner Attention retain independent flags plus identity/scope/RLS; legacy connectors/ledger additionally require exact `TORO_LEGACY_OPERATIONS_ENABLED=true`; task persistence requires exact `TORO_INTERNAL_WORK_WRITE_ENABLED=true` plus its existing role/scope checks. None of these flags is configured by this change. Disabling the demo alone cannot activate these business reads/writes. Internal legacy routes still need a separate authentication review before any public internal-runtime deployment; this unit does not certify them.
+
+Initial 30/09 authorization was local only. On 10/10 Mauricio accepted reconciliation against current main, synthetic tests and the previously authorized PR/protected preview. Remote merge, production, real data, env, credentials and permission changes remain excluded. Runtime promotion is a separate gate and must rebuild/revalidate with production configuration. No schema migration. Reversal is the focused own delta, never a reset of the shared repository. Execution/receipt: Tasks 4–5 in the existing `TORO_CEREBRO_IMPLEMENTACION_2026-09-30.md` and BRAIN-LOCAL block of `CONTINUAR.md`; no runtime activation claimed here.
+
+Verified locally: 359 Vitest + 25 Node tests, validators, lint and production build pass; 112 HTTP checks include 11 built assets, anonymous/synthetic-cookie requests, blocked operational GET/POST and server-action paths, root redirect, Brain RSC and no outbound/ledger I/O attempts. Owner Attention preserves its exact 503/disabled response through the perimeter. Next data-path normalization is disabled for the perimeter; Brain is force-dynamic. Mutation of the demo guard produced 36 expected failures; restored before final verification. Independent review closed with no outstanding findings. Public hosting and real identity/RLS operation remain unverified by this unit.
+Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, injected-client entry points, Worker client and write primitives, health/canary routes and OAuth metadata. Event Ops and the hotel directory keep their existing identity paths, covered by no-I/O regressions. Existing internal capability, role and scope contracts are preserved; demo guards do not grant internal authority. Final local combination against `540d9b8c3de61ae339ef505b4eb6073a821b3fb1`: 481 Vitest + 25 Node tests and 136 HTTP checks pass, with zero outbound/ledger attempts in the synthetic HTTP harness. Build passes. ESLint has no errors; the existing unused OAuth OPTIONS request warning remains. Independent review of `1acae26..d7c3df2` found no actionable defects; the later main deltas add no demo guard changes and is covered by the final suite plus directory regressions. Review/remote evidence belongs in the same execution receipt; this paragraph is not a claim of publication or real RLS verification.
+
 ## Reporte de recepción integrado y preparación operativa 2026 10 08
 
 
@@ -865,7 +876,25 @@ Do not duplicate:
 - approvals
 - identity
 
-Current identity evidence:
+### Dreamcatcher People — owner direction, 2026-10-01
+
+Scope: Dreamcatcher Hotel; owner Mauricio; TORO People owns personnel/attendance, TORO Finance reconciles payroll evidence, TORO Assets preserves originals, TORO Identity/Governance enforce access. Priority is completing the current payroll; broader changes follow its review. These directions extend the existing implementation and shared database, not a second HR app or identity system.
+
+**CURRENT — urgent manual attendance correction:** DreamTeam now has a create-day path for active employees with no clock punches. ADMIN/RRHH must supply a date, one or two complete chronological schedules and a reason; the transaction preserves the raw clock records, records author/reason and leaves attendance pending review. Duplicate employee/date creates and closed payroll periods are rejected. Migration `20261001231135_create_attendance_day_manual` applied to the canonical Supabase project; Vercel production `dpl_EZ1wLBsq7z6tf97wCQ7LFtBQCLcK`, commit `b9cf10606f410a0e6a6cdb5162dac1b735230a27`, READY and assigned to the existing DreamTeam domain. Synthetic SQL/UI tests 14/14 and production build passed. HTTP site read passed; authenticated production save remains unverified because the browser session requires sign-in. No actual hours, payroll approval or payment were entered by the agent. Rollback: prior production `dpl_bd1Vyo1jTXZHHv8pNRDs55Ef2LVj`; drop only the new RPC if needed, retaining recorded days/audit.
+
+**NEXT — close the current payroll:** authorized HR enters confirmed missing hours, reviews incomplete/identity incidents and reconciles the draft. A manually created day may update a draft; pending attendance review is not proof of payroll approval or payment. No fabricated exits, bulk historical overwrite or closed-period reopening by inference.
+
+**TARGET — job-profile permissions:** derive ordinary operational permissions from canonical job profiles (housekeeping, maintenance, reception and administration), with verified employment/organization membership. Reuse existing roles/capabilities and test self-only/team/HR scopes. Do not replace this with arbitrary per-user grants. Reassignment and termination must update/revoke the corresponding capabilities.
+
+**TARGET — restricted assistant:** only individually verified Ana Carolina and Mauricio may use the proposed DreamTeam/TORO assistant. This owner direction supersedes the earlier ADMIN/GERENCIA/partner-wide proposal. A job profile alone must not grant assistant access. Reuse TORO's engine and central permissions; first pilot is consultation/preparation after payroll closure. No assistant activation, provider cost or permission expansion is asserted here.
+
+**TARGET — one personnel history and dossier:** reuse canonical employee IDs and existing document records. Preserve CCSS, INS, payroll versions, contracts and identity documents in restricted existing Dropbox HR structures; link stable file IDs/revisions to the employee record and collect only required missing documents through the existing form. Employee CCSS sections/folders are logical parts of the existing dossier, not duplicate originals or a public archive. Preserve DreamTeam's preferred visual language for internal hotel tools while reusing TORO components.
+
+**NEXT — historical reconciliation intake:** first metadata search found `/ATRAPASUEÑOS-CAROLINA/CCSS/Planilla CCSS Agosto 2026.pdf` (file `id:RAP-nKYFY_UAAAAAAALx4w`, revision `65bc9ad39dec5262f86ce`), CCSS billing/payment files and multiple July 1–15 DreamTeam payroll versions in the existing accounting archive. These are source candidates only; contents, employee identity, authoritative version and bank settlement are not yet reconciled. Preserve originals and source IDs. Build one matrix per employee/period distinguishing internally prepared payroll, CCSS-declared amount, INS coverage and bank-confirmed payment; payroll-transfer spreadsheets alone do not prove payment. Compare disputed versions before importing verified history into the existing model; never infer clock punches from payroll/bank amounts or auto-link people by name. No historical data has been imported in this increment.
+
+**FUTURE — CCSS retrieval:** verify authorized access to the Caja portal and acquire missing employer/employee documents with user-mediated authentication. Portal access is presently unknown; no credentials are copied into TORO or Dropbox. Regulatory filing and money movement retain their own explicit authority gates.
+
+Current identity evidence (historical snapshot; not refreshed by the 2026-10-01 increment):
 - 12 active employees;
 - 1 terminated;
 - 4 employee records linked to active user/role;
@@ -1087,6 +1116,50 @@ Active guest communication runtime.
 
 ## OpenClaw
 Same-Brain code path exists; live Gateway/channel identity/capability parity remains configured-unverified until host acceptance.
+
+---
+
+## Dreamcatcher · Finanzas y Control — reporte hotelero V2 — actualizado 2026-09-29
+
+El reporte financiero hotelero V2 queda incorporado al único Plan General como evidencia ejecutiva parcial del período enero–agosto 2026. No crea un proyecto, una base, un libro contable ni una autoridad nueva.
+
+**HECHO:** [REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx](../../../output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx) conserva el reporte V1 y añade 20 mejoras, servicios Kross, separación de hotel/proyectos/socios/deuda/Santa Toro y un puente explícito de utilidad.
+
+**DATOS OPERATIVOS OBSERVADOS:** alojamiento enero–agosto 2026 `USD 537,609`; descarga Kross Servicios `768` líneas y total bruto `KROSS_REPORTED USD 240,456`; servicios no hospedaje, excluyendo hospedaje y el registro atípico, `USD 25,028`; registro `Recibo 15 / A la carte breakfast` del 08/07/2026 por `USD 212,415` en `PENDING_EVIDENCE`.
+
+**LECTURA CONTABLE:** gasto contable Dreamcatcher convertido analíticamente con CRC 500/USD `USD 419,666`; margen contable provisional `USD 117,943`. La utilidad real del hotel sigue `N/D` hasta reclasificar gastos no hoteleros línea por línea y conciliar Kross–Alegra–bancos. `N/D` no es cero. Kross conserva autoridad operativa; Alegra conserva autoridad fiscal/contable; bancos/procesadores conservan autoridad monetaria; Dropbox conserva originales; Supabase conserva estructura, correspondencias y recibos; Airtable queda como superficie humana/transicional.
+
+**ESTADO:** `PREPARADO · PARCIAL · READ-ONLY`. No se modifica Alegra, Kross, banco, Dropbox ni Airtable por este registro; no se crea factura, asiento, pago o deuda. La actualización de Supabase se limita al conocimiento y tarea existentes, con marcador idempotente `FIN-01-REPORTE-V2-20260929`.
+
+**ÚNICA SIGUIENTE:** cerrar la muestra focal de gastos materiales de Alegra y movimientos bancarios, empezando por Mauricio agosto, con cuenta, tercero, centro, fecha, moneda, comprobante, estado de pago y regla hotel/no hotel; actualizar el mismo reporte y checkpoint sin abrir otro expediente.
+
+**REFERENCIAS ESTRUCTURADAS:** `operations.knowledge_items/finance_accounting_rebuild_scope_2026_09_v1`; tarea `finance_ws_cash_accounting_current`; proyecto `finance_controls`; archivo Kross local `C:\Users\PERSONAL\Downloads\Export_2026-09-29 (1).xlsx`.
+
+**REGLA DE RESPALDO Y ALINEACIÓN:** Kross V1 conserva la autoridad operativa para reservas, cargos, producción y estados transaccionales; no se usa como repositorio de documentos financieros ni como sustituto de Alegra o bancos. Los reportes y originales se respaldan en Dropbox, la estructura y recibos en Supabase y cada resultado se alinea en este Plan General y `CONTINUAR.md`. Cualquier escritura en Kross requiere campo/registro exacto, autorización específica y prueba reversible.
+
+### FIN-01 · muestra focal Mauricio agosto 2026 — actualización 2026-09-29
+
+**HECHO:** la lectura de solo lectura de Alegra para el enlace hotelero `link_6aaa0c0cdbc88191a0fd5419d46efc73` encontró 3 salidas a `Mauricio Fernandez` durante agosto: 15/08, registro `6575` / comprobante `4580`, `USD 1,000` desde `$ BAC $`; 26/08, registro `6712` / comprobante `4665`, `CRC 20,000` desde `₡LAFISE₡`, observación `Pago ST en cuenta Mau`; y 31/08, registro `6945` / comprobante `4818`, `USD 247` desde `$ BAC $`. Los tres tienen centro `DREAMCATCHER`, categoría `Mauricio Fernandez` y estado `open` en Alegra.
+
+**GASTO CONTABLE CORREGIDO:** el estado de resultados de Alegra para agosto muestra `CRC 981,442` en la cuenta `5393`, pero la cuenta no es exclusiva de Mauricio. La evidencia FIN-01 separa `CRC 643,500` de los 3 pagos directos a Mauricio y aproximadamente `CRC 337,942` de seis pagos a terceros: Estadero Medellín, LicoExpress Medellín, Panadería Medellín, Bold Co RST VP, Drogas La Garantía y Restaurante El Carmen. No llamar salario individual al total de la cuenta 5393.
+
+**EQUIVALENTE ANALÍTICO:** los dos pagos en USD suman `USD 1,247`; con el tipo de cambio analítico 500 solicitado por Mauricio equivalen a `CRC 623,500`. Sumado al registro de `CRC 20,000`, el lote de pagos observado equivale analíticamente a `CRC 643,500`. Esta conversión es comparativa, no fiscal, bancaria ni asiento.
+
+**BANCO:** Dropbox contiene los estados corporativos BAC USD y BAC CRC de agosto, ambos con corte 31/08/2026. BAC USD (IBAN terminado `653588`) reporta 31 débitos y saldo final aproximado de `USD 8,443`, pero no muestra una coincidencia inequívoca para USD 1,000 del 15/08 ni USD 247 del 31/08. BAC CRC (IBAN terminado `653660`) está localizado, pero no prueba el pago de LAFISE CRC 20,000. No se localizó estado corporativo LAFISE CRC de agosto. Supabase mantiene `0` estados/movimientos de agosto cargados. La ejecución y conciliación siguen `PENDING_EVIDENCE`; `open` no se trató como prueba de pago bancario.
+
+**ESTADO:** `HECHO · MUESTRA CLASIFICADA Y CORREGIDA PARCIAL`; `BLOQUEADO · LAFISE CRC Y COINCIDENCIAS BAC INEQUÍVOCAS PENDIENTES`. El reporte V2 fue actualizado con la corrección de la cuenta 5393 y la evidencia BAC; nuevo SHA-256 DOCX `C80FB83FD09967CEE292F6C64E025B116A58B1B24EBDF1886277A48CDFA54E7C`. No se escribió Alegra, banco, Kross, Dropbox, Airtable ni Supabase en esta unidad.
+
+**ÚNICA SIGUIENTE:** obtener el estado de cuenta corporativo de agosto de BAC y LAFISE y enlazar esas tres referencias con soporte bancario antes de recalcular utilidad real o autorizar cualquier reclasificación.
+
+### FIN-01 · búsqueda final de soporte bancario primario — cierre de unidad 2026-09-29
+
+**HECHO:** se ejecutó una búsqueda focal de solo lectura en Dropbox y en la evidencia local por `CE-4665`, `4665`, `Pago ST en cuenta Mau`, `LAFISE CRC Agosto 2026`, `CE-4580` y `CE-4818`. No apareció ningún estado corporativo LAFISE CRC de agosto ni un comprobante bancario primario nuevo para `CE-4665 / ID 6712`. Las referencias CE encontradas corresponden a recibos FIN-01 ya derivados, no sustituyen el comprobante original. Tampoco apareció una referencia BAC inequívoca nueva para `CE-4580 / ID 6575` o `CE-4818 / ID 6945`.
+
+**CIERRE DE LA UNIDAD:** `HECHO · BÚSQUEDA FINAL EJECUTADA`; `BLOQUEADO · SOPORTE BANCARIO PRIMARIO FALTANTE`. La clasificación analítica de Mauricio no cambia: `CRC 643,500` de pagos directos y aproximadamente `CRC 337,942` de terceros excluidos de esa cifra. No se convirtió un estado `open` de Alegra en pago confirmado.
+
+**NO ESCRITURAS:** no se escribió en Alegra, Kross, bancos, Dropbox, Airtable ni Supabase; no se cargaron documentos, no se reclasificó, no se pagó y no se creó una fuente paralela. La utilidad real del hotel continúa `N/D` hasta completar la conciliación y la separación hotel/no hotel.
+
+**ÚNICA SIGUIENTE:** recibir o localizar el estado corporativo LAFISE CRC de agosto o el comprobante primario de `CE-4665 / ID 6712`; después enlazarlo línea a línea con Alegra y resolver las dos coincidencias BAC. Hasta entonces, no hay una acción documental adicional segura que cierre este frente.
 
 ---
 
@@ -3080,6 +3153,54 @@ Verified after the initial 2026-09-29 alignment:
 - W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
 - Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
 
+### FIN-01 · auditoría ordenada de correos y extracción financiera — cierre 2026-09-29
+
+**OBJETIVO:** revisar el universo financiero y administrativo de correo de enero a agosto de 2026, extraer evidencia útil y aplicarla al expediente existente sin convertir mensajes, solicitudes o avisos en pagos confirmados.
+
+**COBERTURA VERIFICADA:** Gmail hotel `452/452` cuerpos completos; Gmail Mauricio `126/126` candidatos completos; Gmail Margot/Luz `554/554` candidatos completos; Outlook `2,713/2,713` mensajes inventariados por metadatos y `141/141` mensajes de alta prioridad leídos completos. No se leyó indiscriminadamente correo personal/promocional ajeno al alcance financiero; se excluyó por relevancia y privacidad. No hubo errores de lectura en los lotes completados.
+
+**HALLAZGOS PRINCIPALES:** se localizaron informes de Alegra de enero a julio: ingresos reportados `CRC 237,763,864` y gastos reportados `CRC 206,818,662`, redondeados a unidades completas. Agosto queda `PENDING_EVIDENCE` porque no apareció el informe mensual. La diferencia de febrero (`CRC 46,259,698` frente a `CRC 46,255,096` en una referencia posterior) queda abierta como diferencia de versión/corte. Se detectaron dos transferencias BAC candidatas GORIDE MOTO por `USD 121` y `USD 264`, pero requieren amarre con banco, Kross y Alegra. Las solicitudes S3 Ingenieros de `USD 146` y `USD 140` no se suman como cobros. El aviso Synerjoy/Booking de `USD 9,383` se conserva como obligación candidata y no como gasto pagado. Liberty e ICE/Kolbi quedan como servicios pendientes de entidad hotel/personal. WeSpeak queda como señal operativa, no prueba bancaria.
+
+**20 MEJORAS APLICADAS:** contrato de fuentes; cobertura explícita; lectura por relevancia; autoridad Kross/Alegra/bancos/Dropbox; separación hotel-personas; separación de proyectos; CRC/USD separados; pendiente distinto de cero; cobro distinto de solicitud; pago distinto de recordatorio; señal distinta de evidencia; tabla mensual; total controlado; duplicados; anomalías visibles; servicios por entidad; minimización de datos; trazabilidad; no escritura externa; siguiente unidad única. El anexo quedó en `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V3_CORREO.docx`, SHA-256 `D51341E4AF21B1FA7FA528B9AD432FED920C35983BDD5CC320D42B5B52D72D0C`; V2 se conserva como recuperación.
+
+**ESTADO:** `HECHO · COBERTURA EMAIL FINANCIERA COMPLETADA`; `PENDING_EVIDENCE · AGOSTO ALEGRA, ADJUNTOS BANCARIOS, AMARRES GORIDE, SERVICIOS Y ENTIDAD BOOKING`; `BLOQUEADO · ESCRITURAS O RECLASIFICACIONES EXTERNAS`. No se modificó Alegra, Kross, banco, Dropbox, Airtable ni Supabase.
+
+**ÚNICA SIGUIENTE:** extraer únicamente los adjuntos primarios identificados en mensajes BN/BAC/LAFISE/Liberty/ICE/Booking, calcular hash, cuenta, fecha, moneda, monto, referencia y entidad, y reconciliar solo los casos materiales sin crear otro expediente.
+
+**REVERSIÓN:** retirar el anexo V3 y esta sección documental; conservar V2, originales y fuentes externas sin cambios.
+
+### FIN-01 · corte agosto–septiembre y única estimación de planilla — 2026-09-29
+
+**OBJETIVO:** completar el reporte financiero del hotel con agosto y septiembre, separar hotel de proyectos/personas/propiedades externas y estimar únicamente la segunda quincena de la última planilla disponible.
+
+**HECHO VERIFICADO EN ALEGRA:** agosto: ingresos CRC 15,871,652, gastos operativos CRC 17,313,028, utilidad operativa CRC -1,441,376, resultado neto CRC -3,751,293; caja con entradas CRC 33,576,816, salidas CRC 42,774,278 y flujo neto CRC -9,197,462. Septiembre: corte de trabajo al 29/09; ingresos CRC 14,329,059, gastos operativos CRC 10,894,271, utilidad operativa CRC 3,434,788, resultado neto CRC 2,797,155; caja mensual devuelta por Alegra con entradas CRC 32,888,206, salidas CRC 32,083,489 y flujo neto CRC 805,717. Septiembre no se presenta como cierre definitivo.
+
+**PLANILLA:** agosto quedó preparado/revisión con bruto CRC 2,335,263 y neto CRC 2,304,371. Septiembre 01–15 quedó en revisión con bruto CRC 1,243,659 y neto CRC 1,092,996. Única estimación autorizada: septiembre 16–30 igual a la última planilla disponible, bruto CRC 1,243,659 y neto CRC 1,092,996. Total septiembre con estimación: bruto CRC 2,487,318 y neto CRC 2,185,992. No se estimaron otros rubros ni se interpretó planilla como pago.
+
+**SEPARACIÓN EXTERNA:** se incorporaron como lectura separada Cabuya CRC 2,500,000 de salida en agosto y septiembre; Santa Toro entradas CRC 1,383,095 en agosto y CRC 158,610 en septiembre, con salidas identificadas CRC 1,792,208 y CRC 809,630; DIEX, Vista Alegre, préstamos y personas vinculadas se conservan fuera de la utilidad operativa hasta reconciliar entidad y naturaleza.
+
+**CORREOS FALTANTES:** no es necesario leer todos los correos. Son necesarios solo adjuntos primarios o mensajes que puedan cambiar monto, moneda, entidad, fecha, obligación o prueba de pago: banco, planilla/CCSS, Booking con factura, Santa Toro, servicios y documentos de Alegra. No se incorporan newsletters, duplicados, avisos de exportación sin contenido, mensajes WeSpeak sin liquidación bancaria ni correo personal ajeno. Septiembre hotel tuvo 30 mensajes etiquetados en el alcance y 4 adjuntos identificados; el resto queda fuera por criterio de relevancia, no como “cero”.
+
+**BOOKING AÑADIDO:** se leyeron los dos adjuntos primarios de Booking del 06/09: factura 1663815593 para Santa Toro, periodo 01–31/08, comisión USD 156.39, vencimiento 19/09; factura 1663811248 para Atrapa Sueños, periodo 01–31/08, comisión USD 2,455.93, vencimiento 19/09. Total documental USD 2,612 redondeado; no se trata como pago confirmado ni se agrega a utilidad hasta conciliar Alegra/banco.
+
+**REPORTE:** `output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; SHA-256 `4E4A82A637CB58F89F8484BF2C2CD831494CE138D99A69DBC694E484FB605AB4`. Validación estructural: 51 tablas y 164 párrafos. La renderización visual sigue bloqueada por ausencia de `soffice.exe`.
+
+**ESTADO:** `HECHO · AGOSTO Y SEPTIEMBRE PARCIAL INCORPORADOS`; `PREPARADO · ÚNICA ESTIMACIÓN DE PLANILLA`; `PENDING_EVIDENCE · ADJUNTOS PRIMARIOS Y CONCILIACIÓN DE ENTIDADES`; `BLOQUEADO · ESCRITURAS EXTERNAS Y UTILIDAD CONSOLIDADA DEFINITIVA`. No se modificó Alegra, Kross, bancos, Dropbox, Airtable ni Supabase.
+
+**ÚNICA SIGUIENTE:** extraer y conciliar los adjuntos primarios de septiembre ya identificados (Booking, banco, servicios y planilla); cualquier correo que no cambie un monto/entidad/fecha o no pruebe un pago se mantiene excluido con razón documentada.
+
+**REVERSIÓN:** retirar solo el anexo V4 y esta sección; conservar V3, V2, originales y fuentes externas intactos.
+
+### CIERRE Y ALINEACIÓN CANÓNICA FIN-01 — 2026-09-30
+
+**PUNTERO ÚNICO:** para el reporte financiero del hotel, el documento vigente es `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; V3 y V2 quedan como histórico y recuperación. La sección FIN-01 de agosto–septiembre y el recibo correspondiente en `CONTINUAR.md` sustituyen cualquier estado anterior que aún describa agosto como pendiente sin consulta Alegra o que apunte a V3 como salida actual.
+
+**ESTADO FINAL DE ESTA UNIDAD:** `ALINEADO AL PLAN GENERAL / DOCUMENTACIÓN LOCAL CERRADA`. Agosto está incorporado; septiembre está incorporado como corte parcial al 29/09; solo la segunda quincena de la última planilla fue estimada; Booking queda documentado como obligación no pagada hasta conciliación; proyectos, Santa Toro, deuda y personas vinculadas permanecen separados del hotel.
+
+**PENDIENTES NO CERRADOS:** conciliación primaria de banco/planilla/CCSS/servicios/Booking y utilidad consolidada definitiva. Estos pendientes no se convierten en cero ni bloquean el cierre documental del chat. No se ejecutan escrituras externas ni respaldos Dropbox porque el gate de custodia/ACL y la autorización de destino no están confirmados en esta unidad.
+
+**CIERRE DEL CHAT:** no queda una tarea activa en este hilo. Si se reabre, debe comenzar desde este puntero y ejecutar solo la siguiente acción registrada en `CONTINUAR.md`; no repetir inventarios ni releer el historial completo.
+
 
 # 23. VERSION FINAL — definición del producto terminado — owner direction 2026-09-29
 
@@ -4558,3 +4679,782 @@ El requisito de allowedTools sigue vigente para futura operación de conectores,
 - Evidencia: 85 pruebas de herramientas/menú/contexto; TypeScript y lint del cambio. Sesión local real con seis enlaces, ayuda de cuenta, navegación a la guía y viewport móvil de 390 px sin desborde. La cuenta sintética sin sesión, de otra organización, suspendida o con elección pendiente no consulta el directorio; un fallo de lectura no expone URLs.
 - Criterio de entrega: inicio compacto, acciones útiles primero, pendientes sin falsos botones y seis destinos bajo los mismos controles. Recuperación mediante revert de este cambio de presentación; sin migración.
 - **NEXT único:** cerrar el release acotado en el proyecto Next.js existente. Producción permanece pendiente de separar el delta de otros módulos ya presente en main; no promover todo el proyecto ni activar nuevos permisos bajo esta mejora visual. Catálogo canónico conserva 243 fichas.
+
+
+### Conciliación local del portal — 2026-10-11
+
+**Ámbito y autoridad:** portal existente, Human Experience, Cerebro y TORO Finance/People; este documento sigue siendo el único Plan General. La conciliación local autorizada conserva PR262 `7837ae9`, main `6992dfe`, los deltas aprobados de Hoy/Buscar/test y los aportes humanos People/FIN01. No crea otro proyecto ni integra el checkout separado de DreamTeam.
+
+**CURRENT — código local:** Hoy en Mi TORO conserva un único instante, `America/Costa_Rica`, fuente/cobertura, conteos coherentes, importe desconocido distinto de cero y enlace de evidencia. `search_toro` filtra la lectura canónica acotada antes del límite de resultados; máximo 101 objetos cargados, diez resultados por defecto y máximo 25. Informa conteos y truncamiento, `complete=false` y totalidad autorizada desconocida. Mi TORO mantiene su búsqueda de opciones del menú. Roles, flags, gates y perímetro demo de PR262 se conservan; esto no acredita operación autenticada ni RLS vivo.
+
+**TARGET:** búsqueda con mayor cobertura y evidencia verificable, subordinada a P07/P13 y a fuentes realmente autorizadas. Las 100 mejoras de Cerebro conservan su clasificación documental; conciliarlas no las declara ejecutadas. Alegra/custodia y los cortes históricos FIN01 mantienen sus fechas, autoridad y límites; People conserva su dirección humana sin nuevos grants.
+
+**CURRENT — validación controlada local:** suites principales 463/463 (incluidas 28 de aislamiento secuencial), herramientas/Mi TORO 46/46 y las once regresiones de Buscar ya existentes 11/11; tipos y lint de los 14 archivos relevantes pasaron. Build local de Next 16.3.6/Turbopack: 45 páginas. Los datos de las pruebas son fixtures/sustituciones existentes, incluido el harness privado de Buscar fuera del producto; no son datos operativos reales ni prueba de autenticación/RLS. No se crearon fixtures nuevos. Recibos, comandos, hashes y recuperación quedan fuera del repositorio.
+
+**NEXT:** QA autenticado requiere un entorno interno y una sesión legítima autorizados. Publicación, CI/preview y aceptación operativa requieren su propio alcance.
+
+**Límites y recuperación:** solo integración y pruebas locales. PUMBA conserva A1 Prepare; Kross API, mantenimiento automático, Gateway y WhatsApp quedan fuera de esta unidad. Se preserva Recepción `2adc9fa` / C01–C30. No hay push, merge remoto, deploy, consultas a datos remotos, activaciones, credenciales, permisos, instalaciones ni nuevos fixtures. La rama original permanece en `0f31223`; un snapshot local y respaldo íntegro permiten recuperación sin reset ni borrados.
+
+### Corrección local de dependencias del Portal — 11/10/2026, 15:01 Costa Rica
+
+**CURRENT local, sin publicar:** sobre `7cabb88`, Next y eslint-config-next pasan de 16.3.6 a 16.3.8; sharp de 0.35.4 a 0.35.5 y source-map-js de 1.2.1 a 1.2.2. El lockfile cambia únicamente las familias previstas, con resolved/integrity oficiales. No cambian fuentes de Hoy/Buscar, identidad, flags, gates, permisos, datos ni contribuciones anteriores del Plan.
+
+**Evidencia posterior al cambio:** audit runtime exit 0 y cero avisos; audit completo exit 1 con cinco paquetes de desarrollo que heredan un único aviso de braces. 534/534 pruebas controladas en siete componentes y tres validadores; TypeScript, lint de 14 archivos y build Next 16.3.8/Turbopack aprobados, 45 páginas y dos workers. ESLint completo: 190 archivos, cero errores y un aviso de variable sin uso en un archivo sin cambios. Seis GET al servidor local validaron el perímetro público fail-closed; el servidor de prueba se detuvo. No es sesión autenticada, QA móvil/teclado, RLS vivo ni CI/preview.
+
+**Pendiente y NEXT único:** entorno interno existente del mismo candidato con sesión legítima autorizada para entrada → Hoy → Buscar → evidencia → retorno, identidad/ámbito y móvil/teclado. Braces conserva un aviso sin parche upstream; no es una aceptación de riesgo aprobada. No rebajar ESLint, retirar gates o instalar datos ficticios para cerrar el aviso. El portal integrado sigue sin publicar.
+
+Recibo y recuperación: `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\security-unit\receipt.json`; respaldo de package/lock/Plan en su carpeta `backup`; base `7cabb88` y snapshot histórico `6151a4a` conservados. Recuperación solo de este delta tras verificar cambios posteriores, sin reset/clean ni sobrescribir aportes ajenos. Este bloque no autoriza publicación, despliegue, nuevas lecturas o permisos.
+
+### Preparación local de QA autenticado del Portal — 11/10/2026, 15:23 Costa Rica
+
+**CURRENT verificado:** se añade únicamente `scripts/portal-session-preflight.mjs` y su prueba Node: comprobación offline de candidato/árbol limpio, dependencias instaladas, configuración pública de navegador/servidor, proyecto Supabase esperado, flags exactos y ausencia de privilegios/lecturas legacy/escrituras. 13/13 pruebas dirigidas y lint sin avisos. No consulta datos, lee archivos .env, cambia flags, inicia servidores ni verifica sesiones; exit 0 significa preparación, nunca autorización, RLS o publicación. El proyecto se selecciona explícitamente; para este alcance, la autoridad de las secciones actuales del Plan conserva `abtyrbqlqbsastmridzp`.
+
+**Conservado:** fuentes funcionales, package/lock y todos los aportes de People/Cerebro/Alegra/FIN01 permanecen idénticos al candidato `fc640c6`. Sus 534 pruebas, build y auditoría local se conservan como evidencia anterior, sin nueva ejecución. Braces dev y la advertencia ESLint anterior siguen pendientes.
+
+**Recurso observado:** Vercel identifica la preview abierta `toro-pr11-preview-9uszzp4m4-dreamcatcher-s-projects.vercel.app` como `7837ae9`, no como el candidato integrado. Consulta acotada por SHA `fc640c6` en el equipo actual: cero deployments. La consulta de variables no produjo metadata utilizable; configuración remota UNKNOWN. No se cambia Deployment Protection ni se crea un bypass.
+
+**NEXT único:** autorización específica para QA temporal local en 127.0.0.1:3047, en el portal existente y con identidad/grants actuales: lectura canónica + Hoy/Finance. Solo para el proceso: `TORO_DEPLOYMENT_MODE=internal`, `TORO_BRAIN_CANONICAL_READ_ENABLED=true` y `TORO_OWNER_ATTENTION_READ_ENABLED=true`; legacy/escrituras deshabilitados y ningún secreto privilegiado. Configuración pública del proyecto canónico disponible de forma segura durante un build nuevo; login humano en navegador sin compartir contraseña. Luego completar entrada/identidad → Hoy → Buscar → evidencia/retorno → móvil/teclado, y detener el servidor. Todavía no autorizado ni ejecutado.
+
+Recibo canónico y recuperación en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`; evidencia de esta unidad en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\session-unit\receipt.json`. Recuperación: revert de este delta local tras verificar cambios posteriores; no reset, borrados ni cambios en ramas previas. Esta preparación no autoriza despliegue, nuevos permisos, nuevas cuentas, envío externo ni publicación.
+
+### QA local autorizada: corrección de la entrada interna — 11/10/2026, 15:34 Costa Rica
+
+**Autorización recibida:** Mauricio aprobó explícitamente QA temporal de lectura en 127.0.0.1:3047 y Supabase canónico `abtyrbqlqbsastmridzp`, incluyendo Cerebro y Hoy/Finance, con tres flags internos solo en el proceso, identidad/grants actuales y escrituras deshabilitadas. No permite publicación, nuevas cuentas o permisos.
+
+**CURRENT local:** el preflight autorizado aprobó 15 comprobaciones. Supabase confirmó proyecto ACTIVE_HEALTHY, URL canónica y clave publishable activa; no se obtienen secretos privilegiados. Un build con esa configuración detectó que `/` invocaba el ledger legacy deshabilitado durante el prerender. Se conserva el fallo y el build previo; no se activa legacy para resolverlo. La entrada pública sigue a `/brain`; la entrada interna con legacy deshabilitado va a `/my-toro` antes de todo I/O antiguo, y la rama legacy explícita conserva su comportamiento existente. Este cambio no certifica su autenticación.
+
+**Verificación dirigida:** 105/105 pruebas de entrada/perímetro, incluidas 9 regresiones nuevas de `/`; cero fallos/omitidas. Lint de ambos archivos sin avisos. Las 534 pruebas anteriores y el patch de seguridad se conservan como evidencia baseline; no se relanza la batería completa. Build interno corregido, sesión/RLS y cinco bloques de QA siguen pendientes hasta verificarse.
+
+**NEXT:** rebuild local con configuración pública legítima, verificar entrada y denegación sin sesión, luego login humano y recorrido Hoy/Buscar/evidencia/retorno/móvil/teclado. El permiso para esta QA ya está concedido; no volver a solicitarlo. Fuente/recuperación: commit anterior `adf70cf`, recibo canónico existente y `work/auth-qa-build-attempt1` en el chat local; revert solo de este delta tras verificar cambios posteriores, conservando el Plan previo como prefijo.
+
+### Resultado de QA local con sesión legítima — 11/10/2026, 15:56 Costa Rica
+
+**CURRENT verificado:** la QA temporal de lectura ya tiene autorización expresa de Mauricio; no volver a pedirla para este mismo alcance. Código funcional probado en `cdfa0c2`: `/` conserva `/brain` en modo público, entra a `/my-toro` cuando legacy está deshabilitado y evalúa los gates por petición (`force-dynamic`). Se mantiene la rama legacy existente sin certificarla ni activarla. 105/105 regresiones dirigidas, incluidas 9 nuevas; después del ajuste dinámico, 9/9 de entrada y lint aprobados. Build final Next 16.3.8 con config pública legítima, TypeScript y ruta raíz dinámica aprobados. No es una nueva ejecución de las 534 pruebas baseline.
+
+**Sesión real verificada:** en el segundo navegador conectado, perfil Dirección / ADMIN y contexto Dreamcatcher. Mi TORO presenta sus seis destinos existentes. Móvil 390×844 sin desborde, foco visible sólido de 2px y navegación por teclado a la guía y regreso al mismo hotel. Sin sesión, context y Owner Attention devuelven 401 sin proyección; los 404 de rutas no existentes no cuentan como denegaciones de permisos. Viewport restaurado y servidor temporal detenido, puerto 3047 cerrado.
+
+**BLOCKED, no aceptación operativa:** Hoy muestra fuentes no disponibles; Cerebro conserva el fallback demo explícito. No se verificaron importes/fecha/cobertura reales, búsqueda/evidencia canónica ni aislamiento entre dos identidades. Supabase Data API devolvió PGRST106/406 para operations, integrations y finance en sondas públicas de cero filas; public respondió 200. Metadata confirma ausencia de SELECT/políticas de lectura en finance.invoices y operations.communication_followups; finance tampoco concede USAGE a authenticated. integrations.kross_snapshot_health tiene SELECT authenticated y RLS deshabilitada: exponer todo integrations ampliaría superficie. No se cambia API config, permisos, RLS o datos para hacer pasar la prueba.
+
+**NEXT único:** preparar y verificar localmente un transporte/proyección de lectura autenticado y acotado con su propuesta exacta de grants/RLS/rollback. Reutilizar fuentes y estructura existentes; no exponer esquemas completos, usar service-role, SECURITY DEFINER como atajo, migraciones remotas o nuevos datos de prueba operativos. La propuesta de cambio remoto requerirá su propia autorización específica; la QA local ya está autorizada.
+
+Plan y trabajo People/Cerebro/Alegra/FIN01 preservados. Auditoría anterior terminada: runtime cero avisos; braces dev sigue abierto, no aceptado. El portal integrado permanece sin publicar. Recibo canónico `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md` y evidencia de esta QA `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\auth-qa-unit\receipt.json`; builds anteriores y fallo conservados en carpetas auth-qa-build-attempt1/2. Recuperación mediante revert solo de estos deltas tras comprobar cambios posteriores, sin reset ni eliminación de trabajo existente.
+
+
+### Un solo Portal: Mi TORO y presentación corporativa — 2026-10-11
+
+**Autoridad y alcance:** solicitud directa de Mauricio; TORO Human Experience / Tools, sobre el Portal Next.js existente y este único Plan General, sección 23 y contrato TORO_DASHBOARD_V1. Mi TORO es la vista personal por rol dentro del Portal, no una aplicación o fuente de verdad aparte. Cerebro, módulo visible 0, y los once dominios conservan sus ordinales de presentación; no se renumeran proyectos ni IDs técnicos. La portada final Cerebro autenticada continúa como TARGET hasta comprobar su lectura canónica; no se convierte la demo en operación.
+
+**CURRENT — candidato local:** cabecera común en Mi TORO, Cerebro autenticado y guía del turno; vista `/portal` como directorio de los doce módulos. Paleta azul sobria, tipografía jerarquizada y navegación corporativa, con marca TORO textual existente, sin sustituir los masters de identidad. Las consultas solo enlazan si el menú actual prueba READ_ONLY y foco permitido. Los pendientes tienen texto sin falsos botones. La guía conserva seis accesos revisados. Hoy sigue el mismo panel y fuente, y el explorador conserva aviso demo/lectura. La edición pública no resuelve contexto ni muestra esta navegación privada. No se añaden base, tenant, proyectos, credenciales o permisos.
+
+**Conciliación de fuentes:** lectura directa del Plan/contexto/Constitución y arquitectura; export Dropbox `TORO_Producto_Final_100_Mejoras_2026-10-10.md` declara el mismo Plan único. Metadata de `operations.projects` en Supabase conserva portafolio `toro_os_portfolio_master`, ejecución `toro_executive_control`, Dreamcatcher y carril Propiedades. Datos/Integraciones, Operación Hotelera, Revenue, Web y Finanzas mantienen sus estados registrados; Dreamcatcher madre requiere revalidación. Esto es estado del registro, no prueba de ejecución autónoma ni disponibilidad del Portal. Airtable Central conserva tareas de transición e históricas; la antigua instrucción del plugin Master Brain que da autoridad global a Airtable queda subordinada a este contrato vigente. Kross, Alegra y bancos retienen autoridad transaccional; Dropbox conserva originales; DreamTeam converge a TORO People por paridad, sin retirar su runtime. AI for Dreamers sigue producto separado según contrato; no se fusionan productos por tener relación con TORO.
+
+**Verificado antes del build:** 579 pruebas aprobadas sin fallos ni saltos: 495 suite principal (incluye 23 de navegación/privacidad y 9 de entrada), 46 hotel, 25 Node y 13 preflight; tres validadores CLI, TypeScript y lint afectado sin errores/avisos. Las 534 baseline están incluidas en esta ejecución. Paquetes y lock sin cambios. La auditoría previa sigue terminada: runtime cero avisos, hallazgo braces de desarrollo abierto sin aceptación. Build y recorrido visual del candidato se registrarán con su SHA exacto al cerrar QA.
+
+**BLOCKED y NEXT único:** lectura operativa privada Hoy → Buscar → evidencia continúa bloqueada por transporte/API/permisos previamente diagnosticados. Preparar y probar localmente una proyección autenticada acotada y la propuesta exacta de SQL/grants/RLS/rollback sin aplicarla. No exponer esquemas completos ni usar service-role/SECURITY DEFINER como atajo. La autorización de QA local existente se conserva; cambios remotos necesitan aprobación específica. Portal aún sin publicar. Recuperación: revert de este delta local después de revisar cambios posteriores; no reset, retiro de servicios ni borrado.
+
+
+**Cierre de QA del Portal único — 11/10/2026, 16:20 Costa Rica:** build Next16.3.8/TypeScript y preflight15/15 aprobados sobre `8ac120094138f82d923485d34058b98ad5126312`. Sesión existente Dreamcatcher: recorrido Mi TORO ↔ vista general, Cerebro y guía del turno, doce módulos y seis enlaces revisados. Las cuatro vistas a 390×844 no desbordan; controles principales44px, foco de teclado sólido2px, escritorio1280px restaurado. Sin sesión, `/portal` presenta login sin navegación privada; APIs context/owner-attention401 sin proyección. Hoy continúa sin fuentes disponibles y Cerebro en demo explícita. No se probó segunda identidad ni se aceptó lectura operativa real. Servidor temporal detenido y puerto3047 cerrado. Capturas y evidencia guardadas; candidato integrado NO PUBLICADO. El NEXT único de proyección acotada/SQL propuesto sigue vigente. Se conservan las 534 baseline incluidas entre579 aprobadas, auditoría y trabajo People/Cerebro/Alegra/FIN01.
+
+
+### Lectura autenticada acotada del Portal: preparación local — 2026-10-11
+
+**CURRENT local, no activado:** adaptador server-only de RPC v1 para los lectores existentes Cerebro/Owner Attention; selector `TORO_PORTAL_READ_TRANSPORT=rpc_v1` opt-in, default directo conservado. Gates internos, identidad/rol/org activo, contrato estricto con columnas/topes y revalidación de sesión después del I/O; sin claves privilegiadas, datos operativos nuevos o cambios de UI. Mi TORO permanece dentro del mismo Portal. Se conserva este único Plan y los trabajos People/Cerebro/Alegra/FIN01.
+
+**PROPUESTO, NO APLICADO:** dos funciones públicas SECURITY INVOKER; EXECUTE authenticated; SELECT por columna y RLS organizacional en communication_followups/invoices; USAGE finance con guarda contra privilegios latentes; activación RLS en Kross snapshot health actualmente desprotegido. Reutiliza el helper de rol existente sin modificarlo. Borradores exactos en `supabase/drafts/20261011_portal_narrow_read_v1.sql` y `_rollback.sql`; revisión subordinada `docs/product/TORO_PORTAL_NARROW_READ_V1_REVIEW.md`. Reversión funcional retira nuevas lecturas/funciones y mantiene Kross protegido; no restaura el acceso inseguro previo.
+
+**Verificación:** 631/631 locales, incluidas todas las579 previas: principal531, hotel46, Node25, preflight14, PostgreSQL aislado15; cero fallos/saltos. Tres validadores CLI, TypeScript/lint afectado aprobados. Las15 pruebas SQL usan datos sintéticos solo en PGlite local, incluyendo aislamiento, permisos, límites y reversión. No certifican RLS/PostgREST real ni segunda identidad autorizada. Dependencias y auditoría previa sin cambios: runtime cero avisos en su corte; braces dev abierto sin aceptación. El build se documentará con su SHA al cierre.
+
+**BLOCKED y NEXT único:** revisar/decidir sobre la propuesta exacta antes de todo cambio remoto o activación RPC. La QA local ya está autorizada; esa autorización no amplía accesos. Hoy → Buscar → evidencia real y las comprobaciones del menú que usan esquemas directos siguen sin aceptación. No publicación, schema exposure, service-role, migración remota ni nuevos grants en esta tarea. Checkpoint existente `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md` conserva estado/evidencia/recuperación. No releer fuentes ajenas al bloqueo ni crear otro Plan.
+
+
+**Cierre de build de lectura acotada — 11/10/2026, 17:37 Costa Rica:** Next16.3.8/TypeScript exit0 y preflight16/16 sobre `bd1ec02ffe7acec1bb51846b8c38f6fc51d9ac06`. Configuración pública canónica solo en proceso de build; RPC opt-in desactivada, sin servidor ni nuevas lecturas de negocio. 631 pruebas locales incluyen las579 anteriores. Comprobación SELECT de metadata confirma cero funciones/políticas/grants nuevos y finance sin USAGE; SQL/RLS permanecen propuestos, no aplicados. Sin cambio de dependencias, UI corporativa o auditoría. Portal sin publicar. NEXT único: revisión/decisión explícita de la propuesta exacta antes de cualquier cambio remoto.
+
+
+### Corrección de propuesta SQL y revisión de consumidores — 11/10/2026, 18:21 Costa Rica
+
+**CURRENT verificado, sustituye el diagnóstico Kross anterior:** `integrations.kross_snapshot_health` es vista security_invoker/security_barrier sobre `integrations.kross_snapshot_registry`, tabla con RLS y SELECT organizacional existentes. La fixture anterior la modeló incorrectamente como tabla; sus15 tests no validaban el DDL propuesto para la vista. Se retira ese DDL/política adicional y la afirmación de acceso Kross desprotegido; no se modifica Kross. Nueva fixture reproduce vista/registry/políticas y cálculos de frescura. Auditoría npm y Portal corporativo no cambian.
+
+**Propuesta revisada, NO APLICADA:** únicamente dos RPC SECURITY INVOKER, USAGE finance, SELECT de columnas y RLS organizacional ADMIN/GERENCIA para followups/invoices. Guardas nuevas contra permisos writer latentes y deriva de tipo/invoker/RLS; rollback rechaza cambios concurrentes de función/políticas/columnas/consumidores financieros. Consumidores locales revisados: canonical-read, owner-attention y menú; vista communication_attention_v actualmente sin SELECT authenticated no recibe acceso. Borradores/revisión conservan sus rutas y sustituyen la versión anterior.
+
+**Verificación actual:** SQL25/25 y adaptador36/36, sin fallos/saltos; lint aprobado. 641 pruebas registradas:531 principal,46 hotel,25 Node,14 preflight,25 SQL. SQL25 sustituye la evidencia SQL15 incorrecta sobre Kross; resto de la regresión/build/TypeScript/auditoría conservado sin relanzar. Src y package/lock permanecen idénticos. No datos operativos, SQL remoto, usuarios, grants, RLS, flags o publicación aplicados. No sesión real ni PostgREST certificado.
+
+**Decisión técnica:** preparado para solicitar autorización específica; no es aprobación del propietario. NEXT único: autorización explícita para el SQL exacto revisado y RPC temporal durante la QA local ya autorizada. Después, readback y aceptación Cerebro/Hoy acotadas; menú/Buscar/evidencia siguen sin aceptación. Mantener el mismo checkpoint y Plan; no nuevas auditorías, inventarios o fuentes ajenas. Recuperación del delta local con revert tras revisar cambios posteriores, sin reset/borrados.
+
+
+### SQL de lectura autorizado y QA local real — 11/10/2026, 19:45 Costa Rica
+
+**Autorización vigente:** respuesta directa «Autorizar SQL exacto y QA local», para SHA-256 `921a2329976b5e6da8f2e14ea46dbca80c7e4717df28913a27188d79515b3b19`, proyecto `abtyrbqlqbsastmridzp`, dos RPC invoker, USAGE finance y columnas/políticas organizacionales de followups/invoices, RPC temporal127.0.0.1:3047. No autoriza escritores, nuevas cuentas, otros grants o publicación; no repetir la aprobación para este mismo alcance.
+
+**CURRENT aplicado y readback:** migración `20261012012726` / `portal_narrow_read_v1_authorized_20261011`.11 comprobaciones de metadata: funciones con cuerpo exacto, SECURITY INVOKER/search_path vacío/EXECUTE authenticated y no anon/service_role; SELECT solo13 columnas por cada tabla, RLS SELECT ADMIN/GERENCIA mismo org; sin SELECT de tabla completa o writers. Helper existente y Kross vista/registry/ACL/RLS/políticas intactos. Sin filas operativas o usuarios nuevos. SQL/rollback aprobados conservan bytes/hashes; encabezado histórico REVIEW ONLY no implica que sigan sin aplicar. Rollback no ejecutado remoto.
+
+**QA real local verificada:** build `bd1ec02` reutilizado por identidad exacta de src/scripts/package/lock; preflight16 aprobado. Sesión existente Dirección/ADMIN, Dreamcatcher. Hoy:47 comunicaciones/72 obligaciones/148 facturas, límites100/150/200;50 mostrados de145 seleccionados del lote, total organizacional desconocido, cobertura parcial explícita y fecha11/10/2026 Costa Rica. Cerebro:19 objetos/18 relaciones, sin demo. Mi TORO ↔ Cerebro ↔ Mi TORO dentro del Portal único; ambas vistas con datos reales390×844 sin desborde y viewport restablecido. No importes, registros privados o credenciales guardados. Sin sesión: context y Owner Attention401 sin proyección; los404 de rutas inexistentes no son prueba de denegación. Navegación JSON autenticada IAB bloqueada por cliente: no certifica HTTP; se verificó el render real, sin bypass. Servidor detenido y puerto3047 cerrado; RPC temporal no queda corriendo.
+
+**Conservado/límite:**641 pruebas registradas y auditoría anterior sin repetirlas; src/dependencias y Portal corporativo no cambian, Plan previo intacto. Braces dev abierto sin aceptación. No segunda identidad real ni escenarios de importe conocido/cero/desconocido forzados; no aceptación contable/operativa global. El portal integrado NO PUBLICADO, sin push/merge/deploy. SQL autorizado es un cambio de lectura real en Supabase; no confundirlo con publicación del Portal.
+
+**NEXT único:** cerrar localmente el recorrido menú/Buscar → evidencia permitida → retorno usando las RPC ya aprobadas, manteniendo gates/autoridades. No exponer esquemas ni agregar SQL/permisos para forzar disponibilidad; proponer aparte lo que exceda el alcance. QA local autorizada, no solicitarla de nuevo. Actualizar el mismo checkpoint y entregar superprompt breve; no repetir auditorías o releer fuentes ajenas. Recuperación local con revert del delta documental tras revisar cambios posteriores; recuperación DB mediante rollback exacto y revisión de consumidores/dependencias antes de ejecutar. Evidencia/readback en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\narrow-read-activation`.
+
+
+## Menú/Buscar y evidencia permitida implementados; QA autenticada pendiente — 11/10/2026, 20:13 Costa Rica
+
+Estado **MENU_SEARCH_PROJECT_EVIDENCE_IMPLEMENTED_AUTHENTICATED_QA_PENDING_NOT_PUBLISHED**. Código `bfb874ba5072fb1c2cfbdfc41883065008a61c30`, rama `codex/portal-local-reconcile-20261011`. Clasificación operativa; TORO Human Experience, Portal/Mi TORO, NEXT de la sección23 del Plan General. Conserva único Portal, marcas/ordinales, People/Cerebro/Alegra/FIN01 y autoridades existentes. Esta unidad no reinicia ni declara terminada la auditoría general.
+
+**HECHO local:** `src/features/menu/server.ts` selecciona el lector canónico RPC ya aprobado para el menú de proyectos; una lectura reutilizada para disponibilidad y foco. En rpc_v1 no sondea los esquemas directos ni promueve tareas, caja, decisiones, reservas live o escritores que el payload no cubre. Identidad/organización/rol y revalidación tras I/O siguen en el adaptador aprobado, sin cambios. Errores, transporte incorrecto, lote vacío y contexto ambiguo cierran el acceso; no fallback directo. Las filas históricas se pueden inspeccionar como lote parcial, sin prometer vigencia. `portal-projects.ts` proyecta solo título/estado/prioridad/revalidación/fuente/fecha; sin IDs privados ni enlaces originales. Buscar navega al foco de proyectos; cada registro permite desplegar evidencia de fuente y fecha y volver al menú de Mi TORO. La fecha de lectura no se presenta como actualización del registro. Consulta muestra lote/tope25/total organizacional desconocido. Campo Buscar tiene contorno de foco explícito. No resolutor nuevo de documentos ni ampliación de datos.
+
+**VERIFICADO:**67/67 pruebas dirigidas (menú/proyectos/server/source-aware, Mi TORO, Portal y RPC), incluidas7 nuevas; lint del delta aprobado, diff-check aprobado. Build Next16.3.8 y TypeScript aprobados, preflight16/16. Baseline641 y auditoría/build anteriores preservados, sin relanzar baterías completas ni sumar ejecuciones repetidas como pruebas nuevas. Dependencias/lock/SQL/adaptadorRPC idénticos. Auditoría runtime cero en su corte; braces dev abierto sin aceptación.
+
+**QA real BLOQUEADA por sesión, no por permisos nuevos:** Chrome perfil existente llegó a Mi TORO anónimo y pidió login. Se abrió `/login?next=/my-toro` y se solicitó entrada humana, sin leer/escribir contraseña/token/cookie. No hubo sesión vigente durante este corte. Por tanto menú/Buscar→evidencia→retorno autenticados, móvil/teclado/foco del cambio y screenshot real siguen PENDIENTES; código/build/tests no sustituyen esa aceptación. Anónimo context/Owner Attention401 sin proyección/contexto, este último private/no-store. `/portal` anónimo390×844: ancho390 sin overflow, sin overlay ni consola error/warn. Esta comprobación no certifica el flujo autenticado. Segunda identidad real y documentos originales no aceptados.
+
+**Límites y cierre:** SQL `921a2329976b5e6da8f2e14ea46dbca80c7e4717df28913a27188d79515b3b19` ya aplicado previamente; no se ejecutó SQL ni cambiaron permisos/esquemas/filas/cuentas/flags remotos. Sin push/PR/merge/deploy/publicación. FlagsRPC/read internos de proceso y writers deshabilitados; sin.env. Primer arranque rechazado por preflight de árbol sucio; se versionó el cambio local y se repitió sobre candidato limpio,16 checksPASS. Build nuevo aprobado; primer controlador cerró al recibir EOF y el segundo reutilizó ese BUILD_ID con control de cierre explícito. Servidor finalmente detenido a `2026-10-12T02:13:32.996694+00:00`, puerto3047 cerrado; viewportCDP anónimo restaurado. No se guardaron registros financieros, contenido de huéspedes o credenciales.
+
+**Evidencia/recuperación:** `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\menu-search-qa`: backups de Plan/checkpoint/recibo y fuentes previas, receipts de build/live, logs de build, `anonymous.json`. Código6 archivos, sin fuentes/dependencias/SQL ajenos. Revert selectivo de `bfb874ba5072fb1c2cfbdfc41883065008a61c30` tras revisar deltas posteriores; no reset/clean/borrado. Plan/checkpoint previos preservados íntegros como prefijo. No tocar el SQL remoto para revertir esta unidad de frontend.
+
+**NEXT único y criterio:** reabrir QA local autorizada con login humano vigente y demostrar menú/Buscar→evidencia permitida→retorno en390×844 y teclado, fuente/cobertura/foco sin errores, con captura censurada. Terminado solo con evidencia real, viewport restaurado y servidor detenido. No pedir de nuevo autorización del mismo alcance, ni fabricar identidad/grant. Si se descubre defecto, corregir/verificar solo el delta; no repetir auditoría.
+
+### Superprompt breve vigente
+
+Continúa desde la última sección del checkpoint canónico `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`, código `bfb874b`. Conserva Plan único, Mi TORO,641 baseline y auditoría. SQL YA APLICADO: no reejecutar. Única unidad: QA local menú/Buscar→proyectos→evidencia permitida→retorno con login humano vigente, móvil390×844 y teclado/foco. Reutiliza build y evidencia en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\menu-search-qa` tras comprobar identidad de fuentes. No leer credenciales, repetir baterías, crear cuentas/permisos, escribir o publicar. No afirmar QA real mientras falte sesión. Captura censurada, restaura viewport, detén servidor y actualiza este mismo checkpoint.
+
+
+## QA real menú/Buscar → evidencia permitida → retorno completada — 11/10/2026, 20:25 Costa Rica
+
+Estado **MENU_SEARCH_PERMITTED_PROJECT_EVIDENCE_REAL_SESSION_MOBILE_KEYBOARD_QA_VERIFIED_NOT_PUBLISHED**. Este cierre sustituye el bloqueo de sesión y la reapertura temporal anteriores para este recorrido. HEAD documental previo `99602c06e4c8e6c6250eb1e67cff5c7903346778`, código funcional `bfb874ba5072fb1c2cfbdfc41883065008a61c30`, rama `codex/portal-local-reconcile-20261011`. TORO Human Experience / Portal, NEXT de sección23 del Plan General completado como consulta local acotada; no aceptación global del producto.
+
+**HECHO / QA real:** entrada humana confirmada por Mauricio («ya ingrese») y sesión existente comprobada en IAB, mismo origen127.0.0.1:3047, Mi TORO / Dreamcatcher. Buscar «proyectos» → consulta `/my-toro?focus=projects.status#focus-heading` → desplegar «Evidencia permitida · TORO · Portafolio General» → `/my-toro#available-heading`.11 proyectos del lote, tope25 y total organizacional desconocido explícitos; cobertura parcial. Evidencia real presenta fuente autorizada operations.projects/Supabase/TORO, origen declarado, actualización del registro y lectura del lote como instantes distintos. No se transforma la fecha de lectura en prueba de vigencia ni se abre documento original. No se guardaron payloads, identidad privada, importes, nombres/contenido de huéspedes, contraseñas, cookies o tokens.
+
+**Teclado y móvil verificados:** campo Buscar → Tab enfoca botón Buscar → Enter abre consulta; Enter abre/cierra la evidencia; summary enfocado con outline solid2px. Enter sobre Volver al menú y espera explícita de URL confirman desaparición de la consulta, campo Buscar disponible y Dreamcatcher conservado. Foco nativo tras navegación queda en BODY; no se certifica restauración de foco al encabezado. Menú queda visible. Primero viewport existente615px y después390×844: sin overflow horizontal (documento375px con scrollbar frente a viewport390); evidencia/retorno repetidos en móvil. Sin framework overlay ni console error/warn. Viewport reset confirmado615×548. Captura final limitada al entorno de proyectos/evidencia, sin filas financieras o huéspedes: `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\outputs\PORTAL_TORO_EVIDENCIA_MOVIL.png`.
+
+**Conservado y no repetido:**67 pruebas dirigidas/7 nuevas, lint, build/TypeScript y preflight16 ya aprobados;641 baseline y auditoría anteriores intactos. Ninguna batería completa/auditoría relanzada ni conteo de ejecuciones repetidas como tests nuevos. Build ID `EqCDIhMHqheHIRlaSNqWG` reutilizado por igualdad de src/scripts/dependencias entre código y HEAD; no edición del código en esta QA. SQL/RPC/grants aprobados no se reejecutaron o modificaron. Sin permisos, escrituras, cuentas, push/merge/deploy/publicación ni.env. Flags internos/read/RPC solo de proceso; writers deshabilitados.
+
+**Cierre y límites:** servidor detenido a `2026-10-12T02:25:18.792684+00:00`, puerto3047 cerrado, viewport restaurado. No segunda identidad real: aislamiento cruzado sigue sin aceptación. Evidencia aquí significa procedencia del registro ya autorizado, no acceso a archivos originales, reconciliación contable, censo completo o aceptación operativa global. Menú solo promueve proyectos cubiertos por la RPC; demás capacidades mantienen sus gates. Auditoría runtime cero en su corte; braces dev abierto sin aceptación.
+
+**Evidencia / recuperación:** `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\menu-search-qa\authenticated-qa` contiene recibo estructurado de checks y backups exactos de Plan/checkpoint/recibo previos; runtime/readiness/cierre en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\menu-search-qa\runtime-login-reopened`. Plan/checkpoint anteriores preservados íntegros como prefijo. Código reversible mediante revert selectivo de `bfb874b` tras revisar cambios posteriores; no reset/clean/borrado ni rollbackSQL por una reversión de frontend.
+
+**NEXT único:** QA de aislamiento con segunda identidad real existente/autorizada cuando esté disponible, sin crear cuentas/permisos ni ampliar datos. Criterio: demostrar denegación del otro ámbito y lectura propia permitida, o registrar específicamente el recurso faltante. Este recorrido solicitado queda terminado; esa aceptación cruzada permanece separada y no se presume.
+
+### Superprompt breve vigente
+
+Continúa desde «QA real menú/Buscar → evidencia permitida → retorno completada — 11/10/2026, 20:25 Costa Rica» del checkpoint canónico `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`. Código `bfb874b`; conserva Plan único, Mi TORO,641 baseline,7 pruebas nuevas y auditoría. Recorrido real de proyectos/evidencia/retorno y móvil/teclado ya verificados: no repetirlos sin cambio. SQL YA APLICADO, no reejecutar. Única siguiente unidad: comprobar aislamiento con una segunda identidad real existente y autorizada, si está disponible; no crear cuentas ni grants. Si falta, registrar ese recurso pendiente. Solo QA local de lectura con RPC aprobadas; sin escrituras/publicación. Reutilizar build por identidad de fuentes, cerrar servidor/restaurar viewport y actualizar este mismo checkpoint con evidencia y un superprompt breve.
+
+
+## Portal compacto e integrado: presentación y QA real — 11/10/2026, 20:52 Costa Rica
+
+Estado **COMPACT_INTEGRATED_PORTAL_PRESENTATION_REAL_SESSION_QA_VERIFIED_LOCAL_NOT_PUBLISHED**. Código `2d2bef0f41e0e2f36ad2a3d1b709058caee2ec06`, rama `codex/portal-local-reconcile-20261011`; implementación base `d90e4e3`, corrección final de orden/anchor `2d2bef0`. Autoridad: nueva solicitud directa de Mauricio de compactar, usar columnas y continuar la integración. Unidad operativa TORO Human Experience, misma superficie Portal/Mi TORO, sección23 del Plan. El nuevo pedido prioriza esta unidad visual sobre la siguiente prueba de segunda identidad; esa aceptación continúa pendiente, sin fabricar cuentas/permisos.
+
+**HECHO local:** nueve archivos del Portal. Mi TORO1240px con columnas principal/accesos, Buscar y consultas primero en DOM, atajos a Hoy/Finance y equipo, seis enlaces revisados y DreamTeam identificado como acceso TORO People con sesión propia. Consulta de proyectos en dos columnas de escritorio y evidencia/fuentes con jerarquía compacta. Hoy conserva exactamente su proyección:6 registros de resumen +44 expandibles de50 disponibles,145 seleccionados del lote en sesión real. Ya no afirma50 mostrados cuando solo seis quedan visibles inicialmente.47/72/148 leídos de comunicaciones/obligaciones/facturas, topes100/150/200; fuente/cobertura parcial y total desconocido siempre visibles. Tabla semántica de fuentes, moneda/importe originales y reglas de enlaces seguros conservadas. Guía del turno y directorio12módulos ajustados a la misma presentación. No nuevo producto, base o fuente de verdad.
+
+**Revisión y correcciones:** revisión acotada de solo lectura detectó orden móvil visual distinto del DOM/Tab y anchor Buscar ofrecido a perfiles sin destino disponible. Ambos corregidos en2d2bef0. No CSS reorder móvil; atajo y sección comparten condición. Sin cambios de datos/RPC/SQL/grants/dependencias o estados de capacidades. Finance aquí sigue lectura acotada de prioridades/obligaciones/facturas; DreamTeam/link externo no se convierte en SSO, paridad funcional o conexión completa. Direccionamiento del directorio Dinero/Personas permanece pendiente como siguiente lote.
+
+**VERIFICADO:**139/139 pruebas dirigidas en10archivos, incluidas7 nuevas (6panel +1DreamTeam); tras corrección,11/11 de Mi TORO repetidas y lint del delta aprobados. No sumar la repetición como tests nuevos.641baseline y7nuevas del lote anterior conservadas. Dos builds necesarios por corrección material: final Next16.3.8/TypeScriptPASS, preflight16/16, BUILD_ID `xao1vcdMGmVVaKyxV7wzZ`. Auditoría previa no relanzada: runtime cero en su corte; braces dev abierto sin aceptación. No publicación/push/merge/PR.
+
+**QA real Chrome de Mauricio:** perfil navegador conectado3, sesión existente y Dreamcatcher confirmados por render permitido. Escritorio1280×900: columnas836/340px, documento1265px sin desborde, altura1239px y seis accesos; seis prioridades +44 restantes accesibles. Enter expande/contrae resto, mantiene foco y abre tabla de fuentes; guía interna tiene seis tarjetas/tres columnas y enlaceDreamTeam existente. Móvil390×844: una columna358px, sin overflow, orden visual=DOM; Buscar→proyectos→evidencia→retorno por Enter conserva Dreamcatcher; foco solid2px en summary. El foco nativo tras retorno sigue sin identidad de encabezado, no se certifica restauración específica. Directorio/portal:12módulos, una columna móvil sin overflow. Sin framework overlay ni console error/warn. Override CDP eliminado, viewport observado1280×631. Capturas `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\outputs\PORTAL_TORO_COMPACTO_ESCRITORIO.png` y `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\outputs\PORTAL_TORO_COMPACTO_MOVIL.png` sin filas financieras/importes/identidad privada/credenciales.
+
+**Incidencia de acceso resuelta sin bypass:** IAB estaba en error interno data: tras servidor detenido; su política bloqueó control/navegación. No rawCDP, proxy ni cambio de seguridad para sortearlo. Se pidió apertura humana; Mauricio respondió «Chrome abierto», seleccionando otra superficie explícitamente. Mientras rebuild la pestañaChrome estaba en ERR_CONNECTION_REFUSED; una vez HTTP200 se recargó normalmente y funcionó con su sesión. Se conservaron intentos y evidencia. Anónimo previo: login200, context/Owner Attention401 sin proyección; gates/adaptador intactos en la corrección final.
+
+**Runtime actual para revisión humana:** mismo Portal127.0.0.1:3047, activo temporalmente por un máximo3600s desde el readiness final, cierre automático aproximado `21:44 Costa Rica` o marcador `work/compact-portal/runtime-final/stop`. El cierre automático es control de vida de este proceso QA, no una automatización recurrente. Flags internos/read/RPC aprobados solo del proceso; writersfalse, sin.env/flags remotos. Esto sustituye el estado de servidor detenido del corte anterior mientras dure esta revisión local. No Portal publicado. No se asume que el proceso o sesión seguirán activos en la próxima tarea: comprobar receipt/puerto una vez. El resto de pendientes: aislamiento con segunda identidad, documentos originales sin resolver y aceptación Finance/People integral.
+
+**Evidencia y recuperación:** `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\compact-portal`: backups, runtime inicial/final, builds, anonymous.json y closure/receipt.json. Plan/checkpoint como prefijo exacto conservado. Revert selectivo de d90e4e3/2d2bef0 tras revisar cambios posteriores; preserve aportes/dependencias/SQL aplicado, sin reset/clean/borrados. Antes de revertir código detener proceso local por su marcador. No rollbackSQL por un cambio visual.
+
+**NEXT único y criterio:** consolidar las entradas Dinero y Personas de `/portal` con consulta/guía actuales y límites verificables, sin ampliar capacidades/grants. Terminado cuando cada entrada ofrece un destino permitido o estado pendiente honesto, con móvil/teclado y recuperación, registrándolo aquí. No repetir el lote visual ya verificado. Segunda identidad es límite pendiente separado.
+
+### Superprompt breve vigente
+
+Continúa desde «Portal compacto e integrado: presentación y QA real — 11/10/2026, 20:52 Costa Rica» en el checkpoint canónico `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`, código `2d2bef0`. Conserva Plan único, Mi TORO,641 baseline, pruebas nuevas y auditoría. SQL YA APLICADO: no reejecutar. Presentación compacta/columnas/Hoy/links/guía y QA real ya cerradas; no repetir sin cambios. Única unidad: unificar las entradas Dinero y Personas de `/portal` con las consultas y guía existentes, manteniendo disponibilidad verificable, permisos y sesión propia de DreamTeam. Corrige/prueba solo ese delta con móvil/teclado. No crear cuentas/grants, escribir o publicar. Reutiliza fuentes/build vigentes; confirma estado del servidor temporal. Segunda identidad sigue pendiente por separado. Actualiza este mismo checkpoint y deja otro superprompt breve; continúa en una tarea nueva.
+
+
+## Portal único: Mi espacio, tarjetas completas y 50 ajustes — 11/10/2026, 21:34 Costa Rica
+
+**Objetivo / HECHO:** una sola superficie TORO Portal (Human Experience, sección 23). Mi TORO se presenta como Mi espacio; conserva `/my-toro` y sus consultas. Código `ea4a3bfe1c48d59c259038109ce056e30bf6f9d1`; commits 742429a/5f890fe/d57887b/ea4a3bf.50 ajustes concretos en el recibo:tarjetas disponibles como enlaces completos, 6 accesos del hotel en portada,logos reales/columnas/accesibilidad.12 módulos:6 destinos/6 pendientes. Dinero abre lectura permitida o Hoy parcial; Personas abre guía#equipo y DreamTeam con sesión propia. Cierra el NEXT anterior de navegación Dinero/Personas, sin certificar paridad operativa.
+
+**Verificado:** 69 pruebas dirigidas/9 nuevas; 17 rechecks no sumados. Lint/build/TypeScript/preflight 16 PASS, BUILD_ID `X7FdxFiIOn4m4muuLfVNH`. Chrome real1280×900/900×900/390×844/320×768 sin desborde/overlay/errores; Enter/Tab/retorno/anclas.6 logos cargados;5 assets activos únicos, 20.387 bytes y hashes comprobados. Anónimo sin tarjetas/links privados; APIs context/OwnerAttention 401 sin proyección. Viewport restaurado.641 base y auditoría previa conservadas; no reauditoría, SQL, grants, cuentas, escrituras operativas, env/remotos, publicación o nueva fuente de verdad.
+
+**Decisiones/límites:** pending no es botón; Google es marca genérica. Master TORO vigente ausente en rutas/metadatos revisados; no usar legacy. Segunda identidad real y paridad Finance/People siguen pendientes. Retirada de hash al pulsar Portal dentro de la misma página no certificada. Corrección de fixture de rol y reapertura tras cierre de puerto documentadas en evidencia; no cambio de autoridad.
+
+**Fuentes/evidencia/recuperación:** Plan único `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; recibo `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\outputs\RECIBO_CONTINUACION_PORTAL_TORO.md`; QA/backups `C:\Users\PERSONAL\Documents\Codex\2026-10-11\recibo-continuacion-portal-toro-md-actualizado\work\portal-absorbed\closure`; marcas `public/brand/tools/provenance.json`. Portal 127.0.0.1:3047 temporal hasta aproximadamente 22:27 Costa Rica; runtime `work/portal-absorbed/runtime-ready/receipt.json`, cierre por marcador `stop`. Antes de seguir verificar una vez receipt/puerto. Revert selectivo de esta unidad tras revisar cambios posteriores/parar proceso; sin reset, rollbackSQL o pérdida de aportes ajenos. Prefijo anterior de Plan/checkpoint conservado.
+
+**Bloqueador / NEXT único:** Recuperar el master vigente del logo TORO por su ubicación/ID exacto y verificar el SHA aprobado antes de incorporarlo al Portal. Archivo esperado `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`, SHA 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98. Criterio: activo exacto intacto una vez en cabecera, QA móvil/teclado del delta, o recurso faltante registrado.
+
+### Superprompt breve vigente
+
+Continúa en una tarea nueva desde «Portal único: Mi espacio, tarjetas completas y 50 ajustes — 11/10/2026, 21:34 Costa Rica» del checkpoint `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`, código `ea4a3bf`. Portal/Mi espacio, Dinero/Personas, 50 ajustes y QA están cerrados; no repetir fuentes o pruebas ajenas. Única unidad: localizar el master TORO vigente por ID/ruta exacta, comprobar SHA 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98 e incorporarlo intacto; si no hay evidencia, registrar el recurso faltante. Conserva Plan, 641 base, pruebas nuevas, auditoría y RPC. SQL YA APLICADO: no reejecutar. Sin redibujar, grants, cuentas, escrituras operativas ni publicación. Actualiza este mismo checkpoint y deja otro superprompt breve.
+
+
+## Reglas visuales del Portal y maestro corregido — 11/10/2026, 22:17 Costa Rica
+
+**Objetivo / HECHO:** elevar presentación en la superficie existente, sección 23 del Plan (Human Experience). Reglas permanentes `docs/product/TORO_PORTAL_DESIGN_RULES.md`, referenciadas en AGENTS/START_HERE. Cuadrícula a todo el ancho, módulos 4/3/2/1 columnas, herramientas 3/2/1, acento por área, base azul/cian/dorado, cabecera compacta, texto auxiliar mínimo12px, logos reales72×64 sin alterar bytes y tarjetas completas con foco. Ordinales00–11, seis destinos/seis pendientes, seis herramientas, gates, consultas Dinero/Personas y fuentes intactos. CSS compartido aplica también a Mi espacio. Revisión detectó compresión del lateral a900px; corregida con columnas según ancho real del panel. Código d0d3391 + `d7dc84ce923b4137c1543419f6cfaa96aa7191b0`; misma rama local.
+
+**Verificado:**64/64 pruebas dirigidas en6archivos, sin nuevas pruebas ni suma al baseline641. Lint delta, build/TypeScript y preflight16 PASS; BUILD_ID `BvIdFb42h4Fp9AtlI3X5Z`. Chrome real1280×900/1000×900/900×900/390×844/320×768:12módulos+6herramientas, logos6cargados, sin overflow de documento/tarjetas ni console error/warn. Enter ancla herramientas; Tab desde Dinero salta pendientes hacia Operaciones con foco dorado; Enter Dinero abre Mi espacio y retorno Portal conserva contexto. Mi espacio a900px: lateral267px/una columna/sin overflow y atención existente visible tras esperar render. Viewport restaurado1280×575. Pares de contraste de texto/fondos representativos incluidas acciones/hover/active >=4.5:1; no certificación de todos los estados de otras superficies. Altura portada1280:1734→1622px (6.5%); tarjetas289→246px y módulos4filas→3, sin columna lateral vacía. Se conserva aire para lectura.
+
+**Corrección de autoridad / BLOQUEADOR:** el NEXT previo que pedía8828 queda supersedido: `TORO_BRAND_CONTRACT.md` CURRENT23/09 declara8828 LEGACY y maestro TORO `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747` en `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`. AGENTS/START/context reconciliados; alias isotype/manifiesto conservados como históricos. No bytes locales recuperados. En ambos Dropbox: búsqueda de nombre vigente0, metadatos exactosNOT_FOUND y búsqueda del alias histórico isotype con mismo hash0. No se ha verificado hash de archivo ni incorporado logo TORO; cabecera tipográfica conservada. Único recurso faltante: ubicación/ID accesible del archivo exacto. No nuevas búsquedas equivalentes sin evidencia de ubicación. No redibujo ni sustituto.
+
+**Conservado / límites:** Plan único,641base/pruebas previas/auditoría y accesos. Auditoría anterior no repetida; braces dev sigue abierto en su corte. SQL/RPC/grants no ejecutados/modificados. Sin cuentas, datos operativos, permisos, dependencias, env/remotos, push/PR/merge/publicación o costos. Finance/People integral y segunda identidad siguen pendientes; cambios visuales no prueban esas capacidades. No nueva aceptación de retirada de hash al pulsar Portal en la misma página.
+
+**Fuentes / recuperación:** reglas/contrato/Plan en el repo; checkpoint canónico y recibo existente actualizados. `work/portal-design/browser-qa.json`, runtime y closure:preflight/build/contraste/logo/recibos/backups. Capturas `outputs/PORTAL_TORO_DISENO_ESCRITORIO.png` y `PORTAL_TORO_DISENO_MOVIL.png`, sin datos privados. Plan/checkpoint previos conservados como prefijo exacto. Revert selectivo de d0d3391/d7dc84c tras revisar trabajo posterior y detener proceso propio por `work/portal-design/runtime/stop`; sin reset/clean/rollbackSQL. Servidor anterior detenido22:10; candidato127.0.0.1:3047 temporal hasta aprox.23:11 Costa Rica, flags read/RPC solo del proceso y writersfalse. Esto sustituye el corte temporal22:27 anterior.
+
+**NEXT único / terminado:** recuperar maestro mediante recurso exacto nuevo y verificar bytes antes de incorporarlo intacto una vez en cabecera; QA móvil/teclado del delta. Si el recurso continúa ausente, registrar específicamente ese bloqueo, sin afirmar incorporación.
+
+### Superprompt breve vigente
+
+Continúa en una tarea nueva desde la última sección «Reglas visuales del Portal y maestro corregido» de `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`. Código d7dc84c; aplica `docs/product/TORO_PORTAL_DESIGN_RULES.md`. Única unidad: recuperar el archivo `TORO_LOGO_MASTER_v1.png` por un ID/ruta accesible verificable, comprobar SHA 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747 e incorporarlo intacto. El maestro 8828 es legacy; las búsquedas exactas actuales y del alias ya dieron cero, no repetirlas sin nueva ubicación. Si falta el recurso, registrar el bloqueo. Conserva Plan, Mi espacio, 641 base, pruebas, auditoría y RPC. SQL YA APLICADO. Sin redibujar, permisos, escrituras operativas ni publicar. Verifica solo el delta móvil/teclado y actualiza este mismo checkpoint.
+
+## Portada diaria día/noche: diseño preparado, pendiente de aprobación — 11/10/2026
+Objetivo: rediseño local de cabecera/portada, Human Experience sección 23. Estado verificado: rama codex/portal-local-reconcile-20261011, HEAD f0d8c3d, código d7dc84c; árbol limpio antes de este registro. Puerto 127.0.0.1:3047 observado escuchando, PID34204; receipt anterior en recibo-continuacion-portal-toro-md-actualizado/work/portal-design/runtime/receipt.json. No se detuvo ni sustituyó build.
+PROPUESTO: cabecera compacta; Tu día primero con atención, reservas, huéspedes, equipo, documentos y consulta financiera según gates existentes; cotización/agenda/guía como accesos secundarios; después doce módulos existentes, mismos nombres/ordinales/destinos. Día blanco/gris cálido y noche carbón, acentos discretos; preferencia visual local. Densidad mediante menos repetición/espacio, texto >=12px y objetivos >=44px. Cobertura parcial visible y detalle accesible. Recomendación basada en flujo/código existente, sin métricas de uso disponibles.
+Referencia visual: C:\Users\PERSONAL\Documents\Codex\2026-10-11\mauricio-pide-continuar-esta-ejecuci-n\outputs\PORTAL_TORO_CONCEPTO_DIA_NOCHE.png. Es concepto generado, no captura de implementación. Sus nombres/ordinales abreviados de módulos no son autoridad: conservar exactamente portalDomains de src/features/portal/model.ts. No incorporar esta imagen como interfaz ni crear logos. Maestro exacto pendiente sin nueva búsqueda.
+Bloqueador: brainstorming/SKILL.md exige aprobación humana del diseño breve antes de modificar código. Sin implementación, tests nuevos ni QA certificada en esta unidad; no SQL/escrituras/permisos/publicación. Baseline/pruebas previas conservados.
+Única siguiente acción: aprobar el diseño breve y ejecutar su delta local. Terminado: reglas actualizadas, implementación y pruebas dirigidas, QA escritorio/móvil/teclado/contraste/overflow en ambos temas y checkpoint reconciliado. Recuperación: parar runtime propio por marcador stop y esperar cierre antes de rebuild; commits locales selectivos, conservar aportes ajenos.
+Superprompt: Continúa desde esta sección, sin releer fuentes no relacionadas. Si Mauricio aprueba, implementa únicamente cabecera/portada día/noche sobre los componentes existentes, preserva nombres/gates/RPC y reglas. SQL YA APLICADO. Verifica solo delta y componentes compartidos; actualiza este mismo Plan/checkpoint/recibo. Sin dependencias, push/PR/merge/publicación.
+
+## Render del Portal completo mobile first — 11/10/2026, 22:46 Costa Rica
+PREPARADO, NO IMPLEMENTADO. Nuevo pedido supersede el concepto anterior de Tu día: portada Portal TORO completa, móvil primero, densidad por componentes compactos sin reducir legibilidad/objetivos táctiles, color por áreas y logos reales, día/noche, tips/humor/motivación discretos y descartables, transiciones suaves con reduced-motion. Mantener Plan 00–11, nombres y destinos exactos, estados textuales y cobertura parcial visible. Mapa visual de capacidades propuesto como esquema conceptual; gráficos cuantitativos requieren datos/fuente/fecha verificables.
+Render: C:\Users\PERSONAL\Documents\Codex\2026-10-11\mauricio-pide-continuar-esta-ejecuci-n\outputs\PORTAL_TORO_RENDER_MOBILE_FIRST.png. Imagen generada: no es QA, viewport real ni UI funcionando, aunque haya etiquetas de presentación que lo sugieran. Sus reproducciones de marcas no certifican bytes: para implementación usar exclusivamente assets intactos existentes. Seis hashes de public/brand/tools/provenance.json comprobados PASS; maestro TORO ausente sin nueva búsqueda ni sustituto. Conservar tipografía TORO. Disponible en render significa destino/guía permitido, no capacidad integral; usar estados exactos de model.ts en código.
+Hora/clima: corte consultado 22:46 Costa Rica, Santa Teresa Puntarenas, 23C/nublado; referencia temporal del render, no feed integrado. Chrome: CUA inventario verificó extensión existente en dos perfiles; lectura/captura de páginas seleccionadas es TARGET bajo TORO Tools/Systems, no nueva integración activa ni ingestión automática. No consultar historial/marcadores restringidos ni mezclar fuentes personales/hotel. Solo guardar evidencia con URL/fecha/alcance y autorización adecuada.
+CURRENT: código d7dc84c, HEAD documental f0d8c3d, sin cambios de interfaz en este lote. Plan/checkpoint/recibo y reglas reciben únicamente este registro. SQL/RPC/gates/baseline intactos. Sin nuevas dependencias, instalaciones, acceso, publicación ni costos contratados.
+Única siguiente acción: aprobar esta dirección visual para implementar el delta local completo y verificar escritorio/móvil/teclado/contraste/desborde en ambos temas. Criterio: presentación real, estado honesto de fuentes, recursos originales y QA del delta, sin declarar implementadas animaciones/feed/conector antes de prueba.
+Superprompt: Continúa desde esta sección del checkpoint canónico. No repitas lecturas ajenas ni búsquedas de logo sin nuevo ID. Tras aprobar el render, cambia solo presentación sobre componentes existentes; nombres 00–11, Mi espacio, permisos, enlaces y cobertura intactos. Hora/clima/Chrome son propuestas hasta integración verificada. Detén runtime propio por stop y espera cierre antes de rebuild. SQL YA APLICADO; sin producción. Actualiza los mismos registros.
+
+## TORO: navegación diaria, herramientas y proactividad — dirección aprobada 11/10/2026
+**Clasificación:** TARGET bajo sección23, TORO Human Experience/Tools; referencias Dinero, Clientes, Operaciones, Personas, Crecimiento, Sistemas e Identity/User Vault. Mauricio aprobó la dirección visual y pidió este refinamiento de estructura y render antes de decidir implementación. No activa capacidades, otros negocios, grants, writes o automatizaciones. Subsistemas existentes, sin plan paralelo. Marca visible solo TORO; maestro ausente continúa tipográfico.
+
+### Pantallas y prioridades
+| Pantalla | Información inicial | Detalle / siguiente acción |
+|---|---|---|
+| Inicio | Contexto/proyecto autorizado, urgencias, favoritos del usuario y resumen corto | Abrir alerta con responsable, plazo, fuente y acción; ver catálogo completo |
+| Operación | Pestañas Ocupación, Entradas, Salidas, Reservas nuevas, Limpieza, Mantenimiento | Filtros fecha/estado, filas habitación/hora/preparación/responsable y acceso al sistema original |
+| Dinero | Pestañas Bancos, Facturación, Cobros, Gastos, Caja | Período/fecha, cuenta/entidad, CRC/USD separados, procedencia/cobertura y pendientes |
+| Herramientas | Buscador, favoritas y todas las permitidas por secciones | Recepción/POS, Comunicación/TERE/WhatsApp, Equipo, Finanzas, Documentos, Crecimiento, Sistemas; utilidades calculadora/traductor |
+| Cerebro | Mapa/lista equivalentes de los objetos autorizados | Conservar módulos00–11, vínculos al objeto y evidencia; no duplicar trabajo |
+| Mi espacio | Trabajo personal del usuario y preferencias | Personal privado separado de organización, herramientas propias y transición explícita de contexto |
+
+Mobile-first: Inicio/Operación/Dinero/Herramientas/Más; Más conserva Cerebro, Mi espacio y los módulos, sin renombrar IDs/rutas. Escritorio amplía navegación sin otra IA. Volver conserva contexto, filtro y selección permitida; al cambiar contexto se vacían datos/favoritos/caché del ámbito anterior antes de cargar el siguiente. Selector distingue negocio/propiedad/proyecto de contexto Personal; solo membresías y proyectos autorizados. No onboarding externo por añadir un selector. Vista recepción privilegia turno; dueño excepciones/caja/decisiones; mantenimiento asignaciones; finanzas controles permitidos. El resumen del hotel existe exclusivamente en su ámbito.
+
+### Catálogo y enlaces
+Inicio muestra favoritos individuales, nunca el único inventario. Catálogo único existente, búsqueda global por tarea/programa y categorías, favoritos por usuario/contexto, destinos secundarios desplegables y estado de sesión. Todos los destinos autorizados deben ser localizables; no todos son públicos ni disponibles para cualquier rol. Conserva el directorio/RPC existentes: actualmente proyecta seis enlaces revisados. Ampliar esa proyección requiere revisar y validar cada destino y control en el carril vigente, sin exponer el registro mixto completo. No ampliar grants para hacer visible una tarjeta. Destino desconocido = recurso pendiente con explicación, nunca href ficticio.
+- POS confirmado en sesión Kross: https://dreamcatcherhotel.krossbooking.com/admin/pos. Precio/cesta/cargo a habitación/recibo efectivo-tarjeta observados; ninguna venta registrada. Favorito de recepción propuesto; no se modificó el directorio.
+- Kross, motor, WeSpeak, DreamTeam, Calendar y Dropbox: conservar los seis destinos actuales.
+- WhatsApp: https://web.whatsapp.com/ verificado como entrada pública, sin lectura de mensajes ni envío; sesión/canal/perfil propio. Alegra: https://app.alegra.com/ entrada pública verificada; no demuestra sesión de una entidad concreta.
+- TERE: especialista existente, no nuevo bot. Acceso al canal/ficha autorizada pendiente de identificar; no inventar teléfono, wa.me ni ruta. WeSpeak es acceso existente a comunicaciones, no prueba de una conversación TERE activa.
+- Chrome: extensión existente observada en perfiles3/4; captura seleccionada y evidencia URL/fecha/ámbito son TARGET, no feed/ingestión automática. Conservar restricción de marcadores/historial y privacidad personal/hotel.
+
+### Fuentes y métricas sin falsas equivalencias
+Kross en sesión11/10: dashboard expone reservas, habitaciones ocupadas%, alojados, cobros previstos, llegadas/salidas, reservas recibidas/caducidad, cobros y gráficos procedencia30d/ocupación futura. Evidencia de UI actual, no conector E2E ni feed permanente. Para tarjetas TORO exigir fuente/corte/zona horaria, definición y cobertura; cero solo si está comprobado, desconocido nunca cero. Ocupación: habitaciones ocupadas/denominador disponible verificado; reservas nuevas por creación, no fecha de estancia; entrada/salida prevista separada de completada; canceladas/no-shows explícitos. Limpieza/Mantenimiento requieren fuente y responsable/estado actual; existencia de menú no verifica trabajo físico. Mirror histórico no se vuelve live por diseño.
+Alegra: lectura getbanks nativa exitosa de primera conexión autorizada, página5/18, y página10. Consulta query=CAJA devolvió también otras cuentas: filtro no respetado, no asumir subconjunto caja. Tipos bank/cash/tarjeta y monedas se inspeccionaron sin publicar balances. Hay cuenta nominal de caja clasificada bank: nombre/tipo no bastan para identificar caja chica real. Entidad, cuenta exacta y moneda por defecto deben reconciliarse antes de mostrar finanzas del hotel. No consolidar otras conexiones o cuentas personales. Catálogo documenta reportes de ventas, flujo caja, balance y movimientos; callable no acredita adapter TORO o resultado actual. Bancos en Alegra = saldo contable; banco/procesador y conciliación prueban movimiento/disponible. Facturación, ingreso devengado, cobro, gasto, pago y valor reserva son campos distintos. Mes corriente siempre parcial con corte; CRC/USD originales separados sin conversión implícita. Gráficos solo con datos verificables; render usa guiones/sin conectar.
+
+### Caja, calculadora y traductor
+Caja física por responsable/turno/fecha/ubicación. Dos pestañas CRC y USD con denominaciones configurables, cantidades enteras no negativas, subtotal y total decimal; total moneda=sum(denominación*cantidad). Esperado por moneda=fondo inicial+cobros efectivos-retiros/pagos efectivos documentados. Diferencia=contado-esperado. Si falta esperado, diferencia desconocida. No mezclar POS total, ventas o tarjetas con efectivo; no convertir USD/CRC ni incluir saldo bancario. Conteo preparado/no registrado hasta journal permitido verificado; diferencia permanece abierta, no asiento compensatorio ni cierre automático. Recibo y relevo según flujo finance existente, sin otro ledger.
+Calculadora simple y decimal con borrar/copia; resultados aislados del libro contable. Traductor ES/EN/otros, tono huésped, original/resultados visibles y edición/copia; servicio/proveedor/privacidad por validar. Nunca enviar traducción automáticamente ni transferir datos sensibles sin destino/scope autorizado.
+
+### Alertas, agentes y servicio proactivo
+Urgencias arriba: severidad/plazo/impacto/bloqueo/responsable, dedupe por objeto y fuente, sin inventar counts. Sin señal fresca mostrar desconocido/desactualizado. Franja informativa fija compacta bajo menú: TORO, TERE, RICO, FIONA, SKY, SOBRESITO; color+texto Trabajando/Esperando/Bloqueado/Sin señal. Trabajando solo por ejecución/lease/evento vigente con TTL y evidencia, no gateway saludable ni agente configurado; sin señal al expirar. Movimiento discreto solo durante señal real, reduced-motion y detalle accesible con control44px. No dashboard/agent/runtime adicional.
+TORO coordina y mejora; TERE pre-llegada/bienvenida/checkin/estancia/checkout/post-estancia/reviews; RICO readiness/limpieza/mantenimiento; FIONA caja/conciliación; SKY promos/redes/reputación; SOBRESITO conexiones y calidad. Proactividad por evento y trabajo canónico: detectar/preparar, verificar fuente/identidad/consentimiento/idioma/ventana y permisos, revisar o ejecutar dentro de autoridad existente, registrar recibo/resultado. Retries acotados, idempotencia/no reenvío, una tarea por objeto entre Portal/WhatsApp/email; canal habilitado no entrega. Esta dirección no autoriza mensajes, respuestas públicas, precios/promos ni nuevas automatizaciones. Experto por programa exige fichas/capacidades y escenarios verificados, frescura y abstención ante brechas; no título global sin evidencia.
+
+### Criterio de diseño y entrega
+Referencia visual nueva conserva dirección aprobada; render es conceptual y estados/marks reproducidos no prueba de conexión ni bytes. Assets originales de seis marcas actuales hashesPASS; TORO maestro sigue ausente. Nuevos logos (WhatsApp/Alegra/Chrome) requieren origen y bytes exactos antes de implementación. No regresión de los12módulos/gates/baseline641/SQL aplicado. Datos operativos y privados no se incorporan al render. Texto>=12px, botones44px, foco/contraste4.5:1, tabs accesibles/teclado y sin desborde320px, día/noche, reduced-motion; pruebas futuras del delta y componentes compartidos.
+**Única siguiente unidad:** implementar localmente la navegación/cabecera/Inicio y acceso a Herramientas de esta dirección aprobada, con estados honestos de capacidades pendientes, conservando gates/RPC; probar su delta. Caja/reportes/feeds/envíos se mantienen TARGET hasta implementación y verificación específicas, sin inventar funcionamiento. Antes de rebuild detener proceso propio por marcador stop y esperar cierre. Sin SQL, permisos, producción, dependencias, push/PR/merge.
+
+## TORO V1: integración, sesión común y 100 refinamientos — 11/10/2026
+**Autoridad y estado:** solicitud directa de Mauricio; Human Experience sección23 y contratos Identity/People/Tools/Comms/Revenue/Finance. Diseño previo aprobado; este lote refina antes de construir. Todos los100 criterios siguientes son TARGET, no100funciones activadas. Las pantallas son subviews de los módulos00–11 existentes. No otra base, identidad, scheduler, app o agente. Producto universal con perfiles por negocio y Personal; Dreamcatcher sigue proving ground, nuevo proyecto no equivale a nuevo negocio habilitado.
+**Cambios de dirección:** marca tipográfica TORO con descriptor pequeño OPERATION SYSTEM solicitado; contexto/proyecto arriba; DreamTeam dentro de Personas con sesión común; barra multimodal; habitaciones/precio del día y cotizador; Precios/SP04; Finanzas completa con CRC/USD simultáneos desplegables; Reportes; Capacitación/Mejora; Google/Chrome y revisión semanal subordinada. No habilitar autonomía por estética.
+
+### Evidencia puntual y límites vigentes
+- Login Portal usa Supabase; copy actual admite segundo login DreamTeam. Personas ofrece guía/enlace con sesión propia. TORO_PEOPLE_DREAMTEAM_INTEGRATION.md y TORO_PEOPLE_CODE_MIGRATION_V1.md declaran identidad/contexto comunes como destino; SSO recíproco NO verificado. Importar lógica/vistas People bajo shell/IdentityTORO, comenzando lectura propia horario/asistencia/solicitudes. No copiar cookies/tokens entre sitios, iframe con login alterno ni grants implícitos. Probar entrada desde ambos, expiración/revocación/cierre, roles/RLS y segundo usuario antes de retirar legacy. No modificarSQL aplicado.
+- WidgetKross: lista autenticada contiene2–7; candidatosTORO ES6 y EN7; ES6 leído en /admin/widget/view/id/6, motor dreamcatcherhotel, versión9. Instalación publica CSS/JS https://data.krossbooking.com/widget/v6/dreamcatcherhotel/6.css y6.js, div.kross-container y dependenciajQuery3.4.1. No se guardó configuración ni se hizo búsqueda/reserva. Integración candidata debe aislar script/estilos/CSP según instrucciones y probar teclado/responsive/conflictos, destino y ausencia de writers; no añadir dependencia legacy al core sin evaluación. URL administrativa no es widget público ni certifica resultado embebido.
+- SP04 localizado actualmente en C:\Users\PERSONAL\OneDrive\Documentos\ChatGPT\New project\dreamcatcher-revenue\docs\SP04-RESULTADOS.md. Implementación local previa de observación/calendario/evidencia/paridad con límites comerciales; no aceptación live actual. Conservar sus observaciones/hash/fuentes, no reejecutar344tests ni inventar otro rate-shopper. Puente Revenue/Agencies en docs/superpowers/plans/2026-09-14-toro-os-revenue-bridge.md es otro alcance relacionado, no sustituyeSP04. Vincular como Precios en Clientes/Crecimiento/Dinero con identidad común; URL publicada/SSO/adapter actual pendientes de verificación.
+- Chrome: conector existente permite lectura/captura seleccionada, no browser completo dentro de una web. Target Portal=panel nativo con fuente/fecha/resumen/abrir original; evolución posible Side PanelTORO junto a Chrome, primero evaluar extensión existente. GoogleLogin es identidad; Gmail/Drive/Calendar requieren autorización y scopes separados. Iframes/OAuth/controles del proveedor se respetan.
+- Correo reserva=señal. Usar canal/binding/worker existentes, historialincremental/idempotencia y fuenteKross; si falta señal diagnosticar y preparar notificaciones mínimas, sin activar scopes/reenvíos/settings/suscripciones ahora. APIKross en un par de meses es intención FUTURE condicionada a contrato/costos/permisos/prueba, no API ya contratada ni fecha programada.
+- Revisión semanal=TARGET del flujo existente: evidencias/cobertura/costos/incidencias/UX, propuesta priorizada, pruebas/dryrun y rollback. Cambios sensibles conservan aprobación. No Codexheartbeat ni scheduler nuevo en este lote.
+
+### 100 criterios adicionales de diseño y aceptación
+Identidad y navegación — TORO Identity/Human Experience
+- [V1-001] Una identidad TORO por persona, sin cuentas duplicadas por herramienta.
+- [V1-002] Entrada DreamTeam permite llegar al Portal con sesión común verificada.
+- [V1-003] Entrada Portal permite abrir Personas sin segundo login verificado.
+- [V1-004] Cierre, expiración y revocación coherentes en ambas entradas.
+- [V1-005] Selector solo ofrece ámbitos/proyectos con autorización comprobada.
+- [V1-006] Crear proyecto dentro del ámbito permitido, sin crear negocio/grants implícitos.
+- [V1-007] Cambio de ámbito limpia datos, búsqueda y adjuntos previos.
+- [V1-008] Personal privado mantiene herramientas y archivos fuera del hotel.
+- [V1-009] Favoritos individuales por ámbito, catálogo completo siempre localizable.
+- [V1-010] Menú móvil por rol preserva00–11 y rutas actuales.
+Comando multimodal — TORO Tools/Comms/Actions
+- [V1-011] Barra única acepta solicitud o búsqueda y explica la intención detectada.
+- [V1-012] Adjuntar archivo muestra nombre/tipo/tamaño y destino antes de registrar.
+- [V1-013] Adjuntar foto ofrece interpretación con incertidumbres y evidencia original.
+- [V1-014] Audio muestra transcripción editable antes de preparar una acción.
+- [V1-015] Confirmación visual separa interpretación, borrador y ejecución.
+- [V1-016] Pedir reserva recoge fechas/ocupantes y confirma precio vigente en Kross.
+- [V1-017] Crear tarea reutiliza objeto canónico con responsable/plazo/ámbito.
+- [V1-018] Acciones no permitidas muestran límite y alternativa segura.
+- [V1-019] Solicitudes largas muestran progreso/estado real y posibilidad de cancelar.
+- [V1-020] Recibo permite abrir evidencia y resultado del mismo objeto.
+Operación hotel — TORO Operaciones/Clientes/Activos
+- [V1-021] Habitaciones vacías por fecha, identidad y disponibilidad Kross fresca.
+- [V1-022] Tarifa del día con ocupación/régimen/moneda/impuestos/condiciones visibles.
+- [V1-023] Habitaciones limpias, ocupadas, bloqueadas y fuera de servicio separadas.
+- [V1-024] Entradas ordenadas por hora/preparación, previstas distintas de completadas.
+- [V1-025] Salidas distinguen horario previsto, salida real y relevo de aseo.
+- [V1-026] Nuevas reservas filtradas por creación, con cancelaciones/no-show separados.
+- [V1-027] Notas de reserva mantienen autor/fecha/restricción y pendientes de lectura.
+- [V1-028] Aseo muestra asignación, inspección y evidencia antes de declarar habitación lista.
+- [V1-029] Mantenimiento vincula habitación/incidente/prioridad y cierre con evidencia.
+- [V1-030] Relevo de turno agrupa cobros/notas/preparación sin duplicar tareas.
+Cotización y precios — TORO Clientes/Crecimiento
+- [V1-031] Reutilizar widgetsKross ES6/EN7 existentes, sin crear duplicados.
+- [V1-032] Fechas en dos columnas móvil cuando mantenga lectura y44px.
+- [V1-033] Huéspedes incluye adultos/niños/edades por habitación cuando aplique.
+- [V1-034] Resultado distingue precio total/noches/impuestos/política/disponibilidad.
+- [V1-035] Búsqueda cotizador no se presenta como reserva confirmada.
+- [V1-036] IncorporarSP04 y su evidencia al ámbito correcto sin nueva fuente de tarifas.
+- [V1-037] Paridad OTA compara mismo producto/fecha/ocupantes/régimen/cancelación/promoción.
+- [V1-038] Diferencia de moneda/impuestos/extras explica variación antes de alertar.
+- [V1-039] Cada reserva nueva genera revisión idempotente de tarifa/cargos/condiciones.
+- [V1-040] Precio dudoso produce excepción, nunca ajuste de canal automático sin autoridad.
+Finanzas y cierre — TORO Dinero/FIONA
+- [V1-041] Dinero contiene Bancos/Facturación/Cobros/Gastos/Comprobantes/Caja/Conciliación.
+- [V1-042] CRC yUSD simultáneos en resumen, detalle desplegable por moneda.
+- [V1-043] Conteo físico usa denominaciones/cantidades/subtotales y validación decimal.
+- [V1-044] Esperado usa fondo inicial y movimientos efectivos documentados por moneda.
+- [V1-045] Diferencia desconocida si falta esperado; cero solo comprobado.
+- [V1-046] Cada comprobante enlaza movimiento/reserva/proveedor y original custodiado.
+- [V1-047] Cobros previstos, realizados, pendientes y liquidados no se mezclan.
+- [V1-048] Cierre revisa tarjeta/efectivo/transferencia/OTA y recibos sin doble conteo.
+- [V1-049] SaldoAlegra rotulado contable; banco/procesador prueban efectivo disponible.
+- [V1-050] Mes parcial y conciliación pendiente conservan corte/moneda/responsable.
+Personas y aprendizaje — TORO People/Knowledge
+- [V1-051] DreamTeam aparece como Personas dentro del shellTORO.
+- [V1-052] Mi turno muestra horario/autorización/contexto vigente.
+- [V1-053] Asistencia propia conserva marcaciones originales y correcciones auditables.
+- [V1-054] Jefatura ve cobertura de equipo dentro del rol permitido.
+- [V1-055] Solicitudes y aprobaciones usan flujoPeople existente.
+- [V1-056] Nómina/préstamos/liquidaciones quedan restringidos y fuera de recepción.
+- [V1-057] Capacitación por rol enlaza SOP/documento fuente vigente.
+- [V1-058] Práctica guiada usa escenarios, sin generar operación real.
+- [V1-059] Evaluación registra evidencia de aprendizaje, no presume competencia.
+- [V1-060] Lecciones por incidentes alimentan mejora sin exponer datos privados.
+Datos, catálogo y reportes — TORO Data/Tools
+- [V1-061] Buscar datos mediante vistas/consultas autorizadas, no acceso irrestricto a tablas.
+- [V1-062] Cada resultado informa fuente/fecha/cobertura y objeto canónico.
+- [V1-063] Correcciones de datos conservan autor/evidencia y autorización aplicable.
+- [V1-064] Catálogo por tarea/programa/ámbito agrupa destinos principales y secundarios.
+- [V1-065] Linkdesconocido se presenta pendiente, sin botón muerto niURL inventada.
+- [V1-066] Reportes Operación/Finanzas/People/Comercial/Sistemas conservan filtros.
+- [V1-067] Informe diario abre pendientes, responsable, próximo paso y fuente.
+- [V1-068] Informe semanal distingue avance preparado/ejecutado/verificado/beneficio.
+- [V1-069] Exportación respeta datos visibles/moneda/fecha y sensibilidad.
+- [V1-070] Gráficos tienen unidad/definición/corte; sin fuente no muestran números.
+Google y Chrome — TORO Comms/Tools/Systems
+- [V1-071] Gmail autorizado alimenta señales/evidencia, no autoridadPMS.
+- [V1-072] Calendar muestra agenda por cuenta/ámbito y conserva permisos.
+- [V1-073] Drive conserva originales/ownership y referencias, sin copias paralelas innecesarias.
+- [V1-074] Sheets/Docs complementan reportes/documentos bajo autoridad existente.
+- [V1-075] Contacts enlaza identidad corroborada; teléfono solo no identifica empleado.
+- [V1-076] Tasks/Keep se evalúan frente al gestor existente antes de crear listas.
+- [V1-077] Googlelogin separado de autorización de Gmail/Drive/Calendar.
+- [V1-078] Chrome captura página/selección elegida conURL/fecha/ámbito y minimización.
+- [V1-079] Portal presenta panelnativo yAbriroriginal cuando embebido no es soportado.
+- [V1-080] SidePanelChrome futuro evalúa extensión existente y acceso temporalactiveTab.
+Comunicación proactiva — TORO TERE/SKY
+- [V1-081] Buzón/binding existente detecta nueva reserva conhistorialincremental.
+- [V1-082] Señal perdida/vencida recupera sincronización y evidencia, no silencio indefinido.
+- [V1-083] Ausencia de notificaciones diagnostica y prepara activaciónmínima revisable.
+- [V1-084] Mensaje entrante pegado genera respuesta editable conidioma/tono.
+- [V1-085] Audio huésped genera transcripción y borrador; datos sensibles protegidos.
+- [V1-086] Traducción muestra original/resultado; copiar no equivale a enviar.
+- [V1-087] Prellegada/bienvenida/salida mantienen consentimientos/ventana/recibo/no-reenvío.
+- [V1-088] Reviews/redes usan contexto verificado y aprobación de publicación aplicable.
+- [V1-089] Promociones verifican precio/margen/capacidad y autoridad antes de aplicarse.
+- [V1-090] WhatsApp/WeSpeak/Portal conservan el mismo objeto y límites por canal.
+Calidad, densidad y mejora — TORO Human Experience/Systems
+- [V1-091] Sesión común se acepta con segundo usuario real y pruebas negativas de aislamiento.
+- [V1-092] Franjaagentes informativa pequeña; actividad solo por evento vigente yTTL.
+- [V1-093] Doscolumnas móviles dependen del ancho real; sinreordenarDOM ni textos diminutos.
+- [V1-094] Día/noche mantienen contraste/foco y estados textuales.
+- [V1-095] Adjuntos/tabs/modales soportan teclado y objetivos44px.
+- [V1-096] Movimiento160ms o menos respeta reducedmotion; nada esencial depende de animación.
+- [V1-097] Revisiónsemanal existente evalúa incidencias/cobertura/costos/UX con evidencia.
+- [V1-098] Cada mejora prepara hipótesis/delta/prueba/costo/rollback antes de ejecución.
+- [V1-099] Impacto, fallos y beneficio medidos guían mejoras; no actividad decorativa.
+- [V1-100] Cierre conserva641baseline/SQL/fuentes y registra una siguiente unidad verificable.
+
+### Criterio y continuidad
+No crear100tareas/proyectos ni ejecutar100cambios técnicos. Estos100criterios orientan el primerPortal y se agrupan en capacidades existentes; diferencias se resuelven por autoridad/permisos. Primera implementación visual se mantiene acotada; fuentes/SSO/feeds/escrituras tienen aceptación propia. QA de render no certifica UI. LogoTORO exacto sigue faltante; descriptor solicitado no autoriza marca sustitutiva. APIKross y revisiónsemanal siguen FUTURE/TARGET sin suscripción/costos/settings/schedules.
+**Siguiente unidad única:** cerrar el contrato técnico de sesión común Portal/Personas y su primer alcance de lectura antes de implementar integración, reutilizando Identity/People y sin migrarSQL o retirarDreamTeam. Terminado cuando se identifica la autoridad/session flow, paridad y criteriosRLS/expiración/segunda identidad y rollback en el documentoPeople vigente. La implementación no empieza con cuentas/grants implícitos.
+
+### Fuentes oficiales de integración y cierre de diseño — 12/10/2026
+- Chrome Side Panel: https://developer.chrome.com/docs/extensions/reference/api/sidePanel ; activeTab: https://developer.chrome.com/docs/extensions/develop/concepts/activeTab . PanelTORO junto a Chrome es evolución; capacidades de extensión actual no verificadas.
+- Política de embebido del proveedor: https://w3c.github.io/webappsec-csp/#directive-frame-ancestors . No sortearX-Frame-Options/CSP ni copiar cookies. Widgets oficiales requieren prueba propia.
+- Google identidad/autorización: https://developers.google.com/identity/gsi/web/guides/migration#authentication_and_authorization ; OAuthservidor: https://developers.google.com/identity/protocols/oauth2/web-server#authorization-errors . Login no concede scopesWorkspace ni autoriza browserembebido.
+- Gmailpush: https://developers.google.com/workspace/gmail/api/guides/push ; Calendarpush: https://developers.google.com/workspace/calendar/api/guides/push ; Drivepush: https://developers.google.com/workspace/drive/api/guides/push . Señales referencian cambios, no payloadreserva completa; renovaciones ysincronización de recuperación conservan canales/worker existentes. Gmailwatch renovar antes de7días; no activado en diseño.
+Revisión acotada paralela confirmó contratoPeople/sesión separada actual y opcionesChromeGoogle. Sin consultarpersonas, crearagentes durables ni ampliarpermisos.100criterios contados yúnicos; código intacto. SSO/feed/recepciónreal/ejecuciónsemanal no certificados.
+
+## Render final V1: acceso modular, cotizador y mercadeo — 12/10/2026
+**Estado:** diseño final propuesto, sin construir. Autoridad: solicitud de Mauricio; misma dirección y Plan General, sección23. Refina V1-001–100, no reemplaza capacidades, SQL, identidad o gates. TORO sigue único producto; Dreamcatcher referencia, Personal privado, nuevos proyectos dentro del ámbito permitido.
+
+### Ajustes visuales finales
+- TORO tipográfico azul: candidato día#1358B8 y noche#68A9FF; descriptor pequeño OPERATION SYSTEM. El maestro oficial sigue ausente: esta elección de texto no recolorea, redibuja ni sustituye sus bytes. Cuando se recupere, preservar el archivo exacto.
+- Base día clara y noche carbón; bandas/acentos por sección: Atención coral, Cotizar turquesa, Operación ámbar, Dinero verde, Personas violeta, Mercadeo magenta/naranja, Mensajes turquesa y Reportes índigo. Logos externos conservan sus colores sobre soporte neutro.
+- Franja de agentes informativa más compacta, nombres legibles y señal por evento vigente. Sin señal no significa trabajando. Reducir espacio y repetición, no fuente bajo12px ni objetivos44px. El detalle se abre con un único control accesible.
+- Móvil primero y PC equivalente: favoritos en dos columnas cuando el ancho real lo permite; lectura principal en una columna; escritorio usa el ancho y paneles paralelos útiles. Sin zoom, alturas rígidas, desborde, CSS reorder o datos ocultos por truncamiento.
+- Urgencias y Cotizar son disclosures con nombre/estado/foco accesibles. Inicio cerrado/abierto según preferencia permitida; conservar campos al plegar, prioridad relevante al usuario y sin cifras inventadas. Plegar no oculta alertas críticas verificadas: el resumen conserva severidad/responsable/plazo cuando exista fuente.
+
+### Módulos y acceso
+CURRENT: model.ts devuelve00–11 a contexto organizacional activo, con varios destinos en preparación; no implementa todavía todo el catálogo filtrado por permisos efectivos. directory.ts permite seis destinos solo a ADMIN/GERENCIA/JEFE_DEPARTAMENTO/AUDITOR en Dreamcatcher; EMPLEADO no recibe esos enlaces automáticamente. El render de Gerencia no representa todos los perfiles ni amplía ese acceso.
+TARGET: menú=perfil/puesto/membresía/ámbito/permisos/capacidad/conector/frescura. Mostrar y ejecutar son permisos separados. La validación en servidor es obligatoria; ocultar tarjetas no es aislamiento. Pendientes descubribles solo si está autorizado descubrirlos. Personal no hereda datos hoteleros.
+| Perfil de diseño | Inicio y navegación prioritaria |
+|---|---|
+| Recepción | Entradas/salidas, preparación, cotización, reservas/POS, cobros permitidos y respuestas |
+| Aseo / Mantenimiento | Asignaciones, habitación/incidente, evidencia de cierre y mi turno |
+| Finanzas | Caja CRC/USD, comprobantes, cobros, conciliación y reportes permitidos |
+| Gerencia / Dueño | Urgencias/excepciones, operación, dinero y aprobaciones del ámbito |
+| Mercadeo | Campañas/contenido/reputación/redes/leads/promociones/resultados autorizados |
+| Personal | Mi espacio, proyectos y herramientas privadas |
+Cuatro entradas útiles y Más en móvil, adaptadas al perfil; no imponer Dinero a todos. Cerebro y módulos00–11 conservan identidad/rutas. Herramientas contiene el catálogo completo permitido, no solo favoritos. Reportes y Capacitación son vistas transversales existentes, sin nuevos módulos numerados.
+
+### Widget Kross: lectura real y diseño de búsqueda
+Nueva revisión autenticada del candidatoES6 en una pestaña separada: Opciones guardadas muestran Pedir n.habitaciones=activado, máximo5; Pedir n.huéspedes=activado, estándar2/mínimo1/máximo29; Pedir n.niños=activado, máximo10; apertura selector habitaciones/huéspedes tras período=activada. No se marcó ni guardó nada. La pestaña del usuario cambió a Planner durante la revisión inicial; el selector anterior falló por contexto cambiado, se diagnosticó y se pasó a pestaña propia sin interferir.
+Estos son límites configurados del buscador, no capacidad comercial de cada habitación ni validación de tarifas/disponibilidad. Publicación del widget, edades/reparto por habitación y resultado comercial E2E continúan pendientes. Reutilizar candidatosES6/EN7 y la instalación pública existente, no crear otro motor o widget duplicado.
+Render: fechas Entrada/Salida en dos campos; Habitaciones/Adultos y Niños/Edades en pares; detalle desplegable de reparto por habitación y edades requerido por el motor. No imponer nuevas edades/políticas por copy. Consultar Kross ejecuta búsqueda, nunca confirma reserva/cobro. Mostrar precio total, moneda, noches, impuestos, régimen, extras, condiciones y frescura solo cuando el motor los devuelve. Si el widget no admite cierto detalle, continuar dentro del flujo oficial o explicarlo, sin inventar comportamiento.
+
+### Mercadeo dentro del Plan
+Vista Mercadeo dentro de módulo7Crecimiento, propiedad SKY con colaboración Studio y TERE. No módulo13, base, marca o agente nuevo. Pestañas: Campañas, Contenido, Reputación, Redes y leads, Promociones, Resultados. Vincular precios/SP04, sitio/motor, activos/documentos, consultas y evidencia. Separar producción de contenido, aprobación, publicación, gasto, promoción aplicada y beneficio observado. Presupuesto, contratación, cambios de tarifa y publicaciones conservan autoridad. Las acciones de servicio/conversión de huéspedes permanecen con TERE; no duplicar tareas entre áreas.
+
+### Respuestas rápidas / mensajes pregrabados
+Vista en Clientes/Comms y acceso desde la utilidad de traducción/respuestas. TORO_COMMS_V1.md declara operations.guest_message_templates como recurso existente: esquema vivo, sesión, permisos y CRUD no verificados aquí. Reutilizar ese recurso después de comprobarlo; no crear biblioteca paralela.
+Catálogo por categoría/idioma/canal/ámbito: bienvenida/prellegada, ubicación/acceso, check-in/out, Wi-Fi, servicios, limpieza, incidencias, cotización, recordatorio de pago y solicitud de review. Texto y audio pregrabado se distinguen; grabación necesita origen/autoridad y no se presupone existente.
+Crear genera borrador; editar nueva versión; aprobar requiere responsable habilitado; usar prepara respuesta editable. Eliminar retira/archiva las utilizadas conservando historia y recibos; borrado físico conserva autoridad específica. Campos: título, propósito, idioma, canal, variables, fuente, vigencia, responsable, versión y estado Borrador/Aprobado/Archivado. Variables sensibles se validan antes de usar; datos faltantes se señalan. No introducir RRHH privado o información bancaria en biblioteca general. Pegar mensaje/audio/archivo prepara texto/transcripción/traducción con tono; enviar es una acción independiente autorizada y verificable, no consecuencia de Crear/Editar/Usar.
+
+### Cobertura revisada y aceptación pendiente
+| Área | Cobertura del diseño | Estado de implementación nueva |
+|---|---|---|
+| Identidad/contexto/proyectos/Personal | Común, autorizado, privacidad y limpieza de ámbito | TARGET; sesión recíproca no certificada |
+| Comando/adjuntos/audio/foto/respuestas | Multimodal con borrador y recibo por acción | TARGET |
+| Kross/POS/widget/operación/precios | Reutiliza fuentes/herramientas; límites de búsqueda leídos | Integración y E2E pendientes |
+| People/asistencia/turnos/capacitación | Personas dentro deTORO; vistas por rol | TARGET |
+| Dinero/comprobantes/caja/conciliación | CRC/USD separados, juntos en pantalla y desplegables | TARGET |
+| Mercadeo/Studio/Comms/mensajes | Vistas de módulos existentes y versionado | TARGET |
+| Herramientas/datos/fuentes/Google/Chrome | Catálogo autorizado y captura seleccionada | Feed/permisos/adapter pendientes |
+| Reportes/Cerebro00–11/mejora semanal | Misma información, cortes y resultados verificables | Runtime y automatización pendientes |
+No se omite ninguna categoría del pedido en la estructura; esto no declara exhaustiva la auditoría ni entregadas las capacidades. UI deberá pasar320/390/PC, ambos temas, teclado/disclosures/foco/44px/contraste y datos desconocidos/parciales.100criterios previos y641baseline se conservan; no reauditoría o suite de código por docs/render.
+**Única siguiente acción:** revisar este render final como dirección de presentación. Todavía no construir, conectar o activar CRUD. Al autorizar implementación, primero cerrar contrato de sesión común Portal/Personas y primer alcance de lectura en People vigente; conservar criterios de identidad/RLS/expiración/segunda identidad y rollback. SQL YA APLICADO, sin modificaciones.
+
+## Estructura operativa antes del build — decisión vigente 12/10/2026
+
+**Recomendación:** cerrar primero la estructura y el contrato de identidad, permisos y fuentes. El Portal será una entrada al trabajo del contexto activo; cada registro tendrá un origen y un responsable. La amplitud visual aprobada no acredita integraciones terminadas.
+
+**Alcance de este lote:** diseño y preparación documental. Mauricio detuvo nuevos renders y reiteró que no se construya. La última instrucción sustituye blanco por arena muy claro, elimina rosado/morado y prioriza densidad, pestañas, directorio y People completo. Se mantienen módulos 00–11, 100 criterios V1, fuentes, baseline 641 y SQL ya aplicado. Sin frontend, instalación, configuración, envío, scheduler ni publicación.
+
+### 1. Orden y formato común
+
+- **Cabecera:** TORO tipográfico azul + OPERATION SYSTEM pequeño; proyecto/contexto autorizado, usuario, tema, hora y clima compactos. En día tendrá fondo azul claro o arena más intenso; en noche fondo carbón y superficies azul pizarra más claras para dar contraste. La hora usa Costa Rica en Dreamcatcher y configuración por proyecto; clima requiere ubicación y corte, nunca datos inventados.
+- **Agentes:** una franja mínima con nombres, texto de estado y detalle desplegable; estado activo solo con evento vigente. No fijar múltiples barras altas que resten pantalla móvil. Sin señal comprobada, indicar Sin señal.
+- **Comando:** Pide o busca, con adjuntar archivo/foto/audio. Un único resultado puede abrir una reserva, tarea, documento o herramienta permitida. Buscar, preparar y ejecutar tienen resultados distintos; la petición no concede permisos ni confirma una acción.
+- **Navegación:** PC con menú horizontal y pestañas por sección. Móvil con cuatro destinos prioritarios por rol y Más; conservar las mismas rutas y contenido autorizado. Inicio siempre accesible. Más contiene destinos secundarios, Cerebro, Mi espacio y configuración según permiso.
+- **Formato de sección:** título breve + filtro/período + acciones en una línea cuando quepan; debajo, pestañas y lista compacta. En PC, lista/tabla y detalle lateral; en móvil, fila con icono + asunto + estado + plazo y detalle al tocar. No tarjetas enormes para cada dato, ni ocho paneles abiertos a la vez.
+- **Densidad:** columnas para accesos o datos cortos; lectura larga en una columna. Iconos con nombre accesible, controles de 44px y auxiliares de 12px como mínimo. Unir fecha, responsable y estado si son legibles; no ocultar moneda, fuente o riesgos. Preservar filtros, posición y borradores al regresar.
+
+### 2. Qué va en cada pantalla
+
+Estas son vistas del producto existente, no nuevos módulos, bases ni agentes.
+
+| Vista | Información principal | Detalle / herramientas | Fuente y alineación |
+|---|---|---|---|
+| **Inicio** | Pendiente: dos primeras tareas propias relevantes; nueve favoritos; widget oficial Kross; resumen operativo corto según rol | Ver todas, Crear tarea/Nota, añadir/ordenar favoritos, abrir caso | Atención 01, Operaciones 05, Tools; datos permitidos del contexto |
+| **Operación** | Pestañas Habitaciones, Entradas, Salidas, Nuevas, Aseo, Mantenimiento, Desayunos, Recepción y Tareas según perfil | Habitación/reserva/turno, preparación, incidencias, checklist, notas, evidencia, relevo y enlace original | Kross conserva PMS; TORO coordina tareas; RICO 05 y TERE 04 |
+| **Dinero** | Resumen, Bancos, Cobros, Gastos, Comprobantes, Caja, Conciliación | CRC/USD simultáneos, denominaciones desplegables, calculadora, comprobante original y diferencias | Alegra contabilidad; banco/procesador pagos; conteo físico con corte; FIONA 02 |
+| **Personas** | DreamTeam completo mediante vistas por rol: jornada, horarios, asistencia, solicitudes, equipo, planillas, capacitación y reportes | Día/Semana, cobertura publicada, incidencias, aprobación, evidencia, historial | People 06; no fuente paralela ni sustitución de contabilidad/banco |
+| **Mercadeo** | Campañas, Contenido, Reputación, Redes y leads, Promociones, Resultados | Borradores, recursos Studio, aprobación, publicación y medición separadas; SP04 como contexto de precios | Crecimiento 07, Studio 03, TERE 04; sin presupuesto/publicación implícitos |
+| **Herramientas** | Catálogo completo permitido, Favoritos, Directorio útil, Accesos y conexiones, Dispositivos | Buscar, abrir programa/original, añadir acceso personal, cuenta y permisos, Google Home | Tools/Sistemas 11; permisos efectivos, no catálogo idéntico para todos |
+| **Directorio útil** | Proveedores, técnicos, transporte, experiencias, servicios, emergencias y contactos de operación | Ficha: llamar, mapa, web, preparar WhatsApp, documentos y tareas vinculadas | Vista de Herramientas accesible también desde Operación; reutilizar contactos/empresas existentes |
+| **Reportes** | Operación, dinero, personas, comercial y sistemas; período, corte, cobertura y fuentes | Original, resumen, diferencias, hallazgos candidatos, vincular/confirmar nota o tarea, exportar con permiso | Misma información y cierres, sin segunda cola; fuentes originales y Reports transversal |
+| **Respuestas** | Mensaje original, traducción/transcripción y respuesta editable; biblioteca operativa | Texto/audio/archivo, idioma/tono, crear/editar/versionar/archivar plantilla, preparar WhatsApp | Clientes/Comms 04; recurso existente guest_message_templates sujeto a validación |
+| **Cerebro** | Prioridades, decisiones, tareas de agentes y recibos; módulos 00–11 y conexiones permitidas | Detalle de ejecución, aprobación, fallo, pausa/cancelación, límite de recursos | Control Plane 00/11; sin grafos o actividad ficticia |
+| **Mi espacio** | Tareas, notas, proyectos, archivos y herramientas personales privados | Compartir explícitamente, convertir nota en tarea, favoritos propios | Identity/User Vault y Proyectos 10; no hereda información hotelera |
+| **Capacitación** | Guías por rol/programa, versión vigente, práctica y avance propio | SOP original, asignación, evidencia de comprensión y mejora por incidentes | Knowledge/People; acceso desde Personas/ayuda contextual, sin módulo adicional |
+
+**Inicio no será todo el negocio comprimido.** Enseña qué atender y permite actuar. Horarios extensos, planillas, bancos, biblioteca de respuestas, configuración y reportes completos viven en su sección. Recepción ve entradas/preparación; aseo sus asignaciones; Finanzas caja/cobros; Gerencia excepciones; Mercadeo campañas; Personal su ámbito. Nueve favoritos es capacidad inicial visible, no obligación de mostrar accesos no autorizados.
+
+**Favoritos:** PC 3×3; móvil dos columnas cuando quepan, con noveno acceso y Añadir. Guardar más fácilmente, elegir los nueve de Inicio, ordenar con controles accesibles y ver la lista completa. Los seis destinos actuales no se amplían automáticamente. POS solicitado conserva https://dreamcatcherhotel.krossbooking.com/admin/pos. Añadir un enlace no otorga sesión, rol o capacidad de conector; URL desconocida queda pendiente, sin inventarla. TERE se abre por su canal existente cuando la ruta sea comprobada.
+
+### 3. Widget Kross y calendario único, también en la web
+
+Retirar la cabecera redundante Cotizar estancia y colocar el widget oficial en ese espacio. **Un solo control de fechas:** tocar el calendario una vez, elegir entrada y salida dentro de la misma apertura y ver rango/noches. Los dos valores se conservan explícitos; no abrir dos diálogos. PC puede mostrar meses contiguos; móvil un panel con selección de rango, mes navegable, editar y cancelación accesibles. Mantener selección al cambiar adultos/niños/habitaciones y al volver.
+
+Habitaciones, adultos y niños usan controles compactos; edades y reparto se despliegan según el comportamiento admitido por Kross. Reutilizar candidatos ES6/EN7; ES6 tiene habitaciones/niños activados según lectura previa. **La selección de rango y su personalización exacta no están verificadas.** Antes del build de ese componente, comprobar el flujo oficial y fechas/resultados de extremo a extremo. No modificar scripts del proveedor ni construir un motor alternativo para aparentar capacidad. Si un requisito no es admitido, usar el flujo oficial soportado y registrar la limitación.
+
+Aplicar el mismo contrato de fechas a la web Dreamcatcher existente; esta anotación no modifica su proyecto. Buscar produce una cotización, no una reserva ni un cobro. Precio y disponibilidad requieren respuesta vigente del motor, moneda, impuestos, régimen y condiciones. Habitaciones desocupadas físicamente no equivalen a unidades vendibles.
+
+### 4. Pendiente, notas, reportes y WhatsApp
+
+**Pendiente** sustituye Importante/Urgencias como bloque de Inicio. Mostrar dos tareas relevantes y Ver todas; conservar indicador visible de riesgo crítico aunque otra tarea ocupe las primeras filas. Una sola lista canónica, sin cola paralela de importantes ni listas por canal.
+
+Cada tarea: título, contexto, objeto/habitación/reserva/activo/turno, creador, responsable verificado, plazo, prioridad motivada, estado, fuente, checklist, comentarios y evidencia según necesidad. Menú contextual: Asignar, Adjuntar, Comentar, Registrar avance, Abrir original/Kross y Preparar WhatsApp. El cierre exige permiso y evidencia proporcional; terminado por el ejecutor y verificado pueden ser estados diferentes. Asignar a otro requiere alcance y aceptación/devolución; no se deriva un compromiso solo de una nota.
+
+Notas personales privadas, notas del caso compartidas y tareas son objetos distintos. Crear/editar/archivar es TARGET; nota → tarea o compartir es explícito. No copiar datos privados de empleados/huéspedes a una nota general. El intake local actual solo cubre ADMIN/GERENCIA, asigna al usuario activo y no ofrece destinatarios, privacidad ni CRUD completo: **cada persona crea para sí/otros aún requiere contrato e implementación.**
+
+Kross Housekeeping/Maintenance conserva identificador y autoridad. Vincular primero un registro existente; escritura futura necesita dirección permitida, mapping, versión, dedupe, readback y recibo. Estados Registrado en TORO / Pendiente Kross / Confirmado Kross / Falló separados. No se ha demostrado adapter de escritura de aseo/mantenimiento. Un vínculo ayuda a coordinar; no es un backup recuperable del PMS ni prueba de limpieza física.
+
+Aseo/desayunos/recepción: guardar referencia al reporte original y su autor/turno/corte. TORO extrae **hallazgos candidatos**, busca caso existente y propone nota/tarea/relevo. No convertir cada frase en tarea ni aceptar una interpretación como hecho. Desayuno incluido, servido, extra facturado y cobrado son estados distintos. Actualización incremental por eventos/cursor y revisión existente; mostrar último éxito, fuente, cobertura, error y próximo intento. No activar scheduler nuevo ni prometer tiempo real. Con datos vencidos: Desactualizado, no cero.
+
+WhatsApp útil en asignación/relevo, incidencia, ficha de proveedor/experiencia, respuesta a cliente, cotización y resumen autorizado. Preparar muestra destinatario verificado y borrador editable; copiar/abrir/enviar/entregado se distinguen. Envío automático solo por el canal ya autorizado y capacidad habilitada, con referencia del proveedor, dedupe y resultado. No enviar a terceros por diseñar el botón ni meter claves/datos sensibles en URL. Reportes privados requieren destinatario con el mismo alcance, no cualquier contacto.
+
+### 5. DreamTeam sin perder horarios ni planillas
+
+| Perfil | Entrada y pestañas prioritarias | Información adicional permitida |
+|---|---|---|
+| Empleado | Mi jornada, Horario, Solicitudes, Más | Asistencia propia, formación, perfil/documentos propios autorizados |
+| Jefe | Equipo, Cobertura, Pendientes, Más | Horarios/asistencia de equipo, solicitudes e incidencias bajo alcance |
+| RRHH / ADMIN | Personas, Horarios, Asistencia, Planilla | Expedientes, préstamos/adelantos/liquidaciones, reportes y configuración con permisos |
+| Contabilidad | Planilla permitida, Conciliación, Reportes | Versión revisada, soportes y diferencias; sin expedientes completos por defecto |
+| Gerencia / Auditor | Cobertura, Excepciones, Reportes | Resúmenes/evidencia del ámbito; auditoría de lectura cuando corresponda |
+
+Reutilizar EmployeeCenter, AttendanceCenter/Editor, ScheduleCenter, LeaveCenter, PayrollCenter, ReportCenter y PortalCenter según paridad vigente. Horario Día/Semana muestra publicado frente a borrador; cambios conservan historial. Asistencia mantiene marcaciones originales/correcciones y aprobación. Nómina Borrador/Revisada/Aprobada/Pagada separada; People prepara, Finance concilia y Alegra/banco conservan autoridad fiscal/de pago.
+
+Sesión común Portal/Personas sigue TARGET. Confirmar backend/orígenes, vínculo usuario–empleado, contexto/membresía y expiración/logout/revocación; probar segunda identidad y denegación cruzada. El Plan excluye EMPLEADO de RPC amplios de horario/asistencia: mantener lecturas propias autorizadas, no reabrirlos por montar la UI. El piloto de asistente tiene elegibilidad individual limitada; permitir consultas a todos será una ampliación por definir, no consecuencia del puesto. Conservar DreamTeam hasta paridad y recuperación verificadas. Perfil laboral privado no se mezcla con Mi espacio personal.
+
+### 6. Directorio, acceso Google y dispositivos
+
+**Directorio operativo:** categorías y búsqueda, favoritos por usuario y ficha verificable. Campos mínimos: nombre, categoría, ubicación/cobertura, contacto, horario, idioma si consta, fuente, última comprobación, responsable y notas del ámbito. Tarifas/comisiones/condiciones con vigencia y permisos; experiencias muestran disponibilidad solo si hay fuente. Emergencias permanecen localizables aunque falte un conector; contactos/protocolos críticos necesitan comprobación humana y versión. No cargar teléfonos inventados ni recomendar automáticamente un proveedor por una ficha antigua. Facturación de proveedor remite a su autoridad contable; directorio no autoriza contratación/pago. Separar contactos hotel, personal y fichas publicables para huéspedes.
+
+**Google y Chrome en la estructura:** Gmail alimenta comunicación/señales, Calendar agenda, Drive/Docs/Sheets documentos y Contacts ayuda a resolver contacto; no sustituyen PMS, tareas empresariales o CRM. Tasks/Keep se evalúan como captura/proyección del objeto canónico, no otra lista maestra. Estos accesos se agrupan en Herramientas/Accesos y se abren desde el caso que los necesita. Chrome captura solo página/selección elegida con URL/corte/ámbito mediante capacidad existente que debe comprobarse; conserva Abrir original. Un panel TORO junto a Chrome puede evaluarse después; no incrustar Chrome completo ni copiar cookies para integrar Kross. Legal y Riesgo, Activos y Espacios y Proyectos siguen localizables por Más/Cerebro según permisos, sin desaparecer de 00–11 ni crear otro portal.
+**Continuar con Google:** añadir como TARGET junto al acceso actual. El formulario inspeccionado usa contraseña y no incluye flujo Google. La identidad del proveedor se enlaza a un usuario canónico; no duplicar empleado ni otorgar acceso por coincidencia de nombre/correo o dominio. Primer acceso resuelve elegibilidad, vínculo y contexto. Login Google no concede Gmail/Drive/Calendar/Home; cada conexión necesita consentimiento independiente y cuenta/ámbito visibles. Recuperación/MFA, cierre en equipos compartidos y cambio de cuenta forman parte del contrato de identidad.
+
+**Google Home:** primera versión enlaza al servicio oficial, con acceso desde Herramientas → Dispositivos y favorito opcional. PC: https://home.google.com/; móvil: abrir app instalada mediante mecanismo oficial que deberá validarse por plataforma, con fallback web si no hay handoff soportado. Google confirma controles web limitados según dispositivo y cuenta; no se ha revisado la cuenta de Mauricio ni inventario/casas/equipos. Separar propiedad personal y hotelera. No presumir que iniciar sesión en TORO comparte esa sesión.
+
+Control dentro de TORO es una evolución: Home APIs Android/iOS, OAuth y permisos por estructura/tipo/dispositivo, compatibilidad y conectividad comprobadas. La documentación revisada no establece un SDK web equivalente para este Portal. Modelar dispositivo, ubicación, estado/corte, alcance y comando permitido; cámaras/cerraduras y otros comandos sensibles conservan autorización específica. No crear control, automatización, cámara embebida ni ampliar permisos ahora.
+
+**Accesos y conexiones, no una tabla de contraseñas:** cuenta enmascarada, Hotel/Personal, propietario, permisos, estado y última verificación; Abrir/Conectar/Reautenticar/Ver permisos según rol. Referenciar gestor de contraseñas existente, todavía desconocido. No almacenar claves en favoritos/notas/URL ni mostrar Copiar contraseña. User Vault es contexto personal, no password manager. OAuth/SSO oficial cuando proceda; secretos de integraciones solo servidor y referencias, nunca prompts, navegador o logs.
+
+### 7. Codex ↔ TORO y autonomía real
+
+| Dirección / alcance | Base actual | Complejidad relativa y condición |
+|---|---|---|
+| Codex → TORO: lectura | /api/mcp y seis herramientas de lectura ya existen localmente | Media: autenticar endpoint real y demostrar aislamiento; no conector operativo certificado |
+| Codex → TORO: intención/escritura gobernada | Intake interno y primitives de ejecución, sin herramienta MCP pública de escritura | Media-alta: autorización por capacidad, tarea canónica, idempotencia, verificación y recibo |
+| TORO → Codex: trabajar desde Portal | Modelo/contratos existentes; no puente integrado demostrado | Alta: host, sesión, eventos, aprobación, interrupción, recuperación, presupuesto y auth admitida |
+
+Seis herramientas actuales: get_brain_status, search_toro, get_priorities, get_business_status, get_pending_decisions y get_execution_receipts. El MCP resuelve organizaciones, no prueba datos personales. Bearer se valida con usuario/membresía, pero la inspección acotada no mostró comprobación explícita de audience del recurso y scope de lectura: requisito pendiente, no vulnerabilidad explotada. Verificar issuer/audience/expiración/scopes, recurso OAuth/callback/PKCE, token revocado, org incorrecta y segunda identidad antes de activar.
+
+MCP hace accesibles herramientas a Codex; no convierte al Portal en un ejecutor autónomo. Para interfaz cliente OpenAI documenta app-server; SDK para trabajos automáticos y modelo de autenticación admitido deben evaluarse sin reutilizar credenciales de ChatGPT en un servicio alojado. Las sesiones TORO/Codex/Kross son distintas; no copiar cookies. Reutilizar operations.tasks, runs/receipts, workers y registry existentes, no nueva cola.
+
+Flujo objetivo: petición → intención visible → validación de identidad/capacidad → preparación → autorización aplicable → ejecución limitada → verificación → recibo. Mostrar Preparado/Esperando aprobación/En curso/Verificado/Falló/Cancelado solo con evidencia. Actividad por eventos vigentes, sin parpadeos ficticios. Autonomía empieza con lectura y preparación; mensajes, reservas, cobros, publicación y cambios de precio conservan permisos específicos. Medir ciclos reales, fallos, dedupe, costos y recuperación antes de ampliar.
+
+### 8. Qué falta, qué sobra y qué puede pasar desapercibido
+
+**Falta cerrar antes de la integración funcional:**
+
+1. Sesión común, login Google, segundo usuario y matriz por puesto/membresía/ámbito; permisos para ver separados de ejecutar.
+2. Contrato de tareas/notas privadas, destinatarios, aceptar/devolver/reabrir/cerrar y adjuntos; el intake actual no cubre todo.
+3. Fuente real/formato/corte/responsable de cada reporte y IDs para habitación–reserva–turno–tarea; sin ello se duplicarán incidencias.
+4. Frescura y comportamiento ante fallo por fuente; caja/banco/contabilidad/precio/ocupación no pueden compartir un supuesto único de dato vivo.
+5. Widget oficial con rango, menores/reparto, impuestos/condiciones y resultado comprobados; paridad con la web.
+6. Directorio institucional actualizado, contactos verificados, dueño de cambios y separación de fichas publicables/privadas.
+7. Elegibilidad del asistente, conectores activos vs enlaces, WhatsApp por destinatario y recuperación de envíos ambiguos.
+8. MFA/recuperación/dispositivo compartido, revocación al salir del hotel, sesión caducada y continuidad segura de borradores.
+9. Edición simultánea/offline: no reenviar cobros/mensajes ni duplicar reservas por reintento; borrador local no operación confirmada.
+10. Presupuesto de consultas/modelos, cargas de audio/foto, almacenamiento/retención y atención a adjuntos no confiables; medir por tarea.
+11. Paridad People y recuperación antes de retirar DreamTeam; horario publicado no prueba asistencia, asistencia no aprueba planilla y planilla no prueba pago.
+12. Logo maestro exacto y assets nuevos verificados; renders no acreditan bytes, contraste ni QA. La revisión semanal propone mejoras y prueba deltas, no autoedita producción.
+
+**Sobra:** repetir todo en Inicio, otra cola Importante, contraseñas dentro de accesos, WhatsApp en cada campo, todos los programas en cada tarea, planillas en tarjetas generales, paneles gigantes, movimiento constante y sincronización bidireccional sin propietario. Reducir densidad decorativa antes de reducir letra o controles.
+
+**Límite honesto de preparación:** existe dirección y estructura suficiente para especificar pantallas; todavía faltan contratos/verificación para integrar todos los sistemas. Un catálogo con logos y enlaces no demuestra datos actualizados. El Plan no presume bancos/caja sincronizados, API Kross contratada, precios OTA comparados, Home conectado, SSO recíproco o automatización autónoma funcionando.
+
+### 9. Dirección visual que sustituye decisiones anteriores
+
+Arena muy claro como fondo de día; cabecera con fondo y acento azul. Noche carbón real con superficies azul pizarra más claras. Propuesta de tokens para futuro QA: arena #F7F3EA, cabecera #DCE9F6, tinta #183047, TORO azul #1358B8; noche base #101923, superficie #233A4D, tinta #EDF3F6. Son candidatos, no contraste probado.
+
+Secciones: azules/turquesas, verde salvia, ámbar/dorado y terracota suaves; **sin rosado, fucsia ni morado en UI propia**. Marcas externas mantienen colores originales, sin recolorear logos. Texturas discretas solo en fondos/bandas y sombras suaves; no detrás de lectura densa. Color guía área, estado siempre tiene texto. Pestañas/filas/disclosures compactos, nada esencial depende de animación. Primera versión debe probar 320px, móvil, PC, ambos temas, foco/teclado/contraste/reduced-motion y estados parciales.
+
+El render de Mercadeo que terminó al recibir la instrucción nueva pertenece al lote previo; su paleta rosa/morada está descartada. No se pidieron más imágenes tras esa instrucción. Las imágenes de este lote quedan como propuestas anteriores, no especificación vigente.
+
+### 10. Fuentes y siguiente unidad
+
+Revisión acotada, sin datos de huéspedes/empleados, escrituras operativas o nueva auditoría global. Fuentes locales: TORO_PEOPLE_DREAMTEAM_INTEGRATION.md, TORO_PEOPLE_CODE_MIGRATION_V1.md, TORO_TOOLS_V1.md, TORO_IDENTITY_USER_VAULT_V1.md, TORO_COMMS_V1.md, TORO_CHATGPT_MCP_CONTRACT_V1.md; runbooks TORO_MCP_PUMBA_ACTIVATION_V1.md y TORO_KROSS_FIRST_LIVE_READ_ACCEPTANCE_GATE.md; src/features/auth/login-form.tsx, actions/internal-work*.ts, mcp/server.ts, mcp/auth.ts, lib/supabase/bearer.ts, portal/model.ts y tools/directory.ts. El Plan registra fuentes/recepción y gobernanza Google previas; no se atribuye vigencia operativa a sus snapshots.
+
+Fuentes oficiales consultadas 12/10/2026:
+- [Google Identity: autenticación y autorización](https://developers.google.com/identity/gsi/web/guides/migration#authentication_and_authorization).
+- [Google Home para la web](https://support.google.com/googlehome/answer/9241220?hl=es), [Home APIs Android](https://developers.home.google.com/apis/android/get-started), [Home APIs iOS](https://developers.home.google.com/apis/ios/overview) y [permisos por estructura](https://developers.home.google.com/apis/android/permissions).
+- [Codex MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli), [Codex app-server](https://learn.chatgpt.com/docs/app-server) y [OAuth RFC 9700](https://www.rfc-editor.org/rfc/rfc9700.html).
+
+**Única siguiente acción:** cerrar, en el contrato People/Identity existente, sesión común Portal–Personas y primer alcance de lectura con login Google como opción propuesta. Terminado cuando autoridad, vínculo usuario–empleado, contexto, permisos, expiración/revocación, segunda identidad, paridad y recuperación están definidos y sus pruebas de aceptación listas. Todavía no construir, crear cuentas/permisos, reejecutar SQL ni activar conexiones. Esta decisión documental no certifica dichas pruebas como ejecutadas.
+
+## Recomendación de simplificación y utilidad de MCP — 12/10/2026
+**Estado: PROPUESTO, sin implementación o activación.** Responde a Mauricio: quitar complejidad que no aporta valor y explicar qué controles sí benefician la operación. No modifica permisos, fuentes, baseline, SQL ni elegibilidad del asistente.
+
+**Recomendación principal:** Portal conecta directamente con los servicios existentes de TORO. MCP se conserva como adaptador opcional para que ChatGPT/Codex consulten esos mismos servicios con permisos; no interponerlo en cada pantalla ni condicionar el primer Portal a integrar Codex. Existe servidor local de seis herramientas de lectura, no runtime externo certificado. El contrato MCP P0 existente sigue TARGET: se propone desacoplar su entrega de la experiencia inicial, no eliminarlo ni declarar aprobado un nuevo alcance.
+
+- Conservar un producto, identidad/contexto, tareas, permisos y resultados; reutilizar el código existente y validar el contrato de sesión People. No microservicios, nueva cola o bases por programa.
+- Cada herramienta tiene solo el nivel necesario: abrir el original; leer datos si mejora una decisión; ejecutar una acción cuando el flujo está comprobado y autorizado. Un enlace útil no necesita adapter de escritura.
+- Usar lógica normal para calendario, tareas, caja/calculadora, filtros y plantillas. IA para interpretar reportes, traducir, resumir o preparar respuestas con contexto. Codex desarrolla/prueba mejoras; integración como operador general del hotel se aplaza.
+- Mostrar una lista de trabajo con vistas por rol, sección o programa. No convertir todos los módulos, agentes y herramientas en elementos visibles de Inicio.
+- Reutilizar widget Kross y DreamTeam; no rehacer sus motores ni duplicar planillas. Google Home/Chrome y proveedores empiezan con acceso contextual al original; lecturas/control dentro del Portal requieren beneficio concreto.
+- Automatizar reglas simples por eventos y cambios materiales antes de añadir agentes continuos. Revisión semanal prepara mejoras; no autoedita producción. Autonomía se gana por flujo verificable bajo el modelo A0–A6 vigente.
+
+**Controles que sí conviene conservar:** separación personal/hotel y nómina privada; identidad y permiso por acción; fuente/corte para tarifa/pago/ocupación; evitar efectos duplicados; distinguir preparado/enviado/verificado y recuperación ante fallo. Pueden resolverse una vez en servicios compartidos y actuar silenciosamente. Aprobación humana para lo que la requiere, sin pedir confirmación repetida de tareas ya autorizadas.
+
+**Cuándo vale MCP:** uso repetido desde ChatGPT/Codex para consultar prioridades, evidencia y resultados sin copiar reportes; clientes externos reutilizan las mismas herramientas. Si solo se usa el Portal, el adapter aporta poco al trabajo interno. No sustituye Kross/Alegra/Google ni elimina su autenticación, datos o verificación. Evaluar con un caso externo acotado de lectura y medir trabajo evitado, tiempo de respuesta, mantenimiento y fallos antes de ampliar.
+
+**Valor de la primera versión:** cerrar un flujo como reporte/incidencia → tarea única → responsable → evidencia → relevo/cierre, con accesos contextuales y datos faltantes visibles. Beneficio se mide en doble captura evitada, menos búsqueda, respuesta más rápida y pendientes realmente cerrados. No estimar ahorros o porcentajes sin medición.
+
+Fuente local actual: src/features/mcp/server.ts y contratos TORO_CHATGPT_MCP_CONTRACT_V1.md / TORO_AUTONOMY_AND_ACTION_MODEL_V1.md. Fuente oficial: https://developers.openai.com/plugins/build/mcp-server . Si se utiliza API para IA del Portal, su facturación es independiente de ChatGPT: https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform . Vías OAuth de uso del plan ChatGPT requieren elegibilidad y evaluación específica; no se presume cobertura de usuarios/runtime TORO: https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server . Nada contratado/activado.
+
+**Siguiente unidad conservada:** contrato de sesión común Portal–Personas y primer alcance de lectura, limitado a lo necesario. No resolver todos los conectores para empezar esa preparación. Todavía no construir.
+
+## Dirección aprobada y paquete de inicio del Portal — 12/10/2026
+**Autoridad:** Mauricio aprueba las recomendaciones de simplificación y pide renders finales empresariales, preparación para crear TORO, Google/herramientas y continuidad con CONTINUAR. Su aceptación cubre decisiones de diseño y preparación reversible; este lote no publica, cambia DNS, contrata servicios, activa permisos ni modifica fuentes operativas. Se mantiene un TORO, módulos 00–11 y Dreamcatcher como primera implementación. No onboarding externo por este paquete.
+
+**Decisión aprobada:** Portal reutiliza los servicios actuales; MCP permanece adapter externo opcional, inicialmente lectura, sin requisito para la primera interfaz. IA por necesidad operativa; lógica normal para fechas/tareas/caja; Codex para desarrollar y verificar cambios. No navegador completo, bases/colas nuevas ni autoedición de producción. La sección de simplificación anterior deja de ser mera propuesta en cuanto a esta dirección, pero ninguna capacidad se activa por ello.
+
+### CURRENT: verificación acotada de dominio y Google
+
+| Elemento | Lectura de este lote | Lo que no prueba |
+|---|---|---|
+| Dominio hotel | DNS ns1/ns2.vercel-dns.com; web /es HTTP200; MX smtp.google.com | Autoridad para cambiar zona/correo o disponibilidad continua |
+| toro.dreamcatcherhotel.com | Resuelve a Vercel y devuelve HTTP404; no asociado al proyecto canónico inspeccionado | Portal publicado, binding, certificado del nuevo Portal o acceso privado |
+| Proyecto TORO | toro-pr11-preview, prj_nxerFw9ciNews6tUMAah3GAlAJzs; equipo dreamcatcher-s-projects, team_zUbLBlOtoQBHDfGMYpDlg0XO | Aprobación de despliegue, plan comercial o presupuesto |
+| Producción registrada | dpl_6kfxNwdiEbfjijCLGLNFtmHBUrrR; READY; main; SHA f1f218f691daecce23db00e60aa9b5c577758e93 | Nuevo Portal, revisión de seguridad, pruebasAuth/RLS o código de esta rama |
+| Protección Vercel | all_except_custom_domains | Protección de un nuevo dominio personalizado; login propio es requisito |
+| Gmail/Calendar/Contacts/Drive en ChatGPT | Perfiles actuales corresponden a admin@dreamcatcherhotel.com | Conexión durable del Portal, delegación de dominio, accesoHome o permisos de escritura |
+| Calendar | Un principal editable y ocho suscripciones de lectura; respuesta sin paginación pendiente | Eventos leídos, tareas sincronizadas, nueva agenda de operación o cobertura de turnos |
+
+DNS del subdominio parece proceder de la resolución general de la zona; no inferir asociación por resolver. No se inspeccionaron correos, contactos individuales, archivos ni huéspedes. El deployment registrado es otra evidencia, no el artefacto que deba publicarse por defecto. No mezclar último preview de otra rama con producción; seleccionar SHA explícito antes de cualquier publicación.
+
+### TARGET: publicación simple en toro.dreamcatcherhotel.com
+
+Reutilizar proyecto TORO existente; conservar proyecto web Dreamcatcher aparte. No comprar dominio, transferir registro, mover nameservers ni crear otro hosting para este Portal. Con DNS Vercel, la asociación y verificación podrían bastar; valores exactos se obtienen del proyecto cuando se prepare la asociación. No introducir IP/CNAME universales ni --force para pisar otra asociación.
+
+Secuencia de publicación, aún no ejecutada:
+1. Seleccionar el SHA del Portal reconciliado con main y verificar preview, ambos temas/móvil/PC y alcance real.
+2. Verificar autorización propia: anónimo, sesión vencida/revocada, usuario sin membresía, contexto ambiguo y acceso cruzado fallan cerrado. La protección Vercel actual excluye custom domains.
+3. Registrar binding anterior, proyecto/equipo/SHA/deployment/entorno; confirmar plan comercial y presupuesto existente. No hubo lectura de facturación; no prometer costo cero. Revisar cobertura comercial actual, no activar un upgrade.
+4. Preparar orígenes/callbacks/redirecciones/cookies del dominio exacto. SITE_URL compartido puede afectar recuperación/otras apps: revisar impactos, sin sustituirlo a ciegas.
+5. Asociar solo toro.dreamcatcherhotel.com al proyecto/commit aprobado en la ventana autorizada. Usar recomendaciones reales si pide DNS/TXT; conservar apex/www/MX/TXT/nameservers.
+6. Verificar binding, DNS, propiedad y HTTPS; login/retorno/logout/revocación/permisos; comprobar web pública y correo sin alterar datos.
+7. Revertir solo nueva asociación/configuración o restaurar deployment previo aprobado si falla. No eliminar proyecto/web ni tocar SQL.
+
+Cookies preferentemente limitadas al hostname TORO, sin compartir con toda dreamcatcherhotel.com. Personas portado al mismo origen puede evitar segundo login; el DreamTeam legado conserva acceso hasta paridad. Google provider callback de Supabase y callback de la app son distintos; sus URLs exactas continúan pendientes. No afirmar /auth/callback implementada. El modo demo/fail-closed y controles legacy vigentes se conservan; dominio no habilita modo interno/flags/read/write.
+
+### Google y herramientas: mapa listo para implementación gradual
+
+| Servicio | Primer uso útil y acotado | Integración posterior y aceptación |
+|---|---|---|
+| Google login | Entrada opcional, usuario canónico y contexto | OAuth oficial Supabase, elegibilidad/vínculo seguro/retorno; no otorgar membresía por email/dominio |
+| Gmail hotel | Señal de reserva/consulta y evidencia al caso | Reutilizar ingesta/cursor/worker; evitar duplicados, recuperar gaps y verificar primer evento |
+| Calendar | Agenda del contexto y acceso al calendario actual | Lectura por permiso, filtros CR/operación y dedupe de feriados en la vista; no borrar suscripciones ni confundir evento con turno |
+| Drive/Docs/Sheets | Abrir documentos/SOP/soportes originales permitidos | Mantener ownership/ACL/originales; lectura y edición son alcances distintos, sin duplicarDropbox |
+| Contacts/Directorio | Resolver contacto verificado y ficha útil | No CRM ni empleado maestro; fuente/vigencia/ámbito; WhatsApp contextual con receptor verificado |
+| Home | Abrir original/app según plataforma | Cuenta/casa/device permissions y compatibilidad por verificar; no control autónomo todavía |
+| Chrome | Abrir original/captura elegida | Panel/extensión existente por comprobar; no iframe de Chrome ni copia de cookies |
+| Tasks/Keep | Evaluar captura/proyección frente a tareas/notas canónicas | Sin adapter E2E certificado; no lista maestra paralela ni nuevos scopes ahora |
+
+El acceso desde los conectores de ChatGPT de este lote no transfiere sus sesiones o tokens a TORO. Consentimientos Workspace/Home son distintos de login. Panel Accesos y conexiones mantiene propietario, cuenta enmascarada, alcance, estado y corte. Conector, link, cuenta autorizada y operación verificada se distinguen. No guardar contraseñas en favoritos/notas; conservar referencia al gestor existente, todavía por identificar.
+
+### Diez refinamientos finales, sin diez proyectos nuevos
+
+| # | Mejora incorporada al contrato | Criterio de aceptación futuro |
+|---|---|---|
+| 1 | Inicio por rol y acción frecuente | Recepción/aseo/finanzas/gerencia ven prioridades permitidas; no usar nómina como tarjeta general |
+| 2 | Continuar donde quedaste | Regreso conserva filtro/período/selección dentro del contexto; cambio de usuario/contexto elimina datos anteriores |
+| 3 | Calendario de rango en una apertura | Entrada y salida elegidas en un panel, noches claras y edición sin perder huéspedes; validar comportamiento oficial Kross/web |
+| 4 | Favoritos con nueve accesos elegidos | Añadir/reordenar/editar accesible y Ver todos, sin ampliar permisos; PC3×3/móvil2columnas cuando quepan |
+| 5 | Relevo de turno con excepciones | Preparar resumen de pendientes/responsable/evidencia sobre la misma lista; sin duplicar tareas |
+| 6 | Menú contextual por objeto | Tarea/reserva/proveedor muestran solo acciones útiles y permitidas; WhatsApp conserva receptor/borrador y estado |
+| 7 | Borradores recuperables y reintentos seguros | Evitar doble envío/cobro/reserva; no cachear secretos/nómina; offline no se declara ejecución |
+| 8 | Frescura visible donde cambia decisiones | Fuente/corte/cobertura en operación/dinero/precios; desactualizado no se sustituye por cero |
+| 9 | Búsqueda y teclado coherentes | Comando/buscador distinguen objeto/acción, foco/retorno/44px/320px; nada esencial depende del color o animación |
+| 10 | Estado de conexiones y costo útil | Un detalle de conexión/fallo/último éxito y consumo, avisos solo accionables; sin agentes de vigilancia duplicados |
+
+Estos refinamientos concretan los100criteriosV1 existentes. No migranSQL, crean100tareas, duplican módulos o prometen beneficios todavía no medidos. Logos originales solo desde archivos verificados; maestroTORO exacto sigue ausente y se usa tipografía azul aprobada, sin inventar bull.
+
+### Look final y cobertura visual
+
+Renders final seleccionados: TORO_EMPRESARIAL_FINAL_DIA.png y TORO_EMPRESARIAL_FINAL_NOCHE.png, outputs de la tarea actual. Día arena clara/cabecera azul; noche carbón y superficies azul pizarra más claras. Tipografía/espaciado empresarial, sombras/textura discretas, Pendiente2, Favoritos9, rango, tabs y accesos contextuales a Directorio/Google/Respuestas/Caja/Personas. UI propia sin rosa/morado; marcas conservan identidad. Se corrigió la primera variante nocturna que tenía tarjetas demasiado claras; conservar solo la seleccionada como referencia.
+
+Los renders son conceptos rotulados, con ejemplos de fechas/habitaciones y reproducciones gráficas. No importar esos ejemplos como datos reales ni sus logos como assets. La implementación usa fechas actuales/datos autorizados, bytes existentes y copy canónico. Cards con altura natural, sin forzar Pendiente a altura del widget; móvil no debe mostrar todas las secciones juntas. Render no certifica contraste/foco/44px/capacidad por habitación, widgetpublicado, sesiónPeople, feed o automatización. Herramientas/Personas/Dinero/Reportes/Cerebro/Mi espacio/Legal/Activos/Proyectos conservan destinos por permiso, aunque no todos estén abiertos en Inicio.
+
+### NEXT: primer lote de construcción local
+
+**Preparación concluida para empezar interfaz local.** Contrato mínimo People definido en documento de integración vigente: auth/contexto/vínculo y primer self-read de horario publicado; diez pruebas de aceptación preparadas, no ejecutadas. Resolver todo el SSO/conectores no es requisito para maquetar. Lectura People real, OAuthGoogle y dominio mantienen aceptación propia.
+
+Única siguiente unidad: implementar sobre los componentes existentes cabecera/navegación/Inicio y entrada de catálogo con ambos temas, Pendiente2, Favoritos9 y estados honestos de capacidades. Mantener rutas00–11, gates, APIs y herramientas actuales. Si persistencia/autorización de favoritos/tareas no existe, no activar controles que simulen guardado; presentar capacidad pendiente o preparar flujo local claramente indicado. No añadir schemas, grants, dependencias, proveedores o configuración comercial por este lote.
+
+Antes de código: confirmar estado/rama/aportes y main vigente solo en el delta necesario; no descartar la otra rama ni adoptar el deployment remoto por su READY. Leer guía Next instalada relevante según AGENTS. Reutilizar portal.module.css, module-card.tsx, portal-tool-links.tsx y page.tsx. Antes de rebuild revisar una vez recibo/puerto y detener únicamente runtime propio con su marcador; no procesos ajenos.
+
+Terminado cuando el delta local existe, verificación apropiada pasa y hay evidencia sintética sin datos privados en320/390/PC, día/noche, teclado/foco, overflow, permisos y enlaces vigentes. Baseline641 es evidencia anterior conservada, no resultado nuevo. Cierre con mismo checkpoint/recibo y una siguiente acción. Publicación/Google/Peoplevivo/Krosswrite/WhatsAppconservan gates propios; no declarar Portal completo por maquetación.
+
+Fuentes oficiales: [dominio Vercel](https://vercel.com/docs/domains/set-up-custom-domain), [nameservers](https://vercel.com/docs/domains/working-with-nameservers), [protección](https://vercel.com/docs/deployment-protection), [uso comercial](https://vercel.com/docs/limits/fair-use-guidelines), [Google/Supabase](https://supabase.com/docs/guides/auth/social-login/auth-google), [redirecciones](https://supabase.com/docs/guides/auth/redirect-urls). Metadatos de proyecto/deployment fueron lecturas del conector Vercel; perfiles/calendarios de conectoresGoogle; código/contratos localmente revisados. No escrituras de proveedor.
+
+## Apps móviles, OpenClaw y estilo híbrido único — 12/10/2026
+**Decisión de Mauricio:** incluir Kross móvil, Pulse de Booking.com, Google Home y TTLock; investigar mejor uso de OpenClaw/Companion para después. En la próxima continuación iniciar el Portal. Afinar las cajas con bordes y aspecto corporativo; mezclar día/noche en un solo estilo elegante, tomando la segunda imagen nocturna como referencia. Esta sección supersede el selector y los dos temas de las propuestas anteriores; no elimina accesibilidad ni capacidades existentes.
+
+### Estilo vigente para el próximo build
+
+Un **estilo híbrido fijo**, sin selector día/noche ni cambio automático entre dos interfaces. Cabecera y navegación carbón/azul profundo; fondo azul pizarra; cajas mayormente azul pizarra más claro. Superficies arena/marfil reservadas a lectura intensiva, formularios o datos donde mejoren claridad, con texto oscuro. Mantener predominio y estructura de la referencia nocturna, evitando una mezcla arbitraria de tarjetas. TORO azul + OPERATION SYSTEM pequeño; sin rosado/morado en UI propia. Logos originales intactos.
+
+Bordes definidos y consistentes en tarjetas/cajas/campos; radios moderados, sombra discreta y bandas de sección sobrias. Controles y foco distinguibles del borde decorativo. Altura según contenido, sin vacíos forzados ni brillo/neón. Aplicar el mismo lenguaje en móvil: Pendiente2, Favoritos9 en dos columnas cuando quepan, calendario de rango, pestañas y detalles desplegables. PC aprovecha tabla/lista+detalle, sin cambiar el contenido permitido. Texto principal14px, auxiliar≥12px, objetivos≥44px; validar contraste/forced-colors/reduced-motion, teclado y320px. Los tokens concretos se comprobarán en UI, no se declaran validados por el render. No generar otra ronda de imágenes antes del código.
+
+### FUTURE: tres niveles de acceso, sin prometer apps nativas embebidas
+
+1. **Abrir original:** botón contextual que abre web o app móvil donde el proveedor admita enlaces oficiales, con fallback claro. No inventar esquemas kross://, pulse:// o ttlock://. Registrar destino, plataforma y fecha de prueba. App instalada/sesión externa no equivale a permiso TORO.
+2. **Mostrar información en TORO:** vistas propias con API/SDK oficiales, identidad y permisos por proveedor/dispositivo. Es la ruta preferida para datos útiles y consistentes; no requiere mostrar la pantalla completa de otra aplicación.
+3. **Pantalla/control remoto:** piloto de un dispositivo identificado y capacidades verificadas, si aporta una función que no existe por API/web. scrcpy permite reflejar/controlar Android desde Windows/Linux/macOS, pero integrar ese stream/control en el Portal requeriría transporte, sesión, permisos, privacidad y recuperación. No es iframe de app nativa ni función ya disponible.
+
+| Herramienta | Primera utilidad dentro de TORO | Evolución condicionada |
+|---|---|---|
+| Kross móvil | Abrir app/web autorizada; planner/reserva/POS desde contexto | Leer operación y enlazar objetos; API futura de nuestra cuenta, no contratada/activada. No rehacer PMS/widget ni asumir deep link de reserva |
+| Pulse Booking.com | Abrir Pulse en móvil y Extranet en PC; enlace desde reserva/mensaje/review | Mensajes/plantillas/reservas/reputación según conexión autorizada. Pulse instalado no concede Connectivity ni demuestra API de Pulse |
+| Google Home | Abrir Home/app/web oficial; acceso en Herramientas→Dispositivos | SDKAndroid/iOS, cuenta/casa/dispositivo, permisos y conectividad. No controlar dispositivos personales por pertenecer al hotel |
+| TTLock | Acceso a app oficial; fichas de cerraduras bajo Activos/Herramientas | API/SDK: alias/habitación, modelo, batería/corte, gateway/conectividad, incidencias y registros autorizados. Cuenta/región/modelos/gateway y alcance por verificar |
+
+Estas son vistas en Tools/Assets/Systems y vínculos a la operación, no nuevos módulos numerados, bases o proyectos. Mantener el mismo caso/reserva/tarea. Para tarifas/disponibilidad conservar una autoridad y dirección por campo: usar la relación existente con Kross cuando se verifique, evitando dos escritores automáticos Kross/Pulse. BookingConnectivity tiene onboarding y permisos/certificación propios; mensajes y reservas pueden tener alcances distintos.
+
+**TTLock requiere filtrado incluso en lectura.** Algunos payloads oficiales incluyen códigos/material de apertura. Un adapter futuro entrega solo campos permitidos y elimina secretos antes de UI/IA/logs. Vista normal muestra identificador, vigencia y estado, no PIN/llaves maestras. Bluetooth/gateway/modeloWi-Fi determinan alcance real; indicador de gateway no garantiza estado instantáneo y ausencia de registros puede significar falta de sincronización. Apertura, alta/baja de llaves, generación/cambio/envío de códigos y revocaciones requieren autorización humana específica por cerradura/reserva/plazo y verificación. No probar comandos físicos ni leer códigos reales en esta preparación.
+
+### FUTURE: sacar más provecho a OpenClaw sin duplicar TORO
+
+Flujo único: Portal → identidad/permiso TORO → tarea canónica → ejecutor OpenClaw existente → dispositivo/comando autorizado → verificación → comprobante. TORO mantiene verdad, política, aprobaciones y estado; OpenClaw es ejecutor, no otro Cerebro/cola/memoria maestra.
+
+Usos prioritarios a evaluar:
+- Chrome Relay para pestañas seleccionadas/elegibles y flujos web autorizados cuando no haya API adecuada; no navegador embebido ni acceso indiscriminado a un perfil.
+- Captura elegida de reporte/foto/audio y señal de notificación para proponer nota/tarea; no sustituir reserva Kross o pago por una notificación parcial.
+- Entrega por los canales existentes y autorizados, con destinatario verificado, dedupe y recibo; abrir/copiar no se declara enviado.
+- Ejecución acotada de tareas y diagnóstico de conexión con los workers/broker existentes, costo/tiempo/estado visibles; sin otro Gateway o scheduler.
+- Un nodo móvil por vez, inventario mínimo de capacidades permitidas y piloto de lectura. Desconexión, permiso retirado y comando no soportado fallan cerrado; no extender capacidades por personalidad/agente.
+
+La documentación actual de Android Companion incluye estado/info/permisos/salud, device.apps opcional, cámara/voz y notificaciones según permiso/configuración. **Inventariar apps no prueba control UI genérico** ni disponibilidad de app.launch. Los nodos anuncian capacidades concretas. OpenClaw Companion del plugin de escritorio y Android Companion no deben asumirse la misma instalación o sesión. Ningún emparejamiento, versión o capacidad efectiva de Mauricio se verificó en este lote.
+
+Reutilizar el lane mobile/broker ya documentado; la memoria conserva una inspección histórica de ADB/scrcpy, no un controller operativo actual. El checkout histórico toro-openclaw-integration se comprobó únicamente por existencia de carpeta; fuentes/branch/runtime deberán revalidarse antes de editarlo. No instalar, iniciar, emparejar, conceder permisos, ejecutar comandos o abrir apps del móvil ahora.
+
+OpenAI Developers: Computer Use puede ayudar a probar/automatizar interfaces web con resultado observable. La ruta AgentsAPI revisada usa navegador alojado, no control del teléfono del usuario. Evaluar solo si falta una capacidad en el ejecutor actual y hay beneficio/costo claros; no crear sandbox, sesión/API key ni cambiar arquitectura por mencionar el plugin. Skills agents y computer-use consultadas como guía; no automatizaciónWindows ejecutada.
+
+### Aceptación de cualquier piloto móvil futuro
+
+Identidad de dispositivo y propietario/ámbito; lista exacta de capacidades y permisos; cuenta del proveedor; un objeto de lectura no sensible; prueba negativa sin permiso; pérdida/reconexión; último éxito/corte/cobertura; comprobante y recuperación. Captura minimizada, sin claves/2FA/banca ni datos ajenos. Prioridad API/conector → capacidad nativa verificada → automatización semántica/selector → transporte → visión; no tocar por coordenadas como primera opción. La aprobación técnica de OpenClaw no reemplaza autoridad de negocio. Los comandos físicos TTLock mantienen su gate propio.
+
+### Fuentes y próximo paso
+
+Fuentes oficiales consultadas12/10/2026: [Kross](https://www.krossbooking.com/es), [Pulse](https://www.booking.com/propertyapp.en-gb.html), [Connectivity Booking](https://developers.booking.com/connectivity/docs/managing-endpoint-access), [HomeAndroid](https://developers.home.google.com/apis/android/overview), [HomeiOS](https://developers.home.google.com/apis/ios/overview), [TTLock guía](https://euopen.ttlock.com/documentPages/htmlPages/userGuide/getStartedEn.html), [dispositivos](https://euopen.ttlock.com/doc/api/v3/lock/list), [gateways](https://euopen.ttlock.com/doc/api/v3/gateway/list), [registros](https://euopen.ttlock.com/doc/api/v3/lockRecord/list), [códigos](https://euopen.ttlock.com/doc/api/v3/lock/listKeyboardPwd), [límitesTTLock](https://euopen.ttlock.com/documentPages/htmlPages/example/FAQEn.html), [nodosOpenClaw](https://docs.openclaw.ai/nodes), [AndroidCompanion](https://docs.openclaw.ai/platforms/android), [ChromeRelay](https://docs.openclaw.ai/tools/chrome-extension), [scrcpy](https://github.com/Genymobile/scrcpy), [AndroidAppLinks](https://developer.android.com/training/app-links/about), [OpenAIComputerUse](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use).
+
+CURRENT: investigación y ajuste documental. DESCONOCIDO: cuentas/capacidades/runtime móvil/TTLock efectivos. FUTURE: adapters y piloto; no activaciones por esta sección. NEXT único e independiente: próximo CONTINUAR inicia frontend local cabecera/navegación/Inicio y catálogo, ahora en estilo híbrido único con bordes. Mantener100criterios/00–11/baseline641/SQL y gates. No otra ronda de investigación/renders ni integrar móvil/OpenClaw/TTLock antes de cerrar ese primer lote probado.
+
+
+## Primer lote construido: Inicio híbrido y catálogo — 12/10/2026
+**Ámbito:** presentación del Portal sobre servicios existentes, subsistemas00–11 y Dreamcatcher de referencia; reusable para contextos autorizados. No nuevos módulos, fuentes, tablas o runtime operativo.
+**CURRENT / HECHO local:** código0aca34c y corrección78d9503 (78d9503efa4a3262fff1d384b3a92f979de5aa39) en codex/portal-local-reconcile-20261011. Cabecera TORO azul/OPERATION SYSTEM, contexto enlazado al espacio existente, hora real de Costa Rica, navegación compacta, agentes informativos sin señal (abreviados en móvil), estilo híbrido único con bordes/arena selectiva y sin selector día/noche. Inicio/Módulos/Catálogo funcionan como pestañas con teclado/foco; filtros por texto/sección conservados al cambiar vista. Pendiente muestra máximo2 resultados de la proyección existente, señal crítica, corte, cobertura parcial y selección truncada, nunca cero ante fallo. Lectura solo con rol/ámbito/gates existentes, server→slot; no proyección completa serializada como datos cliente. Favoritos máximo9, solo6 destinos existentes/revisados; PC3columnas/móvil2. Logos exactos intactos; no bull ni assets de render. IDs únicos entre favoritos/catálogo. Personas conserva el destino/notas autorizados, sin afirmar SSO.
+**VERIFICADO:**82/82 pruebas dirigidas,0fallos/0saltos; TypeScript, lint afectado y buildNext16.3.8 exit0. Revisión independiente por lectura sin defectos materiales. QA Chrome existente, fixture temporal compilada desde componentes reales con identidad/datos sintéticos y stubs de navegación Next; no ruta de bypass/fixture añadida a la app.320×800/390×844/1280×575/1536×1024 sin desborde; 2columnas móviles/3PC en favoritos; filtros, vacío, detalle, tabclick/flechas/Home/End y conservación de búsqueda comprobados.73 textos visibles de Inicio: contraste calculado sin fallos contra fondos sólidos, mínimo12px; objetivos visibles≥44px, IDsduplicados0. Alto contraste/reduced-motion comprobados; se corrigió una placa que ocultaba Inicio seleccionado. Consola sin errores/avisos de app, logos cargados y6hashes del manifiesto válidos. Estas comprobaciones no son certificación integral WCAG ni aceptación de permisos reales.
+**Fidelidad del lote:** referencia outputs/TORO_EMPRESARIAL_FINAL_NOCHE.png y dirección híbrida posterior; inspección view_image de concepto y capturas reales. Se compararon marca/descriptor, jerarquía, paleta/bordes, tipografía/densidad, logos, distribución3PC/2móvil, franjaagentes y controles. Viewport nativo del board1536×1024 probado; la imagen conceptual incluye móvil+PC y la captura es una sola vista de app, por eso no se exige coincidencia de píxeles. Diferencias intencionales: arena en Pendiente por última aprobación; navegación operativa actual; solo6 destinos; sin datos hotel ficticios, clima inventado, creación de proyecto, tareas/notas/guardar favoritos, captura/audio, widget alternativo o agentes activos. Motor Kross abre el original; rango/niños/reparto/widget siguen pendientes. Copy nueva limitada a estados de cobertura, acceso y capacidades realmente disponibles; no botones inertes ni envíos implícitos.
+**LÍMITE material:** el arranque de prueba sin configuración/flags de QA respondió503 en Portal/Mi espacio/guía y APIs; no expuso navegación privada ni error framework. Se mantuvo el cierre de seguridad existente. No se activaron flags ni configuración por este lote; nueva pantalla con sesión real y lectura actual no verificadas. La prueba visual es de componentes reales con mocks sintéticos; no certifica la integración completa de app/SSO/fuentes o disponibilidad comercial. Builds no acreditan publicación.
+**CONSERVADO:** main actualizado fb8ccfc incorporado por merge local sin perder el aporte de lavandería/menú. Baseline641 anterior conservada, no relanzada ni sumada a82. SQL aplicado previamente intacto. Cero cambios enpublic/dependencias/Supabase/env/grants/providers/DNS, cero escrituras operativas/reservas/cobros/cerraduras/envíos. Sin push/PR/merge remoto/deploy. Solo procesos QA propios3047/3048 detenidos, puertos cerrados; viewport restablecido, tabs QA cerradas, sin capturas reales privadas/contraseñas/cookies/tokens.
+**Fuentes/evidencia exactas:** src/app/portal/page.tsx; src/features/portal/portal-workspace.tsx, portal-attention-summary.tsx, portal-clock.tsx, portal-header.tsx, portal.module.css; src/features/tools/portal-tool-links.tsx; src/app/my-toro/page.tsx. Guías Next instaladas server/client,CSS,Link leídas. work/portal-build-local/tests.json,next-build.log,fixture.tsx,bundle.mjs y forced-colors.jpg. Capturas outputs/TORO_PORTAL_BUILD_PC.jpg, TORO_PORTAL_BUILD_MOVIL_390.jpg, TORO_PORTAL_BUILD_MOVIL_320.jpg, TORO_PORTAL_BUILD_CATALOGO_PC.jpg, TORO_PORTAL_BUILD_CATALOGO_320.jpg. Export subordinado outputs/TORO_PORTAL_BUILD_LOCAL_EVIDENCIA.json y patch; no nueva fuente de verdad.
+**Reversión:** revert selectivo78d9503 y0aca34c en ese orden después de inspeccionar aportes posteriores, seguido de build; no reset/clean ni rollbackSQL. Backups de registros enwork/portal-build-local/backup. Conservar todos los aportes/documentos.
+**NEXT único:** validar esta nueva pantalla con la sesión real en el lane de QA local de lectura ya autorizado, reusando el controlador existente y configuración pública canónica temporal; sin repetir aprobación, cambiar permisos ni activar nuevos alcances. El503 sin configuración no se resuelve publicando o debilitando el guard. Primeramente comprobar nueva versión/configuración pública build+proceso, sesión/contexto/rol vigente; luego dos pendientes/alcance, seis destinos, Cerebro y regreso móvil. Sin guardar PII. WidgetKross/POS, personalización, PeopleSSO, dominio, móviles/OpenClaw/TTLock y resto del Plan siguen en su lugar, fuera de esta unidad.
+**Criterio del siguiente cierre:** sesión/contexto legítimos y pantalla nueva realmente servida; cortes/cobertura/destinos comprobados o bloqueo preciso registrado; controles móvil/PC sin errores, sin escrituras ni exposición; proceso propio detenido y mismo Plan/checkpoint/recibo actualizados. No afirmar otras identidades/RLS, proveedores o producción por esa prueba.
+**SP:** outputs/TORO_SP_CONTINUAR_BUILD_LOCAL.md actualizado para QA de esta versión; no rehacer diseño/renders/auditoría general.
+
+## Portal público autenticado: autorización y candidato — 12/10/2026
+**Autoridad:** petición directa de Mauricio con referencia1-1001761343.jpg: actualizar la versión y dar enlace público funcional. Supersede NEXT local-only anterior en esta misma línea; no autoriza costos nuevos, grants, pagos, mensajes externos, reservas, cerraduras ni escritores. Reutilizar proyecto Vercel toro-pr11-preview (prj_nxerFw9ciNews6tUMAah3GAlAJzs), team_zUbLBlOtoQBHDfGMYpDlg0XO y dominio toro.dreamcatcherhotel.com, sin afectar web/MX/NS del hotel. Rollback producción previa dpl_6kfxNwdiEbfjijCLGLNFtmHBUrrR SHAf1f218f691daecce23db00e60aa9b5c577758e93. Resultado final y URL comprobada se registrarán en checkpoint canónico INTEGRACION_LOCAL_VALIDADA.md.
+**CURRENT candidato:** look azul oscuro adjunto, login corporativo, ocho pestañas, Pendiente2 existente por rol, hasta9 favoritos seleccionables por sesión, catálogo buscable/seccionado, nuevos shortcuts POS/WhatsApp/Alegra/Gmail/Drive/Home revisados y acotados al mismo contexto hotel autorizado. Son destinos públicos, sin nuevos datos/grants/conectores. Módulos00–11 conservados. Caja CRC/USD simultánea, denominaciones enteras/centavos/diferencia opcional, copia/fallback/reinicio; calculadora sin eval/división0 controlada. Plantillas de operación editables/creables/eliminables efímeras, copiar y abrir WhatsApp/traductor con envío humano. No nueva base ni cola.
+**Seguridad de publicación:** modo despliegue portal distinto de internal/demo: allowlist GET/HEAD, login/Portal/MiTORO/Cerebro/guía/booking-assist y solo APIs contexto+atención autenticadas; unknown, legacy, writer, ServerActions y otros runtimes denegados incluso con flags heredados true. Cache private/no-store y redirecciónnext endurecida. Config pública canónica, rpc_v1 y lecturas Brain/Owner Attention; legacy/write false. Protección Vercel all_except_custom_domains no sustituye auth/RLS. El candidato se prueba antes de merge y asociación. Publicar no reactiva worker/MCP/cron.
+**Widget:** snippet público exacto leído en widget6 Kross12/10: jquery3.4.1 aspnetcdn + data.krossbooking.com/widget/v6/dreamcatcherhotel/6.{css,js}, div.kross-container. UI Kross declara versión9; los paths son los que entrega el proveedor. Sandbox sin acceso a cookies/DOM/almacenamiento TORO. Sin cambios de configuración PMS ni compras/reservas. Exige prueba visual/carga/rango/niños/varias habitaciones; motor completo siempre disponible como fallback.
+**TARGET conservados:** datos PMS/OTA vivos y reconciliación por reserva, bancos y comprobantes/caja contable, tareas persistentes/de equipo, directorio completo verificado, PeopleSSO/GoogleOAuth, media/AI/traducción integrada, agentes con heartbeat real, preciosSP04, capacitación/mercadeo/reportes automáticos, Chrome/OpenClaw/TTLock/Home móvil y revisión semanal. Ninguno se afirma terminado por enlace o render. Sin capacitación o autonomía ficticia.
+**Verificación:** pruebas de rutas/roles/origen/contexto/finanzas, lint/TypeScript/build, QA real local o preview y móvil/PC, negativa anónima y legacy, SHA exacto desplegado y HTTP/TLS del dominio. Sin PII/cookies/secretos en recibos. No repetir inventarios generales.
+**NEXT de esta unidad:** terminar build/QA, preview de rama exacta, PR/merge y release autenticado; registrar evidencia, cualquier límite comercial y un solo siguiente paso en checkpoint existente.

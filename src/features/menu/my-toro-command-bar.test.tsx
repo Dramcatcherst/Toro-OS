@@ -143,7 +143,7 @@ describe("MyToroCommandBar alternative sequences", () => {
     expectAlternativeA(view);
     view.submit(query);
     expect(harness.push).toHaveBeenCalledExactlyOnceWith(
-      query === "proyectos" ? "/my-toro?focus=proyectos" : "/my-toro",
+      query === "proyectos" ? "/my-toro?focus=proyectos#focus-heading" : "/my-toro",
     );
     expectNoAlternative(view);
     view.submit("ayuda");
@@ -174,7 +174,7 @@ describe("MyToroCommandBar alternative sequences", () => {
     expectAlternativeA(view);
     view.submit("continuar");
     expectNoAlternative(view);
-    if (hasNext) expect(harness.push).toHaveBeenCalledExactlyOnceWith("/my-toro?focus=decisiones");
+    if (hasNext) expect(harness.push).toHaveBeenCalledExactlyOnceWith("/my-toro?focus=decisiones#focus-heading");
     else {
       expect(view.html()).toContain("No hay otra lectura disponible ahora.");
       expect(harness.push).not.toHaveBeenCalled();

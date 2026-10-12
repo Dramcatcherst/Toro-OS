@@ -1,4 +1,5 @@
 import "server-only";
+import { assertInternalRuntime } from "@/lib/server/public-demo";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -136,6 +137,7 @@ export async function claimNextToroExecutionRun(
     leaseSeconds?: number;
   },
 ): Promise<ToroWorkerRun | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_claim_execution_run_v1", {
     p_org_id: input.orgId,
     p_worker_id: input.workerId,
@@ -161,6 +163,7 @@ export async function claimToroExecutionRunById(
     leaseSeconds?: number;
   },
 ): Promise<ToroWorkerRun | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_claim_execution_run_by_id_v1",
     {
@@ -190,6 +193,7 @@ export async function renewToroExecutionLease(
     leaseSeconds?: number;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_renew_execution_lease_v1", {
     p_run_id: input.runId,
     p_worker_id: input.workerId,
@@ -217,6 +221,7 @@ export async function transitionToroExecutionRun(
     errorRedacted?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_transition_execution_run_v1", {
     p_run_id: input.runId,
     p_worker_id: input.workerId,
@@ -243,6 +248,7 @@ export async function resolveFailedToroExecutionRun(
     retryAt?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_resolve_failed_execution_run_v1",
     {
@@ -280,6 +286,7 @@ export async function completeToroExecutionRun(
     };
   },
 ): Promise<string | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_complete_execution_run_v1",
     {
@@ -341,6 +348,7 @@ export async function appendToroExecutionReceipt(
     errorRedacted?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase
     .from("toro_execution_receipts")
     .insert({

@@ -16,6 +16,19 @@ import type {
   CanonicalSourceAuthoritySummary,
 } from "./canonical-read";
 
+export type CanonicalBrainProjectionOptions = {
+  purpose?: "visual" | "search";
+};
+
+// These are the existing canonical-read.ts query bounds, not business totals.
+export const CANONICAL_BRAIN_SEARCH_READ_LIMITS = [
+  { source: "public.organizations", limit: 1 },
+  { source: "operations.projects", limit: 25 },
+  { source: "integrations.source_authority_rules", limit: 25 },
+  { source: "integrations.domain_governance", limit: 25 },
+  { source: "integrations.kross_snapshot_health", limit: 25 },
+] as const;
+
 const PROJECT_LIMIT = 5;
 const KROSS_LIMIT = 5;
 const AUTHORITY_LIMIT = 4;
@@ -213,11 +226,14 @@ function sourceSummary(
 
 export function buildCanonicalBrainProjection(
   slice: CanonicalBrainReadSlice,
+  options: CanonicalBrainProjectionOptions = {},
 ): BrainProjection {
-  const projects = slice.projects.slice(0, PROJECT_LIMIT);
-  const kross = slice.krossHealth.slice(0, KROSS_LIMIT);
-  const authority = slice.sourceAuthority.slice(0, AUTHORITY_LIMIT);
-  const governance = slice.domainGovernance.slice(0, GOVERNANCE_LIMIT);
+  const search = options.purpose === "search";
+  // Search uses the bounded authorized read, before visual highlights are cut.
+  const projects = slice.projects.slice(0, search ? 25 : PROJECT_LIMIT);
+  const kross = slice.krossHealth.slice(0, search ? 25 : KROSS_LIMIT);
+  const authority = slice.sourceAuthority.slice(0, search ? 25 : AUTHORITY_LIMIT);
+  const governance = slice.domainGovernance.slice(0, search ? 25 : GOVERNANCE_LIMIT);
 
   const root: BrainNode = {
     id: slice.organization.ref,
@@ -281,6 +297,7 @@ export function buildCanonicalBrainProjection(
   }
 
   const partial =
+    search ||
     slice.projects.length > PROJECT_LIMIT ||
     slice.krossHealth.length > KROSS_LIMIT ||
     slice.sourceAuthority.length > AUTHORITY_LIMIT ||
@@ -301,9 +318,11 @@ export function buildCanonicalBrainProjection(
     edges,
     sources: [...sourceMap.values()],
     partial,
-    degradedReason: partial
-      ? "Focused projection intentionally capped; expand through governed detail views."
-      : undefined,
+    degradedReason: search
+      ? "Search covers only the bounded authorized read; total authorized coverage is unknown."
+      : partial
+        ? "Focused projection intentionally capped; expand through governed detail views."
+        : undefined,
   };
 }
 

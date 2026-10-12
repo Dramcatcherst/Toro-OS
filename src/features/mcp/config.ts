@@ -1,4 +1,5 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { getSupabasePublicConfig } from "@/lib/supabase/env";
 
@@ -8,7 +9,7 @@ export type ToroMcpRuntimeConfig = {
 };
 
 export function isToroMcpEnabled() {
-  return process.env.TORO_MCP_ENABLED === "true";
+  return internalCapabilityEnabled("TORO_MCP_ENABLED");
 }
 
 export function getToroMcpRuntimeConfig(): ToroMcpRuntimeConfig | null {
