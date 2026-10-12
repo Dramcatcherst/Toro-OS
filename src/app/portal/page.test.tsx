@@ -3,9 +3,10 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { authorizedContext } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
 
-const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn() }));
+const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn() }));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
+vi.mock("@/features/attention/owner-attention-server", () => ({ ownerAttentionReadEnabled: mocks.attentionEnabled, loadOwnerAttentionProjection: mocks.attention }));
 vi.mock("@/lib/server/public-demo", () => ({ isPublicDemo: mocks.publicDemo }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
 import PortalPage from "./page";
@@ -15,7 +16,7 @@ function view(): ToroRealMenuView {
     sourceReadiness: null, profileSummary: [], capabilityNotes: {}, capabilityAlternatives: {},
     focusableCapabilities: [], availableSubmenus: {}, focus: null, state: "resolved" };
 }
-beforeEach(() => vi.resetAllMocks());
+beforeEach(() => { vi.resetAllMocks(); mocks.attentionEnabled.mockReturnValue(false); });
 it("keeps the public demo from resolving any private navigation", async () => {
   mocks.publicDemo.mockReturnValue(true);
   mocks.redirect.mockImplementation(() => { throw new Error("redirect:/brain"); });
@@ -75,6 +76,38 @@ it("presents the canonical structure without rendering fabricated links for pend
   expect(html.match(/MÓDULO \d\d/g)).toHaveLength(12);
   expect(html).toContain("MÓDULO 11");
   expect(html).not.toContain("focus=finance");
-  expect(html).not.toContain("<button");
+  expect(html).toContain('role="tablist"');
   expect(html).not.toContain("Santa Toro");
+});
+
+it("does not read priorities when disabled or expose them to an auditor", async () => {
+  mocks.menu.mockResolvedValue(view());
+  await PortalPage();
+  expect(mocks.attention).not.toHaveBeenCalled();
+  mocks.attentionEnabled.mockReturnValue(true);
+  const data = view(); data.context.membership!.roles = ["AUDITOR"];
+  mocks.menu.mockResolvedValue(data);
+  const html = renderToStaticMarkup(await PortalPage());
+  expect(mocks.attention).not.toHaveBeenCalled();
+  expect(html).not.toContain('id="portal-pending-heading"');
+});
+
+it("sanitizes priority read failures instead of presenting zero pending tasks", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.attentionEnabled.mockReturnValue(true);
+  mocks.attention.mockRejectedValue(new Error("private diagnostic"));
+  const html = renderToStaticMarkup(await PortalPage());
+  expect(html).toContain("No se pudieron comprobar las prioridades");
+  expect(html).not.toContain("private diagnostic");
+  expect(html).not.toContain("0 pendientes");
+});
+
+it("names favorite and catalog references separately", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({ state: "ready", links: [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }] });
+  const html = renderToStaticMarkup(await PortalPage());
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+  expect(new Set(ids).size).toBe(ids.length);
+  expect(html).toContain('aria-labelledby="favorite-LINK-086"');
+  expect(html).toContain('aria-labelledby="catalog-LINK-086"');
 });

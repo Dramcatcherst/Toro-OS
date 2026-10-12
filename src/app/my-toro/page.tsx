@@ -109,7 +109,7 @@ export default async function MyToroPage({
 
   return (
     <>
-    {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
+    {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" includeTools={hotelAllowed} scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
     <main id="portal-content" tabIndex={-1} className="min-h-screen bg-[#0d1728] text-slate-100">
       <div className={styles.content}>
         <header className="flex flex-wrap items-center justify-between gap-3">

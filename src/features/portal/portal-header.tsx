@@ -1,29 +1,40 @@
 import Link from "next/link";
-import { ArrowUpRight, LayoutGrid, Network, UserRound } from "lucide-react";
+import { ArrowUpRight, Building2, Home, Network, UserRound, Wrench } from "lucide-react";
+import { PortalClock } from "./portal-clock";
 import styles from "./portal.module.css";
 
-export function PortalHeader({ current, scopeLabel = "Organización activa" }: {
+export function PortalHeader({ current, scopeLabel = "Organización activa", includeTools = current === "tools" }: {
   current: "overview" | "my-toro" | "brain" | "tools";
   scopeLabel?: string;
+  includeTools?: boolean;
 }) {
   const links = [
-    { key: "overview", href: "/portal", label: "Portal", Icon: LayoutGrid },
+    { key: "overview", href: "/portal", label: "Inicio", Icon: Home },
     { key: "brain", href: "/brain", label: "Cerebro", Icon: Network },
+    { key: "tools", href: "/my-toro/herramientas", label: "Herramientas", Icon: Wrench },
     { key: "my-toro", href: "/my-toro", label: "Mi espacio", Icon: UserRound },
   ];
   return <header className={styles.header}>
     <a className={styles.skipLink} href="#portal-content">Saltar al contenido</a>
     <div className={styles.headerInner}>
       <Link href="/portal" prefetch={false} className={styles.brand} aria-label="TORO · Portal empresarial">
-        <strong>TORO</strong><span>Tu Portal</span>
+        <strong>TORO</strong><span>OPERATION SYSTEM</span>
       </Link>
-      <p className={styles.scope}><span aria-hidden="true" className={styles.scopeDot} />{scopeLabel}</p>
+      <Link href="/my-toro#mi-cuenta" prefetch={false} className={styles.scope} aria-label={`Mi contexto: ${scopeLabel}`}>
+        <Building2 size={16} aria-hidden="true" />{scopeLabel}
+      </Link>
+      <PortalClock />
       <nav aria-label="Portal TORO" className={styles.navigation}>
-        {links.map(({ key, href, label, Icon }) => <Link key={key} href={href} prefetch={false}
-          aria-current={current === key || (current === "tools" && key === "my-toro") ? "page" : undefined}>
+        {links.filter(link => includeTools || link.key !== "tools").map(({ key, href, label, Icon }) => <Link key={key} href={href} prefetch={false}
+          aria-current={current === key ? "page" : undefined}>
           <Icon size={17} aria-hidden="true" />{label}
         </Link>)}
       </nav>
+    </div>
+    <div className={styles.agentRail} aria-label="Especialistas TORO: sin señal de actividad">
+      <span className={styles.agentCaption}>Agentes</span>
+      {["TORO", "TERE", "RICO", "FIONA", "SKY", "SOBRESITO"].map(name => <span key={name} className={styles.agent}><i aria-hidden="true" /><span className={styles.agentFull}>{name}</span><abbr className={styles.agentShort} title={name}>{name.slice(0, 2)}</abbr></span>)}
+      <span className={styles.agentSignal}>Sin señal</span>
     </div>
   </header>;
 }
