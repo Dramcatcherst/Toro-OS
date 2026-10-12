@@ -75,7 +75,7 @@ it("does not offer owner attention to an auditor through the Dinero fallback", (
   expect(resolvePortalModules(view)[6].href).toBe("/my-toro/herramientas#equipo");
 });
 
-it("does not offer a staff guide to a reception profile without directory access", () => {
-  const view = portalFixture(); view.context.membership!.roles = ["RECEPCION"];
+it("does not offer a staff guide to an employee profile without directory access", () => {
+  const view = portalFixture(); view.context.membership!.roles = ["EMPLEADO"];
   expect(resolvePortalModules(view)[6].href).toBeNull();
 });
