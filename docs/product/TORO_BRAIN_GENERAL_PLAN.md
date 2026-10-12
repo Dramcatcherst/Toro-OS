@@ -4946,3 +4946,138 @@ TORO coordina y mejora; TERE pre-llegada/bienvenida/checkin/estancia/checkout/po
 ### Criterio de diseño y entrega
 Referencia visual nueva conserva dirección aprobada; render es conceptual y estados/marks reproducidos no prueba de conexión ni bytes. Assets originales de seis marcas actuales hashesPASS; TORO maestro sigue ausente. Nuevos logos (WhatsApp/Alegra/Chrome) requieren origen y bytes exactos antes de implementación. No regresión de los12módulos/gates/baseline641/SQL aplicado. Datos operativos y privados no se incorporan al render. Texto>=12px, botones44px, foco/contraste4.5:1, tabs accesibles/teclado y sin desborde320px, día/noche, reduced-motion; pruebas futuras del delta y componentes compartidos.
 **Única siguiente unidad:** implementar localmente la navegación/cabecera/Inicio y acceso a Herramientas de esta dirección aprobada, con estados honestos de capacidades pendientes, conservando gates/RPC; probar su delta. Caja/reportes/feeds/envíos se mantienen TARGET hasta implementación y verificación específicas, sin inventar funcionamiento. Antes de rebuild detener proceso propio por marcador stop y esperar cierre. Sin SQL, permisos, producción, dependencias, push/PR/merge.
+
+## TORO V1: integración, sesión común y 100 refinamientos — 11/10/2026
+**Autoridad y estado:** solicitud directa de Mauricio; Human Experience sección23 y contratos Identity/People/Tools/Comms/Revenue/Finance. Diseño previo aprobado; este lote refina antes de construir. Todos los100 criterios siguientes son TARGET, no100funciones activadas. Las pantallas son subviews de los módulos00–11 existentes. No otra base, identidad, scheduler, app o agente. Producto universal con perfiles por negocio y Personal; Dreamcatcher sigue proving ground, nuevo proyecto no equivale a nuevo negocio habilitado.
+**Cambios de dirección:** marca tipográfica TORO con descriptor pequeño OPERATION SYSTEM solicitado; contexto/proyecto arriba; DreamTeam dentro de Personas con sesión común; barra multimodal; habitaciones/precio del día y cotizador; Precios/SP04; Finanzas completa con CRC/USD simultáneos desplegables; Reportes; Capacitación/Mejora; Google/Chrome y revisión semanal subordinada. No habilitar autonomía por estética.
+
+### Evidencia puntual y límites vigentes
+- Login Portal usa Supabase; copy actual admite segundo login DreamTeam. Personas ofrece guía/enlace con sesión propia. TORO_PEOPLE_DREAMTEAM_INTEGRATION.md y TORO_PEOPLE_CODE_MIGRATION_V1.md declaran identidad/contexto comunes como destino; SSO recíproco NO verificado. Importar lógica/vistas People bajo shell/IdentityTORO, comenzando lectura propia horario/asistencia/solicitudes. No copiar cookies/tokens entre sitios, iframe con login alterno ni grants implícitos. Probar entrada desde ambos, expiración/revocación/cierre, roles/RLS y segundo usuario antes de retirar legacy. No modificarSQL aplicado.
+- WidgetKross: lista autenticada contiene2–7; candidatosTORO ES6 y EN7; ES6 leído en /admin/widget/view/id/6, motor dreamcatcherhotel, versión9. Instalación publica CSS/JS https://data.krossbooking.com/widget/v6/dreamcatcherhotel/6.css y6.js, div.kross-container y dependenciajQuery3.4.1. No se guardó configuración ni se hizo búsqueda/reserva. Integración candidata debe aislar script/estilos/CSP según instrucciones y probar teclado/responsive/conflictos, destino y ausencia de writers; no añadir dependencia legacy al core sin evaluación. URL administrativa no es widget público ni certifica resultado embebido.
+- SP04 localizado actualmente en C:\Users\PERSONAL\OneDrive\Documentos\ChatGPT\New project\dreamcatcher-revenue\docs\SP04-RESULTADOS.md. Implementación local previa de observación/calendario/evidencia/paridad con límites comerciales; no aceptación live actual. Conservar sus observaciones/hash/fuentes, no reejecutar344tests ni inventar otro rate-shopper. Puente Revenue/Agencies en docs/superpowers/plans/2026-09-14-toro-os-revenue-bridge.md es otro alcance relacionado, no sustituyeSP04. Vincular como Precios en Clientes/Crecimiento/Dinero con identidad común; URL publicada/SSO/adapter actual pendientes de verificación.
+- Chrome: conector existente permite lectura/captura seleccionada, no browser completo dentro de una web. Target Portal=panel nativo con fuente/fecha/resumen/abrir original; evolución posible Side PanelTORO junto a Chrome, primero evaluar extensión existente. GoogleLogin es identidad; Gmail/Drive/Calendar requieren autorización y scopes separados. Iframes/OAuth/controles del proveedor se respetan.
+- Correo reserva=señal. Usar canal/binding/worker existentes, historialincremental/idempotencia y fuenteKross; si falta señal diagnosticar y preparar notificaciones mínimas, sin activar scopes/reenvíos/settings/suscripciones ahora. APIKross en un par de meses es intención FUTURE condicionada a contrato/costos/permisos/prueba, no API ya contratada ni fecha programada.
+- Revisión semanal=TARGET del flujo existente: evidencias/cobertura/costos/incidencias/UX, propuesta priorizada, pruebas/dryrun y rollback. Cambios sensibles conservan aprobación. No Codexheartbeat ni scheduler nuevo en este lote.
+
+### 100 criterios adicionales de diseño y aceptación
+Identidad y navegación — TORO Identity/Human Experience
+- [V1-001] Una identidad TORO por persona, sin cuentas duplicadas por herramienta.
+- [V1-002] Entrada DreamTeam permite llegar al Portal con sesión común verificada.
+- [V1-003] Entrada Portal permite abrir Personas sin segundo login verificado.
+- [V1-004] Cierre, expiración y revocación coherentes en ambas entradas.
+- [V1-005] Selector solo ofrece ámbitos/proyectos con autorización comprobada.
+- [V1-006] Crear proyecto dentro del ámbito permitido, sin crear negocio/grants implícitos.
+- [V1-007] Cambio de ámbito limpia datos, búsqueda y adjuntos previos.
+- [V1-008] Personal privado mantiene herramientas y archivos fuera del hotel.
+- [V1-009] Favoritos individuales por ámbito, catálogo completo siempre localizable.
+- [V1-010] Menú móvil por rol preserva00–11 y rutas actuales.
+Comando multimodal — TORO Tools/Comms/Actions
+- [V1-011] Barra única acepta solicitud o búsqueda y explica la intención detectada.
+- [V1-012] Adjuntar archivo muestra nombre/tipo/tamaño y destino antes de registrar.
+- [V1-013] Adjuntar foto ofrece interpretación con incertidumbres y evidencia original.
+- [V1-014] Audio muestra transcripción editable antes de preparar una acción.
+- [V1-015] Confirmación visual separa interpretación, borrador y ejecución.
+- [V1-016] Pedir reserva recoge fechas/ocupantes y confirma precio vigente en Kross.
+- [V1-017] Crear tarea reutiliza objeto canónico con responsable/plazo/ámbito.
+- [V1-018] Acciones no permitidas muestran límite y alternativa segura.
+- [V1-019] Solicitudes largas muestran progreso/estado real y posibilidad de cancelar.
+- [V1-020] Recibo permite abrir evidencia y resultado del mismo objeto.
+Operación hotel — TORO Operaciones/Clientes/Activos
+- [V1-021] Habitaciones vacías por fecha, identidad y disponibilidad Kross fresca.
+- [V1-022] Tarifa del día con ocupación/régimen/moneda/impuestos/condiciones visibles.
+- [V1-023] Habitaciones limpias, ocupadas, bloqueadas y fuera de servicio separadas.
+- [V1-024] Entradas ordenadas por hora/preparación, previstas distintas de completadas.
+- [V1-025] Salidas distinguen horario previsto, salida real y relevo de aseo.
+- [V1-026] Nuevas reservas filtradas por creación, con cancelaciones/no-show separados.
+- [V1-027] Notas de reserva mantienen autor/fecha/restricción y pendientes de lectura.
+- [V1-028] Aseo muestra asignación, inspección y evidencia antes de declarar habitación lista.
+- [V1-029] Mantenimiento vincula habitación/incidente/prioridad y cierre con evidencia.
+- [V1-030] Relevo de turno agrupa cobros/notas/preparación sin duplicar tareas.
+Cotización y precios — TORO Clientes/Crecimiento
+- [V1-031] Reutilizar widgetsKross ES6/EN7 existentes, sin crear duplicados.
+- [V1-032] Fechas en dos columnas móvil cuando mantenga lectura y44px.
+- [V1-033] Huéspedes incluye adultos/niños/edades por habitación cuando aplique.
+- [V1-034] Resultado distingue precio total/noches/impuestos/política/disponibilidad.
+- [V1-035] Búsqueda cotizador no se presenta como reserva confirmada.
+- [V1-036] IncorporarSP04 y su evidencia al ámbito correcto sin nueva fuente de tarifas.
+- [V1-037] Paridad OTA compara mismo producto/fecha/ocupantes/régimen/cancelación/promoción.
+- [V1-038] Diferencia de moneda/impuestos/extras explica variación antes de alertar.
+- [V1-039] Cada reserva nueva genera revisión idempotente de tarifa/cargos/condiciones.
+- [V1-040] Precio dudoso produce excepción, nunca ajuste de canal automático sin autoridad.
+Finanzas y cierre — TORO Dinero/FIONA
+- [V1-041] Dinero contiene Bancos/Facturación/Cobros/Gastos/Comprobantes/Caja/Conciliación.
+- [V1-042] CRC yUSD simultáneos en resumen, detalle desplegable por moneda.
+- [V1-043] Conteo físico usa denominaciones/cantidades/subtotales y validación decimal.
+- [V1-044] Esperado usa fondo inicial y movimientos efectivos documentados por moneda.
+- [V1-045] Diferencia desconocida si falta esperado; cero solo comprobado.
+- [V1-046] Cada comprobante enlaza movimiento/reserva/proveedor y original custodiado.
+- [V1-047] Cobros previstos, realizados, pendientes y liquidados no se mezclan.
+- [V1-048] Cierre revisa tarjeta/efectivo/transferencia/OTA y recibos sin doble conteo.
+- [V1-049] SaldoAlegra rotulado contable; banco/procesador prueban efectivo disponible.
+- [V1-050] Mes parcial y conciliación pendiente conservan corte/moneda/responsable.
+Personas y aprendizaje — TORO People/Knowledge
+- [V1-051] DreamTeam aparece como Personas dentro del shellTORO.
+- [V1-052] Mi turno muestra horario/autorización/contexto vigente.
+- [V1-053] Asistencia propia conserva marcaciones originales y correcciones auditables.
+- [V1-054] Jefatura ve cobertura de equipo dentro del rol permitido.
+- [V1-055] Solicitudes y aprobaciones usan flujoPeople existente.
+- [V1-056] Nómina/préstamos/liquidaciones quedan restringidos y fuera de recepción.
+- [V1-057] Capacitación por rol enlaza SOP/documento fuente vigente.
+- [V1-058] Práctica guiada usa escenarios, sin generar operación real.
+- [V1-059] Evaluación registra evidencia de aprendizaje, no presume competencia.
+- [V1-060] Lecciones por incidentes alimentan mejora sin exponer datos privados.
+Datos, catálogo y reportes — TORO Data/Tools
+- [V1-061] Buscar datos mediante vistas/consultas autorizadas, no acceso irrestricto a tablas.
+- [V1-062] Cada resultado informa fuente/fecha/cobertura y objeto canónico.
+- [V1-063] Correcciones de datos conservan autor/evidencia y autorización aplicable.
+- [V1-064] Catálogo por tarea/programa/ámbito agrupa destinos principales y secundarios.
+- [V1-065] Linkdesconocido se presenta pendiente, sin botón muerto niURL inventada.
+- [V1-066] Reportes Operación/Finanzas/People/Comercial/Sistemas conservan filtros.
+- [V1-067] Informe diario abre pendientes, responsable, próximo paso y fuente.
+- [V1-068] Informe semanal distingue avance preparado/ejecutado/verificado/beneficio.
+- [V1-069] Exportación respeta datos visibles/moneda/fecha y sensibilidad.
+- [V1-070] Gráficos tienen unidad/definición/corte; sin fuente no muestran números.
+Google y Chrome — TORO Comms/Tools/Systems
+- [V1-071] Gmail autorizado alimenta señales/evidencia, no autoridadPMS.
+- [V1-072] Calendar muestra agenda por cuenta/ámbito y conserva permisos.
+- [V1-073] Drive conserva originales/ownership y referencias, sin copias paralelas innecesarias.
+- [V1-074] Sheets/Docs complementan reportes/documentos bajo autoridad existente.
+- [V1-075] Contacts enlaza identidad corroborada; teléfono solo no identifica empleado.
+- [V1-076] Tasks/Keep se evalúan frente al gestor existente antes de crear listas.
+- [V1-077] Googlelogin separado de autorización de Gmail/Drive/Calendar.
+- [V1-078] Chrome captura página/selección elegida conURL/fecha/ámbito y minimización.
+- [V1-079] Portal presenta panelnativo yAbriroriginal cuando embebido no es soportado.
+- [V1-080] SidePanelChrome futuro evalúa extensión existente y acceso temporalactiveTab.
+Comunicación proactiva — TORO TERE/SKY
+- [V1-081] Buzón/binding existente detecta nueva reserva conhistorialincremental.
+- [V1-082] Señal perdida/vencida recupera sincronización y evidencia, no silencio indefinido.
+- [V1-083] Ausencia de notificaciones diagnostica y prepara activaciónmínima revisable.
+- [V1-084] Mensaje entrante pegado genera respuesta editable conidioma/tono.
+- [V1-085] Audio huésped genera transcripción y borrador; datos sensibles protegidos.
+- [V1-086] Traducción muestra original/resultado; copiar no equivale a enviar.
+- [V1-087] Prellegada/bienvenida/salida mantienen consentimientos/ventana/recibo/no-reenvío.
+- [V1-088] Reviews/redes usan contexto verificado y aprobación de publicación aplicable.
+- [V1-089] Promociones verifican precio/margen/capacidad y autoridad antes de aplicarse.
+- [V1-090] WhatsApp/WeSpeak/Portal conservan el mismo objeto y límites por canal.
+Calidad, densidad y mejora — TORO Human Experience/Systems
+- [V1-091] Sesión común se acepta con segundo usuario real y pruebas negativas de aislamiento.
+- [V1-092] Franjaagentes informativa pequeña; actividad solo por evento vigente yTTL.
+- [V1-093] Doscolumnas móviles dependen del ancho real; sinreordenarDOM ni textos diminutos.
+- [V1-094] Día/noche mantienen contraste/foco y estados textuales.
+- [V1-095] Adjuntos/tabs/modales soportan teclado y objetivos44px.
+- [V1-096] Movimiento160ms o menos respeta reducedmotion; nada esencial depende de animación.
+- [V1-097] Revisiónsemanal existente evalúa incidencias/cobertura/costos/UX con evidencia.
+- [V1-098] Cada mejora prepara hipótesis/delta/prueba/costo/rollback antes de ejecución.
+- [V1-099] Impacto, fallos y beneficio medidos guían mejoras; no actividad decorativa.
+- [V1-100] Cierre conserva641baseline/SQL/fuentes y registra una siguiente unidad verificable.
+
+### Criterio y continuidad
+No crear100tareas/proyectos ni ejecutar100cambios técnicos. Estos100criterios orientan el primerPortal y se agrupan en capacidades existentes; diferencias se resuelven por autoridad/permisos. Primera implementación visual se mantiene acotada; fuentes/SSO/feeds/escrituras tienen aceptación propia. QA de render no certifica UI. LogoTORO exacto sigue faltante; descriptor solicitado no autoriza marca sustitutiva. APIKross y revisiónsemanal siguen FUTURE/TARGET sin suscripción/costos/settings/schedules.
+**Siguiente unidad única:** cerrar el contrato técnico de sesión común Portal/Personas y su primer alcance de lectura antes de implementar integración, reutilizando Identity/People y sin migrarSQL o retirarDreamTeam. Terminado cuando se identifica la autoridad/session flow, paridad y criteriosRLS/expiración/segunda identidad y rollback en el documentoPeople vigente. La implementación no empieza con cuentas/grants implícitos.
+
+### Fuentes oficiales de integración y cierre de diseño — 12/10/2026
+- Chrome Side Panel: https://developer.chrome.com/docs/extensions/reference/api/sidePanel ; activeTab: https://developer.chrome.com/docs/extensions/develop/concepts/activeTab . PanelTORO junto a Chrome es evolución; capacidades de extensión actual no verificadas.
+- Política de embebido del proveedor: https://w3c.github.io/webappsec-csp/#directive-frame-ancestors . No sortearX-Frame-Options/CSP ni copiar cookies. Widgets oficiales requieren prueba propia.
+- Google identidad/autorización: https://developers.google.com/identity/gsi/web/guides/migration#authentication_and_authorization ; OAuthservidor: https://developers.google.com/identity/protocols/oauth2/web-server#authorization-errors . Login no concede scopesWorkspace ni autoriza browserembebido.
+- Gmailpush: https://developers.google.com/workspace/gmail/api/guides/push ; Calendarpush: https://developers.google.com/workspace/calendar/api/guides/push ; Drivepush: https://developers.google.com/workspace/drive/api/guides/push . Señales referencian cambios, no payloadreserva completa; renovaciones ysincronización de recuperación conservan canales/worker existentes. Gmailwatch renovar antes de7días; no activado en diseño.
+Revisión acotada paralela confirmó contratoPeople/sesión separada actual y opcionesChromeGoogle. Sin consultarpersonas, crearagentes durables ni ampliarpermisos.100criterios contados yúnicos; código intacto. SSO/feed/recepciónreal/ejecuciónsemanal no certificados.
