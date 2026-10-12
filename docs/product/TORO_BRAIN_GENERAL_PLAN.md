@@ -5294,3 +5294,87 @@ Fuentes oficiales consultadas 12/10/2026:
 Fuente local actual: src/features/mcp/server.ts y contratos TORO_CHATGPT_MCP_CONTRACT_V1.md / TORO_AUTONOMY_AND_ACTION_MODEL_V1.md. Fuente oficial: https://developers.openai.com/plugins/build/mcp-server . Si se utiliza API para IA del Portal, su facturación es independiente de ChatGPT: https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform . Vías OAuth de uso del plan ChatGPT requieren elegibilidad y evaluación específica; no se presume cobertura de usuarios/runtime TORO: https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server . Nada contratado/activado.
 
 **Siguiente unidad conservada:** contrato de sesión común Portal–Personas y primer alcance de lectura, limitado a lo necesario. No resolver todos los conectores para empezar esa preparación. Todavía no construir.
+
+## Dirección aprobada y paquete de inicio del Portal — 12/10/2026
+**Autoridad:** Mauricio aprueba las recomendaciones de simplificación y pide renders finales empresariales, preparación para crear TORO, Google/herramientas y continuidad con CONTINUAR. Su aceptación cubre decisiones de diseño y preparación reversible; este lote no publica, cambia DNS, contrata servicios, activa permisos ni modifica fuentes operativas. Se mantiene un TORO, módulos 00–11 y Dreamcatcher como primera implementación. No onboarding externo por este paquete.
+
+**Decisión aprobada:** Portal reutiliza los servicios actuales; MCP permanece adapter externo opcional, inicialmente lectura, sin requisito para la primera interfaz. IA por necesidad operativa; lógica normal para fechas/tareas/caja; Codex para desarrollar y verificar cambios. No navegador completo, bases/colas nuevas ni autoedición de producción. La sección de simplificación anterior deja de ser mera propuesta en cuanto a esta dirección, pero ninguna capacidad se activa por ello.
+
+### CURRENT: verificación acotada de dominio y Google
+
+| Elemento | Lectura de este lote | Lo que no prueba |
+|---|---|---|
+| Dominio hotel | DNS ns1/ns2.vercel-dns.com; web /es HTTP200; MX smtp.google.com | Autoridad para cambiar zona/correo o disponibilidad continua |
+| toro.dreamcatcherhotel.com | Resuelve a Vercel y devuelve HTTP404; no asociado al proyecto canónico inspeccionado | Portal publicado, binding, certificado del nuevo Portal o acceso privado |
+| Proyecto TORO | toro-pr11-preview, prj_nxerFw9ciNews6tUMAah3GAlAJzs; equipo dreamcatcher-s-projects, team_zUbLBlOtoQBHDfGMYpDlg0XO | Aprobación de despliegue, plan comercial o presupuesto |
+| Producción registrada | dpl_6kfxNwdiEbfjijCLGLNFtmHBUrrR; READY; main; SHA f1f218f691daecce23db00e60aa9b5c577758e93 | Nuevo Portal, revisión de seguridad, pruebasAuth/RLS o código de esta rama |
+| Protección Vercel | all_except_custom_domains | Protección de un nuevo dominio personalizado; login propio es requisito |
+| Gmail/Calendar/Contacts/Drive en ChatGPT | Perfiles actuales corresponden a admin@dreamcatcherhotel.com | Conexión durable del Portal, delegación de dominio, accesoHome o permisos de escritura |
+| Calendar | Un principal editable y ocho suscripciones de lectura; respuesta sin paginación pendiente | Eventos leídos, tareas sincronizadas, nueva agenda de operación o cobertura de turnos |
+
+DNS del subdominio parece proceder de la resolución general de la zona; no inferir asociación por resolver. No se inspeccionaron correos, contactos individuales, archivos ni huéspedes. El deployment registrado es otra evidencia, no el artefacto que deba publicarse por defecto. No mezclar último preview de otra rama con producción; seleccionar SHA explícito antes de cualquier publicación.
+
+### TARGET: publicación simple en toro.dreamcatcherhotel.com
+
+Reutilizar proyecto TORO existente; conservar proyecto web Dreamcatcher aparte. No comprar dominio, transferir registro, mover nameservers ni crear otro hosting para este Portal. Con DNS Vercel, la asociación y verificación podrían bastar; valores exactos se obtienen del proyecto cuando se prepare la asociación. No introducir IP/CNAME universales ni --force para pisar otra asociación.
+
+Secuencia de publicación, aún no ejecutada:
+1. Seleccionar el SHA del Portal reconciliado con main y verificar preview, ambos temas/móvil/PC y alcance real.
+2. Verificar autorización propia: anónimo, sesión vencida/revocada, usuario sin membresía, contexto ambiguo y acceso cruzado fallan cerrado. La protección Vercel actual excluye custom domains.
+3. Registrar binding anterior, proyecto/equipo/SHA/deployment/entorno; confirmar plan comercial y presupuesto existente. No hubo lectura de facturación; no prometer costo cero. Revisar cobertura comercial actual, no activar un upgrade.
+4. Preparar orígenes/callbacks/redirecciones/cookies del dominio exacto. SITE_URL compartido puede afectar recuperación/otras apps: revisar impactos, sin sustituirlo a ciegas.
+5. Asociar solo toro.dreamcatcherhotel.com al proyecto/commit aprobado en la ventana autorizada. Usar recomendaciones reales si pide DNS/TXT; conservar apex/www/MX/TXT/nameservers.
+6. Verificar binding, DNS, propiedad y HTTPS; login/retorno/logout/revocación/permisos; comprobar web pública y correo sin alterar datos.
+7. Revertir solo nueva asociación/configuración o restaurar deployment previo aprobado si falla. No eliminar proyecto/web ni tocar SQL.
+
+Cookies preferentemente limitadas al hostname TORO, sin compartir con toda dreamcatcherhotel.com. Personas portado al mismo origen puede evitar segundo login; el DreamTeam legado conserva acceso hasta paridad. Google provider callback de Supabase y callback de la app son distintos; sus URLs exactas continúan pendientes. No afirmar /auth/callback implementada. El modo demo/fail-closed y controles legacy vigentes se conservan; dominio no habilita modo interno/flags/read/write.
+
+### Google y herramientas: mapa listo para implementación gradual
+
+| Servicio | Primer uso útil y acotado | Integración posterior y aceptación |
+|---|---|---|
+| Google login | Entrada opcional, usuario canónico y contexto | OAuth oficial Supabase, elegibilidad/vínculo seguro/retorno; no otorgar membresía por email/dominio |
+| Gmail hotel | Señal de reserva/consulta y evidencia al caso | Reutilizar ingesta/cursor/worker; evitar duplicados, recuperar gaps y verificar primer evento |
+| Calendar | Agenda del contexto y acceso al calendario actual | Lectura por permiso, filtros CR/operación y dedupe de feriados en la vista; no borrar suscripciones ni confundir evento con turno |
+| Drive/Docs/Sheets | Abrir documentos/SOP/soportes originales permitidos | Mantener ownership/ACL/originales; lectura y edición son alcances distintos, sin duplicarDropbox |
+| Contacts/Directorio | Resolver contacto verificado y ficha útil | No CRM ni empleado maestro; fuente/vigencia/ámbito; WhatsApp contextual con receptor verificado |
+| Home | Abrir original/app según plataforma | Cuenta/casa/device permissions y compatibilidad por verificar; no control autónomo todavía |
+| Chrome | Abrir original/captura elegida | Panel/extensión existente por comprobar; no iframe de Chrome ni copia de cookies |
+| Tasks/Keep | Evaluar captura/proyección frente a tareas/notas canónicas | Sin adapter E2E certificado; no lista maestra paralela ni nuevos scopes ahora |
+
+El acceso desde los conectores de ChatGPT de este lote no transfiere sus sesiones o tokens a TORO. Consentimientos Workspace/Home son distintos de login. Panel Accesos y conexiones mantiene propietario, cuenta enmascarada, alcance, estado y corte. Conector, link, cuenta autorizada y operación verificada se distinguen. No guardar contraseñas en favoritos/notas; conservar referencia al gestor existente, todavía por identificar.
+
+### Diez refinamientos finales, sin diez proyectos nuevos
+
+| # | Mejora incorporada al contrato | Criterio de aceptación futuro |
+|---|---|---|
+| 1 | Inicio por rol y acción frecuente | Recepción/aseo/finanzas/gerencia ven prioridades permitidas; no usar nómina como tarjeta general |
+| 2 | Continuar donde quedaste | Regreso conserva filtro/período/selección dentro del contexto; cambio de usuario/contexto elimina datos anteriores |
+| 3 | Calendario de rango en una apertura | Entrada y salida elegidas en un panel, noches claras y edición sin perder huéspedes; validar comportamiento oficial Kross/web |
+| 4 | Favoritos con nueve accesos elegidos | Añadir/reordenar/editar accesible y Ver todos, sin ampliar permisos; PC3×3/móvil2columnas cuando quepan |
+| 5 | Relevo de turno con excepciones | Preparar resumen de pendientes/responsable/evidencia sobre la misma lista; sin duplicar tareas |
+| 6 | Menú contextual por objeto | Tarea/reserva/proveedor muestran solo acciones útiles y permitidas; WhatsApp conserva receptor/borrador y estado |
+| 7 | Borradores recuperables y reintentos seguros | Evitar doble envío/cobro/reserva; no cachear secretos/nómina; offline no se declara ejecución |
+| 8 | Frescura visible donde cambia decisiones | Fuente/corte/cobertura en operación/dinero/precios; desactualizado no se sustituye por cero |
+| 9 | Búsqueda y teclado coherentes | Comando/buscador distinguen objeto/acción, foco/retorno/44px/320px; nada esencial depende del color o animación |
+| 10 | Estado de conexiones y costo útil | Un detalle de conexión/fallo/último éxito y consumo, avisos solo accionables; sin agentes de vigilancia duplicados |
+
+Estos refinamientos concretan los100criteriosV1 existentes. No migranSQL, crean100tareas, duplican módulos o prometen beneficios todavía no medidos. Logos originales solo desde archivos verificados; maestroTORO exacto sigue ausente y se usa tipografía azul aprobada, sin inventar bull.
+
+### Look final y cobertura visual
+
+Renders final seleccionados: TORO_EMPRESARIAL_FINAL_DIA.png y TORO_EMPRESARIAL_FINAL_NOCHE.png, outputs de la tarea actual. Día arena clara/cabecera azul; noche carbón y superficies azul pizarra más claras. Tipografía/espaciado empresarial, sombras/textura discretas, Pendiente2, Favoritos9, rango, tabs y accesos contextuales a Directorio/Google/Respuestas/Caja/Personas. UI propia sin rosa/morado; marcas conservan identidad. Se corrigió la primera variante nocturna que tenía tarjetas demasiado claras; conservar solo la seleccionada como referencia.
+
+Los renders son conceptos rotulados, con ejemplos de fechas/habitaciones y reproducciones gráficas. No importar esos ejemplos como datos reales ni sus logos como assets. La implementación usa fechas actuales/datos autorizados, bytes existentes y copy canónico. Cards con altura natural, sin forzar Pendiente a altura del widget; móvil no debe mostrar todas las secciones juntas. Render no certifica contraste/foco/44px/capacidad por habitación, widgetpublicado, sesiónPeople, feed o automatización. Herramientas/Personas/Dinero/Reportes/Cerebro/Mi espacio/Legal/Activos/Proyectos conservan destinos por permiso, aunque no todos estén abiertos en Inicio.
+
+### NEXT: primer lote de construcción local
+
+**Preparación concluida para empezar interfaz local.** Contrato mínimo People definido en documento de integración vigente: auth/contexto/vínculo y primer self-read de horario publicado; diez pruebas de aceptación preparadas, no ejecutadas. Resolver todo el SSO/conectores no es requisito para maquetar. Lectura People real, OAuthGoogle y dominio mantienen aceptación propia.
+
+Única siguiente unidad: implementar sobre los componentes existentes cabecera/navegación/Inicio y entrada de catálogo con ambos temas, Pendiente2, Favoritos9 y estados honestos de capacidades. Mantener rutas00–11, gates, APIs y herramientas actuales. Si persistencia/autorización de favoritos/tareas no existe, no activar controles que simulen guardado; presentar capacidad pendiente o preparar flujo local claramente indicado. No añadir schemas, grants, dependencias, proveedores o configuración comercial por este lote.
+
+Antes de código: confirmar estado/rama/aportes y main vigente solo en el delta necesario; no descartar la otra rama ni adoptar el deployment remoto por su READY. Leer guía Next instalada relevante según AGENTS. Reutilizar portal.module.css, module-card.tsx, portal-tool-links.tsx y page.tsx. Antes de rebuild revisar una vez recibo/puerto y detener únicamente runtime propio con su marcador; no procesos ajenos.
+
+Terminado cuando el delta local existe, verificación apropiada pasa y hay evidencia sintética sin datos privados en320/390/PC, día/noche, teclado/foco, overflow, permisos y enlaces vigentes. Baseline641 es evidencia anterior conservada, no resultado nuevo. Cierre con mismo checkpoint/recibo y una siguiente acción. Publicación/Google/Peoplevivo/Krosswrite/WhatsAppconservan gates propios; no declarar Portal completo por maquetación.
+
+Fuentes oficiales: [dominio Vercel](https://vercel.com/docs/domains/set-up-custom-domain), [nameservers](https://vercel.com/docs/domains/working-with-nameservers), [protección](https://vercel.com/docs/deployment-protection), [uso comercial](https://vercel.com/docs/limits/fair-use-guidelines), [Google/Supabase](https://supabase.com/docs/guides/auth/social-login/auth-google), [redirecciones](https://supabase.com/docs/guides/auth/redirect-urls). Metadatos de proyecto/deployment fueron lecturas del conector Vercel; perfiles/calendarios de conectoresGoogle; código/contratos localmente revisados. No escrituras de proveedor.

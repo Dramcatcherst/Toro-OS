@@ -39,3 +39,10 @@ Herramientas incluye Catálogo/Favoritos/Directorio útil/Accesos y conexiones/D
 Personas conserva DreamTeam completo por rol, incluyendo horarios, cobertura publicada, asistencia, solicitudes, planillas privadas y capacitación; sin retirar runtime ni ampliar RPC. Tareas/Notas/WhatsApp/Reportes/Kross usan el mismo objeto y estados independientes; herramientas según contexto. Actualización incremental reutiliza workers existentes, sin nuevo scheduler. Codex MCP de lectura existente no prueba autonomía Portal→Codex.
 
 Detalle rector: sección Estructura operativa antes del build del Plan General. Supersede paletas y resumen Importante/Urgencias anteriores; conserva100criterios/00–11/baseline641/SQL/gates. Imágenes anteriores no son especificación ni QA. Única próxima unidad: contrato People/Identity de sesión común y lectura inicial; todavía sin construir.
+
+## Look empresarial y primer lote local — aprobado12/10/2026
+Renders seleccionados TORO_EMPRESARIAL_FINAL_DIA/NOCHE: arena clara con cabecera azul y carbón con superficies azul pizarra; textura/sombra discreta, sin rosa/morado en UI propia. Conservar tipografíaTORO azul/OPERATION SYSTEM y bytes de marcas existentes. Cards de altura natural: Pendiente2 sin vacío forzado; Favoritos9 editables propuestos; rango en una apertura, tabs y utilidades/contexto. Imagen no aporta datos/assets/copy de producción ni certifica QA.
+
+Google/herramientas/directorio y People permanecen por permisos; perfiles de ChatGPT leídos no activan Portal. Reutilizar servicios internos; MCP externo opcional, no requisito. Contrato mínimo sesiónPeople preparado; primera lectura futura Mi horario publicado propio, sin nómina ni ampliaciónRPC.
+
+Próximo lote: cabecera/navegación/Inicio/entrada de catálogo sobre componentes actuales, local reversible, ambos temas y móvil/PC. Estados honestos, no controles que simulen persistencia/envío. Mantener00–11/baseline641/SQL/gates. Dominio toro.dreamcatcherhotel.com definido como destino propuesto de publicación; acceso propio y SHA aprobado antes de asociación porque la protecciónVercel excluye customdomains. Fuente rectora: última sección del Plan y People vigente.
