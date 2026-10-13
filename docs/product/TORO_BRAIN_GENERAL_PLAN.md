@@ -163,6 +163,47 @@ Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -
 
 ---
 
+## Inventario desde facturas y WhatsApp de aseo 2026 10 13
+
+**DIRECTIVA APROBADA por Mauricio el 13/10/2026:** ampliar el flujo existente de TORO Compras e Inventario para que las líneas de compra recibidas por correo, XML/PDF, foto o chat preparen automáticamente entradas de inventario y los retiros reportados en el grupo de aseo preparen salidas, traslados o bajas. PayFlow es la orquestación financiera documentada; “Flash” queda sin identidad/capacidad verificada y no se le asigna otro procesamiento. Reutilizar TORO Correos y Pagos, mail_ingest, OpenClaw/WhatsApp, Control Plane y la tarea `ops_ws_housekeeping_laundry_stock`; sin otra base, cola, scheduler ni reprocesamiento masivo.
+
+**Estado:** configuración aprobada y registrada; extracción, escritura automática y captura viva del grupo NO VERIFICADAS. Este registro no activa procesos, no acredita compras/recepción ni modifica existencias o contabilidad.
+
+### Entradas desde compras
+
+1. Reutilizar la ingesta actual; preferir XML cuando exista, leer PDF/foto como alternativa, conservar documento original y procedencia.
+2. Extraer por línea: proveedor, clave/número de factura, fecha, artículo/SKU/alias, marca, presentación, cantidad facturada, unidad, factor de conversión, precio/costo, moneda e impuestos separados, negocio/propiedad/proyecto, ubicación y referencia de fuente.
+3. Resolver producto y presentación contra catálogo existente. Artículo nuevo o ambiguo pasa a revisión, sin fusionarlo por similitud. Separar consumibles, activos y servicios/gastos no inventariables; excluir compras personales u otra propiedad sin asignación explícita.
+4. La factura crea compra/entrada pendiente y datos del catálogo. El stock disponible aumenta solo por cantidad efectivamente recibida y confirmada, incluido un comprobante que pruebe entrega. Facturación, pago y recepción son eventos distintos; admitir entregas parciales sin sumar toda la factura.
+5. Reusar `assets.stock_items`, `assets.stock_levels`, `assets.inventory_movements`, `assets.purchase_runs` y `assets.purchase_run_items`; activos en el maestro físico existente. Supabase es destino después de paridad/conteo verificados; Airtable Inventario & Activos mantiene el papel definido por el contrato vigente. Alegra conserva contabilidad; Dropbox conserva originales; Portal y WhatsApp muestran proyecciones del mismo saldo.
+
+### Salidas desde el grupo de aseo
+
+Interpretar mensajes naturales por empleado/turno/propiedad autorizados y conservar message_id, autor, fecha, texto/evidencia, artículo, cantidad, unidad, origen, destino y motivo. No exigir otra app. Formato breve sugerido: “Retiré 2 litros de cloro de bodega para Toro”.
+
+- **Traslado:** baja en bodega y alta en área destino; total del hotel sin cambio.
+- **Consumo:** descuenta cantidad consumida del área correspondiente.
+- **Baja, daño o pérdida:** movimiento específico y evidencia/revisión proporcional.
+- Blancos/equipos enviados a habitación o lavandería cambian ubicación/estado, no desaparecen del inventario.
+- “Se acabó”, “saqué jabón” o cantidades/unidades/ubicación dudosas crean excepción dirigida; no inventar saldo ni movimiento. Pedir solo el dato faltante cuando la ingesta y el canal estén operativos.
+
+### Configuración y controles
+
+Habilitar extracción automática y validación como primer paso; contabilizar movimientos automáticamente solo con producto/unidad/ubicación/recepción o consumo inequívocos, identidad autorizada, baseline físico verificado y piloto aprobado. Clave de deduplicación por organización + factura/proveedor/clave fiscal + línea + recepción parcial; para WhatsApp, organización + canal + message_id + movimiento. Correo y foto de la misma factura producen una sola compra; reporte de recepción y factura no suman dos veces; ediciones/reenvíos son nuevas versiones, no movimientos adicionales.
+
+Convertir caja/paquete/botella/galón a unidad base mediante presentación verificada; no asumir equivalencias. Bloquear negativos y conservar diferencias para conciliación física. Correcciones/devoluciones usan reversos o movimientos compensatorios con referencia al original, sin borrar historial. Nota de crédito financiera no equivale por sí sola a devolución física. Alerta al llegar al mínimo/punto de reposición confirmado; sugerir lista de compra existente, sin pedidos o pagos automáticos. Alertas por excepción material y fallo nuevo, sin notificar cada mensaje.
+
+### Ejecución y terminado
+
+Responsables por rol: sistemas TORO configura ingesta/mapeo/deduplicación; administración/finanzas valida factura, costo y ámbito; encargado de aseo/bodega confirma recepción, unidad y conteo; Gerencia supervisa excepciones. No se asignan nuevas personas ni fechas de compromiso.
+
+**Ahora:** verificar baseline vigente, lectores disponibles y stock físico, mapear diez productos frecuentes y resolver aliases/presentaciones/unidades. **Después:** piloto sobre cinco facturas y diez reportes reales autorizados de aseo, con recepción parcial, duplicado correo/foto, traslado, consumo, baja, devolución, mensaje ambiguo y stock insuficiente. **Terminado:** cada caso con fuente y recibo/readback; cero duplicados, cero mezclas de ámbitos, cero negativos y conciliación de saldos contra conteo. Meta propuesta: al menos 90% de líneas del piloto identificadas sin recaptura manual; medir entradas/salidas verificadas, excepciones, demora y exactitud de saldo con denominador. Nada de esto se reporta como ahorro o automatización activa hasta verificarlo.
+
+Si falla lectura/escritura o el resultado es ambiguo, conservar el candidato sin tocar stock, continuar el registro manual en el sistema autoritativo y verificar antes de reintentar. Reversión: desactivar solo el adapter de movimientos y usar compensación trazable para escrituras confirmadas; conservar el resto de correo/PayFlow.
+
+Referencia canónica: `operations.knowledge_items/procurement_inventory_operating_contract_2026_09_v1` y `operations.tasks/ops_ws_housekeeping_laundry_stock`.
+
+
 ## Correos y PayFlow — continuidad permanente 2026-10-07
 
 **Decisión de Mauricio:** mantener de forma indefinida el análisis de correos y la conciliación del calendario de pagos, ampliando la extracción de información útil. Reutilizar **una única tarea diaria existente** (`TORO Correos y Pagos`, 08:00 America/Costa_Rica, RRULE diario sin fecha de fin), el control `PayFlow Semanal` de los lunes y el forecast mensual a 90 días; no crear un segundo Finance Guard, plan, bandeja o scheduler ni reactivar escritores financieros suspendidos.
