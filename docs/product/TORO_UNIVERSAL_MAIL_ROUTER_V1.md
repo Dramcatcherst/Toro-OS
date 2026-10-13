@@ -212,3 +212,12 @@ Concrete next dependency: resolve the accepted private account identity and org 
 Environment implementation status supersedes the historical NOT_IMPLEMENTED statement above: read adapters and protected Portal projections are implemented and preview build-verified (186 tests, scoped lint, TypeScript); existing daily Team Brief prompt is configured and read back without cadence change. See `docs/evidence/TORO_ENVIRONMENT_READ_PREVIEW_2026-10-12.md`. Production deployment, authenticated visual/RLS acceptance, first verified daily environment execution and local tide source remain pending. Documentation/configuration do not certify runtime delivery.
 
 Identity follow-up: exact known-mailbox lookup returned zero Portal auth accounts, including zero confirmed accounts. A connected Gmail mailbox is not a Portal login identity. The owner has been asked which login email Margot will use; no account invite, membership grant or identity creation was attempted.
+
+
+### Owner-selected Portal login — 2026-10-13
+
+The owner selected the existing hotel administration login as the access identity for Margot's private project. Read-only auth lookup confirmed exactly one account with confirmed email. Current private-scope memberships for that account: zero; Margot projects: zero. This resolves which login to reuse, not the remaining runtime provisioning gates. Do not create a duplicate auth account or treat the hotel organization as the personal-data destination.
+
+Access design: reuse that identity with an explicit scoped membership in margot-personal, using the least role that supports the authorized project workflow after Identity/Governance resolves the existing role model. Organization context, data bindings and private storage remain Margot's. The owner-selected identity may hold access to both contexts; negative tests must target hotel-only identities and explicitly selected hotel-context requests, rather than expecting the chosen dual-scope identity to have no Margot access at all. Org-level RLS alone does not certify context isolation for a dual-scope user: server loaders, workers and projections must enforce the selected scope and prevent fallback.
+
+Remaining work: same-scope module/parent and personal mailbox/calendar mapping; governed membership/project writer and receipts; authenticated selected-context and hotel-only denial tests. No roles, accounts, permissions, projects or provider bindings were changed by this readback.
