@@ -94,8 +94,8 @@ export default async function MyToroPage({
   const menu = view.menu;
   const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
   const hotelAllowed = canReadHotelDirectory(view.context);
-  const directory = hotelAllowed ? await loadHotelDirectory() : null;
-  const hotelLinks = directory?.state === "ready" ? directory.links : [];
+  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true}) : null;
+  const hotelLinks = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true) ? directory.links : [];
   const available = menu?.items.filter(item =>
     item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
   ) ?? [];
@@ -190,11 +190,12 @@ export default async function MyToroPage({
               <h2 id="hotel-heading" className="text-xl font-semibold">Equipo y herramientas</h2>
               <p className="mt-1 text-sm text-slate-300">Accesos revisados para tu contexto.</p>
             </div>
-            <Link href="/my-toro/herramientas" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Guía de mi turno <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/my-toro/herramientas#guide-catalogue-heading" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Todos mis accesos <ArrowRight className="h-4 w-4" /></Link>
           </div>
           {hotelLinks.length ? <>
-            <PortalToolLinks links={hotelLinks} compact />
-            <p className={styles.note}>Estos botones abren tus herramientas. Cada una puede pedir su propia sesión.</p>
+            <PortalToolLinks links={hotelLinks.slice(0, 6)} compact />
+            <p className={styles.note}>Accesos rápidos. Abre el directorio para ver todos; cada servicio conserva su sesión.</p>
+            {directory?.state !== "ready" ? <p role="status" className={styles.note}>Directorio parcial: solo accesos públicos revisados.</p> : null}
           </> : <div role="status" className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-4">
             <p className="font-semibold text-amber-100">{directory?.state === "denied" ? "Los accesos no están habilitados para esta sesión." : "La lista de accesos no está disponible ahora."}</p>
             <p className="mt-1 text-sm text-slate-300">Puedes abrir la guía del turno y volver a intentar cargar los accesos.</p>

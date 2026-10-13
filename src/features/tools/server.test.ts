@@ -44,3 +44,51 @@ it("does not reuse links after the session changes", async () => {
   expect(await loadHotelDirectory()).toEqual({state:"denied",links:[]});
   expect(mocks.client).toHaveBeenCalledTimes(1);
 });
+
+it("includes approved public navigation only when requested by an authorized catalogue", async () => {
+  mocks.context.mockResolvedValue(context);
+  const rpc=vi.fn().mockResolvedValue({error:null,data:[
+    {id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",account_refs:["private"]},
+    {id:"foreign",url:"https://private.example/"},
+  ]});
+  mocks.client.mockResolvedValue({rpc});
+  const view = await loadHotelDirectory({includeApprovedNavigation:true});
+  expect(view.state).toBe("ready");
+  expect(view.links.map(link => link.id)).toEqual([
+    "LINK-002","PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
+  ]);
+  expect(JSON.stringify(view.links)).not.toContain("private");
+  expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_links_v1");
+});
+
+it("retains reviewed public access during a directory outage without claiming the source is ready", async () => {
+  mocks.context.mockResolvedValue(context);
+  mocks.client.mockResolvedValue({rpc:vi.fn().mockResolvedValue({error:{code:"PGRST202"},data:null})});
+  const view=await loadHotelDirectory({includeApprovedNavigation:true});
+  expect(view.state).toBe("unavailable");
+  expect(view.reason).toBe("connection_pending");
+  expect(view.links.map(link => link.id)).toEqual([
+    "PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
+  ]);
+  expect(view.links.some(link => link.id.startsWith("LINK-"))).toBe(false);
+});
+
+it.each([
+  {...context,membership:{...context.membership!,roles:["EMPLEADO"]}},
+  {...context,orgId:"foreign"},
+  {...context,requiresContextChoice:true},
+])("does not let the catalogue option bypass identity or scope", async candidate => {
+  mocks.context.mockResolvedValue(candidate);
+  expect(await loadHotelDirectory({includeApprovedNavigation:true})).toEqual({state:"denied",links:[]});
+  expect(mocks.client).not.toHaveBeenCalled();
+});
+
+it("keeps navigation authorization separate from the optional account email", async () => {
+  mocks.context.mockResolvedValue({...context,email:null});
+  mocks.client.mockResolvedValue({rpc:vi.fn().mockResolvedValue({error:{code:"PGRST202"},data:null})});
+  const view=await loadHotelDirectory({includeApprovedNavigation:true});
+  expect(view.navigationAuthorized).toBe(true);
+  expect(view.account).toBeUndefined();
+  expect(view.state).toBe("unavailable");
+  expect(view.links).toHaveLength(6);
+});
