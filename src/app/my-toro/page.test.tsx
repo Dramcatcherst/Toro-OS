@@ -99,7 +99,9 @@ it("keeps DreamTeam as reviewed navigation inside the compact Portal without cla
   mocks.menu.mockResolvedValue(view());
   mocks.directory.mockResolvedValue({state:"ready",links:[{id:"LINK-086",label:"Ver equipo",url:"https://dream-team-public.vercel.app/dreamteam/ingresar"}]});
   const html=await render();expect(html).toContain("DreamTeam · TORO People");
-  expect(html).toContain("Equipo · sesión propia");expect(html).toContain("Cada una puede pedir su propia sesión");
+  expect(html).toContain("Equipo · sesión propia");expect(html).toContain("cada servicio conserva su sesión");
+  expect(html).toContain('href="/my-toro/herramientas#guide-catalogue-heading"');
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true});
   expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
 });
 
@@ -115,4 +117,15 @@ it("keeps a usable submenu reachable even when its parent has no direct consulta
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
   expect(html).toContain("Dinero QA</span>");
   expect(html).not.toContain("Dinero QA · pendiente");
+});
+
+it("offers the complete reviewed catalogue without treating email as an access grant", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({state:"unavailable",navigationAuthorized:true,links:[
+    {id:"PORTAL-ALEGRA",label:"Alegra",url:"https://app.alegra.com/"},
+  ]});
+  const html=await render();
+  expect(html.includes('href="https://app.alegra.com/"')).toBe(true);
+  expect(html.includes("Directorio parcial")).toBe(true);
+  expect(html.includes('href="/my-toro/herramientas#guide-catalogue-heading"')).toBe(true);
 });

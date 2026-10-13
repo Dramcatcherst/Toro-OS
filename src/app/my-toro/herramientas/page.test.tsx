@@ -24,3 +24,32 @@ it("recognizes a signed-in account without sending it back to login on a connect
   expect(markup).toContain("Tu acceso está bien");
   expect(markup).not.toContain('href="/login');
 });
+
+it("exposes the same reviewed catalogue beyond the shift shortcuts", async () => {
+  load.mockResolvedValue({state:"ready",links:[
+    {id:"PORTAL-ALEGRA",label:"Alegra",url:"https://app.alegra.com/"},
+    {id:"PORTAL-GMAIL",label:"Gmail",url:"https://mail.google.com/"},
+  ]});
+  const markup=renderToStaticMarkup(await ToolsPage());
+  expect(markup).toContain("Todos tus accesos");
+  expect(markup).toContain('href="https://app.alegra.com/"');
+  expect(markup).toContain('href="https://mail.google.com/"');
+  expect(load).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true});
+});
+it("does not turn an account label into authorization when the reader denies access", async () => {
+  load.mockResolvedValue({state:"denied",account:"person@example.test",links:[
+    {id:"PORTAL-ALEGRA",label:"Alegra",url:"https://app.alegra.com/"},
+  ]});
+  const markup=renderToStaticMarkup(await ToolsPage());
+  expect(markup).not.toContain('href="https://app.alegra.com/"');
+  expect(markup).not.toContain("Todos tus accesos");
+});
+
+it("keeps reviewed access available for an authorized account without email during an outage", async () => {
+  load.mockResolvedValue({state:"unavailable",navigationAuthorized:true,links:[
+    {id:"PORTAL-ALEGRA",label:"Alegra",url:"https://app.alegra.com/"},
+  ]});
+  const markup=renderToStaticMarkup(await ToolsPage());
+  expect(markup.includes('href="https://app.alegra.com/"')).toBe(true);
+  expect(markup.includes("Cobertura parcial")).toBe(true);
+});
