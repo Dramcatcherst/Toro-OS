@@ -47,8 +47,8 @@ export default async function MyToroPage({
 
   if (!view) {
     return (
-      <main className="min-h-screen bg-[#030712] px-5 py-10 text-slate-100">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-800 bg-slate-950/80 p-7">
+      <main className={styles.accessScreen}>
+        <div className={styles.accessBox}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-amber-100">
             <LockKeyhole className="h-4 w-4" /> Acceso a tu cuenta
           </div>
@@ -71,8 +71,8 @@ export default async function MyToroPage({
 
   if (view.state === "context_choice_required") {
     return (
-      <main className="min-h-screen bg-[#030712] px-5 py-10 text-slate-100">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-cyan-300/15 bg-slate-950/80 p-7">
+      <main className={styles.accessScreen}>
+        <div className={styles.accessBox}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-100">
             <UserRound className="h-4 w-4" /> Contexto
           </div>
@@ -82,7 +82,7 @@ export default async function MyToroPage({
           <p className="mt-3 text-sm leading-6 text-slate-400">
             Tu cuenta tiene más de un contexto autorizado. TORO no elegirá uno automáticamente porque eso podría mezclar permisos o información.
           </p>
-          <div className="mt-5 rounded-2xl border border-slate-800 bg-black/25 p-4 text-sm text-slate-300">
+          <div className={styles.contextBox}>
             Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
           </div>
         </div>
@@ -111,13 +111,13 @@ export default async function MyToroPage({
   return (
     <>
     {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" includeTools={hotelAllowed} scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
-    <main id="portal-content" tabIndex={-1} className="min-h-screen bg-[#0d1728] text-slate-100">
+    <main id="portal-content" tabIndex={-1} className={styles.screen}>
       <div className={styles.content}>
-        <header className="flex flex-wrap items-center justify-between gap-3">
+        <header className={styles.pageHeader}>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Portal TORO · Mi espacio</p>
+            <p className={styles.eyebrow}>Portal TORO · Mi espacio</p>
             <h1 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Mi espacio</h1>
-            <p className="mt-2 text-sm text-slate-300">Mi TORO reúne tu trabajo, prioridades y accesos dentro del Portal.</p>
+            <p className={styles.pageLead}>Prioridades, consultas y accesos de tu cuenta.</p>
           </div>
           <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
@@ -129,7 +129,7 @@ export default async function MyToroPage({
         </nav>
         <div className={styles.layout}>
           <div className={styles.primary}>
-        {available.length || alternatives.length || submenuParents.length ? <section aria-labelledby="available-heading" className={styles.panel}>
+        {available.length || alternatives.length || submenuParents.length ? <section aria-labelledby="available-heading" className={styles.panel + " " + styles.paperPanel}>
           <h2 id="available-heading" tabIndex={-1} className="text-lg font-bold">Buscar y consultas</h2>
           <div className={styles.menu}>
             {available.map(item => <Link key={item.key} href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
@@ -184,7 +184,7 @@ export default async function MyToroPage({
           </div>
           <aside className={styles.sidebar} aria-label="Accesos y cuenta">
 
-        {hotelAllowed ? <section aria-labelledby="hotel-heading" className={styles.panel}>
+        {hotelAllowed ? <section aria-labelledby="hotel-heading" className={styles.panel + " " + styles.paperPanel}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 id="hotel-heading" className="text-xl font-semibold">Equipo y herramientas</h2>
