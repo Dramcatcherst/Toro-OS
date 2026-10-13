@@ -398,6 +398,18 @@ Routine successful receipts remain evidence/digest unless another rule makes the
 
 ## TORO Studio — governed creative & media capability
 
+
+### Nombres humanos y curación fiel de documentos/media — 13/10/2026
+
+**Scope:** TORO Assets/Studio/Governance/Channels; piloto Dreamcatcher dentro de Web, Marca, SEO y Reputación. **TARGET:** nombres legibles, originales intactos, clasificación por lugar/contenido y selección por objetivo; mejoras conservadoras sin alterar arquitectura ni ocultar defectos materiales. Reutilizar los contratos/índices actuales y `initiative_bindings.visual_commerce_dreamcatcher`, issues #6/#28/#30 y gates de PR #43; sin biblioteca, base, agente o publisher adicional.
+
+**CURRENT comprobado:** propuesta PDF y cotizador HTML del retreat guardados en `/Dreamcatcher Hotel/Administracion/Retiros/2027`, con nombres humanos, lenguaje ES y versión v01; cargas completed y IDs/tamaños leídos. Muestreo visual encontró dos capturas web en la biblioteca; el set anterior de retreats prioriza candidatos de arte y usos múltiples sin pertinencia comprobada. Manifest Eagle de 05/07: 9.935 filas, no conteo live; índice actual Dreamcatcher: 60 assets, 44 sin subject_key, 55 requieren revisión humana y 10 assignments. No afirmar inventario completo ni reselección final.
+
+**PROPUESTO / NEXT:** contrato detallado y texto común para ChatGPT/Codex en [TORO Studio, secciones 10–12](TORO_STUDIO_V1.md). Primero clasificar/reconciliar y seleccionar 30 originales representativos; luego un antes/después conservador, aprobación por versión/destino y sustitución gradual con rollback. Fotos/QR/tablas y claims siguen ligados al alojamiento correcto. Los nombres nuevos no autorizan renombrar archivos fiscales originales, internas Eagle ni rutas publicadas en masa.
+
+**Límite:** esta propuesta documental y la referencia de contexto no modifican ajustes globales de ChatGPT ni activan edición/publicación/DB writes. Lo reutilizable es el método; imágenes y datos privados permanecen en su scope. La adopción automática y la mejora comercial requieren pruebas y medidas; ningún score técnico equivale a aprobación.
+
+
 TORO Studio is an internal subsystem/capability of the single TORO product.
 
 Canonical path:
