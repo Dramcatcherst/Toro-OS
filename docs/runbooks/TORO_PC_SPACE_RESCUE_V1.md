@@ -101,7 +101,7 @@ Available-state readback confirms S0 low-power idle with connected networking an
 Remaining recovery: free space is materially improved, but the general C: scan was partial. Reuse Get-ToroStorageInventory for the current user's profile and LocalApplicationData, each with a 45-second traversal budget. The two inventories overlap: do not sum their sizes. Output remains private/local; files are not deleted, moved or uploaded. Metadata lengths are not recoverable-space promises. The wrapper downloads exact previously CI-tested executable commit cd14593c31a72be2ab1c46fab066a8fb8902d1ed and dot-sources it without invoking its main cleanup entrypoint.
 
 ```powershell
-& {
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command {
     $ErrorActionPreference = 'Stop'
     $toroLectura = "D:\TORO-carpetas-$([guid]::NewGuid().ToString('N')).ps1"
     $toroDescarga = @{
@@ -138,3 +138,14 @@ Remaining recovery: free space is materially improved, but the general C: scan w
 ```
 
 Preserve the active Codex history database, Windows component and Installer files, provider credentials, application databases and Dropbox originals. Select any subsequent cleanup or personal-file copy after targeted sizes and identity are known. No further deletion, paging change, automatic reboot, application relocation, cloud-sync adjustment or production deployment has been performed from this session.
+
+## Execution-policy correction, 13 October 2026
+
+The owner reported PSSecurityException/UnauthorizedAccess when the targeted wrapper attempted dot-sourcing in the existing Windows PowerShell session. The download completed, but the inventory did not start; no folder measurements or additional recovery are established by that attempt. The wrapper omitted the per-process execution setting used successfully in the earlier -File launchers.
+
+The corrected wrapper starts a separate powershell.exe process with -NoProfile -ExecutionPolicy Bypass -Command and performs dot-sourcing inside that child. It does not modify registry-backed execution policy, current-user/local-machine policy, or the parent session. No permanent Set-ExecutionPolicy change or Unblock-File is required by the procedure. The diagnostic executable still uses the exact previously tested cd14593c source.
+
+Regression: tests/pc-space-policy.test.ps1 in Windows CI establishes Restricted in the isolated runner's parent process, runs the existing synthetic read-only inventory fixture in a child using the corrected launch form, verifies its native exit code and verifies that the parent's policy stays Restricted, then restores the runner's original process policy. This is fixture validation, not owner-PC evidence.
+
+Authority: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe?view=powershell-5.1
+NEXT: corrected owner execution and actual targeted inventory output. Latest free-space readback remains 15.199 GiB from the prior hibernation action; no new live disk measurement is available.
