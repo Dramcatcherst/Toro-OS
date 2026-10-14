@@ -88,4 +88,53 @@ Microsoft authority:
 - https://learn.microsoft.com/en-us/windows/win32/power/system-power-states
 - https://learn.microsoft.com/en-us/troubleshoot/windows-client/performance/how-to-determine-the-appropriate-page-file-size-for-64-bit-versions-of-windows
 
-CURRENT: diagnostics owner-reported and next procedure prepared; no execution of reduced-mode powercfg observed. NEXT: owner execution with before/after readback, then evaluate pagefile needs and a targeted user/AppData inventory if free space remains insufficient. The cleanup/diagnostic script itself is unchanged; this is a separate Windows-managed recovery procedure under the same General Plan checkpoint.
+CURRENT: owner supplied successful reduced-mode powercfg output; this is owner-run evidence, not a connected-PC execution claim. NEXT: preserve automatic paging and run the targeted inventory below. The cleanup/diagnostic executable is unchanged; the Windows-managed action and targeted wrapper remain under the same General Plan checkpoint.
+
+## Reduced-mode execution receipt, owner supplied 13 October 2026
+
+Powercfg reported hibernation-file sizes of 13,370,806,272 bytes and 6,685,401,088 bytes: approximately 12.453 and 6.226 GiB, nominal file-length reduction 6.226 GiB. Owner readback: free space before 8.944 GiB, after 15.199 GiB, observed delta 6.255 GiB. The observed delta includes concurrent disk activity; do not equate it exactly to the file-size reduction. The increase between the earlier 2.133 GiB inventory and the 8.944 GiB pre-action measurement has no established cause here.
+
+Reported RAM is 31.13 GiB and AutomaticManagedPagefile=True. Pagefile metrics: 27,625 MiB allocated (26.978 GiB), 5,593 MiB currently used (5.462 GiB), peak 7,556 MiB (7.379 GiB). These are one session's metrics; they do not establish peak committed-memory needs or justify a fixed smaller paging file. Preserve automatic management.
+
+Available-state readback confirms S0 low-power idle with connected networking and fast startup. Hibernate is unavailable because of the file type. S3 is unavailable in firmware; hybrid sleep was also unavailable for hardware/hypervisor reasons, so do not attribute every unavailable sleep state to this action.
+
+Remaining recovery: free space is materially improved, but the general C: scan was partial. Reuse Get-ToroStorageInventory for the current user's profile and LocalApplicationData, each with a 45-second traversal budget. The two inventories overlap: do not sum their sizes. Output remains private/local; files are not deleted, moved or uploaded. Metadata lengths are not recoverable-space promises. The wrapper downloads exact previously CI-tested executable commit cd14593c31a72be2ab1c46fab066a8fb8902d1ed and dot-sources it without invoking its main cleanup entrypoint.
+
+```powershell
+& {
+    $ErrorActionPreference = 'Stop'
+    $toroLectura = "D:\TORO-carpetas-$([guid]::NewGuid().ToString('N')).ps1"
+    $toroDescarga = @{
+        Uri = 'https://raw.githubusercontent.com/Dramcatcherst/Toro-OS/cd14593c31a72be2ab1c46fab066a8fb8902d1ed/scripts/pc-space-rescue.ps1'
+        OutFile = $toroLectura
+        UseBasicParsing = $true
+        ErrorAction = 'Stop'
+    }
+    Invoke-WebRequest @toroDescarga
+    . $toroLectura
+
+    $toroZonas = @(
+        [Environment]::GetFolderPath('UserProfile'),
+        [Environment]::GetFolderPath('LocalApplicationData')
+    )
+    foreach ($toroZona in $toroZonas) {
+        if (-not $toroZona.StartsWith('C:\', [StringComparison]::OrdinalIgnoreCase)) { continue }
+        if (-not (Test-ToroPlainDirectory -Path $toroZona)) {
+            Write-Warning ('Carpeta enlazada o inaccesible: ' + $toroZona)
+            continue
+        }
+        Write-Host ('Revisando: ' + $toroZona)
+        $toroResultado = Get-ToroStorageInventory -Root $toroZona -MaxSeconds 45
+        $toroResultado |
+            Select-Object Seconds, FilesMeasured, Partial, LimitReached, ExcludedLinkedOrOffline, AccessErrors |
+            Format-List
+        Write-Host $toroResultado.Notice
+        $toroResultado.Folders |
+            Select-Object LogicalGB, Folder | Format-Table -AutoSize -Wrap
+        $toroResultado.LargestFiles |
+            Select-Object LogicalGB, Path | Format-Table -AutoSize -Wrap
+    }
+}
+```
+
+Preserve the active Codex history database, Windows component and Installer files, provider credentials, application databases and Dropbox originals. Select any subsequent cleanup or personal-file copy after targeted sizes and identity are known. No further deletion, paging change, automatic reboot, application relocation, cloud-sync adjustment or production deployment has been performed from this session.
