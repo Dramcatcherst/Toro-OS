@@ -8,7 +8,7 @@ function Test-ToroPlainDirectory {
     try {
         $current = Get-Item -LiteralPath $Path -Force -ErrorAction Stop
         while ($null -ne $current) {
-            if (-not $current.PSIsContainer) { return $false }
+            if (-not ($current -is [IO.DirectoryInfo])) { return $false }
             if (($current.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { return $false }
             $current = $current.Parent
         }
