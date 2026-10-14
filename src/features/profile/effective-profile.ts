@@ -14,6 +14,7 @@ type Subject =
 export type EffectiveProfileInput = {
   subject: Subject;
   binding: {
+    subject: Subject;
     status: BindingStatus;
     channelAccountKey: string;
     organizationId: string | null;
@@ -25,8 +26,10 @@ export type EffectiveProfileInput = {
     deviceExpiresAt: string | null;
   };
   authority: {
+    subject: Subject;
     active: boolean;
     organizationId: string | null;
+    propertyIds: string[];
     roleProfile: string;
     allowedDataScopes: string[];
     capabilityIds: string[];
@@ -42,8 +45,11 @@ export type EffectiveProfileFailure =
   | "device_not_verified"
   | "device_binding_expired"
   | "inactive_authority"
+  | "subject_mismatch"
+  | "organization_required"
   | "organization_mismatch"
   | "property_scope_missing"
+  | "property_scope_mismatch"
   | "unknown_subject"
   | "unknown_role_profile"
   | "role_profile_mismatch";
@@ -139,11 +145,25 @@ export function compileEffectiveProfile(input: EffectiveProfileInput): Effective
     return { ok: false, reason: "device_binding_expired" };
   }
   if (!input.authority.active) return { ok: false, reason: "inactive_authority" };
+  if (input.binding.subject.kind !== input.subject.kind ||
+      input.binding.subject.key !== input.subject.key ||
+      input.authority.subject.kind !== input.subject.kind ||
+      input.authority.subject.key !== input.subject.key) {
+    return { ok: false, reason: "subject_mismatch" };
+  }
+  if (input.authority.roleProfile !== "personal" &&
+      (!input.binding.organizationId || !input.authority.organizationId)) {
+    return { ok: false, reason: "organization_required" };
+  }
   if (input.binding.organizationId !== input.authority.organizationId) {
     return { ok: false, reason: "organization_mismatch" };
   }
   if (input.authority.organizationId && input.binding.propertyIds.length === 0) {
     return { ok: false, reason: "property_scope_missing" };
+  }
+  const authoritativePropertyIds = new Set(input.authority.propertyIds);
+  if (input.binding.propertyIds.some((propertyId) => !authoritativePropertyIds.has(propertyId))) {
+    return { ok: false, reason: "property_scope_mismatch" };
   }
 
   const record = findSubject(input.subject);
@@ -184,7 +204,11 @@ export function compileEffectiveProfile(input: EffectiveProfileInput): Effective
     roleProfile: input.authority.roleProfile,
     communication,
     messages,
+    allowedDataScopes,
+    capabilityIds,
     peopleAssistantAllowed,
+    organizationId: input.authority.organizationId,
+    propertyIds,
   });
 
   return {

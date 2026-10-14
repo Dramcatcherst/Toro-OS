@@ -12,6 +12,7 @@ function input(overrides: Partial<EffectiveProfileInput> = {}): EffectiveProfile
   return {
     subject: { kind: "person", key: "mauricio_owner" },
     binding: {
+      subject: { kind: "person", key: "mauricio_owner" },
       status: "verified",
       channelAccountKey: "owner-private",
       organizationId: "dreamcatcher",
@@ -23,8 +24,10 @@ function input(overrides: Partial<EffectiveProfileInput> = {}): EffectiveProfile
       deviceExpiresAt: "2026-11-14T10:00:00.000Z",
     },
     authority: {
+      subject: { kind: "person", key: "mauricio_owner" },
       active: true,
       organizationId: "dreamcatcher",
+      propertyIds: ["main-property"],
       roleProfile: "owner_executive",
       allowedDataScopes: ["work_org", "system"],
       capabilityIds: ["people.employee_records", "operations.read"],
@@ -53,7 +56,16 @@ describe("compileEffectiveProfile", () => {
   it("keeps Ana gated by both individual allowlist and runtime authority", () => {
     const base = input({
       subject: { kind: "person", key: "ana_carolina_admin" },
-      authority: { ...input().authority, roleProfile: "hr_people", peopleAssistantAuthorized: false },
+      binding: {
+        ...input().binding,
+        subject: { kind: "person", key: "ana_carolina_admin" },
+      },
+      authority: {
+        ...input().authority,
+        subject: { kind: "person", key: "ana_carolina_admin" },
+        roleProfile: "hr_people",
+        peopleAssistantAuthorized: false,
+      },
     });
     const denied = compileEffectiveProfile(base);
     expect(denied.ok && denied.profile.peopleAssistantAllowed).toBe(false);
@@ -68,7 +80,16 @@ describe("compileEffectiveProfile", () => {
   it("never grants People access to Alexandra even if runtime input requests it", () => {
     const result = compileEffectiveProfile(input({
       subject: { kind: "person", key: "alexandra_reception" },
-      authority: { ...input().authority, roleProfile: "reception", peopleAssistantAuthorized: true },
+      binding: {
+        ...input().binding,
+        subject: { kind: "person", key: "alexandra_reception" },
+      },
+      authority: {
+        ...input().authority,
+        subject: { kind: "person", key: "alexandra_reception" },
+        roleProfile: "reception",
+        peopleAssistantAuthorized: true,
+      },
     }));
     expect(result.ok && result.profile.peopleAssistantAllowed).toBe(false);
   });
@@ -76,8 +97,19 @@ describe("compileEffectiveProfile", () => {
   it("uses a team identity for the shared Reception account", () => {
     const result = compileEffectiveProfile(input({
       subject: { kind: "shared_account", key: "dreamcatcher_reception_whatsapp" },
-      binding: { ...input().binding, deviceKey: null, deviceStatus: "not_applicable", deviceExpiresAt: null },
-      authority: { ...input().authority, roleProfile: "reception", peopleAssistantAuthorized: true },
+      binding: {
+        ...input().binding,
+        subject: { kind: "shared_account", key: "dreamcatcher_reception_whatsapp" },
+        deviceKey: null,
+        deviceStatus: "not_applicable",
+        deviceExpiresAt: null,
+      },
+      authority: {
+        ...input().authority,
+        subject: { kind: "shared_account", key: "dreamcatcher_reception_whatsapp" },
+        roleProfile: "reception",
+        peopleAssistantAuthorized: true,
+      },
     }));
     expect(result.ok).toBe(true);
     if (!result.ok) return;
@@ -93,10 +125,17 @@ describe("compileEffectiveProfile", () => {
     ["expired binding", input({ binding: { ...input().binding, expiresAt: NOW } }), "binding_expired"],
     ["revoked device", input({ binding: { ...input().binding, deviceStatus: "revoked" } }), "device_not_verified"],
     ["inactive authority", input({ authority: { ...input().authority, active: false } }), "inactive_authority"],
+    ["subject mismatch", input({ binding: { ...input().binding, subject: { kind: "person", key: "alexandra_reception" } } }), "subject_mismatch"],
+    ["missing organization", input({ binding: { ...input().binding, organizationId: null, propertyIds: [] }, authority: { ...input().authority, organizationId: null, propertyIds: [] } }), "organization_required"],
     ["wrong organization", input({ authority: { ...input().authority, organizationId: "other-org" } }), "organization_mismatch"],
     ["missing property", input({ binding: { ...input().binding, propertyIds: [] } }), "property_scope_missing"],
+    ["unauthorized property", input({ binding: { ...input().binding, propertyIds: ["other-property"] } }), "property_scope_mismatch"],
     ["role escalation", input({ authority: { ...input().authority, roleProfile: "finance" } }), "role_profile_mismatch"],
-    ["unknown identity", input({ subject: { kind: "person", key: "unknown" } }), "unknown_subject"],
+    ["unknown identity", input({
+      subject: { kind: "person", key: "unknown" },
+      binding: { ...input().binding, subject: { kind: "person", key: "unknown" } },
+      authority: { ...input().authority, subject: { kind: "person", key: "unknown" } },
+    }), "unknown_subject"],
   ])("fails closed for %s", (_label, candidate, reason) => {
     expect(compileEffectiveProfile(candidate as EffectiveProfileInput)).toEqual({ ok: false, reason });
   });
@@ -117,5 +156,19 @@ describe("compileEffectiveProfile", () => {
     });
     receipts[2].receipt.profileHash = "0".repeat(64);
     expect(compareEffectiveProfileReceipts(receipts).deployedConsistently).toBe(false);
+  });
+
+  it("changes the hash when authority scope or capabilities differ", () => {
+    const first = compileEffectiveProfile(input());
+    const second = compileEffectiveProfile(input({
+      authority: {
+        ...input().authority,
+        allowedDataScopes: ["system"],
+        capabilityIds: ["operations.read"],
+      },
+    }));
+    expect(first.ok && second.ok).toBe(true);
+    if (!first.ok || !second.ok) return;
+    expect(first.profile.receipt.profileHash).not.toBe(second.profile.receipt.profileHash);
   });
 });
