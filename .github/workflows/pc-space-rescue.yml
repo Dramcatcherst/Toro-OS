@@ -5,11 +5,13 @@ on:
     paths:
       - scripts/pc-space-rescue.ps1
       - tests/pc-space-rescue.test.ps1
+      - tests/pc-space-inventory.test.ps1
       - .github/workflows/pc-space-rescue.yml
   pull_request:
     paths:
       - scripts/pc-space-rescue.ps1
       - tests/pc-space-rescue.test.ps1
+      - tests/pc-space-inventory.test.ps1
       - .github/workflows/pc-space-rescue.yml
 permissions:
   contents: read
@@ -21,7 +23,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Windows PowerShell 5.1 synthetic safety checks
         shell: powershell
-        run: ./tests/pc-space-rescue.test.ps1
+        run: |
+          ./tests/pc-space-rescue.test.ps1
+          ./tests/pc-space-inventory.test.ps1
       - name: PowerShell 7 synthetic safety checks
         shell: pwsh
-        run: ./tests/pc-space-rescue.test.ps1
+        run: |
+          ./tests/pc-space-rescue.test.ps1
+          ./tests/pc-space-inventory.test.ps1
