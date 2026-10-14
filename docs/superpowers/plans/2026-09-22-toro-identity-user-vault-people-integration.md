@@ -179,3 +179,15 @@ Antes de codificar, fijar commits vigentes y preservar el tipo exportado de cont
 - Task3: matrizpreview/directorio/commit por identidadorgrelojfecha, conservando RPCcanónica.
 - Conciliación delExcel: detectar portada/filatítulo/headers, compararsemántica de columnas y fecha de generación; mínimosCódigo/Colaborador/Sector/Función/Estado/Ingreso/Salida; formatos/hojas exactas delarchivo se fijan tras leerlo. Códigoexportador no certifica bytes deladjunto. Salarios/banca se revisan en carrilRRHHrestringido si necesario, no por matchingdeidentidad.
 - Evidencia y reporte privados porfila; GitHub conserva solo schema, agregados y decisión. No nuevas cuentas ni ingesta de expediente hasta readiness.
+
+
+## Addendum: Investigación autónoma mediante conectores
+
+La transcripción delExcel no es prerrequisito para avanzar. Ya se leyó el inventario canónico13fichas de Supabase con atributosdeidentidadminimizados, mappings/roles/membresías y sin nómina/banca/contactos. ElarchivoExcel sigue sinparsear; registrar fuente distinta y coverageexacto.
+
+- Task1 incorpora clasificación data_conflict/source_reconciliation/offboarding_mapping_review/multiple_external_bindings/clock_requirement_review/not_onboarded. No declararduplicado por dosclockIDs o exigirreloj aadministrador no sujetoa jornada.
+- Task2 muestra porseparado faltafecha/nombrelegal, vínculo sinmembresía y provenance. Estadospropuestos, no escrituras o permisos.
+- Task3 prueba employee terminated conmappinghistórico abierto; conservarhistoria sin aprobarjornadaactual. DosclockIDs de una ficha se muestran como relaciones, nunca personaduplicada. El mappingdefechauniqueness delcommit se conserva.
+- Buscar fechas/nombres legales en evidencias autorizadas ya referenciadas; primerpunch/mappingvalid_from no prueba ingreso. Proveedorcontact/name no pruebaempleador.
+- Antes de pregunta, agotar fuentecomprobable correspondiente y presentar solución/decisión concreta. No pedirtranscribir información que estáenSupabase.
+- No recuperarUI mediante creación/reset deidentidad, ampliacióndegrants o transferenciadecookies. Perfilbrowser sinsigninverificado es dependencia deQAinteractiva, no bloqueo delread-onlydiagnóstico.
