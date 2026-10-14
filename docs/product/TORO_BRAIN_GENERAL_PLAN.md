@@ -11,26 +11,53 @@
 ---
 
 <a id="entrada-ejecucion-vigente"></a>
-## Entrada de ejecución vigente — revisión propuesta, 13/10/2026
+## Entrada de ejecución vigente — diseño integral solicitado, 13/10/2026
 
-**Vigencia del Plan y madurez del producto son dimensiones distintas.** CURRENT MASTER PLAN identifica la autoridad documental; no certifica todas sus funciones. Cada resultado conserva fecha, entorno/SHA, fuente y prueba. Clasificar implementación como DOCUMENTADO / PREPARADO / PUBLICADO / RUNTIME ACEPTADO / OPERACIÓN MEDIDA; TARGET y una lista de pruebas no equivalen a operación completa.
+**Autoridad documental y producto construido son dimensiones distintas.** Esta revisión amplía el frente explícito de Mauricio a toda la experiencia TORO y registra lo que falta. El diseño es propuesto; ningún writer, permiso, ruta o dato se activa por editar el Plan. Política vigente, preparación, publicación, runtime aceptado y operación medida conservan prueba/fecha/ámbito propios.
 
-| Frente solicitado | Estado respaldado / límite | Siguiente unidad de este frente |
+**Decisión de diseño:** cinco entradas —Hoy, Trabajo, Información, Herramientas, Dirección—, contexto autorizado y un shell. Cerebro00/búsqueda/pedido son transversales; mapa/lista dentro de Información. Conservar00–11, IDs/source authority y rutas compatibles. El Portal deja de competir con otras portadas/menús; los19IDslegacy se corresponden como capacidades/referencias, no otros19módulos.
+
+| Dimensión | Estado respaldado / límite | Decisión de esta revisión |
 |---|---|---|
-| Portal / TORO Tools | Doce destinos publicados según el checkpoint13/10; favoritos temporales en memoria del componente. Cuatro accesos Kross revisados como propuesta; RPC y permisos siguen iguales. | Preparar diseño compartido de sugeridos/fijados con los doce destinos actuales y resolver almacenamiento durable autorizado. |
-| Producto final / favoritos | Petición del propietario: catálogo permitido similar al HTML existente, Inicio con selección breve que puede sugerirse y fijarse. Diseño propuesto; sin implementación. | Misma unidad anterior; no copiar todo el registro ni su rol-preview. |
-| Plan / continuidad | Revisión estructural completa y profunda de los contratos relevantes; índice/semántica corregidos en este draft. Historial y IDs conservados. | Usar esta entrada y el último corte del checkpoint exacto, sin volver a leer todo el Plan. |
-| Compras/inventario; WhatsApp/OpenClaw; otros dominios | Conservan sus decisiones, tareas y gates propios. Sus recibos históricos no prueban ejecución actual ni quedan cancelados por este frente. | Resolver únicamente desde su tarea/contrato cuando sean el frente solicitado o una dependencia material. |
+| Cobertura |13/13páginas+layout,8pestañas,12dominios,19legacyIDs revisados en fuente; Plan estructural completo y contratos pertinentes. No13sesiones reales ni auditoría completa de16APIhandlers. | Una acción/cierre/estado por página y una correspondencia al Plan. |
+| Navegación | Seis páginas admitidas más raíz redirect en modo Portal; seis excluidas; varias entradas/retornos/cabeceras. | Shell/contexto/retorno únicos; no nueva allowlist por apariencia. |
+| Veracidad | Flags no prueban verificación; ausencia no es cero; relaciones/porcentajes de scaffold y fallbacks pueden confundir. | E1 primero: contrato común de estado/cobertura/evidencia y negativas. |
+| Trabajo | Predomina lectura/handoff/estado local; no se demuestra ciclo persistente completo para todas las audiencias. | Caso existente→tarea única→humano→evidencia→relevo/cierre con readback, por gate. |
+| Herramientas |12destinos de baseline;4Krosspropuestos para16; favoritos temporales; soporte durable no confirmado. | Catálogo permitido y política compartida de sugeridos/fijados dentro de E4; lote listo preservado. |
+| Ámbitos | Event Ops tiene conflicto privado/hotel observado, sin filtración demostrada; lab/scaffolds son sintéticos/históricos. | Mantener fuera del menú hotelero; aislamiento probado antes de exposición. |
 
-Expediente de este frente: última sección de INTEGRACION_LOCAL_VALIDADA.md, tarea toro-accesos-operacion del13/10/2026; diagnóstico y evidencia locales subordinados. Diseño único: [catálogo y favoritos dentro de la especificación existente](../superpowers/specs/2026-10-12-portal-completeness-and-document-close-design.md#herramientas-favoritos-20261013). No otro Plan General, inventario, agente, base, dashboard o scheduler.
+Expediente canónico del frente: última sección INTEGRACION_LOCAL_VALIDADA.md, tarea toro-accesos-operacion del13/10/2026. [Diseño integral y planE1–E7 en la especificación existente](../superpowers/specs/2026-10-12-portal-completeness-and-document-close-design.md#experiencia-integral-20261013). Reporte/evidencia locales REVISION_PRODUCTO_Y_ALINEAMIENTO_TORO.md y REVISION_PRODUCTO_EVIDENCIA.json son entregables subordinados, no otro Plan General o fuente hotelera.
 
-La intención de catálogo completo se acepta por cobertura de **destinos elegibles/revisados/permitidos del ámbito**, con conteos y exclusiones fechadas. El total bruto histórico no es un denominador de permisos. Un enlace revisado no acredita sesión, integración, escritura o cierre operacional.
+### Brechas registradas — corte de esta revisión
 
-**Limpieza editorial aplicada:** entrada vigente y estados separados; sin renumerar o borrar recibos. Numeración21/22 repetida, superprompts anteriores y familias P/M/V se conservan como referencias fechadas; no se ejecutan por aparecer al final o llevar “vigente”. Cada continuación elige un resultado y una tarea existente. Reordenación/archivo adicional necesita delta revisable y comprobación de anclas; no eliminación masiva.
+Las referenciasUX no crean nuevas tareas/proyectos. Estado inicial OBSERVADO/PROPUESTO, sin implementación. Cada cierre añade SoT/SHA/fecha/prueba/gate/reversión y brecha restante a la tarea/registro existentes.
 
-**Modo de despliegue:** la sección Public Brain perimeter inferior conserva el contrato de demo en su corte. El código actual también reconoce modo portal y limita capacidades internas en él; el Portal publicado es una superficie autenticada de lectura, no activación general del runtime interno. Revisar versión/configuración efectiva antes de cualquier cambio, sin inferirla de una cabecera histórica.
+| ID | Pri | Falta / prueba necesaria |
+|---|---|---|
+| UX-01 | P0 | Aislamiento Event Ops privado frente a ámbito hotel; contexto/actor/lectura mínima antes de exposición. |
+| UX-02 | P1 | Verificación por objeto; needsRevalidation=false sin evidencia no marca verified. |
+| UX-03 | P1 | Dato ausente/error/parcial distinto de cero/ready. |
+| UX-04 | P1 | Fallo operativo no sustituido por demo sin elección explícita. |
+| UX-05 | P1 | Sin match no aparecen acciones/conectores ajenos del scaffold. |
+| UX-06 | P1 | Shell/entrada/retorno únicos y ruta disponible por modalidad. |
+| UX-07 | P1 | Contexto/deep-link/filtro/recarga sin mezclar estados o exponer consultas privadas. |
+| UX-08 | P1 | Caso/tarea/owner/evidencia/relevo/cierre en origen con readback e idempotencia. |
+| UX-09 | P1 | Preferencias personales aisladas, acción/pin estable y persistencia autorizada. |
+| UX-10 | P1 | Evidencia abrible y siguiente acción del objeto desde Cerebro/Información. |
+| UX-11 | P1 | Correspondencia12dominios/19legacyIDs sin segundo menú o progreso hardcoded. |
+| UX-12 | P1 | Trabajo útil del equipo por identidad/rol; no ampliar derechos por perfil-preview. |
+| UX-13 | P1 | Conteo/documento/pago/factura/conciliación/cierre separados, monedas y fuentes originales. |
+| UX-14 | P2 | Un solo borrador de respuesta, sin envío implícito. |
+| UX-15 | P2 | Reporte con período/corte/cobertura/origen y exportación verificada. |
+| UX-16 | P2 | Ayuda/onboarding opcionales con continuidad de contexto y destino permitido. |
+| UX-17 | P2 | Idioma/tema/cabeceras comunes, fixtureREADYsolo en lab. |
+| UX-18 | P2 | Índice/anclas/criteriosP-M-V vinculados a resultado/tarea/prueba; historia conservada. |
 
-**NEXT único del frente solicitado:** preparar política y preferencia compartidas de favoritos sugeridos/fijados para los doce destinos revisados, con usuario/ámbito y pin estable; lector/almacén durable aún no confirmado. Conservar las cuatro candidatas como lote listo separado hasta cambio implementado/pruebas/autorización específica. No aplicar SQL, publicar o ampliar permisos por esta revisión.
+**Secuencia subordinada:** E1veracidad/límites; E2shell/contexto/navegación; E3un ciclo de trabajo; E4herramientas/preferencias; E5información/evidencia/reportes; E6capacidad por rol/dominio, uno por vez; E7consolidación/rendimiento/limpieza segura. Una unidad pesada activa; no agenda/scheduler/writers nuevos. Las fases de inventario, comunicación, People, documento/cierre y otros negocios conservan sus tareas/autoridad/gates y no se cancelan.
+
+**Limpieza:** entrada vigente y correspondencia por función; los cortes y21/22repetidos siguen como historia con títulos/anclas. No purga o renumeración automática. El contrato demo inferior se aplica a su modalidad/corte; el código también reconoce Portal con capacidad limitada. CURRENT MASTER PLAN no certifica implementación de todos los apartados.
+
+**NEXT único:** E1, delta local de veracidad/límites de presentación, después de revisión del diseño; actor/contexto/perímetro intactos, pruebas de flag sin evidencia/null/error/match vacío/fallbackdemo. Código y publicación son gates distintos. El lector/almacén durable, aislamiento privado y expansión efectiva siguen pendientes; ningún SQL, permiso, writer, dato o costo autorizado por esta revisión.
 
 ---
 
