@@ -1,0 +1,64 @@
+name: Sandbox role RLS SQL
+
+on:
+  pull_request:
+    paths:
+      - "supabase/drafts/20261014_sandbox_role_rls_v1*.sql"
+      - "tests/sql/sandbox_role_rls_*.sql"
+      - ".github/workflows/sandbox-role-rls-sql.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toro_role_rls_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d toro_role_rls_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/toro_role_rls_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure psql
+        run: |
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+      - name: Build synthetic fixture
+        run: psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/sandbox_role_rls_fixture.sql
+      - name: Apply draft and assert isolation
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/sandbox_role_rls_assertions.sql
+      - name: Refuse second application
+        run: |
+          if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1.sql; then
+            echo "second application unexpectedly succeeded" >&2
+            exit 1
+          fi
+      - name: Refuse rollback after concurrent policy drift
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "alter policy toro_user_roles_active_self_read_v1 on public.user_roles using (true)"
+          if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql; then
+            echo "rollback unexpectedly removed a modified policy" >&2
+            exit 1
+          fi
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "alter policy toro_user_roles_active_self_read_v1 on public.user_roles using (auth.uid() is not null and user_id=(select auth.uid()) and status='active' and revoked_at is null)"
+      - name: Roll back and verify baseline
+        run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f tests/sql/sandbox_role_rls_rollback_assertions.sql
