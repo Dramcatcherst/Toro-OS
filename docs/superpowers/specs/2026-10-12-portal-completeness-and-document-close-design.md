@@ -118,3 +118,45 @@ Done means the operator can repeat the workflow with the intended identity, obse
 ## Approval boundary
 
 This written specification is ready for review. Architectural implementation and its detailed execution plan require the user's review under the invoked Superpowers workflow. The audit and reversible metadata corrections do not activate chat ingestion, posting, new permissions or new automation. Existing approvals remain valid within their original scope.
+
+## Owner-approved daily-close requirements — 2026-10-14
+
+This direction authorizes the current audit, report/SOP preparation and adjustment of the existing report schedule. Native channel ingestion, photo OCR persistence and accounting writes still require their actual runtime acceptance; documenting them does not activate them.
+
+### Operating cadence and minimal request
+- At 17:00 America/Costa_Rica prepare the current business date through the existing area-report schedule. Preserve the other area outputs; keep the detailed accounting report in its current Page.
+- Read Payments collected, Prime entry/petty cash, Finalize Day/history, authorized reservation-room detail, existing proof and Alegra before asking. Keep the paid Kross API paused.
+- The day's Alegra entries normally occur at end of day. Label this timing honestly; do not alert for a missing current-day posting before the agreed cutoff.
+- Ask only for missing terminal batch close per bank/terminal/currency, cash count with confirmation/photo and any original that cannot already be recovered. Do not ask for Kross screenshots that have been retrieved directly.
+- On explicit “listo” or the cashier's confirmed cutoff, reread Kross and create the final version in the same close. A late payment reopens a versioned difference; it never overwrites the earlier receipt or silently shifts dates.
+- Keep customer payment, native daily close, cash physical count, bank settlement and Alegra posting statuses separate. Pending processor settlement can be documented in transit without claiming bank reconciliation.
+- Final report delivery uses the verified Accounting group and an authorized owner view. A failed/uncertain send is inspected by receipt before retry; no guessed group ID or fallback recipient. Without transport, retain the report and message draft and name the exact gap.
+
+### Complete final report contract
+Header: entity/property, business date, cutoff and timezone, preparer, cashier confirmation, reviewer, source times, version, coverage and lifecycle state.
+
+Payment row: stable source payment/event ID; guest/payer; reservation ID; verified room(s) and allocation basis; stay/folio context; transaction and registration dates; method; original currency and exact amount; account/bank mapping; deposit/advance flag; processor terminal, affiliation, batch, voucher and authorization where present; native reference; unchanged proof link/hash; source version; matched Alegra invoice/receipt IDs; reconciliation status; outstanding evidence and responsible role. If room allocation or a terminal ID is absent, mark it unknown and retrieve it; never infer it from a guest name or voucher sequence.
+
+Cash: opening balance + receipts + authorized replenishments − expenses − refunds − withdrawals/deposits = expected cash, separately CRC/USD. Show denomination count, counted amount, signed difference, timestamp, cashier confirmation and photo/reference. Internal transfers have two linked legs and are excluded from lodging income and expense totals.
+
+Cards: per bank/terminal/currency/batch show transaction count, gross sales, voids/refunds and closing total; distinguish later net settlement, fees/withholdings and actual bank credit. Do not copy an entire batch total onto each guest.
+
+Transfers/deposits: payer, date/value date, original currency/amount, beneficiary account, reference, reservation allocation, original proof and bank-match state. A proof of transfer is distinct from independent beneficiary-account credit.
+
+Expenses/refunds: payee/purpose, property/cost center, source cash/account, original amount/currency, authorization reference and evidence; known personal or other-property items stay isolated.
+
+Footer: totals recalculated from rows, original source totals preserved, bridge for source/report/FX/timing differences, missing-source checklist, approved exception disposition, prepared Alegra manifest, already-recorded items, excluded internal transfers, gate status and exact readback/delivery receipt.
+
+### Photo count using the existing tool
+Use the existing `src/features/portal/cash-calculation.ts` and `portal-cash-tools.tsx`; do not create another counter. Current behavior is a local draft with copy, without persistent photo intake. The next unit adds a scoped evidence handoff to the existing Comms/document/close contracts.
+
+Cashier instructions: clear the tray/table, keep the money in custody, separate colones and dollars, then bills and coins by denomination. Lay each piece flat and individually visible; no opaque envelopes, hidden piles or overlapping notes. Photograph from directly above with good light, sharp denomination values and the entire arrangement in frame. If all cash does not fit, use separately labelled non-overlapping frames and identify which pieces appear only once. Keep receipt/terminal photos separate.
+
+Extraction returns denomination, count, subtotal and confidence/uncertainty, not just one total. Unreadable, occluded, partially framed or suspected duplicate pieces remain unresolved. The cashier corrects/accepts counts and confirms the entire physical float is represented; the tool recalculates expected/actual/difference. Never claim photo OCR guarantees completeness or authenticates banknotes. A confirmation plus evidence reference is required before durable saved-close status; copy-to-clipboard is not persistence.
+
+### Delivery and accounting preparation gates
+Reuse existing tables and manifest. Each source occurrence has one stable tenant-scoped replay key; duplicate forwards attach provenance rather than new money. Before preparing a new native action, check existing Alegra invoice/payment, original currency/account/company, document custody and source-version freshness.
+
+Preparation may finish with labelled exceptions. READY_FOR_ALEGRA means the exact candidate action has satisfied its relevant evidence/approval gate; it is not payment permission or fiscal acceptance. Definitive posting, issue/correction/refund and native Finalize Day require their separate authorized action, independent readback and recovery path. The current read-only connector does not supply that writer.
+
+Acceptance cases add: end-of-day expected delay; no-movement day with cash expense; saved closure different from current payment; one transfer labelled in the wrong currency; existing grouped invoice; multi-room reservation without allocation; hidden cash; overlapping photos; replay after restart; late transfer; no group receipt; recovery after ambiguous posting. Measure source/evidence coverage, confirmed-count coverage, replay duplicates, aged exceptions and operator questions; establish baseline before claiming time savings.
