@@ -20,6 +20,21 @@ Initial 30/09 authorization was local only. On 10/10 Mauricio accepted reconcili
 Verified locally: 359 Vitest + 25 Node tests, validators, lint and production build pass; 112 HTTP checks include 11 built assets, anonymous/synthetic-cookie requests, blocked operational GET/POST and server-action paths, root redirect, Brain RSC and no outbound/ledger I/O attempts. Owner Attention preserves its exact 503/disabled response through the perimeter. Next data-path normalization is disabled for the perimeter; Brain is force-dynamic. Mutation of the demo guard produced 36 expected failures; restored before final verification. Independent review closed with no outstanding findings. Public hosting and real identity/RLS operation remain unverified by this unit.
 Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, injected-client entry points, Worker client and write primitives, health/canary routes and OAuth metadata. Event Ops and the hotel directory keep their existing identity paths, covered by no-I/O regressions. Existing internal capability, role and scope contracts are preserved; demo guards do not grant internal authority. Final local combination against `540d9b8c3de61ae339ef505b4eb6073a821b3fb1`: 481 Vitest + 25 Node tests and 136 HTTP checks pass, with zero outbound/ledger attempts in the synthetic HTTP harness. Build passes. ESLint has no errors; the existing unused OAuth OPTIONS request warning remains. Independent review of `1acae26..d7c3df2` found no actionable defects; the later main deltas add no demo guard changes and is covered by the final suite plus directory regressions. Review/remote evidence belongs in the same execution receipt; this paragraph is not a claim of publication or real RLS verification.
 
+
+## WhatsApp de recepción, cuenta personal y respaldo integral — 13/10/2026 CR
+
+**DIRECTIVA AUTORIZADA por Mauricio:** recopilar comunicación observable y permitida del WhatsApp de recepción (alias protegido, terminación 4004) y de su WhatsApp personal (terminación 3792), enlazarla con toda la operación TORO y asegurar archivos/recuperación; lo no comprobado queda planeado. Números completos en binding protegido, nunca en este repo público. **Scope:** Dreamcatcher + Mauricio Personal privados; **owner:** TORO Comms, Systems/Tools/Identity, Personal, Data/Assets y dominios afectados. Reutilizar issues #122/#170/#209; no nueva base, master plan, inbox o scheduler.
+
+**TARGET:** cuenta/chat/evento -> identidad/scope -> journal autorizado y adjuntos -> clasificación/autoridad -> objeto canónico existente -> revisión/acción permitida -> evidencia -> respaldo/restore. Cobertura entrantes/salientes, histórico/nuevo, directos/grupos y media explícita; no prometer datos inaccesibles. Reader separado de responder/enviar. Personal no visible para hotel por defecto; compartir solo datos empresariales seleccionados y permitidos.
+
+**CURRENT verificado por metadata:** registro organizacional communication_channel_bindings existe con RLS; un canal openclaw distinto de los dos solicitados aparece healthy/verified, pero last_sync_at=null; dependency registry OpenClaw sigue needs_audit. Contradicción registrada, no resuelta por inferencia. No binding organizacional de los dos números solicitados; modelo User Vault nominal y host privado sin validar. WeSpeak activo en registry no prueba ese WhatsApp conectado. No lectura real, enrolamiento, envío ni restore efectuados.
+
+**NEXT P0:** comprobar host/runtime y cuenta recepción; resolver identidad/alcance/efectos de captura; piloto hasta 20 eventos y 1 caso operativo, replay y prueba negativa. **P1:** cuenta personal aislada (hasta 10 eventos/1 compromiso), archivo y restore por scope. **P2:** backfill y ampliación por lotes con límites/checkpoints/huecos visibles. Matriz completa de dependencias, respaldo y aceptación en [TORO Comms, sección 19](TORO_COMMS_V1.md); ver [runbook actual](../runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md). Los contratos de documentos/fotos en Studio 10–12 permanecen incluidos en esta misma propuesta.
+
+**Respaldo objetivo:** estado privado/index en Supabase; originales/exportes autorizados en Dropbox con separación empresarial/personal, checksum/manifest y ACL; contratos/redacciones en GitHub; Pages/Airtable/Portal como proyecciones. Probar restore de datos + binarios + permisos; no declarar backup por existir carpetas. RPO <=24h/RTO <=4h son objetivos iniciales por validar, no SLA vigente.
+
+**Terminado:** una captura real por cuenta produce fuente, scope y objetos conciliados; replay sin duplicado, cero filtración personal, archivos recuperables y falla visible. Kross conserva autoridad comercial; banco/procesador/Alegra conservan las suyas. No cambios tarifarios, pagos, mensajes externos, permisos amplios o publicación por haber leído un chat. Estado documental autorizado; integración y recuperación E2E UNVERIFIED hasta prueba.
+
 ## Reporte de recepción integrado y preparación operativa 2026 10 08
 
 
@@ -397,6 +412,18 @@ Routine successful receipts remain evidence/digest unless another rule makes the
 ---
 
 ## TORO Studio — governed creative & media capability
+
+
+### Nombres humanos y curación fiel de documentos/media — 13/10/2026
+
+**Scope:** TORO Assets/Studio/Governance/Channels; piloto Dreamcatcher dentro de Web, Marca, SEO y Reputación. **TARGET:** nombres legibles, originales intactos, clasificación por lugar/contenido y selección por objetivo; mejoras conservadoras sin alterar arquitectura ni ocultar defectos materiales. Reutilizar los contratos/índices actuales y `initiative_bindings.visual_commerce_dreamcatcher`, issues #6/#28/#30 y gates de PR #43; sin biblioteca, base, agente o publisher adicional.
+
+**CURRENT comprobado:** propuesta PDF y cotizador HTML del retreat guardados en `/Dreamcatcher Hotel/Administracion/Retiros/2027`, con nombres humanos, lenguaje ES y versión v01; cargas completed y IDs/tamaños leídos. Muestreo visual encontró dos capturas web en la biblioteca; el set anterior de retreats prioriza candidatos de arte y usos múltiples sin pertinencia comprobada. Manifest Eagle de 05/07: 9.935 filas, no conteo live; índice actual Dreamcatcher: 60 assets, 44 sin subject_key, 55 requieren revisión humana y 10 assignments. No afirmar inventario completo ni reselección final.
+
+**PROPUESTO / NEXT:** contrato detallado y texto común para ChatGPT/Codex en [TORO Studio, secciones 10–12](TORO_STUDIO_V1.md). Primero clasificar/reconciliar y seleccionar 30 originales representativos; luego un antes/después conservador, aprobación por versión/destino y sustitución gradual con rollback. Fotos/QR/tablas y claims siguen ligados al alojamiento correcto. Los nombres nuevos no autorizan renombrar archivos fiscales originales, internas Eagle ni rutas publicadas en masa.
+
+**Límite:** esta propuesta documental y la referencia de contexto no modifican ajustes globales de ChatGPT ni activan edición/publicación/DB writes. Lo reutilizable es el método; imágenes y datos privados permanecen en su scope. La adopción automática y la mejora comercial requieren pruebas y medidas; ningún score técnico equivale a aprobación.
+
 
 TORO Studio is an internal subsystem/capability of the single TORO product.
 
