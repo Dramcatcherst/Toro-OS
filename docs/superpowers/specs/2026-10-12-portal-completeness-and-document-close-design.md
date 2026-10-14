@@ -118,3 +118,50 @@ Done means the operator can repeat the workflow with the intended identity, obse
 ## Approval boundary
 
 This written specification is ready for review. Architectural implementation and its detailed execution plan require the user's review under the invoked Superpowers workflow. The audit and reversible metadata corrections do not activate chat ingestion, posting, new permissions or new automation. Existing approvals remain valid within their original scope.
+
+<a id="herramientas-favoritos-20261013"></a>
+## Herramientas y favoritos — propuesta de diseño, 13/10/2026
+
+Intento del propietario: integrar una herramienta similar al HTML TORO-DASHBOARD-LINKS dentro del TORO existente, optimizada por tareas y contexto; Inicio presenta una selección breve que se sugiere automáticamente y puede fijarse. Supuesto de alcance pendiente de corrección: esto aplica a la sección de accesos de Inicio, conservando los demás paneles operativos. No exige otra aplicación o registro.
+
+### Fuente, superficie y estado
+
+- Referencia local: agrupación por proveedor/acción, búsqueda, densidades, favoritos y detalle contextual. Es preview con perfiles de presentación, no autorización. No copiar su modelo completo, account_refs o evidencia cruda al cliente.
+- CURRENT verificado en fuente: catálogo compartido de doce destinos ya revisados; selección inicial fija de hasta nueve y cambios solo en memoria del componente. Cuatro destinos Kross adicionales están revisados en un lote propuesto; aún no proyectados.
+- TARGET_REQUESTED: catálogo completo permitido y favoritos duraderos personales. Lo publicado, temporal, sugerido y guardado deben distinguirse.
+- Portal/Herramientas, guía y Mi espacio consumen la misma política de catálogo/preferencias. Mantener las rutas actuales; sus vistas no crean otro módulo ni catálogo independiente.
+
+### Contrato de sugeridos y fijados
+
+1. Solo entra un destino que entrega el lector autorizado vigente, con la misma pareja exacta ID/URL y revisión. Fijar o usar no concede permisos. No incorporar una candidata, histórico, contraseña, cierre financiero, tarifa o cuenta ambigua por ranking.
+2. Fijados manuales preceden a sugeridos. Hasta nueve accesos visibles en total; los fijados nunca se desplazan o desordenan al recalcular. El catálogo conserva el resto de destinos permitidos y una acción clara para volver.
+3. Inicio frío: presets por tarea/perfil confirmado, filtrados por autorización. Etiqueta “Sugerido”, sin afirmar aprendizaje. Uso propio/recencia puede mejorar orden cuando exista captura aprobada; sin IA, polling o datos de huéspedes para esta decisión.
+4. Se recalcula al entrar/cambiar contexto o al pedir actualizar; no mientras el usuario interactúa. Descartar afecta sugerencias, desfijar afecta preferencias; controles separados y reversibles.
+5. Fijar selecciona una acción y revisión del destino estables, no un proveedor con apertura variable según búsqueda. Alias pueden agruparse para presentar, conservando los IDs de origen; detalles y búsqueda aplican el mismo filtro que lista y apertura.
+6. Cambiar usuario, organización/propiedad o cuenta autorizada cambia el conjunto visible y su estado temporal. Un rol-preview, correo o cuenta inferida nunca suple la autorización real. Cuenta solo si el contexto seguro vigente la identifica; no proyectar account_refs.
+7. Si una autorización/destino deja de ser válido, impedir apertura y explicar el estado sin sustituirlo silenciosamente. No guardar URLs de sesión, credenciales o parámetros sensibles; favoritos no transportan sesiones del proveedor.
+8. Pin persistido exige readback después de guardar y recargar. Fallo muestra “Cambios temporales: no guardados”; no toast de éxito falso. En la fase temporal solo se promete memoria del componente, sin “guardado entre dispositivos”.
+
+### Dependencia de preferencias y límites
+
+No se confirmó un lector/almacén durable autorizado. La comprobación focal de catálogo Supabase no encontró tablas con nombres de preferencias/settings/vault en public/operations/private ni columnas correspondientes en los objetos de usuario examinados; esto no demuestra ausencia global de mecanismos. Resolver el contrato existente antes de implementar persistencia.
+
+Contrato propuesto mínimo: actor tomado de sesión, organización/propiedad resueltas, clave de superficie, destino canónico/revisión, rango de fijación y sugerencias descartadas; versión/updated_at para conflictos. Contadores de uso solo si se aprueba su captura y retención. Datos de preferencia no son claims de rol ni grants. Un nuevo almacén o política de escritura requiere necesidad y cambio mínimo revisados; sin esquema/escritor paralelo automático.
+
+### Aceptación y reversión
+
+- Fijar/desfijar, descartar/recuperar y ordenar por teclado; nombre de acción estable, foco visible y estado anunciado. Filtro/categoría no abandona Favoritos ni muestra archivos ocultos.
+- Misma autorización en sugerencia, tarjeta, detalle y apertura; revocación, cambio de contexto, ID/URL alterados, alias y duplicados tienen prueba negativa.
+- Un pin es control hermano del enlace, nunca botón anidado dentro de un enlace; una tarjeta no combina acciones ambiguas.
+- Lectura parcial/fallo de preferencias no borra pins ni sobreescribe preferencias con semillas. Guardado versionado/idempotente maneja cambios de otra pestaña sin perder elecciones.
+- Superficies públicas genéricas conservan sesión del proveedor y cuenta no confirmada; no afirmar selección automática de la cuenta del hotel.
+- Los mismos doce destinos de baseline siguen disponibles; las cuatro candidatas no aparecen antes de su cambio autorizado. No ID/URL/organización/cuenta inferidos.
+- Los pins mantienen orden y destino elegido tras búsqueda y actualización; persistencia solo aceptada con recarga/readback y dos identidades/contextos sin mezcla.
+- QA del delta en320/390/1280, teclado y fallback; los límites44px/12px del diseño vigente permanecen. El HTML file:// no tuvo nueva QA visual por bloqueo de política; no usar servidor alternativo para eludirlo.
+- Reversión por delta propio/feature control acordado, conservando preferencias y datos; no reset del repositorio compartido, cambio de RLS o borrado de originales.
+
+### Secuencia de mejora en el Plan único
+
+Una unidad activa: preferencias/política y UX compartidas con los doce destinos. Después, por dependencia y autorización: ampliación de las cuatro parejas ya revisadas; grupos y cobertura por ámbitos elegibles; un flujo operacional completo con tarea/responsable/evidencia/cierre; mantenimiento editorial de índice/aliases y historial. Cada resultado conserva SoT, dueño, prueba, bloqueo, gate y reversión en sus registros existentes. No calendario, otro backlog ni trabajo paralelo activado.
+
+La investigación del13/10/2026 queda en REVISION_PRODUCTO_Y_ALINEAMIENTO_TORO.md y su evidencia local de la tarea toro-accesos-operacion, subordinadas a esta especificación y al Plan General.
