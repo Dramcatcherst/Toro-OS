@@ -5599,3 +5599,12 @@ Sitio HTTP200 sin sesión muestra acceso. Deployment READY producción dpl_EZ1wL
 Código exportador indica expedientelaboral con16columnas y datos restringidos, sin identidadAuth/membresía/reloj. «Con cuenta registrada» significa cuenta bancaria en su resumen; hasAccess en directorio solo user_id vinculado. Plan requiere separar cuenta bancaria/cuentaTORO/vínculo/membresía/permisoefectivo y usar mappingtemporal actual/histórico. BaselineDBindependiente:13no borrados/12activos/5vinculados/7activos sincuenta/1vinculado sinmembresía.
 
 NEXT delmismo plan: lectura minimizada delExcel y comparaciónprivada pororg+IDcorroborado, más corregirsemántica delreader/exportador en unidadprobada posterior. Archivo pendiente no bloquea investigación deorigen/código, pero impide certificar alineaciónporfila. Sin writesruntime, datos sensibles publicados o release.
+
+
+### Conciliación por fuente canónica y autonomía de investigación
+
+Owner solicita usarconectores y evitar transcripciones. Revisadas13fichasDreamTeam enSupabase con camposminimizados:12activas/5vinculadas,1vínculo sinmembresía,9activos siningreso,5sin nombrelegal,1retirado conmappingreloj abierto,1ficha condobleclockID,1activo sinmapping y0canalesverificados. No son efectos de esta sesión ni errores todos: vigencia y necesidaddereloj requieren regla/evidencia. Inventarioporpersona permaneceprivado; soloagregados alPlan.
+
+La informacióncanónica fue recuperada; ya no se requiere transcripciónmanual para investigarla. Revisar candidatos confuentes antes de preguntar; no autoconcederroles/membresía, fecharcontratos conmarcaciones, fusionarIDs o eliminarhistorias. Las preguntas se limitan a decisioneshumanas no resueltas porfuentes, con propuestasconcretas.
+
+Lectura delarchivo adjunto y sesiónUI permanecen noverificadas porlimitacionesdeherramienta; navegadorlocal no conectado y perfilremoto sin signinDreamTeam registrado. Consultardatosporconector no certifica lecturaExcel o comportamientoRLSinteractivo. Continuar matrizautorización/fieldauthority bajoPR281, sin pedircopy/paste delarchivo ni haceraltausuarios.
