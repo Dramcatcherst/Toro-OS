@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$Clean)
+param([switch]$Clean, [switch]$StorageReport)
 
 $ErrorActionPreference = 'Stop'
 
@@ -129,6 +129,118 @@ function Invoke-ToroPcSpaceRescue {
     }
 }
 
+
+function Get-ToroStorageBucket {
+    param([string]$RelativeDirectory)
+    if ([string]::IsNullOrWhiteSpace($RelativeDirectory)) { return '(drive root)' }
+    $parts = @($RelativeDirectory.Trim('\').Split('\'))
+    $count = [Math]::Min(2, $parts.Count)
+    if ($parts[0] -eq 'Users') {
+        $count = [Math]::Min(3, $parts.Count)
+        if ($parts.Count -ge 4 -and $parts[2] -eq 'AppData') {
+            $count = [Math]::Min(5, $parts.Count)
+        }
+    }
+    return ($parts[0..($count - 1)] -join '\')
+}
+
+function Get-ToroStorageInventory {
+    param(
+        [Parameter(Mandatory)][string]$Root,
+        [ValidateRange(1, 600)][int]$MaxSeconds = 90,
+        [ValidateRange(1, 1000000)][int]$MaxEntries = 200000
+    )
+    $rootPath = [IO.Path]::GetFullPath($Root).TrimEnd('\') + '\'
+    if (-not (Test-ToroPlainDirectory -Path $rootPath)) { throw 'Storage root must be an accessible plain directory.' }
+    $pending = New-Object 'System.Collections.Generic.Queue[string]'
+    $pending.Enqueue($rootPath)
+    $groups = @{}
+    $largest = @()
+    $entries = 0
+    $files = 0
+    $bytes = [long]0
+    $excluded = 0
+    $accessErrors = 0
+    $limited = $false
+    $clock = [Diagnostics.Stopwatch]::StartNew()
+    # Reparse points, offline files and Windows recall placeholders.
+    $excludedMask = [long](0x400 -bor 0x1000 -bor 0x40000 -bor 0x400000)
+    while ($pending.Count -gt 0) {
+        if ($clock.Elapsed.TotalSeconds -ge $MaxSeconds -or $entries -ge $MaxEntries) {
+            $limited = $true
+            break
+        }
+        $directory = $pending.Dequeue()
+        if (-not (Test-ToroPlainDirectory -Path $directory)) { $excluded++; continue }
+        $relativeDirectory = $directory.Substring($rootPath.Length).Trim('\')
+        $bucket = Get-ToroStorageBucket -RelativeDirectory $relativeDirectory
+        try {
+            # Lazy metadata enumeration. No file contents are opened.
+            $info = Get-Item -LiteralPath $directory -Force -ErrorAction Stop
+            foreach ($entry in $info.EnumerateFileSystemInfos()) {
+                if ($clock.Elapsed.TotalSeconds -ge $MaxSeconds -or $entries -ge $MaxEntries) {
+                    $limited = $true
+                    break
+                }
+                $entries++
+                try {
+                    if (([long]$entry.Attributes -band $excludedMask) -ne 0) { $excluded++; continue }
+                    if ($entry -is [IO.DirectoryInfo]) {
+                        $pending.Enqueue($entry.FullName)
+                        continue
+                    }
+                    if (-not ($entry -is [IO.FileInfo])) { continue }
+                    $length = [long]$entry.Length
+                    $files++
+                    $bytes += $length
+                    if (-not $groups.ContainsKey($bucket)) { $groups[$bucket] = [long]0 }
+                    $groups[$bucket] += $length
+                    $largest += [pscustomobject]@{ Path = $entry.FullName; Bytes = $length }
+                    if ($largest.Count -gt 40) { $largest = @($largest | Sort-Object Bytes -Descending | Select-Object -First 12) }
+                } catch { $accessErrors++ }
+            }
+        } catch { $accessErrors++ }
+        if ($limited) { break }
+    }
+    $clock.Stop()
+    $folders = @($groups.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 20 | ForEach-Object {
+        [pscustomobject]@{ Folder = $_.Key; LogicalGB = [Math]::Round([long]$_.Value / 1GB, 3); Bytes = [long]$_.Value }
+    })
+    $topFiles = @($largest | Sort-Object Bytes -Descending | Select-Object -First 12 | ForEach-Object {
+        [pscustomobject]@{ Path = $_.Path; LogicalGB = [Math]::Round($_.Bytes / 1GB, 3); Bytes = $_.Bytes }
+    })
+    return [pscustomobject]@{
+        Mode = 'storage_inspect_only'
+        Root = $rootPath
+        Seconds = [Math]::Round($clock.Elapsed.TotalSeconds, 1)
+        EntriesVisited = $entries
+        FilesMeasured = $files
+        LogicalBytesMeasured = $bytes
+        LimitReached = $limited
+        ExcludedLinkedOrOffline = $excluded
+        AccessErrors = $accessErrors
+        Partial = ($limited -or $excluded -gt 0 -or $accessErrors -gt 0)
+        Folders = $folders
+        LargestFiles = $topFiles
+        Notice = 'Logical file lengths, not allocated disk usage or recoverable space. Incomplete scans are lower bounds for observed logical lengths; hard links may be counted more than once. No file contents read or files changed.'
+    }
+}
+
+function Show-ToroStorageReport {
+    if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'Run on the Windows PC being inspected.' }
+    Write-Host 'TORO: read-only C: metadata scan (90-second budget).'
+    $result = Get-ToroStorageInventory -Root 'C:\'
+    $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
+    $result | Select-Object Mode, Seconds, FilesMeasured, LimitReached, Partial, ExcludedLinkedOrOffline, AccessErrors | Format-List
+    Write-Host ('C: free now: {0} GiB' -f ([Math]::Round([long]$disk.FreeSpace / 1GB, 3)))
+    Write-Host $result.Notice
+    Write-Host 'Largest folder groups seen (GiB):'
+    $result.Folders | Select-Object LogicalGB, Folder | Format-Table -AutoSize
+    Write-Host 'Largest files seen (GiB):'
+    $result.LargestFiles | Select-Object LogicalGB, Path | Format-Table -AutoSize -Wrap
+}
+
 if ($MyInvocation.InvocationName -ne '.') {
-    Invoke-ToroPcSpaceRescue -Apply:$Clean | Format-List
+    if ($StorageReport -and $Clean) { throw 'Choose -StorageReport or -Clean, not both.' }
+    if ($StorageReport) { Show-ToroStorageReport } else { Invoke-ToroPcSpaceRescue -Apply:$Clean | Format-List }
 }
