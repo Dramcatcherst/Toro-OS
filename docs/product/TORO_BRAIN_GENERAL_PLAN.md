@@ -7,6 +7,18 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## BETORO — proyecto privado del portafolio TORO (14/10/2026)
+
+**CURRENT: DISEÑO / radar existente; no despliegue comprobado.** BETORO es el nombre canónico del proyecto personal antes denominado APUESTORO y POLYBET. Se integra **arquitectónicamente** bajo gobierno e identidad TORO por la decisión del 13/10/2026, en **scope privado aislado**: prohibido mezclar fondos, datos, personal, permisos o contabilidad con Dreamcatcher. La integración nominal no concede permisos financieros, ejecución real, custodia, firma, transferencia, acceso hotelero ni infraestructura nueva. Alias anteriores conservados para referencias; sin duplicar aplicaciones o bases.
+
+**Diseño fuente:** PR #282 en borrador, rama `docs/apuestoro-laboratorio-20261013`, `docs/product/APUESTORO_LABORATORIO_Y_50_MEJORAS_2026-10-13.md` (ruta histórica conservada). Contiene diseño de 50 mejoras **no probadas**, límites, metodología, arquitectura candidata, criterios de terminado y checkpoint de piloto ficticio. No representa merge a main ni integración runtime. Más detalle vigente en su sección 13.
+
+**Radar:** cadencia existente sin nuevos schedulers ni servicios de pago; máximo ocho mercados/treinta llamadas por ciclo. Investigar mecanismos y fuentes primarias y reportar hasta tres candidatos, estado INVESTIGAR/ESPERAR/DESCARTAR, datos con hora de Costa Rica, cambios verdaderos, hipótesis contrarias, catalizador, costos, evidencia y próxima invalidación. No simular cotizaciones ejecutables con midpoint; entrada ask, salida bid según profundidad/tamaño y tarifas/protocolos versionados. Tres métodos iniciales Estadístico/Causal/Intuición; otras variantes futuras y comparaciones bajo idéntica información/presupuesto. Costos no conocidos SIN MEDIR.
+
+**Piloto protegido:** US$100 ficticios, PB-20261013-001, sin reinicio ni nuevas operaciones virtuales hasta libro persistente y conciliación comprobada. Enmienda A1 conserva dos alternativas de contabilización de tarifas, no combinables: **P&L NO VALIDADO**. Posición CLARITY REAL excluida. Preservar evidencia y todos los intentos (incluidos descartes). Ninguna compra, firma, depósito o transferencia real autorizada.
+
+**NEXT / puertas de aceptación:** conciliar protocolo, comisión/cash/participaciones/redondeos; libro idempotente; reglas, bids/asks y caducidad verificables; comparación prospectiva reproducible y pruebas de aislamiento/backup/costos. TARGET laboratorio privado y nube solo si se prueban requisitos; FUTURE monetización de analítica condicionada. No añadir operaciones hoteleras a esta sección ni crear sistema paralelo.
+
 ---
 
 ## Public Brain perimeter — local correction, 2026-09-30
