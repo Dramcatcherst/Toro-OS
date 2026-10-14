@@ -28,11 +28,11 @@ begin
   if (select md5(regexp_replace(qual,'[[:space:]]','','g'))
       from pg_catalog.pg_policies
       where schemaname='public' and tablename='roles'
-        and policyname='toro_roles_active_self_read_v1') <> 'afe15e8bb9a7384d387b61ef51c41f5a'
+        and policyname='toro_roles_active_self_read_v1') is distinct from 'afe15e8bb9a7384d387b61ef51c41f5a'
       or (select md5(regexp_replace(qual,'[[:space:]]','','g'))
       from pg_catalog.pg_policies
       where schemaname='public' and tablename='user_roles'
-        and policyname='toro_user_roles_active_self_read_v1') <> '1175ea0e8f96fece3413ec584a117131'
+        and policyname='toro_user_roles_active_self_read_v1') is distinct from '1175ea0e8f96fece3413ec584a117131'
   then
     raise exception 'Rollback role policy definition drift';
   end if;
@@ -46,6 +46,10 @@ begin
   if has_table_privilege('authenticated','public.roles','INSERT,UPDATE,DELETE,TRUNCATE')
       or has_table_privilege('authenticated','public.user_roles','INSERT,UPDATE,DELETE,TRUNCATE') then
     raise exception 'Rollback authenticated write privilege drift';
+  end if;
+  if has_table_privilege('anon','public.roles','SELECT,INSERT,UPDATE,DELETE,TRUNCATE')
+      or has_table_privilege('anon','public.user_roles','SELECT,INSERT,UPDATE,DELETE,TRUNCATE') then
+    raise exception 'Rollback anonymous role-table privilege drift';
   end if;
 end;
 $preconditions$;

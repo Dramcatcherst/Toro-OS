@@ -52,12 +52,24 @@ jobs:
           fi
       - name: Refuse rollback after concurrent policy drift
         run: |
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "grant select on public.roles to anon"
+          if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql; then
+            echo "rollback unexpectedly disabled RLS over an anonymous grant" >&2
+            exit 1
+          fi
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "revoke select on public.roles from anon"
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "alter policy toro_user_roles_active_self_read_v1 on public.user_roles using (true)"
           if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql; then
             echo "rollback unexpectedly removed a modified policy" >&2
             exit 1
           fi
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "alter policy toro_user_roles_active_self_read_v1 on public.user_roles using (auth.uid() is not null and user_id=(select auth.uid()) and status='active' and revoked_at is null)"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "drop policy toro_user_roles_active_self_read_v1 on public.user_roles; create policy toro_user_roles_active_self_read_v1 on public.user_roles for select to authenticated"
+          if psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql; then
+            echo "rollback unexpectedly accepted a policy with a NULL definition" >&2
+            exit 1
+          fi
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c "drop policy toro_user_roles_active_self_read_v1 on public.user_roles; create policy toro_user_roles_active_self_read_v1 on public.user_roles for select to authenticated using (auth.uid() is not null and user_id=(select auth.uid()) and status='active' and revoked_at is null)"
       - name: Roll back and verify baseline
         run: |
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/drafts/20261014_sandbox_role_rls_v1_rollback.sql
