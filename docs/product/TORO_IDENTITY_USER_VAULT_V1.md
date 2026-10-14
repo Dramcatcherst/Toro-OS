@@ -554,3 +554,22 @@ Estado de la ampliación: investigación de fuentes disponibles y plan de tareas
 **NEXT:** recuperar lectura real/minimizada de la hoja y fecha de generación; matrizporfila privado con match/diferencias/fuente/acciónpropuesta. Preservar información laboral restringida; índiceIdentity proyecta solo datos necesarios y references. Añadir a Task1 conteoscorrectos, Task2 estados de vínculo/acceso y Task3 mappingtemporal en directorio. Revisiónprivacy de export porcampo/rol separada: código permite rolesprivilegiados, pero no se probaron sus lecturas/RLS; no afirmar filtración.
 
 **No realizado:** lectura deladjunto, comparaciónporfila, sesiónautenticada, alta, cambio deperfil/rol, modificación deasistencia/planilla o release. La exportación queda recibida y pendientelectura, no validada por similitud de filename.
+
+
+### Conciliación directa por conectores — solicitud del propietario
+
+Mauricio pide resolver la investigación mediante conectores y evitar transcripciones/preguntas rutinarias. La petición de pegar filas queda retirada como dependencia: se consultaron directamente las13 fichas canónicas no borradas en Supabase, que alimentan el exportador DreamTeam. Lectura privada minimizada: código, nombre/estado, departamento/área, ingreso/salida, vínculoAuth, membresía, roles y mappings de reloj; sin salarios, bancos o contactos. GitHub conserva solo agregados, no inventario identificable.
+
+Resultados:12activos;5con cuenta vinculada y1de esos sin membresía activa;9activos sin fecha de ingreso;5activos sin nombre legal;1retirado con mappingreloj activo sinvalid_to;1ficha con dosIDsreloj;1activo sinmapping;0identidades de canal verificadas. No todos son errores: dosIDs pueden corresponder a migración/reasignación y gerencia puede no usarreloj. «Retirado conmapping abierto» no demuestra loginactivo ni autoriza borrar historia. Examinar vigencia, jornadasposteriores y fuente antes de proponer cambio.
+
+Disposición de casos en vista protegida:
+- Cuenta vinculada sinmembresía: data_conflict/authorization_review_required; no crear membresía automáticamente por rolEMPLEADO.
+- Faltaingreso/nombrelegal: source_reconciliation_required; buscardocumental autorizado, no inferir fecha desde primera marcación o valid_from.
+- Retiro+mappingabierto: offboarding_mapping_review_required; preservar histórico y verificar cierre según política; no cambiar payroll/clock.
+- DosIDsreloj: multiple_external_bindings_review; no duplicar persona ni elegirprimerIDen directorio.
+- Sinmapping: clock_requirement_review; decidir si el tipo de relación necesita marcación antes de proponer enlace.
+- Sincanal: not_onboarded; no declarar mensajeríaactiva ni invitarpersonas duranteOWNER_ONLY_PROOF.
+
+Autonomía de investigación: comprobar primero código desplegado, basecanónica, referencias/manifests y documentos autorizados; formular candidatos con evidenciacorte y fuente. Preguntaralpropietario únicamente una decisión humana no deducible de fuentes, después de presentar opcionesconcretas. Fallo de lectura/local o auth no se resuelve creando sesión, reseteandoclave, ampliandopermisos o copiandocookies.
+
+Accesos intentados: conector de navegadorlocal devolvió Browser not connected; perfilremoto disponible no tiene signinDreamTeam verificado; no se ejecutó loginautomatizado/credenciales. El adjunto sigue recibido/no leído debido al workspace, pero la revisión de fichascanónicas sí se completó dentro delquery. No sustituir la afirmación«Excelcomparado» por datosdebase; tampoco mantener «falta información del personal» como bloqueo cuando el conector ya la devolvió.
