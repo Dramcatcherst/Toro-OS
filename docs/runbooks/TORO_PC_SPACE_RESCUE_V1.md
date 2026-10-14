@@ -148,4 +148,69 @@ The corrected wrapper starts a separate powershell.exe process with -NoProfile -
 Regression: tests/pc-space-policy.test.ps1 in Windows CI establishes Restricted in the isolated runner's parent process, runs the existing synthetic read-only inventory fixture in a child using the corrected launch form, verifies its native exit code and verifies that the parent's policy stays Restricted, then restores the runner's original process policy. This is fixture validation, not owner-PC evidence.
 
 Authority: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_exe?view=powershell-5.1
-NEXT: corrected owner execution and actual targeted inventory output. Latest free-space readback remains 15.199 GiB from the prior hibernation action; no new live disk measurement is available.
+CURRENT: owner supplied targeted inventory output; execution-policy launch issue is resolved for this attempt. Latest supplied free-space measurement remains 15.199 GiB from the prior action; the new folder output contains no disk-free readback.
+
+
+## Targeted inventory receipt and next package/WSL step, 13 October 2026
+
+Owner supplied readable excerpts after the full pasted-text attachment could not be downloaded in this chat (execution workspace unavailable). Do not claim the attachment was opened or that its unshown content was analyzed. The LocalApplicationData scan measured 56,214 files in 45 seconds; Partial=True, LimitReached=True, 5,908 linked/offline exclusions, AccessErrors=0. Only a tail of the UserProfile largest-file list is available; its scan-wide coverage metrics and full folder totals are unknown.
+
+Observed logical sizes: WSL ext4.vhdx 30.932 GiB; pnpm store 1.586 GiB; OneDrive group 1.238 GiB; Codex executable group 0.409 GiB. UserProfile excerpt includes a project video asset 1.233 GiB, substantial session/archive JSONL history, and a Codex runtime installation archive 0.414 GiB. Preserve project assets, active/history databases, sessions and installed executables. File lengths are not allocated or recoverable disk usage; no 30.932 GiB recovery promise.
+
+The next bounded cleanup uses the installed native pnpm.cmd/pnpm.exe launcher and pnpm store prune, which removes unreferenced store packages using the package manager's own accounting. It prints the version/active store, checks its exit status, observes C: disk-free delta and never falls back to raw recursive deletion or installing a missing manager. It acts on the active configured store; its path may differ from the partial inventory. Referenced projects remain; future installs may re-download pruned packages. A running store server or other manager refusal is preserved as a failure/skip, not overridden.
+
+The same block reads WSL version/list state and the registry binding for the observed VHD directory. It calls df only if the matched distribution is listed as running; it does not intentionally start a stopped distribution, terminate any distribution, unregister it, compact or move its disk. A concurrently changing WSL state can change between listing and invoking df. An absent registry binding is a mismatch to resolve, not evidence that the VHD is disposable.
+
+```powershell
+& {
+    $ErrorActionPreference = 'Stop'
+    $toroAntes = [long](Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace
+    $toroPnpm = Get-Command pnpm.cmd, pnpm.exe -CommandType Application -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+    if ($null -ne $toroPnpm) {
+        try {
+            & $toroPnpm.Source --version
+            & $toroPnpm.Source store path
+            & $toroPnpm.Source store prune
+            if ($LASTEXITCODE -ne 0) { Write-Warning 'pnpm no completo la limpieza; no se forzara borrado.' }
+        } catch { Write-Warning $_.Exception.Message }
+    } else {
+        Write-Host 'pnpm no encontrado; limpieza de paquetes omitida.'
+    }
+    $toroDespues = [long](Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace
+    [pscustomobject]@{
+        LibreAhoraGiB = [Math]::Round($toroDespues / 1GB, 3)
+        CambioObservadoGiB = [Math]::Round(($toroDespues - $toroAntes) / 1GB, 3)
+    } | Format-List
+
+    wsl.exe --version
+    wsl.exe --list --verbose
+    $toroClave = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss\{201db596-c13c-4b4c-943a-44d8698b3ab2}'
+    $toroDistro = Get-ItemProperty -LiteralPath $toroClave -ErrorAction SilentlyContinue
+    if ($null -ne $toroDistro) {
+        $toroDistro | Select-Object DistributionName, Version, BasePath | Format-List
+        $toroActivas = @(wsl.exe --list --running --quiet)
+        if ($LASTEXITCODE -eq 0) {
+            $toroActivas = @($toroActivas | ForEach-Object {
+                ([string]$_).Replace([string][char]0, '').Trim()
+            })
+            if ($toroActivas -contains $toroDistro.DistributionName) {
+                wsl.exe --distribution $toroDistro.DistributionName --exec df -h /
+            } else {
+                Write-Host 'Disco Linux no consultado: distribucion detenida.'
+            }
+        }
+    } else {
+        Write-Host 'El registro no identifica ese disco; conservarlo hasta verificar su distribucion.'
+    }
+}
+```
+
+WSL compaction remains NEXT only after confirming distribution identity, version, actual allocated file usage, Linux filesystem usage, backup/recovery and an appropriate quiescent state. Do not run wsl --shutdown on unidentified active projects/services, remove the VHD, or migrate the live distro to external exFAT D: based on folder size alone. The external drive can hold an identified ordinary backup archive; runtime relocation requires separate filesystem, availability and recovery validation. No WSL mutation has been executed from this session.
+
+Primary sources:
+- https://pnpm.io/cli/store
+- https://learn.microsoft.com/en-us/windows/wsl/disk-space
+- https://learn.microsoft.com/en-us/windows/wsl/basic-commands
+
+CURRENT: targeted metadata owner-reported; package prune and WSL information block prepared, execution/readback pending. A read-only scan frees no bytes.
