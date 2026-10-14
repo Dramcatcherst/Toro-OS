@@ -5588,3 +5588,14 @@ Alegra:3 conectores consultados, muestras/metadata distintas;2 muestran mismo co
 **Contratos y plan:** secciones12–13 de TORO_IDENTITY_USER_VAULT_V1.md y plan subordinado existente docs/superpowers/plans/2026-09-22-toro-identity-user-vault-people-integration.md actualizado con interfaces, rutas, tests, fases y cobertura. Superpowerswriting-plans consultado como metodología; MasterBrain no cambia autoridad del único Plan. Match porIDfuerte+proveedor/cuenta+tipo+scope+vigencia; nombres/aliases/carpeta/contacto no conceden identidad o acceso. Human, external_party, agent y machine son tipos distintos. Registrar responsable y delegación de agente por principalvalidado, action/scope/expiry y recibo.
 
 **NEXT único actualizado:** completar inventario y contrato de vínculos antes de activarusuarios: recibirExcel, contrastaroriginalreloj, consultarChrome en sesiónlocal y resolver cuenta/empresa/ACL externa; preparar índicelectura/candidatos y matrizautorización con fuentesdisponibles. Roles/membresías, ciclo devida y recorridoowner siguen gates previos. No nuevasinvitaciones/grants/fusiones/migraciones, retiroDreamTeam, cambioscontables/biométricos o limpiezaPC.
+
+
+### DreamTeam export y código servido — mismo carril, 13/10/2026
+
+Mauricio adjunta dream-team-empleados.xlsx y URL dream-team-public.vercel.app/dreamteam. Archivo RECIBIDO_NO_LEÍDO: downloader requiere workspace no disponible y no hay sesiónExcel. Comparaciónporfila aún pendiente; no colocar datos privados enGitHub ni afirmar que losconteosDB provienen deladjunto.
+
+Sitio HTTP200 sin sesión muestra acceso. Deployment READY producción dpl_EZ1wLBsq7z6tf97wCQ7LFtBQCLcK sirve rama fix/manual-attendance-20261001 commitb9cf10606f410a0e6a6cdb5162dac1b735230a27, doscommits por delante delmainDreamTeam observado4d8374194b59d044bf67e703f5b854ad0105cf05. Mantener código publicado/paridad y no sustituirlo por mainantiguo.
+
+Código exportador indica expedientelaboral con16columnas y datos restringidos, sin identidadAuth/membresía/reloj. «Con cuenta registrada» significa cuenta bancaria en su resumen; hasAccess en directorio solo user_id vinculado. Plan requiere separar cuenta bancaria/cuentaTORO/vínculo/membresía/permisoefectivo y usar mappingtemporal actual/histórico. BaselineDBindependiente:13no borrados/12activos/5vinculados/7activos sincuenta/1vinculado sinmembresía.
+
+NEXT delmismo plan: lectura minimizada delExcel y comparaciónprivada pororg+IDcorroborado, más corregirsemántica delreader/exportador en unidadprobada posterior. Archivo pendiente no bloquea investigación deorigen/código, pero impide certificar alineaciónporfila. Sin writesruntime, datos sensibles publicados o release.
