@@ -167,3 +167,15 @@ Una importación tiene punchdates posteriores a imported_at local. Causa pendien
 Cobertura: tasks1–7 cubren fuentes, tipos, matching, dispositivo, autoridad y pruebaowner; ausenciaChrome/device/APIusuariosgeneralesAlegra permanece explícita. Índice lectura y actorbinding tienen contratos separados; no compartirAuthcomo empleado, noDDLforzada. FiveReviewFocus cubiertos en tests tasks2/3/5/6/7.
 
 Antes de codificar, fijar commits vigentes y preservar el tipo exportado de contexto, resolverExcel/device pendiente y revisar rutas/transporte; cualquier cambioespecífico delalcance actualiza spec/plan. La variante actual queda para revisión técnica del propietario y próximos datos. No ejecución elegida, fixture creado, prueba corrida, worker activado o merge/release por este documento. La guía writing-plans consultada es la publicaciónupstream; no se certifica que coincida con versiónbundled delplugin instalado.
+
+
+## Addendum: Export recibido, lector pendiente y código publicado
+
+- Archivo dream-team-empleados.xlsx recibido; lectura de bytes/hojas no disponible en este entorno. No ejecutar diagnóstico contra filas imaginadas ni transferirlo a otra cuenta para sortear el bloqueo. Completar con lectura local autorizada o tabla minimizada del propietario.
+- URL del propietario y Vercelreadback fijan código servido b9cf10606f410a0e6a6cdb5162dac1b735230a27, doscommits adelante delmain observado. Preservar manualattendance y demásdeltas al preparar cualquierPR DreamTeam.
+- Exportador contiene16campos de expediente, incluida banca/salario; no proyectar esa hoja completa en el índiceIdentity. «Con cuenta registrada»=banca, noAuth. Directorioactual hasAccess=user_id; precisar vínculo vsaccesoefectivo.
+- Task1: prueba de usuario vinculado sinmembresía exige linked_account=true y effective_access=false; cuenta bancaria nunca afecta acceso. ResumenBANK cuenta filasbankactivas según contrato, separado delconteoAuth.
+- Task2: prueba de directorio excluir salario/banco/contactoprivado de lector general; vínculo no concede permisos. No clockIdhistórico como actual: mappingvigente único y falta/ambigüedad explícita.
+- Task3: matrizpreview/directorio/commit por identidadorgrelojfecha, conservando RPCcanónica.
+- Conciliación delExcel: detectar portada/filatítulo/headers, compararsemántica de columnas y fecha de generación; mínimosCódigo/Colaborador/Sector/Función/Estado/Ingreso/Salida; formatos/hojas exactas delarchivo se fijan tras leerlo. Códigoexportador no certifica bytes deladjunto. Salarios/banca se revisan en carrilRRHHrestringido si necesario, no por matchingdeidentidad.
+- Evidencia y reporte privados porfila; GitHub conserva solo schema, agregados y decisión. No nuevas cuentas ni ingesta de expediente hasta readiness.
