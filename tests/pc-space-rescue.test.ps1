@@ -15,6 +15,8 @@ $temporary = Join-Path $fixture 'temporary'
 $cache = Join-Path $fixture 'browser-cache'
 $outside = Join-Path $fixture 'outside'
 $cutoff = (Get-Date).AddDays(-7)
+Assert-Toro ((@(Get-ToroCacheCandidates -Roots @() -Cutoff $cutoff)).Count -eq 0) 'Absent roots must return no candidates.'
+Assert-Toro ((Invoke-ToroCacheCleanup -Candidates @() -Cutoff $cutoff).DeletedFiles -eq 0) 'Empty cleanup must delete nothing.'
 try {
     [void](New-Item -ItemType Directory -Path $temporary, $cache, $outside)
     foreach ($name in @('old.tmp', 'recent.tmp', 'keep.docx', 'keep.xlsx', 'keep.pdf', 'keep.ps1', 'keep.bak')) {
