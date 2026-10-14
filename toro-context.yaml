@@ -1378,6 +1378,24 @@ guest_service_recovery_prepare_only:
     - authorized_guest_followup
 
 openclaw_runtime_evidence:
+  whatsapp_capture_and_archive:
+    owner_directive_date: "2026-10-13"
+    status: authorized_scope_runtime_and_restore_unverified
+    contract: docs/product/TORO_COMMS_V1.md
+    contract_section: "19"
+    runbook: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
+    existing_issue_refs: [122, 170, 209]
+    reception_alias: dreamcatcher_reception_whatsapp
+    personal_alias: mauricio_personal_whatsapp
+    complete_endpoints_in_public_contract: false
+    account_capture_is_not_sender_allowlist: true
+    personal_work_isolation_required: true
+    reader_does_not_grant_send_or_business_write: true
+    history_coverage_requires_observed_evidence: true
+    binding_registry_health_drift_requires_reconciliation: true
+    journal_and_attachments_have_separate_checkpoints: true
+    backup_requires_scope_acl_and_restore_test: true
+    global_settings_or_runtime_activated_here: false
   canonical_status: configured_unverified
   evaluator: src/features/openclaw/runtime-evidence.ts
   template: data/openclaw_runtime_evidence_template_v1.json
