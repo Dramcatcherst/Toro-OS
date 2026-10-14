@@ -7,7 +7,7 @@ import profileRegistryData from "../../../data/toro_verified_user_profiles_v1.js
 
 type BindingStatus = "verified" | "unverified" | "revoked" | "ambiguous";
 type DeviceBindingStatus = "verified" | "not_applicable" | "unverified" | "revoked";
-type Subject =
+export type Subject =
   | { kind: "person"; key: string }
   | { kind: "shared_account"; key: string };
 
