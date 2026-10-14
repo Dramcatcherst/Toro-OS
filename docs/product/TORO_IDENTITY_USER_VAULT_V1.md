@@ -524,3 +524,16 @@ Configurar permisos por capacidad y ámbito; un agente lector no paga, cambia ro
 **P1 posterior:** flujo de enlace/aprobación/desvinculación y ciclo de vida gobernados después de readiness. Persistencia/DDL solo si se demuestra necesidad y se aprueban gates técnicos.
 
 Plan ejecutable subordinado: `docs/superpowers/plans/2026-09-22-toro-identity-user-vault-people-integration.md`, revisión13/oct. Conserva fases históricas como evidencia, reemplaza recomendaciones obsoletas de crear membresías ya desplegadas y permite implementación por unidad. No se realizó unión, traslado, invitación, activación de agentes o limpieza del PC.
+
+
+### Aclaración del reloj y evidencia DreamTeam — mismo corte
+
+Mauricio confirma descarga manual por llaveUSB, reloj sinmarca identificada y conexión posible alPC; anuncia unExcel DreamTeam pendiente de recepción. No se conoce protocolo o tipo de puerto. La propuesta prioriza importación asistida del archivo existente y evaluación de conexión directa después del diagnóstico.
+
+Readback de time_imports localiza seis TXT, incluidos AGL_001.TXT y archivos quincenales nombrados por período. Última importación registrada:01/oct/2026, período16–30/sept. El archivo original no fue recuperado por este readback. Los períodos/local_dates consultados explican alcance del lote; no acreditan horas pagadas ni jornada física.
+
+Código DreamTeam: src/lib/hr/time-clock.ts usa TXT/CSV/TSV/XLS/XLSX/ODS, UTF8/fallbackWindows1252, ventanas de duplicado configurables y parser existente. Analyze consulta resolveStaff de src/lib/hr/staff.ts, que usa lista local y alias de respaldo. La persistencia llama commit_time_import_v6; cadena desplegada v6->v5->v4->v3->v2 comprobada. v2 aplica mapping org+clock_id+fecha, active/confirmed/no borrado y un único employee_id. Así la diferencia principal a resolver es concordancia preview/commit, conservando el gate de mapping de base.
+
+Consulta adicional encontró un import con marcas fechadas después de imported_at local. No se infiere la causa: contrastar archivo original, metadata y reloj antes de corregir. No recalcular nómina, cambiar hora del dispositivo, sustituir períodos o cerrar asistencia con esta señal.
+
+Estado de la ampliación: investigación de fuentes disponibles y plan de tareas guardados; roster directo del dispositivo, perfiles localesChrome, ACL de documentos y usuarios generalesAlegra siguen sin verificar. ElExcel pendiente puede cambiar resultados y prioridades; incorporar su delta antes de decisiones de alta/migración.
