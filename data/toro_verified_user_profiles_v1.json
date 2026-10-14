@@ -1,0 +1,98 @@
+{
+  "version": "2026.10.13-v1",
+  "status": "specified_not_runtime_verified",
+  "purpose": "Verified personalization overlays for TORO; never an authorization source.",
+  "rules": {
+    "personalization_never_expands_authority": true,
+    "role_and_membership_remain_authoritative": true,
+    "channel_binding_must_be_verified_at_runtime": true,
+    "raw_phone_email_and_secret_identifiers_forbidden": true,
+    "shared_accounts_use_team_identity": true,
+    "unconfirmed_preferences_are_not_durable": true
+  },
+  "people_assistant_gate": {
+    "mode": "explicit_individual_allowlist",
+    "allowed_user_keys": [
+      "mauricio_owner",
+      "ana_carolina_admin"
+    ],
+    "job_profile_alone_grants_access": false,
+    "runtime_activation_verified": false,
+    "source": "docs/product/TORO_BRAIN_GENERAL_PLAN.md#dreamcatcher-people-owner-direction-2026-10-01"
+  },
+  "people": [
+    {
+      "user_key": "mauricio_owner",
+      "presentation_name": "Mauricio",
+      "preferred_address": "Mau",
+      "identity_verification": "owner_verified",
+      "role_contexts": ["owner_executive", "personal"],
+      "communication": {
+        "language": "es",
+        "style": "directo_resolutivo_proactivo",
+        "decision_shape": "una_decision_material_a_la_vez",
+        "detail": "resultado_primero"
+      },
+      "privacy_scope": "owner_private_plus_authorized_work",
+      "people_assistant_eligible": true,
+      "sources": [
+        "canonical_owner_identity",
+        "docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md",
+        "docs/product/TORO_BRAIN_GENERAL_PLAN.md"
+      ]
+    },
+    {
+      "user_key": "ana_carolina_admin",
+      "presentation_name": "Ana Carolina",
+      "preferred_address": null,
+      "identity_verification": "owner_confirmed_mapping_requires_runtime_binding",
+      "role_contexts": ["hr_people", "finance"],
+      "communication": {
+        "language": "es",
+        "style": "preciso_discreto_trazable",
+        "name_confirmation_required": true,
+        "detail": "suficiente_para_revision"
+      },
+      "privacy_scope": "authorized_work_only",
+      "people_assistant_eligible": true,
+      "sources": [
+        "owner_confirmation_2026-10-07",
+        "docs/product/TORO_BRAIN_GENERAL_PLAN.md"
+      ]
+    },
+    {
+      "user_key": "alexandra_reception",
+      "presentation_name": "Alexandra",
+      "preferred_address": null,
+      "identity_verification": "owner_confirmed_role_requires_runtime_binding",
+      "role_contexts": ["reception"],
+      "communication": {
+        "language": "es",
+        "style": "calido_claro_paso_a_paso",
+        "name_confirmation_required": true,
+        "detail": "breve_con_opcion_de_explicacion"
+      },
+      "privacy_scope": "reception_work_only",
+      "people_assistant_eligible": false,
+      "sources": [
+        "owner_confirmed_reception_context_2026-09-21",
+        "verified_openclaw_conversation_history"
+      ]
+    }
+  ],
+  "shared_accounts": [
+    {
+      "account_key": "dreamcatcher_reception_whatsapp",
+      "team_label": "equipo de Recepción",
+      "identity_verification": "canonical_channel_alias_requires_runtime_sender_resolution",
+      "role_context": "reception",
+      "privacy_scope": "reception_work_only",
+      "people_assistant_eligible": false,
+      "must_not_impersonate_individual": true,
+      "sources": [
+        "docs/product/TORO_COMMS_V1.md",
+        "docs/product/TORO_BRAIN_GENERAL_PLAN.md"
+      ]
+    }
+  ]
+}
