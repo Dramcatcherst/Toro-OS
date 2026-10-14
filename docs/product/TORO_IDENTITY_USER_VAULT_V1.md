@@ -451,3 +451,76 @@ Resueltas por Mauricio: prioridad integración/activación coherente antes de us
 Pendientes técnicos se investigan sin trasladarlos al propietario: mapa de consumidores/RPC, dataset de prueba con dos identidades elegibles, comportamiento de revocación, deploy activo vs main/local, perfiles laborales discordantes y writer gobernado. Más adelante solicitar únicamente quién valida la ficha laboral y qué persona acepta el primer piloto, después de que el sistema supere el gate; no pedir altas ahora.
 
 NEXT único: completar el mapa de autorización por consumidor y la matriz de aceptación de identidad/contexto, con un recorrido del propietario y recuperación definidos, dentro de los contratos existentes. No empezar por invitaciones, grants, migraciones o User Vault lleno. El plan está preparado para revisión; implementación y optimizaciones de producción no ejecutadas.
+
+
+## 13. Identidades vinculadas entre sistemas y actores humanos/no humanos — investigación 13/10/2026
+
+**Dirección:** ampliar la misma entrega del PR281 a DreamTeam/TORO, Alegra, Dropbox, Chrome/Windows, reloj, otros registros y agentes. Un lugar para consultar sujetos, relaciones, cuentas y evidencias autorizadas; datos transaccionales y permisos permanecen en sus autoridades. OWNER_ONLY_PROOF sigue vigente: Mauricio único humano usuario actual y cuenta administrativa solo suya. No nuevas cuentas, fusiones, invitaciones, grants, DDL o agentes activos por esta investigación.
+
+### Matriz de fuentes y alcance comprobado
+
+| Fuente | Observación | Cobertura y siguiente dependencia |
+|---|---|---|
+| TORO y DreamTeam | Mismo Auth/Supabase y datos laborales existentes; diferencias de resolución/membresía y altas documentadas en sección12 | Código y metadata investigados, no SSO/runtime integral certificado |
+| Auth/app_users/People | Reutilizar identidad de cuenta, empleado por organización y membresía/rol; no elevar contacto a login | Agregados actuales; el inventario privado por persona requiere vista autorizada |
+| Reloj/Supabase |13 mappings activos marked confirmed;3 con confirmed_at.12 empleados activos:11 con mapping confirmado,1 sin mapping.1642 punches no borrados,12 identificadores por org;6 imports con períodos julio–septiembre2026 y última importación01/oct | Son datos importados, no roster actual del dispositivo.0 punches sin mapping temporal válido,0 con más de uno y0 períodos invertidos en el corte. Falta marca/modelo/software/device export; consulta al propietario enviada |
+| Airtable Central |staff_directory, hr_employment_profiles, hr_time_imports y demás HR ya existen | Los12 perfiles fueron leídos con campos minimizados; no nueva tabla espejo |
+| Alegra contabilidad |Tres conectores permitidos, muestra1 contacto por conexión; metadata total1029/426/1029. Conectores1y3 devolvieron mismo UUID/ID;2 otro UUID/ID | Muestra no acredita inventario completo ni identidad legal de empresa. No contar conectores como personas o tenants. Resolver empresa/country/account antes de matching; no unir nombres |
+| Alegra Nómina/POS |GET employees devolvió404 APC2001 Organization not found en las tres conexiones; una consulta de usuarios de estación sin estación explícita devolviólista vacía | Falta cobertura de nómina/login ACL. No significa ausencia de empleados/contactos o usuarios generales en Alegra. No activar módulo ni contratar servicio para investigar |
+| Dropbox |Cuenta conectada y raíz verificadas; navegación acotada encontró rutas EMPLEADOS/RRHH/BASE DE DATOS. Listados de hijos directos y paginaciónRRHH agotada;2 archivos RRHH de metadata | No se leyó contenido sensible ni ACL de colaboración. Nombre de carpeta no acredita titular o privacidad. No mover/copiar archivos. Original+file_id/revisión/hash y manifest existente |
+| Dropbox búsquedas |Búsqueda amplia de marcaciones devolvió imágenes irrelevantes; búsqueda por título marcaciones/DREAMTEAM devolvió0 | Resultado de búsqueda no acredita ausencia de originales. Navegar directorios exactos y validar cada archivo |
+| Windows del propietario |Capturas muestran perfilMicrosoft del propietario, discoC235GB usados/0bytes libres, Documentos21,3GB,77aplicaciones; tamaños de apps declarados por Windows | Evidencia aportada, no medición local nueva. No identificar usuarioChrome desde iconos. Disco lleno es dependenciaP0 para capturas/export/diagnóstico; no borrar/sincronizar ni desinstalar por esta tarea |
+| Chrome |Sin acceso directo a perfiles locales en este entorno | Inventario local de metadata pendiente; descubrir perfiles, cuenta de sync y cuentas de servicios como relaciones distintas. No acceder a cookies, Login Data, contraseñas o tokens |
+| Agentes |Registry actor/surface, catálogo54capacidades/6responsables; Control Plane tiene4runs:3agent/1human; recibos3agent verified,1human verified y1prepared | Etiqueta de actor/receipt no prueba identidad de máquina o autonomía general. operations.toro_execution_actor_v1 es proyección de tareas, no registro de cuentas de agentes |
+| Plugins invocados |Superpowers instalado según catálogo; guía writing-plans pública consultada. Master Brain no proporcionó capacidad específica mediante búsqueda disponible | No asumir autoridad Airtable por nombre de plugin. Constitución/Plan GitHub y Supabase siguen canónicos; no inventar ejecución del plugin ausente |
+
+Metadata de conectores, conteos y estados son evidencia del corte, no constantes. Las rutas/documentos privados, direcciones personales, números legales y nombres de empleados permanecen fuera del repositorio público.
+
+### Qué significa «una sola parte»
+
+Una vista gobernada de TORO Identity/People/Actors que muestra, según permiso:
+- sujeto estable y tipo;
+- relaciones laborales/organizacionales y proyectos;
+- cuentas externas vinculadas con fuente/estado/vigencia;
+- acceso efectivo y origen de permiso;
+- referencias documentales;
+- conflictos, faltantes y último corte.
+
+No es una fila universal con todos los campos ni un repositorio de credenciales. Payroll sigue People/Finance y autoridad contable; punch original sigue asistencia; archivos siguen Dropbox; perfil de navegador sigue dispositivo; permisos de proveedor siguen proveedor. Mantener contratos y referencias verificadas evita que cada proyecto cree otra lista de usuarios.
+
+### Tipos y claves iniciales del índice de lectura
+
+1. **human con cuenta:** human:auth:<auth.uid> enlaza app_users; empleado por org es una faceta, no otra persona.
+2. **human sin cuenta:** human:employee:<org_id>:<employee_id> es clave provisional de expediente. No crea Auth ni declara identidad global para varios empleadores.
+3. **external_party:** external:<provider>:<provider_account_key>:<external_id>; puede ser persona o empresa. Un contacto Alegra proveedor no es automáticamente empleado ni usuario.
+4. **agent:** agent:<canonical_agent_key>, enlazado al registry/catálogo vigente, responsable humano y autoridad limitada. No salario, planilla, huella ni onboarding laboral por defecto.
+5. **machine/service:** machine:<verified_machine_principal_ref>, solo cuando ya exista identidad técnica validada. Si falta, aparece candidato pendiente; actor_ref arbitrario no la crea.
+6. **account/profile:** registro de relación a sujeto, no sujeto humano adicional. Una persona puede usar distintos perfilesChrome/cuentasGoogle/Microsoft/Dropbox sin ser duplicada.
+
+Estas claves son contrato del índice read-only, no nuevas columnas/tablas. Revisar dominio/mappings existentes antes de persistir crosswalk. Si falta relación común, justificar capa mínima tipada bajo Identity con migración/tests/recovery propios; no extender external_dependency_registry como identidad personal ni usar employee_code como IDglobal.
+
+### Matching y confianza
+
+Identificadores externos se acotan por proveedor+cuenta/empresa+tipo+scope; reloj añade dispositivo cuando se conozca y período de vigencia. El esquema actual no ofrece device_id en punch_identity_mappings: no cargar un segundo reloj con IDs reciclados sin resolver esa colisión. Evaluar valid_from/to para cada marcación; no aplicar mapping actual a historia.
+
+Evidencia fuerte: enlace Auth existente, empleadoID corroborado, mapping confirmado con fuente/confirmador y vigencia, identificador externo inmutable, o confirmación documentada del titular. Nombre/apodo, correo parecido, teléfono, perfilChrome, carpeta, coincidencia salarial o catálogo IA son candidatos, nunca fusión automática. Correos compartidos y cuentas de servicio requieren propietario/responsable, no «persona inferida».
+
+Estado del vínculo: observed/candidate/verified/disputed/revoked/expired; no elevarlo por similitud. Cada cambio conserva antes/después, decisión, fuente y fecha. Puede deshacerse el enlace sin borrar historial. Evitar export público del inventario de personas; hashes de identificadores no vuelven públicos los datos por sí mismos.
+
+### Agentes como usuarios del sistema
+
+Aceptar actor no humano en la vista común y en auditoría sin convertirlo en cuenta de empleado. Separar quién actúa, para quién actúa y quién aprobó. Un humano autenticado que delega a un agente conserva su identidad; el agente ejecuta con principal técnico propio, ceiling de acción, scope, caducidad, revocación y run/lease/fencing/receipt. No heredar ADMIN por nombre de agente, copiar contraseña del propietario, simular login humano ni dar service_role a UI.
+
+Configurar permisos por capacidad y ámbito; un agente lector no paga, cambia roles o publica. Dots, specialists, workers temporales, schedules y connectors tienen clases distintas en el registry vigente. Entrenamiento y menú no conceden autoridad. Atribución actor_ref debe validarse contra principal/autorización antes de tratar receipt como prueba de identidad.
+
+### Secuencia de esta ampliación
+
+**P0:** completar fuentes privadas faltantes (Chrome local y reloj) sin alterar dispositivo; catalogar conexionesAlegra por empresa y obtener roster/ACL mediante lectura permitida. Resolver estado de disco antes de exportaciones grandes, con recuperación de archivos aparte.
+
+**P0:** índice de lectura y matching candidato sobre modelos existentes, aislamiento probado; incluir contactos/empleados y actores tipados, sin conceder permisos. Reusar diagnóstico SQL existente y corregir métricas: su consulta de cardinalidad actual agrupa por user_id, cuenta users_with_active_org_role incluso sin rol y etiqueta pares por usuario; definir usuario con rol y parorg+usuario como medidas distintas.
+
+**P1:** vista única y contexto común para el propietario; navegar a ficha laboral, proyecto, contacto externo y documento autorizado conservando fuentes. No desplegar User Vault lleno ni reemplazar productos hasta paridad.
+
+**P1 posterior:** flujo de enlace/aprobación/desvinculación y ciclo de vida gobernados después de readiness. Persistencia/DDL solo si se demuestra necesidad y se aprueban gates técnicos.
+
+Plan ejecutable subordinado: `docs/superpowers/plans/2026-09-22-toro-identity-user-vault-people-integration.md`, revisión13/oct. Conserva fases históricas como evidencia, reemplaza recomendaciones obsoletas de crear membresías ya desplegadas y permite implementación por unidad. No se realizó unión, traslado, invitación, activación de agentes o limpieza del PC.
