@@ -35,3 +35,57 @@ The scan does not open file contents, delete or copy files, upload results, chan
 Sizes are logical file lengths, not allocated disk usage or promised recoverable space. Compression, sparse files, hard links and exclusions make totals unsuitable for reconciliation to the disk's used-space counter. A partial scan gives only observed logical lengths. Do not delete Windows, pagefile, hibernation files, app databases, Dropbox content or credentials based on their presence in this list.
 
 Actual paths and file names are local/private evidence; do not commit the diagnostic output to this public repository. Select a specific next action after observing sizes: Windows-managed cleanup for system content; ordinary relocation only for identified personal files after verified copy to D:. The exFAT drive is suitable for ordinary supported files, not moving installed apps or creating NTFS junctions. No automatic relocation or source deletion is part of this tool.
+
+## Owner-reported inventory and Windows-managed next action, 13 October 2026
+
+The owner supplied a -StorageReport run from code cd14593c31a72be2ab1c46fab066a8fb8902d1ed. Duration 90 seconds, 68,302 files measured, LimitReached=True, Partial=True, 40 linked/offline exclusions and 52 access errors. Reported free space now 2.133 GiB. Do not attribute the difference from 1.925 GiB to the read-only scan or assume Disk Cleanup was applied.
+
+Reported logical file lengths: pagefile.sys 29.475 GiB, hiberfil.sys 12.453 GiB, Codex thread-history SQLite 4.04 GiB. Preserve the Codex database and its companion files; no deletion, vacuum or relocation of the active history database is authorized by its size alone. Windows Installer and WinSxS figures are not safe deletion candidates; hard links and partial traversal also prevent summing the report to disk-used space. User-specific paths/names are omitted from this public record.
+
+A concrete next action is the Microsoft-documented reduced hibernation-file mode, using powercfg rather than deleting hiberfil.sys. It retains fast-startup support but removes Hibernate and hybrid sleep. Reduced mode normally uses 20% of physical memory versus the default full mode's 40%; recovery for this PC is unverified until readback. No RAM amount or current hibernation configuration is inferred as a confirmed fact from the file length.
+
+Open Windows PowerShell as administrator and run the following block. It checks elevation, resets custom hibernation sizing to OS default, requests reduced mode, checks each native exit code, measures disk free space, and reads RAM/pagefile configuration and available sleep states. It does not change pagefile configuration or restart the PC. Windows can reject an operation; no full-disable fallback runs.
+
+```powershell
+& {
+    $ErrorActionPreference = 'Stop'
+    $toroPrincipal = [Security.Principal.WindowsPrincipal]::new(
+        [Security.Principal.WindowsIdentity]::GetCurrent()
+    )
+    if (-not $toroPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        throw 'Abre PowerShell como administrador y vuelve a ejecutar este bloque.'
+    }
+    $toroAntes = [long](Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace
+
+    powercfg.exe /hibernate /size 0
+    if ($LASTEXITCODE -ne 0) { throw 'Windows no pudo restablecer el tamano de hibernacion.' }
+    powercfg.exe /hibernate /type reduced
+    if ($LASTEXITCODE -ne 0) { throw 'Windows no pudo aplicar el modo reducido.' }
+
+    $toroDespues = [long](Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'").FreeSpace
+    [pscustomobject]@{
+        LibreAntesGiB = [Math]::Round($toroAntes / 1GB, 3)
+        LibreAhoraGiB = [Math]::Round($toroDespues / 1GB, 3)
+        CambioObservadoGiB = [Math]::Round(($toroDespues - $toroAntes) / 1GB, 3)
+    } | Format-List
+
+    $toroEquipo = Get-CimInstance Win32_ComputerSystem
+    [pscustomobject]@{
+        RAMGiB = [Math]::Round($toroEquipo.TotalPhysicalMemory / 1GB, 2)
+        PaginacionAutomatica = $toroEquipo.AutomaticManagedPagefile
+    } | Format-List
+    Get-CimInstance Win32_PageFileUsage |
+        Select-Object Name, AllocatedBaseSize, CurrentUsage, PeakUsage |
+        Format-Table -AutoSize
+    powercfg.exe /availablesleepstates
+}
+```
+
+Functional recovery: in elevated PowerShell, run `powercfg.exe /hibernate /type full` to restore full hibernation-file support at Windows-managed default size, provided sufficient space remains. This is not an exact restoration of an unknown earlier custom size. Pagefile decisions require RAM, usage/commit and crash-dump requirements; never delete it or shrink it arbitrarily, and do not relocate it to the external exFAT D: drive.
+
+Microsoft authority:
+- https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/powercfg-command-line-options
+- https://learn.microsoft.com/en-us/windows/win32/power/system-power-states
+- https://learn.microsoft.com/en-us/troubleshoot/windows-client/performance/how-to-determine-the-appropriate-page-file-size-for-64-bit-versions-of-windows
+
+CURRENT: diagnostics owner-reported and next procedure prepared; no execution of reduced-mode powercfg observed. NEXT: owner execution with before/after readback, then evaluate pagefile needs and a targeted user/AppData inventory if free space remains insufficient. The cleanup/diagnostic script itself is unchanged; this is a separate Windows-managed recovery procedure under the same General Plan checkpoint.
