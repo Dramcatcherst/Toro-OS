@@ -1,12 +1,12 @@
-# APUESTORO — Laboratorio de decisiones y 50 mejoras verificables
+# BETORO — Laboratorio de decisiones y 50 mejoras verificables
 
 Fecha: 13 de octubre de 2026. Estado: TARGET / DISEÑO PROPUESTO. Documento subordinado al Plan General único de TORO; no es una aplicación desplegada ni un resultado de rentabilidad. Especificación técnica sin datos de carteras personales.
 
 ## 1. Decisión, alcance y relación con TORO
 
-La solicitud del propietario renombra POLYBET como APUESTORO e incorpora el proyecto al portafolio TORO. Sustituye la decisión anterior de mantenerlo arquitectónicamente fuera de TORO, pero NO permite mezclar fondos, datos o permisos con Dreamcatcher. POLYBET queda como alias histórico para conservar referencias; no se reinician registros ni se convierten estimaciones anteriores en resultados validados.
+La solicitud del propietario establece BETORO como nombre definitivo (antes APUESTORO y POLYBET) e incorpora el proyecto al portafolio TORO. Sustituye la decisión anterior de mantenerlo arquitectónicamente fuera de TORO, pero NO permite mezclar fondos, datos o permisos con Dreamcatcher. APUESTORO y POLYBET quedan como alias históricos para conservar referencias; no se reinician registros ni se convierten estimaciones anteriores en resultados validados.
 
-APUESTORO es una experiencia especializada bajo TORO, con scope privado del proyecto y el mismo gobierno, identidad y Control Plane. La marca propuesta es «APUESTORO · por TORO»; no cambia la marca global ni autoriza redibujar el logo maestro. La disponibilidad del dominio y la marca comercial todavía no está verificada.
+BETORO es una experiencia especializada bajo TORO, con scope privado del proyecto y el mismo gobierno, identidad y Control Plane. La marca propuesta es «BETORO · por TORO»; no cambia la marca global ni autoriza redibujar el logo maestro. La disponibilidad del dominio y la marca comercial todavía no está verificada.
 
 Mapeo: portafolio TORO → proyecto personal aislado → investigación, conectores, simulación, evaluación y presentación. Antes de crear registros runtime, resolver la identidad de proyecto existente y posibles relaciones con TORO Exchange: una similitud de nombre no prueba que sean el mismo proyecto. Esta ronda NO crea tablas, permisos, cuentas, cobros, despliegues ni un scheduler nuevo.
 
@@ -67,7 +67,7 @@ No se han auditado cuentas privadas, rentabilidad real o código propietario de 
 
 ## 5. Constitución de integración
 
-APUESTORO tendrá un modelo interno neutral con adaptadores nativos. Parecerse a una API no significa copiar todas sus limitaciones ni depender de un solo proveedor.
+BETORO tendrá un modelo interno neutral con adaptadores nativos. Parecerse a una API no significa copiar todas sus limitaciones ni depender de un solo proveedor.
 
 Contrato conceptual de lectura: descubrir contratos; leer regla; obtener libro; recibir cambios; obtener tarifas; leer estado de resolución. Capacidades no soportadas se declaran explícitamente. Ningún adaptador de la mini versión expone crear/cancelar órdenes reales, firmar o transferir.
 
@@ -204,15 +204,15 @@ Esta especificación está subordinada a `docs/product/TORO_BRAIN_GENERAL_PLAN.m
 
 Resumen propuesto para insertar en el Plan General mediante parche acotado, preservando íntegro el resto:
 
-> APUESTORO — evolución de POLYBET (13/10/2026). Proyecto privado del portafolio TORO para investigación de mercados de predicción, simulación prospectiva y comparación de métodos. CURRENT: diseño documentado; TARGET: laboratorio cloud independiente de la PC; NEXT: mini de datos públicos + libro contable probado + tres modos de hipótesis + tablero privado; FUTURE: producto analítico comercial sujeto a licencias/readiness/revisión legal. Nombre APUESTORO aprobado por el propietario; no reemplaza la identidad global TORO. Mismo gobierno y scope privado; sin mezcla con Dreamcatcher. Sin custodia, órdenes reales, cobros ocultos ni promesas de rentabilidad. Reutilizar el radar existente; no nuevo scheduler. La matriz de 50 mejoras y criterios vive en `docs/product/APUESTORO_LABORATORIO_Y_50_MEJORAS_2026-10-13.md`; no son 50 tareas completadas ni 50 estrategias rentables. Incorporación runtime y dominio pendientes de verificación.
+> BETORO — evolución de POLYBET (13/10/2026). Proyecto privado del portafolio TORO para investigación de mercados de predicción, simulación prospectiva y comparación de métodos. CURRENT: diseño documentado; TARGET: laboratorio cloud independiente de la PC; NEXT: mini de datos públicos + libro contable probado + tres modos de hipótesis + tablero privado; FUTURE: producto analítico comercial sujeto a licencias/readiness/revisión legal. Nombre BETORO aprobado por el propietario; no reemplaza la identidad global TORO. Mismo gobierno y scope privado; sin mezcla con Dreamcatcher. Sin custodia, órdenes reales, cobros ocultos ni promesas de rentabilidad. Reutilizar el radar existente; no nuevo scheduler. La matriz de 50 mejoras y criterios vive en `docs/product/BETORO_LABORATORIO_Y_50_MEJORAS_2026-10-13.md`; no son 50 tareas completadas ni 50 estrategias rentables. Incorporación runtime y dominio pendientes de verificación.
 
 Si la integración textual no se aplicó en esta rama, informar PENDIENTE_INTEGRAR_MASTER. No afirmar que el Plan General quedó actualizado por el solo hecho de enlazarlo.
 
 ## 11. Próximo superprompt
 
-Continúa APUESTORO dentro de TORO. Lee AGENTS.md, START_HERE.md, toro-context.yaml, Plan General, constitución y esta especificación en su versión más reciente. Conserva POLYBET como alias y el piloto previo con sus enmiendas pendientes; no reinicies saldo ni copies una cartera personal al repo público.
+Continúa BETORO dentro de TORO. Lee AGENTS.md, START_HERE.md, toro-context.yaml, Plan General, constitución y esta especificación en su versión más reciente. Conserva POLYBET como alias y el piloto previo con sus enmiendas pendientes; no reinicies saldo ni copies una cartera personal al repo público.
 
-1. Revisa el PR de APUESTORO existente y diferencias respecto de main. Reutiliza esa rama y documento. Aplica el resumen de la sección 10 al Plan General con una inserción mínima, después de recuperar el archivo completo y comprobar que no existe otra sección equivalente. No reemplaces main con una lectura parcial; no hagas merge automático.
+1. Revisa el PR de BETORO existente y diferencias respecto de main. Reutiliza esa rama y documento. Aplica el resumen de la sección 10 al Plan General con una inserción mínima, después de recuperar el archivo completo y comprobar que no existe otra sección equivalente. No reemplaces main con una lectura parcial; no hagas merge automático.
 2. Haz ingeniería inversa pública de los contratos actuales Polymarket/Kalshi y de experiencias de simulación. Valida esquema/protocolo, precision, tarifas, licencias, cuotas y timestamp; distingue documentación de conexión realmente probada. No copies código sin comprobar su licencia.
 3. Inspecciona runtime TORO y capacidad cloud existente en solo lectura. Elige la arquitectura mínima sin PC y sin nueva base/identidad/scheduler paralelo. Entrega contratos de módulos, datos, amenazas, estimación de costos y pruebas de aceptación; no contrates servicios ni publiques.
 4. Define el primer experimento prospectivo con tres modos y el mismo presupuesto, más baselines de mercado/efectivo. Congela hipótesis, universos, límites y criterios; muestra abstención, costos, incertidumbre y correlaciones. No simules ganancia con conocimiento del futuro.
@@ -222,7 +222,7 @@ No vuelvas a preguntar nombre, capital ficticio inicial, preferencia cloud ni ne
 
 ## 12. Fuentes primarias consultadas
 
-Consultadas el 13/10/2026. Son evidencia de documentación/investigación, no pruebas del runtime de APUESTORO.
+Consultadas el 13/10/2026. Son evidencia de documentación/investigación, no pruebas del runtime de BETORO.
 
 - S01 Polymarket, Overview: https://docs.polymarket.com/api-reference/predictions/overview
 - S02 Polymarket, Real-Time Data: https://docs.polymarket.com/market-data/realtime-data
@@ -245,3 +245,33 @@ Consultadas el 13/10/2026. Son evidencia de documentación/investigación, no pr
 - S19 FTC, informe sobre dark patterns, 15/09/2022: https://www.ftc.gov/news-events/news/press-releases/2022/09/ftc-report-shows-rise-sophisticated-dark-patterns-designed-trick-trap-consumers
 
 S19 es una referencia de protección del consumidor de EE. UU.; no certifica qué ley aplica a este proyecto en Costa Rica u otro país. Comercialización y gestión financiera requieren análisis profesional de la jurisdicción y actividad concretas. No se crea una garantía regulatoria por llamar «software» al producto.
+
+
+## 13. Actualización de nombre y controles del radar — 14/10/2026
+
+**Nombre vigente: BETORO.** Alias históricos: APUESTORO y POLYBET. El nombre nuevo no crea una aplicación, repositorio, identidad, cuenta ni despliegue nuevo. El nombre físico de esta ruta y de la rama se conserva por trazabilidad hasta decidir una migración no destructiva de enlaces. Proyecto **PRIVADO** en el portafolio TORO; reutiliza gobierno y arquitectura sin compartir datos, saldos, permisos ni fuentes de Dreamcatcher. La decisión de 13/10/2026 reemplaza únicamente la separación arquitectónica previa. Ningún permiso financiero se entiende concedido.
+
+### Radar ya definido, sin ampliar su infraestructura
+
+- Reutilizar la cadencia existente: no añadir schedulers, suscripciones, proveedores de pago ni un cron 24/7. Cada ciclo: **máximo ocho mercados y treinta llamadas**, reintentos limitados y abstención permitida. El radar periódico no es un feed continuo.
+- Salida breve en español con fecha/hora de Costa Rica, cobertura real, hasta tres candidatos, **INVESTIGAR / ESPERAR / DESCARTAR**, evidencia a favor/en contra, fuente primaria, catalizador, costos, próxima señal de invalidación y cambios comprobados. Primera revisión vespertina: comparar con último corte efectivamente accesible o declarar que falta.
+- Tres métodos iniciales: **Estadístico, Causal, Intuición**; Intuición fechada, refutable y exploratoria sin probabilidad defendible. Contraria, Señales y Combinado para experimentos posteriores. Mantener método, perfil de riesgo y horizonte como variables separadas. No adjudicar independencia a clones, republicaciones o contratos del mismo evento.
+- Usar el libro oficial de Polymarket con **ask para entrada, bid para salida y profundidad según tamaño**; nunca midpoint como precio ejecutable. Versionar mercado, entorno, protocolo, fecha, feed, tarifa efectiva, activo de cobro, redondeo, mínimos, ticks, fuente y reglas de resolución. Kalshi solo tras comparación contractual, de unidades y entorno. No descontar spread/slippage dos veces.
+- Distinguir datos obsoletos, error de fuente, bajo volumen y mercado inactivo; contrastar contadores estructurados con resúmenes indexados/IA. Bloquear fills ficticios sin cotización suficiente. No reutilizar noticias de rondas anteriores como verificación nueva.
+- Costos de IA, datos y nube **SIN MEDIR** hasta contrastar facturas/consumo; comisiones comerciales y pérdida total posible visibles. No presentar 50 ideas de diseño ni 54 configuraciones conceptuales como resultados experimentales.
+
+### Piloto histórico protegido: conciliación aún pendiente
+
+Piloto ficticio inicial **US$100**, ID **PB-20261013-001**, observación 13/10/2026 18:15:29 Costa Rica, mercado de aprobación de legislación cripto estadounidense en 2026. Dos lotes hipotéticos: 30 participaciones brutas a US$0.047 y 20 a US$0.05; configuración entonces observada rate=0.04, exponent=1, takerOnly=true; bid histórico US$0.037 para cantidad 50. El ID de mercado/activo y fuentes exactas se conservan en el checkpoint del radar, no como cartera real ni datos del hotel.
+
+**Enmienda A1, dos representaciones alternativas NO conciliadas:** (a) 50 participaciones + US$0.09175 añadidos a costo en cash, costo US$2.50175, NAV US$99.27699 **provisionales**; (b) cash US$97.590 tras bruto US$2.410 y 48.0963829787 participaciones netas antes de compatibilidad, decimales y protocolo comprobados. **No sumar ambos modelos, no declarar settlement validado ni modificar CLARITY REAL.** Hasta reconstruir el libro con versión contractual y reglas aplicables: **P&L NO VALIDADO**. No agregar nuevas operaciones virtuales.
+
+### Evidencia de cortes históricos y puntos de invalidación
+
+Los cortes narrados en el historial del radar (13–14/10/2026) son referencias históricas **no revalidadas en esta actualización**: variación bid/ask y spreads severos en la ley cripto; contadores y páginas/resúmenes inconsistentes en rangos de publicaciones de Musk; reuniones de Fed e inflación como posibles catalizadores. Nunca elevar esos valores a datos vigentes sin consultar de nuevo las fuentes oficiales. Registrar tesis contrarias, tamaño, última observación realmente accesible, resultado y error, incluso en abstenciones y candidatos descartados.
+
+### Puertas de implementación
+
+**CURRENT:** diseño en PR borrador y radar existente, piloto pendiente de reconciliación. **NEXT:** identificar registro privado/canonical, conciliar libro por protocolo, persistir eventos y enmiendas sin duplicados, registrar hipótesis prospectivas y pruebas de aislamiento. **TARGET:** dashboard privado de lectura y simulación, cloud solo tras pruebas y presupuesto. **FUTURE:** producto de analítica sujeto a licencias, elegibilidad y revisión legal. No rutas de ejecución de apuestas reales ni firma/custodia/transferencia; sin fondos de Dreamcatcher. No escribir secretos, posiciones reales ni datos privados en GitHub sin auditoría explícita de visibilidad.
+
+**Criterios de terminado del siguiente bloque:** pruebas reproducibles de cash/participaciones/tarifas para cada versión, replay idempotente, valoración marcada desconocida ante fallos de profundidad, comparación prospectiva de tres métodos sobre la misma instantánea, evidencia verificable de aislamiento y cero operaciones reales. PR y main permanecen separados hasta revisión; esta sección no certifica despliegue.
