@@ -1,7 +1,7 @@
 # TORO verified user profiles v1
 
 **Version:** 2026.10.13-v1  
-**Status:** specified; static validation and fail-closed effective-profile compiler implemented; runtime deployment not verified
+**Status:** specified; static validation, fail-closed canonical channel-binding resolver and effective-profile compiler implemented; runtime deployment not verified
 
 ## Decision
 
@@ -31,7 +31,9 @@ The registry deliberately excludes raw phone numbers, emails, secrets, psycholog
 7. Fail closed on an absent/revoked/ambiguous binding, inactive membership, unknown role or incompatible profile version.
 8. Write an audit receipt containing profile version and sanitized identity aliases.
 
-The reference compiler is `src/features/profile/effective-profile.ts`. It requires the binding, authority result and requested profile to name the same canonical subject; a verified, unexpired channel binding; an active authority result; matching organization and an authorized property subset; a compatible role profile; and a verified device binding when a device alias is present. Every non-personal role requires an organization. It carries runtime data scopes and capabilities through unchanged and only intersects People-assistant authority with the explicit individual allowlist.
+The reference channel resolver is `src/features/profile/channel-binding.ts`. It accepts only a keyed HMAC digest produced inside the runtime secret boundary, requires one exact transport/runtime/account match, rejects missing, duplicate, unverified, future-dated, revoked or expired bindings, and never returns the digest. Raw phone numbers, emails and device identifiers are not valid resolver inputs or repository records.
+
+The reference compiler is `src/features/profile/effective-profile.ts`. It requires the resolved binding, authority result and requested profile to name the same canonical subject; a verified, unexpired channel binding; an active authority result; matching organization and an authorized property subset; a compatible role profile; and a verified device binding when a device alias is present. Every non-personal role requires an organization. It carries runtime data scopes and capabilities through unchanged and only intersects People-assistant authority with the explicit individual allowlist.
 
 Its sanitized receipt includes the registry version, message-pack version and a deterministic SHA-256 profile hash over identity, communication, role, organization/property scope, data scopes and capabilities. `compareEffectiveProfileReceipts` requires one matching receipt from Portal, OpenClaw and WhatsApp before deployment consistency can be claimed. Different channel aliases do not change the profile hash; different effective content or authority does.
 
