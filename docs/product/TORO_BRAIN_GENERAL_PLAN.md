@@ -1,11 +1,36 @@
 # TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-28
+**Baseline date:** 2026-09-28
+**Review:** 2026-10-13 — product/Plan alignment draft; runtime status remains source-specific
 **Master product:** TORO
 **Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
+
+---
+
+<a id="entrada-ejecucion-vigente"></a>
+## Entrada de ejecución vigente — revisión propuesta, 13/10/2026
+
+**Vigencia del Plan y madurez del producto son dimensiones distintas.** CURRENT MASTER PLAN identifica la autoridad documental; no certifica todas sus funciones. Cada resultado conserva fecha, entorno/SHA, fuente y prueba. Clasificar implementación como DOCUMENTADO / PREPARADO / PUBLICADO / RUNTIME ACEPTADO / OPERACIÓN MEDIDA; TARGET y una lista de pruebas no equivalen a operación completa.
+
+| Frente solicitado | Estado respaldado / límite | Siguiente unidad de este frente |
+|---|---|---|
+| Portal / TORO Tools | Doce destinos publicados según el checkpoint13/10; favoritos temporales en memoria del componente. Cuatro accesos Kross revisados como propuesta; RPC y permisos siguen iguales. | Preparar diseño compartido de sugeridos/fijados con los doce destinos actuales y resolver almacenamiento durable autorizado. |
+| Producto final / favoritos | Petición del propietario: catálogo permitido similar al HTML existente, Inicio con selección breve que puede sugerirse y fijarse. Diseño propuesto; sin implementación. | Misma unidad anterior; no copiar todo el registro ni su rol-preview. |
+| Plan / continuidad | Revisión estructural completa y profunda de los contratos relevantes; índice/semántica corregidos en este draft. Historial y IDs conservados. | Usar esta entrada y el último corte del checkpoint exacto, sin volver a leer todo el Plan. |
+| Compras/inventario; WhatsApp/OpenClaw; otros dominios | Conservan sus decisiones, tareas y gates propios. Sus recibos históricos no prueban ejecución actual ni quedan cancelados por este frente. | Resolver únicamente desde su tarea/contrato cuando sean el frente solicitado o una dependencia material. |
+
+Expediente de este frente: última sección de INTEGRACION_LOCAL_VALIDADA.md, tarea toro-accesos-operacion del13/10/2026; diagnóstico y evidencia locales subordinados. Diseño único: [catálogo y favoritos dentro de la especificación existente](../superpowers/specs/2026-10-12-portal-completeness-and-document-close-design.md#herramientas-favoritos-20261013). No otro Plan General, inventario, agente, base, dashboard o scheduler.
+
+La intención de catálogo completo se acepta por cobertura de **destinos elegibles/revisados/permitidos del ámbito**, con conteos y exclusiones fechadas. El total bruto histórico no es un denominador de permisos. Un enlace revisado no acredita sesión, integración, escritura o cierre operacional.
+
+**Limpieza editorial aplicada:** entrada vigente y estados separados; sin renumerar o borrar recibos. Numeración21/22 repetida, superprompts anteriores y familias P/M/V se conservan como referencias fechadas; no se ejecutan por aparecer al final o llevar “vigente”. Cada continuación elige un resultado y una tarea existente. Reordenación/archivo adicional necesita delta revisable y comprobación de anclas; no eliminación masiva.
+
+**Modo de despliegue:** la sección Public Brain perimeter inferior conserva el contrato de demo en su corte. El código actual también reconoce modo portal y limita capacidades internas en él; el Portal publicado es una superficie autenticada de lectura, no activación general del runtime interno. Revisar versión/configuración efectiva antes de cualquier cambio, sin inferirla de una cabecera histórica.
+
+**NEXT único del frente solicitado:** preparar política y preferencia compartidas de favoritos sugeridos/fijados para los doce destinos revisados, con usuario/ámbito y pin estable; lector/almacén durable aún no confirmado. Conservar las cuatro candidatas como lote listo separado hasta cambio implementado/pruebas/autorización específica. No aplicar SQL, publicar o ampliar permisos por esta revisión.
 
 ---
 
@@ -1530,6 +1555,8 @@ Every program report must distinguish:
 
 ## CURRENT
 Verified live reality.
+
+This is an implementation claim tied to explicit environment, version, date and evidence. CURRENT MASTER PLAN denotes document authority only. Historical “CURRENT local/candidate” receipts are preparation evidence at their recorded cutoff; they do not certify live operation. Use DOCUMENTED, PREPARED, PUBLISHED, RUNTIME ACCEPTED and MEASURED OPERATION to report delivery maturity without rewriting historical receipts.
 
 ## TARGET
 Approved North-Star architecture.
