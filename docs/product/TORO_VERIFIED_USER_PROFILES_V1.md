@@ -1,7 +1,7 @@
 # TORO verified user profiles v1
 
 **Version:** 2026.10.13-v1  
-**Status:** specified; static validation implemented; runtime deployment not verified
+**Status:** specified; static validation and fail-closed effective-profile compiler implemented; runtime deployment not verified
 
 ## Decision
 
@@ -31,6 +31,10 @@ The registry deliberately excludes raw phone numbers, emails, secrets, psycholog
 7. Fail closed on an absent/revoked/ambiguous binding, inactive membership, unknown role or incompatible profile version.
 8. Write an audit receipt containing profile version and sanitized identity aliases.
 
+The reference compiler is `src/features/profile/effective-profile.ts`. It requires a verified, unexpired channel binding; an active authority result; matching organization and property scope; a compatible role profile; and a verified device binding when a device alias is present. It carries runtime data scopes and capabilities through unchanged and only intersects People-assistant authority with the explicit individual allowlist.
+
+Its sanitized receipt includes the registry version, message-pack version and a deterministic SHA-256 profile hash. `compareEffectiveProfileReceipts` requires one matching receipt from Portal, OpenClaw and WhatsApp before deployment consistency can be claimed. Different channel aliases do not change the profile hash; different profile content does.
+
 ## Source integration
 
 - **Supabase:** remains authoritative for identity, membership, roles, employee linkage, channel bindings, consent and audit. Store the overlay only after schema/RLS review; do not auto-link by name.
@@ -54,4 +58,4 @@ Run:
 npm run test:user-profiles
 ```
 
-The audit rejects raw contact identifiers, unknown role profiles, shared-account impersonation, runtime-deployment claims without evidence and any People-assistant allowlist broader than Mauricio plus Ana Carolina.
+The audit rejects raw contact identifiers, unknown role profiles, shared-account impersonation, runtime-deployment claims without evidence and any People-assistant allowlist broader than Mauricio plus Ana Carolina. Compiler tests also reject expired/revoked/ambiguous bindings, inactive authority, organization/property mismatches, device revocation, role escalation and cross-surface profile drift.
