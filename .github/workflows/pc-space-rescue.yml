@@ -7,6 +7,7 @@ on:
       - tests/pc-space-rescue.test.ps1
       - tests/pc-space-inventory.test.ps1
       - tests/pc-space-policy.test.ps1
+      - tests/pc-space-archive-compression.test.ps1
       - .github/workflows/pc-space-rescue.yml
   pull_request:
     paths:
@@ -14,6 +15,7 @@ on:
       - tests/pc-space-rescue.test.ps1
       - tests/pc-space-inventory.test.ps1
       - tests/pc-space-policy.test.ps1
+      - tests/pc-space-archive-compression.test.ps1
       - .github/workflows/pc-space-rescue.yml
 permissions:
   contents: read
@@ -28,11 +30,13 @@ jobs:
         run: |
           ./tests/pc-space-rescue.test.ps1
           ./tests/pc-space-inventory.test.ps1
+          ./tests/pc-space-archive-compression.test.ps1
       - name: PowerShell 7 synthetic safety checks
         shell: pwsh
         run: |
           ./tests/pc-space-rescue.test.ps1
           ./tests/pc-space-inventory.test.ps1
+          ./tests/pc-space-archive-compression.test.ps1
       - name: Restricted parent execution policy regression
         shell: powershell
         run: ./tests/pc-space-policy.test.ps1
