@@ -1,7 +1,9 @@
-# TORO Portal: completeness, simple navigation and document-based close
+# TORO product experience: single shell, work, information and governed execution
 
 Status: PROPOSED WRITTEN SPECIFICATION — architecture review required before new product implementation.
 Date: 2026-10-12. Parent: `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, section 23 Human Experience; TORO Finance / Comms / Tools contracts remain authoritative.
+
+Review: 2026-10-13 — complete product/page design proposed; no runtime activation.
 
 ## Outcome and scope
 
@@ -160,8 +162,151 @@ Contrato propuesto mínimo: actor tomado de sesión, organización/propiedad res
 - QA del delta en320/390/1280, teclado y fallback; los límites44px/12px del diseño vigente permanecen. El HTML file:// no tuvo nueva QA visual por bloqueo de política; no usar servidor alternativo para eludirlo.
 - Reversión por delta propio/feature control acordado, conservando preferencias y datos; no reset del repositorio compartido, cambio de RLS o borrado de originales.
 
-### Secuencia de mejora en el Plan único
+### Secuencia inicial del lote de favoritos — antecedente sustituido por el diseño integral siguiente
 
 Una unidad activa: preferencias/política y UX compartidas con los doce destinos. Después, por dependencia y autorización: ampliación de las cuatro parejas ya revisadas; grupos y cobertura por ámbitos elegibles; un flujo operacional completo con tarea/responsable/evidencia/cierre; mantenimiento editorial de índice/aliases y historial. Cada resultado conserva SoT, dueño, prueba, bloqueo, gate y reversión en sus registros existentes. No calendario, otro backlog ni trabajo paralelo activado.
 
 La investigación del13/10/2026 queda en REVISION_PRODUCTO_Y_ALINEAMIENTO_TORO.md y su evidencia local de la tarea toro-accesos-operacion, subordinadas a esta especificación y al Plan General.
+
+<a id="experiencia-integral-20261013"></a>
+## Experiencia integral TORO — diseño y plan de implementación propuestos, 13/10/2026
+
+> Para ejecutores: usar superpowers:subagent-driven-development o superpowers:executing-plans por unidades. Un escritor aislado, condiciones y pruebas del delta; sin asumir que este diseño está implementado.
+
+**Goal:** contexto autorizado→siguiente trabajo→fuente/evidencia→acción permitida→responsable/relevo/cierre leído del registro original.
+**Architecture:** shell único, registro00–11/capacidades conservados, política común de presentación y fuentes nativas. La vista no crea permisos, escrituras o otra identidad/verdad.
+**Tech Stack:** Next.js16.3.8/React19.2.4/TypeScript/Vitest4.1.11 observados; componentes/tokens y lectores existentes. Consultar guías del Next instalado antes de código; no actualizar dependencias por este plan.
+**Spec/authority:** esta especificación existente bajo el Plan General; reporte/evidencia locales de toro-accesos-operacion del13/10/2026 son entregables de la revisión. No otro master plan, app, DB, backlog o scheduler.
+
+### Decisiones de producto
+
+Cinco entradas: Hoy, Trabajo, Información, Herramientas y Dirección autorizada. Cerebro00 y búsqueda/pedido son transversales; mapa/lista dentro de Información. Un contexto visible y una acción principal por pantalla. PC lista+detalle, móvil Hoy/Trabajo/Buscar/Más; compatibilidad de rutas. Idioma/tema/cuenta, cabecera, evidencia y retorno se resuelven una vez.
+
+Hoy contiene siguiente caso, decisiones/bloqueos y favoritos, no todas las tarjetas de todas las áreas. Trabajo presenta caso/tarea/turno por proceso. Información sirve consultas/documentos/reportes con corte/cobertura. Herramientas reúne catálogo permitido y utilidades. Dirección muestra prioridades/portafolio/riesgos/Plan/capacidad por permiso; cuenta propia no equivale a configuración del sistema.
+
+Los ocho tabs actuales se redistribuyen: Operación/Personas/Dinero/Clientes/Crecimiento a Trabajo y sus consultas; Reportes a Información; Más a mapa de capacidades. Respuestas de huéspedes son Comunicación/Clientes, no un módulo Mercadeo terminado. Plantillas con una referencia de borrador; no instancias efímeras competidoras.
+
+En público/demostración se indica modo sintético. Un fallo operacional conserva estado indisponible; ver demo es elección explícita. No hero o franja de agentes que simule actividad, score/progreso o integración.
+
+### Cobertura de las13páginas y layout
+
+Auditoría de fuente sobrebe48e66, sin sesiones de todas las páginas. Estado de modalidad derivado del proxy, no de pruebas nuevas de runtime. Se localizaron16APIroutes; sus handlers no tuvieron auditoría exhaustiva.
+
+| Ruta actual | Portal actual | Decisión TARGET |
+|---|---|---|
+| / | redirect | authenticated Hoy / explicit demo |
+| /login | allowed | single accepted entry and safe available return |
+| /onboarding | blocked | optional contextual help, no blocking tour |
+| /portal | allowed | single workspace shell and Hoy |
+| /my-toro | allowed | account/consultation compatibility view within single experience |
+| /my-toro/herramientas | allowed | canonical tools/guide subview with aliases preserved |
+| /brain | allowed | transversal Cerebro and Information view within shell |
+| /booking-assist | allowed | reusable Cotizar action and compatibility route |
+| /dreamcatcher | blocked | hide from operational product; source/lab only |
+| /modules | blocked | technical history; no second operating catalogue |
+| /modules/[id] | blocked | technical reference with no false fallback |
+| /modules/event-ops | blocked | private project context after isolation proof |
+| /experience-lab | blocked | design/QA only, outside daily menu |
+
+Layout conserva base y se combina con shell autorizado; acceso/demo siguen ligeros. Login/transporte aceptado se conserva; safe-next debe ser seguro y disponible. No reabrir DreamTeam ni introducir SSO. Onboarding se vuelve ayuda opcional; no exposición de rutas por apariencia. Landing hotel/legacy/lab conservan historia fuera de navegación diaria. Event Ops mantiene su proyecto privado y debe acreditar aislamiento antes de cualquier exposición hotelera.
+
+### Registro canónico de dominios
+
+Ordinales de presentación, no IDs de base. Todos siguen localizables como áreas/capacidades; no renumerar o duplicar proyectos.
+
+| Dominio preservado | Hogar TARGET |
+|---|---|
+| 00 Cerebro | Information/transversal command |
+| 01 Hoy y Atención | Hoy / Trabajo |
+| 02 Dinero | Trabajo / Información / Dirección |
+| 03 Studio | Trabajo / Información |
+| 04 Clientes | Trabajo |
+| 05 Operaciones | Trabajo |
+| 06 Personas | Trabajo / own account |
+| 07 Crecimiento | Trabajo / Dirección |
+| 08 Legal y Riesgo | Dirección / Información |
+| 09 Activos y Espacios | Trabajo / Información |
+| 10 Proyectos | Trabajo / Dirección |
+| 11 Sistemas | Dirección / authorized technical tools |
+
+DiecinueveIDslegacy conservados: command,brain,tools,agents,revenue,campaigns,channel,market,kross,comm,ops,event-ops,assets,data,gov,approvals,browser,codex,settings. Se corresponden como capacidades/referencias de las áreas o del contexto privado, no otro19módulos. CODEX queda como herramienta de SOBRESITO/Sistemas, no director.
+
+### Contrato común de presentación y verdad
+
+Vigencia documental no certifica implementación. Separar consulta disponible, dato revisado, preparación, guardado/readback, enviado/entregado, cierre y desconocido. Campos/estados de fuente gobiernan la vista; no manufacturar actividad.
+
+- needsRevalidation=false sin evidencia individual no produce verified/riesgo certificado.
+- Null/error/parcial no es0/ready; conservar diferencia con cero confirmado y cobertura de consulta.
+- Sin match explícito no usar primeras acciones/conectores ajenos.
+- Relaciones generadas desde raíz/fixtures no acreditan conexión, y activityidle no es trabajo activo.
+- Misma autorización en sugerencia/lista/detalle/apertura; cambio de contexto limpia estado. No rol-preview, teléfono, nombre o correo como grant.
+- Proyecto familiar, privado personal, empresa y portafolio mantienen aislamiento; un org_id o role label no lo sustituye.
+- Datos presentes/límites de una consulta no son denominador global de cobertura.
+- Recibido/documento/conteo/cotización preparada no son pago, contabilización, reserva o cierre.
+
+### Cinco clases de fallo que gobiernan pruebas
+
+Fuente ausente/stale; identidad/ámbito cambiado; ruta segura pero no disponible; guardado/envío ambiguo o repetido; grupo con objetos de distinto permiso. Cada unidad incluye el caso que le corresponde, sin interpretar silencio del spec como permiso.
+
+### Secuencia de implementación E1–E7
+
+Una unidad pesada activa; cada una produce comportamiento verificable, archivo/fuente exactos, prueba, gate y reversión. La secuencia previa del lote de favoritos es antecedente; esta secuencia integral es rectora para el frente ahora solicitado.
+
+**E1 — Veracidad/límites (NEXT único).**
+Archivos: features/brain/canonical-projection.ts; lib/server/brain-projection.ts; app/modules/[id]/page.tsx; features/event-ops/los50s-server.ts y vista si corresponde. Tests existentes canonical-projection.test.ts, brain-projection.test.ts, los50s-server.test.ts; agregar prueba focal legacy si falta.
+- [ ] Aislar escritor y reconfirmar delta/contrato.
+- [ ] Regresiones: flagfalse sin evidencia, summarynull/error, relación sin match, fallo operacional/no demo automático y ámbito privado no permitido.
+- [ ] Confirmar fallo; implementar mínimo y pasar tests/typecheck/lint/diff-check proporcionales.
+- [ ] Recibo/PR/checkpoint; no exposición privada ni SQL/grants/env. No cerrarUX-01sin aislamiento probado.
+Comando dirigido: node node_modules/vitest/vitest.mjs run src/features/brain/canonical-projection.test.ts src/lib/server/brain-projection.test.ts src/features/event-ops/los50s-server.test.ts. Compilación del mismo SHA cuando corresponda, sin repetir build agotado o borrar caché.
+
+**E2 — Shell/contexto/navegación.**
+Archivos: portal-workspace.tsx, portal-header.tsx, portal.module.css, app/portal/page.tsx, my-toro/page.tsx, layout.tsx, auth/safe-next.ts, menu/portal-projects.ts; propuestos workspace-navigation.ts/workspace-shell.tsx en features/portal.
+- [ ]13rutas/12dominios/19legacyIDs y aliases completos.
+- [ ] Navegación por permiso/contexto efectivo, cabecera única y retorno/deep-links.
+- [ ] Tests safe-next, portal-session, menu resolver/server, appPortal/proxy; interacción contexto/atrás/recarga/ruta no disponible.
+- [ ] QA320/390/1280/teclado, fuentes/monedas/foco y limpieza de estado. Allowlist separado.
+
+**E3 — Un ciclo de trabajo.**
+Reusar features/actions/internal-work.ts, internal-work-server.ts/tests, operations.tasks/projects y recibos existentes.
+- [ ] Caso hotelero bajo riesgo y actores autorizados; tarea única/owner/evidencia/relevo.
+- [ ] Idempotencia, actor/org incorrectos, revocación, interrupción/readback ambiguo y responsable ausente.
+- [ ] Si el writer no está autorizado, preparación/handoff honesto; guardado/cierre solo con prueba en origen.
+- [ ] Gate específico de escritura; no mensaje/reserva/pago/contabilización implícitos.
+
+**E4 — Herramientas/preferencias.**
+Reusar directory/server/catalogue/links y vistasPortal/Miespacio; resolver contrato de preferencias actor/ámbito/revisión/rank/version.
+- [ ] Semillas permitidas y pin/descarte/orden compartidos;12destinosbaseline.
+- [ ] URL estable, aliases, dos identidades/contextos, revocación, lectura parcial, guardadofallido, dos pestañas/recarga/readback.
+- [ ] No creds/account_refs/claims como grant. Pin/link hermanos; cuenta externa no seleccionada porTORO.
+- [ ] Lote4ya revisado: deltaRPC6→10+navegación6=16, id/url/presentación fija, con gate separado. No nuevo censo243.
+
+**E5 — Información/evidencia/reportes.**
+Reusar brain-explorer/canonical-projection/brain-projection, menu/source-aware/server/portal-projects y lectores autorizados.
+- [ ] Fuente/corte/cobertura/ref→objeto/acción→retorno con foco.
+- [ ] Ref no permitida/stale/partial/empty/retirada; sin resolvedor no botón falso.
+- [ ] Reporte por reader aceptado, período/moneda originales, exportación solo probada.
+- [ ] Mapa/lista contenido, no navegaciónglobal duplicada; fuentes/privacidad intactas.
+
+**E6 — Capacidad útil por rol/dominio.**
+Reusar menu/types/server/resolver, context/resolver y cada feature nativo. No diez writers paralelos.
+- [ ] Matriz identidad/rol/ámbito/acción/fuente/capacidad, sin ampliar por perfil de diseño.
+- [ ] Un proceso por dependencia/utilidad, campos/adapter mínimos.
+- [ ] Negativas/frescura/cobertura/repetición y recepción≠pago/documento≠contabilización.
+- [ ] Readback/actores reales tras gate específico; mantener Kross/People/Alegra/bancos/canales.
+
+**E7 — Consolidación/rendimiento/limpieza.**
+Plan/spec, portal/model, toro-data y compatibilidad/nav.
+- [ ] Índice/aliases/criteriosP-M-V hacia resultado/tarea/prueba; historia/IDs intactos.
+- [ ] Retirar duplicación y ejemplos del flujooperativo; probar referencias/rutas/perímetro.
+- [ ] Medir carga/uso/cierre/fallas con corte y denominador; no porcentajes porrequisitos.
+- [ ] Retiros destructivos solo con autorización/consumidores/retención/recuperación. Reversión del delta, nunca reset compartido.
+
+### Aceptación global, notas y reversión
+
+Cada página tiene usuario/contexto/acción/estado final y decisión visible/redirect/oculta. Todos los dominios están localizables; ninguna ruta permitida lleva a superficie prohibida. Un caso se acepta al cerrar en fuente con actor/evidencia/readback, no al compilar o publicar una maqueta.
+
+RegistrarUX-01–18 en el Plan/registro/tarea existentes: observado/preparado/implementado/publicado/runtimeaceptado/medido, fuente/SHA/fecha, prueba, gate y una brecha/siguiente acción. No auditorías repetidas de fuentes ajenas, historial completo en workers o nuevo programa paralelo. Datos privados no van al repo.
+
+Reversión de diseño: delta documental propio con historia conservada. En implementación, rollback focal/aliases/featurecontrol acordado; preferencias y originales no se borran. Producción, permisos, SQL, costos y acciones sensibles conservan autorización específica. E1–E7 no quedan programados o activados por este registro.
+
