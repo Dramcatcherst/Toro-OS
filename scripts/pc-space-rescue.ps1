@@ -41,7 +41,7 @@ function Get-ToroCleanupRoots {
 
 function Get-ToroCacheCandidates {
     param(
-        [Parameter(Mandatory)][object[]]$Roots,
+        [Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Roots,
         [Parameter(Mandatory)][datetime]$Cutoff
     )
     $candidates = New-Object 'System.Collections.Generic.List[object]'
@@ -77,7 +77,7 @@ function Get-ToroCacheCandidates {
 
 function Invoke-ToroCacheCleanup {
     param(
-        [Parameter(Mandatory)][object[]]$Candidates,
+        [Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Candidates,
         [Parameter(Mandatory)][datetime]$Cutoff
     )
     $deletedFiles = 0
