@@ -5556,3 +5556,55 @@ Sección23 Human Experience y TORO Tools/Identity. Primera subunidad de A sobre 
 La opción de presentación del lector añade solo navegación previamente aprobada después del mismo control de identidad/rol/organización. Una caída del directorio conserva los seis destinos públicos y estado parcial; correo de cuenta no sustituye autorización. RPC/RLS/grants/usuarios/rutas/destinos/conectores/escritores permanecen. Catálogo encontrado o enlace disponible no demuestra sesión compartida, sincronización ni ejecución nativa.
 La lectura agregada del registro actual confirma243fichas v2.0 y referencias mixtas/históricas; no hay fecha registrada en destination_verified_at para las fichas. Las seis URLs exactas aprobadas de la RPC siguen siendo la frontera de lectura. No se exponen las restantes fichas ni se modifica su revisión. A completo y ampliación de proyección siguen TARGET hasta revisión de cada destino/alcance y aprobación del cambio acotado; no se declara100%del registro.
 Verificación candidata:139 pruebas dirigidas y lint; QA de componentes/Tailwind reales con datos sintéticos en320/390/1280, búsqueda/limpieza/conservación de filtros, recorrido Mi espacio→catálogo, grupos, cobertura parcial, foco/targets/IDs y negativa de acceso. Compilación local afectada por memoria y C: reportando0MB; la eliminación de caché fue bloqueada por aprobación automática. La compilación completa remota, CI, preview y publicación deben acreditarse en el checkpoint antes de cierre. No se debilitan gates ni se crean permisos para superar el problema local.
+
+
+## Usuarios y Personas — integración antes de incorporación, 13/10/2026
+
+**Dirección de Mauricio:** actualmente es el único usuario humano real; priorizar alineación, activación verificable e integración entre todos los proyectos antes de incorporar personas. La cuenta administrativa la usa solo Mauricio. Cada persona tendrá identidad propia; el acceso administrativo del propietario a Margot no convierte esa cuenta en la identidad de Margot. No nuevas invitaciones, grants o cuentas por esta unidad de planificación. No borrar cuentas existentes ni inferir usuarios reales desde registros.
+
+**Clasificación y ownership:** TARGET plan investigado, sección23 y carriles existentes TORO Identity, People, Projects, Data, Governance, Comms y Human Experience. El detalle y la matriz de etapas se incorporan al contrato vigente `docs/product/TORO_IDENTITY_USER_VAULT_V1.md`, sección12; permanece subordinado a este único Plan General. Sin nuevo proyecto maestro, base, cola o scheduler.
+
+**CURRENT verificado:** Supabase contiene6 cuentas Auth/app_users;12 empleados activos,5 vinculados y7 sin vínculo, más1 terminado no vinculado;5 membresías activas;18 roles activos y1 rol EMPLEADO sin membresía activa.13 perfiles privados de RRHH,0 employment_profiles; Airtable Central conserva12 perfiles laborales con estados/calidad mezclados.12 perfiles IA not_started y cero filas de progreso onboarding/identidades de canal/capability grants en las tablas consultadas. No son usuarios integrados ni evidencia de canal operativo. Corte agregado, sin salarios/contactos/personas publicados.
+
+**Diferencia estructural:** organización_memberships ya existe pero Portal aún usa roles como pertenencia; helper RLS de rol no exige membresía y DreamTeam elige contexto mediante prioridad de rol. DreamTeam sí tiene flujos de cuentas/invitaciones: reutilizarlos, conciliar membresía y efectos parciales, no crear sistema paralelo. No se demostró filtración o explotación. User Vault continúa TARGET sin tablas visibles en su esquema; no ingerir memoria personal antes de gates.
+
+**Orden acordado:** conciliar cuentas/expedientes/carriles -> contrato común de autorización y ciclo de vida -> recorrido completo de Mauricio -> altas/bajas gobernadas y recuperación -> RRHH/tareas/canales por objeto canónico -> gate con pruebas negativas -> piloto de una persona -> optimización medida. DreamTeam conserva runtime hasta paridad. Cada etapa requiere evidencia, rollback y estado preparado/implementado/probado/activo/usado separado. PR207 y PR265 siguen sus carriles; esta investigación no los activa o publica.
+
+**NEXT único:** mapa de consumidores Portal/DreamTeam/RLS/RPC/canales/workers y matriz de aceptación de identidad, contexto, suspensión/revocación y recorrido del propietario. Primero resolver diferencias de autoridad; no iniciar invitaciones ni modificar permisos para hacer pasar pruebas. Readiness significa recorridos críticos aceptados, aislamiento, recuperación y pendientes explícitos, no promesa de software sin errores. Segunda identidad de QA y release de consumidores requieren evidencia propia.
+
+**Límites:** lecturas de metadata/agregados/código y12 filas Airtable minimizadas, no auditoría exhaustiva ni pruebas autenticadas de dos usuarios. No writes runtime, migraciones, sesión compartida activada, publicación o ampliación de permisos. Revertir solo este delta documental preservando cambios humanos/concurrentes.
+
+
+### Ampliación de identidades externas y actores — 13/10/2026
+
+**TARGET del mismo carrilPR281:** Mauricio amplía investigación a DreamTeam/TORO, Alegra, Dropbox, Chrome/Windows, reloj y otros registros; agentes pueden ser actores usuarios del sistema con identidad técnica, sin convertirse en empleados humanos. Diseñar un lugar gobernado para consultar sujetos/relaciones/cuentas/vínculos y evidencia autorizada. Reutilizar Auth/app_users, memberships, employees, clock mappings y Control Plane; no tabla universal, credenciales centralizadas ni permisos heredados.
+
+**CURRENT investigado:** DreamTeam repositorio y parser/readbackRPC revisados. Reloj:13 mappings marked confirmed,11/12 empleados activos cubiertos;1642 punches,6imports y0 ambigüedades temporales en ese corte, período más reciente septiembre. analyze tiene lista local/fallback por alias; commitv6 delega a cadena cuyo v2 usa mapping org/reloj/fecha único. Resolver concordancia preview/commit; no reemplazar mapping canónico. Un import presenta fecha de marca posterior a imported_at local, causa pendiente con original.
+
+Alegra:3 conectores consultados, muestras/metadata distintas;2 muestran mismo contacto de muestra y mismo total, sin certificar misma empresa. Nómina404Organization not found en3; POSlista vacía sin estación explícita no inventario general. Dropboxcuenta/raíz y listados acotadosHR verificados; no ACL/documentos originales certificados. Actorregistry/capabilitycatalog y runs/receipts consultados; etiquetaagent no identidadmachine probada. Chrome local y rosteractual del dispositivo pendientes.
+
+**Fuente humana:** reloj sin marca conocida, descarga manual por llaveUSB y posible conexión alPC; ExcelDreamTeam anunciado, pendiente de recibir. Evaluar primero importación asistida del mismoarchivo, luego protocolo/capacidad directa con recuperación. No asumirred/API por puerto. CapturasWindows muestran discoCsinlibre; diagnóstico local es dependencia, sin limpieza/borrados autorizados por este plan.
+
+**Contratos y plan:** secciones12–13 de TORO_IDENTITY_USER_VAULT_V1.md y plan subordinado existente docs/superpowers/plans/2026-09-22-toro-identity-user-vault-people-integration.md actualizado con interfaces, rutas, tests, fases y cobertura. Superpowerswriting-plans consultado como metodología; MasterBrain no cambia autoridad del único Plan. Match porIDfuerte+proveedor/cuenta+tipo+scope+vigencia; nombres/aliases/carpeta/contacto no conceden identidad o acceso. Human, external_party, agent y machine son tipos distintos. Registrar responsable y delegación de agente por principalvalidado, action/scope/expiry y recibo.
+
+**NEXT único actualizado:** completar inventario y contrato de vínculos antes de activarusuarios: recibirExcel, contrastaroriginalreloj, consultarChrome en sesiónlocal y resolver cuenta/empresa/ACL externa; preparar índicelectura/candidatos y matrizautorización con fuentesdisponibles. Roles/membresías, ciclo devida y recorridoowner siguen gates previos. No nuevasinvitaciones/grants/fusiones/migraciones, retiroDreamTeam, cambioscontables/biométricos o limpiezaPC.
+
+
+### DreamTeam export y código servido — mismo carril, 13/10/2026
+
+Mauricio adjunta dream-team-empleados.xlsx y URL dream-team-public.vercel.app/dreamteam. Archivo RECIBIDO_NO_LEÍDO: downloader requiere workspace no disponible y no hay sesiónExcel. Comparaciónporfila aún pendiente; no colocar datos privados enGitHub ni afirmar que losconteosDB provienen deladjunto.
+
+Sitio HTTP200 sin sesión muestra acceso. Deployment READY producción dpl_EZ1wLBsq7z6tf97wCQ7LFtBQCLcK sirve rama fix/manual-attendance-20261001 commitb9cf10606f410a0e6a6cdb5162dac1b735230a27, doscommits por delante delmainDreamTeam observado4d8374194b59d044bf67e703f5b854ad0105cf05. Mantener código publicado/paridad y no sustituirlo por mainantiguo.
+
+Código exportador indica expedientelaboral con16columnas y datos restringidos, sin identidadAuth/membresía/reloj. «Con cuenta registrada» significa cuenta bancaria en su resumen; hasAccess en directorio solo user_id vinculado. Plan requiere separar cuenta bancaria/cuentaTORO/vínculo/membresía/permisoefectivo y usar mappingtemporal actual/histórico. BaselineDBindependiente:13no borrados/12activos/5vinculados/7activos sincuenta/1vinculado sinmembresía.
+
+NEXT delmismo plan: lectura minimizada delExcel y comparaciónprivada pororg+IDcorroborado, más corregirsemántica delreader/exportador en unidadprobada posterior. Archivo pendiente no bloquea investigación deorigen/código, pero impide certificar alineaciónporfila. Sin writesruntime, datos sensibles publicados o release.
+
+
+### Conciliación por fuente canónica y autonomía de investigación
+
+Owner solicita usarconectores y evitar transcripciones. Revisadas13fichasDreamTeam enSupabase con camposminimizados:12activas/5vinculadas,1vínculo sinmembresía,9activos siningreso,5sin nombrelegal,1retirado conmappingreloj abierto,1ficha condobleclockID,1activo sinmapping y0canalesverificados. No son efectos de esta sesión ni errores todos: vigencia y necesidaddereloj requieren regla/evidencia. Inventarioporpersona permaneceprivado; soloagregados alPlan.
+
+La informacióncanónica fue recuperada; ya no se requiere transcripciónmanual para investigarla. Revisar candidatos confuentes antes de preguntar; no autoconcederroles/membresía, fecharcontratos conmarcaciones, fusionarIDs o eliminarhistorias. Las preguntas se limitan a decisioneshumanas no resueltas porfuentes, con propuestasconcretas.
+
+Lectura delarchivo adjunto y sesiónUI permanecen noverificadas porlimitacionesdeherramienta; navegadorlocal no conectado y perfilremoto sin signinDreamTeam registrado. Consultardatosporconector no certifica lecturaExcel o comportamientoRLSinteractivo. Continuar matrizautorización/fieldauthority bajoPR281, sin pedircopy/paste delarchivo ni haceraltausuarios.
