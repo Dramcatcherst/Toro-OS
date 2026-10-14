@@ -1,0 +1,27 @@
+name: PC space rescue safety
+on:
+  push:
+    branches: [codex/pc-space-rescue-20261013]
+    paths:
+      - scripts/pc-space-rescue.ps1
+      - tests/pc-space-rescue.test.ps1
+      - .github/workflows/pc-space-rescue.yml
+  pull_request:
+    paths:
+      - scripts/pc-space-rescue.ps1
+      - tests/pc-space-rescue.test.ps1
+      - .github/workflows/pc-space-rescue.yml
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Windows PowerShell 5.1 synthetic safety checks
+        shell: powershell
+        run: ./tests/pc-space-rescue.test.ps1
+      - name: PowerShell 7 synthetic safety checks
+        shell: pwsh
+        run: ./tests/pc-space-rescue.test.ps1
