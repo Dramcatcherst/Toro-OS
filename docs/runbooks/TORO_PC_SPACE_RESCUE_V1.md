@@ -222,9 +222,9 @@ Owner supplied WSL 2.7.12.0, kernel 6.18.33.2-2, Windows 10.0.26300.9550. Regist
 
 Native pnpm was absent from the command lookup; no packages were pruned. Free space now 12.328 GiB, observed block delta 0. The difference from the older 15.199 GiB measurement has no established cause. Preserve the store; do not manually delete it or install a manager just to force cleanup.
 
-Next concrete Windows action: NTFS compression of at most 50 largest plain, writable, uncompressed direct JSONL files in the current user's .codex/archived_sessions directory on C:. Existing Test-ToroPlainDirectory rejects linked ancestors. SQLite, active sessions, subdirectories, read-only/linked/already-compressed files, installed apps and project assets are outside the selection. No directory compression inheritance or whole-volume compression is applied. Native compact /C /Q keeps file content and paths; no /EXE, /S, /F or raw deletion fallback. Recovery must be measured, not inferred from logical lengths. Native errors leave remaining files untouched.
+Next concrete Windows action: NTFS compression of at most 50 largest plain, writable, uncompressed direct JSONL files in the current user's .codex/archived_sessions directory on C:. Existing Test-ToroPlainDirectory rejects linked ancestors. SQLite, active sessions, subdirectories, read-only/linked/already-compressed files, installed apps and project assets are outside the selection. No directory compression inheritance or whole-volume compression is applied. The exact selected file list is saved privately to a unique D: JSON receipt before compression, so reversal can target the same paths. Native compact /C /Q keeps file content and paths; no /EXE, /S, /F or raw deletion fallback. Recovery must be measured, not inferred from logical lengths. Native errors leave remaining files untouched.
 
-The same block uses apt-get clean in confirmed Ubuntu to clear APT's retrieved package archive cache without uninstalling packages, and then reads Linux filesystem usage plus at most 15 largest directory totals. du uses one filesystem, MiB units and depth-two output across explicit Linux roots, with a 60-second timeout; nonzero status must be retained as incomplete/error. Parent/child directory totals overlap and must not be summed. apt cache cleanup may free internal Linux blocks without shrinking the Windows VHD immediately; no C: recovery is claimed from that operation without later host readback. Ubuntu remains running; no shutdown, unregister, compact-vdisk, fstrim, disk move or project/history deletion is requested by the block.
+The block first checks Ubuntu is still listed as running; Linux operations are skipped if it is stopped or state cannot be read. The same block uses apt-get clean in confirmed Ubuntu to clear APT's retrieved package archive cache without uninstalling packages, and then reads Linux filesystem usage plus at most 15 largest directory totals. du uses one filesystem, MiB units and depth-two output across explicit Linux roots, with a 60-second timeout; nonzero status must be retained as incomplete/error. Parent/child directory totals overlap and must not be summed. apt cache cleanup may free internal Linux blocks without shrinking the Windows VHD immediately; no C: recovery is claimed from that operation without later host readback. Ubuntu remains running; no shutdown, unregister, compact-vdisk, fstrim, disk move or project/history deletion is requested by the block.
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command {
@@ -240,6 +240,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command {
             Where-Object { ([long]$_.Attributes -band (0x400 -bor 0x1 -bor 0x800)) -eq 0 } |
             Sort-Object Length -Descending | Select-Object -First 50)
         if ($toroLogs.Count -gt 0) {
+            $toroRecibo = "D:\TORO-compresion-$([guid]::NewGuid().ToString('N')).json"
+            $toroLogs | Select-Object FullName, Length |
+                ConvertTo-Json | Set-Content -LiteralPath $toroRecibo -Encoding UTF8
+            Write-Host ('Lista de archivos para revertir: ' + $toroRecibo)
             & compact.exe /C /Q $toroLogs.FullName
             if ($LASTEXITCODE -ne 0) { Write-Warning 'Compresion incompleta; conservar los archivos.' }
         }
@@ -250,13 +254,34 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command {
         CambioObservadoGiB = [Math]::Round(($toroDespues - $toroAntes) / 1GB, 3)
     } | Format-List
 
+    $toroEnMarcha = @(wsl.exe --list --running --quiet)
+    if ($LASTEXITCODE -ne 0) { Write-Warning 'No se pudo comprobar WSL'; return }
+    $toroEnMarcha = @($toroEnMarcha | ForEach-Object {
+        ([string]$_).Replace([string][char]0, '').Trim()
+    })
+    if ($toroEnMarcha -notcontains 'Ubuntu') {
+        Write-Host 'Ubuntu detenido: limpieza y lectura Linux omitidas.'
+        return
+    }
     wsl.exe --distribution Ubuntu --user root --exec apt-get clean
     Write-Host ('Resultado limpieza APT: ' + $LASTEXITCODE)
     wsl.exe --distribution Ubuntu --exec df -h /
     $toroDu = @(wsl.exe --distribution Ubuntu --user root --exec timeout 60s du -x -m --max-depth=2 /home /root /var /usr /opt /tmp)
     $toroDuEstado = $LASTEXITCODE
     $toroDu | ForEach-Object {
-        if ([string]$_ -match '^(\d+)\s+(.+)$') {
+        if ([string]$_ -match '^(\d+)\s+(.+)
+```
+
+Functional reversal: use compact.exe /U /Q with the same explicit file paths to undo NTFS compression, provided sufficient free space remains; avoid broad directory wildcards for reversal. Tests/pc-space-archive-compression.test.ps1 uses synthetic JSONL archives, a SQLite sentinel and an active-session sentinel to verify SHA256 byte preservation, unchanged locations/scope exclusions and decompression, including spaced paths, in Windows PowerShell 5.1 and 7. A passing fixture does not constitute execution against owner archives. APT cache has no deleted-download rollback; repository-provided packages can be downloaded again if needed, while installed software remains.
+
+Primary sources:
+- https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact
+- https://manpages.ubuntu.com/manpages/noble/man8/apt-get.8.html
+- https://www.gnu.org/software/coreutils/manual/html_node/du-invocation.html
+- https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact-vdisk
+
+CURRENT: Ubuntu identity/usage and zero-recovery pnpm skip owner-reported. NEXT: CI-validated archive compression and bounded Ubuntu cache/size step with actual readback. No owner archive or Ubuntu mutation has been executed by this chat connector.
+) {
             [pscustomobject]@{ MiB = [long]$Matches[1]; Carpeta = $Matches[2] }
         }
     } | Sort-Object MiB -Descending | Select-Object -First 15 | Format-Table -AutoSize
