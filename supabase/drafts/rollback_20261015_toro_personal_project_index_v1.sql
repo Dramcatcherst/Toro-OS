@@ -5,15 +5,23 @@
 begin;
 
 do $$
+declare
+  has_rows boolean;
 begin
-  if to_regclass('user_vault.project_links') is not null
-     and exists (select 1 from user_vault.project_links limit 1) then
-    raise exception 'Refusing rollback: user_vault.project_links contains data';
+  if to_regclass('user_vault.project_links') is not null then
+    execute 'select exists (select 1 from user_vault.project_links limit 1)'
+      into has_rows;
+    if has_rows then
+      raise exception 'Refusing rollback: user_vault.project_links contains data';
+    end if;
   end if;
 
-  if to_regclass('user_vault.projects') is not null
-     and exists (select 1 from user_vault.projects limit 1) then
-    raise exception 'Refusing rollback: user_vault.projects contains data';
+  if to_regclass('user_vault.projects') is not null then
+    execute 'select exists (select 1 from user_vault.projects limit 1)'
+      into has_rows;
+    if has_rows then
+      raise exception 'Refusing rollback: user_vault.projects contains data';
+    end if;
   end if;
 end
 $$;
