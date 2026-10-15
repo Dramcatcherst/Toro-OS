@@ -7,12 +7,20 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
-## Gmail personal gobernado — propuesta 15/10/2026
+## Gmail personal y limpieza controlada — 15/10/2026
 
-Integrar la cuenta Gmail privada del propietario con el **TORO Comms y User Vault existentes**, nunca con el registro organizacional de Dreamcatcher ni reenvío a administradores del hotel. Contrato de autorización, pruebas negativas, niveles de permiso y pasos de consentimiento por OAuth en [TORO Personal Gmail Admin Gate V1](TORO_PERSONAL_GMAIL_ADMIN_GATE_V1.md). Código `src/features/comms/personal-mailbox-guard.ts` y pruebas quedan en PR de revisión, sin deployment.
+**Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General ÚNICO; la cuenta personal del propietario jamás se incorpora como buzón de la organización Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y ámbito; no una segunda copia masiva del buzón.
 
-La conexión de Gmail en ChatGPT permite operaciones manuales autorizadas pero **NO prueba** que el runtime TORO tenga OAuth ni privilegios sobre esta cuenta. Primero lectura y archivo reversible, luego borradores; envío, ajustes, papelera y eliminaciones finales requieren autorización y recibo, sin permisos irrestrictos. No se crea otro scheduler: reutilizar la revisión `TORO Correos y Pagos` y checkpoints existentes solo tras demostrar aislamiento personal y ejecución segura. No contabilizar archivo como GB liberados ni copiar información privada a `operations.tasks` del hotel sin transferencia explícita.
+**Implementación comprobada:** [PR #292](https://github.com/Dramcatcherst/Toro-OS/pull/292) fusionado en `main`. Guard de permisos personales, clasificador conservador, pruebas y [contrato del módulo](TORO_PERSONAL_GMAIL_ADMIN_GATE_V1.md) integrados en el repositorio. NO acredita OAuth de TORO, ejecución autónoma, despliegue productivo ni cuota liberada. La conexión autorizada de ChatGPT Gmail está operativa *solo en el entorno de ChatGPT*.
 
+**Limpieza solicitada por el propietario — política aplicable desde hoy:**
+1. Eliminar ruido sin duplicar bases, agentes, tareas ni schedulers: continuar el seguimiento `TORO Correos y Pagos` existente, distinguiendo lectura rutinaria de mantenimiento de bandeja y archivando la evidencia operacional privada fuera del repositorio público.
+2. Clasificar por mensaje y por conversación: revisar recibidos/enviados, distinguir publicidad realmente prescindible de notificaciones de cuentas y conservar siempre reservas, contratos, facturas, bancarios, visas, seguridad, documentos personales, confirmaciones y cualquier hilo relevante. Prohibido depender solo de la etiqueta 'Promociones' para borrar.
+3. Reversible primero: etiquetar/archivar o mover publicidad revisada a papelera; cancelar boletines solo desde el control oficial de Gmail o una solicitud autenticada del remitente (no abrir enlaces de phishing). No cancelar una suscripción de pago ni retirar alertas transaccionales por interpretar "unsubscribe" sin distinguirlas.
+4. **Almacenamiento:** la operación de Gmail "mover a papelera" NO equivale a liberar GB. Medir consumo actual de Gmail/Drive/Photos en Google One; conservar prueba/recuperación de mensajes de valor; eliminación definitiva solo con selección verificada y autorización, seguida de comprobación de cuota. El conector ChatGPT disponible no ofrece vaciado definitivo de la papelera ni administración de filtros de Gmail. No afirmar espacio recuperado sin lectura de cuota.
+5. Automatización futura: completar OAuth **por usuario** del runtime TORO, vault secreto server-only, ownership personal, grants mínimos, RLS y denegación de scope organizacional; cursors incrementales y dedupe; canario de un correo con lectura/antes/después/receipt; retry y rollback; **sin** Domain-Wide Delegation, contraseñas de aplicación, cuotas pagas ni nuevas automatizaciones. Envíos externos, permisos, configuración y destrucción definitiva siguen aprobaciones separadas.
+
+**Estado:** políticas/código probados en CI; operaciones de ChatGPT realizadas con Gmail real, cuyos conteos por buzón permanecen en reporte privado; OAuth/productivo, gestión de suscripciones de proveedores y espacio real liberado pendientes de verificación. Reutilizar controles del Plan General y no reinterpretar código como ejecución runtime.
 
 ---
 
