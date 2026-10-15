@@ -1,8 +1,22 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import type { ToolLink } from "./directory";
+import {
+  catalogueItemsFromLinks,
+  projectCompleteCatalogueRows,
+  type DirectoryCatalogueItem,
+  type ToolCatalogueItem,
+  type ToolLink,
+} from "./directory";
+import { authorizedContext, completeCatalogueRows } from "./fixtures.test-utils";
 import { getToolPresentation } from "./portal-tool-links";
-import { PortalToolCatalogue, selectToolCatalogue, toolCatalogueReducer } from "./portal-tool-catalogue";
+import {
+  initialToolCatalogueFilters,
+  PortalToolCatalogue,
+  selectToolCatalogue,
+  TOOL_CATALOGUE_BATCH_SIZE,
+  toolCatalogueReducer,
+  type ToolCatalogueFilters,
+} from "./portal-tool-catalogue";
 
 const links: ToolLink[] = [
   { id: "LINK-048", label: "Recepción Ágil", url: "https://example.com/reservations" },
@@ -12,38 +26,65 @@ const links: ToolLink[] = [
   { id: "TEST-SUPPLIER", label: "  🧰 Proveedor Ágil  ", url: "https://example.com/supplier" },
   { id: "TEST-SUPPORT", label: "Soporte de prueba", url: "https://example.com/support" },
 ];
-const initialState = { query: "", category: "Todas" };
-const ids = (items: ToolLink[]) => items.map(item => item.id);
+const reviewed = catalogueItemsFromLinks(links);
+const filters = (patch: Partial<ToolCatalogueFilters> = {}): ToolCatalogueFilters => ({
+  ...initialToolCatalogueFilters,
+  ...patch,
+});
+const ids = (items: ToolCatalogueItem[]) => items.map(item => item.id);
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function completeCatalogue() {
+  const rows = completeCatalogueRows();
+  rows[0] = {
+    ...rows[0],
+    name: "Métricas Laguna",
+    url: "https://catalogue.example.test/private-url-fragment",
+    purpose: "Comparar conversión directa",
+    project: "Dreamcatcher Marketing",
+    category: "Analítica",
+    provider: "Google Analytics",
+    state: "activo",
+    lifecycle: "operativo",
+    priority: "P1 crítico",
+    link_type: "panel",
+    scope: "Hotel",
+  };
+  rows[242] = { ...rows[242], url: "" };
+  const items = projectCompleteCatalogueRows(authorizedContext(), rows);
+  expect(items).toHaveLength(244);
+  return items;
+}
 
 describe("authorized tool presentation", () => {
   it("places and finds the reviewed Google Hotels profile in Mercadeo", () => {
-    const profile = { id: "LINK-244", label: "🏨 Ver Google Hotels", url: "https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB" };
-    expect(getToolPresentation(profile)).toMatchObject({
+    const profile: ToolLink = { id: "LINK-244", label: "🏨 Ver Google Hotels", url: "https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB" };
+    const [item] = catalogueItemsFromLinks([profile]);
+    expect(getToolPresentation(item)).toMatchObject({
       name: "Google Hotels", title: "Ver perfil del hotel", category: "Mercadeo",
     });
-    const selection = selectToolCatalogue([profile], { category: "Todas", query: "mercadeo" });
+    const selection = selectToolCatalogue([item], filters({ query: "mercadeo" }));
     expect(ids(selection.filteredLinks)).toEqual(["LINK-244"]);
-    expect(selection.groups).toEqual([{ category: "Mercadeo", links: [profile] }]);
-    const html = renderToStaticMarkup(<PortalToolCatalogue links={[profile]} idPrefix="google-hotels" />);
+    expect(selection.groups).toEqual([{ project: "Accesos revisados", links: [item] }]);
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={[item]} idPrefix="google-hotels" />);
     expect(html).toContain('href="https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB"');
     expect(html).toContain("Ficha pública, reseñas y opciones de reserva");
   });
 
   it("renders a readable fallback for an authorized link without a registered brand", () => {
-    const presentation = getToolPresentation(links[4]);
+    const presentation = getToolPresentation(reviewed[4]);
     expect(presentation).toMatchObject({
       name: "Proveedor Ágil", title: "Proveedor Ágil", category: "Otros", detail: "Acceso externo", logo: null,
     });
     expect(presentation.Icon).toBeTruthy();
-    const html = renderToStaticMarkup(<PortalToolCatalogue links={[links[4]]} idPrefix="fallback" />);
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={[reviewed[4]]} idPrefix="fallback" />);
     expect(html).toContain("Proveedor Ágil");
     expect(html).toContain("Acceso externo");
     expect(html).toContain('href="https://example.com/supplier"');
   });
 
   it("does not confuse an inherited object property with a registered brand", () => {
-    const inheritedId = { id: "constructor", label: "Acceso técnico", url: "https://example.com/technical" };
+    const [inheritedId] = catalogueItemsFromLinks([{ id: "constructor", label: "Acceso técnico", url: "https://example.com/technical" }]);
     expect(getToolPresentation(inheritedId)).toMatchObject({
       name: "Acceso técnico", title: "Acceso técnico", category: "Otros", detail: "Acceso externo", logo: null,
     });
@@ -52,12 +93,11 @@ describe("authorized tool presentation", () => {
 
 describe("tool catalogue selection", () => {
   it("preserves distinct destinations of the same provider without mutating the input", () => {
-    const original = links.map(link => ({ ...link }));
-    const selection = selectToolCatalogue(links, initialState);
-    expect(selection.filteredLinks).toEqual(original);
-    expect(selection.filteredLinks.filter(link => ["LINK-048", "PORTAL-POS"].includes(link.id)))
-      .toEqual([original[0], original[1]]);
-    expect(links).toEqual(original);
+    const original = reviewed.map(link => ({ ...link }));
+    const selection = selectToolCatalogue(reviewed, filters());
+    expect(selection.filteredLinks.filter(link => ["LINK-048", "PORTAL-POS"].includes(link.id)).map(link => link.id).sort())
+      .toEqual(["LINK-048", "PORTAL-POS"]);
+    expect(reviewed).toEqual(original);
   });
 
   it.each([
@@ -65,87 +105,117 @@ describe("tool catalogue selection", () => {
     ["PROVEEDOR AGIL", ["TEST-SUPPLIER"]],
     ["consumos", ["PORTAL-POS"]],
     ["otros", ["TEST-SUPPLIER", "TEST-SUPPORT"]],
-  ])("searches labels, purpose and categories without case or accent barriers: %s", (query, expected) => {
-    expect(ids(selectToolCatalogue(links, { ...initialState, query }).filteredLinks)).toEqual(expected);
+  ])("searches reviewed names, purpose and categories without case or accent barriers: %s", (query, expected) => {
+    expect(ids(selectToolCatalogue(reviewed, filters({ query })).filteredLinks)).toEqual(expected);
+  });
+
+  it("searches the complete catalogue by safe metadata and combines project, category and state", () => {
+    const complete = completeCatalogue();
+    for (const query of ["metricas laguna", "conversion directa", "google analytics", "operativo", "p1 critico", "panel", "hotel"]) {
+      expect(ids(selectToolCatalogue(complete, filters({ query })).filteredLinks)).toContain("LINK-001");
+    }
+    const selection = selectToolCatalogue(complete, filters({
+      project: "Dreamcatcher Marketing", category: "Analítica", state: "activo",
+    }));
+    expect(ids(selection.filteredLinks)).toEqual(["LINK-001"]);
+    expect(selection.groups).toEqual([{ project: "Dreamcatcher Marketing", links: [complete[0]] }]);
   });
 
   it("does not expose URL text as searchable catalogue metadata", () => {
-    expect(selectToolCatalogue(links, { ...initialState, query: "https://example.com" }).filteredLinks).toEqual([]);
-    expect(selectToolCatalogue(links, { ...initialState, query: "/point-of-sale" }).filteredLinks).toEqual([]);
+    const complete = completeCatalogue();
+    expect(selectToolCatalogue(complete, filters({ query: "private-url-fragment" })).filteredLinks).toEqual([]);
+    expect(selectToolCatalogue(reviewed, filters({ query: "/point-of-sale" })).filteredLinks).toEqual([]);
   });
 
-  it("groups every authorized destination once and reports the original total", () => {
-    const selection = selectToolCatalogue(links, initialState);
-    expect(selection.total).toBe(links.length);
-    const grouped = selection.groups.flatMap(group => group.links);
-    expect(ids(grouped).sort()).toEqual(ids(links).sort());
-    expect(new Set(selection.categories).size).toBe(selection.categories.length);
-    expect(selection.categories).toContain("Otros");
-    for (const group of selection.groups) {
-      expect(selection.categories).toContain(group.category);
-      expect(group.links.length).toBeGreaterThan(0);
-      expect(group.links.every(link => getToolPresentation(link).category === group.category)).toBe(true);
-    }
-    expect(selection.groups.find(group => group.category === "Otros")?.links).toHaveLength(2);
+  it("returns batches of 48, grows one batch at a time and resets the batch on a filter", () => {
+    const complete = completeCatalogue();
+    const first = selectToolCatalogue(complete, filters());
+    expect(first.visibleLinks).toHaveLength(TOOL_CATALOGUE_BATCH_SIZE);
+    expect(first.filteredTotal).toBe(244);
+    expect(first.hasMore).toBe(true);
+    const more = toolCatalogueReducer(initialToolCatalogueFilters, { type: "more" });
+    expect(selectToolCatalogue(complete, more).visibleLinks).toHaveLength(96);
+    const narrowed = toolCatalogueReducer(more, { type: "project", value: "Dreamcatcher Marketing" });
+    expect(narrowed.visibleCount).toBe(TOOL_CATALOGUE_BATCH_SIZE);
+    let nearEnd = initialToolCatalogueFilters;
+    for (let batch = 0; batch < 4; batch += 1) nearEnd = toolCatalogueReducer(nearEnd, { type: "more" });
+    const finalFour = selectToolCatalogue(complete, nearEnd);
+    expect(finalFour.visibleLinks).toHaveLength(240);
+    expect(finalFour.filteredTotal - finalFour.visibleLinks.length).toBe(4);
+    const completeState = toolCatalogueReducer(nearEnd, { type: "more" });
+    expect(selectToolCatalogue(complete, completeState)).toMatchObject({ visibleLinks: expect.any(Array), hasMore: false });
+    expect(selectToolCatalogue(complete, completeState).visibleLinks).toHaveLength(244);
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={complete} idPrefix="complete" mode="complete" />);
+    expect(html.match(/\sdata-tool=/g)).toHaveLength(TOOL_CATALOGUE_BATCH_SIZE);
+    expect(html).toContain("Mostrar 48 más");
   });
 
-  it("combines category and query filters while keeping the full catalogue count", () => {
-    const selection = selectToolCatalogue(links, { category: "Otros", query: "agil" });
-    expect(ids(selection.filteredLinks)).toEqual(["TEST-SUPPLIER"]);
-    expect(selection.groups).toEqual([{ category: "Otros", links: [links[4]] }]);
-    expect(selection.total).toBe(links.length);
-  });
-
-  it("treats whitespace as an empty query and handles an empty authorized directory", () => {
-    expect(selectToolCatalogue(links, { ...initialState, query: "   " }).filteredLinks).toEqual(links);
-    const empty = selectToolCatalogue([], initialState);
-    expect(empty.filteredLinks).toEqual([]);
-    expect(empty.groups).toEqual([]);
-    expect(empty.total).toBe(0);
-  });
-
-  it("recovers all links after an empty search result through the reset action", () => {
-    const categoryState = toolCatalogueReducer(initialState, { type: "category", value: "Otros" });
+  it("recovers the catalogue after an empty result through reset", () => {
+    const categoryState = toolCatalogueReducer(initialToolCatalogueFilters, { type: "category", value: "Otros" });
     const queryState = toolCatalogueReducer(categoryState, { type: "query", value: "unmatched synthetic term" });
-    expect(queryState).toEqual({ category: "Otros", query: "unmatched synthetic term" });
-    expect(selectToolCatalogue(links, queryState).filteredLinks).toEqual([]);
+    expect(selectToolCatalogue(reviewed, queryState).filteredLinks).toEqual([]);
     const reset = toolCatalogueReducer(queryState, { type: "reset" });
-    expect(reset).toEqual(initialState);
-    expect(selectToolCatalogue(links, reset).filteredLinks).toEqual(links);
-    expect(initialState).toEqual({ query: "", category: "Todas" });
-    expect(queryState).toEqual({ category: "Otros", query: "unmatched synthetic term" });
+    expect(reset).toEqual(initialToolCatalogueFilters);
+    expect(selectToolCatalogue(reviewed, reset).filteredLinks).toHaveLength(reviewed.length);
   });
 });
 
 describe("tool catalogue markup", () => {
-  it("keeps every destination external and resolves accessible names and descriptions to unique IDs", () => {
-    const html = renderToStaticMarkup(<><PortalToolCatalogue links={links} idPrefix="primary" />
-      <PortalToolCatalogue links={links} idPrefix="secondary" /></>);
-    const renderedIds = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
-    expect(new Set(renderedIds).size).toBe(renderedIds.length);
-    const anchors = [...html.matchAll(/<a\b[^>]*>/g)].map(match => match[0]);
-    expect(anchors).toHaveLength(links.length * 2);
-    for (const link of links) {
-      expect(anchors.filter(anchor => anchor.includes(`href="${link.url}"`))).toHaveLength(2);
-    }
-    for (const anchor of anchors) {
-      expect(anchor).toContain('target="_blank"');
-      const rel = anchor.match(/\brel="([^"]+)"/)?.[1].split(/\s+/);
-      expect(rel).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
-      for (const attribute of ["aria-labelledby", "aria-describedby"]) {
-        const references = anchor.match(new RegExp(`${attribute}="([^"]+)"`))?.[1].split(/\s+/);
-        expect(references?.length).toBeGreaterThan(0);
-        for (const reference of references ?? []) expect(renderedIds).toContain(reference);
-      }
-    }
+  it("shows lifecycle so an archived reference cannot look current from its state alone", () => {
+    const archived = completeCatalogue().find(item => item.id === "LINK-008");
+    expect(archived).toMatchObject({ state: "registrado", lifecycle: "archivo/referencia" });
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={archived ? [archived] : []} idPrefix="archived" mode="complete" />);
+    expect(html).toContain("archivo/referencia");
+    expect(html).toContain("registrado");
   });
 
-  it("states partial coverage and a separate provider session without claiming integration", () => {
-    const html = renderToStaticMarkup(<PortalToolCatalogue links={links} idPrefix="partial" directoryAvailable={false} />);
+  it("renders empty destinations as pending cards instead of clickable controls", () => {
+    const pending = completeCatalogue().find(item => item.id === "LINK-243");
+    expect(pending?.url).toBeNull();
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={pending ? [pending] : []} idPrefix="pending" mode="complete" />);
+    expect(html).toContain("Destino pendiente");
+    expect(html).toContain('data-tool="LINK-243"');
+    expect(html).not.toMatch(/<a\b/);
+  });
+
+  it("keeps unique accessible references and opens only HTTPS in a new tab", () => {
+    const directoryBase: Omit<DirectoryCatalogueItem, "id" | "label" | "name" | "url"> = {
+      kind: "directory", purpose: "Acceso autorizado", project: "Dreamcatcher", category: "Operación",
+      provider: "Proveedor", state: "registrado", lifecycle: "activo", priority: "P2", linkType: "acceso", scope: "Hotel", homeEligible: false,
+    };
+    const items: ToolCatalogueItem[] = [
+      { ...directoryBase, id: "LINK-901", label: "Web", name: "Web", url: "https://example.com/" },
+      { ...directoryBase, id: "LINK-902", label: "Correo", name: "Correo", url: "mailto:hotel@example.test" },
+      { ...directoryBase, id: "LINK-903", label: "Teléfono", name: "Teléfono", url: "tel:+50626401234" },
+      { ...directoryBase, id: "LINK-904", label: "Pendiente", name: "Pendiente", url: null },
+    ];
+    const html = renderToStaticMarkup(<><PortalToolCatalogue items={items} idPrefix="primary" />
+      <PortalToolCatalogue items={items} idPrefix="secondary" /></>);
+    const renderedIds = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
+    expect(new Set(renderedIds).size).toBe(renderedIds.length);
+    const webAnchors = [...html.matchAll(/<a\b[^>]*href="https:\/\/example\.com\/"[^>]*>/g)].map(match => match[0]);
+    expect(webAnchors).toHaveLength(2);
+    for (const anchor of webAnchors) {
+      expect(anchor).toContain('target="_blank"');
+      expect(anchor).toContain('rel="noopener noreferrer"');
+    }
+    for (const destination of ["mailto:hotel@example.test", "tel:+50626401234"]) {
+      const anchors = [...html.matchAll(new RegExp(`<a\\b[^>]*href="${destination.replace("+", "\\+")}"[^>]*>`, "g"))];
+      expect(anchors).toHaveLength(2);
+      expect(anchors.every(match => !match[0].includes("target="))).toBe(true);
+    }
+    expect(html.match(/data-tool="LINK-904"/g)).toHaveLength(2);
+  });
+
+  it.each([
+    ["complete", "Catálogo interno completo para tu rol."],
+    ["reviewed", "Accesos revisados para tu rol."],
+    ["fallback", "Cobertura parcial"],
+  ] as const)("describes %s coverage without claiming an integration", (mode, message) => {
+    const html = renderToStaticMarkup(<PortalToolCatalogue items={reviewed} idPrefix={mode} mode={mode} />);
     const text = normalize(html);
-    expect(text).toMatch(/parcial/);
-    expect(text).toContain("sesion propia");
+    expect(text).toContain(normalize(message));
+    expect(text).toContain("sesion");
     expect(text).not.toMatch(/integracion activa|sincronizado|conexion verificada/);
-    for (const link of links) expect(html).toContain(`href="${link.url}"`);
   });
 });

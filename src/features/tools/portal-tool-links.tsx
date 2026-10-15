@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ArrowUpRight, CalendarDays, FolderOpen, MessagesSquare, Users, BedDouble, CreditCard, Wallet, Mail, House, Link as LinkIcon } from "lucide-react";
-import type { ToolLink } from "./directory";
+import type { ToolCatalogueItem, ToolLink } from "./directory";
 import styles from "@/features/portal/portal.module.css";
 
 export type PortalToolCategory = "Operación" | "Comunicación" | "Equipo" | "Dinero" | "Mercadeo" | "Google" | "Documentos" | "Otros";
@@ -26,8 +26,14 @@ export const portalToolBrands: Record<string, PortalToolPresentation> = {
   "PORTAL-HOME": { name: "Google Home", title: "Abrir Google Home", detail: "Dispositivos · funciones según tu cuenta", Icon: House, logo: "/brand/tools/google.svg", category: "Google", keywords: ["dispositivos", "casa", "Google Home"] },
 } as const;
 
-export function getToolPresentation(link: ToolLink): PortalToolPresentation {
+type PresentableTool = ToolLink | ToolCatalogueItem;
+
+export function getToolPresentation(link: PresentableTool): PortalToolPresentation {
   const known = Object.hasOwn(portalToolBrands, link.id) ? portalToolBrands[link.id] : null;
+  if ("kind" in link && link.kind === "directory") {
+    return { ...(known ?? { Icon: LinkIcon, logo: null, category: "Otros" as const, keywords: [] }),
+      name: link.name, title: link.name, detail: link.purpose };
+  }
   if (known) return known;
   const label = link.label.replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/u, "").replace(/\s+/g, " ").trim() || "Recurso externo";
   return { name: label, title: label, detail: "Acceso externo", Icon: LinkIcon, logo: null, category: "Otros", keywords: [] };
@@ -35,23 +41,34 @@ export function getToolPresentation(link: ToolLink): PortalToolPresentation {
 
 /** Presentation only: destinations must already be filtered by the approved directory reader. */
 export function PortalToolLinks({ links, compact = false, wide = false, favorites = false, idPrefix = "tool", ariaLabel }: {
-  links: ToolLink[]; compact?: boolean; wide?: boolean; favorites?: boolean; idPrefix?: string; ariaLabel?: string;
+  links: PresentableTool[]; compact?: boolean; wide?: boolean; favorites?: boolean; idPrefix?: string; ariaLabel?: string;
 }) {
   return <nav aria-label={ariaLabel ?? (favorites ? "Favoritos del hotel" : "Herramientas del hotel")} className={favorites ? styles.favoritesGrid : wide ? styles.toolsWide : compact ? styles.toolsCompact : styles.toolsGrid}>
     {links.map(link => {
       const brand = getToolPresentation(link);
       const Icon = brand.Icon;
-      return <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-        className={styles.toolCard + (favorites ? " " + styles.favoriteCard : "")} data-tool={link.id} aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>
+      const directory = "kind" in link && link.kind === "directory" ? link : null;
+      const content = <>
         <span className={styles.toolVisual + (brand.logo ? " " + styles.lightLogo : "")} aria-hidden="true">
           {brand.logo ? <Image src={brand.logo} alt="" width={72} height={64} unoptimized /> : <Icon size={38} strokeWidth={1.6} />}
         </span>
         <span className={styles.toolCopy}><strong id={idPrefix + "-" + link.id}>{favorites ? (Object.hasOwn(portalToolBrands, link.id) ? brand.name.split(" ·")[0] : brand.name) : brand.title}</strong>
           {!favorites ? <span className={styles.toolBrand}>{brand.name}</span> : null}
-          <small id={idPrefix + "-note-" + link.id}>{favorites ? brand.title : brand.detail}<span className={styles.srOnly}> · abre otra pestaña</span></small>
+          <small id={idPrefix + "-note-" + link.id}>{favorites ? brand.title : brand.detail}
+            {link.url?.startsWith("https://") ? <span className={styles.srOnly}> · abre otra pestaña</span> : null}</small>
+          {wide && directory ? <span className={styles.toolMetadata}>
+            <span>{directory.category}</span><span>{directory.state}</span><span>{directory.lifecycle}</span><span>{directory.scope}</span>
+          </span> : null}
         </span>
-        <ArrowUpRight className={styles.toolArrow} size={18} aria-hidden="true" />
-      </a>;
+        {link.url ? <ArrowUpRight className={styles.toolArrow} size={18} aria-hidden="true" />
+          : <span className={styles.toolPending}>Destino pendiente</span>}
+      </>;
+      const className = styles.toolCard + (favorites ? " " + styles.favoriteCard : "") + (!link.url ? " " + styles.toolCardPending : "");
+      if (!link.url) return <article key={link.id} className={className} data-tool={link.id}
+        aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</article>;
+      const external = link.url.startsWith("https://");
+      return <a key={link.id} href={link.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
+        className={className} data-tool={link.id} aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</a>;
     })}
   </nav>;
 }

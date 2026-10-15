@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { ToroResolvedContext } from "@/features/context/types";
-import { canReadHotelDirectory, projectHotelLinks } from "./directory";
-import { authorizedContext, quoteEntry as entry, readKross, sourceRow as row } from "./fixtures.test-utils";
+import { canReadCompleteHotelDirectory, canReadHotelDirectory, projectCompleteCatalogueRows, projectHotelLinks } from "./directory";
+import { authorizedContext, completeCatalogueRows, quoteEntry as entry, readKross, sourceRow as row } from "./fixtures.test-utils";
 
 const context = authorizedContext();
 
@@ -46,5 +46,42 @@ describe("hotel directory boundary", () => {
   });
   it("rejects duplicate IDs and other project links", () => {
     expect(projectHotelLinks(context,{...row,structured_content:{link_directory:{entries:[entry,entry,{id:"LINK-217",url:"https://admin.booking.com/"}]}}})).toEqual([]);
+  });
+});
+
+describe("complete catalogue boundary", () => {
+  it("limits the complete projection to ADMIN or GERENCIA in the exact hotel context", () => {
+    expect(canReadCompleteHotelDirectory(context)).toBe(true);
+    expect(canReadCompleteHotelDirectory({...context,membership:{...context.membership!,roles:["ADMIN"]}})).toBe(true);
+    expect(canReadCompleteHotelDirectory({...context,membership:{...context.membership!,roles:["JEFE_DEPARTAMENTO"]}})).toBe(false);
+    expect(canReadCompleteHotelDirectory({...context,membership:{...context.membership!,roles:["AUDITOR"]}})).toBe(false);
+  });
+
+  it("projects exactly 244 strict safe rows and represents a blank destination as pending", () => {
+    const rows = completeCatalogueRows(); rows[200] = {...rows[200],url:""};
+    const projected = projectCompleteCatalogueRows(context, rows);
+    expect(projected).toHaveLength(244);
+    expect(projected[200]).toMatchObject({kind:"directory",id:"LINK-201",url:null,label:"Herramienta 201"});
+    expect(new Set(projected.map(item => item.id)).size).toBe(244);
+    expect(JSON.stringify(projected)).not.toContain("evidence");
+    expect(JSON.stringify(projected)).not.toContain("account_refs");
+  });
+
+  it.each([
+    ["extra fields", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],evidence:"private"} as typeof rows[number]; }],
+    ["unsafe protocol", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"javascript:alert(1)"}; }],
+    ["embedded credentials", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://user:pass@example.test/"}; }],
+    ["sensitive query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/?token=private"}; }],
+    ["API key query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/?api_key=private"}; }],
+    ["refresh token query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/?refresh_token=private"}; }],
+    ["signed cloud query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/?X-Amz-Signature=private"}; }],
+    ["sensitive fragment", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/#/open?token=private"}; }],
+    ["sensitive mail query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"mailto:hotel@example.test?token=private"}; }],
+    ["duplicate IDs", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[1] = {...rows[1],id:rows[0].id}; }],
+    ["noncanonical ID set", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[243] = {...rows[243],id:"LINK-999"}; }],
+    ["wrong count", (rows: ReturnType<typeof completeCatalogueRows>) => { rows.pop(); }],
+  ])("fails the whole complete catalogue on %s", (_label, mutate) => {
+    const rows = completeCatalogueRows(); mutate(rows);
+    expect(projectCompleteCatalogueRows(context, rows)).toEqual([]);
   });
 });
