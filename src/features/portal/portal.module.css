@@ -153,6 +153,11 @@
 .toolBrand { font-size:12px; line-height:1.4; color:#cce2f5; }
 .toolCopy small { color:#b8c9da; font-size:12px; line-height:1.5; }
 .toolArrow { color:var(--accent); }
+.toolMetadata { display:flex; flex-wrap:wrap; gap:4px; margin-top:2px; }
+.toolMetadata > span { max-width:100%; padding:2px 5px; border:1px solid #6f899c; border-radius:999px; color:#d9e8f2; font-size:10px; line-height:1.35; overflow-wrap:anywhere; }
+.toolCardPending { grid-template-columns:52px minmax(0,1fr) auto; border-style:dashed; cursor:default; }
+.toolCardPending:hover { background:#1b3447; border-color:#58788e; }
+.toolPending { max-width:78px; color:#f1d69a; font-size:11px; line-height:1.35; text-align:right; }
 .favoriteCard { display:flex; position:relative; flex-direction:column; gap:3px; text-align:center; padding:6px; min-height:64px; }
 .favoriteCard .toolVisual { width:42px; height:28px; }
 .favoriteCard .toolVisual img { width:36px; height:24px; }
@@ -347,6 +352,8 @@
 .viewPanel .responseTools { border-color:#acc0ce; }
 .viewPanel .card { --toro-focus:#0969a2; }
 .viewPanel .toolCard { --toro-focus:#0969a2; }
+.viewPanel .toolMetadata > span { color:#40576a; border-color:#8ea8b8; background:#f8fbfc; }
+.viewPanel .toolPending { color:#704f0d; }
 .viewPanel .utilityField :is(input,select,textarea) { color:#203c50; background:#fffef8; border-color:#8ea8b8; }
 .viewPanel .utilityField :is(input,textarea)::placeholder { color:#455969; opacity:1; }
 .viewPanel .catalogSearch { color:#40576a; background:#fffef8; border-color:#8ea8b8; }
@@ -361,7 +368,7 @@
 .calcGrid :is(input,select,button):focus-visible { outline-color:#0969a2; }
 @media (max-width:619px) { .loginPage { padding:12px; } .loginBox { padding:16px; } }
 @media (forced-colors:active) {
- .viewPanel, .calcGrid, .viewPanel .catalogSearch, .viewPanel .categorySelect select, .calcGrid :is(input,select), .card .status, .card .icon { background:Canvas; color:CanvasText; border-color:CanvasText; }
+ .viewPanel, .calcGrid, .viewPanel .catalogSearch, .viewPanel .categorySelect select, .viewPanel .toolMetadata > span, .calcGrid :is(input,select), .card .status, .card .icon { background:Canvas; color:CanvasText; border-color:CanvasText; }
  .viewPanel .card, .card .subtleDisclosure summary, .calcGrid { --toro-focus:Highlight; }
  .viewPanel :is(input,select):focus-visible, .calcGrid :is(input,select,button):focus-visible, .loginBox :focus-visible { outline-color:Highlight; }
 }

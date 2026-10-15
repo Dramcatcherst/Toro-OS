@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
 import { canReadHotelDirectory } from "@/features/tools/directory";
 import { loadHotelDirectory } from "@/features/tools/server";
-import { portalNavigation } from "@/features/tools/portal-navigation";
 import { hasPortalOrganizationContext, resolvePortalModules } from "@/features/portal/model";
 import { PortalWorkspace } from "@/features/portal/portal-workspace";
 import { PortalAttentionSummary, type PortalAttentionState } from "@/features/portal/portal-attention-summary";
@@ -37,13 +36,16 @@ export default async function PortalPage() {
     try { return { state: "ready", projection: await loadOwnerAttentionProjection(view!.context) }; }
     catch { return { state: "unavailable", projection: null }; }
   }
-  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory() : Promise.resolve(null), readAttention()]);
-  const links = [...(directory?.state === "ready" ? directory.links : []), ...portalNavigation(view.context)];
+  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true}) : Promise.resolve(null), readAttention()]);
+  const directoryAuthorized = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true);
+  const operationalLinks = directoryAuthorized ? directory.links : [];
+  const catalogueItems = directoryAuthorized ? directory.catalogueItems : [];
   const availableCount = modules.filter(module => module.href).length;
   return <>
     <PortalHeader current="overview" scopeLabel={scopeLabel} includeTools={hotelAllowed} />
     <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
-      <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={links} hotelAllowed={hotelAllowed} directoryAvailable={directory?.state === "ready"}
+      <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
+        catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
