@@ -101,7 +101,9 @@ function projectNode(
     scopeRef,
     status: projectStatus(project.status),
     risk: project.needsRevalidation ? "Medium" : "Low",
-    verification: project.needsRevalidation ? "unverified" : "verified",
+    // This bounded read has no individual verification evidence. A false
+    // revalidation flag must not certify the project or its graph relation.
+    verification: "unverified",
     freshness: freshnessFromDate(project.updatedAt, generatedAt),
     sourceSystem: project.sourceSystem ?? "Supabase",
     authoritySystem: "TORO Projects",
