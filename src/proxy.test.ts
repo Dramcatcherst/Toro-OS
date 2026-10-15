@@ -33,7 +33,7 @@ describe.each([false, true])("public perimeter, session cookie %s", (session) =>
   });
 });
 
-it.each(["/brain", "/favicon.ico", "/_next/static/chunks/fake.js"])("allows safe GET/HEAD to %s, not POST", (path) => {
+it.each(["/brain", "/favicon.ico", "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image", "/_next/static/chunks/fake.js"])("allows safe GET/HEAD to %s, not POST", (path) => {
   for (const method of ["GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"]) {
     const request = new NextRequest(`https://demo.invalid${path}`, { method, headers: { "Next-Action": "fake-action" } });
     expect(unstable_doesProxyMatch({ config, nextConfig: {}, url: request.url })).toBe(true);
@@ -59,7 +59,7 @@ describe("published Portal perimeter", () => {
     vi.stubEnv("TORO_INTERNAL_WORK_WRITE_ENABLED", "true");
   });
 
-  it.each(["/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain", "/booking-assist", "/api/brain/context", "/api/brain/owner-attention", "/brand/tools/kross.png", "/brand/tools/wespeak.ico", "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg", "/favicon.ico", "/_next/static/chunks/app.js"])("delegates only safe reads to %s and leaves auth to its guarded reader", path => {
+  it.each(["/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain", "/booking-assist", "/api/brain/context", "/api/brain/owner-attention", "/brand/tools/kross.png", "/brand/tools/wespeak.ico", "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg", "/favicon.ico", "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image", "/_next/static/chunks/app.js"])("delegates only safe reads to %s and leaves auth to its guarded reader", path => {
     for (const method of ["GET", "HEAD"]) {
       for (const cookie of ["", "session=synthetic-expired; TORO_DEPLOYMENT_MODE=internal"]) {
         const request = new NextRequest(`https://toro.invalid${path}`, { method, headers: { cookie } });
