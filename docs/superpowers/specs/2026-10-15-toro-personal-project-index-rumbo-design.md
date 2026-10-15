@@ -6,7 +6,7 @@
 **Ámbito:** Principal Mauricio → privado  
 **Subsistemas:** TORO Personal + TORO Projects + TORO Tools  
 **Clasificación:** TARGET / NEXT condicionado  
-**Autoridades:** GitHub para contrato; Supabase para estado estructurado; Rumbo para el viaje
+**Autoridades:** ChatGPT Work como superficie primaria; Rumbo como autoridad del viaje; Supabase como base estructurada canónica; GitHub como contrato y código
 
 ## Decisión
 
@@ -16,6 +16,8 @@ Rumbo conserva la autoridad del itinerario, documentos, reservas, gastos y prepa
 
 No se guarda el inventario personal en Airtable `executive_portfolio`, `operations.projects`, un repositorio público ni `private.founder_profiles`.
 
+**Un solo lugar** significa una experiencia unificada y una única base Supabase, no una sola tabla sin fronteras. El catálogo organizacional existente continúa en `operations.knowledge_items`; el inventario privado vive en `user_vault`. Un resolver con permisos puede proyectar ambos sin duplicarlos ni ampliar acceso.
+
 ## Evidencia actual
 
 - Existe `operations.projects:toro_personal_mauricio`, pero sus políticas permiten lectura a roles empresariales privilegiados.
@@ -24,6 +26,8 @@ No se guarda el inventario personal en Airtable `executive_portfolio`, `operatio
 - En producción todavía no existe el esquema `user_vault`.
 - Rumbo tiene un viaje propiedad del usuario y funciona como sistema especialista; su conector actual permite añadir y registrar, pero no reemplazar, archivar ni eliminar itinerario/tareas/reservas.
 - Airtable contiene el portafolio ejecutivo de TORO/Dreamcatcher, no un almacén privado por propietario.
+- Supabase ya contiene el directorio organizacional `dreamcatcher_system_database_directory_v1` en `operations.knowledge_items`: 244 entradas distintas al 15-oct-2026, con una proyección existente mediante `public.dreamcatcher_tool_catalog_v1()`. No se crea un segundo catálogo organizacional.
+- El conector de Rumbo está disponible como superficie de ChatGPT Work; no se encontró en la integración actual una URL pública/deep link verificada ni acceso a su repositorio fuente.
 
 ## Modelo propuesto
 
@@ -33,7 +37,7 @@ Una fila por proyecto privado del usuario. Guarda nombre, estado, prioridad, res
 
 ### `user_vault.project_links`
 
-Enlaces asociados al proyecto: aplicación, repositorio, viaje, documento, tablero o sitio. Los enlaces pueden ser HTTPS o URI interna aprobada. Cada fila hereda el mismo propietario que su proyecto.
+Enlaces tipados asociados al proyecto: `live_app`, `preview`, `repository`, `trip`, `document`, `dashboard`, `connector`, `admin` u `other`. Cada proyecto puede marcar un único enlace activo como `is_primary_view`: se prioriza la experiencia que permite **ver o usar** el proyecto; GitHub permanece como enlace técnico separado. Cada fila registra proveedor, modo de apertura, verificación y hereda el mismo propietario que su proyecto.
 
 ### Fuente y copia permitida
 
@@ -45,6 +49,16 @@ Enlaces asociados al proyecto: aplicación, repositorio, viaje, documento, table
 | Correo | Proveedor de correo | Evidencia resumida; no copiar hilo completo |
 | Proyecto personal | User Vault | Registro canónico privado |
 | Portafolio empresarial | `operations.projects` | Solo referencia agregada sin contenido privado |
+
+## Directorio unificado sin duplicación
+
+La experiencia de `/my-toro/projects` consulta un resolver sensible a permisos:
+
+1. enlaces organizacionales permitidos desde el directorio existente en `operations.knowledge_items`;
+2. enlaces privados del propietario desde `user_vault.project_links`;
+3. estado vivo del viaje desde Rumbo cuando el vínculo está disponible.
+
+El resolver devuelve un formato común, pero conserva fuente, ámbito, sensibilidad y autoridad. Nunca materializa las 244 entradas organizacionales dentro de `user_vault`. Para cada proyecto ordena enlaces así: `is_primary_view` verificado, aplicación en producción, preview autorizado, dashboard/viaje y finalmente repositorio/documentación. Los enlaces rotos o pendientes no son primarios.
 
 ## Inventario inicial
 
@@ -95,7 +109,7 @@ Estado minimizado permitido:
 - número de bloqueos;
 - próxima fecha límite;
 - última sincronización;
-- enlace/acción para abrir Rumbo si existe un destino privado verificable.
+- enlace/acción para abrir Rumbo si existe un destino privado verificable. Si solo existe la integración de ChatGPT Work, usar una acción del conector y no inventar una URL.
 
 No persistir en el índice:
 
@@ -106,12 +120,22 @@ No persistir en el índice:
 - URLs con tokens;
 - archivos de identidad.
 
+## ChatGPT Work como entrada estándar
+
+La interacción primaria será `@Rumbo` dentro de ChatGPT Work. El plugin combina el procedimiento de trabajo con las herramientas MCP de datos vivos; TORO Personal mantiene el índice y los permisos. Una UI MCP opcional puede renderizar el panel de viaje sin crear otra autoridad.
+
+Flujo objetivo:
+
+`ChatGPT Work → @Rumbo → herramientas MCP → estado del viaje en Rumbo → resumen minimizado en TORO Personal`
+
+Para completar la integración futura, el propietario del plugin debe exponer el repositorio o editor del servidor Rumbo. El conector actual permite operar el viaje, pero no permite desde esta superficie añadir herramientas nuevas ni modificar su UI.
+
 ## Mejoras prioritarias de Rumbo
 
 ### P0
 
 1. Modelo de ruta canónica con versiones y capacidad de reemplazar/archivar una versión anterior.
-2. CRUD o upsert de itinerario, tareas y reservas; el modelo append-only crea contradicciones.
+2. CRUD, upsert y archivo de itinerario, tareas y reservas; el modelo append-only crea contradicciones.
 3. Estados tipados para reservas: idea / hold / confirmada / pagada / cancelada / vencida.
 4. `entryCases` por viajero y país con fuente, fecha de consulta, vigencia y faltantes.
 5. Estados documentales separados: cargado / revisado / enviado / pagado / aprobado / rechazado / vencido.
@@ -126,7 +150,9 @@ No persistir en el índice:
 - modo standby con escenarios;
 - detección de duplicados y archivo de viajes alternativos;
 - auditoría de cambios y frescura;
-- panel: Hoy / Bloqueos / Próximos vencimientos / Variación de presupuesto / Documentos.
+- panel: Hoy / Bloqueos / Próximos vencimientos / Variación de presupuesto / Documentos;
+- herramientas MCP de lectura y escritura con recibo/readback, y UI opcional embebida para el panel;
+- identificadores estables y enlaces privados verificables para abrir el viaje desde el índice.
 
 ## Dependencias antes de producción
 
@@ -138,6 +164,8 @@ No persistir en el índice:
 6. Adaptador de servidor que no use claves privilegiadas en el navegador.
 7. Revisión de privacidad del índice inicial.
 8. Aplicación mediante migración revisada; no ejecutar directamente los borradores.
+9. Acceso al repositorio/editor de Rumbo para implementar CRUD/upsert/archive, `entryCases`, readiness derivado y la UI MCP.
+10. Resolver de enlaces unificado con pruebas de ámbito: organización vs. propietario.
 
 ## Pruebas de aceptación
 
@@ -146,6 +174,9 @@ No persistir en el índice:
 - `anon` no tiene acceso;
 - un enlace no puede cambiar de propietario;
 - un enlace no puede apuntar a un proyecto de otro usuario;
+- solo existe un `is_primary_view` activo por proyecto y propietario;
+- GitHub no desplaza una URL de vista verificada cuando ambas existen;
+- el resolver no duplica el catálogo organizacional dentro de `user_vault`;
 - URI inseguras `javascript:`, `data:` o credenciales embebidas son rechazadas;
 - una lectura de TORO Personal no amplía permisos del destino;
 - la desconexión de Rumbo conserva el proyecto y muestra estado `DEGRADED`;
