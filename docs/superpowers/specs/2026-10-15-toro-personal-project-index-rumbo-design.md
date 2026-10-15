@@ -60,6 +60,20 @@ La experiencia de `/my-toro/projects` consulta un resolver sensible a permisos:
 
 El resolver devuelve un formato común, pero conserva fuente, ámbito, sensibilidad y autoridad. Nunca materializa las 244 entradas organizacionales dentro de `user_vault`. Para cada proyecto ordena enlaces así: `is_primary_view` verificado, aplicación en producción, preview autorizado, dashboard/viaje y finalmente repositorio/documentación. Los enlaces rotos o pendientes no son primarios.
 
+## Candidatos de enlace de vista verificados
+
+Lectura de Vercel del 15-oct-2026; esto es inventario para reconciliar con el directorio canónico, no una siembra de producción:
+
+| Proyecto | Vista preferida candidata | Estado observado | Tratamiento |
+| --- | --- | --- | --- |
+| TORO | `https://toro-os-five.vercel.app/` | deployment de producción READY | `live_app`, primaria tras health check |
+| DreamTeam | `https://dream-team-public.vercel.app/dreamteam/ingresar` | deployment de producción READY | `live_app`, separar de repositorio |
+| RicoSky | `https://ricosky.vercel.app/stays/property-dreamcatcher-alpha` | deployment READY; target no marcado producción | `preview` hasta validar ruta pública |
+| AI for Dreamers | `https://ai-for-dreamers.vercel.app/` | deployment READY; target no marcado producción | `preview` hasta validar producto vigente |
+| Dreamcatcher Hotel | `https://dreamcatcherhotel.com/` | deployment de producción READY y dominio canónico | `live_app`, primaria |
+
+Rumbo no aparece como proyecto Vercel ni tiene deep link público verificado. Su acceso primario sigue siendo `@Rumbo` en ChatGPT Work hasta que el creador publique un destino estable.
+
 ## Inventario inicial
 
 El inventario real debe sembrarse después de verificar RLS y una sesión del propietario. No se versionan nombres, URLs privadas ni IDs de conectores en este repositorio público.
