@@ -43,13 +43,18 @@ create table user_vault.project_links (
   link_key text not null,
   label text not null,
   link_type text not null
-    check (link_type in ('app', 'repository', 'trip', 'document', 'dashboard', 'website', 'other')),
+    check (link_type in ('live_app', 'preview', 'repository', 'trip', 'document', 'dashboard', 'connector', 'admin', 'other')),
   target_uri text,
+  provider text,
+  open_mode text not null default 'direct'
+    check (open_mode in ('direct', 'chatgpt', 'internal')),
+  is_primary_view boolean not null default false,
   status text not null default 'active'
     check (status in ('active', 'pending', 'broken', 'archived')),
   visibility text not null default 'owner_only'
     check (visibility = 'owner_only'),
   source_ref text,
+  last_checked_at timestamptz,
   last_verified_at timestamptz,
   notes text,
   created_at timestamptz not null default now(),
@@ -58,6 +63,11 @@ create table user_vault.project_links (
     foreign key (project_id, user_id)
     references user_vault.projects(id, user_id)
     on delete cascade,
+  constraint project_links_primary_view_type_check
+    check (
+      not is_primary_view
+      or link_type in ('live_app', 'preview', 'trip', 'dashboard', 'connector')
+    ),
   constraint project_links_safe_uri_check
     check (
       target_uri is null
@@ -79,6 +89,10 @@ create index user_vault_projects_user_status_idx
 
 create index user_vault_project_links_user_project_idx
   on user_vault.project_links (user_id, project_id, status);
+
+create unique index user_vault_project_links_one_active_primary_view_idx
+  on user_vault.project_links (user_id, project_id)
+  where is_primary_view and status = 'active';
 
 alter table user_vault.projects enable row level security;
 alter table user_vault.projects force row level security;
@@ -151,3 +165,6 @@ commit;
 -- 3. organization roles cannot access personal rows;
 -- 4. PostgREST exposure is an explicit separate decision;
 -- 5. Supabase security advisors have no new findings.
+-- 6. the permission-aware resolver reads the existing organization directory and
+--    user_vault rows without copying either source into the other.
+-- 7. no seed data or private URL is committed to this public repository.
