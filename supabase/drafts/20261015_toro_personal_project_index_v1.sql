@@ -61,10 +61,15 @@ create table user_vault.project_links (
   constraint project_links_safe_uri_check
     check (
       target_uri is null
-      or target_uri ~ '^https://'
-      or target_uri ~ '^app://'
-      or target_uri ~ '^plugin://'
-      or target_uri ~ '^rumbo://'
+      or (
+        (
+          target_uri ~ '^https://'
+          or target_uri ~ '^app://'
+          or target_uri ~ '^plugin://'
+          or target_uri ~ '^rumbo://'
+        )
+        and target_uri !~* '^https://[^/?#]*@'
+      )
     ),
   unique (user_id, project_id, link_key)
 );
@@ -81,8 +86,8 @@ alter table user_vault.project_links enable row level security;
 alter table user_vault.project_links force row level security;
 
 revoke all on schema user_vault from public;
-revoke all on user_vault.projects from anon;
-revoke all on user_vault.project_links from anon;
+revoke all on user_vault.projects from public, anon;
+revoke all on user_vault.project_links from public, anon;
 
 grant usage on schema user_vault to authenticated;
 grant select, insert, update, delete on user_vault.projects to authenticated;
