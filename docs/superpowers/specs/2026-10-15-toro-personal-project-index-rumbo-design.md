@@ -62,14 +62,14 @@ El resolver devuelve un formato común, pero conserva fuente, ámbito, sensibili
 
 ## Candidatos de enlace de vista verificados
 
-Lectura de Vercel del 15-oct-2026; esto es inventario para reconciliar con el directorio canónico, no una siembra de producción:
+Lectura de Vercel y comprobación HTTP del 15-oct-2026; los cinco destinos respondieron `200 OK`. Esto es inventario para reconciliar con el directorio canónico, no una siembra de producción:
 
 | Proyecto | Vista preferida candidata | Estado observado | Tratamiento |
 | --- | --- | --- | --- |
 | TORO | `https://toro-os-five.vercel.app/` | deployment de producción READY | `live_app`, primaria tras health check |
 | DreamTeam | `https://dream-team-public.vercel.app/dreamteam/ingresar` | deployment de producción READY | `live_app`, separar de repositorio |
-| RicoSky | `https://ricosky.vercel.app/stays/property-dreamcatcher-alpha` | deployment READY; target no marcado producción | `preview` hasta validar ruta pública |
-| AI for Dreamers | `https://ai-for-dreamers.vercel.app/` | deployment READY; target no marcado producción | `preview` hasta validar producto vigente |
+| RicoSky | `https://ricosky.vercel.app/stays/property-dreamcatcher-alpha` | `200 OK`; título indica marketplace demostrativo | `preview`/demo visible, no confundir con producción transaccional |
+| AI for Dreamers | `https://ai-for-dreamers.vercel.app/` | `200 OK`; sitio visible | `live_app` candidata, pendiente reconciliar vigencia de producto |
 | Dreamcatcher Hotel | `https://dreamcatcherhotel.com/` | deployment de producción READY y dominio canónico | `live_app`, primaria |
 
 Rumbo no aparece como proyecto Vercel ni tiene deep link público verificado. Su acceso primario sigue siendo `@Rumbo` en ChatGPT Work hasta que el creador publique un destino estable.
