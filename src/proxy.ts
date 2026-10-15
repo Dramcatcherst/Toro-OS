@@ -10,8 +10,9 @@ const portalPages = new Set([
 const portalReadApis = new Set(["/api/brain/context", "/api/brain/owner-attention"]);
 const portalAssets = new Set([
   "/brand/tools/whatsapp-official.svg", "/brand/tools/alegra-official.svg", "/brand/tools/google-calendar-official.svg",
-  "/favicon.ico", "/brand/tools/kross.png", "/brand/tools/wespeak.ico",
+  "/apple-icon.png", "/favicon.ico", "/icon.png", "/brand/tools/kross.png", "/brand/tools/wespeak.ico",
   "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg",
+  "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image",
 ]);
 
 function privateResponse(response: NextResponse) {
@@ -59,7 +60,11 @@ export function publicSurfaceDecision(request: NextRequest) {
     response.headers.set("Cache-Control", "no-store");
     return response;
   }
-  if (readOnly && (path === "/brain" || path === "/favicon.ico" || path.startsWith("/_next/static/"))) {
+  if (readOnly && (
+    path === "/brain" || path === "/apple-icon.png" || path === "/favicon.ico" || path === "/icon.png" || path === "/manifest.webmanifest" ||
+    path === "/opengraph-image" || path === "/robots.txt" || path === "/twitter-image" ||
+    path.startsWith("/_next/static/")
+  )) {
     const response = NextResponse.next();
     if (path === "/brain") response.headers.set("Cache-Control", "no-store");
     return response;
