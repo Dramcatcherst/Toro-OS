@@ -22,11 +22,15 @@ it("projects reviewed destinations and discards other fields and unknown links",
   mocks.context.mockResolvedValue(context);
   const rpc=vi.fn().mockResolvedValue({error:null,data:[
     {id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",private:"hidden"},
+    {id:"LINK-244",url:"https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB",account_refs:["private"]},
     {id:"other",url:"https://private.example/"},
   ]});
   mocks.client.mockResolvedValue({rpc});
   expect(await loadHotelDirectory()).toEqual({state:"ready",account:"admin@example.test",
-    links:[{id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",label:"💬 Cotizar estancia"}]});
+    links:[
+      {id:"LINK-002",url:"https://dreamcatcherhotel.kross.travel/",label:"💬 Cotizar estancia"},
+      {id:"LINK-244",url:"https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB",label:"🏨 Ver Google Hotels"},
+    ]});
 });
 it.each([null,[],[{id:"LINK-002",url:"javascript:alert(1)"}]])("fails closed on invalid RPC data", async data => {
   mocks.context.mockResolvedValue(context);

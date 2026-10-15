@@ -7,7 +7,7 @@ export const DIRECTORY_SCOPE = {
   key: "dreamcatcher_system_database_directory_v1",
 } as const;
 
-const tasks = [
+export const REVIEWED_HOTEL_LINKS = [
   // Provider keys from data/toro_tool_catalog_seed.json. Mapping a destination
   // does not create a grant or demonstrate that the connection is operational.
   ["LINK-048", "🛎️ Ver reservas", "https://dreamcatcherhotel.krossbooking.com/admin/dashboard#/admin/tableau/planner?id=dreamcatcherhotel", "kross"],
@@ -55,7 +55,7 @@ export function projectToolRows(context: ToroResolvedContext | null, input: unkn
   const entries: unknown[] = input;
   // Only explicitly reviewed destinations leave the server. Account metadata,
   // unrelated projects, raw evidence and the rest of the mixed registry stay out.
-  return tasks.flatMap(([id, label, expectedUrl]) => {
+  return REVIEWED_HOTEL_LINKS.flatMap(([id, label, expectedUrl]) => {
     const matches = entries.filter((entry: unknown) => object(entry)?.id === id);
     if (matches.length !== 1 || object(matches[0])?.url !== expectedUrl) return [];
     return [{ id, label, url: expectedUrl }];

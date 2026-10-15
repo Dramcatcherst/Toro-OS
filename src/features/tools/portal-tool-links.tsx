@@ -3,7 +3,7 @@ import { ArrowUpRight, CalendarDays, FolderOpen, MessagesSquare, Users, BedDoubl
 import type { ToolLink } from "./directory";
 import styles from "@/features/portal/portal.module.css";
 
-export type PortalToolCategory = "Operación" | "Comunicación" | "Equipo" | "Dinero" | "Google" | "Documentos" | "Otros";
+export type PortalToolCategory = "Operación" | "Comunicación" | "Equipo" | "Dinero" | "Mercadeo" | "Google" | "Documentos" | "Otros";
 export type PortalToolPresentation = {
   name: string; title: string; detail: string; Icon: typeof BedDouble; logo: string | null;
   category: PortalToolCategory; keywords: readonly string[];
@@ -17,7 +17,7 @@ export const portalToolBrands: Record<string, PortalToolPresentation> = {
   "LINK-086": { name: "DreamTeam · TORO People", title: "Ver equipo", detail: "Equipo · sesión propia", Icon: Users, logo: "/brand/tools/dreamteam.svg", category: "Equipo", keywords: ["personas", "horarios", "asistencia", "planilla"] },
   "LINK-056": { name: "Google Calendar", title: "Ver agenda", detail: "Agenda del hotel", Icon: CalendarDays, logo: "/brand/tools/google-calendar-official.svg", category: "Google", keywords: ["agenda", "eventos", "calendario"] },
   "LINK-131": { name: "Dropbox", title: "Buscar documentos", detail: "Archivos del hotel", Icon: FolderOpen, logo: "/brand/tools/dropbox.svg", category: "Documentos", keywords: ["documentos", "archivos", "comprobantes"] },
-  "LINK-244": { name: "Google Hotels", title: "Ver perfil del hotel", detail: "Ficha pública, reseñas y opciones de reserva", Icon: BedDouble, logo: "/brand/tools/google.svg", category: "Google", keywords: ["hotel", "perfil", "reseñas", "precios", "reservas"] },
+  "LINK-244": { name: "Google Hotels", title: "Ver perfil del hotel", detail: "Ficha pública, reseñas y opciones de reserva", Icon: BedDouble, logo: "/brand/tools/google.svg", category: "Mercadeo", keywords: ["hotel", "perfil", "reseñas", "precios", "reservas"] },
   "PORTAL-POS": { name: "Kross POS", title: "Abrir punto de venta", detail: "Consumos y cobros en Kross", Icon: CreditCard, logo: "/brand/tools/kross.png", category: "Operación", keywords: ["punto de venta", "cobros", "consumos", "caja"] },
   "PORTAL-WHATSAPP": { name: "WhatsApp", title: "Abrir WhatsApp", detail: "Mensajes · envío manual", Icon: MessagesSquare, logo: "/brand/tools/whatsapp-official.svg", category: "Comunicación", keywords: ["mensajes", "chat", "comunicación"] },
   "PORTAL-ALEGRA": { name: "Alegra", title: "Abrir finanzas", detail: "Bancos, ingresos y gastos en Alegra", Icon: Wallet, logo: "/brand/tools/alegra-official.svg", category: "Dinero", keywords: ["finanzas", "bancos", "ingresos", "gastos", "facturas"] },

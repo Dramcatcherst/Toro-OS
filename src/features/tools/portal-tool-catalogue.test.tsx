@@ -17,11 +17,14 @@ const ids = (items: ToolLink[]) => items.map(item => item.id);
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 describe("authorized tool presentation", () => {
-  it("places the reviewed Google Hotels profile in the Google catalogue", () => {
+  it("places and finds the reviewed Google Hotels profile in Mercadeo", () => {
     const profile = { id: "LINK-244", label: "🏨 Ver Google Hotels", url: "https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB" };
     expect(getToolPresentation(profile)).toMatchObject({
-      name: "Google Hotels", title: "Ver perfil del hotel", category: "Google",
+      name: "Google Hotels", title: "Ver perfil del hotel", category: "Mercadeo",
     });
+    const selection = selectToolCatalogue([profile], { category: "Todas", query: "mercadeo" });
+    expect(ids(selection.filteredLinks)).toEqual(["LINK-244"]);
+    expect(selection.groups).toEqual([{ category: "Mercadeo", links: [profile] }]);
     const html = renderToStaticMarkup(<PortalToolCatalogue links={[profile]} idPrefix="google-hotels" />);
     expect(html).toContain('href="https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB"');
     expect(html).toContain("Ficha pública, reseñas y opciones de reserva");

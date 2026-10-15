@@ -15,7 +15,7 @@ export function toolCatalogueReducer(state: ToolCatalogueFilters, action: ToolCa
   return { ...state, [action.type]: action.value };
 }
 
-const categoryOrder: readonly PortalToolCategory[] = ["Operación", "Comunicación", "Equipo", "Dinero", "Google", "Documentos", "Otros"];
+const categoryOrder: readonly PortalToolCategory[] = ["Operación", "Comunicación", "Equipo", "Dinero", "Mercadeo", "Google", "Documentos", "Otros"];
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 export function selectToolCatalogue(links: ToolLink[], state: ToolCatalogueFilters) {
