@@ -1,6 +1,6 @@
 # TORO — Contrato transversal de alineación de datos y fuentes (Alegra / Supabase / Kross / Booking / Airtable / Drive / Dropbox)
 
-**Estado:** DECISIÓN DE ARQUITECTURA + AUDITORÍA DE SOLO LECTURA, pendiente de revisión/merge. **Fecha:** 2026-10-15 (Costa Rica).  
+**Estado:** CONTRATO PUBLICADO en Plan General (PR #299 fusionado); AUDITORÍA DE SOLO LECTURA. Sin sincronización de producción acreditada. **Fecha:** 2026-10-15 (Costa Rica).  
 **Autoridad superior:** [Plan General único](TORO_BRAIN_GENERAL_PLAN.md), `TORO_BRAIN_CONSTITUTION.md`, `START_HERE.md` y `toro-context.yaml`. Este documento es una extensión subordinada, NO otro plan ni una segunda plataforma.  
 **Ruta existente de Alegra:** `docs/superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md`; reutilizar el conector y las colas existentes.
 
@@ -76,7 +76,7 @@ Normalizar cada relación fuente↔TORO usando estas propiedades lógicas (reuti
 **Permitido ahora:** análisis en vivo de solo lectura; mejorar el contrato/documentación y crear PR; catalogar desalineaciones; recomendaciones y tareas subordinadas a las existentes.  
 **No ejecutado ni autorizado como consecuencia de esta auditoría:** emitir/anular facturas, asientos, pagos, ajustes fiscales, cambiar reservas/tarifas Kross, borrar bases, activar sincronización bidireccional ciega, habilitar credenciales elevadas, replicar datos personales, alterar RLS en producción, publicar nuevos tenants, comprar herramientas.
 
-**Siguiente implementación:** completar prueba de paridad Alegra↔TORO con `org_id`, centos de costo, rangos, ID nativo y documento fuente; corregir el sandbox RLS en cambio revisado; entonces habilitar read-only incremental con evidencia.
+**Siguiente implementación:** completar prueba de paridad Alegra↔TORO con `org_id`, centros de costo, rangos, ID nativo y documento fuente; corregir el sandbox RLS en cambio revisado; entonces habilitar read-only incremental con evidencia.
 
 ## 7. Receipts y vínculos
 
