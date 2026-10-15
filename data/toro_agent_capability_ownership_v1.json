@@ -614,7 +614,7 @@
     {
       "key": "guest_assistant",
       "name": "Asistente de huéspedes",
-      "subsystem_owner": "TORO Guests / TORO TERE",
+      "subsystem_owner": "TORO Guests / TERE",
       "risk": "L3-L4",
       "catalog_status": "partial",
       "contexts": [
