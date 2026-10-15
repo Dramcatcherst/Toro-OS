@@ -9,6 +9,10 @@ const catalogueSql = readFileSync(new URL("../../../supabase/drafts/dreamcatcher
   .replace(/\r\n/g, "\n");
 const catalogueRollbackSql = readFileSync(new URL("../../../supabase/drafts/dreamcatcher_tool_catalog_v1_rollback.sql", import.meta.url), "utf8")
   .replace(/\r\n/g, "\n");
+const reviewedUpgradeSql = readFileSync(new URL("../../../supabase/drafts/dreamcatcher_tool_links_v1_add_google_hotels.sql", import.meta.url), "utf8")
+  .replace(/\r\n/g, "\n");
+const reviewedRollbackSql = readFileSync(new URL("../../../supabase/drafts/dreamcatcher_tool_links_v1_add_google_hotels_rollback.sql", import.meta.url), "utf8")
+  .replace(/\r\n/g, "\n");
 
 function reviewedSqlLinks() {
   const block = sql.match(/reviewed\(id,url\) as \(values([\s\S]*?)\n\s*\)\n\s*select/);
@@ -24,6 +28,14 @@ function catalogueFunctionBodyHash() {
   return createHash("md5").update(catalogueSql.slice(start, end).replace(/\r/g, "")).digest("hex");
 }
 
+function functionBodyHash(source: string) {
+  const marker = "$function$";
+  const start = source.indexOf(marker) + marker.length;
+  const end = source.indexOf(marker, start);
+  if (start < marker.length || end < start) throw new Error("SQL function body not found");
+  return createHash("md5").update(source.slice(start, end).replace(/\r/g, "")).digest("hex");
+}
+
 describe("versioned hotel directory RPC", () => {
   it("matches the TypeScript allowlist exactly", () => {
     expect(reviewedSqlLinks()).toEqual(REVIEWED_HOTEL_LINKS.map(([id, , url]) => [id, url]));
@@ -34,6 +46,25 @@ describe("versioned hotel directory RPC", () => {
     expect(sql).toContain("private.has_org_role(k.org_id, array['ADMIN','GERENCIA','JEFE_DEPARTAMENTO','AUDITOR']::text[])");
     expect(sql).toContain("revoke all on function public.dreamcatcher_tool_links_v1() from public,anon,authenticated,service_role;");
     expect(sql).toContain("grant execute on function public.dreamcatcher_tool_links_v1() to authenticated;");
+  });
+
+  it("ships a guarded LINK-244 upgrade and an exact six-link rollback", () => {
+    const previousHash = "a3e88afd0d1f2f6450f080c0c5fc44f9";
+    const updatedHash = "d31196c3bc2a570413bb06fe111c8742";
+    expect(functionBodyHash(sql)).toBe(updatedHash);
+    expect(functionBodyHash(reviewedUpgradeSql)).toBe(updatedHash);
+    expect(functionBodyHash(reviewedRollbackSql)).toBe(previousHash);
+    expect(reviewedUpgradeSql).toContain("v_body_hash <> '" + previousHash + "'");
+    expect(reviewedUpgradeSql).toContain("v_body_hash <> '" + updatedHash + "'");
+    expect(reviewedUpgradeSql).toContain("expected one exact LINK-244 source entry");
+    expect(reviewedRollbackSql).toContain("v_body_hash <> '" + updatedHash + "'");
+    expect(reviewedRollbackSql).toContain("v_body_hash <> '" + previousHash + "'");
+    for (const migration of [reviewedUpgradeSql, reviewedRollbackSql]) {
+      expect(migration).toContain("create or replace function public.dreamcatcher_tool_links_v1()");
+      expect(migration).toContain("language sql stable security invoker");
+      expect(migration).not.toMatch(/drop\s+function|\bcascade\b/i);
+      expect(migration).not.toMatch(/\b(update|insert|delete|truncate)\b/i);
+    }
   });
 });
 
