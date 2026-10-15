@@ -28,7 +28,8 @@ as $function$
     ('LINK-178','https://app.wespeak.pro/chatv2'),
     ('LINK-086','https://dream-team-public.vercel.app/dreamteam/ingresar'),
     ('LINK-056','https://calendar.google.com/'),
-    ('LINK-131','https://www.dropbox.com/home/Dreamcatcher%20Hotel')
+    ('LINK-131','https://www.dropbox.com/home/Dreamcatcher%20Hotel'),
+    ('LINK-244','https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB')
   )
   select e.id,e.url from entries e join reviewed r using(id,url)
   where e.matches=1;

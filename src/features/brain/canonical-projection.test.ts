@@ -119,6 +119,29 @@ describe("buildCanonicalBrainProjection", () => {
     });
   });
 
+  it("does not certify projects from the absence of a revalidation flag", () => {
+    const slice = makeSlice();
+    // A current update, completed status and 100% progress still provide no
+    // individual verification evidence in the bounded project read contract.
+    slice.projects[0] = {
+      ...slice.projects[0],
+      status: "completed",
+      completionPct: 100,
+      needsRevalidation: false,
+    };
+    const projection = buildCanonicalBrainProjection(slice);
+
+    expect(projection.nodes.find((node) => node.id === "project:p0"))
+      .toMatchObject({
+        status: "Ready",
+        freshness: "current",
+        verification: "unverified",
+        metric: { value: 100 },
+      });
+    expect(projection.edges.find((edge) => edge.target === "project:p0"))
+      .toMatchObject({ verification: "unverified" });
+  });
+
   it("produces bounded rows for the existing graph renderer", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
     const layout = buildCanonicalBrainLayout(projection);

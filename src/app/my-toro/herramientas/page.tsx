@@ -16,9 +16,10 @@ const shiftSteps = [
 ];
 
 export default async function ToolsPage() {
-  const view = await loadHotelDirectory({includeApprovedNavigation:true});
+  const view = await loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true});
   const authorized = view.state === "ready" || (view.state === "unavailable" && view.navigationAuthorized === true);
   const links = authorized ? view.links : [];
+  const catalogueItems = authorized ? view.catalogueItems : [];
   return <>{authorized ? <PortalHeader current="tools" scopeLabel="Dreamcatcher" /> : null}
     <main id="portal-content" tabIndex={-1} className={styles.screen}>
     <div className={styles.content}>
@@ -48,11 +49,11 @@ export default async function ToolsPage() {
         </nav>
         <section className={styles.panel + " " + styles.paperPanel + " mt-3"} aria-labelledby="guide-catalogue-heading">
           <h2 id="guide-catalogue-heading">Todos tus accesos</h2>
-          <PortalToolCatalogue links={links} idPrefix="guide-catalogue" directoryAvailable={view.state === "ready"} />
+          <PortalToolCatalogue items={catalogueItems} idPrefix="guide-catalogue" mode={view.catalogueMode} />
         </section>
         <details className={styles.guideDisclosure}><summary>Qué hace esta pantalla</summary>
           <p className="mt-3 text-sm leading-6 text-slate-300">Es una guía de accesos. No muestra ocupación, cobros, habitaciones listas ni tareas terminadas en tiempo real. Kross, los canales, DreamTeam y los sistemas de cobro conservan sus datos y permisos.</p>
-          <p className="mt-3 text-sm leading-6 text-slate-300">La secuencia es una ayuda para el turno: confirma con tu equipo quién hace cada paso. El catálogo reúne los accesos revisados. Otros destinos se incorporarán después de validar alcance y permisos.</p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">La secuencia es una ayuda para el turno: confirma con tu equipo quién hace cada paso. El catálogo muestra las fichas permitidas para tu rol y conserva visibles su estado y ámbito.</p>
         </details>
       </> : null}
     </div>

@@ -3,7 +3,9 @@
 Status: PROPOSED WRITTEN SPECIFICATION — architecture review required before new product implementation.
 Date: 2026-10-12. Parent: `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, section 23 Human Experience; TORO Finance / Comms / Tools contracts remain authoritative.
 
-Review: 2026-10-13 — complete product/page design proposed; no runtime activation.
+Review: 2026-10-15 — database/product alignment and bounded E1a correction candidate; no runtime activation.
+
+Latest authority within this subordinate specification: [alignment15/10](#alineamiento-producto-datos-20261015). The13/10 counts12/16/243 describe their historical cutoff; catalogue244 in current main supersedes them. E1–E7 remain the single delivery sequence; a UI grouping is not a new product/domain.
 
 ## Outcome and scope
 
@@ -310,3 +312,99 @@ RegistrarUX-01–18 en el Plan/registro/tarea existentes: observado/preparado/im
 
 Reversión de diseño: delta documental propio con historia conservada. En implementación, rollback focal/aliases/featurecontrol acordado; preferencias y originales no se borran. Producción, permisos, SQL, costos y acciones sensibles conservan autorización específica. E1–E7 no quedan programados o activados por este registro.
 
+
+<a id="alineamiento-producto-datos-20261015"></a>
+## Alineamiento del producto con datos — 15/10/2026
+
+**Alcance y evidencia.** Inventario funcional completo solicitado por Mauricio, relacionado con el Plan único; esta matriz es subordinada. Lectura integral del Plan en `2320fb66300857b1c350e75fe8feac245ed7ca12`, delta relevante revisado hasta `4068ef3936ce86f3014c3b021566630af0e87c19`; no repetición de auditoría general. Estructura Supabase/Airtable y agregado saneado del directorio leídos15/10; no aceptación de todos los procesos ni extracción de datos privados. Auditoría de páginas fuente en `be48e66` complementada por catálogo actual; Kross interno no fue auditado en la comparación visual general. El HTML compacto fue un prototipo independiente, nunca producto implementado.
+
+**Cómo leer la matriz.** D=dominio00–11 existente; H=hogar principal propuesto del menú. Resumen en Inicio siempre abre ese hogar con filtro y regreso conservados. “Estructura” acredita metadatos; “lector” requiere contrato permitido y readback; “código” acredita repositorio; “flujo aceptado” exige actor real/corte/acción/resultado; “publicado” exige SHA/despliegue. Ninguna fila es un permiso o nueva tarea. Prefijos de esquema indican familias existentes, no tablas específicas inferidas; cuando no se identificó contrato, se marca pendiente.
+
+### Inventario funcional único y destino
+
+| # | Función / D | Fuente existente o autoridad | H / formato propio | Estado al corte / prueba que falta |
+|---|---|---|---|---|
+| 01 | Acceso y contexto /06,11 | DreamTeam/Auth, app_users, user_roles, identity.organization_memberships | Cabecera / cuenta | Acceso observado con una cuenta; probar revocación/segundo actor/recuperación por separado. |
+| 02 | Inicio /01 | Proyecciones autorizadas Brain/Owner Attention | Inicio / resumen y filas | Pantalla observada; cada resumen debe abrir lista filtrada y conservar regreso. |
+| 03 | Cerebro, mapa y búsqueda /00 | RPC Brain vigente; projections y reglas de autoridad | Información→Cerebro / mapa-lista | Lectura parcial; no búsqueda global acreditada ni relación gráfica como integración. |
+| 04 | Tareas, responsables y relevo /01,05,10 | operations.tasks/projects; internal-work existente | Trabajo→Tareas / tabla-tablero | Soporte fuente/código; persistencia/cierre completo del Portal pendiente de flujo aceptado. |
+| 05 | Recepción y turno /05 | Tareas + Kross como PMS; guía existente | Trabajo→Recepción / tablero | Guía/handoff disponibles; relevo persistido con responsable/evidencia pendiente. |
+| 06 | Habitaciones y reservas /05,04 | Kross; catálogo espacial existente | Trabajo→Reservas / planning-tabla | Enlaces/motor existentes; disponibilidad/estado vivo solo mediante autoridad Kross comprobada. |
+| 07 | Limpieza y lavandería /05,09 | Tarea ops_ws_housekeeping_laundry_stock; operaciones/activos | Trabajo→Limpieza / lista por área | Estructura/contrato; captura/estado por habitación y consumo con readback no acreditados aquí. |
+| 08 | Mantenimiento e inspecciones /05,09 | facilities.maintenance_events, inspection_rounds/checks; vistas de prioridad | Trabajo→Mantenimiento / cola-detalle | Estructura observada; cierre activo/evidencia/reincidencia por actor pendientes. |
+| 09 | Inventarios y bodegas /09 | assets.stock_items/stock_levels/inventory_movements; vistas de conteo/reposición | Trabajo→Inventarios / tabla compacta | Estructura observada; lector/página operativa pendientes. No inventar total ni valoración. |
+| 10 | Compras y recepción /09,02 | assets.purchase_runs/purchase_run_items; contrato de compras/inventario | Trabajo→Compras / cola-recibo | Estructura; distinguir requerido/comprado/recibido/facturado/pagado con prueba. |
+| 11 | Proveedores /09,02 | assets.suppliers; original/evidencia en Dropbox | Trabajo→Compras→Proveedores / directorio | Estructura; no alta duplicada ni saldo inferido de una ficha. |
+| 12 | Activos y espacios /09 | assets.physical_assets; Airtable physical_spaces y correspondencias | Información→Activos y espacios / ficha-mapa | Estructura; reconciliar ubicación física/lógica/vendible antes de cambiar modelos. |
+| 13 | Huéspedes y CRM /04 | Kross autoridad; revenue/operations según contrato permitido | Trabajo→Clientes / lista-ficha | Contrato de lector y campos mínimos por rol pendientes; sin copiar huéspedes al cliente por defecto. |
+| 14 | Comunicaciones /04,05 | TORO Comms, canales/conexiones existentes | Trabajo→Comunicaciones / bandeja permitida | Capacidad por canal/usuario por probar; no bandeja universal ni envío automático acreditado. |
+| 15 | Respuestas y traducción /04,03 | Plantillas existentes; conectores bajo sus gates | Comunicaciones→Respuestas / editor | Borrador/copia efímeros observados; un solo editor, envío humano; traducción nativa no probada. |
+| 16 | Cotizaciones /04,02 | booking-assist/Kross; TERE y contratos existentes | Trabajo→Cotizaciones / formulario-resumen | Código/handoff; preparado≠enviado≠reserva confirmada. |
+| 17 | Precios e ingresos /02 | Kross/Alegra según hecho; SP04 y TERE | Dirección→Ingresos / tabla-escenarios | TARGET de control; precio/piso aprobado y evidencia antes de recomendar o escribir. |
+| 18 | Canales y distribución /07,04 | Kross/OTA/motor; directorio único | Dirección→Canales / estado-links | Enlaces/código parcial; feed recibido, mapping y sincronización requieren prueba por canal. |
+| 19 | Finanzas y conciliación /02 | Alegra fiscal; bancos dinero real; finance como control | Información→Finanzas / tabla-reporte | Estructura y reportes previos; panel vivo aceptado pendiente; monedas/corte explícitos. |
+| 20 | Caja y cierre /02,05 | Conteo local existente; comprobantes y fuentes originales | Trabajo→Caja / conteo-cierre | Calculadora/copia efímeras; contado≠cobrado≠conciliado≠cierre persistido. |
+| 21 | Costos y rentabilidad /02 | FIN-01 y contratos de costos; finance/reporting | Dirección→Costos / reporte-simulador | TARGET; break-even provisional no es tarifa mínima autorizada. |
+| 22 | Personas /06 | DreamTeam; public.employees y estructura de empleo | Trabajo→Personas / directorio por rol | Estructura/rutas previas; verificar paridad y alcance, sin sustituir DreamTeam. |
+| 23 | Asistencia, horarios, RRHH y nómina /06 | DreamTeam attendance/shift/leave/payroll según permiso | Personas / submenús privados | Estructura; actor/cálculo/aprobación/recuperación/cierre aceptados por separado. Oculto a roles sin acceso. |
+| 24 | Capacitación y SOP /06,00 | DreamTeam Knowledge OS; conocimiento aprobado | Información→Aprender / guía-búsqueda | SOP existente no prueba habilidad certificada ni entrenamiento ejecutado. |
+| 25 | Mercadeo y crecimiento /07 | TORO Growth/SKY, content/revenue y plataformas fuente | Trabajo→Mercadeo / tablero-calendario | Catálogo/sourcecode parcial; cuentas, métricas, publicación y gasto con evidencia independiente. |
+| 26 | Studio y marca /03 | content; originales de marca en Dropbox | Trabajo→Studio / biblioteca-editor | TARGET/capacidad condicionada; logo maestro original, no variantes redibujadas. |
+| 27 | Documentos y evidencia /00,08 | Dropbox original; knowledge/references de TORO | Información→Documentos / índice-detalle | Abrir original permitido; upload≠extracción≠contabilización; dedupe/custodia antes de cierre. |
+| 28 | Agenda y notas /01,06 | Calendar enlazado; contrato Tasks/Keep pendiente de aceptación | Trabajo→Agenda / agenda-lista | Enlace no es sincronización; no nuevo almacén de notas ni scheduler. |
+| 29 | Directorio útil /00,11 | Directorio canónico knowledge_items | Información→Directorio / personas-recursos | Proyección mínima por ámbito pendiente; una fuente, con accesos desde su contexto. |
+| 30 | Proyectos y decisiones /10,01 | operations.projects/tasks; atención existente | Dirección→Proyectos / tablero-decisiones | Lectura/proyección limitada; progreso, propietario y cierre deben provenir del objeto. |
+| 31 | Legal, riesgo y obligaciones /08 | risk; documentos originales/registro autorizado | Dirección→Legal y riesgo / calendario-tabla | Estructura/contratos; fecha o enlace no confirma obligación vigente/cumplida. |
+| 32 | Herramientas, enlaces y logos /11 | dreamcatcher_system_database_directory_v1; RPC catálogo/v1 | Herramientas / proveedor→acciones | 244 fichas y código integrado; destinos/roles según proyección; verificación destino y aceptación UI separadas. |
+| 33 | Sistemas y dispositivos /11 | integrations; herramientas autorizadas existentes | Dirección→Sistemas / estado-inventario | Conexión/instalación no prueba control Android/Home/TTLock/PC; piloto bajo gate existente. |
+| 34 | Agentes y ejecución /00,11 | PUMBA/TORO Brain; runtime/ledger existentes | Dirección→Ejecución / cola-recibos | No crear agentes/schedulers; preparado/delegado/programado/ejecutado/entregado distintos. |
+| 35 | Auditoría y mejora /00,08,11 | Evidencias, control-plane y contratos de aceptación | Dirección→Control / excepciones | Cobertura con denominador y origen; no % global por tarjetas/tablas/requisitos. |
+| 36 | Personal y portafolio /contexto propio | User Vault/fuentes privadas; Plan único | Cambio de contexto autorizado | Fuera del menú/datos hotel; búsqueda y lecturas también deben probar aislamiento. |
+| 37 | Utilidades /05,11 | Caja/calculadora/plantillas/enlaces existentes | Barra PC→Utilidades / panel breve | Capacidad local visible como local; sin guardado/envío/AI implícitos. |
+| 38 | Cuenta, ayuda y administración /06,11 | Identidad y contratos TORO vigentes | Pie del menú→Cuenta/Ayuda; administración por rol | Recuperación y ajustes solo mediante flujos comprobados; legacy/lab separados del trabajo diario. |
+
+### Navegación y composición de cada página
+
+- Inicio contiene señales vigentes, siguiente trabajo, decisiones y accesos permitidos. Cada bloque tiene un destino concreto; sin resumen decorativo o botón inerte. Un dato ausente muestra cobertura/estado, nunca cero o actividad ficticia.
+- Trabajo despliega áreas, con Inventarios, Compras y Mantenimiento visibles por separado cuando el rol los permite. Información reúne consultas/evidencia; Dirección reúne decisiones/control. Herramientas conserva el directorio único. Cerebro puede abrirse desde búsqueda/Información sin otro menú principal.
+- PC: rail contraíble e identificación del contexto, barra transversal breve de accesos, contenido con ancho útil; filas/columnas alineadas y detalle lateral para conservar lista. Expandir el menú no debe empujar la tarea fuera de la pantalla. No geometría fija aprobada por el prototipo.
+- Móvil: tareas del rol primero; menú completo accesible; detalle de una acción por vez. Tablas con columnas prioritarias y resto en detalle. No ocho pestañas que exijan desplazamiento horizontal para descubrir áreas.
+- Tablero para recepción/turno; tabla para stock/movimientos/compras; planning en reservas si el lector lo soporta; período/filtros/fuentes en reportes; proveedor/logo/subacciones en herramientas; formulario y confirmación en captura. No forzar tarjetas iguales en todas las páginas.
+- Logos oficiales cuando haya asset identificado y permiso de uso; fallback de nombre legible. El directorio no aporta assets de logo comprobados todavía. Iconos sin párrafos repetidos, con nombre accesible/tooltip y estado distinguible sin depender del color.
+- Menú con máximo dos niveles propuestos; tarea frecuente→detalle en≤2 acciones desde su área. Atrás, recarga y enlaces conservan contexto/filtro/selección; búsquedas temporales privadas no se filtran en URLs compartibles.
+
+### Inventarios: contrato previo a la primera página
+
+Reusar las siete tablas `assets` relacionadas en el Plan y vistas `inventory_count_checklist`, `inventory_count_priority`, `procurement_reorder_candidates`, `replenishment_candidates`; mantenimiento conserva `facilities.maintenance_events` y sus relaciones. Fuente de trabajo: `ops_ws_housekeeping_laundry_stock`; contrato de conocimiento existente `procurement_inventory_operating_contract_2026_09_v1`. Airtable Inventario & Activos es referencia/migración; no otra captura maestra simultánea. No volcar cuentas o filas privadas en este documento.
+
+| Subvista | Mostrar solo con lector permitido | Criterio de aceptación |
+|---|---|---|
+| Resumen | Faltantes y conteos pendientes con corte/ubicación | Cada cifra abre su lista filtrada; parcial no es totalhotel. |
+| Artículos | SKU, nombre, unidad, mínimo/máximo, proveedor | ID estable; unidades compatibles antes de sumar o reponer. |
+| Existencias | Artículo×ubicación, cantidad, último conteo confirmado | Separar confirmado/estimado/ausente; sin saldos fabricados. |
+| Movimientos | Tipo, origen/destino, cantidad, motivo, responsable | Traslado conserva total; ajuste trazable; rechazo/idempotencia en futura captura. |
+| Compras/recepción | Necesario/comprado/recibido por línea y evidencia | Factura no suma stock; recepción parcial suma solo cantidad confirmada bajo writer autorizado. |
+| Conteos | Diferencia y prioridad de revisión | Conteo no modifica saldo sin aprobación/registro según contrato. |
+| Activos/historia | Ficha de activo, condición, mantenimiento/evidencia | Activo individual distinto de consumible; enlace de evidencia accesible por rol. |
+| Costos | Precio/moneda/fecha y origen cuando exista | Valoración pendiente si no hay libro/método/lector aceptado; no total mezclando CRC/USD. |
+
+**Brechas concretas:** ubicación está como texto en stock/movimientos; `physical_spaces` existe en AirtableCentral pero no se probó correspondencia duradera con cada ubicación. No se identificó tabla dedicada de bodegas ni libro de valoración; esto no prueba ausencia global. Resolver equivalencias y autoridad con datos mínimos antes de crear tablas o calcular total. RPC Brain/Owner Attention no acredita un lector de stock: el inventario no se conecta al navegador con service_role ni SELECT amplio para completar el diseño.
+
+### Criterios verificables y control de aplicación
+
+| Pri / unidad | Comprobación | Evidencia para avanzar |
+|---|---|---|
+| P0 / E1, E6 | Identidad/ámbito reales, negativas por rol y otro contexto | Lectura servidor/campos mínimos; EventOps privado y datos personales fuera hotel. Ocultar menú no basta. |
+| P1 / E1a | needsRevalidation=false sin prueba individual no produce verified | Regresión falla antes y pasa después; solo proyección/estado, sin cambiar fuente/permiso. No cierra E1. |
+| P1 / E1 restante | Ausente/error/parcial≠0/ready; sin match≠acciones ajenas; fallo≠demo silenciosa | Pruebas del caso original; actor/cobertura/límite visibles. |
+| P1 / E2 | Las38 funciones tienen hogar y destino/estado por rol; Inicio→detalle→regreso | Matriz sin huérfanos/duplicados; navegación≤2 acciones y recarga/atrás conservados en320/390/1280. |
+| P1 / E6 Inventarios | Lectura mínima de stock/conteo en contrato existente | Fuente/corte/ubicación/unidad; negativas/empty/error; no escrituras antes de gate propio. |
+| P2 / E2, E7 | Meta3× información útil PC | Mismo contenido y datos sintéticos, viewport1280×720 y1536×864, escala100%; comparar entidades/celdas útiles y acciones visibles antes/después. Sin contar iconos, duplicados o datos ocultos. |
+| P2 / E2, E7 | Densidad legible y móvil útil | Texto principal≥14px, secundario≥12px como objetivos de diseño; controles táctiles≥44px, foco/teclado, contraste medido, sin overflow en320/390; si la meta3× perjudica tarea, no se aprueba por cumplir cantidad. |
+| P2 / E4 | Directorio por proveedor y acción, acceso rápido revisado | Mantener244IDs/5sinURL y roles actuales; agrupación no elimina referencias ni convierte históricos/candidatos en favoritos. |
+
+El directorio agregado tenía244 fichas/20categorías,61home_eligible y183no; una fecha destination_verified_at y ningún campo de logo entre las fichas leídas. No confundir `checked_at`/etiqueta verified del registro con destino, sesión o conector comprobados. `home_eligible` es metadato, no aprobación de favorito. La RPC completa sigue limitada aADMIN/GERENCIA; otros perfiles conservan su proyección existente. Agrupar por proveedor es presentaciónTARGET; no nueva tabla/catálogo ni acceso transversal a otros proyectos.
+
+**Recibo obligatorio por unidad:** bloque funcional/D; fuente y contrato; archivos/SHA; estado estructura/lectura/código/publicación/flujo/operación; pruebas exactas y alcance; pendiente y una siguiente acción. Usar tarea/checkpoint existentes; nada se marca aplicado solo por estar en el Plan. E1a cambia únicamente la inferencia de verificación de proyectos; riesgo, estado de proyecto, métricas, otras fuentes y resto de brechas no se certifican por esa corrección. PR280 queda actualizado sobre main actual preservando sus aportes. No merge/deploy/SQL/grants/escritores por esta unidad.
+
+**NEXT único:** completar el resto acotado de E1 sobre ausencia/error/parcial después de verificar y registrar E1a. E2 consume esta matriz; Inventarios se prepara como primer dominio de lectura después de los límites comunes. No lanzar los38 bloques ni crear procesos paralelos. Reversión: revert selectivo de archivos propios después de comparar concurrencia; mantener historia/fuentes/datos originales y DreamTeam.

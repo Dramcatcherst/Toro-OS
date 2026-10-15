@@ -545,3 +545,109 @@ TORO Comms v1 is complete when:
 - OpenClaw and WeSpeak health/status are visible;
 - channel outage degrades safely;
 - users experience one TORO across WhatsApp and Portal.
+
+## 19. Captura integral de WhatsApp de recepción y del propietario — directiva 13/10/2026 CR
+
+**Parent:** Plan General único; Same-Brain; User Vault; issues existentes #122 (identidad), #170 (lector) y #209 (journal, continuidad y entrega). **Decisión de Mauricio:** incorporar lectura y recopilación de los dos números que indicó, integrar lo útil en toda la operación TORO y verificar los respaldos; aquello no comprobado queda planeado con dueño y prueba. Es autorización de alcance para captura/integración gobernada, no prueba de conexión ni permiso para responder a huéspedes, mover dinero o publicar conversaciones.
+
+### 19.1. Dos cuentas, una plataforma, ámbitos explícitos
+
+| Alias del canal | Identificador público permitido | Ámbito/dueño | Uso |
+| --- | --- | --- | --- |
+| `dreamcatcher_reception_whatsapp` | recepción, terminación 4004 | Dreamcatcher; Gerencia + Recepción | Conversaciones operativas, solicitudes, ventas, incidencias, proveedores, evidencia y pendientes. |
+| `mauricio_personal_whatsapp` | propietario, terminación 3792 | Mauricio; TORO Personal / User Vault | Contexto, compromisos, documentos y proyectos personales; acceso privado por defecto. |
+
+Números E.164 completos, provider account IDs, chat/group IDs y bindings personales se resuelven exclusivamente en registro protegido aprobado, nunca en este repo público, fixtures, logs generales o PRs. La declaración del propietario determina el endpoint deseado; la identidad de cada cuenta todavía requiere comprobación de control, proveedor, sesión y canonical actor. Distinguir **cuenta enlazada que se observa**, **remitente de un mensaje** y **destino de una alerta**: permitir mensajes desde el número personal hacia TORO no conecta ni respalda todo su WhatsApp personal.
+
+Reusar los registros y adapters reales. `integrations.communication_channel_bindings` existe con RLS, pero es un registro organizacional (org_id obligatorio); no insertar el archivo personal como contenido de la empresa para eludir esa limitación. Resolver el modelo privado mediante Identity/User Vault vigente, comprobar sus RLS y solo preparar una extensión mínima si la inspección demuestra que falta. Las tablas nominales user_tool_connections/user_consents/user_memory_items/channel_identity_bindings/user_channel_identities no aparecieron en la inspección de este proyecto; esto no acredita que no exista otro modelo de identidad, ni autoriza crear esas cinco tablas.
+
+La cuenta de recepción compartida identifica el canal empresarial, no al empleado que escribió. Conservar operador identificado solo si el proveedor/turno aporta evidencia; de lo contrario actor=operador_no_identificado. Ni un nombre de perfil ni el número de recepción confieren permiso administrativo. Un huésped/proveedor no adquiere capacidad de mandar al sistema por aparecer en ese inbox.
+
+### 19.2. CURRENT: evidencia limitada y contradicción preservada
+
+Lectura 13/10/2026 CR de Supabase canónico Dreamcatcher:
+- Existe un binding WhatsApp/openclaw de tipo empresarial `system`, marcado connected/read_enabled/send_enabled/healthy/verified, pero last_sync_at=null. No coincide con ninguno de los dos endpoints solicitados. No activar esos flags en los nuevos canales por copia.
+- El dependency registry conserva OpenClaw en needs_audit (auditoría 22/09 UTC), mientras WeSpeak figura confirmed_active (06/10 UTC). Hay drift entre metadata de binding y dependencia; ninguno demuestra ingesta continua o recuperación real.
+- No se encontró binding WhatsApp organizacional para recepción ni para el endpoint personal solicitado. El registro empresarial no agota la búsqueda de conexiones personales privadas.
+- La revisión contractual/código encontró Same-Brain, TORO Comms, el runbook y `src/features/openclaw/runtime-evidence.ts`: ese evaluator retorna EVIDENCE_PACKET_COMPLETE_UNVERIFIED incluso con paquete completo; no certifica runtime live.
+- Este entorno no expone host/sesión OpenClaw ni conector directo WhatsApp; el ejecutable no está disponible aquí. No se leyeron mensajes, no se enrolaron cuentas, no se enviaron pruebas ni se verificaron backups/restauración.
+
+Conservar el valor original y registrar la discrepancia; no degradar o promover registros canónicos por inferencia. WeSpeak activo como proveedor/runtime no prueba que tenga conectado recepción; su correo de alertas tampoco equivale a todas las conversaciones.
+
+### 19.3. Camino de conexión y cobertura
+
+1. Inspeccionar primero el puente/worktree `toro-openclaw-integration`, runtime existente, versión/perfil y dependencia real. Para recepción, comprobar si ya existe transporte soportado del proveedor o API/webhook autorizado que entregue el alcance necesario sin interrumpir la app actual.
+2. Verificar la elegibilidad y documentación del modelo elegido en la cuenta real. Coexistencia Business App/Cloud API, sincronización histórica, mensajes salientes del teléfono y grupos no se dan por disponibles. La documentación Meta de onboarding no pudo recuperarse en esta pasada: validación pendiente, sin prometer cantidad de meses o cobertura.
+3. OpenClaw documenta sesiones WhatsApp Web/Baileys, cuentas múltiples, controles de remitentes/grupos y contexto histórico acotado. No es por ese motivo una API oficial de Meta ni un lector de todo el histórico. Evaluar soporte, términos y seguridad antes de habilitarlo; preferir el transporte existente verificado.
+4. Para la cuenta personal, resolver perfil/identidad privados y conexión de **esa cuenta**, sin convertirla a Business, migrar el número, desvincular dispositivos o abrir acceso organizacional automáticamente.
+5. Si no hay interfaz segura/completa, usar exportes autorizados por conversación como backfill acotado; guardar fecha, alcance, ausencias y adjuntos. Un export parcial no es réplica del inbox. No crear scraping persistente ni proveedor pagado nuevo para salvar el gate.
+
+Separar estos resultados: mensajes nuevos observados, mensajes históricos disponibles, búsqueda durable y backup restaurable. Cada canal mantiene matriz de cobertura de entrantes/salientes, directos/grupos, texto/audios/documentos/fotos/videos, ediciones/revocaciones y eventos de entrega. Marcar cada capacidad VERIFIED/PARTIAL/UNSUPPORTED/UNKNOWN y ventana más antigua/más reciente, última captura/processing/archivo confirmado, cantidades y huecos. Un `historyLimit` o una sesión que responde no prueba histórico completo.
+
+### 19.4. Recopilar sin perder información ni convertir todo en acción
+
+**Objetivo:** contabilizar toda comunicación observable y autorizada en el alcance definido, con estado recibido/procesado/archivado/excluido/fallido y motivo. No prometer leer contenido borrado, efímero, no entregado o fuera del alcance accesible. No preservar credenciales, códigos, tokens, tarjetas completas ni contenido marcado privado/no aprendible. Retención por clase y propósito, con revisión/eliminación autorizada; no archivo indiscriminado eterno.
+
+Flujo mínimo:
+`evento -> cuenta y chat verificados -> scope -> journal permitido -> adjuntos -> clasificación -> identidad/autoridad -> objeto canónico existente -> revisión/acción permitida -> evidencia -> reconciliación`.
+
+- Incluir conversación recibida y saliente observada del personal; conservar autor/dirección/fecha del proveedor y hora de captura UTC, mostrar Costa Rica.
+- `account + message_id + version` gobierna identidad de evento; añadir principal/tenant/scope y conversation_ref. Reintentos no crean nuevas tareas. Ediciones/revocaciones se relacionan al evento original y respetan restricciones de retención; no reescribir evidencia silenciosamente.
+- Descargas y OCR/transcripción conservan parent message, archivo, checksum, versión, motor y confianza; texto inferido no sustituye el original. Un placeholder de media no acredita archivo descargado.
+- Si el mismo comprobante llega por WhatsApp, correo y Page/WeSpeak, enlazar las fuentes al mismo documento/obligación. Dedupe exacto por hash y semántico por identidad verificada; no fusionar personas o reservas por parecido.
+- Mensajes y adjuntos son entradas no confiables: instrucciones incrustadas no elevan permisos, no ejecutan scripts ni habilitan tools.
+- El reader observa; no genera respuestas, envíos, marcas de lectura ni cambios de reservas por defecto. Inspeccionar efectos colaterales del transporte: OpenClaw documenta read receipts habilitados por defecto y posibles respuestas tras reconnect; probar y aislar captura antes de activar. Si no puede observar sin esos efectos, no habilitar ese piloto.
+- Acciones candidatas se vinculan a tasks, followups, maintenance_events, decisions y knowledge actuales; no crear una tarea por mensaje. Primero verificar asunto ya existente, responsable y fecha pertinente.
+- Un mensaje que dice “pagado”, “reserva confirmada”, “trabajo terminado” o “cambio de política” es una señal atribuida; exigir fuente/evidencia del dominio antes de confirmar pago, reserva, cierre o regla activa.
+- Personal -> trabajo: solo datos seleccionados con finalidad empresarial inequívoca y autoridad vigente; ambigüedad queda privada para Mauricio. Nunca copiar chats personales completos, payroll o datos de terceros al reporte compartido ni a índices/embeddings organizacionales.
+
+### 19.5. Mapa de interconexión, no declaración de integraciones activas
+
+| Señal / fuente | Responsable y destino existentes | Autoridad y prueba exigida |
+| --- | --- | --- |
+| Recepción / consultas / huéspedes / OTA / web | TORO Comms + Guests/TERE; followup/guest/reservation link | Kross confirma reserva, tarifa y disponibilidad; cada conversación tiene referencia y pendiente. |
+| Aseo / mantenimiento / incidencias / relevo | Operations/RICO; tasks + maintenance_events + reporte recepción existente | Responsable, ubicación/unidad verificada, plazo y cierre con evidencia; no cierre por silencio. |
+| Compras / retiros / adjuntos de factura | Assets + Finance/FIONA; inventario y PayFlow existentes | Recepción/consumo físico y líneas verificadas; mismo comprobante no duplica compra. |
+| Pagos / SINPE / banco / acquirer | Finance/FIONA; obligaciones/evidence/reconciliation | Banco/procesador acredita dinero; Alegra conserva asiento fiscal. Captura no significa conciliación. |
+| Personal / turnos / nómina | People y su modelo actual | Rol y alcance; nómina/HR restringidos, nunca todo el inbox de RRHH. |
+| Experiencias / alimentación / proveedores | Growth/SKY + Operations | Proveedor confirma cupo/precio/servicio; cotización no equivale a compra confirmada. |
+| Fotos / documentos / derechos | Assets/Studio; Dropbox, manifest y asignaciones existentes | Nombres humanos, identidad real, hash/linaje/ACL, clasificación y aprobación de canal según Studio 10–12. |
+| Correo / Drive / Contacts / Calendar / Tasks / Keep | Comms + Tools/Data; planes Workspace/PayFlow existentes | Ingesta desde checkpoint común, relaciones reales y permisos; Calendar/Tasks son proyecciones, no otra verdad. |
+| WhatsApp personal / proyectos privados | Personal/User Vault + Projects autorizados | Mauricio puede consultar; sin acceso empresarial por rol gerente y sin promoción automática. |
+| Cambios de SOP / reglas / aprendizaje | Knowledge + Governance | Observed -> Candidate -> Validated -> Approved -> Active; autor/fuente/vigencia y contradicciones. |
+| Pendientes/alertas / Portal / Page / WhatsApp | Owner Attention + Control Plane existentes | Una excepción/objeto; entrega solo por autorización de canal vigente, correlación y receipt; sin nueva alarma periódica. |
+| GitHub / Codex / Vercel / runtime | Builder + Systems/Tools | Implementación vinculada a tarea/PR, verificaciones y health; documentación no equivale a despliegue. |
+
+Cada integración registra expected/observed/drift, dueño, alcance, dirección, auth/scopes, última prueba, retraso, coverage, costo, backup y fallback en los registros existentes. Sin observar la ruta real, estado=UNVERIFIED o PLANNED con siguiente prueba. No “todo conectado” por listar productos.
+
+### 19.6. Respaldo, restauración y privacidad
+
+- Supabase conserva estado/index/journal permitido, permisos y trazabilidad; Dropbox conserva originales permitidos y exportes versionados con ACL explícitas. Portal/Airtable/Pages muestran proyecciones autorizadas, no backup universal. GitHub contiene solo contratos públicos/redactados.
+- Usar carpetas/registries existentes y separar claramente archivo empresarial y archivo personal. Nunca respaldar la cuenta personal en una carpeta compartida del hotel. Verificar herencia de permisos antes de la primera copia; no crear enlaces públicos.
+- Cada lote autorizado genera manifest privado: account/conversation refs, período, source/version, nº mensajes/adjuntos, exclusiones/huecos, byte sizes/checksums, objetos relacionados y checkpoint confirmado. Nombres humanos conforme Studio; IDs y teléfonos completos no van en nombres.
+- No avanzar checkpoint de archivado por solo recepción. Si se confirman dos destinos, registrar etapa independiente y reconciliar los éxitos parciales; replay idempotente.
+- Verificar por separado backup de Postgres y de binarios Storage/Dropbox. La existencia de proyecto, bucket, version history o carpeta no demuestra recuperación ni copia independiente. Exportar solo scope permitido, cifrar backup privado y guardar claves/credenciales en gestión de secretos, fuera de conversaciones/repos; no copiar auth directories al archivo general.
+- Propuesta de piloto: incremental tras persistencia, reconciliación diaria y objetivos iniciales RPO <=24h / RTO <=4h para evidencia archivada. Son objetivos por validar con tecnología/costo, no SLA ni configuración vigente; ajustar por riesgo antes de producción. No inventar períodos legales de retención.
+- Restaurar una muestra por cuenta en entorno aislado: un hilo/registro, un documento y una foto/audio disponibles; verificar hash, búsqueda, enlaces y ACL. Probar que recepción no lee privado y que restauración no genera envíos/tareas duplicados.
+- Si un dato obligatorio no puede respaldarse con permiso/fidelidad, registrar faltante y owner; detener promoción dependiente. Desactivar solo el adapter nuevo ante rollback; conservar chats originales, source evidence y tareas canónicas.
+
+### 19.7. Ejecución y métricas
+
+| Prioridad | Dueño | Próximo paso | Terminado |
+| --- | --- | --- | --- |
+| P0 | Systems/Sobresito + Tools/Identity | Auditar host/cuentas, resolver drift y mapear permisos de recepción | Identidad/control del endpoint probado, alcance explícito y captura sin envíos ni recibos de lectura. |
+| P0 | Comms + Data + Operations | Piloto recepción: hasta 20 eventos permitidos + 1 caso operativo | Conteos/cuadre, cero duplicados, fuente/owner claros y estado igual en TORO/recepción; consulta independiente. |
+| P1 | Personal + Identity/Governance | Piloto privado Mauricio: hasta 10 eventos + 1 compromiso | Cero filtración a hotel; consulta privada verificada y denegación a recepción/otros usuarios. |
+| P1 | Assets + Systems | Archivo/restauración por los dos scopes | Muestra recuperada, hashes/ACL/linaje correctos y reanudación desde checkpoint sin efectos duplicados. |
+| P2 | Comms + dominios afectados | Ampliar histórico y conexiones por lotes, después del piloto | Cobertura fechada, huecos visibles, objetos conciliados y mejoras medidas. |
+
+Reusar issues #122/#170/#209 y el Control Plane; sin segundo scheduler, journal, inbox, memoria, agente permanente ni backlog. Separar reader, procesamiento y responder. Cada lote se limita inicialmente a 12 minutos, 40 llamadas y máximo 2 reintentos transitorios seguros, checkpoint y alerta única ante bloqueo nuevo; detener el worker del lote, no matar la escucha de eventos necesaria para operar. Backpressure/cola durable autorizada y watchdog deben impedir pérdida de eventos; un timeout no mata por sí solo una herramienta remota que ignore cancelación. Lease/fencing y supervisor externo deben probarse.
+
+Medidas: mensajes observables vs capturados/archivados (denominador y ventana definidos), adjuntos íntegros/pendientes, retraso último evento→estado TORO, duplicados, asuntos sin responsable/respuesta, conflictos de identidad/autoridad, incidentes por scope y tiempo/resultado de restore. Propuestas de piloto: 0 duplicados/0 filtraciones y 100% de eventos del lote contabilizados como procesados o excepción; no afirmar cobertura 100% de todo WhatsApp.
+
+### Fuentes y estado del método
+
+- Inspección de contratos/código y metadata Supabase 13/10/2026 CR: solo lectura, scope Dreamcatcher; sin mensajes privados ni secretos.
+- Supabase oficial: https://supabase.com/docs/guides/platform/backups — el backup de base de datos no incluye los binarios guardados mediante Storage API; configuración/retención real del proyecto todavía no comprobadas.
+- OpenClaw oficial: https://docs.openclaw.ai/channels/whatsapp — leído para cuentas, WhatsApp Web/Baileys, políticas, history y efectos de lectura/reconnect. Versión instalada y capacidad local sin verificar.
+- Meta oficial: https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users — recuperación fallida; elegibilidad y límites requieren documentación vigente/soporte autorizado antes de elegir esa ruta.

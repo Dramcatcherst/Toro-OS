@@ -1,6 +1,7 @@
 import { beforeEach, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import { authorizedContext } from "@/features/tools/fixtures.test-utils";
+import { catalogueItemsFromLinks, projectCompleteCatalogueRows, type ToolLink } from "@/features/tools/directory";
+import { authorizedContext, completeCatalogueRows } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
 
 const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn() }));
@@ -15,6 +16,9 @@ function view(): ToroRealMenuView {
   return { context: authorizedContext(), preferredDisplayName: "QA", menu: null,
     sourceReadiness: null, profileSummary: [], capabilityNotes: {}, capabilityAlternatives: {},
     focusableCapabilities: [], availableSubmenus: {}, focus: null, state: "resolved" };
+}
+function reviewedDirectory(links: ToolLink[]) {
+  return { state: "ready", links, catalogueItems: catalogueItemsFromLinks(links), catalogueMode: "reviewed" } as const;
 }
 beforeEach(() => { vi.resetAllMocks(); mocks.attentionEnabled.mockReturnValue(false); });
 it("keeps the public demo from resolving any private navigation", async () => {
@@ -34,10 +38,12 @@ it("shows login without private navigation to anonymous visitors", async () => {
 
 it.each(["denied", "unavailable"])("does not expose supplied directory rows when %s", async state => {
   mocks.menu.mockResolvedValue(view());
-  mocks.directory.mockResolvedValue({ state, links: [{ id: "LINK-086", label: "Private", url: "https://private.example/" }] });
+  const links = [{ id: "LINK-086", label: "Private", url: "https://private.example/" }];
+  mocks.directory.mockResolvedValue({ state, links, catalogueItems: catalogueItemsFromLinks(links),
+    catalogueMode: state === "denied" ? "reviewed" : "fallback" });
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).not.toContain("https://private.example/");
-  expect(html).toContain("La lista no está disponible ahora");
+  expect(html).toContain("La lista completa no está disponible ahora");
 });
 
 it("keeps the hotel tools out of another authorized organization", async () => {
@@ -51,13 +57,15 @@ it("keeps the hotel tools out of another authorized organization", async () => {
 
 it("incorporates reviewed tools into the same Portal without nested controls", async () => {
   mocks.menu.mockResolvedValue(view());
-  mocks.directory.mockResolvedValue({ state: "ready", links: [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }] });
+  const links = [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }];
+  mocks.directory.mockResolvedValue(reviewedDirectory(links));
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain('aria-label="Herramientas del hotel"');
   expect(html).toContain("Mi espacio");
   expect(html).toContain("Equipo · sesión propia");
   expect(html).toContain('rel="noopener noreferrer"');
   expect(html).not.toMatch(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a[\s>]/);
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true,includeCompleteCatalogue:true});
 });
 it.each(["choice", "inactive"])("hides modules for %s context", async reason => {
   const data = view();
@@ -104,10 +112,25 @@ it("sanitizes priority read failures instead of presenting zero pending tasks", 
 
 it("names favorite and catalog references separately", async () => {
   mocks.menu.mockResolvedValue(view());
-  mocks.directory.mockResolvedValue({ state: "ready", links: [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }] });
+  const links = [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }];
+  mocks.directory.mockResolvedValue(reviewedDirectory(links));
   const html = renderToStaticMarkup(await PortalPage());
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
   expect(html).toContain('aria-labelledby="favorite-LINK-086"');
   expect(html).toMatch(/aria-labelledby="catalog-[^"]*LINK-086"/);
+});
+
+it("keeps the complete catalogue out of favorites and operational panels", async () => {
+  mocks.menu.mockResolvedValue(view());
+  const links = [{ id: "LINK-086", label: "Team", url: "https://dream-team-public.vercel.app/dreamteam/ingresar" }];
+  const catalogueItems = projectCompleteCatalogueRows(authorizedContext(), completeCatalogueRows());
+  expect(catalogueItems).toHaveLength(244);
+  mocks.directory.mockResolvedValue({ state: "ready", links, catalogueItems, catalogueMode: "complete" });
+  const html = renderToStaticMarkup(await PortalPage());
+  const favorites = html.match(/<section[^>]*aria-labelledby="portal-favorites-heading"[\s\S]*?<\/section>/)?.[0] ?? "";
+  expect(html).toContain("244 fichas visibles");
+  expect(html.match(/data-tool="LINK-001"/g)).toHaveLength(1);
+  expect(favorites).toContain('data-tool="LINK-086"');
+  expect(favorites).not.toContain("LINK-001");
 });
