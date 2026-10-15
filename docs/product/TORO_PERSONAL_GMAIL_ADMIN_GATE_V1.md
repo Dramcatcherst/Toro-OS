@@ -98,3 +98,41 @@ empty Trash or delete attachments by policy assumption.
 
 **No production rights, migration, extra subscriptions, forwarding,
 domain-wide delegation or application passwords are created by this PR.**
+
+## Operational gate — 15 October 2026
+
+The owner authorized personal Gmail decluttering and TORO alignment. ChatGPT's
+connected Gmail interface previously supported classification and reversible
+moves; subsequent Gmail searches returned **FORBIDDEN**. This is a source-access
+blocker, not evidence of revoked OAuth or permanent loss. Do not retry an
+unauthorized operation blindly, scrape credentials, or substitute the company
+mailbox.
+
+Connected personal Google Drive was checked: the Drive Trash query returned
+zero files, but this says nothing about Gmail Trash, Google Photos or actual
+Google One quota. User-facing cleaning must **not** claim freed GB from Gmail
+archiving or moving messages to Trash.
+
+### Next authorized execution, no parallel tools or new subscriptions
+
+1. In the user's authenticated Work/Google session verify account identity,
+   check current Google One storage totals by **service**, preserve numbers
+   and date as private receipts.
+2. Review Gmail Trash selectively, distinguish previously owned content from
+   reviewed advertising and exclude any financial, personal, hotel, travel,
+   legal, security, attachment or account-recovery message. Permanent deletion
+   requires concrete selection and a user-visible confirmation on Google's
+   irreversible-deletion step. Never empty the whole Trash without validating
+   its contents; older items may predate TORO cleanup.
+3. Use Google's native **Manage subscriptions** to unsubscribe only from
+   commercial newsletters, and check already-submitted requests before
+   repeating. Keep receipts/security/purchases/OTA/service alerts enabled.
+4. Reconcile the Gmail connector's FORBIDDEN result and TORO OAuth runtime
+   independently. Only enable personal-mail read/modify after owner-consented
+   scopes, private User Vault RLS/negative tests, evidence, and rollback.
+5. Return current Inbox/Spam/Trash counts, permanent deletions (count and
+   selected class), before/after storage GB by service, unsubscribe outcomes,
+   permission health and remaining human approval. If any is not proven,
+   report PENDING rather than FINISHED.
+
+This is a status/checklist update, not a claim of production operation.
