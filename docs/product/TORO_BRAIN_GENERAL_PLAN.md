@@ -7,6 +7,16 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## Alineación transversal de datos Alegra ↔ Supabase — 15/10/2026
+
+**DECISIÓN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General único y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integración, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al huésped en Booking se conserva como evidencia de reserva; Alegra conserva facturación y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versión, fecha, idempotencia, permisos, conciliación, readback y receipt verificables.
+
+**AUDITORÍA VERIFICADA:** el 15/10/2026 se pudieron leer Alegra y Supabase; Alegra muestra 1.191 facturas y 11 centros de costo en la conexión operativa, mientras un tercer enlace muestra cero: no confundir accesos. Supabase ya tiene `finance.*`, `integrations.source_authority_rules`, `integrations.external_dependency_registry`, `public.sync_outbox`, `operations.tasks` y los registros de ejecución. No hay prueba de paridad ni escritura contable general desde el conector de esta conversación. Existe incidente RLS de las tablas `roles` y `user_roles` en `dreamteam-recovery-sandbox`; reparar mediante políticas probadas, no activación ciega. No extrapolar snapshots Kross a vivo ni cifras de CSV Booking a total comercial final.
+
+**CONTRATO Y GATES** en [TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md](TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md): mapa por dominio, correspondencias existentes, Booking/Kross y cierres diarios, comprobantes XML/facturas, cumplimiento, idempotencia, seguridad, prueba de conciliación de muestra, integración de solo lectura, writer gated separado, deduplicación y decommission con backup/restore. Esta ampliación es subordinada al Plan General, sin nuevo backlog ni scheduler.
+
+**ESTADO:** HECHO = inventario de lectura y contrato propuesto en PR; PROPUESTO = piloto y mejoras controladas; BLOQUEADO = writer Alegra, frescura comercial Kross y paridad de source IDs; DESCONOCIDO = fingerprint fiscal de cada enlace y completitud histórica por período. **GATE:** no mutar Alegra, reservas, facturas, RLS ni eliminar bases antes de pruebas, aprobación adecuada y recibos independientes.
+
 ## Gmail personal y limpieza controlada — 15/10/2026
 
 **Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General ÚNICO; la cuenta personal del propietario jamás se incorpora como buzón de la organización Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y ámbito; no una segunda copia masiva del buzón.
