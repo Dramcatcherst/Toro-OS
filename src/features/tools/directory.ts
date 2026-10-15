@@ -17,6 +17,8 @@ const tasks = [
   ["LINK-086", "👥 Ver equipo", "https://dream-team-public.vercel.app/dreamteam/ingresar", null],
   ["LINK-056", "📅 Ver agenda", "https://calendar.google.com/", "google-calendar"],
   ["LINK-131", "📁 Buscar documentos", "https://www.dropbox.com/home/Dreamcatcher%20Hotel", "dropbox"],
+  // Public profile only. Hotel Center/feed ownership remains a separate provider check.
+  ["LINK-244", "🏨 Ver Google Hotels", "https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB", null],
 ] as const;
 
 export type ToolLink = { id: string; label: string; url: string };

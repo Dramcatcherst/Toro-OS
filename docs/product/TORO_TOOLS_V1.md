@@ -199,6 +199,7 @@ Kross remains live PMS authority until an explicit authority change is approved.
 - Figma
 - Meta/social channels
 - Google Business Profile
+- Google Hotels / Hotel Center (public profile navigation; rates and feed ownership remain with the verified connectivity provider)
 - website/CMS
 - PostHog/analytics
 - email marketing providers

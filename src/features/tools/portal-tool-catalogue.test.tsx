@@ -17,6 +17,16 @@ const ids = (items: ToolLink[]) => items.map(item => item.id);
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 describe("authorized tool presentation", () => {
+  it("places the reviewed Google Hotels profile in the Google catalogue", () => {
+    const profile = { id: "LINK-244", label: "🏨 Ver Google Hotels", url: "https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB" };
+    expect(getToolPresentation(profile)).toMatchObject({
+      name: "Google Hotels", title: "Ver perfil del hotel", category: "Google",
+    });
+    const html = renderToStaticMarkup(<PortalToolCatalogue links={[profile]} idPrefix="google-hotels" />);
+    expect(html).toContain('href="https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB"');
+    expect(html).toContain("Ficha pública, reseñas y opciones de reserva");
+  });
+
   it("renders a readable fallback for an authorized link without a registered brand", () => {
     const presentation = getToolPresentation(links[4]);
     expect(presentation).toMatchObject({

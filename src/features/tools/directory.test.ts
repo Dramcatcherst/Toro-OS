@@ -20,6 +20,13 @@ describe("hotel directory boundary", () => {
   it("exposes only link fields, not accounts or evidence", () => {
     expect(projectHotelLinks(context,row)).toEqual([{id:"LINK-002",label:"💬 Cotizar estancia",url:entry.url}]);
   });
+  it("projects the exact reviewed Google Hotels profile without connector authority", () => {
+    const hotelProfile = {id:"LINK-244",url:"https://www.google.co.cr/travel/hotels/entity/CgsIpKWViNeV4ufCARAB",account_refs:["private"]};
+    expect(projectHotelLinks(context,{...row,structured_content:{link_directory:{entries:[hotelProfile]}}})).toEqual([
+      {id:"LINK-244",label:"🏨 Ver Google Hotels",url:hotelProfile.url},
+    ]);
+    expect(context.allowedTools).toEqual([]);
+  });
   it.each([null, {...context, userId: ""}, {...context, userId: " "}, {...context, allowedDataScopes: ["personal"]},
     {...context, mode: "personal"}, {...context, requiresContextChoice: true},
     {...context, canUseOrganizationData: false}, {...context, orgId: "other"},
