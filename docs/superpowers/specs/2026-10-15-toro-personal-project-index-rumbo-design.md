@@ -20,8 +20,8 @@ No se guarda el inventario personal en Airtable `executive_portfolio`, `operatio
 
 - Existe `operations.projects:toro_personal_mauricio`, pero sus políticas permiten lectura a roles empresariales privilegiados.
 - `private.founder_profiles` también es contexto gobernado por la organización; el contrato de User Vault prohíbe usarlo como memoria personal genérica.
-- En producción no existen todavía los esquemas `identity` ni `user_vault`.
-- `identity.organization_memberships` sigue validado de forma aislada pero no aplicado.
+- En producción existe `identity.organization_memberships` con RLS y políticas de lectura propia/privilegiada; la verificación del 15-oct-2026 no observó políticas de escritura.
+- En producción todavía no existe el esquema `user_vault`.
 - Rumbo tiene un viaje propiedad del usuario y funciona como sistema especialista; su conector actual permite añadir y registrar, pero no reemplazar, archivar ni eliminar itinerario/tareas/reservas.
 - Airtable contiene el portafolio ejecutivo de TORO/Dreamcatcher, no un almacén privado por propietario.
 
@@ -131,7 +131,7 @@ No persistir en el índice:
 ## Dependencias antes de producción
 
 1. Revisión del contrato `TORO_IDENTITY_USER_VAULT_V1.md`.
-2. Ruta aprobada para `identity.organization_memberships` y contexto personal.
+2. Verificar la cobertura, escritura autorizada y uso real de `identity.organization_memberships`, más el resolver de contexto personal.
 3. Validación aislada de las tablas y políticas propuestas.
 4. Pruebas negativas con dos usuarios sintéticos.
 5. Decisión explícita de exponer o no `user_vault` por PostgREST.
