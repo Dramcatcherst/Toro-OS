@@ -7,6 +7,13 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## Gmail personal gobernado — propuesta 15/10/2026
+
+Integrar la cuenta Gmail privada del propietario con el **TORO Comms y User Vault existentes**, nunca con el registro organizacional de Dreamcatcher ni reenvío a administradores del hotel. Contrato de autorización, pruebas negativas, niveles de permiso y pasos de consentimiento por OAuth en [TORO Personal Gmail Admin Gate V1](TORO_PERSONAL_GMAIL_ADMIN_GATE_V1.md). Código `src/features/comms/personal-mailbox-guard.ts` y pruebas quedan en PR de revisión, sin deployment.
+
+La conexión de Gmail en ChatGPT permite operaciones manuales autorizadas pero **NO prueba** que el runtime TORO tenga OAuth ni privilegios sobre esta cuenta. Primero lectura y archivo reversible, luego borradores; envío, ajustes, papelera y eliminaciones finales requieren autorización y recibo, sin permisos irrestrictos. No se crea otro scheduler: reutilizar la revisión `TORO Correos y Pagos` y checkpoints existentes solo tras demostrar aislamiento personal y ejecución segura. No contabilizar archivo como GB liberados ni copiar información privada a `operations.tasks` del hotel sin transferencia explícita.
+
+
 ---
 
 ## Public Brain perimeter — local correction, 2026-09-30
