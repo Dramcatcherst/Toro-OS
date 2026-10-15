@@ -329,7 +329,9 @@ subsystem_architecture:
   specialist_naming_pattern: "<Specialist>"
   specialist_names_are_standalone: true
   toro_prefix_reserved_for_master_product_and_subsystems: true
-  legacy_names_are_migration_aliases: true
+  legacy_subsystem_names_are_migration_aliases: true
+  historical_specialist_skill_names_are_evidence_only: true
+  active_specialist_skill_aliases_allowed: false
   dreamteam_destination: TORO People
   personal_assistant_destination: TORO Personal
   communication_destination: TORO Comms
@@ -1261,7 +1263,7 @@ agent_lifecycle_supervision:
     scope:
       - capability_ownership_integrity
       - playbook_coverage
-      - canonical_skill_and_alias_collisions
+      - canonical_skill_uniqueness_and_active_alias_prohibition
       - new_agent_request_detection
       - external_skill_import_guard
       - eval_suite_agent_coverage
