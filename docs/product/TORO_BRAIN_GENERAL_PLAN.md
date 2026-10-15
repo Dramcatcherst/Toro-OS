@@ -15,7 +15,7 @@
 
 **CONTRATO Y GATES** en [TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md](TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md): mapa por dominio, correspondencias existentes, Booking/Kross y cierres diarios, comprobantes XML/facturas, cumplimiento, idempotencia, seguridad, prueba de conciliación de muestra, integración de solo lectura, writer gated separado, deduplicación y decommission con backup/restore. Esta ampliación es subordinada al Plan General, sin nuevo backlog ni scheduler.
 
-**ESTADO:** HECHO = inventario de lectura y contrato propuesto en PR; PROPUESTO = piloto y mejoras controladas; BLOQUEADO = writer Alegra, frescura comercial Kross y paridad de source IDs; DESCONOCIDO = fingerprint fiscal de cada enlace y completitud histórica por período. **GATE:** no mutar Alegra, reservas, facturas, RLS ni eliminar bases antes de pruebas, aprobación adecuada y recibos independientes.
+**ESTADO:** HECHO = inventario de lectura y contrato incorporado en main mediante PR #299; PROPUESTO = piloto y mejoras controladas; BLOQUEADO = writer Alegra, frescura comercial Kross y paridad de source IDs; DESCONOCIDO = fingerprint fiscal de cada enlace y completitud histórica por período. **GATE:** no mutar Alegra, reservas, facturas, RLS ni eliminar bases antes de pruebas, aprobación adecuada y recibos independientes.
 
 ## Gmail personal y limpieza controlada — 15/10/2026
 
