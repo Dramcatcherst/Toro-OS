@@ -4,7 +4,7 @@
 
 ## Decisión y estado
 
-El propietario pidió extender a las automatizaciones actuales el método ya existente: una unidad verificable, checkpoint propio y siguiente instrucción breve. Se actualizaron por la herramienta nativa doce configuraciones locales: diez activas y dos revisiones pausadas. Se preservó sin cambios el recordatorio finito pausado. La lectura posterior de las trece configuraciones confirmó nombre, horario, estado, destino, política de avisos y conservación íntegra del prompt anterior. No se creó ningún scheduler.
+**Corte histórico del15/10/2026:** el propietario pidió extender a las automatizaciones actuales el método ya existente: una unidad verificable, checkpoint propio y siguiente instrucción breve. Se actualizaron por la herramienta nativa doce configuraciones locales: diez activas y dos revisiones pausadas. Se preservó sin cambios el recordatorio finito pausado. La lectura posterior de las trece configuraciones confirmó nombre, horario, estado, destino, política de avisos y conservación íntegra del prompt anterior. No se creó ningún scheduler.
 
 Esta evidencia acredita configuración guardada en un host, no primera ejecución, continuidad sin intervención, entrega ni sincronización de todos los proveedores. Las configuraciones y recibos con referencias de ámbitos privados permanecen fuera de este repositorio público. Otros schedulers, incluido el carril técnico de Alegra, requieren su propia comprobación nativa; no se los reconfigura por inferencia.
 
@@ -103,7 +103,7 @@ Se mantiene el [contrato de alineación Alegra–Supabase](TORO_DATA_ALIGNMENT_A
 
 ## Verificación, reversión y siguiente acción
 
-**Verificado en esta unidad:** doce respuestas nativas de actualización y trece configuraciones releídas, todas consistentes; diez ACTIVE y tres PAUSED; recordatorio finito intacto; cero nuevos schedulers, operaciones contables, envíos, permisos, merges o despliegues. El anexo y la inserción del Plan se proponen mediante rama/PR.
+**Verificación histórica del15/10/2026:** doce respuestas nativas de actualización y trece configuraciones releídas, todas consistentes; diez ACTIVE y tres PAUSED; recordatorio finito intacto; cero nuevos schedulers, operaciones contables, envíos, permisos, merges o despliegues. El anexo y la inserción del Plan se proponen mediante rama/PR.
 
 **Reversión:** restaurar selectivamente el prompt anterior de una automatización por herramienta nativa, previa comparación con su revisión actual; conservar cualquier cambio posterior de otro escritor. No restaurar en bloque un snapshot antiguo. Revert documental de este delta; no reset de main ni de otros carriles.
 
