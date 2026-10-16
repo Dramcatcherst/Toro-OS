@@ -23,6 +23,8 @@
 
 **Implementación comprobada:** [PR #292](https://github.com/Dramcatcherst/Toro-OS/pull/292) fusionado en `main`. Guard de permisos personales, clasificador conservador, pruebas y [contrato del módulo](TORO_PERSONAL_GMAIL_ADMIN_GATE_V1.md) integrados en el repositorio. NO acredita OAuth de TORO, ejecución autónoma, despliegue productivo ni cuota liberada. La conexión autorizada de ChatGPT Gmail está operativa *solo en el entorno de ChatGPT*.
 
+**Superficie unificada:** [TORO Mail V1](TORO_MAIL_V1.md) pertenece a TORO Comms + Personal/User Vault + Tools. Proyecta Gmail/Outlook según el contexto canónico, separa evidencia de conector ChatGPT de OAuth runtime y exige recibos antes/después para mutaciones. No crea otro Brain, inbox, base, permisos o scheduler.
+
 **Limpieza solicitada por el propietario — política aplicable desde hoy:**
 1. Eliminar ruido sin duplicar bases, agentes, tareas ni schedulers: continuar el seguimiento `TORO Correos y Pagos` existente, distinguiendo lectura rutinaria de mantenimiento de bandeja y archivando la evidencia operacional privada fuera del repositorio público.
 2. Clasificar por mensaje y por conversación: revisar recibidos/enviados, distinguir publicidad realmente prescindible de notificaciones de cuentas y conservar siempre reservas, contratos, facturas, bancarios, visas, seguridad, documentos personales, confirmaciones y cualquier hilo relevante. Prohibido depender solo de la etiqueta 'Promociones' para borrar.
