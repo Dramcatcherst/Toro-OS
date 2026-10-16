@@ -34,6 +34,8 @@
 
 **Estado:** políticas/código probados en CI; operaciones de ChatGPT realizadas con Gmail real, cuyos conteos por buzón permanecen en reporte privado; OAuth/productivo, gestión de suscripciones de proveedores y espacio real liberado pendientes de verificación. Reutilizar controles del Plan General y no reinterpretar código como ejecución runtime.
 
+**Cuota observada y continuidad horaria:** sesión autenticada Google One del 15/10/2026 mostró 197,45/200 GB usados: Google Fotos 183,19 GB, Otros 13,01 GB y Gmail 1,16 GB. Los mensajes en Papelera no acreditan espacio liberado; Gmail no es el principal consumidor. Mauricio autorizó un único heartbeat horario para continuar esta misma línea TORO Mail con código, pruebas, documentación y verificación, no como worker de correo. “20 veces más” limita lotes homogéneos a veinte objetos y “50 mejoras” se aplica como línea base fija de cincuenta controles testados; no autoriza mutaciones de proveedor, OAuth, producción, Alegra/Supabase, merge, despliegue, costos ni schedulers adicionales.
+
 ---
 
 ## Public Brain perimeter — local correction, 2026-09-30

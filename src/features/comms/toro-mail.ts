@@ -10,6 +10,66 @@ import {
   type ToroPersonalMailboxConnection,
 } from "./personal-mailbox-guard";
 
+/**
+ * Fixed governance baseline for TORO Mail. The hourly loop applies these
+ * controls; it never manufactures fifty code changes to satisfy a counter.
+ */
+export const TORO_MAIL_GOVERNANCE_CONTROLS = [
+  "identity.owner_verified",
+  "identity.provider_account_readback",
+  "identity.personal_org_isolation",
+  "identity.active_org_membership",
+  "identity.context_choice_resolved",
+  "identity.per_account_grant",
+  "identity.no_wildcard_identity",
+  "identity.third_party_read_only",
+  "identity.revoked_fails_closed",
+  "identity.exact_provider_mapping",
+  "privacy.metadata_first",
+  "privacy.body_on_demand",
+  "privacy.attachment_explicit",
+  "privacy.no_tokens_in_receipts",
+  "privacy.no_bodies_in_receipts",
+  "privacy.no_bulk_mailbox_copy",
+  "privacy.retention_known",
+  "privacy.pii_redacted",
+  "privacy.personal_business_separation",
+  "privacy.tenant_source_ids_preserved",
+  "runtime.connector_not_oauth",
+  "runtime.oauth_per_user",
+  "runtime.server_only_secret",
+  "runtime.minimum_scopes",
+  "runtime.token_lifecycle",
+  "runtime.incremental_cursor",
+  "runtime.deduplication",
+  "runtime.idempotent_replay",
+  "runtime.gap_recovery",
+  "runtime.freshness_readback",
+  "action.read_only_default",
+  "action.reversible_first",
+  "action.bounded_object_set",
+  "action.trash_requires_approval",
+  "action.native_unsubscribe",
+  "action.send_separate_capability",
+  "action.no_permanent_delete",
+  "action.before_readback",
+  "action.after_readback",
+  "action.partial_failure_reconciliation",
+  "evidence.receipt_id",
+  "evidence.object_ids_hash",
+  "evidence.timestamps",
+  "evidence.explicit_outcome",
+  "evidence.durable_error",
+  "automation.no_duplicate_scheduler",
+  "automation.one_safe_unit",
+  "automation.quiet_when_unchanged",
+  "automation.usage_guard",
+  "automation.rollback_and_one_next_action",
+] as const;
+
+export type ToroMailGovernanceControl =
+  (typeof TORO_MAIL_GOVERNANCE_CONTROLS)[number];
+
 export type ToroMailConnectorEvidence = {
   /** A ChatGPT/plugin session is evidence for that surface only. */
   connectorSessionVerified: boolean;

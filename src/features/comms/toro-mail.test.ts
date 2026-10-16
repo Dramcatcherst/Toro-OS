@@ -5,6 +5,7 @@ import type { ToroMailboxBinding } from "./mailbox-bindings";
 import type { ToroPersonalMailboxConnection } from "./personal-mailbox-guard";
 import {
   projectToroMail,
+  TORO_MAIL_GOVERNANCE_CONTROLS,
   validateToroMailActionReceipt,
   type ToroMailAccount,
 } from "./toro-mail";
@@ -119,6 +120,22 @@ const accounts: ToroMailAccount[] = [
     connectorEvidence: { connectorSessionVerified: true, observedAt: "2026-10-15T12:00:00Z" },
   },
 ];
+
+describe("TORO Mail governance baseline", () => {
+  it("keeps exactly fifty stable, unique controls", () => {
+    expect(TORO_MAIL_GOVERNANCE_CONTROLS).toHaveLength(50);
+    expect(new Set(TORO_MAIL_GOVERNANCE_CONTROLS).size).toBe(50);
+  });
+
+  it("covers identity, privacy, runtime, actions, evidence and automation", () => {
+    const groups = new Set(
+      TORO_MAIL_GOVERNANCE_CONTROLS.map((control) => control.split(".")[0]),
+    );
+    expect(groups).toEqual(new Set([
+      "identity", "privacy", "runtime", "action", "evidence", "automation",
+    ]));
+  });
+});
 
 describe("TORO Mail account projection", () => {
   it("keeps personal and organization mailboxes in separate views", () => {

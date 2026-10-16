@@ -72,3 +72,24 @@ Do not claim TORO Mail operational until one account per intended scope proves:
 
 ChatGPT connector results remain operational evidence for the current session,
 not proof of this runtime acceptance.
+
+## Hourly governed loop
+
+Mauricio authorized one hourly heartbeat for the existing TORO Mail lane. It
+continues from this specification, the General Plan, the private audit receipt
+and the existing PR. It is an engineering/checkpoint loop, not a mailbox worker
+or evidence of production OAuth.
+
+Each pass may complete at most one safe, reversible and verified unit. A batch
+may contain up to twenty objects only when account, authority, classification,
+risk and readback are identical. Unchanged state remains silent. The loop may
+inspect metadata deltas, run tests, improve local code/docs and verify PR/CI. It
+may not send, unsubscribe, label, archive, trash or permanently delete mail;
+read bodies/attachments in bulk; write Alegra/Supabase; change OAuth, secrets,
+permissions or production; merge/deploy; or create another scheduler.
+
+“Fifty improvements” is implemented as the fixed, test-enforced
+`TORO_MAIL_GOVERNANCE_CONTROLS` baseline. It contains fifty unique controls
+across identity, privacy, runtime truth, action safety, evidence and automation.
+The loop reports only material changes; it never creates cosmetic work to reach
+a numeric target.
