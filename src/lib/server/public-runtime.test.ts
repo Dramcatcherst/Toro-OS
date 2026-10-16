@@ -91,7 +91,9 @@ describe.each([undefined, "public-demo", "INTERNAL"])("runtime seams in demo mod
     noIo();
   });
   it("hotel directory denies access without identity, RPC or account disclosure", async () => {
-    expect(await loadHotelDirectory()).toEqual({ state: "denied", links: [] });
+    expect(await loadHotelDirectory()).toEqual({
+      state: "denied", links: [], catalogueItems: [], catalogueMode: "reviewed",
+    });
     noIo();
   });
 });
