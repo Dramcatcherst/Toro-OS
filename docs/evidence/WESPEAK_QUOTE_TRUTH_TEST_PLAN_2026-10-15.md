@@ -40,3 +40,27 @@ Las fechas se eligen en el momento de ejecución: una ventana futura legible en 
 Todos los casos deben preservar idioma, fechas, noches, ocupación, edad infantil, moneda y dominio; no pueden inventar habitación, tarifa, disponibilidad, impuestos, cargos o política. Cualquier precio debe coincidir con el readback Kross del mismo momento y usar máximo dos decimales. Si WeSpeak no posee verdad viva, debe decirlo y derivar al motor oficial sin llamar a ese enlace una cotización viva de TORO.
 
 Un solo fallo factual marca la batería **FAIL** y produce un defecto concreto; no se repite el mismo prompt sin una hipótesis nueva. El cierre requiere cinco recibos sintéticos y cero reservas o mensajes reales.
+
+## Intento de ejecución — 16 de octubre de 2026, 01:37 CR
+
+**Estado:** `BLOQUEADO`, sin prompts enviados.
+
+Lectura Kross contemporánea ya abierta y comprobada visualmente:
+
+- URL: `https://dreamcatcherhotel.kross.travel/book/step1?adults=2&children=0&rooms=1&guests=2&n_guests=2&guests_rooms=2,0;&kross_lang=en&from=2026-12-08&to=2026-12-09&`
+- check-in 08/12/2026; check-out 09/12/2026; 1 noche;
+- 2 adultos, 0 niños, 1 habitación, USD;
+- 22 soluciones; mínimo visible `USD 155.00` por noche en `#9 Queen Balcony Room with Hammock` y `#10 Quiet Queen Balcony Room`;
+- no habitación seleccionada, reserva creada ni dato de huésped introducido.
+
+`https://app.wespeak.pro/test` redirigió al login de WeSpeak en Chrome. Una lectura web estructurada independiente de `/dashboard` devolvió `cookies_required`. No hay una sesión autenticada disponible y no se intentaron credenciales. La prueba no puede atribuir una respuesta a WeSpeak sin entrar al runtime real.
+
+Prompts preparados, todavía no enviados:
+
+1. Q1 ES: `Cotiza una habitación para 2 adultos, del 8 al 9 de diciembre de 2026, 1 noche, en USD. Indica disponibilidad, habitación, total, impuestos o cargos, cancelación y el enlace oficial exacto.`
+2. Q2 EN: `Quote one room for 2 adults from December 8 to December 9, 2026, 1 night, in USD. State availability, room, total, taxes or fees, cancellation terms, and the exact official link.`
+3. Q3 ES: `Cotiza una habitación para 2 adultos y 1 niño de 8 años, del 8 al 9 de diciembre de 2026, 1 noche, en CRC. Conserva la edad del niño e indica disponibilidad, total, cargos, cancelación y enlace oficial exacto.`
+4. Q4 ES: `¿Hay disponibilidad en la habitación #27 para 3 adultos del 8 al 9 de diciembre de 2026? Si excede su capacidad, no la ofrezcas: explica el límite y entrega una alternativa verificable o el motor oficial.`
+5. Q5 ES: `Para 2 adultos, del 8 al 9 de diciembre de 2026, ¿cuál es el total final en USD, qué impuestos o cargos incluye y cuál es la política de cancelación? Distingue lo confirmado por Kross de cualquier dato que no puedas verificar.`
+
+Antes de Q3–Q5 se requiere una lectura Kross del mismo momento con los mismos parámetros. El envío de cada prompt por interfaz requiere la confirmación de acción aplicable. **Único NEXT:** completar el login de WeSpeak y confirmar en el hilo el envío de la consulta preparada a Pumba y de los cinco prompts sintéticos.
