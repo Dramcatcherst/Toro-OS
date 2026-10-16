@@ -7,6 +7,16 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## Continuidad de automatizaciones existentes — 15/10/2026
+
+**DECISIÓN DEL PROPIETARIO:** extender a las automatizaciones actuales el método existente de una unidad verificable, checkpoint propio y un superprompt breve para la siguiente pasada. Reutilizar los schedulers, tareas y recibos; conservar alcance, horarios, zona, pausas, destino y avisos particulares. Hasta veinte objetos homogéneos por lote y cincuenta controles pertinentes significan trabajo agrupado y calidad verificable; nunca una cuota ficticia de cambios ni una ampliación de autoridad.
+
+**APLICACIÓN OBSERVADA:** doce configuraciones locales actualizadas mediante herramienta nativa y trece releídas: diez activas, tres pausadas, recordatorio finito conservado y cero nuevos schedulers. No acredita primera ejecución ni todos los proveedores. El contrato subordinado [Continuidad de automatizaciones](TORO_AUTOMATION_CONTINUITY_V1.md) define evidencia, superprompt, conflictos, consumo, reversión y controles. Solo se edita el soporte ya autorizado de cada ámbito; donde el checkpoint esté prohibido, la continuidad queda en el resultado privado del mismo chat.
+
+**ALEGRA:** conserva libro/documento; TORO dirige; FIONA concilia; SOBRESITO integra el adaptador existente. PR228 permanece el carril técnico con writer OFF; PR304 conserva el programa contable general preparado. El frente Hacienda no cambia ese NEXT técnico. No sincronización ciega, nueva apertura, journal, emisión, pago o devolución desde esta programación. La aceptación exige identidad/entidad/moneda, permisos, dedupe, operación soportada, readback y recibo; el detalle y los gates de respaldo constan en el contrato de alineación vigente.
+
+**NEXT:** verificar el primer recibo horario de FIN-01 y su siguiente instrucción contra el resultado real; mantener bloqueos y tareas ajenas sin sobrescritura. Configuración guardada y ejecución probada son estados distintos.
+
 ## Alineación transversal de datos Alegra ↔ Supabase — 15/10/2026
 
 **DECISIÓN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General único y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integración, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al huésped en Booking se conserva como evidencia de reserva; Alegra conserva facturación y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versión, fecha, idempotencia, permisos, conciliación, readback y receipt verificables.
