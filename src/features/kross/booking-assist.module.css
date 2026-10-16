@@ -1,0 +1,39 @@
+.shell { min-height:100dvh; padding:12px 10px 20px; background:#0e2433; color:#edf4fb; color-scheme:dark; }
+.shell *, .shell *::before, .shell *::after { box-sizing:border-box; }
+.container { max-width:1040px; margin:auto; }
+.backLink { display:inline-flex; align-items:center; gap:7px; min-height:44px; color:#cfe5f6; font-size:13px; font-weight:600; text-decoration:none; }
+.backLink:hover { color:#fff; text-decoration:underline; text-underline-offset:3px; }
+.shell :is(a,button,input,select):focus-visible { outline:3px solid #f5cb76; outline-offset:3px; }
+.panel { margin-top:8px; border:1px solid #9aafbd; border-radius:10px; padding:12px; background:#f5f1e8; color:#203c50; color-scheme:light; box-shadow:0 4px 16px #07111d26; }
+.panel :is(a,button,input,select):focus-visible { outline-color:#0969a2; }
+.badges { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.badge, .officialBadge { display:inline-flex; align-items:center; gap:6px; border:1px solid #a3bdcd; border-radius:5px; padding:5px 8px; background:#e3edf3; color:#203c50; font-size:12px; font-weight:650; line-height:1.4; }
+.officialBadge { border-color:#a1b9a8; background:#e7efe6; color:#225c47; }
+.heading { margin-top:10px; font-size:clamp(22px,3vw,28px); font-weight:750; letter-spacing:-.025em; line-height:1.25; }
+.intro { margin-top:8px; max-width:760px; color:#455969; font-size:13px; line-height:1.5; }
+.prefill { margin-top:10px; border:1px solid #98b9cc; border-radius:6px; padding:8px 10px; background:#e3edf3; color:#284959; font-size:12px; line-height:1.5; }
+.form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 12px; margin-top:14px; }
+.label { display:grid; align-content:start; gap:4px; min-width:0; color:#203c50; font-size:13px; }
+.labelCaption { font-weight:650; }
+.field { min-height:44px; width:100%; min-width:0; border:1px solid #738b9b; border-radius:6px; padding:8px 9px; background:#fffef8; color:#203c50; font:inherit; font-size:14px; }
+.field::placeholder { color:#455969; opacity:1; }
+.field:focus-visible { border-color:#0969a2; }
+.fullRow { grid-column:1 / -1; }
+.issues { grid-column:1 / -1; border:1px solid #b3945c; border-radius:6px; padding:8px 10px; background:#fff0d2; color:#6b4a0b; font-size:13px; line-height:1.5; }
+.actions { grid-column:1 / -1; display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; }
+.primaryAction { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:44px; border:1px solid #387c93; border-radius:6px; padding:9px 12px; background:#145d77; color:#fff; font-size:13px; font-weight:650; cursor:pointer; }
+.primaryAction:hover { background:#1e6b83; }
+.actionNote { flex:1; min-width:min(100%,180px); color:#455969; font-size:12px; line-height:1.5; }
+.limits { margin-top:12px; border:1px solid #bdc9d0; border-radius:6px; padding:8px 10px; background:#e3edf3; color:#455969; font-size:12px; line-height:1.5; }
+.limits summary { min-height:44px; align-content:center; cursor:pointer; color:#203c50; font-weight:600; }
+.limits p { margin:6px 0 0; }
+@media(min-width:900px) { .shell { padding:12px 16px 24px; } .panel { padding:16px; } .form { grid-template-columns:repeat(4,minmax(0,1fr)); } .label.fullRow { grid-column:auto; } .actions { grid-column:2 / -1; } }
+@media(max-width:360px) { .form { gap:8px; } .field { padding-inline:6px; font-size:13px; } .primaryAction { width:100%; } }
+@media(prefers-reduced-motion:reduce) { .shell *, .shell *::before, .shell *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+@media(forced-colors:active) {
+ .shell, .panel, .badge, .officialBadge, .prefill, .issues, .limits, .field { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; }
+ .intro, .actionNote, .label, .field::placeholder { color:CanvasText; }
+ .backLink, .backLink:hover { color:LinkText; }
+ .primaryAction, .primaryAction:hover { background:ButtonFace; color:ButtonText; border-color:ButtonText; }
+ .shell :is(a,button,input,select):focus-visible { outline-color:Highlight; }
+}

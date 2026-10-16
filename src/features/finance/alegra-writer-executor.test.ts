@@ -33,11 +33,16 @@ const intent = prepareAlegraWriteIntent({
 
 const approval = {
   approvalId: "approval-1",
+  approvalReceiptId: "approval-receipt-1",
   actorId: "owner-1",
   approvedAt: "2026-10-09T08:00:00Z",
+  expiresAt: "2026-10-09T08:15:00Z",
+  decisionId: "decision-1",
+  decisionRevision: "2026-10-09T08:00:00Z",
   payloadHash: intent.payloadHash,
   state: "approved" as const,
 };
+const validNow = "2026-10-09T08:05:00Z";
 
 const clearDuplicates = evaluateAlegraDuplicatePreflight({
   intent,
@@ -77,7 +82,7 @@ describe("Alegra Writer governed executor", () => {
       transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
       priorReceipt: { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash,
         approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created",
-        verificationState: "VERIFIED", verified: true, reasons: [], createdAt: "2026-10-11T00:00:00Z" }, now: "2026-10-11T00:00:00Z" });
+        verificationState: "VERIFIED", verified: true, reasons: [], createdAt: "2026-10-11T00:00:00Z" }, now: validNow });
     expect(result.ok).toBe(false);
     expect(result.receipt.reasons).toContain("PRIOR_RECEIPT_NOT_DURABLE");
   });
@@ -87,7 +92,7 @@ describe("Alegra Writer governed executor", () => {
     const changedApproval = { ...approval };
     const result = await executeApprovedAlegraIntent({ intent: changed, approval: changedApproval, duplicateDecision: clearDuplicates,
       transport: { create: async ({ intent: captured }) => { expect(captured.payload.total).toBe("113.00"); return { state: "created", nativeId: "bill-1" }; }, findByIdempotencyKey: vi.fn(), readback: async () => verifiedReadback() }, writerEnabled: true,
-      gate: { ...gate, beforeDispatch: async (captured) => { expect(Object.isFrozen(captured.approval)).toBe(true); changed.payload.total = "999.00"; changedApproval.actorId = "other-actor"; changedApproval.approvalId = "other-approval"; return true; } }, now: "2026-10-11T00:00:00Z" });
+      gate: { ...gate, beforeDispatch: async (captured) => { expect(Object.isFrozen(captured.approval)).toBe(true); changed.payload.total = "999.00"; changedApproval.actorId = "other-actor"; changedApproval.approvalId = "other-approval"; return true; } }, now: validNow });
     expect(result.ok).toBe(true);
     expect(result.receipt.actorId).toBe(approval.actorId);
     expect(result.receipt.approvalId).toBe(approval.approvalId);
@@ -95,15 +100,34 @@ describe("Alegra Writer governed executor", () => {
   it("requires durable admission before dispatch", async () => {
     const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates,
       transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
-      writerEnabled: true, gate: { ...gate, beforeDispatch: async () => false }, now: "2026-10-11T00:00:00Z" });
+      writerEnabled: true, gate: { ...gate, beforeDispatch: async () => false }, now: validNow });
     expect(result.executedProviderMutation).toBe(false);
     expect(result.receipt.reasons).toContain("EXECUTION_GATE_NOT_ACQUIRED");
+  });
+
+  it("preserves the provider effect when readback is unavailable", async () => {
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: {
+        create: async () => ({ state: "created", nativeId: "bill-1" }),
+        findByIdempotencyKey: vi.fn(),
+        readback: async () => { throw new Error("fixture readback unavailable"); },
+      },
+      now: validNow });
+    expect(result.ok).toBe(false);
+    expect(result.executedProviderMutation).toBe(true);
+    expect(result.receipt).toMatchObject({
+      nativeId: "bill-1",
+      executionState: "provider_created",
+      verificationState: "PROVIDER_STATE_UNKNOWN",
+      reasons: ["READBACK_UNAVAILABLE"],
+      durableReceiptId: "fixture-durable-receipt",
+    });
   });
 
   it("never reports success when saving the provider receipt fails", async () => {
     const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates,
       transport: { create: async () => ({ state: "created", nativeId: "bill-1" }), findByIdempotencyKey: async () => ({ state: "not_found" }), readback: async () => verifiedReadback() },
-      writerEnabled: true, gate: { ...gate, persistReceipt: async () => { throw new Error("fixture store failure"); } }, now: "2026-10-11T00:00:00Z" });
+      writerEnabled: true, gate: { ...gate, persistReceipt: async () => { throw new Error("fixture store failure"); } }, now: validNow });
     expect(result.ok).toBe(false);
     expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN");
     expect(result.receipt.nativeId).toBe("bill-1");
@@ -111,7 +135,7 @@ describe("Alegra Writer governed executor", () => {
 
   it("reconciles a thrown create timeout without a blind second create", async () => {
     const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
-      transport: { create: async () => { throw new Error("fixture timeout"); }, findByIdempotencyKey: async () => ({ state: "found", nativeId: "bill-1" }), readback: async () => verifiedReadback() }, now: "2026-10-11T00:00:00Z" });
+      transport: { create: async () => { throw new Error("fixture timeout"); }, findByIdempotencyKey: async () => ({ state: "found", nativeId: "bill-1" }), readback: async () => verifiedReadback() }, now: validNow });
     expect(result.ok).toBe(true);
     expect(result.receipt.executionState).toBe("provider_ambiguous_recovered");
   });
@@ -122,7 +146,7 @@ describe("Alegra Writer governed executor", () => {
       findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(async () => verifiedReadback()),
     };
-    const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates, transport, now: "2026-10-11T00:00:00Z" });
+    const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates, transport, now: validNow });
     expect(result.ok).toBe(false);
     expect(result.receipt.reasons).toContain("WRITER_DISABLED");
     expect(result.executedProviderMutation).toBe(false);
@@ -136,7 +160,7 @@ describe("Alegra Writer governed executor", () => {
       verified: false, reasons: ["TIMEOUT"], createdAt: "2026-10-09T08:30:00Z",
     };
     const transport: AlegraWriteTransport = { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() };
-    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, priorReceipt: prior, now: "2026-10-11T00:00:00Z" });
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, priorReceipt: prior, now: validNow });
     expect(result.executedProviderMutation).toBe(false);
     expect(result.receipt.reasons).toContain("PRIOR_EFFECT_REQUIRES_RECONCILIATION");
   });
@@ -147,7 +171,7 @@ describe("Alegra Writer governed executor", () => {
       findByIdempotencyKey: vi.fn<AlegraWriteTransport["findByIdempotencyKey"]>(),
       readback: vi.fn(async () => verifiedReadback("another-bill")),
     };
-    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, now: "2026-10-11T00:00:00Z" });
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, now: validNow });
     expect(result.receipt.verified).toBe(false);
   });
 
@@ -163,7 +187,7 @@ describe("Alegra Writer governed executor", () => {
       approval,
       duplicateDecision: clearDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(true);
@@ -185,7 +209,7 @@ describe("Alegra Writer governed executor", () => {
       approval: { ...approval, payloadHash: "wrong" },
       duplicateDecision: clearDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(false);
@@ -214,7 +238,7 @@ describe("Alegra Writer governed executor", () => {
       approval,
       duplicateDecision: staleDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(false);
@@ -234,7 +258,7 @@ describe("Alegra Writer governed executor", () => {
       approval,
       duplicateDecision: clearDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(true);
@@ -255,7 +279,7 @@ describe("Alegra Writer governed executor", () => {
       approval,
       duplicateDecision: clearDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(false);
@@ -292,7 +316,7 @@ describe("Alegra Writer governed executor", () => {
       duplicateDecision: clearDuplicates,
       transport,
       priorReceipt: prior,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(true);
@@ -313,7 +337,7 @@ describe("Alegra Writer governed executor", () => {
       approval,
       duplicateDecision: clearDuplicates,
       transport,
-      now: "2026-10-09T09:00:00Z",
+      now: validNow,
     });
 
     expect(result.ok).toBe(false);

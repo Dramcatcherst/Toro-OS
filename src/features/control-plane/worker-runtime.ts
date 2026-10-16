@@ -1,4 +1,5 @@
 import "server-only";
+import { assertInternalRuntime } from "@/lib/server/public-demo";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -136,6 +137,7 @@ export async function claimNextToroExecutionRun(
     leaseSeconds?: number;
   },
 ): Promise<ToroWorkerRun | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_claim_execution_run_v1", {
     p_org_id: input.orgId,
     p_worker_id: input.workerId,
@@ -161,6 +163,7 @@ export async function claimToroExecutionRunById(
     leaseSeconds?: number;
   },
 ): Promise<ToroWorkerRun | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_claim_execution_run_by_id_v1",
     {
@@ -181,6 +184,377 @@ export async function claimToroExecutionRunById(
   return normalizeToroWorkerRun(first as ToroRunRow);
 }
 
+export type ToroApprovedL3Dispatch = {
+  approvalReceiptId: string;
+  approvalId: string;
+  approvalActorId: string;
+  approvalApprovedAt: string;
+  approvalExpiresAt: string;
+  payloadHash: string;
+  decisionRevision: string;
+};
+
+export type ToroL3DispatchAdmission = {
+  runId: string;
+  fencingToken: number;
+  leaseExpiresAt: string;
+  preparedReceiptId: string;
+};
+
+export type ToroAlegraExecutionFinalization = {
+  runId: string;
+  finalReceiptId: string;
+  runStatus: "succeeded" | "blocked";
+  verificationStatus: "passed" | "partial";
+  replayed: boolean;
+};
+
+export type ToroAlegraLeaseHeartbeat = {
+  runId: string;
+  fencingToken: number;
+  leaseExpiresAt: string;
+  preparedReceiptId: string;
+};
+
+export type ToroAlegraExpiredLeaseRecovery = {
+  runId: string;
+  finalReceiptId: string;
+  fencingToken: number;
+  runStatus: "blocked";
+  verificationStatus: "partial";
+  providerState: "PROVIDER_STATE_UNKNOWN";
+  replayed: boolean;
+};
+
+/**
+ * Atomically admits one explicitly approved Alegra L3 run at the provider
+ * dispatch boundary. The generic queue/targeted claim RPCs intentionally stay
+ * limited to L0-L2. This RPC must remain fail-closed and callable only by a
+ * dedicated runtime role without direct table DML; broad service_role is not
+ * the Writer role for this boundary.
+ */
+export async function admitApprovedAlegraExecutionRun(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    workerId: string;
+    expectedFencingToken: number;
+    approval: ToroApprovedL3Dispatch;
+    leaseSeconds?: number;
+  },
+): Promise<ToroL3DispatchAdmission | null> {
+  assertInternalRuntime();
+  const { data, error } = await supabase.rpc(
+    "toro_admit_approved_alegra_execution_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_worker_id: input.workerId,
+      p_expected_fencing_token: input.expectedFencingToken,
+      p_approval_receipt_id: input.approval.approvalReceiptId,
+      p_approval_id: input.approval.approvalId,
+      p_approval_actor_id: input.approval.approvalActorId,
+      p_approval_approved_at: input.approval.approvalApprovedAt,
+      p_approval_expires_at: input.approval.approvalExpiresAt,
+      p_payload_hash: input.approval.payloadHash,
+      p_decision_revision: input.approval.decisionRevision,
+      p_lease_seconds: input.leaseSeconds ?? 120,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO approved Alegra dispatch admission failed safely.");
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row || typeof row !== "object") return null;
+
+  const candidate = row as Record<string, unknown>;
+  const runId = stringOrNull(candidate.runId ?? candidate.run_id);
+  const leaseExpiresAt = stringOrNull(
+    candidate.leaseExpiresAt ?? candidate.lease_expires_at,
+  );
+  const preparedReceiptId = stringOrNull(
+    candidate.preparedReceiptId ?? candidate.prepared_receipt_id,
+  );
+  const rawFencingToken =
+    candidate.fencingToken ?? candidate.fencing_token;
+  const fencingToken =
+    typeof rawFencingToken === "number"
+      ? rawFencingToken
+      : typeof rawFencingToken === "string"
+        ? Number(rawFencingToken)
+        : Number.NaN;
+
+  if (
+    runId !== input.runId ||
+    !leaseExpiresAt ||
+    !preparedReceiptId ||
+    !Number.isSafeInteger(fencingToken) ||
+    fencingToken !== input.expectedFencingToken + 1
+  ) {
+    return null;
+  }
+
+  return { runId, fencingToken, leaseExpiresAt, preparedReceiptId };
+}
+
+/**
+ * Atomically persists or recovers the one final Alegra receipt and moves the
+ * exact fenced run to its matching terminal state. The prepared admission
+ * receipt remains part of the authority/evidence chain.
+ */
+export async function finalizeAlegraExecutionRun(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    workerId: string;
+    fencingToken: number;
+    preparedReceiptId: string;
+    outcome: "verified" | "reconciliation_required";
+    receipt: {
+      external_reference?: string | null;
+      observed_after: unknown;
+      evidence_refs?: string[];
+      integrity_hash: string;
+    };
+  },
+): Promise<ToroAlegraExecutionFinalization | null> {
+  assertInternalRuntime();
+  const { data, error } = await supabase.rpc(
+    "toro_finalize_alegra_execution_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_worker_id: input.workerId,
+      p_fencing_token: input.fencingToken,
+      p_prepared_receipt_id: input.preparedReceiptId,
+      p_outcome: input.outcome,
+      p_receipt: input.receipt,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO Alegra finalization failed safely.");
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row || typeof row !== "object") return null;
+
+  const candidate = row as Record<string, unknown>;
+  const runId = stringOrNull(candidate.runId ?? candidate.run_id);
+  const finalReceiptId = stringOrNull(
+    candidate.finalReceiptId ?? candidate.final_receipt_id,
+  );
+  const runStatus = stringOrNull(candidate.runStatus ?? candidate.run_status);
+  const verificationStatus = stringOrNull(
+    candidate.verificationStatus ?? candidate.verification_status,
+  );
+  const replayed = candidate.replayed;
+  const expectedRunStatus =
+    input.outcome === "verified" ? "succeeded" : "blocked";
+  const expectedVerificationStatus =
+    input.outcome === "verified" ? "passed" : "partial";
+
+  if (
+    runId !== input.runId ||
+    !finalReceiptId ||
+    runStatus !== expectedRunStatus ||
+    verificationStatus !== expectedVerificationStatus ||
+    typeof replayed !== "boolean"
+  ) {
+    return null;
+  }
+
+  return {
+    runId,
+    finalReceiptId,
+    runStatus,
+    verificationStatus,
+    replayed,
+  };
+}
+
+/**
+ * Extends only the same live Alegra L3 worker/fence and exact prepared marker.
+ * The SQL boundary rejects wait-through-expiry and caps both the requested TTL
+ * and the total admission horizon; this is not the generic worker renewal RPC.
+ */
+export async function heartbeatAlegraExecutionRun(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    workerId: string;
+    fencingToken: number;
+    preparedReceiptId: string;
+    leaseSeconds?: number;
+  },
+): Promise<ToroAlegraLeaseHeartbeat | null> {
+  assertInternalRuntime();
+  const { data, error } = await supabase.rpc(
+    "toro_heartbeat_alegra_execution_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_worker_id: input.workerId,
+      p_fencing_token: input.fencingToken,
+      p_prepared_receipt_id: input.preparedReceiptId,
+      p_lease_seconds: input.leaseSeconds ?? 60,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO Alegra lease heartbeat failed safely.");
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row || typeof row !== "object") return null;
+
+  const candidate = row as Record<string, unknown>;
+  const runId = stringOrNull(candidate.runId ?? candidate.run_id);
+  const leaseExpiresAt = stringOrNull(
+    candidate.leaseExpiresAt ?? candidate.lease_expires_at,
+  );
+  const preparedReceiptId = stringOrNull(
+    candidate.preparedReceiptId ?? candidate.prepared_receipt_id,
+  );
+  const rawFencingToken =
+    candidate.fencingToken ?? candidate.fencing_token;
+  const fencingToken =
+    typeof rawFencingToken === "number"
+      ? rawFencingToken
+      : typeof rawFencingToken === "string"
+        ? Number(rawFencingToken)
+        : Number.NaN;
+
+  if (
+    runId !== input.runId ||
+    preparedReceiptId !== input.preparedReceiptId ||
+    !leaseExpiresAt ||
+    !Number.isSafeInteger(fencingToken) ||
+    fencingToken !== input.fencingToken
+  ) {
+    return null;
+  }
+
+  return { runId, fencingToken, leaseExpiresAt, preparedReceiptId };
+}
+
+/**
+ * Recovers an expired admitted lease without invoking Alegra or retrying the
+ * create operation. SQL fences the stale worker, writes one reconciliation
+ * receipt with unknown provider state, and blocks the run atomically.
+ */
+export async function recoverExpiredAlegraExecutionRun(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    recoveryWorkerId: string;
+    expectedFencingToken: number;
+    preparedReceiptId: string;
+  },
+): Promise<ToroAlegraExpiredLeaseRecovery | null> {
+  assertInternalRuntime();
+  const { data, error } = await supabase.rpc(
+    "toro_recover_expired_alegra_execution_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_recovery_worker_id: input.recoveryWorkerId,
+      p_expected_fencing_token: input.expectedFencingToken,
+      p_prepared_receipt_id: input.preparedReceiptId,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO Alegra expired lease recovery failed safely.");
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row || typeof row !== "object") return null;
+
+  const candidate = row as Record<string, unknown>;
+  const runId = stringOrNull(candidate.runId ?? candidate.run_id);
+  const finalReceiptId = stringOrNull(
+    candidate.finalReceiptId ?? candidate.final_receipt_id,
+  );
+  const runStatus = stringOrNull(candidate.runStatus ?? candidate.run_status);
+  const verificationStatus = stringOrNull(
+    candidate.verificationStatus ?? candidate.verification_status,
+  );
+  const providerState = stringOrNull(
+    candidate.providerState ?? candidate.provider_state,
+  );
+  const rawFencingToken =
+    candidate.fencingToken ?? candidate.fencing_token;
+  const fencingToken =
+    typeof rawFencingToken === "number"
+      ? rawFencingToken
+      : typeof rawFencingToken === "string"
+        ? Number(rawFencingToken)
+        : Number.NaN;
+  const replayed = candidate.replayed;
+
+  if (
+    runId !== input.runId ||
+    !finalReceiptId ||
+    !Number.isSafeInteger(fencingToken) ||
+    fencingToken !== input.expectedFencingToken + 1 ||
+    runStatus !== "blocked" ||
+    verificationStatus !== "partial" ||
+    providerState !== "PROVIDER_STATE_UNKNOWN" ||
+    typeof replayed !== "boolean"
+  ) {
+    return null;
+  }
+
+  return {
+    runId,
+    finalReceiptId,
+    fencingToken,
+    runStatus,
+    verificationStatus,
+    providerState,
+    replayed,
+  };
+}
+
+export async function revokeAlegraExecutionApproval(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    runId: string;
+    approvalReceiptId: string;
+  },
+): Promise<"revoked" | "already_revoked" | "dispatch_already_admitted" | null> {
+  // This helper must receive an authenticated owner-session client. The RPC
+  // derives the signer from auth.uid(); neither a worker nor the caller may
+  // assert an actor identifier.
+  assertInternalRuntime();
+  const { data, error } = await supabase.rpc(
+    "toro_revoke_alegra_execution_authority_v1",
+    {
+      p_org_id: input.orgId,
+      p_run_id: input.runId,
+      p_approval_receipt_id: input.approvalReceiptId,
+    },
+  );
+
+  if (error) {
+    throw new Error("TORO Alegra approval revocation failed safely.");
+  }
+
+  return data === "revoked" ||
+    data === "already_revoked" ||
+    data === "dispatch_already_admitted"
+    ? data
+    : null;
+}
+
 export async function renewToroExecutionLease(
   supabase: SupabaseClient,
   input: {
@@ -190,6 +564,7 @@ export async function renewToroExecutionLease(
     leaseSeconds?: number;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_renew_execution_lease_v1", {
     p_run_id: input.runId,
     p_worker_id: input.workerId,
@@ -217,6 +592,7 @@ export async function transitionToroExecutionRun(
     errorRedacted?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc("toro_transition_execution_run_v1", {
     p_run_id: input.runId,
     p_worker_id: input.workerId,
@@ -243,6 +619,7 @@ export async function resolveFailedToroExecutionRun(
     retryAt?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_resolve_failed_execution_run_v1",
     {
@@ -280,6 +657,7 @@ export async function completeToroExecutionRun(
     };
   },
 ): Promise<string | null> {
+  assertInternalRuntime();
   const { data, error } = await supabase.rpc(
     "toro_complete_execution_run_v1",
     {
@@ -341,6 +719,7 @@ export async function appendToroExecutionReceipt(
     errorRedacted?: string | null;
   },
 ) {
+  assertInternalRuntime();
   const { data, error } = await supabase
     .from("toro_execution_receipts")
     .insert({

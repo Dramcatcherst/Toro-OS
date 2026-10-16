@@ -180,6 +180,28 @@ export type ToroMcpSearchInput = {
   correlationId?: string;
 };
 
+export type ToroMcpSearchReadLimit = {
+  source: string;
+  limit: number;
+};
+
+export type ToroMcpSearchData = {
+  hits: ToroMcpSearchHit[];
+  coverage: {
+    universe: "bounded_authorized_read";
+    loadedCount: number;
+    examinedCount: number;
+    matchedCount: number;
+    returnedCount: number;
+    resultLimit: number;
+    resultTruncated: boolean;
+    readLimits: readonly ToroMcpSearchReadLimit[];
+    totalAuthorizedCount: null;
+    complete: false;
+    cursorSupported: false;
+  };
+};
+
 export type ToroMcpSearchHit = {
   objectRef: string;
   kind: string;

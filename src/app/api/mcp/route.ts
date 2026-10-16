@@ -1,3 +1,4 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import {
   getToroMcpRuntimeConfig,
   isToroMcpEnabled,
@@ -16,6 +17,8 @@ function unconfiguredResponse() {
 }
 
 async function handle(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   if (!isToroMcpEnabled()) return disabledResponse();
 
   const config = getToroMcpRuntimeConfig();

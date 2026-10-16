@@ -1,4 +1,6 @@
 import "server-only";
+import { isPortalDeployment, isPublicDemo } from "@/lib/server/public-demo";
+import { portalSessionAllowed } from "@/features/auth/portal-session";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -21,6 +23,9 @@ const CANONICAL_ROLES = new Set<ToroCanonicalRole>([
   "AUDITOR",
   "EMPLEADO",
 ]);
+
+export type ToroContextFailure = "auth_identity" | "password_change" | "session_transport" | "session_policy" |
+  "role_transport" | "role_shape" | "organization_membership" | "employee_context";
 
 function normalizeRoleCode(value: unknown): ToroCanonicalRole | null {
   if (typeof value !== "string") return null;
@@ -138,7 +143,9 @@ export async function resolveToroContextWithSupabase(
   supabase: SupabaseClient,
   request: ToroContextRequest = {},
   accessToken?: string,
+  diagnose?: (code: ToroContextFailure) => void,
 ) {
+  if (isPublicDemo()) return null;
   const {
     data: { user },
     error: userError,
@@ -146,7 +153,11 @@ export async function resolveToroContextWithSupabase(
     ? await supabase.auth.getUser(accessToken)
     : await supabase.auth.getUser();
 
-  if (userError || !user) return null;
+  if (userError || !user) { diagnose?.("auth_identity"); return null; }
+  if (isPortalDeployment()) {
+    if (user.app_metadata?.force_password_change) { diagnose?.("password_change"); return null; }
+    if (!await portalSessionAllowed(supabase, diagnose)) return null;
+  }
 
   const mode = request.mode ?? "organization";
 
@@ -178,10 +189,10 @@ export async function resolveToroContextWithSupabase(
     };
   }
 
-  if (roleError) return null;
+  if (roleError) { diagnose?.("role_transport"); return null; }
 
   const rolesByOrg = parseRoleRows(roleRows);
-  if (!rolesByOrg) return null;
+  if (!rolesByOrg) { diagnose?.("role_shape"); return null; }
 
   const availableOrgIds = [...rolesByOrg.keys()].sort();
 
@@ -231,13 +242,13 @@ export async function resolveToroContextWithSupabase(
     };
   }
 
-  if (!orgId) return null;
+  if (!orgId) { diagnose?.("organization_membership"); return null; }
 
   const roles = rolesByOrg.get(orgId);
-  if (!roles?.length) return null;
+  if (!roles?.length) { diagnose?.("organization_membership"); return null; }
 
   const employee = await resolveEmployeeContext(supabase, user.id, orgId);
-  if (employee === undefined) return null;
+  if (employee === undefined) { diagnose?.("employee_context"); return null; }
 
   const membership: ToroResolvedMembership = {
     orgId,
@@ -279,6 +290,7 @@ export async function resolveToroContextWithSupabase(
 export const resolveToroContext: ResolveToroContext = async (
   request: ToroContextRequest = {},
 ) => {
+  if (isPublicDemo()) return null;
   const supabase = await createServerSupabaseClient();
   return resolveToroContextWithSupabase(supabase, request);
 };

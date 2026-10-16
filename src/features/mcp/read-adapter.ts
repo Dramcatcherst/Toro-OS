@@ -10,63 +10,86 @@ import type {
   ToroMcpDecisionItem,
   ToroMcpExecutionReceipt,
   ToroMcpPriorityItem,
+  ToroMcpSearchData,
   ToroMcpSearchHit,
+  ToroMcpSearchReadLimit,
 } from "@/lib/toro-mcp-contracts";
 import type { RiskLevel } from "@/lib/toro-types";
 
 const DEFAULT_LIMIT = 10;
 const MAX_LIMIT = 25;
 
-function boundedLimit(value?: number) {
+export function boundedMcpReadLimit(value?: number) {
   if (!Number.isFinite(value)) return DEFAULT_LIMIT;
   return Math.max(1, Math.min(MAX_LIMIT, Math.trunc(value as number)));
 }
 
+type ProjectionSearchInput = {
+  query: string;
+  kinds?: readonly string[];
+  limit?: number;
+};
+
+export function searchToroProjectionResult(
+  projection: BrainProjection,
+  input: ProjectionSearchInput,
+  readLimits: readonly ToroMcpSearchReadLimit[] = [],
+): ToroMcpSearchData {
+  const query = input.query.trim().toLocaleLowerCase();
+  const kinds = new Set((input.kinds ?? []).map((kind) => kind.trim()).filter(Boolean));
+  const limit = boundedMcpReadLimit(input.limit);
+  const loaded = projection.nodes.filter(
+    (node) => node.scopeRef === projection.context.scopeRef,
+  );
+  const examined = query
+    ? loaded.filter((node) => kinds.size === 0 || kinds.has(node.kind))
+    : [];
+  const matched = examined.filter((node) => [
+    node.label,
+    node.kind,
+    node.summary,
+    node.sourceSystem,
+    node.authoritySystem,
+  ].filter(Boolean).join(" ").toLocaleLowerCase().includes(query));
+
+  const hits = matched.slice(0, limit).map((node) => ({
+    objectRef: node.id,
+    kind: node.kind,
+    label: node.label,
+    scopeRef: node.scopeRef,
+    summary: node.summary,
+    sourceSystem: node.sourceSystem,
+    authoritySystem: node.authoritySystem,
+    freshness: node.freshness,
+    verification: node.verification,
+    canOpen: node.capabilities.canOpen,
+    canInspectEvidence: node.capabilities.canInspectEvidence,
+  }));
+
+  return {
+    hits,
+    coverage: {
+      universe: "bounded_authorized_read",
+      loadedCount: loaded.length,
+      examinedCount: examined.length,
+      matchedCount: matched.length,
+      returnedCount: hits.length,
+      resultLimit: limit,
+      resultTruncated: matched.length > hits.length,
+      readLimits,
+      totalAuthorizedCount: null,
+      complete: false,
+      cursorSupported: false,
+    },
+  };
+}
+
+// Preserve the existing array API for callers that only need hits.
 export function searchToroProjection(
   projection: BrainProjection,
-  input: {
-    query: string;
-    kinds?: readonly string[];
-    limit?: number;
-  },
+  input: ProjectionSearchInput,
 ): ToroMcpSearchHit[] {
-  const query = input.query.trim().toLocaleLowerCase();
-  if (!query) return [];
-
-  const kinds = new Set((input.kinds ?? []).map((kind) => kind.trim()).filter(Boolean));
-  const limit = boundedLimit(input.limit);
-
-  return projection.nodes
-    .filter((node) => kinds.size === 0 || kinds.has(node.kind))
-    .map((node) => {
-      const searchable = [
-        node.label,
-        node.kind,
-        node.summary,
-        node.sourceSystem,
-        node.authoritySystem,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLocaleLowerCase();
-
-      return { node, searchable };
-    })
-    .filter(({ searchable }) => searchable.includes(query))
-    .slice(0, limit)
-    .map(({ node }) => ({
-      objectRef: node.id,
-      kind: node.kind,
-      label: node.label,
-      scopeRef: node.scopeRef,
-      summary: node.summary,
-      sourceSystem: node.sourceSystem,
-      authoritySystem: node.authoritySystem,
-      freshness: node.freshness,
-      verification: node.verification,
-      canOpen: node.capabilities.canOpen,
-      canInspectEvidence: node.capabilities.canInspectEvidence,
-    }));
+  return searchToroProjectionResult(projection, input).hits;
 }
 
 function attentionRisk(priority: "critical" | "high" | "normal"): RiskLevel {
@@ -79,7 +102,7 @@ export function prioritiesFromOwnerAttention(
   attention: OwnerAttentionProjection,
   limit = DEFAULT_LIMIT,
 ): ToroMcpPriorityItem[] {
-  return attention.items.slice(0, boundedLimit(limit)).map((item) => ({
+  return attention.items.slice(0, boundedMcpReadLimit(limit)).map((item) => ({
     objectRef: item.dedupeRef,
     title: item.title,
     reason: [item.kind, item.state].filter(Boolean).join(" · "),
@@ -134,7 +157,7 @@ export function pendingDecisionsFromProjection(
 ): ToroMcpDecisionItem[] {
   return projection.nodes
     .filter((node) => node.kind === "decision" || node.kind === "approval")
-    .slice(0, boundedLimit(limit))
+    .slice(0, boundedMcpReadLimit(limit))
     .map((node) => ({
       decisionRef: node.id,
       title: node.label,
@@ -179,7 +202,7 @@ export function executionReceiptsFromProjection(
     )
     .filter((event) => !input.since || event.occurredAt >= input.since)
     .filter((event) => !input.until || event.occurredAt <= input.until)
-    .slice(0, boundedLimit(input.limit))
+    .slice(0, boundedMcpReadLimit(input.limit))
     .map((event) => ({
       receiptRef: event.eventId,
       scopeRef: event.scopeRef,

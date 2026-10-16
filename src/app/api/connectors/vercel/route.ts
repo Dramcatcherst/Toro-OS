@@ -1,8 +1,11 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 import { readVercelDeployments } from "@/lib/server/read-only-connectors";
 import { resolveVercelRuntimeConfig } from "@/lib/vercel-runtime";
 
 export async function GET() {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const runtime = resolveVercelRuntimeConfig();
   const { projectId, teamId } = runtime;
   const liveRead = await readVercelDeployments({ projectId, teamId });

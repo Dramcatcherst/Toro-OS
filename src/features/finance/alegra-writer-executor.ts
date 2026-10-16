@@ -125,7 +125,7 @@ export async function executeApprovedAlegraIntent(input: AlegraExecutionInput): 
 }
 
 async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWriterExecutionResult> {
-  const approvalDecision = validateAlegraWriteApproval(input.intent, input.approval);
+  const approvalDecision = validateAlegraWriteApproval(input.intent, input.approval, input.now);
   if (!approvalDecision.ok) {
     return {
       ok: false,
@@ -187,7 +187,7 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
     return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "EXECUTION_GATE_UNAVAILABLE" }) };
   }
 
-  const revalidated = validateAlegraWriteApproval(input.intent, input.approval);
+  const revalidated = validateAlegraWriteApproval(input.intent, input.approval, input.now);
   if (!revalidated.ok) {
     return { ok: false, executedProviderMutation: false, admitted: true,
       receipt: blockedReceipt({ ...input, reason: revalidated.reason }) };
@@ -278,7 +278,7 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
     readback = await input.transport.readback({ intent: input.intent, nativeId });
   } catch {
     return { ok: false, executedProviderMutation: true, receipt: { ...blockedReceipt({ ...input,
-      reason: "READBACK_UNAVAILABLE", verificationState: "PROVIDER_STATE_UNKNOWN" }), nativeId } };
+      reason: "READBACK_UNAVAILABLE", verificationState: "PROVIDER_STATE_UNKNOWN" }), nativeId, executionState } };
   }
   const verification = verifyAlegraReadback(input.intent, readback);
   if (readback.nativeId !== nativeId) {

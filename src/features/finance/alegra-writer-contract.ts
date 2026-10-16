@@ -78,12 +78,23 @@ export type AlegraWriteIntent = {
 };
 
 export type AlegraWriteApproval = {
+  /**
+   * Untrusted transport envelope. This object never proves owner authority by
+   * itself; only the atomic database admission may resolve it against the
+   * canonical signer decision produced through the pinned owner-authority RPC.
+   */
   approvalId: string;
+  approvalReceiptId: string;
   actorId: string;
   approvedAt: string;
+  expiresAt: string;
+  decisionId: string;
+  decisionRevision: string;
   payloadHash: string;
   state: "approved" | "rejected" | "expired";
 };
+
+export const ALEGRA_L3_APPROVAL_TTL_MS = 15 * 60 * 1000;
 
 export type AlegraReadback = {
   nativeId: string;
@@ -306,6 +317,7 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
 export function validateAlegraWriteApproval(
   intent: AlegraWriteIntent,
   approval: AlegraWriteApproval | null | undefined,
+  now: string,
 ): { ok: boolean; reason: string } {
   const current = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: intent.payload });
   if (current.payloadHash !== intent.payloadHash || current.idempotencyKey !== intent.idempotencyKey) {
@@ -323,11 +335,47 @@ export function validateAlegraWriteApproval(
     return { ok: false, reason: "APPROVAL_NOT_ACTIVE" };
   }
 
+  const checkedAt = Date.parse(now);
+  const approvedAt = Date.parse(approval.approvedAt);
+  const expiresAt = Date.parse(approval.expiresAt);
+  const decisionRevision = Date.parse(approval.decisionRevision);
+
+  if (
+    !approval.approvalId.trim() ||
+    !approval.approvalReceiptId.trim() ||
+    !approval.actorId.trim() ||
+    !approval.decisionId.trim() ||
+    !approval.decisionRevision.trim() ||
+    !Number.isFinite(checkedAt) ||
+    !Number.isFinite(approvedAt) ||
+    !Number.isFinite(expiresAt) ||
+    !Number.isFinite(decisionRevision) ||
+    expiresAt <= approvedAt ||
+    decisionRevision !== approvedAt
+  ) {
+    return { ok: false, reason: "APPROVAL_BINDING_INVALID" };
+  }
+
+  if (approvedAt > checkedAt) {
+    return { ok: false, reason: "APPROVAL_FROM_FUTURE" };
+  }
+
+  if (expiresAt <= checkedAt) {
+    return { ok: false, reason: "APPROVAL_EXPIRED" };
+  }
+
+  if (expiresAt - approvedAt !== ALEGRA_L3_APPROVAL_TTL_MS) {
+    return { ok: false, reason: "APPROVAL_TTL_INVALID" };
+  }
+
   if (approval.payloadHash !== intent.payloadHash) {
     return { ok: false, reason: "APPROVAL_PAYLOAD_MISMATCH" };
   }
 
-  return { ok: true, reason: "APPROVED_EXACT_PAYLOAD" };
+  return {
+    ok: true,
+    reason: "APPROVAL_ENVELOPE_VALID_PENDING_CANONICAL_ADMISSION",
+  };
 }
 
 export function verifyAlegraReadback(

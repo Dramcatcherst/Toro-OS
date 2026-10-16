@@ -94,10 +94,23 @@ beforeEach(() => {
         if (!rows.has(source)) throw new Error(`Unexpected synthetic source: ${source}`);
         const query: Query = { source, filters: [] };
         queries.push(query);
+        let ordered = false;
         const chain = {
           select: () => chain,
           eq: (key: string, value: unknown) => { query.filters.push([key, value]); return chain; },
+          order: (key: string, options: unknown) => {
+            expect(ordered).toBe(false);
+            expect(key).toBe(({
+              "operations.communication_followups": "followup_key",
+              "operations.obligations": "obligation_key",
+              "finance.invoices": "invoice_key",
+            } as Record<string, string>)[source]);
+            expect(options).toEqual({ ascending: true });
+            ordered = true;
+            return chain;
+          },
           limit: (limit: number) => {
+            expect(ordered).toBe(true);
             query.limit = limit;
             return Promise.resolve({
               data: rows.get(source),

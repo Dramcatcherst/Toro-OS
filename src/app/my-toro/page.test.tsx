@@ -17,6 +17,29 @@ function view(): ToroRealMenuView {
 const render = async () => renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
 beforeEach(() => vi.resetAllMocks());
 
+it("keeps the account read surface without linking to blocked onboarding in hosted mode", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  try {
+    mocks.menu.mockResolvedValue(view());
+    const html = await render();
+    expect(html).toContain('id="mi-cuenta"');
+    expect(html).not.toContain('href="/onboarding"');
+    expect(html).toContain("Mi cuenta y ayuda para entrar");
+  } finally { vi.unstubAllEnvs(); }
+});
+
+it("renders permitted evidence with partial coverage and a local menu return, without original-document links", async () => {
+  const data = view();
+  data.focus = { capability: "projects.status", label: "Proyectos", coverage: "Cobertura parcial; total desconocido",
+    items: [{ title: "Synthetic", evidence: { source: "operations.projects", reportedSource: "No informada",
+      observedAt: "2026-08-01T00:00:00Z", readAt: "2026-10-12T02:00:00Z" } }] };
+  mocks.menu.mockResolvedValue(data); mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+  const html = await render();
+  expect(html).toContain("Evidencia permitida"); expect(html).toContain("total desconocido");
+  expect(html).toContain('href="/my-toro#available-heading"');
+  expect(html).toContain("no certifica su vigencia ni abre documentos originales");
+});
+
 it("does not query or expose the hotel directory without a session", async () => {
   mocks.menu.mockResolvedValue(null);
   const html = await render();
@@ -31,7 +54,7 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   if (reason === "inactive") data.context.membership!.status = "suspended";
   if (reason === "context_choice") data.state = "context_choice_required";
   mocks.menu.mockResolvedValue(data);
-  expect(await render()).not.toContain("Tu hotel, a mano");
+  expect(await render()).not.toContain("Equipo y herramientas");
   expect(mocks.directory).not.toHaveBeenCalled();
 });
 
@@ -54,6 +77,7 @@ it("exposes a reviewed destination directly and groups unavailable actions witho
   expect(html).toContain('href="https://dreamcatcherhotel.kross.travel/" target="_blank" rel="noopener noreferrer"');
   expect(html).toContain("Cobrar QA · pendiente");
   expect(html).not.toContain("focus=payment");
+  expect(html).not.toContain('href="#available-heading"');
   expect(html).not.toContain("Pregúntale a TORO");
 });
 
@@ -71,6 +95,16 @@ it("keeps available consultations and safe alternatives as separate anchors", as
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
 });
 
+it("keeps DreamTeam as reviewed navigation inside the compact Portal without claiming shared login", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({state:"ready",links:[{id:"LINK-086",label:"Ver equipo",url:"https://dream-team-public.vercel.app/dreamteam/ingresar"}]});
+  const html=await render();expect(html).toContain("DreamTeam · TORO People");
+  expect(html).toContain("Equipo · sesión propia");expect(html).toContain("cada servicio conserva su sesión");
+  expect(html).toContain('href="/my-toro/herramientas#guide-catalogue-heading"');
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true});
+  expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
+});
+
 it("keeps a usable submenu reachable even when its parent has no direct consultation", async () => {
   const data = view();
   data.menu = { profileId: "manager", selectionReason: "test", hiddenCapabilityCount: 0,
@@ -83,4 +117,15 @@ it("keeps a usable submenu reachable even when its parent has no direct consulta
   expect(html).toContain('aria-label="Buscar una opción de TORO"');
   expect(html).toContain("Dinero QA</span>");
   expect(html).not.toContain("Dinero QA · pendiente");
+});
+
+it("offers the complete reviewed catalogue without treating email as an access grant", async () => {
+  mocks.menu.mockResolvedValue(view());
+  mocks.directory.mockResolvedValue({state:"unavailable",navigationAuthorized:true,links:[
+    {id:"PORTAL-ALEGRA",label:"Alegra",url:"https://app.alegra.com/"},
+  ]});
+  const html=await render();
+  expect(html.includes('href="https://app.alegra.com/"')).toBe(true);
+  expect(html.includes("Directorio parcial")).toBe(true);
+  expect(html.includes('href="/my-toro/herramientas#guide-catalogue-heading"')).toBe(true);
 });

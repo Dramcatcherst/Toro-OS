@@ -416,19 +416,22 @@ brand:
   generic_replacement_bull_allowed: false
   bullfighting_or_violent_imagery_allowed: false
   current_master_logo:
-    library_path: /TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png
+    asset_key: toro_logo_master_v1
+    authority: docs/product/TORO_BRAND_CONTRACT.md
+    library_path: /TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png
     dimensions: 1536x1536
-    sha256: 8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98
-  current_master_isotype:
+    sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
+  historical_isotype_reference:
     library_path: /TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png
     dimensions: 1536x1536
     sha256: 15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747
+    status: historical_filename_reference_not_an_additional_current_master
   legacy_source_artwork:
     repository: Dramcatcherst/toro-os-v88-new
     asset: public/assets/toro-azul-logo.jpg
     registry_entry: BRAND-005
     status: historical_source_reference
-  brand_manifest: /TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
+  historical_brand_manifest: /TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md
   palette_approximation_from_current_master:
     deep_navy: "#020C1E"
     midnight: "#010511"
@@ -1162,6 +1165,21 @@ readiness:
 # Declarative index into the existing General Plan and work items, not runtime activation.
 initiative_bindings:
   visual_commerce_dreamcatcher:
+    document_media_policy:
+      updated_on: "2026-10-13"
+      status: proposed_for_gradual_adoption_not_runtime_enforced
+      canonical_contract: docs/product/TORO_STUDIO_V1.md
+      contract_sections: "10-12"
+      new_outputs_require_human_readable_names: true
+      original_identity_and_bytes_preserved: true
+      screenshots_are_not_property_photography: true
+      factual_identity_precedes_quality_ranking: true
+      architectural_fidelity_required: true
+      material_defects_not_hidden_by_marketing_edits: true
+      per_derivative_and_destination_approval_required: true
+      reuse_existing_media_registries_and_assignments: true
+      global_chatgpt_settings_changed_by_this_registration: false
+      editing_or_publication_activated_by_this_registration: false
     updated_on: "2026-09-23"
     kind: capability_with_business_pilot
     general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
@@ -1360,6 +1378,24 @@ guest_service_recovery_prepare_only:
     - authorized_guest_followup
 
 openclaw_runtime_evidence:
+  whatsapp_capture_and_archive:
+    owner_directive_date: "2026-10-13"
+    status: authorized_scope_runtime_and_restore_unverified
+    contract: docs/product/TORO_COMMS_V1.md
+    contract_section: "19"
+    runbook: docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md
+    existing_issue_refs: [122, 170, 209]
+    reception_alias: dreamcatcher_reception_whatsapp
+    personal_alias: mauricio_personal_whatsapp
+    complete_endpoints_in_public_contract: false
+    account_capture_is_not_sender_allowlist: true
+    personal_work_isolation_required: true
+    reader_does_not_grant_send_or_business_write: true
+    history_coverage_requires_observed_evidence: true
+    binding_registry_health_drift_requires_reconciliation: true
+    journal_and_attachments_have_separate_checkpoints: true
+    backup_requires_scope_acl_and_restore_test: true
+    global_settings_or_runtime_activated_here: false
   canonical_status: configured_unverified
   evaluator: src/features/openclaw/runtime-evidence.ts
   template: data/openclaw_runtime_evidence_template_v1.json

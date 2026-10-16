@@ -34,6 +34,7 @@ it.each([false, true])("uses real directory context and denies ambiguous org wit
   const view = await loadHotelDirectory();
   expect(view.state).toBe(multiOrg ? "denied" : "ready");
   expect(rpc).toHaveBeenCalledTimes(multiOrg ? 0 : 1);
+  if (!multiOrg) expect(rpc).toHaveBeenCalledWith("dreamcatcher_tool_links_v1");
   expect(context?.allowedTools).toEqual([]);
   expect(schema).not.toHaveBeenCalled();
 });

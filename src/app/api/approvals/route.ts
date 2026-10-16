@@ -1,9 +1,12 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextRequest, NextResponse } from "next/server";
 import { auditSeed } from "@/lib/approval-store";
 import { applyApprovalUpdate, getApprovalLedger, persistApprovalLedger } from "@/lib/server/approval-ledger";
 import type { ApprovalState } from "@/lib/toro-types";
 
 export async function GET() {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const ledger = await getApprovalLedger();
 
   return NextResponse.json({
@@ -19,6 +22,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const body = await request.json().catch(() => ({}));
   const approvalId = typeof body.id === "string" ? body.id : null;
   const requestedState = body.state as ApprovalState | undefined;

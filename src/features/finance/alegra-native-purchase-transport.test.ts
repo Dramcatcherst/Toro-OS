@@ -70,7 +70,7 @@ describe("Native Alegra purchase transport candidate", () => {
   it("records a preflight denial without claiming provider dispatch", async () => {
     const store = fixture(); store.authorize.mockResolvedValue(false); const prepared = intent();
     const persist = vi.fn(async () => "fixture-blocked-receipt");
-    const result = await executeApprovedAlegraIntent({ intent: prepared, approval: { approvalId: "fixture-approval", actorId: "fixture-owner", approvedAt: now, payloadHash: prepared.payloadHash, state: "approved" },
+    const result = await executeApprovedAlegraIntent({ intent: prepared, approval: { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z", decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash, state: "approved" },
       duplicateDecision: { clear: true, state: "CLEAR", exactMatches: [], probableMatches: [], sourceStates: [], reasons: [] }, transport: store.transport,
       now, writerEnabled: true, gate: { beforeDispatch: async () => true, persistReceipt: persist } });
     expect(result.executedProviderMutation).toBe(false); expect(result.receipt.durableReceiptId).toBe("fixture-blocked-receipt");
@@ -156,7 +156,7 @@ describe("Native Alegra purchase transport candidate", () => {
   it("creates once and compares a separately retrieved native bill through the existing executor", async () => {
     const store = fixture(); const prepared = intent();
     const result = await executeApprovedAlegraIntent({ intent: prepared,
-      approval: { approvalId: "fixture-approval", actorId: "fixture-owner", approvedAt: now, payloadHash: prepared.payloadHash, state: "approved" },
+      approval: { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z", decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash, state: "approved" },
       duplicateDecision: { clear: true, state: "CLEAR", exactMatches: [], probableMatches: [], sourceStates: [], reasons: [] },
       transport: store.transport, now, writerEnabled: true, gate: { beforeDispatch: async () => true, persistReceipt: async () => "fixture-receipt" } });
     expect(result.ok).toBe(true); expect(result.receipt.verified).toBe(true);

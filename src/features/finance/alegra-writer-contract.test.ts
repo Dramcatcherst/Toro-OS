@@ -74,9 +74,9 @@ describe("TORO Alegra Writer v3 contract", () => {
 
   it("rejects mutation of the intent after its approval hash was calculated", () => {
     const prepared = prepareAlegraWriteIntent(baseInput);
-    const granted = { approvalId: "fixture-approval", actorId: "fixture-owner", approvedAt: "2026-10-11T00:00:00Z", state: "approved" as const, payloadHash: prepared.payloadHash };
+    const granted = { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: "2026-10-11T00:00:00Z", expiresAt: "2026-10-11T00:15:00Z", decisionId: "fixture-decision", decisionRevision: "2026-10-11T00:00:00Z", state: "approved" as const, payloadHash: prepared.payloadHash };
     prepared.payload.total = "999.00";
-    expect(validateAlegraWriteApproval(prepared, granted).ok).toBe(false);
+    expect(validateAlegraWriteApproval(prepared, granted, "2026-10-11T00:05:00Z").ok).toBe(false);
   });
 
   it("creates deterministic payload, duplicate and idempotency hashes", () => {
@@ -114,15 +114,19 @@ describe("TORO Alegra Writer v3 contract", () => {
     const intent = prepareAlegraWriteIntent(baseInput);
     const approval = {
       approvalId: "approval-1",
+      approvalReceiptId: "approval-receipt-1",
       actorId: "owner-1",
       approvedAt: "2026-10-09T08:00:00Z",
+      expiresAt: "2026-10-09T08:15:00Z",
+      decisionId: "decision-1",
+      decisionRevision: "2026-10-09T08:00:00Z",
       payloadHash: intent.payloadHash,
       state: "approved" as const,
     };
 
-    expect(validateAlegraWriteApproval(intent, approval)).toEqual({
+    expect(validateAlegraWriteApproval(intent, approval, "2026-10-09T08:05:00Z")).toEqual({
       ok: true,
-      reason: "APPROVED_EXACT_PAYLOAD",
+      reason: "APPROVAL_ENVELOPE_VALID_PENDING_CANONICAL_ADMISSION",
     });
 
     const changed = prepareAlegraWriteIntent({
@@ -134,7 +138,7 @@ describe("TORO Alegra Writer v3 contract", () => {
       },
     });
 
-    expect(validateAlegraWriteApproval(changed, approval)).toEqual({
+    expect(validateAlegraWriteApproval(changed, approval, "2026-10-09T08:05:00Z")).toEqual({
       ok: false,
       reason: "APPROVAL_PAYLOAD_MISMATCH",
     });
@@ -142,10 +146,29 @@ describe("TORO Alegra Writer v3 contract", () => {
 
   it("requires explicit approval even when validation passes", () => {
     const intent = prepareAlegraWriteIntent(baseInput);
-    expect(validateAlegraWriteApproval(intent, null)).toEqual({
+    expect(validateAlegraWriteApproval(intent, null, "2026-10-09T08:05:00Z")).toEqual({
       ok: false,
       reason: "APPROVAL_REQUIRED",
     });
+  });
+
+  it.each([
+    ["2026-10-09T08:10:00Z", "2026-10-09T08:25:00Z", "2026-10-09T08:05:00Z", "APPROVAL_FROM_FUTURE"],
+    ["2026-10-09T08:00:00Z", "2026-10-09T08:15:00Z", "2026-10-09T08:15:00Z", "APPROVAL_EXPIRED"],
+    ["2026-10-09T08:00:00Z", "2026-10-09T08:16:00Z", "2026-10-09T08:05:00Z", "APPROVAL_TTL_INVALID"],
+  ])("rejects invalid L3 approval time window %#", (approvedAt, expiresAt, checkedAt, reason) => {
+    const intent = prepareAlegraWriteIntent(baseInput);
+    expect(validateAlegraWriteApproval(intent, {
+      approvalId: "approval-time-window",
+      approvalReceiptId: "receipt-time-window",
+      actorId: "owner-time-window",
+      approvedAt,
+      expiresAt,
+      decisionId: "decision-time-window",
+      decisionRevision: approvedAt,
+      payloadHash: intent.payloadHash,
+      state: "approved",
+    }, checkedAt)).toEqual({ ok: false, reason });
   });
 
   it("detects material readback mismatch instead of claiming success", () => {
