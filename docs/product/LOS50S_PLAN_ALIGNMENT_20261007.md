@@ -77,7 +77,7 @@ Los candidatos son una petición expresa del dueño, nueva evidencia vinculada, 
 - **L50-EVT-29 — Superprompt puntual:** Dejar como máximo120palabras con un único NEXT y el evento o autorización que permitiría retomarlo; nunca ordenar reactivación automática.
 - **L50-EVT-30 — Estado honesto de disparadores:** Distinguir PAUSED, perfil preparado, evento conectado y recepción probada. Aquí no hay un trigger externo conectado por guardar este perfil.
 
-Son reglas documentadas y guardadas en un perfil pausado: no se cuentan como treinta funciones nuevas, resultados de negocio o disparadores operativos. El [contrato transversal de continuidad](TORO_AUTOMATION_CONTINUITY_V1.md) conserva el mismo Plan General y las autoridades existentes; su ampliación sigue en PR311.
+Son reglas documentadas y guardadas en un perfil pausado: no se cuentan como treinta funciones nuevas, resultados de negocio o disparadores operativos. El [contrato transversal de continuidad propuesto](https://github.com/Dramcatcherst/Toro-OS/pull/311) conserva el mismo Plan General y las autoridades existentes; su ampliación sigue en PR311.
 
 **Siguiente instrucción:** mantener PAUSED. Cuando Mauricio pida un trabajo concreto, continuar solo el NEXT propio de Los50 con el checkpoint y evidencia pertinentes; conservar identidad, consentimiento y aislamiento de LOS50K-DATA-COMPLETE como aceptación funcional pendiente. Activar modo viaje o conectar eventos es una decisión posterior, con periodo, transporte, permisos y recibo real. Ningún perfil genérico puede reactivar este caso.
 
