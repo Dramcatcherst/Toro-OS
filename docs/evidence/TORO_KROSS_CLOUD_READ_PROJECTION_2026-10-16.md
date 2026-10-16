@@ -1,9 +1,10 @@
 # TORO — Kross cloud read projection — 2026-10-16
 
 **Scope:** Dreamcatcher Hotel / TORO Same-Brain  
-**Cutoff:** 2026-10-16 01:07 America/Costa_Rica  
-**Branch:** `codex/kross-cloud-read-20261016` from `75ebb7e`  
-**Result:** LOCAL IMPLEMENTATION VERIFIED / HOSTED INGESTION AND WHATSAPP E2E NOT ACTIVE
+**Original cutoff:** 2026-10-16 01:07 America/Costa_Rica
+**Latest material cutoff:** 2026-10-16 03:15 America/Costa_Rica
+**Current branch:** `codex/toro-supermenu-20261016`
+**Result:** LOCAL DATED FALLBACK ACTIVE / HOSTED INGESTION, LIVE KROSS AND POST-CHANGE WHATSAPP E2E NOT VERIFIED
 
 ## Decision
 
@@ -115,6 +116,45 @@ The current Supabase security advisor also reports three anonymous-callable and 
 
 Before deployment, reversal is one local Git revert/removal of this branch's commit. The implementation creates no migration, does not change Supabase data, does not write to Kross, does not send WhatsApp messages and does not alter reservations, prices, availability, permissions or billing.
 
+## Material addendum — dated XLSX fallback activated at 03:15 CR
+
+This addendum supersedes only the earlier statements that no inspectable OpenClaw runtime or usable dated owner projection existed. It does not promote the data to live Kross, availability, pricing, payments, breakfast fulfillment or the Supabase current-state mirror.
+
+### HECHO
+
+- The existing owner-only OpenClaw snapshot was updated atomically at `/home/personal/.config/toro-whatsapp/kross-private-snapshot.json`.
+- Source artifact: `C:\Users\PERSONAL\Downloads\kross reservas 2026.xlsx`, SHA-256 `6ba860832dbe6642fe5b9e32cb1d2e6db2e597ea7d6c67fe5e734a8dc7736da3`, 1,195 source rows and attributed cutoff `2026-10-15T10:11:14-06:00`.
+- The bounded operational projection contains 88 unique, non-cancelled reservations whose departure is on or after 2026-10-16 and whose PMS status is one of: pending payment, new/review, confirmed/ready for check-in, pay at check-in, check-in or pending extras.
+- The projection preserves ongoing stays: nine selected reservations started before the cutoff date. It excludes cancelled and checked-out rows.
+- Snapshot hash is `3fdd89b97438c60ff7e8b0a738ad5c0f3e9f55719f98675dc5f7c346494636db`; size 145,360 bytes; file mode 0600; parent directory mode 0700; owner `personal`; `sourceIsLive=false`.
+- The current reader's numeric identifier constraint is handled without losing provenance: the operational ID uses the unique numeric prefix and the exact Kross source number remains in the private details/provenance.
+- The XLSX does not contain guest phone/email, currency, breakfast inclusion, amount paid or payment status. These remain unknown/null. Collected or retained commissions were not converted into guest payments.
+- The previous operations block remains semantically identical and keeps its September timestamps. It was not relabelled as October housekeeping, breakfast, maintenance or reception evidence.
+- The WhatsApp agent instruction now requires `toro_kross_snapshot_read` for owner reservation/guest/movement/room/total questions. When a requested live read fails, it must consult the dated snapshot and answer `RESPALDO FECHADO / ESTADO ACTUAL NO CONFIRMADO` instead of returning a generic denial when dated data exists.
+- No Kross write, reservation change, price/availability claim, guest message, push, PR, deployment or Supabase mutation occurred.
+
+### Verification
+
+- Converter unit tests: 4/4 PASS, including active/future selection, exact source-ID retention, unknown-field preservation and source-hash rejection.
+- Candidate pre-publication check: PASS; 88/88 paginated; seven configured non-owner senders denied; zero external messages.
+- Atomic refresh: `UPDATED`, 88 reservations, dated cutoff and non-live flag preserved.
+- Installed snapshot readback: PASS; hash equals the validated candidate; `.previous.json` equals the prior active hash.
+- Owner-only local read for 2026-10-16: 14 matching dated records, complete first page, `freshness=red`, `sourceIsLive=false`; exact numeric-ID lookup also passed.
+- An isolated CLI agent run was intentionally non-delivering and did not inherit a verified WhatsApp-channel identity, so the tool correctly returned `Capability unavailable`. This is not a post-change WhatsApp E2E acceptance result.
+
+### Reversal
+
+- Prior snapshot is retained both as `kross-private-snapshot.previous.json` and as the immutable rollback copy `kross-private-snapshot.rollback-b6dac7847e1d98387c2687c6cc5143d2dd5765f541ac4c4196093dbd0c34b3b9.json`; both hash to `b6dac7847e1d98387c2687c6cc5143d2dd5765f541ac4c4196093dbd0c34b3b9` and pass the snapshot checker.
+- The prior WhatsApp agent instruction is retained at `/home/personal/.openclaw/backups/kross-xlsx-snapshot-20261016/AGENTS.before.md`, hash `6b96b3ad0f1641ebd6ead0f3b408b9a094d287d0a194e211e4aa856ddee529a9`.
+- Snapshot rollback must use an atomic staged rename after verifying the expected active hash; the refresh command must not be used because it correctly rejects an older cutoff.
+
+### BLOQUEADO / DESCONOCIDO
+
+- This is still a dated local fallback and depends on a newly supplied export for later updates. It does not meet the requirement to run independently of Mauricio's computer.
+- Supabase still has no verified Kross import run or current safe reservation rows from this artifact.
+- No post-change inbound WhatsApp message, generated reply and delivery receipt have yet demonstrated the full owner-channel round trip.
+- Payments, breakfast execution, current physical presence, live prices and live availability remain unavailable from this XLSX.
+
 ## NEXT — one unit only
 
-`KROSS-CLOUD-MIRROR-ACTIVATION-01`: obtain and verify one official authorized read-only Kross transport, then deploy one server-side writer into the existing Supabase mirror with secret isolation, one-property scope, cursor, idempotency, lease/fencing, quarantine, six-hour health gate, receipts and rollback. Completion requires one fresh direct Kross snapshot, safe-view readback, one owner-only WhatsApp round trip through `get_hotel_current_state`, duplicate replay denial, stale-source denial and zero Kross writes. Price/availability remains a separate acceptance gate.
+`KROSS-WHATSAPP-INBOUND-ACCEPTANCE-01`: Mauricio sends one owner-channel test asking for the reservation count on 2026-10-16 without guest names. Observe `toro_kross_snapshot_read`, verify the reply says 14 dated matches with cutoff 2026-10-15, `sourceIsLive=false` and numbered continuation options, then capture the provider delivery receipt without exposing the phone number or guest data. Do not alter Kross, send guest messages or claim live availability. After this gate, resume the official server-to-server Kross → existing Supabase mirror activation.
