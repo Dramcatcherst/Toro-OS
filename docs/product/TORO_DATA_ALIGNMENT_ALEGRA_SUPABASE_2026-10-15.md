@@ -266,9 +266,10 @@ La proyección ejecutable está en [`data/toro_fin01_action_plan_2026_v1.json`](
 ### 10.7 Estado de aplicación de esta unidad
 
 - `HECHO`: contrato ampliado, programa priorizado, proyección estructurada y prueba estática creados; Plan General enlazado.
-- `PREPARADO`: paquete de decisión RLS y secuencia de conciliación; sin SQL aplicado.
+- `HECHO · PREPARACIÓN RLS`: 12/12 tablas inventariadas con dueño funcional, rol efectivo, alcance, dependencias, consumidor documentado/observable, tratamiento y prueba positiva/negativa. `anon` y `authenticated` tienen cero privilegios efectivos; `service_role` conserva acceso completo únicamente en las diez tablas `finance`; las dos tablas `integrations` permanecen solo para `postgres`. No se encontraron vistas, funciones de base, triggers externos ni código runtime directo dependiente.
+- `PREPARADO_NOT_APPLIED`: [`toro_fin01_rls_inventory_2026_v1.json`](../../data/toro_fin01_rls_inventory_2026_v1.json), SQL de aplicación/rollback en `supabase/drafts/20261015_fin01_server_only_rls_v1*.sql` y pruebas en `tests/toro-fin01-rls-draft.test.mjs`. La decisión es activar RLS sin políticas, grants, RPC, `FORCE RLS` ni cambios de datos; los prechecks abortan ante drift.
 - `BLOQUEADO`: cambios en RLS, asientos, facturas, pagos, impuestos, cierres y permisos hasta su gate exacto.
-- `DESCONOCIDO`: consumidor efectivo de cada tabla observada sin RLS y política mínima compatible; debe resolverse antes de escribir SQL final.
+- `DESCONOCIDO`: puede existir un cliente externo privilegiado no versionado; el paquete conserva sus grants y BYPASSRLS, pero la aplicación exige lectura fresca y aprobación humana. No hubo motor PostgreSQL aislado disponible; la validación local es estructural/contractual y no sustituye una ejecución de ensayo o el readback posterior.
 - `NO ACTIVADO`: heartbeat financiero existente permanece pausado; writer Alegra permanece apagado.
-- `REVERSIÓN`: revertir únicamente el commit documental/proyección; no hay datos ni configuración externa que restaurar.
-- `SIGUIENTE ÚNICA`: inventariar consumidores/grants/policies de las 12 tablas observadas sin RLS y producir el diff SQL revisable con pruebas y rollback; detenerse antes de aplicar.
+- `REVERSIÓN`: rollback SQL exacto preparado para restaurar RLS deshabilitado solo si no existen políticas o grants nuevos; para esta unidad local, revertir únicamente el delta documental/código porque no hubo mutación remota.
+- `SIGUIENTE ÚNICA`: ejecutar `FIN01-P0-CUR-01`: determinar moneda base/de cuenta y regla de tipo de cambio por evento y fecha, conservar CRC/USD originales y producir una matriz aprobable por contador; no modificar Alegra ni registros históricos.

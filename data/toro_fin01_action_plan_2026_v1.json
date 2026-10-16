@@ -16,22 +16,28 @@
   "overallStatus": "PENDING_EVIDENCE",
   "externalWritesEnabled": false,
   "automationState": "PAUSED",
-  "singleNextTaskId": "FIN01-P0-SEC-01",
+  "singleNextTaskId": "FIN01-P0-CUR-01",
   "tasks": [
     {
       "id": "FIN01-P0-SEC-01",
       "priority": "P0",
-      "state": "NEXT",
+      "state": "DONE",
       "owner": "TORO Systems + FIONA",
       "outcome": "Prepare least-privilege RLS remediation for the 12 observed finance/integration tables.",
-      "evidence": ["Supabase security advisory 2026-10-15"],
+      "evidence": [
+        "Supabase security advisory 2026-10-15",
+        "data/toro_fin01_rls_inventory_2026_v1.json",
+        "supabase/drafts/20261015_fin01_server_only_rls_v1.sql",
+        "supabase/drafts/20261015_fin01_server_only_rls_v1_rollback.sql",
+        "tests/toro-fin01-rls-draft.test.mjs"
+      ],
       "gate": "Exact table, consumer, grant and policy inventory plus owner approval before apply.",
       "doneWhen": ["12/12 tables inventoried", "allow and deny tests specified", "rollback specified", "no SQL applied"]
     },
     {
       "id": "FIN01-P0-CUR-01",
       "priority": "P0",
-      "state": "QUEUED",
+      "state": "NEXT",
       "owner": "FIONA + accountant",
       "outcome": "Resolve CRC/USD default and preserve original currency and dated FX per event.",
       "evidence": ["Alegra currency endpoints conflict at cutoff"],

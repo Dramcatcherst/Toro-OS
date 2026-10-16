@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0",
+  "inventoryId": "FIN01-P0-SEC-01-RLS-20261015",
+  "asOf": "2026-10-15",
+  "projectId": "abtyrbqlqbsastmridzp",
+  "status": "PREPARED_NOT_APPLIED",
+  "remoteMutationPerformed": false,
+  "decision": {
+    "strategy": "ENABLE_RLS_WITHOUT_POLICIES",
+    "reason": "No anon or authenticated role has effective table privileges. Current direct access is limited to PostgreSQL roles that bypass RLS, so default-deny RLS adds a future safety barrier without inventing end-user access.",
+    "applyRequires": [
+      "human approval of the exact SQL",
+      "fresh precondition readback",
+      "review of any consumer or grant drift",
+      "post-apply positive and negative readback"
+    ],
+    "notIncluded": [
+      "new policies",
+      "new grants",
+      "RPC creation",
+      "FORCE ROW LEVEL SECURITY",
+      "data changes",
+      "production application"
+    ]
+  },
+  "roleBaseline": {
+    "anon": { "bypassRls": false },
+    "authenticated": { "bypassRls": false },
+    "service_role": { "bypassRls": true },
+    "postgres": { "bypassRls": true }
+  },
+  "tables": [
+    {
+      "relation": "finance.daily_close_runs",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["org_id", "property_id"],
+      "estimatedLiveRows": 61,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Saved close draft design; runtime implementation not found in the inspected repository.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.daily_close_items",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["close_run_id"],
+      "estimatedLiveRows": 0,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Child records for saved close drafts; runtime implementation not found in the inspected repository.",
+      "dependencies": ["FK close_run_id -> finance.daily_close_runs.id ON DELETE CASCADE"],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.daily_close_questions",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["close_run_id"],
+      "estimatedLiveRows": 4,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Exception questions for saved close drafts; runtime implementation not found in the inspected repository.",
+      "dependencies": ["FK close_run_id -> finance.daily_close_runs.id ON DELETE CASCADE"],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.subscription_reviews",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["org_id"],
+      "estimatedLiveRows": 12,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Finance review data; no direct code, view or database function consumer found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.payflow_rules",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": [],
+      "estimatedLiveRows": 19,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Global payflow control rules; no direct code, view or database function consumer found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; keep the table server-only because it has no tenant scope column.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.payflow_write_receipts",
+      "owner": "TORO Control Plane + Finance",
+      "scopeColumns": [],
+      "estimatedLiveRows": 4,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Referenced as the finance-domain receipt in the Control Plane contract; no direct runtime consumer found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; keep the receipt table server-only because it has no tenant scope column.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.module_alerts",
+      "owner": "TORO Finance + Comms",
+      "scopeColumns": ["org_id"],
+      "estimatedLiveRows": 40,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Documented compatibility input for alert delivery; it is not the master queue.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve server-only compatibility access.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.intake_batches",
+      "owner": "TORO Finance + Comms",
+      "scopeColumns": ["org_id"],
+      "estimatedLiveRows": 0,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Governed document-intake batch concept; no direct code, view or database function consumer found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.management_budget_scenarios",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["org_id", "property_id"],
+      "estimatedLiveRows": 2,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Management-budget scenario store; no direct code, view or database function consumer found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "finance.management_budget_lines",
+      "owner": "TORO Finance/FIONA",
+      "scopeColumns": ["scenario_id"],
+      "estimatedLiveRows": 22,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres", "service_role"],
+      "documentedConsumer": "Child lines for management-budget scenarios; no direct runtime consumer found.",
+      "dependencies": ["FK scenario_id -> finance.management_budget_scenarios.id ON DELETE CASCADE"],
+      "proposedTreatment": "Enable RLS; create no policies; preserve existing grants.",
+      "positiveTest": "service_role retains SELECT and write access through BYPASSRLS.",
+      "negativeTest": "anon and authenticated remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "integrations.mail_ingest_census",
+      "owner": "TORO Comms + Systems",
+      "scopeColumns": ["mailbox"],
+      "estimatedLiveRows": 1932,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres"],
+      "documentedConsumer": "Privileged mail-ingest process outside the inspected repository; no direct database function or view dependency found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve postgres-only access and do not grant service_role.",
+      "positiveTest": "postgres retains access through BYPASSRLS.",
+      "negativeTest": "anon, authenticated and service_role remain unable to SELECT, INSERT, UPDATE or DELETE."
+    },
+    {
+      "relation": "integrations.mail_ingest_checkpoints",
+      "owner": "TORO Comms + Systems",
+      "scopeColumns": ["mailbox"],
+      "estimatedLiveRows": 4,
+      "currentRls": false,
+      "currentPolicies": [],
+      "effectiveConsumers": ["postgres"],
+      "documentedConsumer": "Privileged mail-ingest checkpoint process outside the inspected repository; no direct database function or view dependency found.",
+      "dependencies": [],
+      "proposedTreatment": "Enable RLS; create no policies; preserve postgres-only access and do not grant service_role.",
+      "positiveTest": "postgres retains access through BYPASSRLS.",
+      "negativeTest": "anon, authenticated and service_role remain unable to SELECT, INSERT, UPDATE or DELETE."
+    }
+  ],
+  "evidence": {
+    "databaseMetadata": [
+      "12/12 relations exist",
+      "12/12 have RLS disabled and zero policies",
+      "anon and authenticated have zero effective table privileges on 12/12",
+      "service_role has full effective privileges on 10 finance tables and no privileges on 2 integrations tables",
+      "postgres and service_role have BYPASSRLS; anon and authenticated do not",
+      "zero dependent views, zero dependent database functions and zero non-internal triggers were found"
+    ],
+    "repositorySearch": "Only three documentation references were found; no direct runtime or migration consumer for these relation names was found in the inspected repository and parent project tree.",
+    "limitations": [
+      "PostgreSQL statistics are cumulative estimates, not a current row-count assertion.",
+      "An external privileged client can exist without a repository reference; the SQL therefore preserves privileged grants and fails on baseline drift.",
+      "No production DDL or data operation was executed."
+    ]
+  }
+}
