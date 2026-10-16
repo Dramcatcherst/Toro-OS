@@ -16,7 +16,7 @@
   "overallStatus": "PENDING_EVIDENCE",
   "externalWritesEnabled": false,
   "automationState": "PAUSED",
-  "singleNextTaskId": "FIN01-P0-CUR-01",
+  "singleNextTaskId": "FIN01-P0-SCOPE-01",
   "tasks": [
     {
       "id": "FIN01-P0-SEC-01",
@@ -37,17 +37,25 @@
     {
       "id": "FIN01-P0-CUR-01",
       "priority": "P0",
-      "state": "NEXT",
+      "state": "DONE",
       "owner": "FIONA + accountant",
-      "outcome": "Resolve CRC/USD default and preserve original currency and dated FX per event.",
-      "evidence": ["Alegra currency endpoints conflict at cutoff"],
+      "outcome": "Document CRC as the observed/corroborated base, USD as additional, all 18 account evidence states, and dated FX semantics while preserving originals.",
+      "completionScope": "DOCUMENTED_MATRIX_ONLY_PREPARED_NOT_APPLIED",
+      "evidence": [
+        "Alegra company configuration observed 2026-09-19",
+        "Alegra live currency and account catalogs read 2026-10-15 through both current links",
+        "data/toro_fin01_currency_policy_2026_v1.json",
+        "docs/product/TORO_FIN01_CURRENCY_AND_FX_POLICY_2026-10-15.md",
+        "tests/toro-fin01-currency-policy.test.mjs",
+        "docs/evidence/TORO_FIN01_CURRENCY_POLICY_RECEIPT_2026-10-15.md"
+      ],
       "gate": "Accountant validates fiscal event and exchange-rate semantics.",
-      "doneWhen": ["base currency documented", "account currency documented", "no implicit 500 FX", "historical records unchanged"]
+      "doneWhen": ["base currency documented with confidence and conflict", "all account currency evidence states documented", "no implicit 500 FX", "historical records unchanged"]
     },
     {
       "id": "FIN01-P0-SCOPE-01",
       "priority": "P0",
-      "state": "QUEUED",
+      "state": "NEXT",
       "owner": "FIONA + Mauricio",
       "outcome": "Separate company, business, property, cost center, person and related-party scopes.",
       "evidence": ["Mixed cost-center and equity labels in Alegra"],
