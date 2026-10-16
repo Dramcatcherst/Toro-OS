@@ -1346,6 +1346,23 @@ Canonical structured references:
 
 ---
 
+## Portafolio integrado, conexiones y builds — dirección de organización 15/10/2026
+
+Mauricio autoriza organizar las iniciativas antiguas y nuevas dentro de este único Plan, conservar información y relacionar proyectos, módulos, documentos y builds. Se adopta una casa administrativa por iniciativa y conexiones funcionales con fuente/fecha; compartir una capacidad no fusiona ámbitos ni contabilidades.
+
+Las cinco vistas son **TORO, Dreamcatcher, Patrimonio, Productos y Personal**. Son filtros de navegación, no cinco proyectos raíz nuevos. **Por clasificar** es transversal. operations.projects conserva identidad, jerarquía, estados y merged_into_project_key; las fichas de inventario y recursos digitales se referencian sin convertirlos en nuevos proyectos o reactivar históricos/incubadoras.
+
+Contrato subordinado: [Estructura del portafolio y mapa de conexiones](TORO_PORTFOLIO_RELATIONSHIP_MAP_V1.md). Reutiliza toro_brain_taxonomy_v1 y los registros/directorios existentes. El mapa completo privado se identifica por toro_portfolio_relationship_map_v1 en el ámbito personal existente; el índice empresarial sanitizado queda en portfolio_scope_alignment_2026_09_v1. Ningún payload privado se publica en GitHub ni se proyecta por el lector hotelero.
+
+Un build es un artefacto subordinado: proveedor/configuración → deployment/versión → fuente/SHA cuando existe → entorno/URL → evidencia. Conservar **último observado**, **producción servida** y **candidato de reversión** separados. Un preview reciente no sustituye producción; un nombre de proyecto no prueba su función; READY no acredita aceptación funcional. Las relaciones por nombre permanecen inferidas y las no resueltas quedan visibles para clasificación.
+
+CURRENT es organización de metadatos y evidencia, con recibos de guardado propios; no interfaz ni permisos nuevos. TARGET: 10 Proyectos ofrece lista completa autorizada y detalle; 00 Cerebro muestra el vecindario de la selección; 11 Sistemas muestra recursos/builds; Herramientas reutiliza los enlaces revisados. La misma proyección sirve las superficies, sin grafo maestro o base paralelos.
+
+NEXT: proyector estricto sobre filas ya autorizadas y pruebas de conservación/alias/ciclos; después reader server-only/RPC aditiva con autorización por objeto y ambos extremos, paginación y cobertura explícita; luego UI compacta con componentes actuales. La organización personal inactiva/sin membresía permanece cerrada hasta su gate vigente. visibility/audience no son ACL y un vínculo jamás concede acceso. Preservar los escritores existentes de Portal/Personal y consolidación bajo la línea técnica ya abierta.
+
+Esta dirección no ejecuta bajas, fusiones destructivas, cambios de permisos, migraciones, mensajes, operaciones comerciales o automatizaciones. Las fusiones conservan alias/ID/origen, recuperan información única y requieren paridad/recuperación antes de cualquier retiro.
+
+
 # 13. Repository/project disposition
 
 ## Canonical portfolio hierarchy — verified 2026-09-22
