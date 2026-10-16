@@ -7,6 +7,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   canViewOwnerAttention,
 } from "@/features/attention/owner-attention";
+import { canonicalScopeRefForOrgId } from "@/features/brain/canonical-read";
 import {
   loadOwnerAttentionProjection,
   loadOwnerAttentionProjectionWithClient,
@@ -14,6 +15,11 @@ import {
 import { CANONICAL_BRAIN_SEARCH_READ_LIMITS } from "@/features/brain/canonical-projection";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
+import {
+  currentCostaRicaDate,
+  loadKrossCurrentStateWithClient,
+  type KrossCurrentStateMovement,
+} from "@/features/kross/current-state-read";
 import {
   boundedMcpReadLimit,
   businessStatusFromProjection,
@@ -30,10 +36,11 @@ import {
 } from "@/lib/server/brain-projection";
 import {
   TORO_MCP_CONTRACT_VERSION,
-  type ToroMcpCoreToolName,
   type ToroMcpErrorCode,
+  type ToroMcpRegisteredReadToolName,
   type ToroMcpResponse,
 } from "@/lib/toro-mcp-contracts";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type ReadInput = Record<string, unknown> & {
   correlationId?: string;
@@ -50,7 +57,7 @@ export type ToroMcpReadRuntime = {
 };
 
 function errorResponse(
-  tool: ToroMcpCoreToolName,
+  tool: ToroMcpRegisteredReadToolName,
   input: ReadInput,
   code: ToroMcpErrorCode,
   message: string,
@@ -87,11 +94,18 @@ function validOrganizationContext(
 }
 
 async function resolveReadContext(
-  tool: ToroMcpCoreToolName,
+  tool: ToroMcpRegisteredReadToolName,
   input: ReadInput,
   runtime: ToroMcpReadRuntime,
 ): Promise<
-  | { ok: true; context: ToroResolvedContext & { orgId: string } }
+  | {
+      ok: true;
+      context: ToroResolvedContext & {
+        mode: "organization";
+        orgId: string;
+        membership: NonNullable<ToroResolvedContext["membership"]>;
+      };
+    }
   | { ok: false; response: ToroMcpResponse<never> }
 > {
   if (runtime.error) {
@@ -181,7 +195,7 @@ async function resolveReadContext(
 }
 
 export async function runToroMcpReadTool(
-  tool: ToroMcpCoreToolName,
+  tool: ToroMcpRegisteredReadToolName,
   input: ReadInput = {},
   runtime: ToroMcpReadRuntime = {},
 ): Promise<ToroMcpResponse<unknown>> {
@@ -193,6 +207,125 @@ export async function runToroMcpReadTool(
 
   const correlationId = input.correlationId ?? randomUUID();
   const asOf = new Date();
+
+  if (tool === "get_hotel_current_state") {
+    const allowedRoles = new Set([
+      "ADMIN",
+      "GERENCIA",
+      "JEFE_DEPARTAMENTO",
+      "AUDITOR",
+    ]);
+    if (
+      !resolved.context.membership.roles.some((role) =>
+        allowedRoles.has(role),
+      )
+    ) {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "forbidden",
+        "This identity cannot read current hotel reservation state.",
+        false,
+      );
+    }
+
+    const movementValues = new Set<KrossCurrentStateMovement>([
+      "arrivals",
+      "departures",
+      "daily_movements",
+    ]);
+    const movement =
+      typeof input.movement === "string" &&
+      movementValues.has(input.movement as KrossCurrentStateMovement)
+        ? (input.movement as KrossCurrentStateMovement)
+        : "daily_movements";
+    const date =
+      typeof input.date === "string" ? input.date : currentCostaRicaDate(asOf);
+    const propertyId =
+      typeof input.propertyId === "string" && input.propertyId.trim()
+        ? input.propertyId.trim()
+        : undefined;
+    const limit =
+      typeof input.limit === "number" && Number.isInteger(input.limit)
+        ? input.limit
+        : 10;
+
+    let supabase: SupabaseClient;
+    try {
+      supabase = runtime.supabase ?? (await createServerSupabaseClient());
+    } catch {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "runtime_unconfigured",
+        "TORO cannot reach its governed Supabase read runtime.",
+        true,
+      );
+    }
+
+    const state = await loadKrossCurrentStateWithClient(
+      supabase,
+      {
+        orgId: resolved.context.orgId,
+        propertyId,
+        date,
+        movement,
+        limit,
+      },
+      asOf,
+    );
+    const base = {
+      contractVersion: TORO_MCP_CONTRACT_VERSION,
+      tool,
+      generatedAt: asOf.toISOString(),
+      correlationId,
+      context: {
+        mode: "organization" as const,
+        scopeRef: canonicalScopeRefForOrgId(resolved.context.orgId),
+      },
+      sources: [
+        {
+          sourceSystem: "Supabase Kross read-only mirror",
+          authoritySystem: "Kross",
+          freshness:
+            state.state === "READY"
+              ? ("current" as const)
+              : state.state === "STALE"
+                ? ("stale" as const)
+                : ("unknown" as const),
+          verification:
+            state.state === "READY"
+              ? ("verified" as const)
+              : ("unverified" as const),
+          observedAt: state.observedAt ?? state.sourceAsOf ?? undefined,
+          authoritative: false,
+        },
+      ],
+      data: state,
+    };
+
+    if (state.state === "READY") {
+      return { ...base, partial: state.coverage.truncated };
+    }
+
+    const contextChoice = state.reason === "property_choice_required";
+    return {
+      ...base,
+      partial: true,
+      error: {
+        code: contextChoice
+          ? ("context_choice_required" as const)
+          : state.state === "STALE"
+            ? ("stale_source" as const)
+            : ("capability_unavailable" as const),
+        message: state.message,
+        retryable: !contextChoice,
+        nextAction: contextChoice
+          ? "Choose one authorized property."
+          : "Restore and verify the hosted Kross-to-Supabase synchronization before retrying.",
+      },
+    };
+  }
 
   let view;
   try {

@@ -11,7 +11,7 @@ import type {
   RiskLevel,
 } from "./toro-types";
 
-export const TORO_MCP_CONTRACT_VERSION = "1.0.0" as const;
+export const TORO_MCP_CONTRACT_VERSION = "1.1.0" as const;
 
 export const TORO_MCP_CORE_TOOL_NAMES = [
   "get_brain_status",
@@ -22,12 +22,18 @@ export const TORO_MCP_CORE_TOOL_NAMES = [
   "get_execution_receipts",
 ] as const;
 
-export const TORO_MCP_AUXILIARY_TOOL_NAMES = ["get_toro_profile"] as const;
+export const TORO_MCP_AUXILIARY_TOOL_NAMES = [
+  "get_toro_profile",
+  "get_hotel_current_state",
+] as const;
 
 export type ToroMcpCoreToolName = (typeof TORO_MCP_CORE_TOOL_NAMES)[number];
 export type ToroMcpAuxiliaryToolName =
   (typeof TORO_MCP_AUXILIARY_TOOL_NAMES)[number];
 export type ToroMcpToolName = ToroMcpCoreToolName | ToroMcpAuxiliaryToolName;
+export type ToroMcpRegisteredReadToolName =
+  | ToroMcpCoreToolName
+  | "get_hotel_current_state";
 
 export type ToroMcpErrorCode =
   | "unauthenticated"
@@ -149,6 +155,20 @@ export const TORO_MCP_CORE_TOOLS: readonly ToroMcpToolDescriptor[] = [
     actionCeiling: "observe",
     approvalRequirement: "None",
     requiredCapabilities: ["evidence.read"],
+  },
+] as const;
+
+export const TORO_MCP_AUXILIARY_TOOLS: readonly ToroMcpToolDescriptor[] = [
+  {
+    name: "get_hotel_current_state",
+    purpose:
+      "Read the fresh, permission-filtered Kross reservation mirror for daily arrivals/departures without exposing guest contact or payment data.",
+    readOnlyHint: true,
+    destructiveHint: false,
+    sideEffect: "none",
+    actionCeiling: "observe",
+    approvalRequirement: "None",
+    requiredCapabilities: ["hotel.current_state.read"],
   },
 ] as const;
 
@@ -299,6 +319,15 @@ export type ToroMcpExecutionReceiptsInput = {
   since?: string;
   until?: string;
   limit?: number;
+};
+
+export type ToroMcpHotelCurrentStateInput = {
+  scopeRef?: string;
+  propertyId?: string;
+  date?: string;
+  movement?: "arrivals" | "departures" | "daily_movements";
+  limit?: number;
+  correlationId?: string;
 };
 
 export type ToroMcpBusinessStatusData = {

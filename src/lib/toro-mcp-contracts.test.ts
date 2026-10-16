@@ -8,8 +8,8 @@ import {
 } from "./toro-mcp-contracts";
 
 describe("TORO MCP v1 contract", () => {
-  it("pins the v1 contract version", () => {
-    expect(TORO_MCP_CONTRACT_VERSION).toBe("1.0.0");
+  it("pins the backwards-compatible v1.1 contract version", () => {
+    expect(TORO_MCP_CONTRACT_VERSION).toBe("1.1.0");
   });
 
   it("exposes exactly the six approved core business tools", () => {
@@ -46,5 +46,23 @@ describe("TORO MCP v1 contract", () => {
       "Receipt",
       "Memory",
     ]);
+  });
+
+  it("adds the Kross current-state reader as an auxiliary read-only tool", async () => {
+    const contract = await import("./toro-mcp-contracts");
+
+    expect(contract.TORO_MCP_CORE_TOOL_NAMES).toHaveLength(6);
+    expect(contract.TORO_MCP_AUXILIARY_TOOL_NAMES).toContain(
+      "get_hotel_current_state",
+    );
+    expect(contract.TORO_MCP_AUXILIARY_TOOLS).toContainEqual(
+      expect.objectContaining({
+        name: "get_hotel_current_state",
+        readOnlyHint: true,
+        destructiveHint: false,
+        sideEffect: "none",
+        requiredCapabilities: ["hotel.current_state.read"],
+      }),
+    );
   });
 });

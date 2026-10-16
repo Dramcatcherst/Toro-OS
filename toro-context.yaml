@@ -1065,6 +1065,21 @@ kross_live_read_gate:
   reservation_and_rate_availability_gates_are_separate: true
   internal_normalization_state: implemented_ci_verified
   transport_adapter_state: implemented_in_main_ci_guarded
+  cloud_read_projection:
+    tool: get_hotel_current_state
+    implementation: src/features/kross/current-state-read.ts
+    mcp_adapter: src/features/mcp/read-adapter-server.ts
+    contract_version: 1.1.0
+    state: local_ci_verified_not_deployed
+    reads_only:
+      - integrations.kross_snapshot_health
+      - operations.current_reservations_safe
+    max_age_hours: 6
+    max_rows: 25
+    required_snapshot_kind: reservation_mirror
+    output_excludes_guest_contact_payment_and_external_identity: true
+    openclaw_whatsapp_runtime_verified: false
+    evidence: docs/evidence/TORO_KROSS_CLOUD_READ_PROJECTION_2026-10-16.md
   scoped_identity_guard:
     migration: kross_reservation_scope_identity_guard_20260923
     index: operations.reservations_kross_scope_external_uq
@@ -1104,6 +1119,7 @@ kross_live_read_gate:
   source_is_live_rows: 0
   current_reservations_safe_rows: 0
   kross_import_runs: 0
+  direct_promoted_current_kross_health_rows: 0
   first_verified_scheduled_run: false
   direct_pms_writes: false
   second_mirror_forbidden: true

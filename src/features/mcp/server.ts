@@ -8,7 +8,7 @@ import {
   verifyToroMcpBearerToken,
 } from "@/features/mcp/auth";
 import { runToroMcpReadTool } from "@/features/mcp/read-adapter-server";
-import type { ToroMcpCoreToolName } from "@/lib/toro-mcp-contracts";
+import type { ToroMcpRegisteredReadToolName } from "@/lib/toro-mcp-contracts";
 
 const scopeRef = z.string().min(1).max(240).optional();
 const correlationId = z.string().min(1).max(240).optional();
@@ -22,16 +22,14 @@ const readOnlyAnnotations = {
 } as const;
 
 function toolResult(
-  tool: ToroMcpCoreToolName,
+  tool: ToroMcpRegisteredReadToolName,
   response: Awaited<ReturnType<typeof runToroMcpReadTool>>,
 ) {
   const structuredContent = JSON.parse(
     JSON.stringify(response),
   ) as Record<string, unknown>;
 
-  const text = response.error
-    ? `TORO ${tool}: ${response.error.code} — ${response.error.message}`
-    : `TORO ${tool}: read-only result${response.partial ? " (partial/degraded sources are labeled in structured data)" : ""}.`;
+  const text = toroMcpToolText(tool, response);
 
   return {
     content: [{ type: "text" as const, text }],
@@ -40,8 +38,29 @@ function toolResult(
   };
 }
 
+export function toroMcpToolText(
+  tool: ToroMcpRegisteredReadToolName,
+  response: Awaited<ReturnType<typeof runToroMcpReadTool>>,
+) {
+  if (response.error) {
+    return `TORO ${tool}: ${response.error.code} — ${response.error.message}`;
+  }
+
+  if (
+    tool === "get_hotel_current_state" &&
+    response.data &&
+    typeof response.data === "object" &&
+    "message" in response.data &&
+    typeof response.data.message === "string"
+  ) {
+    return response.data.message;
+  }
+
+  return `TORO ${tool}: read-only result${response.partial ? " (partial/degraded sources are labeled in structured data)" : ""}.`;
+}
+
 async function executeTool(
-  tool: ToroMcpCoreToolName,
+  tool: ToroMcpRegisteredReadToolName,
   args: Record<string, unknown>,
   bearerToken?: string,
 ) {
@@ -172,6 +191,28 @@ const handler = createMcpHandler((server) => {
     },
     async (args, ctx) =>
       executeTool("get_execution_receipts", args, ctx.http?.authInfo?.token),
+  );
+
+  server.registerTool(
+    "get_hotel_current_state",
+    {
+      title: "Hotel current state from Kross",
+      description:
+        "Read fresh Kross-backed arrivals and departures for an authorized hotel scope. Fails closed when the Supabase mirror is stale or unavailable, minimizes guest data, and never treats reservation rows as live price or availability authority.",
+      inputSchema: z.object({
+        scopeRef,
+        propertyId: z.string().uuid().optional(),
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+        movement: z
+          .enum(["arrivals", "departures", "daily_movements"])
+          .optional(),
+        limit,
+        correlationId,
+      }),
+      annotations: readOnlyAnnotations,
+    },
+    async (args, ctx) =>
+      executeTool("get_hotel_current_state", args, ctx.http?.authInfo?.token),
   );
 }, {});
 
