@@ -93,3 +93,19 @@ permissions or production; merge/deploy; or create another scheduler.
 across identity, privacy, runtime truth, action safety, evidence and automation.
 The loop reports only material changes; it never creates cosmetic work to reach
 a numeric target.
+
+## Alert routing through OpenClaw
+
+Mail can produce a sanitized alert candidate, but it cannot choose a recipient
+from a name, phone number or mailbox alone. Hotel guest-service alerts route to
+the verified Reception group; hotel payment/security/system alerts route to the
+verified restricted Management group. Personal or third-party mail never routes
+to hotel groups and remains blocked until a separately verified owner-direct
+binding exists.
+
+Every alert requires privacy review and a SHA-256 provider-reference hash before
+it reaches the existing `alert-delivery` contract. A ready candidate still does
+not prove a send. Provider acceptance and verified delivery are distinct;
+delivery requires destination binding, dedupe key, timestamps and readback in a
+valid receipt. The current browser can reach the local OpenClaw gateway, but it
+requires its secret and is not an authenticated delivery session.

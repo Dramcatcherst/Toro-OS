@@ -36,6 +36,8 @@
 
 **Cuota observada y continuidad horaria:** sesión autenticada Google One del 15/10/2026 mostró 197,45/200 GB usados: Google Fotos 183,19 GB, Otros 13,01 GB y Gmail 1,16 GB. Los mensajes en Papelera no acreditan espacio liberado; Gmail no es el principal consumidor. Mauricio autorizó un único heartbeat horario para continuar esta misma línea TORO Mail con código, pruebas, documentación y verificación, no como worker de correo. “20 veces más” limita lotes homogéneos a veinte objetos y “50 mejoras” se aplica como línea base fija de cincuenta controles testados; no autoriza mutaciones de proveedor, OAuth, producción, Alegra/Supabase, merge, despliegue, costos ni schedulers adicionales.
 
+**Alertas y OpenClaw — 16/10/2026:** el delta mínimo de los otros buzones detectó señales hoteleras de verificación de pago/terminal y seguimiento de huésped, además de una alerta bancaria personal; el detalle privado queda fuera del repositorio. La ruta implementada reutiliza `alert-delivery`: huésped hotel → grupo Recepción verificado; evidencia financiera, seguridad y sistemas hotel → grupo Gerencia restringido verificado; correo personal o de tercero → únicamente owner-direct separado, actualmente bloqueado. Requiere revisión de privacidad, referencia del mensaje hasheada, binding único vigente, dedupe y receipt. El gateway local OpenClaw respondió en Chrome, pero pidió secreto; no hay sesión autenticada ni recibo de envío/entrega. No se envió nada ni se copiaron secretos.
+
 ---
 
 ## Public Brain perimeter — local correction, 2026-09-30
