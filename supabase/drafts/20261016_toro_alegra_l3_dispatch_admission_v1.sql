@@ -987,7 +987,9 @@ begin
 
   if new.status <> 'denied'
      or new.supersedes_receipt_id is null
-     or new.idempotency_key <> v_run.idempotency_key || ':revocation:' || v_decision_revision::text then
+     or new.idempotency_key <>
+        v_run.idempotency_key || ':revocation:' ||
+        nullif(new.desired_state->>'decisionRevision','') then
     raise exception 'alegra_approval_event_invalid';
   end if;
 
