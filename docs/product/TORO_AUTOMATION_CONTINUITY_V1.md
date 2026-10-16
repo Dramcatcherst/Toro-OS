@@ -8,6 +8,12 @@ El propietario pidió extender a las automatizaciones actuales el método ya exi
 
 Esta evidencia acredita configuración guardada en un host, no primera ejecución, continuidad sin intervención, entrega ni sincronización de todos los proveedores. Las configuraciones y recibos con referencias de ámbitos privados permanecen fuera de este repositorio público. Otros schedulers, incluido el carril técnico de Alegra, requieren su propia comprobación nativa; no se los reconfigura por inferencia.
 
+## Excepción vigente — Los 50 de Caro, 16/10/2026
+
+El propietario retiró su revisión horaria durante la preparación. La automatización existente está PAUSED y se conserva como perfil a demanda; no se sustituye por otro sondeo o scheduler. Un «continuar» genérico, un superprompt o una revisión global no la reactiva. Un futuro modo viaje requiere periodo y autorización específicos.
+
+El perfil incorpora treinta reglas operativas: candidatos concretos, identidad/ámbito, revisión y deduplicación, orden de eventos, concurrencia, silencio sin cambio, recibo y siguiente acción. El detalle pertenece al [frente existente Los50](https://github.com/Dramcatcherst/Toro-OS/pull/309). Son reglas de configuración y documentación; no acreditan transporte de eventos, recepción real ni autoapagado. La regla horaria histórica permanece inactiva bajo PAUSED. No se modifican FIN-01, Mail, Kross ni otros ámbitos para esta excepción.
+
 ## Contrato por pasada
 
 1. Leer únicamente el último checkpoint/recibo autorizado y la sección necesaria del NEXT propio. Reutilizar evidencia vigente; no reconstruir historia, inventarios o pruebas estables.
