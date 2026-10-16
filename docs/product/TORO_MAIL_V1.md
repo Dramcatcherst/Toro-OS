@@ -55,8 +55,28 @@ Receipts contain no OAuth tokens, message bodies or attachment bytes.
 - `src/features/comms/personal-gmail-cleanup.ts`: conservative classifier;
   protects purchase/order/shipping/delivery messages even when Gmail places
   them under Promotions.
+- `src/features/comms/hotel-mail-trigger.ts`: metadata-only hotel trigger. It
+  projects Reception, Management, Finance or Systems queues, suppresses
+  promotional noise and forces every reservation-like email through Kross
+  read reconciliation. It cannot mutate a reservation.
 - Tests cover scope isolation, another user, connector-only status, Outlook,
-  action gates and receipt failures.
+  action gates, receipt failures and department trigger routing.
+
+## Gmail visual organization readback — 2026-10-16
+
+The authenticated Dreamcatcher Gmail connector reused the existing numbered
+taxonomy; no duplicate labels were created. A bounded recent batch added only
+reversible labels: 8 Kross messages to Guests & Reservations, 41 WeSpeak alerts
+to Urgent plus Guests & Reservations, 6 Booking account events to Security, 50
+GitHub messages to GitHub/CI and 28 Vercel messages to Vercel/Deploys. Readback
+confirmed those labels and the Inbox remained at 1,182 messages / 513 unread,
+proving that this pass did not archive, trash, delete or mark messages read.
+
+Provider-native Gmail filters are still pending. The authenticated hotel tab
+was visible in Chrome, but browser control failed before settings could be read
+or saved. The connector does not expose filter administration. Therefore the
+code trigger is CURRENT/TESTABLE while automatic future Gmail labeling and any
+TORO runtime ingestion remain UNVERIFIED.
 
 ## Runtime acceptance
 
