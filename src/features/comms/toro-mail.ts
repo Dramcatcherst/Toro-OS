@@ -61,7 +61,7 @@ export const TORO_MAIL_GOVERNANCE_CONTROLS = [
   "evidence.explicit_outcome",
   "evidence.durable_error",
   "automation.no_duplicate_scheduler",
-  "automation.one_safe_unit",
+  "automation.bounded_safe_batches",
   "automation.quiet_when_unchanged",
   "automation.usage_guard",
   "automation.rollback_and_one_next_action",
@@ -89,6 +89,8 @@ export type ToroMailOrganizationAccount = {
   kind: "organization";
   binding: ToroMailboxBinding;
   connectorEvidence: ToroMailConnectorEvidence;
+  /** True only after every TORO Mail runtime-acceptance gate is evidenced. */
+  runtimeAcceptanceVerified: boolean;
 };
 
 export type ToroMailAccount =
@@ -171,7 +173,11 @@ function organizationRuntimeState(
 ): ToroMailRuntimeState {
   const health = mailboxBindingHealth(account.binding);
   if (health === "degraded" || health === "unavailable") return "degraded";
-  if (health === "healthy" && canUseMailboxBindingForRuntime(account.binding)) {
+  if (
+    health === "healthy" &&
+    account.runtimeAcceptanceVerified &&
+    canUseMailboxBindingForRuntime(account.binding)
+  ) {
     return "runtime_verified";
   }
   if (account.connectorEvidence.connectorSessionVerified) return "connector_only";
@@ -183,6 +189,20 @@ function canUseMailboxBindingForRuntime(binding: ToroMailboxBinding) {
     isMailboxBindingReadable(binding) &&
       binding.verificationStatus === "verified" &&
       binding.lastSyncAt,
+  );
+}
+
+function hasOrganizationToolGrant(
+  context: ToroResolvedContext,
+  binding: ToroMailboxBinding,
+  action: "read" | "draft" | "execute",
+) {
+  return context.allowedTools.some(
+    (tool) =>
+      tool.owner === "organization" &&
+      tool.orgId === binding.orgId &&
+      tool.provider === binding.provider &&
+      tool.actions.includes(action),
   );
 }
 
@@ -200,6 +220,7 @@ export function projectToroMail(
         tool.actions.includes("execute") &&
         tool.provider === (account.connection.provider === "gmail" ? "gmail" : "outlook-email"),
       );
+      const canModify = readable && account.connection.modifyEnabled && canExecute;
       return [{
         id: account.id,
         endpoint: account.endpoint,
@@ -210,9 +231,9 @@ export function projectToroMail(
         connectorObservedAt: account.connectorEvidence.observedAt,
         readable,
         actionPolicy: {
-          labelAndArchive: readable && canExecute ? "message_evidence_required" : "blocked",
-          trash: readable && canExecute ? "approval_and_readback_required" : "blocked",
-          unsubscribe: readable && canExecute ? "native_provider_review_required" : "blocked",
+          labelAndArchive: canModify ? "message_evidence_required" : "blocked",
+          trash: canModify ? "approval_and_readback_required" : "blocked",
+          unsubscribe: canModify ? "native_provider_review_required" : "blocked",
           send: readable && canExecute && account.connection.sendEnabled
             ? "approval_and_readback_required"
             : "blocked",
@@ -223,7 +244,13 @@ export function projectToroMail(
 
     if (!organizationVisible(context, account)) return [];
     const readable = canUseMailboxBinding(context, account.binding);
-    const canModify = readable && account.binding.deleteEnabled;
+    const canExecute = hasOrganizationToolGrant(
+      context,
+      account.binding,
+      "execute",
+    );
+    const canModify = readable && account.binding.deleteEnabled && canExecute;
+    const canSend = readable && account.binding.sendEnabled && canExecute;
     return [{
       id: account.binding.id,
       endpoint: account.binding.normalizedEndpoint,
@@ -237,7 +264,7 @@ export function projectToroMail(
         labelAndArchive: canModify ? "message_evidence_required" : "blocked",
         trash: canModify ? "approval_and_readback_required" : "blocked",
         unsubscribe: canModify ? "native_provider_review_required" : "blocked",
-        send: readable && account.binding.sendEnabled
+        send: canSend
           ? "approval_and_readback_required"
           : "blocked",
         permanentDelete: "separate_human_gate",

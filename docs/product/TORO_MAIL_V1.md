@@ -49,7 +49,10 @@ Receipts contain no OAuth tokens, message bodies or attachment bytes.
 ## Current implementation
 
 - `src/features/comms/toro-mail.ts`: scope-filtered Gmail/Outlook projection and
-  mutation receipt validator.
+  mutation receipt validator. Organization runtime state requires explicit
+  runtime-acceptance evidence; connection state and sync timestamps alone are
+  insufficient. Personal mutations honor `modifyEnabled`, and organization
+  sends require an actor-specific organization execute grant.
 - `src/features/comms/personal-mailbox-guard.ts`: provider-specific personal
   grant check for Gmail and Outlook.
 - `src/features/comms/personal-gmail-cleanup.ts`: conservative classifier;
@@ -100,11 +103,14 @@ continues from this specification, the General Plan, the private audit receipt
 and the existing PR. It is an engineering/checkpoint loop, not a mailbox worker
 or evidence of production OAuth.
 
-Each pass may complete at most one safe, reversible and verified unit. A batch
-may contain up to twenty objects only when account, authority, classification,
-risk and readback are identical. Unchanged state remains silent. The loop may
-inspect metadata deltas, run tests, improve local code/docs and verify PR/CI. It
-may not send, unsubscribe, label, archive, trash or permanently delete mail;
+Each pass may complete every safe, reversible and verified unit that is
+compatible with the same checkpoint and available evidence. There is no
+artificial one-unit ceiling. Each homogeneous batch may contain up to twenty
+objects only when account, authority, classification, risk and readback are
+identical, and multiple compatible batches may run in one pass. Unchanged state
+remains silent. The loop may inspect metadata deltas, run tests, improve local
+code/docs and verify PR/CI. It may not send, unsubscribe, label, archive, trash
+or permanently delete mail;
 read bodies/attachments in bulk; write Alegra/Supabase; change OAuth, secrets,
 permissions or production; merge/deploy; or create another scheduler.
 
@@ -113,6 +119,11 @@ permissions or production; merge/deploy; or create another scheduler.
 across identity, privacy, runtime truth, action safety, evidence and automation.
 The loop reports only material changes; it never creates cosmetic work to reach
 a numeric target.
+
+Owner correction on 2026-10-16 removed the earlier one-safe-unit-per-pass rule
+from the active automation, this contract and the tested control set. Safety is
+now bounded by authority, compatibility, batch homogeneity, readback and the
+existing action gates rather than by a unit counter.
 
 ## Alert routing through OpenClaw
 

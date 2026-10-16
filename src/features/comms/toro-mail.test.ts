@@ -118,6 +118,7 @@ const accounts: ToroMailAccount[] = [
     kind: "organization",
     binding: organizationBinding,
     connectorEvidence: { connectorSessionVerified: true, observedAt: "2026-10-15T12:00:00Z" },
+    runtimeAcceptanceVerified: false,
   },
 ];
 
@@ -125,6 +126,9 @@ describe("TORO Mail governance baseline", () => {
   it("keeps exactly fifty stable, unique controls", () => {
     expect(TORO_MAIL_GOVERNANCE_CONTROLS).toHaveLength(50);
     expect(new Set(TORO_MAIL_GOVERNANCE_CONTROLS).size).toBe(50);
+    expect(TORO_MAIL_GOVERNANCE_CONTROLS).toContain(
+      "automation.bounded_safe_batches",
+    );
   });
 
   it("covers identity, privacy, runtime, actions, evidence and automation", () => {
@@ -153,6 +157,20 @@ describe("TORO Mail account projection", () => {
     expect(outlook).toMatchObject({ runtimeState: "connector_only", readable: false });
   });
 
+  it("requires explicit organization runtime acceptance evidence", () => {
+    const [hotel] = projectToroMail(orgContext, accounts);
+    expect(hotel.runtimeState).toBe("connector_only");
+
+    const acceptedAccounts = accounts.map((account) =>
+      account.kind === "organization"
+        ? { ...account, runtimeAcceptanceVerified: true }
+        : account,
+    );
+    expect(projectToroMail(orgContext, acceptedAccounts)[0].runtimeState).toBe(
+      "runtime_verified",
+    );
+  });
+
   it("does not expose personal accounts to an organization administrator", () => {
     const projections = projectToroMail(orgContext, accounts);
     expect(projections).toHaveLength(1);
@@ -168,6 +186,52 @@ describe("TORO Mail account projection", () => {
       send: "blocked",
       permanentDelete: "separate_human_gate",
     });
+  });
+
+  it("blocks personal mutations when the connection is read-only", () => {
+    const readOnlyAccounts = accounts.map((account) =>
+      account.kind === "personal" && account.id === "personal-gmail"
+        ? {
+            ...account,
+            connection: { ...account.connection, modifyEnabled: false },
+          }
+        : account,
+    );
+    const [gmail] = projectToroMail(personalContext, readOnlyAccounts);
+    expect(gmail.actionPolicy).toMatchObject({
+      labelAndArchive: "blocked",
+      trash: "blocked",
+      unsubscribe: "blocked",
+    });
+  });
+
+  it("requires an actor-specific organization grant before offering send", () => {
+    const sendAccounts = accounts.map((account) =>
+      account.kind === "organization"
+        ? {
+            ...account,
+            binding: { ...account.binding, sendEnabled: true },
+          }
+        : account,
+    );
+    expect(projectToroMail(orgContext, sendAccounts)[0].actionPolicy.send).toBe(
+      "blocked",
+    );
+
+    const grantedContext: ToroResolvedContext = {
+      ...orgContext,
+      allowedTools: [
+        {
+          provider: "gmail",
+          actions: ["execute"],
+          owner: "organization",
+          orgId: "org-1",
+        },
+      ],
+    };
+    expect(
+      projectToroMail(grantedContext, sendAccounts)[0].actionPolicy.send,
+    ).toBe("approval_and_readback_required");
   });
 });
 
