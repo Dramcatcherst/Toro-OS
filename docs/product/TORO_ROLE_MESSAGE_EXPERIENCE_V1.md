@@ -93,6 +93,20 @@ Avoid:
 
 Where buttons exist, button text should normally be 1–4 words.
 
+## 2D. WhatsApp compacto como formato operativo predeterminado — 16/10/2026
+
+Directiva de Mauricio para todas las respuestas operativas por OpenClaw, incluidos avisos, reportes, confirmaciones y bloqueos. Reutiliza este pack; no otro renderer o memoria. Estado: pauta aprobada y guardada; adopción del runtime pendiente de prueba.
+
+- Abrir con conclusión/acción y nombre del área. En automatizaciones mantener exactamente el aviso de prueba vigente con el área real, sin placeholders.
+- Título breve + fecha/hora CR cuando el tiempo afecte la decisión. Diferenciar fecha del dato, consulta y reformato; “hoy/mañana” solo con fecha fuente válida.
+- Negrita de WhatsApp con un asterisco por lado, frases de una o dos líneas, máximo tres asuntos y hasta tres emojis semánticos en total, incluido el aviso de prueba. Etiquetas escritas para estado; iconos no sustituyen importes, fechas, incertidumbre o acción.
+- Orden: urgencia/impacto -> hecho y diferencia -> próxima acción + responsable/plazo confirmados o pendientes -> un enlace autorizado al detalle. Mauricio <=120 palabras; grupos <=100. Explicación extensa solo si hace falta o se pide; documento completo en fuente autorizada, no datos descartados para cumplir longitud.
+- Omitir secciones vacías, saludos repetidos, IDs/códigos de caso y jerga técnica. Sin tablas, listas anidadas, párrafos largos ni cercas de código dentro del mensaje enviado. Un bloque copiable de Page puede conservar el texto listo para WhatsApp sin incluir esas cercas en el envío.
+- Mañana conserva PLAN DE HOY; tarde conserva RESUMEN DEL DÍA/corte17:30 solo si es ese informe. Una alerta posterior usa hora real y no certifica cierre diario. Estado preparado/enviado/entregado/leído requiere evidencia de cada etapa.
+- En dinero, incidentes, RRHH o seguridad: símbolos sobrios, incertidumbre explícita y cero humor decorativo. No transformar comprobante en abono, silencio en resolución ni plazo propuesto en aceptado.
+
+Validación: una alerta con evidencia real, texto <=límite, tres iconos como máximo, lectura móvil clara y sin información material omitida; un corte viejo reformateado no produce notificación de novedad. Fuente/auditoría conservadas. Probar renderer/salida real desde el host antes de afirmar estilo activo en todo OpenClaw. Las Pages aplican sus propias instrucciones; guardarlas no configura el Gateway.
+
 ## 2A. TORO Personal
 
 ### Home
