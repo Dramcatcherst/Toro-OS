@@ -153,3 +153,49 @@ Cada pasada retoma evidencia y bloqueos del punto anterior, busca una unidad mat
 - Reglamento IVA, artículo 21, fuente oficial SINALEVI: https://sinalevi.go.cr/ResultadosNormativa/Informacion?param1=88953&param2=117169&param3=3&param4=22
 
 **Cierre de esta etapa:** reglas y referencias guardadas/verificadas, continuación horaria programada, cero cambios en documentos fiscales, reservas, importes, permisos o catálogo del proveedor. Siguiente unidad: habilitar la ruta nativa autorizada de adjuntos y validar una carga con original/target/readback; en paralelo, completar catálogo Kross y equivalencias de servicios sin publicar los no verificados.
+
+## 9. Comparador de tarifas entre plataformas y competidores — recuperación e incorporación al Plan General
+
+**Mandato recuperado y ampliado por Mauricio:** localizar lo ya trabajado para comparar precios de plataformas y competidores e incorporarlo al Plan General único, sin crear otro proyecto. Esta sección incorpora documentalmente esa capacidad al contrato que el Plan General ya referencia; no acredita aplicación operativa ni cambia prioridades, estados o permisos de ejecución.
+
+### 9.1 Fuentes recuperadas y alcance comprobado
+
+- `MASTER-PROGRAM-GLOBAL-REFERENCE.md`, conservado en la Library: fase 6, TORO OS comercial y reputación, y prompt de Revenue. Define expresamente un comparador interno de Kross/directo, Booking, Airbnb, Expedia, Google Hotels/Travel y otros canales activos. Exige fechas, composición del grupo, impuestos, comisiones, desayuno, cancelación, estancia mínima, moneda, precio total y precio por persona; recomendaciones sin publicar ni cambiar precios automáticamente. Es evidencia del diseño previo, no de un servicio desplegado.
+- `2026-08-20-ricosky-v3-1-audit-and-visual-directions.md`, conservado en la Library: referencia al comparador normalizado y Price Match verificable. Preservar la distinción de su prototipo/simulación frente al comparador automático a escala; recuperar y revisar sus artefactos antes de cualquier reutilización de código.
+- Airtable Master Brain conserva estructuras `Public Rate Snapshot`, `External Availability Snapshot` y `Booking Engine Audit`. La existencia de tablas acredita estructura previa, no ingesta actual, cotizaciones vigentes ni comparación terminada. Auditar sus consumidores y mapeo antes de reutilizar; no reactivar el esquema legacy como autoridad principal.
+- `Competitor Signals` en TORO OS Central contiene cinco registros de posicionamiento, estacionalidad, validación OTA, logística y trabajo remoto. En el alcance leído NO son cotizaciones hoteleras por noche ni un conjunto competitivo cuantificado.
+- En las búsquedas realizadas en GitHub, Supabase, Airtable y Library no se comprobó una aplicación operativa independiente de comparación de tarifas. La ruta documental histórica `docs/master-program/14-REVENUE-DISTRIBUTION-REVIEWS-ADS.md` aparece prevista en el documento maestro recuperado, pero su archivo no fue localizado en el repositorio web inspeccionado; no inventar un enlace de implementación.
+
+**No confundir** con DC2-028 (comparación de características de tres habitaciones propias), el tarifario para agencias, el informe de conciliación de reservas ya vendidas Booking/Kross, los comparables inmobiliarios de compraventa ni BETORO. Pueden aportar contexto, pero no sustituyen este comparador comercial.
+
+### 9.2 Ubicación y responsabilidades, sin otro proyecto
+
+Ruta existente comprobada en `operations.projects`: `toro_os_portfolio_master` → `dreamcatcher_hotel_master` → `revenue_booking_stack`, módulo **4. Dreamcatcher · Revenue, Reservas y Guest Experience**. El comparador es una capacidad interna de este módulo, no un nuevo proyecto, base, ledger, agente o scheduler. Conservar su estado y dependencias actuales; esta recuperación documental no lo promueve a operativo.
+
+Revenue/TERE conserva la responsabilidad funcional existente; TORO Research aporta fuentes comparables y contexto, Finance/FIONA valida comisiones/costos y diferencias bruto-neto, Systems/SOBRESITO revisa adaptadores, unicidad y evidencia. Estos son roles funcionales, no nuevas asignaciones aceptadas por personas. Las escrituras, tareas y recibos continúan por el Control Plane vigente. La PR #228 sigue siendo exclusivamente la ruta de Alegra: no añadirle código de comparación de competidores.
+
+### 9.3 Dos funciones dentro de la misma capacidad
+
+**A. Consistencia entre canales propios:** comparar el mismo alojamiento y estancia de Dreamcatcher entre venta directa/Kross y los canales activos. Mostrar el total final obligatorio que pagaría el huésped, no únicamente la tarifa nocturna de entrada. Conservar promociones, elegibilidad y condiciones distintas; una diferencia justificada no es automáticamente un error de paridad.
+
+**B. Posicionamiento frente a competidores:** comparar alojamientos equivalentes y fuentes públicas/autorizadas para las mismas fechas y composición del grupo. Separar habitaciones, apartamentos con cocina, suites, villas privadas y full buyout; documentar ubicación, capacidad, privacidad y diferencias relevantes. Seleccionar y validar el conjunto competitivo antes del piloto; no inventar hoteles integrantes ni inferir sus costos, ocupación o márgenes a partir de su precio anunciado. El conjunto es interno y no modifica la guía pública del hotel.
+
+### 9.4 Contrato mínimo de una comparación válida
+
+Conservar fecha/hora y enlace de observación; hotel, canal e ID de anuncio/unidad; entrada y salida; número de habitaciones y distribución de adultos/niños con edades/bebés/cunas; categoría comparable; moneda original y conversión documentada; precio final de toda la estancia; impuestos y cargos obligatorios; limpieza y suplementos; desayuno y otros incluidos; cancelación y su plazo; prepago; estancia mínima; descuentos y elegibilidad móvil/miembro/residente/mercado cuando estén observados.
+
+Prioridad de presentación: total de estancia al huésped → precio equivalente por noche/unidad → precio por persona como dato secundario con denominador explícito. No enfrentar una villa privada completa contra el precio de una habitación, comparar una tarifa no reembolsable con flexible como si fueran iguales, aplicar 13% automáticamente ni sumar nuevamente cargos ya incluidos.
+
+Estados propuestos: `COMPARABLE`, `CONDITIONAL`, `NOT_COMPARABLE`, `STALE`, `NO_OFFER_OBSERVED` y `SOURCE_BLOCKED`. Falta de oferta no demuestra ocupación total; fallo técnico no es agotado; un precio antiguo no es vigente. Google Hotels/Travel y la OTA a la que remite pueden mostrar la misma oferta: guardar procedencia y no contarlos como competidores independientes. Un cambio de fechas, personas o condiciones invalida la comparación anterior.
+
+El total comercial al huésped, la base financiera/comisionable Booking, el alojamiento/extras del PMS y el neto recibido del canal siguen siendo campos distintos de las secciones 1 y 3. Para Dreamcatcher, calcular contribución estimada solo con comisiones, cargos de procesamiento, impuestos y costos efectivamente sustentados; partidas desconocidas permanecen desconocidas. No usar ofertas o estimaciones para crear asientos/facturas en Alegra ni como pagos conciliados.
+
+### 9.5 Siguiente unidad y criterio de aceptación
+
+**Piloto propuesto, todavía no ejecutado:** reutilizar una categoría/unidad de Dreamcatcher y una estancia concreta; obtener hasta tres ofertas de canales propios y hasta tres alojamientos competitivos comparables, con evidencia y una ventana temporal definida. Capturar también los intentos bloqueados; el denominador son las fuentes previstas, no solo las que respondan. Cada resultado debe quedar comparable o explicar exactamente por qué no lo es. Si no se puede completar cobertura, mostrar parcial sin afirmar que el precio más bajo es el mejor del mercado.
+
+Cierre del piloto: enlaces y cortes recuperables, desglose del total final, condiciones contrastables, FX explícito si se usa, ausencia de ofertas duplicadas, clasificación de discrepancias y una recomendación humana con su evidencia. Aceptación del sistema requiere después una nueva captura con cambio controlado, prueba de datos vencidos/errores y persistencia por la ruta canónica. No marcar terminado por existir esta sección o una tabla.
+
+Orden: recuperar el material previo → identificar fuentes y equivalencias → completar el piloto comparable → reutilizar el resultado en Revenue y evaluación de margen → evaluar actualización incremental solo con adaptador, límites y permisos verificados. No abrir otra automatización ni alterar los observadores financieros. No reactivar la API Kross pausada, contratar rate shoppers, esquivar restricciones de acceso, publicar promociones, igualar ofertas ni modificar reservas/precios sin aprobación independiente.
+
+**Estado de la incorporación:** requisito recuperado y especificado dentro del contrato subordinado al Plan General. Cotizaciones actuales, código de comparador integrado, despliegue y actualización automática permanecen NO VERIFICADOS. No se escribieron registros operativos ni se sustituyeron los datos de la conciliación Alegra/Booking/Kross por esta ampliación documental.
