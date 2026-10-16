@@ -25,7 +25,7 @@
 
 ## Verificación local
 
-Suite focal FIN-01: `12/12 PASS` (`action-plan`, RLS preparado, moneda/FX y alcance/50 controles). `git diff --check`: `PASS`. Las pruebas exigen 11/11 centros, cero inclusión automática, cuatro centros privados minimizados, legado aislado, 50 IDs únicos, cero mutaciones externas y un único `NEXT` en bancos/caja.
+Suite focal FIN-01: `12/12 PASS` (`action-plan`, RLS preparado, moneda/FX y alcance/50 controles). El script `test:fin01` quedó incorporado a `npm test`, que es la cadena ejecutada por GitHub Actions; así estas reglas dejan de depender de una invocación manual. `git diff --check`: `PASS`. Las pruebas exigen 11/11 centros, cero inclusión automática, cuatro centros privados minimizados, legado aislado, 50 IDs únicos, cero mutaciones externas y un único `NEXT` en bancos/caja.
 
 ## Límites
 
