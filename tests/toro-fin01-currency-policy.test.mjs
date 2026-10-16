@@ -79,15 +79,17 @@ test("every financial event preserves originals and has explicit FX semantics", 
   );
 });
 
-test("official fiscal authority and action-plan handoff remain explicit", () => {
+test("official fiscal authority and completed scope handoff remain explicit", () => {
   const law = policy.officialSources.find((source) => source.authority === "Costa Rica PGR/SINALEVI");
   assert.ok(law.url.includes("nValor2=32526"));
   assert.match(law.use, /article 15/i);
   assert.match(document, /artículo 15 de la Ley 6826/i);
 
   const currencyTask = actionPlan.tasks.find((task) => task.id === "FIN01-P0-CUR-01");
-  const nextTask = actionPlan.tasks.find((task) => task.id === "FIN01-P0-SCOPE-01");
+  const scopeTask = actionPlan.tasks.find((task) => task.id === "FIN01-P0-SCOPE-01");
+  const nextTask = actionPlan.tasks.find((task) => task.id === "FIN01-P0-BANK-01");
   assert.equal(currencyTask.state, "DONE");
+  assert.equal(scopeTask.state, "DONE");
   assert.equal(nextTask.state, "NEXT");
   assert.equal(actionPlan.singleNextTaskId, nextTask.id);
 });

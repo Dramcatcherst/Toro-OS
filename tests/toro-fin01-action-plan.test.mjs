@@ -9,7 +9,12 @@ const plan = JSON.parse(
 test("FIN-01 action plan is bounded, unique and write-gated", () => {
   assert.equal(plan.programId, "FIN-01-ALEGRA-TORO-2026");
   assert.equal(plan.externalWritesEnabled, false);
-  assert.equal(plan.automationState, "PAUSED");
+  assert.equal(plan.automationState, "ACTIVE_READ_ONLY_HOURLY");
+  assert.equal(plan.automation.id, "toro-alegra-cada-30-minutos");
+  assert.equal(plan.automation.status, "ACTIVE");
+  assert.equal(plan.automation.rrule, "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0");
+  assert.equal(plan.automation.timezone, "America/Costa_Rica");
+  assert.equal(plan.automation.externalWritesEnabled, false);
 
   const ids = plan.tasks.map((task) => task.id);
   assert.equal(new Set(ids).size, ids.length, "task IDs must be unique");

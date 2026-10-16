@@ -15,8 +15,19 @@
   },
   "overallStatus": "PENDING_EVIDENCE",
   "externalWritesEnabled": false,
-  "automationState": "PAUSED",
-  "singleNextTaskId": "FIN01-P0-SCOPE-01",
+  "automationState": "ACTIVE_READ_ONLY_HOURLY",
+  "automation": {
+    "id": "toro-alegra-cada-30-minutos",
+    "kind": "heartbeat",
+    "name": "TORO · FIONA · FIN-01 cada hora",
+    "status": "ACTIVE",
+    "rrule": "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0",
+    "timezone": "America/Costa_Rica",
+    "executionScope": "ONE_BOUNDED_READ_ONLY_FIN01_UNIT",
+    "notificationRule": "SILENT_WHEN_UNCHANGED_NOTIFY_ONLY_MATERIAL_PROGRESS_FAILURE_OR_REQUIRED_DECISION",
+    "externalWritesEnabled": false
+  },
+  "singleNextTaskId": "FIN01-P0-BANK-01",
   "tasks": [
     {
       "id": "FIN01-P0-SEC-01",
@@ -55,17 +66,25 @@
     {
       "id": "FIN01-P0-SCOPE-01",
       "priority": "P0",
-      "state": "NEXT",
+      "state": "DONE",
       "owner": "FIONA + Mauricio",
-      "outcome": "Separate company, business, property, cost center, person and related-party scopes.",
-      "evidence": ["Mixed cost-center and equity labels in Alegra"],
+      "outcome": "Document the current and historical company boundary, identity layers and all 11 active cost centers as routed or quarantined, without transaction reclassification.",
+      "completionScope": "DOCUMENTED_CATALOG_SCOPE_CONTRACT_ONLY_TRANSACTION_APPLICATION_PENDING",
+      "evidence": [
+        "Alegra live cost-center catalogs read 2026-10-15 through both current links",
+        "data/toro_fin01_scope_matrix_2026_v1.json",
+        "data/toro_fin01_scope_control_pack_50_v1.json",
+        "docs/product/TORO_FIN01_SCOPE_AND_ENTITY_POLICY_2026-10-15.md",
+        "tests/toro-fin01-scope-policy.test.mjs",
+        "docs/evidence/TORO_FIN01_SCOPE_POLICY_RECEIPT_2026-10-15.md"
+      ],
       "gate": "Documentary identity or owner/accountant decision per mapping.",
-      "doneWhen": ["mapping covers every active cost center", "ambiguous rows quarantined", "legacy account isolated"]
+      "doneWhen": ["11/11 active centers routed or quarantined", "ambiguous rows carry explicit gates", "legacy company isolated", "no automatic transaction inclusion or external write"]
     },
     {
       "id": "FIN01-P0-BANK-01",
       "priority": "P0",
-      "state": "QUEUED",
+      "state": "NEXT",
       "owner": "FIONA",
       "outcome": "Reconcile bank and cash accounts by month and currency.",
       "evidence": ["18 financial accounts", "11 open reconciliations", "2026 review queue"],
