@@ -48,8 +48,10 @@ Dreamcatcher remains the reference implementation and test environment until the
 5. `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`
 6. `docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md`
 7. `docs/product/NEW_BUSINESS_READINESS_GATE.md`
-8. The current execution plan relevant to the task
-9. Domain-specific technical contracts and tests
+8. `docs/product/TORO_SOURCE_SURFACE_REGISTRY.md` when the task touches systems, sources, repos, runtimes or convergence
+9. `docs/product/TORO_NAMING_MIGRATION_STATUS.md` when the task changes product/subsystem naming
+10. The current execution plan relevant to the task
+11. Domain-specific technical contracts and tests
 
 Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO constitution.
 
@@ -64,6 +66,8 @@ Historical TORO/TORO OS documents are evidence and context. They do not override
 - **Specialist systems:** retain authority in their domains (for example Kross for live PMS truth and Alegra for fiscal/accounting truth).
 
 No tool becomes authoritative merely because TORO can connect to it.
+
+Current surface authority is structured in Supabase `operations.toro_system_surfaces_v1`; GitHub's `TORO_SOURCE_SURFACE_REGISTRY.md` defines the contract and navigation, not a second registry.
 
 ## Subsystem and user-data rule
 
