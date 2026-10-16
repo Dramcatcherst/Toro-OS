@@ -11,6 +11,31 @@ GitHub conserva código/contratos; Supabase, datos operativos/identidad/permisos
 Reutilizar las cinco tareas `LOS50K-PORTAL-V2`, `LOS50K-DATA-COMPLETE`, `LOS50K-TRANSPORT`, `LOS50K-ROOMING`, `LOS50K-OPENCLAW`. No inventar responsables, estados ni fechas. Su presencia en Airtable no acredita dispatch canónico.
 Web base: `codex/website-progress-20260924`, SHA observado `c23a674ee1e9140f5bd9d9c82ce236411d966562`. Candidato: `los50s/align-installed-itinerary-20261007`, PR96 borrador. No merge ni publicación autorizados por esta ejecución.
 
+## Estado operativo vigente — V7, 15 octubre 2026
+
+Esta actualización es aditiva y prevalece sobre el snapshot V6 únicamente cuando describe el estado actual de PR96 y su preview. No convierte los diagnósticos históricos en hechos vigentes ni autoriza producción.
+
+- **CURRENT / superficie:** commit web `c5a2e2ae090933e524e608711f16e6c9c8d8a0c2`, deployment Vercel `dpl_D2U7yJy8fSDdfiYAG1qyoKXyGE36`, alias corto protegido `los50s-toro.vercel.app`, ruta `/los50sdecaro`; respuesta HTTP 200 y `noindex, nofollow` observados. Producción no cambió.
+- **CURRENT / experiencia TORO:** la familia Toro aparece como primer grupo familiar del piloto. TORO actúa como gerente, administrador y concierge digital; el contacto `+506 8844 4004` puede abrirse por WhatsApp, llamada o vCard. El álbum se explica como memoria familiar opcional y excluye pasaportes, comprobantes y documentos personales. Solo WhatsApp conserva logotipo de aplicación.
+- **CURRENT / límites:** TORO ordena, conserva, prepara y orienta. Mauricio, Dreamcatcher y responsables humanos confirman habitaciones, proveedores, pagos y decisiones sensibles. El preview no acredita identidad, consentimiento, receipt de WhatsApp, reserva, cobro ni autonomía.
+- **Verificación:** suite unitaria, TypeScript, lint, build, rutas, secretos, gobierno, medios, rendimiento, terminología y render estático aprobaron; navegador revisado a 390 px y escritorio sin desborde ni errores de consola. Vercel vinculó el deployment al SHA exacto.
+
+### Propiedad y mapeo canónico
+
+| Estado / tarea existente | Propietario funcional | Dependencias y criterio |
+| --- | --- | --- |
+| CURRENT / `LOS50K-PORTAL-V2` | Event Ops + TORO Brain | Superficie en PR96 y preview protegido; no equivale a liberación pública. |
+| NEXT P0 / `LOS50K-DATA-COMPLETE` | TORO Identity + Event Ops | Identidad individual, consentimiento, scope familiar privado, persistencia mínima y rechazo entre actores antes de compartir el directorio. |
+| NEXT P0 / `LOS50K-OPENCLAW` | TORO Comms + TORO Brain | Un actor autorizado, intención explícita, ACK/receipt y límites de acción; abrir WhatsApp no acredita envío. |
+| DEPENDENCY / `LOS50K-TRANSPORT` | RICO + Mauricio | Autoridad humana sobre modalidad, equipaje, cupo y proveedor; el concierge no confirma contratación. |
+| DEPENDENCY / `LOS50K-ROOMING` | RICO + Mauricio | Autoridad Kross/humana sobre capacidad y asignación; el concierge no convierte una preferencia en reserva. |
+
+**TARGET:** piloto familiar consentido y trazable sobre el mismo TORO, sin base, agente, memoria, plan ni scheduler paralelo. Los aprendizajes reutilizables se sanean antes de generalizarse y nunca incluyen datos familiares.
+
+**NEXT único:** cerrar y probar `LOS50K-DATA-COMPLETE`. No enviar invitaciones, quitar protección, abrir el directorio nominal, automatizar mensajes ni tratar el preview como producción antes de identidad, consentimiento y aislamiento verificados.
+
+**FUTURE:** probar `LOS50K-OPENCLAW` con un único actor autorizado y receipt; después medir preguntas resueltas, correcciones, tiempos y fallos. Una automatización horaria de continuidad puede preparar trabajo documental acotado, pero no acredita autonomía del producto ni obtiene permiso para contactar participantes.
+
 ## CURRENT — CI-01 cobertura corregida; CI-02 reparación probada fuera del commit
 
 PR96 conserva el arreglo de dos filtros en `.github/workflows/ci.yml` y seis pruebas de cobertura. El run original37728619852 dejó de ser omitido y falló en `npm ci` por entradas @emnapi inconsistentes. Los gates oficiales no se debilitaron.
