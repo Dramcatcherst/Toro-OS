@@ -1,15 +1,280 @@
 {
-  "version": "2026.09.23-v2",
-  "status": "source_aware_resolver_integrated_child_availability_gated",
+  "version": "2026.10.16-v3",
+  "status": "source_aware_resolver_integrated_stable_supermenu_local_contract_runtime_unverified",
   "rules": {
     "max_visible_suggestions": 3,
     "max_submenu_items": 6,
     "numbers_are_active_menu_scoped": true,
+    "stable_codes_never_grant_authority": true,
+    "short_codes_require_matching_active_menu_version": true,
+    "canonical_codes_use_m_prefix": true,
     "execution_rechecks_authority": true,
     "stale_menu_numbers_must_not_execute": true,
     "free_text_always_allowed": true,
     "after_success_offer_continuation": true,
-    "after_block_offer_safe_alternative": true
+    "after_block_offer_safe_alternative": true,
+    "full_menu_is_on_demand": true,
+    "learning_requires_confirmation": true,
+    "cross_scope_learning_forbidden": true,
+    "target_capabilities_default_hidden": true
+  },
+  "supermenu": {
+    "version": "2026.10.16-v1",
+    "status": "specified_and_locally_resolvable_runtime_multichannel_unverified",
+    "canonical_prefix": "M",
+    "short_code_example": "C3",
+    "canonical_code_example": "MC3",
+    "navigation": [
+      { "code": "M0", "label": "Menú completo", "intent": "full_menu" },
+      { "code": "M1", "label": "Menú de este contexto", "intent": "context_menu" },
+      { "code": "M2", "label": "Volver", "intent": "back" },
+      { "code": "M3", "label": "Inicio", "intent": "home" },
+      { "code": "M4", "label": "Estado, fuente y frescura", "intent": "status_source" },
+      { "code": "M5", "label": "Cambiar contexto", "intent": "switch_context" },
+      { "code": "M6", "label": "Ayuda", "intent": "help" },
+      { "code": "M7", "label": "Capacitación recomendada", "intent": "training" },
+      { "code": "M8", "label": "Sugerir mejora o reportar error", "intent": "feedback" },
+      { "code": "M9", "label": "Privacidad y aprendizajes", "intent": "privacy_learning" }
+    ],
+    "categories": [
+      {
+        "code": "MA",
+        "short_code": "A",
+        "label": "Hoy y control",
+        "modes": ["personal", "organization"],
+        "items": [
+          { "code": "MA1", "short_code": "A1", "label": "Resumen de hoy", "capability": "executive.brief", "modes": ["organization"] },
+          { "code": "MA2", "short_code": "A2", "label": "Prioridades", "capability": "operations.priorities", "modes": ["organization"] },
+          { "code": "MA3", "short_code": "A3", "label": "Alertas y pendientes", "capability": "operations.exceptions", "modes": ["organization"] },
+          { "code": "MA4", "short_code": "A4", "label": "Continuar lo anterior", "capability": "ui.resume_active_workflow", "modes": ["personal", "organization"] },
+          { "code": "MA5", "short_code": "A5", "label": "Crear reporte", "capability": "reports.create", "modes": ["organization"] },
+          { "code": "MA6", "short_code": "A6", "label": "Acción rápida", "capability": "ui.quick_action", "modes": ["personal", "organization"] },
+          { "code": "MA7", "short_code": "A7", "label": "Qué cambió", "capability": "ui.changes_since_last_visit", "modes": ["personal", "organization"] },
+          { "code": "MA8", "short_code": "A8", "label": "Próximo mejor paso", "capability": "ui.next_best_action", "modes": ["personal", "organization"] },
+          { "code": "MA9", "short_code": "A9", "label": "Estado y comprobante", "capability": "ui.status_and_receipt", "modes": ["personal", "organization"] }
+        ]
+      },
+      {
+        "code": "MB",
+        "short_code": "B",
+        "label": "Reservas y huéspedes",
+        "modes": ["organization"],
+        "items": [
+          { "code": "MB1", "short_code": "B1", "label": "Llegadas", "capability": "guest.arrivals", "modes": ["organization"] },
+          { "code": "MB2", "short_code": "B2", "label": "Salidas", "capability": "guest.departures", "modes": ["organization"] },
+          { "code": "MB3", "short_code": "B3", "label": "Huéspedes en casa", "capability": "guest.in_house", "modes": ["organization"] },
+          { "code": "MB4", "short_code": "B4", "label": "Buscar reserva", "capability": "guest.reservation_lookup", "modes": ["organization"] },
+          { "code": "MB5", "short_code": "B5", "label": "Cotizar estancia", "capability": "hospitality.quote", "modes": ["organization"] },
+          { "code": "MB6", "short_code": "B6", "label": "Preparar mensaje", "capability": "comms.guest_messages", "modes": ["organization"] },
+          { "code": "MB7", "short_code": "B7", "label": "Solicitudes e incidentes", "capability": "guest.service_issues", "modes": ["organization"] },
+          { "code": "MB8", "short_code": "B8", "label": "Estado de Kross", "capability": "pms.current_state", "modes": ["organization"] },
+          { "code": "MB9", "short_code": "B9", "label": "Seguimientos", "capability": "guest.followup", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "MC",
+        "short_code": "C",
+        "label": "Operación del hotel",
+        "modes": ["organization"],
+        "items": [
+          { "code": "MC1", "short_code": "C1", "label": "Limpieza", "capability": "housekeeping.assigned_units", "modes": ["organization"] },
+          { "code": "MC2", "short_code": "C2", "label": "Mantenimiento", "capability": "maintenance.priorities", "modes": ["organization"] },
+          { "code": "MC3", "short_code": "C3", "label": "Turno de recepción", "capability": "operations.reception_shift", "modes": ["organization"] },
+          { "code": "MC4", "short_code": "C4", "label": "Caja y entrega de turno", "capability": "operations.cash_handover", "modes": ["organization"] },
+          { "code": "MC5", "short_code": "C5", "label": "Inventario", "capability": "inventory.status", "modes": ["organization"] },
+          { "code": "MC6", "short_code": "C6", "label": "Tareas operativas", "capability": "operations.my_tasks", "modes": ["organization"] },
+          { "code": "MC7", "short_code": "C7", "label": "Incidentes", "capability": "operations.exceptions", "modes": ["organization"] },
+          { "code": "MC8", "short_code": "C8", "label": "Procedimientos", "capability": "knowledge.operating_checklists", "modes": ["organization"] },
+          { "code": "MC9", "short_code": "C9", "label": "Reporte de operación", "capability": "reports.operations", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "MD",
+        "short_code": "D",
+        "label": "Equipo",
+        "modes": ["organization"],
+        "items": [
+          { "code": "MD1", "short_code": "D1", "label": "Mi turno", "capability": "people.my_day", "modes": ["organization"] },
+          { "code": "MD2", "short_code": "D2", "label": "Asignar o actualizar tarea", "capability": "operations.my_tasks", "modes": ["organization"] },
+          { "code": "MD3", "short_code": "D3", "label": "Asistencia", "capability": "people.attendance", "modes": ["organization"] },
+          { "code": "MD4", "short_code": "D4", "label": "Capacitación por rol", "capability": "learning.role_training", "modes": ["organization"] },
+          { "code": "MD5", "short_code": "D5", "label": "Retroalimentación", "capability": "people.feedback", "modes": ["organization"] },
+          { "code": "MD6", "short_code": "D6", "label": "Horarios", "capability": "people.schedule", "modes": ["organization"] },
+          { "code": "MD7", "short_code": "D7", "label": "Escalar problema", "capability": "comms.request_help", "modes": ["organization"] },
+          { "code": "MD8", "short_code": "D8", "label": "Mi acceso", "capability": "identity.my_access", "modes": ["organization"] },
+          { "code": "MD9", "short_code": "D9", "label": "Reconocimientos", "capability": "people.recognition", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "ME",
+        "short_code": "E",
+        "label": "Finanzas y control",
+        "modes": ["organization"],
+        "items": [
+          { "code": "ME1", "short_code": "E1", "label": "Cierre diario", "capability": "finance.daily_close", "modes": ["organization"] },
+          { "code": "ME2", "short_code": "E2", "label": "Ingresos", "capability": "finance.income", "modes": ["organization"] },
+          { "code": "ME3", "short_code": "E3", "label": "Gastos", "capability": "finance.expenses", "modes": ["organization"] },
+          { "code": "ME4", "short_code": "E4", "label": "Conciliaciones", "capability": "finance.reconcile", "modes": ["organization"] },
+          { "code": "ME5", "short_code": "E5", "label": "Cuentas pendientes", "capability": "finance.obligations", "modes": ["organization"] },
+          { "code": "ME6", "short_code": "E6", "label": "Diferencias", "capability": "finance.exceptions", "modes": ["organization"] },
+          { "code": "ME7", "short_code": "E7", "label": "Reportes aprobados", "capability": "finance.export_reports", "modes": ["organization"] },
+          { "code": "ME8", "short_code": "E8", "label": "Fuente y frescura", "capability": "audit.source_authority", "modes": ["organization"] },
+          { "code": "ME9", "short_code": "E9", "label": "Preparar revisión", "capability": "ui.prepare_finance_review", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "MF",
+        "short_code": "F",
+        "label": "Ventas, reputación y crecimiento",
+        "modes": ["organization"],
+        "items": [
+          { "code": "MF1", "short_code": "F1", "label": "Consultas y oportunidades", "capability": "growth.lead_inbox", "modes": ["organization"] },
+          { "code": "MF2", "short_code": "F2", "label": "Cotizaciones", "capability": "hospitality.quote", "modes": ["organization"] },
+          { "code": "MF3", "short_code": "F3", "label": "Promociones", "capability": "growth.campaign_plan", "modes": ["organization"] },
+          { "code": "MF4", "short_code": "F4", "label": "Reseñas", "capability": "growth.reviews", "modes": ["organization"] },
+          { "code": "MF5", "short_code": "F5", "label": "Seguimientos comerciales", "capability": "growth.followup", "modes": ["organization"] },
+          { "code": "MF6", "short_code": "F6", "label": "Contenido", "capability": "growth.content_prepare", "modes": ["organization"] },
+          { "code": "MF7", "short_code": "F7", "label": "Ocupación e ingresos", "capability": "growth.performance", "modes": ["organization"] },
+          { "code": "MF8", "short_code": "F8", "label": "Canales y campañas", "capability": "growth.channels", "modes": ["organization"] },
+          { "code": "MF9", "short_code": "F9", "label": "Oportunidades recomendadas", "capability": "growth.opportunities", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "MG",
+        "short_code": "G",
+        "label": "TORO Personal",
+        "modes": ["personal"],
+        "items": [
+          { "code": "MG1", "short_code": "G1", "label": "Plan del día", "capability": "personal.today", "modes": ["personal"] },
+          { "code": "MG2", "short_code": "G2", "label": "Agenda", "capability": "personal.calendar", "modes": ["personal"] },
+          { "code": "MG3", "short_code": "G3", "label": "Tareas personales", "capability": "personal.tasks", "modes": ["personal"] },
+          { "code": "MG4", "short_code": "G4", "label": "Dinero personal", "capability": "personal.money", "modes": ["personal"] },
+          { "code": "MG5", "short_code": "G5", "label": "Hábitos", "capability": "personal.habits", "modes": ["personal"] },
+          { "code": "MG6", "short_code": "G6", "label": "Diario y reflexión", "capability": "personal.journal", "modes": ["personal"] },
+          { "code": "MG7", "short_code": "G7", "label": "Viajes", "capability": "personal.travel", "modes": ["personal"] },
+          { "code": "MG8", "short_code": "G8", "label": "Documentos", "capability": "personal.documents", "modes": ["personal"] },
+          { "code": "MG9", "short_code": "G9", "label": "Bienestar", "capability": "personal.wellbeing", "modes": ["personal"] }
+        ]
+      },
+      {
+        "code": "MH",
+        "short_code": "H",
+        "label": "Aprende con TORO",
+        "modes": ["personal", "organization"],
+        "items": [
+          { "code": "MH1", "short_code": "H1", "label": "Inicio rápido", "capability": "learning.quickstart", "modes": ["personal", "organization"] },
+          { "code": "MH2", "short_code": "H2", "label": "Tour guiado", "capability": "learning.guided_tour", "modes": ["personal", "organization"] },
+          { "code": "MH3", "short_code": "H3", "label": "Capacitación por rol", "capability": "learning.role_training", "modes": ["personal", "organization"] },
+          { "code": "MH4", "short_code": "H4", "label": "Simulación segura", "capability": "learning.safe_simulation", "modes": ["personal", "organization"] },
+          { "code": "MH5", "short_code": "H5", "label": "Checklist práctico", "capability": "learning.checklist", "modes": ["personal", "organization"] },
+          { "code": "MH6", "short_code": "H6", "label": "Miniquiz", "capability": "learning.quiz", "modes": ["personal", "organization"] },
+          { "code": "MH7", "short_code": "H7", "label": "Explícame cómo", "capability": "learning.explain_work", "modes": ["personal", "organization"] },
+          { "code": "MH8", "short_code": "H8", "label": "Qué puede hacer TORO", "capability": "learning.capability_boundaries", "modes": ["personal", "organization"] },
+          { "code": "MH9", "short_code": "H9", "label": "Siguiente habilidad", "capability": "learning.next_skill", "modes": ["personal", "organization"] }
+        ]
+      },
+      {
+        "code": "MI",
+        "short_code": "I",
+        "label": "Administración y gobierno",
+        "modes": ["organization"],
+        "items": [
+          { "code": "MI1", "short_code": "I1", "label": "Identidades y membresías", "capability": "identity.memberships", "modes": ["organization"] },
+          { "code": "MI2", "short_code": "I2", "label": "Roles y permisos", "capability": "identity.roles_permissions", "modes": ["organization"] },
+          { "code": "MI3", "short_code": "I3", "label": "Conectores", "capability": "systems.connector_health", "modes": ["organization"] },
+          { "code": "MI4", "short_code": "I4", "label": "Salud de fuentes", "capability": "systems.source_health", "modes": ["organization"] },
+          { "code": "MI5", "short_code": "I5", "label": "Auditoría y comprobantes", "capability": "audit.evidence", "modes": ["organization"] },
+          { "code": "MI6", "short_code": "I6", "label": "Automatizaciones", "capability": "automation.manage", "modes": ["organization"] },
+          { "code": "MI7", "short_code": "I7", "label": "Políticas", "capability": "governance.policies", "modes": ["organization"] },
+          { "code": "MI8", "short_code": "I8", "label": "Incidentes y reversión", "capability": "systems.incidents", "modes": ["organization"] },
+          { "code": "MI9", "short_code": "I9", "label": "Configuración", "capability": "systems.configuration", "modes": ["organization"] }
+        ]
+      },
+      {
+        "code": "MJ",
+        "short_code": "J",
+        "label": "Navegador y conectores",
+        "modes": ["personal", "organization"],
+        "items": [
+          { "code": "MJ0", "short_code": "J0", "label": "Estado del navegador", "capability": "browser.session_state", "modes": ["personal", "organization"] },
+          { "code": "MJ1", "short_code": "J1", "label": "Abrir o navegar", "capability": "browser.navigate", "modes": ["personal", "organization"] },
+          { "code": "MJ2", "short_code": "J2", "label": "Leer y resumir", "capability": "browser.read", "modes": ["personal", "organization"] },
+          { "code": "MJ3", "short_code": "J3", "label": "Comparar o verificar", "capability": "browser.compare", "modes": ["personal", "organization"] },
+          { "code": "MJ4", "short_code": "J4", "label": "Preparar formulario", "capability": "browser.prepare_form", "modes": ["personal", "organization"] },
+          { "code": "MJ5", "short_code": "J5", "label": "Capturar evidencia", "capability": "browser.capture_evidence", "modes": ["personal", "organization"] },
+          { "code": "MJ6", "short_code": "J6", "label": "Archivos autorizados", "capability": "browser.authorized_files", "modes": ["personal", "organization"] },
+          { "code": "MJ7", "short_code": "J7", "label": "Estado de sesión", "capability": "browser.authenticated_session_state", "modes": ["personal", "organization"] },
+          { "code": "MJ8", "short_code": "J8", "label": "Proponer acción web", "capability": "browser.propose_action", "modes": ["personal", "organization"] },
+          { "code": "MJ9", "short_code": "J9", "label": "Ejecutar acción confirmada", "capability": "browser.execute_confirmed_action", "modes": ["personal", "organization"], "approval": "explicit_action_time_confirmation" }
+        ]
+      }
+    ],
+    "capability_contract": {
+      "registered_capability_source": "data/toro_role_toolbox_v1.json",
+      "target_status": "TARGET_BLOCKED",
+      "target_reason": "not_registered_in_role_toolbox",
+      "target_capabilities": [
+        "automation.manage",
+        "browser.authenticated_session_state",
+        "browser.authorized_files",
+        "browser.capture_evidence",
+        "browser.compare",
+        "browser.execute_confirmed_action",
+        "browser.navigate",
+        "browser.prepare_form",
+        "browser.propose_action",
+        "browser.read",
+        "browser.session_state",
+        "finance.daily_close",
+        "finance.expenses",
+        "finance.income",
+        "governance.policies",
+        "growth.channels",
+        "growth.followup",
+        "guest.arrivals",
+        "guest.departures",
+        "guest.in_house",
+        "guest.reservation_lookup",
+        "identity.memberships",
+        "identity.my_access",
+        "identity.roles_permissions",
+        "inventory.status",
+        "knowledge.operating_checklists",
+        "learning.capability_boundaries",
+        "learning.checklist",
+        "learning.explain_work",
+        "learning.guided_tour",
+        "learning.next_skill",
+        "learning.quickstart",
+        "learning.quiz",
+        "learning.role_training",
+        "learning.safe_simulation",
+        "operations.cash_handover",
+        "operations.priorities",
+        "operations.reception_shift",
+        "people.feedback",
+        "personal.documents",
+        "personal.habits",
+        "personal.journal",
+        "personal.money",
+        "personal.travel",
+        "personal.wellbeing",
+        "pms.current_state",
+        "reports.create",
+        "reports.operations",
+        "systems.configuration",
+        "systems.source_health"
+      ]
+    },
+    "channel_contract": {
+      "whatsapp_reply_buttons_max": 3,
+      "whatsapp_list_rows_max": 10,
+      "whatsapp_button_title_max_chars": 20,
+      "full_catalog_is_list_or_text_on_demand": true,
+      "browser_is_not_whatsapp_transport": true,
+      "out_of_window_requires_approved_template": true,
+      "human_escalation_required": true
+    }
   },
   "submenus": {
     "owner_money": [

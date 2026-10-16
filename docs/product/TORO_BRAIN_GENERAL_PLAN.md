@@ -7,6 +7,57 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## TORO Supermenu estable y navegador gobernado — 16/10/2026
+
+**Decisión:** ampliar el sistema conversacional existente, sin crear otra app,
+brain, perfil ni fuente de permisos. El menú compacto por rol continúa como
+inicio; `M0` abre un catálogo estable de diez familias y 91 rutas. Los códigos
+canónicos usan namespace `M` (`MA4`, `MC3`); los alias cortos pedidos por
+Mauricio (`A4`, `C3`) solo se interpretan con un recibo de menú vigente ligado
+a sujeto, huella de contexto, versión y expiración máxima de 30 minutos.
+Así no colisionan con la escala de autonomía TORO `A0–A6`, no sobreviven a un
+cambio de contexto y nunca conceden permiso.
+
+**CURRENT / HECHO LOCAL:** el manifest existente
+`data/toro_conversational_submenus_v2.json` contiene las familias Hoy,
+Huéspedes, Operación, Equipo, Finanzas, Crecimiento, Personal, Capacitación,
+Gobierno y Navegador. El resolver puro falla cerrado por contexto/capacidad; el
+formateador produce una respuesta directa, máximo tres continuaciones
+numeradas, fallback textual y proyección compatible con tres reply buttons de
+WhatsApp; sus IDs incluyen un receipt opaco y `M0` no se duplica. El catálogo
+se filtra por capacidades efectivas y oculta categorías vacías. Auditoría
+estática valida 15 perfiles, 89 opciones existentes, 10 familias y 91 rutas
+estables; 50 capacidades aún no registradas en toolboxes quedan declaradas
+`TARGET_BLOCKED` y el resolver las mantiene ocultas aunque reciba un `READY`
+forjado, en vez de aparentar disponibilidad. Personal no aparece
+dentro del contexto de organización; Administración no aparece dentro de
+Personal. Capacitación no amplía permisos.
+
+**NAVEGADOR OBSERVADO:** durante esta unidad, el control visual conectado a la
+conversación pudo enumerar dos perfiles de Chrome y leer una pestaña ya abierta
+del motor público Kross para 08–09/12/2026, donde la página mostraba 22
+soluciones. Esto acredita acceso puntual de esta sesión a Chrome, no acceso
+permanente del runtime OpenClaw, ni capacidad WhatsApp→navegador, ni autoridad
+de reservas/precios. No se hizo clic, envío, reserva, login, cambio o captura de
+datos privados.
+
+**BLOQUEADO / DESCONOCIDO:** consumo del mismo perfil/hash por Portal,
+OpenClaw y WhatsApp; emisión/persistencia server-only del receipt multicanal;
+entrega estructurada y webhook; runtime autónomo de Chrome; identidad y
+capability grant del host; producción. Conexión visible no sustituye prueba de
+ida y regreso.
+
+**NEXT ÚNICO — `SUPERMENU-CROSSCHANNEL-COMPOSER-01`:** integrar en local el
+resolver y formateador al compositor server-only previsto para
+`get_toro_profile`, sin endpoint ni I/O externo. Debe emitir el mismo
+`subject/profile/menu_version/context_fingerprint/hash` para fixtures Portal,
+OpenClaw y WhatsApp, invalidar alias corto vencido, negar Personal↔Org y
+demostrar que `MJ9` conserva confirmación explícita. No host, mensaje real,
+deploy, permisos, secretos ni producción en esa unidad.
+
+**Reversión:** revert selectivo del commit de Supermenu y restaurar la versión
+anterior del manifest; no reset del repositorio ni cambios de datos.
+
 ## Alineación transversal de datos Alegra ↔ Supabase — 15/10/2026
 
 **DECISIÓN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General único y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integración, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al huésped en Booking se conserva como evidencia de reserva; Alegra conserva facturación y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versión, fecha, idempotencia, permisos, conciliación, readback y receipt verificables.

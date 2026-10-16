@@ -754,6 +754,42 @@ role_toolbox_system:
 conversational_menu_system:
   canonical_spec: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   runtime_resolver: src/features/menu/resolver.ts
+  supermenu_manifest: data/toro_conversational_submenus_v2.json
+  supermenu_version: "2026.10.16-v1"
+  supermenu_resolver: src/features/menu/supermenu-resolver.ts
+  response_formatter: src/features/menu/response-format.ts
+  supermenu_status: local_contract_verified_multichannel_runtime_unverified
+  stable_code_namespace: M
+  short_code_examples:
+    - A4
+    - C3
+  canonical_code_examples:
+    - MA4
+    - MC3
+  short_code_requires_matching_active_menu_version: true
+  short_code_requires_bound_menu_receipt: true
+  menu_receipt_subject_bound: true
+  menu_receipt_context_fingerprint_bound: true
+  menu_receipt_max_age_minutes: 30
+  whatsapp_button_ids_include_opaque_menu_receipt: true
+  short_code_never_maps_to_autonomy_without_explicit_policy_context: true
+  stable_code_never_grants_authority: true
+  supermenu_categories: 10
+  supermenu_stable_routes: 91
+  target_blocked_capabilities: 50
+  target_blocked_enforced_by_resolver: true
+  target_registry_overlap_forbidden: true
+  undeclared_capability_fails_static_audit: true
+  categories_filter_by_effective_capability: true
+  direct_category_requires_visible_child: true
+  browser_execute_route_requires_action_time_confirmation: true
+  normal_response_numbered_options_min: 1
+  normal_response_numbered_options_max: 3
+  full_menu_control: M0
+  training_category: MH
+  browser_category: MJ
+  browser_capability_requires_point_in_time_evidence: true
+  browser_connected_does_not_prove_whatsapp_access: true
   experience_lab_route: /experience-lab
   experience_lab_data: synthetic_only
   experience_lab_external_writes: false
@@ -788,6 +824,11 @@ conversational_menu_system:
   free_text_always_allowed: true
   next_best_action_suggestions: true
   max_suggested_replies: 3
+  whatsapp_reply_buttons_max: 3
+  whatsapp_list_rows_max: 10
+  whatsapp_button_title_max_chars: 20
+  whatsapp_out_of_window_requires_approved_template: true
+  human_escalation_required_for_automation: true
   workflow_local_continuation_words: true
   accepts:
     - number

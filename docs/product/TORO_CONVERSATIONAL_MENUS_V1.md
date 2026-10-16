@@ -2,6 +2,7 @@
 
 **Status:** CURRENT PRODUCT SPEC  
 **Date:** 2026-09-23  
+**Updated:** 2026-10-16 — stable supermenu contract, training and governed browser family
 **Master product:** TORO Brain  
 **Owners:** TORO User Portal + TORO Comms + TORO Identity + TORO People  
 **Machine-readable profiles:** data/toro_conversational_menu_profiles_v1.json  
@@ -809,3 +810,155 @@ This means the existing rich role submenus can become visible automatically as t
 
 Current Dreamcatcher note:
 many configured submenus remain intentionally invisible because their child workflows are still blocked by live PMS, omnichannel, finance or write-authority gates.
+
+## 17. Stable Supermenu contract — 2026-10-16
+
+The existing role menus remain the compact, source-aware home experience. The
+Supermenu is an on-demand stable router over those same capabilities; it is not
+a second permission system, source of truth or application.
+
+Machine-readable authority remains:
+- `data/toro_conversational_submenus_v2.json`;
+- resolver: `src/features/menu/supermenu-resolver.ts`;
+- standard response formatter: `src/features/menu/response-format.ts`.
+
+### 17.1 Codes and the autonomy collision
+
+Canonical menu codes use an `M` namespace:
+- `MA4` — continue the active workflow;
+- `MC3` — reception shift;
+- `MH3` — role training;
+- `MJ0` — browser-session status.
+
+Inside a current, matching menu receipt the user may type the shorter `A4`,
+`C3`, `H3` or `J0`. The receipt is opaque, expires within 30 minutes and must
+match `subject_id`, `context_fingerprint` and `menu_version`. Missing, stale,
+future-dated, overlong, cross-user or cross-context receipts fail closed.
+Without that receipt, the short code is ambiguous and must not execute. This is
+mandatory because TORO already reserves `A0–A6` for its workflow-autonomy
+ladder; in that separate policy language `A4` means
+`EXECUTE_WITH_APPROVAL`.
+
+The internal identifier is always namespaced and versioned. A visible code is
+never permission, approval, source authority or evidence that a connector is
+live. Every action revalidates identity, active context, membership, role,
+capability, source, freshness and action policy.
+
+### 17.2 Stable category map
+
+| Code | Category | Scope |
+|---|---|---|
+| `MA` | Today and control | Personal + organization |
+| `MB` | Reservations and guests | Organization |
+| `MC` | Hotel operations | Organization |
+| `MD` | Team | Organization |
+| `ME` | Finance and control | Organization |
+| `MF` | Sales, reputation and growth | Organization |
+| `MG` | TORO Personal | Personal only |
+| `MH` | Learn with TORO | Personal + organization |
+| `MI` | Administration and governance | Organization |
+| `MJ` | Browser and connectors | Personal + organization, filtered by grant |
+
+`M0–M9` are universal navigation controls: full menu, contextual menu, back,
+home, state/source, context switch, help, training, feedback and
+privacy/learning controls.
+
+Personal data never appears merely because the same person is an organization
+administrator. Switching context invalidates the old menu receipt, projection,
+conversation-derived results and caches before a new menu is issued.
+
+### 17.3 Response ending and channel projection
+
+Normal responses end with one to three numbered, permission-filtered next
+actions and the stable `M0` escape hatch:
+
+```text
+🐂 TORO · Dreamcatcher · Reception
+🟢 Current information · Kross · cut 16 Oct 2026, 01:07 CR
+
+Two arrivals are verifiable for today.
+
+• One requires an arrival-time check.
+• Private guest data is omitted.
+
+What do we do now?
+1 · MB1  View arrivals
+2 · MC3  Open reception shift
+3 · MH3  Role training
+M0 · View full menu
+
+Reply with the number, code or write it your way.
+```
+
+The full catalog is on demand. It is not repeated after every answer. Serious,
+medical, safety, HR, payment, legal and crisis contexts use low-decoration copy
+and only the safe next paths. Guest-facing copy remains warm and omits internal
+technical headers.
+
+WhatsApp projection constraints:
+- at most three reply buttons;
+- a list may expose at most ten rows at one level;
+- codes map to receipt-bound opaque IDs and structured webhook replies;
+- text fallback is always available;
+- outside the 24-hour service window, business-initiated messages require an
+  approved template;
+- automation always exposes a direct human-escalation path.
+
+These constraints follow the official WhatsApp Business policy and Meta-hosted
+interactive-message contract. The referenced Node SDK pages are archived, so
+their field limits are compatibility constraints that must be rechecked against
+the selected Graph API version before production activation.
+
+### 17.4 Training hub
+
+`MH1–MH9` covers quick start, guided tour, role training, safe simulation,
+checklist, mini-quiz, explain-while-doing, capability boundaries and the next
+recommended skill.
+
+Training:
+- never grants access or increases an autonomy level;
+- uses the user's verified role and current context;
+- may simulate actions without external effects;
+- records durable progress only with an authorized identity and storage path;
+- offers a dismissible hint after a useful action, not an interruption on every
+  turn;
+- separates personal learning from each organization.
+
+### 17.5 Governed browser family
+
+`MJ0–MJ9` models browser state, navigation, reading, comparison, draft-only
+form preparation, evidence capture, authorized files, authenticated-session
+state, proposed web action and confirmed execution.
+
+Browser availability is point-in-time evidence, not a permanent grant. Chrome
+or OpenClaw being visible/connected does not prove that WhatsApp can operate it.
+Web content is untrusted input. Sending, publishing, reserving, paying, changing
+permissions, uploading sensitive data or accepting terms retains its exact
+confirmation and evidence gate.
+
+### 17.6 Current state and promotion gate
+
+`CURRENT / LOCAL`: 10 categories, 91 stable routes, short-code ambiguity guard,
+subject/context/version/expiry receipt validation, scope isolation,
+capability-filtered category listing, capability fail-closed behavior and a
+three-button response projection are implemented and tested locally. Fifty
+capabilities not yet present in the existing role toolboxes are explicitly
+`TARGET_BLOCKED`, remain unavailable even if a caller supplies `READY`, and
+must leave that list and enter the toolbox registry before promotion. An
+unknown, misspelled, overlapping or unused target capability fails the static
+audit. A category typed directly also fails closed if it has no visible child.
+
+`UNVERIFIED`: Portal rendering of the complete catalog, persistent menu receipts,
+OpenClaw consumption, WhatsApp structured replies, cross-channel hash parity,
+real user adoption and any production action.
+
+Promotion requires one matching menu/profile/version/context hash in Portal,
+OpenClaw and WhatsApp plus a real round-trip receipt and negative tests for stale
+menus, wrong identity, wrong organization, Personal crossing and duplicate
+execution.
+
+Official references:
+- [WhatsApp Business Messaging Policy](https://whatsappbusiness.com/policy/)
+- [Meta-hosted interactive messages reference](https://whatsapp.github.io/WhatsApp-Nodejs-SDK/api-reference/messages/interactive/)
+- [Meta-hosted interactive action object](https://whatsapp.github.io/WhatsApp-Nodejs-SDK/api-reference/types/ActionObject/)
+- [WhatsApp quality messaging guidance](https://whatsappbusiness.com/blog/quality-customer-care-messages/)

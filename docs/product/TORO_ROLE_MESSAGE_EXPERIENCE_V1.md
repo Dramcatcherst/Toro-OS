@@ -2,6 +2,7 @@
 
 **Status:** CURRENT PRODUCT SPEC  
 **Date:** 2026-09-23  
+**Updated:** 2026-10-16 — stable response ending and multichannel formatting
 **Parent:** docs/product/TORO_CONVERSATIONAL_MENUS_V1.md  
 **Machine-readable pack:** data/toro_role_message_pack_v1.json  
 **Runtime state:** SPECIFIED / NOT YET RUNTIME-VERIFIED
@@ -492,3 +493,26 @@ The message pack is runtime-ready when:
 - every blocked/error message contains a useful next path;
 - every success message distinguishes prepared vs executed vs verified;
 - suggested actions are permission-filtered at render and execution.
+
+## 21. Standard response envelope — 2026-10-16
+
+For normal internal and Personal turns, assemble messages in this order:
+
+1. optional compact TORO/context header;
+2. truth state, source and cutoff when the answer depends on current data;
+3. direct answer in one sentence;
+4. zero to three decision-relevant bullets;
+5. one recommended action when useful;
+6. one to three numbered continuations with canonical menu codes;
+7. `M0 · Ver menú completo` and a free-text reminder.
+
+Do not add a technical header to every guest message. Do not expose raw source,
+role, permission or connector internals to a guest unless they need a plain-
+language explanation. Serious contexts suppress decorative personality, but
+still offer a safe next step or human escalation.
+
+The local formatter is `src/features/menu/response-format.ts`. It enforces the
+three-button WhatsApp projection, receipt-bound opaque button IDs, unique
+IDs/titles, the 20-character reply-button title compatibility limit, one
+non-duplicated `M0` escape hatch and a text fallback. It does not send a message
+or prove channel integration.
