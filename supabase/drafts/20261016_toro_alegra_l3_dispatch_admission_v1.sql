@@ -331,6 +331,21 @@ begin
       and not pg_catalog.has_function_privilege('anon', function_row.oid, 'EXECUTE')
       and not pg_catalog.has_function_privilege('authenticated', function_row.oid, 'EXECUTE')
       and not pg_catalog.has_function_privilege('service_role', function_row.oid, 'EXECUTE')
+      and (
+        select count(*) = 1
+          and pg_catalog.bool_and(
+            privilege.grantee = function_row.proowner
+            and privilege.privilege_type = 'EXECUTE'
+            and privilege.grantor = function_row.proowner
+            and not privilege.is_grantable
+          )
+        from pg_catalog.aclexplode(
+          coalesce(
+            function_row.proacl,
+            pg_catalog.acldefault('f', function_row.proowner)
+          )
+        ) privilege
+      )
       and position(
         'alegra_l3_owner_approval_is_immutable'
         in pg_catalog.pg_get_functiondef(function_row.oid)
@@ -500,6 +515,21 @@ begin
       and not pg_catalog.has_function_privilege('anon', function_row.oid, 'EXECUTE')
       and not pg_catalog.has_function_privilege('authenticated', function_row.oid, 'EXECUTE')
       and not pg_catalog.has_function_privilege('service_role', function_row.oid, 'EXECUTE')
+      and (
+        select count(*) = 1
+          and pg_catalog.bool_and(
+            privilege.grantee = function_row.proowner
+            and privilege.privilege_type = 'EXECUTE'
+            and privilege.grantor = function_row.proowner
+            and not privilege.is_grantable
+          )
+        from pg_catalog.aclexplode(
+          coalesce(
+            function_row.proacl,
+            pg_catalog.acldefault('f', function_row.proowner)
+          )
+        ) privilege
+      )
   ) or not exists (
     select 1
     from pg_catalog.pg_trigger trigger_row
@@ -1102,7 +1132,17 @@ begin
          or nullif(new.safe_metadata->>'approvalApprovedAt','') is null
          or nullif(new.safe_metadata->>'approvalExpiresAt','') is null
          or nullif(new.safe_metadata->>'decisionRevision','') is null
-         or not (old.safe_metadata <@ new.safe_metadata)
+         or (old.safe_metadata - array[
+              'approvalBindingState','approvalReceiptId','canonicalApprovalId',
+              'approvalId','approvalActorId','approvalApprovedAt',
+              'approvalExpiresAt','decisionRevision'
+            ]::text[])
+            is distinct from
+            (new.safe_metadata - array[
+              'approvalBindingState','approvalReceiptId','canonicalApprovalId',
+              'approvalId','approvalActorId','approvalApprovedAt',
+              'approvalExpiresAt','decisionRevision'
+            ]::text[])
          or (to_jsonb(new) - 'decision_id' - 'safe_metadata' - 'updated_at')
             is distinct from
             (to_jsonb(old) - 'decision_id' - 'safe_metadata' - 'updated_at') then
@@ -1125,7 +1165,13 @@ begin
          or new.error_redacted is not null
          or new.safe_metadata->>'approvalBindingState' is distinct from 'revoked'
          or nullif(new.safe_metadata->>'revocationReceiptId','') is null
-         or not (old.safe_metadata <@ new.safe_metadata)
+         or (old.safe_metadata - array[
+              'approvalBindingState','revocationReceiptId'
+            ]::text[])
+            is distinct from
+            (new.safe_metadata - array[
+              'approvalBindingState','revocationReceiptId'
+            ]::text[])
          or (to_jsonb(new)
                - 'status' - 'fencing_token' - 'lease_owner' - 'lease_expires_at'
                - 'finished_at' - 'error_class' - 'error_redacted'
@@ -1196,7 +1242,6 @@ begin
        or new.verifying_at is null
        or new.finished_at is null
        or new.error_redacted is not null
-       or not (old.safe_metadata <@ new.safe_metadata)
        or nullif(new.safe_metadata->>'finalReceiptId','') is null
        or new.safe_metadata->>'preparedReceiptId' is distinct from old.safe_metadata->>'preparedReceiptId'
        or (to_jsonb(new)
@@ -1215,6 +1260,15 @@ begin
       if old.lease_expires_at is null
          or old.lease_expires_at <= v_checked_at
          or new.fencing_token is distinct from old.fencing_token
+         or (old.safe_metadata - array[
+              'approvalBindingState','finalReceiptId','finalizationOutcome',
+              'finalizedByWorkerId','finalizedAt'
+            ]::text[])
+            is distinct from
+            (new.safe_metadata - array[
+              'approvalBindingState','finalReceiptId','finalizationOutcome',
+              'finalizedByWorkerId','finalizedAt'
+            ]::text[])
          or not (
            (new.status = 'succeeded'
              and new.verification_status = 'passed'
@@ -1250,6 +1304,17 @@ begin
          or new.safe_metadata->>'recoveredFromFencingToken' is distinct from old.fencing_token::text
          or new.safe_metadata->>'recoveryFencingToken' is distinct from new.fencing_token::text
          or new.safe_metadata->>'recoveryReceiptId' is distinct from new.safe_metadata->>'finalReceiptId'
+         or (old.safe_metadata - array[
+              'approvalBindingState','preparedReceiptId','recoveryReceiptId',
+              'finalReceiptId','recoveryState','recoveredByWorkerId',
+              'recoveredAt','recoveredFromFencingToken','recoveryFencingToken'
+            ]::text[])
+            is distinct from
+            (new.safe_metadata - array[
+              'approvalBindingState','preparedReceiptId','recoveryReceiptId',
+              'finalReceiptId','recoveryState','recoveredByWorkerId',
+              'recoveredAt','recoveredFromFencingToken','recoveryFencingToken'
+            ]::text[])
          or not exists (
            select 1
            from public.toro_execution_receipts receipt
@@ -2961,34 +3026,83 @@ revoke all on function public.toro_recover_expired_alegra_execution_v1(uuid,uuid
 comment on function public.toro_recover_expired_alegra_execution_v1(uuid,uuid,text,bigint,uuid) is
   'Draft-only idempotent recovery for an expired admitted Alegra L3 lease. It never invokes the provider or retries creation; it fences the stale worker, records PROVIDER_STATE_UNKNOWN, and blocks the run for reconciliation atomically.';
 
--- Post-create owner/security preflight for every callable L3 entrypoint.
--- The draft grants none of these functions. A separately reviewed activation
+-- Post-create owner/security preflight for every L3 function. The draft grants
+-- none of them, including trigger functions. A separately reviewed activation
 -- may grant the operational RPCs only to the dedicated no-DML Writer role and
 -- the revoker only to authenticated owner sessions; never grant the revoker to
--- the Writer or service_role.
+-- the Writer or service_role. Checking the complete ACL prevents a residual
+-- grant to an unrelated role from surviving CREATE OR REPLACE.
 do $$
 declare
   v_function regprocedure;
+  v_security_definer boolean;
 begin
-  foreach v_function in array array[
-    to_regprocedure('public.toro_revoke_alegra_execution_authority_v1(uuid,uuid,uuid)'),
-    to_regprocedure('public.toro_admit_approved_alegra_execution_v1(uuid,uuid,text,bigint,uuid,text,text,timestamptz,timestamptz,text,text,integer)'),
-    to_regprocedure('public.toro_finalize_alegra_execution_v1(uuid,uuid,text,bigint,uuid,text,jsonb)'),
-    to_regprocedure('public.toro_heartbeat_alegra_execution_v1(uuid,uuid,text,bigint,uuid,integer)'),
-    to_regprocedure('public.toro_recover_expired_alegra_execution_v1(uuid,uuid,text,bigint,uuid)')
-  ] loop
+  for v_function, v_security_definer in
+    select expected.function_oid, expected.security_definer
+    from (values
+      (
+        to_regprocedure('public.toro_prevent_alegra_l3_owner_approval_mutation_v1()'),
+        false
+      ),
+      (
+        to_regprocedure('public.toro_capture_alegra_l3_owner_approval_v1()'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_guard_alegra_l3_approval_receipt_v1()'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_guard_alegra_l3_run_admission_v1()'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_revoke_alegra_execution_authority_v1(uuid,uuid,uuid)'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_admit_approved_alegra_execution_v1(uuid,uuid,text,bigint,uuid,text,text,timestamptz,timestamptz,text,text,integer)'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_finalize_alegra_execution_v1(uuid,uuid,text,bigint,uuid,text,jsonb)'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_heartbeat_alegra_execution_v1(uuid,uuid,text,bigint,uuid,integer)'),
+        true
+      ),
+      (
+        to_regprocedure('public.toro_recover_expired_alegra_execution_v1(uuid,uuid,text,bigint,uuid)'),
+        true
+      )
+    ) expected(function_oid, security_definer)
+  loop
     if v_function is null or not exists (
       select 1
       from pg_catalog.pg_proc p
       where p.oid = v_function
-        and p.prosecdef
+        and p.prosecdef = v_security_definer
         and pg_catalog.pg_get_userbyid(p.proowner) = 'postgres'
         and coalesce(p.proconfig, '{}'::text[]) @> array['search_path=""']::text[]
+        and not pg_catalog.has_function_privilege('public', p.oid, 'EXECUTE')
         and not pg_catalog.has_function_privilege('anon', p.oid, 'EXECUTE')
         and not pg_catalog.has_function_privilege('authenticated', p.oid, 'EXECUTE')
         and not pg_catalog.has_function_privilege('service_role', p.oid, 'EXECUTE')
+        and (
+          select count(*) = 1
+            and pg_catalog.bool_and(
+              privilege.grantee = p.proowner
+              and privilege.privilege_type = 'EXECUTE'
+              and privilege.grantor = p.proowner
+              and not privilege.is_grantable
+            )
+          from pg_catalog.aclexplode(
+            coalesce(p.proacl, pg_catalog.acldefault('f', p.proowner))
+          ) privilege
+        )
     ) then
-      raise exception 'alegra_l3_callable_function_security_drifted';
+      raise exception 'alegra_l3_callable_function_security_drifted:%', v_function;
     end if;
   end loop;
 end;
