@@ -199,3 +199,76 @@ Cierre del piloto: enlaces y cortes recuperables, desglose del total final, cond
 Orden: recuperar el material previo → identificar fuentes y equivalencias → completar el piloto comparable → reutilizar el resultado en Revenue y evaluación de margen → evaluar actualización incremental solo con adaptador, límites y permisos verificados. No abrir otra automatización ni alterar los observadores financieros. No reactivar la API Kross pausada, contratar rate shoppers, esquivar restricciones de acceso, publicar promociones, igualar ofertas ni modificar reservas/precios sin aprobación independiente.
 
 **Estado de la incorporación:** requisito recuperado y especificado dentro del contrato subordinado al Plan General. Cotizaciones actuales, código de comparador integrado, despliegue y actualización automática permanecen NO VERIFICADOS. No se escribieron registros operativos ni se sustituyeron los datos de la conciliación Alegra/Booking/Kross por esta ampliación documental.
+
+## 10. Programa FIN-01 2026 aplicado a TORO Finance
+
+### 10.1 Resultado y límites
+
+Este programa convierte el corte de auditoría del 15/10/2026 en ejecución gobernada dentro de `TORO Finance`, con FIONA como responsable funcional de preparación y conciliación. No crea otro libro, base, módulo, agente o scheduler. Alegra conserva el libro contable/fiscal; bancos y procesadores conservan movimiento real; Kross conserva operación/reservas/cargos; Dropbox conserva originales; Supabase conserva control, correspondencias, estados y recibos; Airtable permanece como superficie humana transitoria.
+
+**Estado general:** `PARTIAL / PENDING_EVIDENCE / UNPOSTED`. La meta no es “cuadrar” por fuerza, sino poder explicar y reproducir cada saldo material por entidad, propiedad, período, moneda, documento y movimiento. Cualquier asiento, factura, pago, declaración, cierre de período, cambio de permisos o cambio de catálogo mantiene gate separado.
+
+El detalle financiero privado permanece en el expediente FIN-01 restringido. Este repositorio conserva únicamente el contrato, los conteos de control y el programa sin datos de huéspedes, credenciales, números bancarios completos o documentos fuente.
+
+### 10.2 Prioridad ejecutiva
+
+| Orden | Frente | Estado inicial | Resultado exigido | Gate |
+| ---: | --- | --- | --- | --- |
+| 1 | Seguridad RLS de 12 tablas `finance`/`integrations` | `P0 / OBSERVED` | inventario de consumidores, política por actor/acción, pruebas allow/deny, asesor limpio, rollback | aprobación del cambio SQL exacto |
+| 2 | Moneda, entidad y alcance | `P0 / CONFLICT` | CRC/USD por documento y cuenta; compañía, negocio, propiedad y centro de costo sin cruces implícitos | contador/Mauricio valida semántica fiscal |
+| 3 | Bancos y caja | `P0 / OPEN` | 18 cuentas identificadas; 11 conciliaciones resueltas o bloqueadas; movimientos 2026 con estado reproducible | extracto/comprobante primario |
+| 4 | Compras y cuentas por pagar | `P0 / COVERAGE_GAP` | proveedor, documento, fecha, moneda, impuesto, centro, vencimiento, pago y soporte; faltante nunca cero | original + identidad fiscal |
+| 5 | Ventas y cobros | `P1 / VARIANCE_OPEN` | puente factura↔reserva/cargo↔cobro↔banco; diferencias entre reportes explicadas | cobertura completa del rango |
+| 6 | Costos y margen | `P1 / NOT_VALIDATED` | costo de ventas y OPEX separados; no usar margen provisional para precio/bonos | clasificación y soporte |
+| 7 | Impuestos | `P1 / PENDING_EVIDENCE` | IVA/retenciones/créditos con período, documento, aceptación y pago separados | revisión profesional y fuente oficial |
+| 8 | Activos, deuda, patrimonio y partes relacionadas | `P1 / INCOMPLETE` | registro con titularidad, fecha, valor, depreciación, saldo y tratamiento; fuera de OPEX | documento jurídico/contable |
+| 9 | Cierre mensual 2026 | `P1 / OPEN_PERIODS` | enero–septiembre cerrables; octubre parcial; noviembre–diciembre preparados | checklist y aprobación por período |
+| 10 | Integración incremental de solo lectura | `P1 / PREPARED` | cursor durable, paginación, idempotencia, hash, cuarentena, recibo y replay sin duplicados | identidad/cobertura verificada |
+| 11 | Writer Alegra | `P2 / OFF` | un borrador no fiscal, deduplicado, con readback y recuperación | autorización específica del documento |
+| 12 | Retiro de duplicados y legado | `P2 / BLOCKED` | consumidor, paridad, retención, respaldo y restore probados antes de retirar | aprobación de retiro exacto |
+
+### 10.3 Secuencia de 90 días y cierre del año
+
+**Días 0–7 — proteger y fijar alcance.** Congelar nuevas rutas de escritura; documentar las 12 tablas sin RLS y sus consumidores; resolver la semántica de moneda; fijar `org_id`, `legal_entity_id`, `business_scope`, `property_id` y centro de costo; confirmar las dos conexiones que apuntan a la misma compañía y aislar el enlace histórico. Resultado: una matriz de autoridad/identidad aprobable y un paquete RLS revisable, sin aplicar.
+
+**Días 8–30 — recuperar evidencia y conciliación.** Trabajar en lotes por cuenta y mes: primero movimientos marcados para revisión, luego conciliaciones abiertas, facturas/proveedores y soportes. Cada lote termina con totales CRC/USD separados, duplicados, diferencias, evidencia faltante, dueño, fecha y estado. No avanzar el cursor si el lote falla.
+
+**Días 31–60 — reconstruir resultado y balance.** Resolver diferencia entre superficies de ventas, construir costo de ventas, separar OPEX/no operativo/partes relacionadas, verificar impuestos, activos, deuda y patrimonio. Reemitir el estado gerencial solo cuando cada subtotal tenga fuente y fórmula; una reclasificación propuesta continúa `UNPOSTED`.
+
+**Días 61–90 — cierre reproducible y piloto controlado.** Completar checklist enero–septiembre, mantener octubre como parcial por corte, preparar noviembre–diciembre, validar dos ejecuciones incrementales sin duplicados y someter a decisión un único borrador Alegra no fiscal. No activar emisión, adjuntos, pagos o asientos reales por el mero cumplimiento de pruebas locales.
+
+**Calendario 2026:** enero–septiembre se tratan como recuperación histórica priorizada por materialidad; octubre se cierra únicamente al concluir el mes; noviembre y diciembre usan el contrato desde origen. El cierre anual requiere doce cierres mensuales, auxiliares contra mayor, bancos/caja, impuestos, cartera/proveedores, activos/deuda/partes relacionadas y aprobación del contador. Un período abierto no se cierra para ocultar una diferencia.
+
+### 10.4 Contrato de cada lote
+
+Cada lote FIN-01 debe registrar: `batch_id`, entidad, propiedad, período, moneda, evento financiero, fuente autoritativa, IDs externos, cobertura esperada/observada, suma fuente, suma destino, delta, duplicados, cuarentena, evidencia, responsable, aprobación requerida, estado, pruebas, readback, reversión y única acción siguiente.
+
+Estados válidos: `DRAFT`, `PARTIAL`, `PENDING_EVIDENCE`, `UNPOSTED`, `READY_FOR_AUTHORIZED_POSTING`, `CLOSED_VERIFIED`. `READY_FOR_AUTHORIZED_POSTING` no permite publicar por sí solo. Solo `CLOSED_VERIFIED` puede alimentar métricas finales sin advertencia.
+
+### 10.5 Gobierno y responsabilidades
+
+| Actor | Responsable de | No puede asumir por este plan |
+| --- | --- | --- |
+| Mauricio | prioridades, alcance sensible, aprobación de cambios materiales | firma contable/fiscal por delegación implícita |
+| Contador/revisor autorizado | criterios fiscales, asientos, declaraciones y cierre profesional | inventar evidencia o saltar conciliaciones |
+| TORO/FIONA | recopilar, normalizar, reconciliar, preparar, alertar, documentar y verificar readback | mover dinero, declarar impuestos o publicar sin gate |
+| Recepción/operación | hechos de estancia, cargos, caja y soportes del turno | decidir tratamiento contable/fiscal |
+| SOBRESITO/TORO Systems | conectores, seguridad, idempotencia, observabilidad y recuperación | convertir disponibilidad técnica en autorización |
+
+### 10.6 Métricas y criterio de terminado
+
+El tablero existente de FIN-01 debe mostrar, con denominador: conciliación bancaria; movimientos con revisión pendiente; documentos de proveedor con monto/moneda/tercero/evidencia; ventas con puente PMS↔Alegra↔banco; cobertura de costo de ventas; períodos cerrados; activos con soporte; obligaciones fiscales con aceptación/pago separados; lotes incrementales sin duplicados; tablas financieras con RLS y pruebas negativas; propuestas `UNPOSTED`; y acciones externas con receipt/readback.
+
+FIN-01 2026 solo puede declararse `CLOSED_VERIFIED` cuando: las doce mensualidades tienen checklist; los bancos/cajas y auxiliares concilian o muestran diferencias aprobadas y explicadas; las compras/ventas materiales tienen documento y relación bancaria; costo de ventas no es un cero por ausencia; impuestos y patrimonio fueron revisados por la autoridad humana; no existen escrituras con resultado desconocido; cada excepción conserva dueño y fecha; y el reporte puede regenerarse desde fuentes/IDs sin copiar datos privados al repositorio.
+
+La proyección ejecutable está en [`data/toro_fin01_action_plan_2026_v1.json`](../../data/toro_fin01_action_plan_2026_v1.json). Su prueba estática exige IDs únicos, una sola tarea `NEXT`, estados/gates válidos y prohibición expresa de publicación autónoma.
+
+### 10.7 Estado de aplicación de esta unidad
+
+- `HECHO`: contrato ampliado, programa priorizado, proyección estructurada y prueba estática creados; Plan General enlazado.
+- `PREPARADO`: paquete de decisión RLS y secuencia de conciliación; sin SQL aplicado.
+- `BLOQUEADO`: cambios en RLS, asientos, facturas, pagos, impuestos, cierres y permisos hasta su gate exacto.
+- `DESCONOCIDO`: consumidor efectivo de cada tabla observada sin RLS y política mínima compatible; debe resolverse antes de escribir SQL final.
+- `NO ACTIVADO`: heartbeat financiero existente permanece pausado; writer Alegra permanece apagado.
+- `REVERSIÓN`: revertir únicamente el commit documental/proyección; no hay datos ni configuración externa que restaurar.
+- `SIGUIENTE ÚNICA`: inventariar consumidores/grants/policies de las 12 tablas observadas sin RLS y producir el diff SQL revisable con pruebas y rollback; detenerse antes de aplicar.
