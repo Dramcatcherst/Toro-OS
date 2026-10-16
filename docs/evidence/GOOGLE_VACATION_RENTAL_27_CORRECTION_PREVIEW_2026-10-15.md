@@ -2,7 +2,7 @@
 
 **Fecha de corte:** 15 de octubre de 2026, America/Costa_Rica
 
-**Estado:** PREPARADA, NO EJECUTADA
+**Estado:** HECHA Y VERIFICADA EN KROSS; RECEPCION AGUAS ABAJO EN GOOGLE PENDIENTE
 
 **Alcance TORO:** Dreamcatcher reference implementation → integraciones/canales → Kross como autoridad comercial → NEXT P0. No crea un proyecto, cuenta, propiedad ni feed nuevo.
 
@@ -17,9 +17,9 @@ La custodia técnica del feed `dreamcatcherhotel` es de **Kross Booking** median
 
 La correspondencia con las dos filas del feed es concluyente por el número exacto de imágenes: la fila A de 14 fotos corresponde a `idrt=28`; la fila B de 7 fotos corresponde a `idrt=43`.
 
-## Una sola corrección propuesta
+## Una sola corrección ejecutada
 
-**Excluir `Kross room_type_id = 28` del envío Google Vacation Rental de `dreamcatcherhotel`, sin borrar el registro, y conservar `room_type_id = 43` como único `#27` exportado.**
+Se deshabilitó `dreamcatcherhotel` en **Enabled booking engines** para `Kross room_type_id = 28`, sin borrar el registro, y se conservó `room_type_id = 43` como único `#27` exportado.
 
 Esta propuesta no cambia en el mismo lote camas, horario, texto, coordenadas, fotos, inventario, tarifas ni capacidad. En particular, la discrepancia de la fila vigente —el feed dice `beds=2`, mientras el contenido público de Kross dice `1 king bed`— queda registrada para revisión separada; no debe mezclarse con la eliminación del duplicado.
 
@@ -34,20 +34,23 @@ Esta propuesta no cambia en el mismo lote camas, horario, texto, coordenadas, fo
 
 Los identificadores de cuenta, propiedad y feed del lado de Google, así como el titular nativo de Hotel Center, siguen **DESCONOCIDOS**. Esto no impide identificar al publicador técnico ni el origen Kross del duplicado.
 
-## Ejecución posterior, solo con autorización
+## Recibo de ejecución autorizado
 
-1. Capturar el estado previo de la regla de exportación de `idrt=28`.
-2. Desactivar únicamente su inclusión en Google Vacation Rental; no borrar el tipo de habitación ni modificar `idrt=43`.
-3. Recargar Kross y verificar que Google Vacation Rental muestre 22 filas, 22 títulos únicos y exactamente un `#27`.
-4. Tras la propagación normal del partner, comprobar recepción aguas abajo en Google sin crear activos nuevos.
+1. Estado previo: `idrt=28 > Booking Engine > Enabled booking engines > dreamcatcherhotel` estaba marcado; `hide_be`, `hide_be_listing` y `noindex` estaban desmarcados.
+2. Acción única: se desmarcó solamente `dreamcatcherhotel` y se guardó la ficha antigua. No se cambió `idrt=43`, el inventario, las tarifas, la capacidad, los horarios, las coordenadas, las imágenes ni el contenido.
+3. Readback tras recargar: el checkbox `idca-0` permaneció desmarcado y `Status > Booking Engine` cambió a `fa-times text-red`.
+4. Readback del feed Kross: `Google Vacation Rental` pasó de 23 a 22 filas; página 2 muestra `Rows from 21 to 22 of 22`, con `Villa Toro` y una sola `#27`. La fila `#27` conserva ocupación máxima 2, check-in 15:00 y 7 imágenes, lo que corresponde a `idrt=43`.
+5. Google Hotel Travel permaneció en 0 filas. No se creó ni modificó ninguna cuenta, propiedad o feed de Google.
+
+La recepción posterior en una superficie nativa de Google sigue **DESCONOCIDA** porque Hotel Center no expone la entidad a los perfiles disponibles. El readback Kross sí demuestra que el payload del partner quedó corregido en su fuente técnica.
 
 ## Criterio de terminado
 
-- Kross: `22` filas / `22` títulos únicos / un solo `#27` correspondiente a `idrt=43`.
+- Kross: `22` filas / `22` títulos únicos / un solo `#27` correspondiente a `idrt=43`: **PASS**.
 - Cero cambios en Google Hotel Center, cuentas, propiedades o feeds.
-- El registro `idrt=28` permanece recuperable en Kross.
+- El registro `idrt=28` permanece recuperable en Kross: **PASS**.
 - Existe readback fechado de Kross y, cuando Google procese el feed, evidencia separada de recepción aguas abajo.
 
 ## Reversión
 
-Restaurar exactamente la inclusión previa de `idrt=28` en Google Vacation Rental. No recrear el registro, la cuenta, la propiedad ni el feed.
+Volver a marcar `dreamcatcherhotel` en `idrt=28 > Booking Engine > Enabled booking engines`, guardar y comprobar que Kross vuelve a publicar 23 filas con dos títulos `#27`. No recrear el registro, la cuenta, la propiedad ni el feed.
