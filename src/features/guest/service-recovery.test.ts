@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { prepareGuestServiceRecovery } from "./service-recovery";
+import {
+  prepareGuestFeedbackBatch,
+  prepareGuestServiceRecovery,
+} from "./service-recovery";
 
 describe("prepareGuestServiceRecovery", () => {
   it("prepares a maintenance handoff to RICO without write or external send", () => {
@@ -212,6 +215,138 @@ describe("prepareGuestServiceRecovery", () => {
 
     expect(result.errors).toContain(
       "breakfastConcern is only valid for breakfast feedback.",
+    );
+  });
+});
+
+describe("prepareGuestFeedbackBatch", () => {
+  it("prepares several concerns from one synthetic submission without writes", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0001",
+      sourceChannel: "survey",
+      projectKey: "dreamcatcher_hotel_reinvestment_2026",
+      guestLanguage: "es",
+      contactConsent: true,
+      roomEntryConsent: false,
+      bookingContextVerified: true,
+      privateFeedbackLink: "https://example.com/feedback/opaque-token",
+      issues: [
+        {
+          category: "housekeeping",
+          summary: "Polvo en una repisa",
+          locationLabel: "Habitación 27",
+        },
+        {
+          category: "breakfast",
+          summary: "Demora en el desayuno",
+          breakfastConcern: "wait",
+          breakfastEntitlement: "unknown",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.value).toMatchObject({
+      workflowState: "prepared",
+      externalSend: false,
+      internalWriteExecuted: false,
+      issueCount: 2,
+      duplicateIssueCount: 0,
+      immediateHumanAttention: false,
+    });
+    expect(
+      result.value.issues.map((issue) => issue.internalWork.projectKey),
+    ).toEqual([
+      "dreamcatcher_hotel_reinvestment_2026",
+      "dreamcatcher_hotel_reinvestment_2026",
+    ]);
+    expect(
+      result.value.issues.map((issue) => issue.internalWork.idempotencyKey),
+    ).toEqual([
+      "guest:survey:synthetic_0001:01",
+      "guest:survey:synthetic_0001:02",
+    ]);
+  });
+
+  it("collapses exact duplicates and reports the avoided duplicate", () => {
+    const issue = {
+      category: "maintenance" as const,
+      summary: "A/C no enfría",
+      locationLabel: "Habitación 10",
+    };
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0002",
+      sourceChannel: "portal",
+      issues: [issue, { ...issue }],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issueCount).toBe(1);
+    expect(result.value.duplicateIssueCount).toBe(1);
+  });
+
+  it("selects the urgent acknowledgement when any concern needs immediate attention", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0003",
+      sourceChannel: "survey",
+      guestLanguage: "en",
+      issues: [
+        { category: "noise", summary: "Noise outside" },
+        {
+          category: "electricity",
+          summary: "Electrical smell near an outlet",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.immediateHumanAttention).toBe(true);
+    expect(result.value.guestReplyDraft.text).toContain("prioritizing");
+    expect(result.value.issues[1].internalWork.priority).toBe("critical");
+  });
+
+  it("fails closed when a submission would fan out into too many tasks", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0004",
+      sourceChannel: "survey",
+      issues: [
+        { category: "noise", summary: "Issue one" },
+        { category: "amenity", summary: "Issue two" },
+        { category: "water", summary: "Issue three" },
+        { category: "general", summary: "Issue four" },
+      ],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      errors: [
+        "A feedback submission may create at most 3 unique operational issues.",
+      ],
+    });
+  });
+
+  it("produces the same task keys when an identical submission is replayed", () => {
+    const input = {
+      submissionId: "synthetic_0005",
+      sourceChannel: "survey" as const,
+      issues: [
+        { category: "housekeeping" as const, summary: "Revisar limpieza" },
+        { category: "water" as const, summary: "Revisar presión" },
+      ],
+    };
+    const first = prepareGuestFeedbackBatch(input);
+    const second = prepareGuestFeedbackBatch(input);
+
+    expect(first.ok).toBe(true);
+    expect(second.ok).toBe(true);
+    if (!first.ok || !second.ok) return;
+
+    expect(first.value.issues.map((issue) => issue.internalWork.idempotencyKey)).toEqual(
+      second.value.issues.map((issue) => issue.internalWork.idempotencyKey),
     );
   });
 });
