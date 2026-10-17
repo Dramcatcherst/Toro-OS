@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "1.0",
+  "policyId": "FIN-01-CURRENCY-FX-2026",
+  "taskId": "FIN01-P0-CUR-01",
+  "asOf": "2026-10-15",
+  "timezone": "America/Costa_Rica",
+  "status": "MATRIX_READY_FOR_ACCOUNTANT_REVIEW",
+  "operationalState": "PREPARED_NOT_APPLIED",
+  "externalWritesEnabled": false,
+  "remoteMutationPerformed": false,
+  "scope": {
+    "organization": "Atrapasuenos",
+    "business": "Dreamcatcher Hotel & Villas",
+    "alegraCompanyIdFromExistingEvidence": "2087288",
+    "currentEndpointIdentityRevalidated": false,
+    "accountingAuthority": "Alegra",
+    "cashAuthority": "banks_and_processors",
+    "pmsAuthority": "Kross",
+    "controlAndReconciliation": "Supabase/TORO"
+  },
+  "companyCurrencyDecision": {
+    "baseCurrency": "CRC",
+    "decisionState": "OBSERVED_CORROBORATED_PENDING_ACCOUNTANT",
+    "additionalCurrencies": ["USD"],
+    "evidence": [
+      {
+        "source": "Alegra company configuration UI",
+        "observedOn": "2026-09-19",
+        "result": "CRC shown as company currency with precision 2; USD shown as an additional currency with a manual rate"
+      },
+      {
+        "source": "Alegra currencies catalog through both current read links",
+        "observedOn": "2026-10-15",
+        "result": "CRC idCurrency 32 has main=true; USD idCurrency 140 is active with rate 500 and autoUpdate=no"
+      }
+    ],
+    "conflict": {
+      "source": "Alegra getDefaultCurrency through both current read links",
+      "result": "USD active with rate 500 and no event date",
+      "treatment": "AMBIGUOUS_ENDPOINT_NOT_BASE_CURRENCY_AUTHORITY"
+    },
+    "formalGate": "Accountant confirms fiscal semantics and the company identity/base-currency readback before any posting, migration or period close."
+  },
+  "configuredRate500": {
+    "value": 500,
+    "currencyPair": "CRC_per_1_USD",
+    "state": "HISTORICAL_CONFIG_OBSERVATION_ONLY",
+    "autoUpdate": false,
+    "allowedAsImplicitFallback": false,
+    "rules": [
+      "Preserve rate 500 where an existing native document already contains it.",
+      "Do not use it as a current fiscal, commercial, bank-settlement or management rate.",
+      "Do not rewrite a historical document because a later rate differs."
+    ]
+  },
+  "accountInventory": {
+    "observedTotal": 18,
+    "activeTotal": 18,
+    "typeCounts": {
+      "bank": 12,
+      "cash": 2,
+      "credit-card": 4
+    },
+    "nativeCurrencyEvidenceCounts": {
+      "USD_EXPLICIT": 9,
+      "CURRENCY_OMITTED": 9
+    },
+    "toroProjectionCounts": {
+      "CRC": 9,
+      "USD": 9,
+      "accountStatementTransactionCurrencyMismatches": 0,
+      "authorityLimit": "TORO consistency corroborates the mapping but does not replace missing native Alegra currency evidence."
+    },
+    "accounts": [
+      {"alegraId": "1", "name": "DEFAULT", "type": "cash", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "2", "name": "₡CAJA C₡", "type": "cash", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "3", "name": "₡ BN ₡", "type": "bank", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "4", "name": "₡TC BAC₡", "type": "credit-card", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "7", "name": "₡ BAC ₡", "type": "bank", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "9", "name": "₡LAFISE₡", "type": "bank", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "11", "name": "₡ BCR ₡", "type": "bank", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "13", "name": "₡ WINK ₡", "type": "bank", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "16", "name": "$PAYPAL$", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "17", "name": "$ BCR $", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "18", "name": "$ LAFISE $", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "19", "name": "$ BAC $", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "20", "name": "$ BN $", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "21", "name": "$CAJA C$", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED_WITH_TYPE_ANOMALY"},
+      {"alegraId": "23", "name": "$TC BAC$", "type": "credit-card", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "24", "name": "$TC LAF$", "type": "credit-card", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED"},
+      {"alegraId": "25", "name": "₡TC LAF₡", "type": "credit-card", "nativeCurrency": null, "candidateCurrency": "CRC", "currencyEvidence": "MISSING_NATIVE_FIELD", "status": "PENDING_EVIDENCE"},
+      {"alegraId": "26", "name": "$BITCOINS$", "type": "bank", "nativeCurrency": "USD", "candidateCurrency": null, "currencyEvidence": "NATIVE_EXPLICIT", "status": "OBSERVED_WITH_TYPE_ANOMALY"}
+    ],
+    "classificationAnomalies": [
+      "Account 21 is named as cash but Alegra classifies it as bank.",
+      "Accounts 16 and 26 are classified as bank; their names do not prove a regulated bank account.",
+      "Account 1 has a generic name and no native currency field."
+    ]
+  },
+  "requiredEventFields": [
+    "original_amount",
+    "original_currency",
+    "event_date",
+    "source_system",
+    "source_record_id",
+    "account_id",
+    "account_currency",
+    "fx_purpose",
+    "fx_from_currency",
+    "fx_to_currency",
+    "fx_rate",
+    "fx_quote_convention",
+    "fx_date",
+    "fx_source",
+    "converted_amount",
+    "rounding_rule",
+    "evidence_status"
+  ],
+  "fxQuoteConvention": "to_currency_units_per_1_from_currency_unit",
+  "eventPolicies": [
+    {
+      "eventType": "SALES_OR_PURCHASE_DOCUMENT",
+      "preserveOriginal": true,
+      "ratePurpose": "DOCUMENT_AND_FISCAL_SEPARATE",
+      "rule": "Keep native document amount/currency/rate. For Costa Rican VAT base in a foreign currency, use the BCCR reference selling rate effective at the taxable event, after accountant validation; never replace it with a bank or commercial rate."
+    },
+    {
+      "eventType": "PAYMENT_OR_COLLECTION",
+      "preserveOriginal": true,
+      "ratePurpose": "SETTLEMENT",
+      "rule": "Keep paid amount/currency and the actual bank or processor rate and fees. Do not overwrite the invoice rate; route any exchange difference for accountant review."
+    },
+    {
+      "eventType": "BANK_EXCHANGE_OR_TRANSFER",
+      "preserveOriginal": true,
+      "ratePurpose": "TREASURY_SETTLEMENT",
+      "rule": "Use the provider-confirmed execution rate, gross amounts and fees for reconciliation; this rate does not replace the fiscal rate."
+    },
+    {
+      "eventType": "PMS_RESERVATION_OR_COMMERCIAL_QUOTE",
+      "preserveOriginal": true,
+      "ratePurpose": "COMMERCIAL",
+      "rule": "Keep contract currency and guest-facing totals. Kross or OTA data is not bank settlement or fiscal posting evidence."
+    },
+    {
+      "eventType": "MANAGEMENT_PRESENTATION",
+      "preserveOriginal": true,
+      "ratePurpose": "ANALYTICAL",
+      "rule": "A presentation conversion is optional and must carry source/date/purpose; it never replaces ledger values or supports an accounting posting."
+    },
+    {
+      "eventType": "HISTORICAL_NATIVE_RECORD",
+      "preserveOriginal": true,
+      "ratePurpose": "AS_RECORDED",
+      "rule": "Preserve the native historical rate, including an observed 500, and flag missing provenance. Do not backfill or reinterpret without separately approved correction evidence."
+    },
+    {
+      "eventType": "UNKNOWN_CURRENCY_OR_RATE",
+      "preserveOriginal": true,
+      "ratePurpose": "NONE",
+      "rule": "Set PENDING_EVIDENCE and do not convert, aggregate across currencies, post or close the period."
+    }
+  ],
+  "supabaseReadOnlyFindings": {
+    "reusableChain": ["finance.bank_accounts", "finance.bank_statements", "finance.bank_transactions", "finance.reconciliations"],
+    "currencyConsistencyObserved": true,
+    "schemaGaps": [
+      "No original_currency field contract across all financial events.",
+      "No exchange-rate source/date/purpose/quote-direction contract.",
+      "finance.pms_payments exposes amount_converted_usd without native amount/currency/rate provenance.",
+      "44 of 153 finance.invoices have no currency at the cutoff."
+    ],
+    "decision": "NO_DDL_NO_BACKFILL",
+    "historyRule": "Do not recalculate or overwrite finance.pms_payments.amount_converted_usd or any historical source record."
+  },
+  "officialSources": [
+    {
+      "authority": "Costa Rica PGR/SINALEVI",
+      "url": "https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_articulo.aspx?nValor1=1&nValor2=32526&nValor3=121985&nValor5=147811&param1=NRA",
+      "use": "Law 6826 article 15: BCCR reference selling rate at the taxable event for consideration fixed in a currency other than CRC."
+    },
+    {
+      "authority": "Banco Central de Costa Rica",
+      "url": "https://gee.bccr.fi.cr/indicadoreseconomicos/IndicadoresEconomicos/frmEstructuraInformacion.aspx?DesTitulo=Tipos+de+Cambio&codMenu=+71&idioma=1",
+      "use": "Authoritative exchange-rate series, including reference buying and selling rates."
+    },
+    {
+      "authority": "Alegra Costa Rica",
+      "url": "https://ayuda.alegra.com/cri/automatica-de-monedas-ac",
+      "use": "Optional daily automatic rate from BCCR; not enabled by this unit."
+    },
+    {
+      "authority": "Alegra Costa Rica",
+      "url": "https://ayuda.alegra.com/cri/crear-diferentes-monedas-en-alegra",
+      "use": "Document-level currency/rate and historical preservation behavior."
+    }
+  ],
+  "accountantReviewQueue": [
+    "Confirm company identity and base-currency semantics in one primary readback.",
+    "Validate taxable-event dates and fiscal FX treatment by operation.",
+    "Review historical records with rate 500 and missing rate provenance without rewriting them by default.",
+    "Approve any exchange-gain/loss account mapping, adjustment or period close."
+  ],
+  "prohibitedActions": [
+    "implicit_fx_500",
+    "cross_currency_sum_without_conversion_evidence",
+    "historical_rate_rewrite",
+    "alegra_write",
+    "supabase_ddl_or_backfill",
+    "accounting_post",
+    "period_close",
+    "automation_reactivation"
+  ],
+  "singleNextTaskId": "FIN01-P0-SCOPE-01"
+}

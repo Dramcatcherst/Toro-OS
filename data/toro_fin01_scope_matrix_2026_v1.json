@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "1.0",
+  "matrixId": "FIN-01-SCOPE-2026",
+  "taskId": "FIN01-P0-SCOPE-01",
+  "asOf": "2026-10-15",
+  "timezone": "America/Costa_Rica",
+  "status": "CATALOG_SCOPE_CONTRACT_COMPLETE_TRANSACTION_MAPPING_PENDING",
+  "operationalState": "DOCUMENTED_NOT_APPLIED",
+  "externalWritesEnabled": false,
+  "remoteMutationPerformed": false,
+  "identityLayers": {
+    "alegraCurrentCompany": {
+      "providerCompanyId": "2087288",
+      "state": "OBSERVED_CURRENT",
+      "connectorAliasesObserved": 2,
+      "rule": "Two current connector links returned the identical 11-row catalog and are views of one accounting company; deduplicate them before counts or totals."
+    },
+    "alegraHistoricalCompany": {
+      "providerCompanyId": "1254496",
+      "state": "HISTORICAL_ISOLATED",
+      "rule": "No 2026 consolidation without an approved migration bridge, parity and opening-balance evidence."
+    },
+    "legalEntity": {
+      "name": "Atrapasueños de Santa Teresa S.A.",
+      "legalIdentifier": "3-101-354441",
+      "normalizedLegalIdentifier": "3101354441",
+      "state": "DOCUMENTED_LOCALLY_PENDING_ALEGRA_COMPANY_READBACK",
+      "rule": "The live cost-center endpoint does not expose legal name or tax ID, so the legal entity is not promoted from that endpoint alone."
+    },
+    "toroRuntimeOrganization": {
+      "orgId": "595801ce-2895-4d91-81ae-e8d1d5cc8593",
+      "name": "Dreamcatcher Hotel & Villas",
+      "state": "CURRENT_RUNTIME_SCOPE",
+      "rule": "Operational tenant identity is not interchangeable with the legal entity or Alegra company ID."
+    },
+    "business": {
+      "businessScope": "dreamcatcher",
+      "name": "Dreamcatcher Hotel & Villas",
+      "state": "CURRENT_OPERATING_SCOPE"
+    },
+    "property": {
+      "propertyId": "7ac9e46e-3b56-44d6-96f9-9d0b63bc943b",
+      "name": "Dreamcatcher Hotel & Villas",
+      "state": "CURRENT_PROPERTY_SCOPE"
+    }
+  },
+  "scopeDimensionsRequired": [
+    "provider_company_id",
+    "legal_entity_id",
+    "org_id",
+    "business_scope",
+    "property_id",
+    "cost_center_id",
+    "department",
+    "person_or_related_party_id",
+    "source_system",
+    "source_record_id",
+    "mapping_version",
+    "effective_from",
+    "effective_to",
+    "evidence_status"
+  ],
+  "costCenterInventory": {
+    "stableNativeKeyRule": "alegra_company_id + cost_center_id",
+    "nativeCodesPopulated": 0,
+    "expected": 11,
+    "observed": 11,
+    "active": 11,
+    "mappedOrQuarantined": 11,
+    "automaticallyIncludedInDreamcatcher": 0,
+    "eligibleDreamcatcherCandidates": 1,
+    "excludedOtherScope": 5,
+    "quarantinedPrivatePersonRelated": 4,
+    "pendingDepartmentScope": 1,
+    "centers": [
+      {
+        "alegraCostCenterId": "1",
+        "name": "DREAMCATCHER",
+        "classification": "HOTEL_OPERATING_SCOPE_CANDIDATE",
+        "includeInDreamcatcherReports": null,
+        "eligibleForDreamcatcherReview": true,
+        "targetOrgId": "595801ce-2895-4d91-81ae-e8d1d5cc8593",
+        "targetBusinessScope": "dreamcatcher",
+        "targetPropertyId": "7ac9e46e-3b56-44d6-96f9-9d0b63bc943b",
+        "mappingState": "CATALOG_ROUTING_CANDIDATE_TRANSACTION_EVIDENCE_REQUIRED",
+        "gate": "The center is contaminated by observed non-hotel and related-party examples; each line/document still needs entity, beneficiary, source, period and event evidence before report inclusion."
+      },
+      {
+        "alegraCostCenterId": "2",
+        "name": "SANTA TORO",
+        "classification": "SEPARATE_BUSINESS_OR_PROPERTY_CANDIDATE",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "EXCLUDED_PENDING_IDENTITY",
+        "gate": "Document legal entity and property before any cross-scope report."
+      },
+      {
+        "alegraCostCenterId": "3",
+        "name": "VISTA ALEGRE",
+        "classification": "SEPARATE_PORTFOLIO_PROPERTY_CANDIDATE",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "EXCLUDED_PENDING_IDENTITY",
+        "gate": "Document ownership, entity and business purpose."
+      },
+      {
+        "alegraCostCenterId": "4",
+        "name": "CASA TORO",
+        "classification": "SEPARATE_PROPERTY_CANDIDATE",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "EXCLUDED_PENDING_IDENTITY",
+        "gate": "Document ownership, entity and business purpose."
+      },
+      {
+        "alegraCostCenterId": "5",
+        "name": "GUATAPE",
+        "classification": "UNKNOWN_SCOPE",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "EXCLUDED_PENDING_IDENTITY",
+        "gate": "Document ownership, jurisdiction, entity and business purpose."
+      },
+      {
+        "alegraCostCenterId": "6",
+        "name": "CALLE FLORA",
+        "classification": "UNKNOWN_SCOPE",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "EXCLUDED_PENDING_IDENTITY",
+        "gate": "Document ownership, entity and business purpose."
+      },
+      {
+        "alegraCostCenterId": "7",
+        "name": "PRIVATE_PERSON_RELATED_07",
+        "classification": "PERSON_OR_RELATED_PARTY",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "QUARANTINED_PRIVATE",
+        "gate": "Authorized identity and related-party treatment; do not expose the person's name in the repository."
+      },
+      {
+        "alegraCostCenterId": "8",
+        "name": "PRIVATE_PERSON_RELATED_08",
+        "classification": "PERSON_OR_RELATED_PARTY",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "QUARANTINED_PRIVATE",
+        "gate": "Authorized identity and related-party treatment; do not expose the person's name in the repository."
+      },
+      {
+        "alegraCostCenterId": "9",
+        "name": "PRIVATE_PERSON_RELATED_09",
+        "classification": "PERSON_OR_RELATED_PARTY",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "QUARANTINED_PRIVATE",
+        "gate": "Authorized identity and related-party treatment; do not expose the person's name in the repository."
+      },
+      {
+        "alegraCostCenterId": "10",
+        "name": "PRIVATE_PERSON_RELATED_10",
+        "classification": "PERSON_OR_RELATED_PARTY",
+        "includeInDreamcatcherReports": false,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "QUARANTINED_PRIVATE",
+        "gate": "Authorized identity and related-party treatment; do not expose the person's name in the repository."
+      },
+      {
+        "alegraCostCenterId": "11",
+        "name": "RESTAURANTE",
+        "classification": "DEPARTMENT_OR_SHARED_BUSINESS_PENDING",
+        "includeInDreamcatcherReports": null,
+        "targetOrgId": null,
+        "targetBusinessScope": null,
+        "targetPropertyId": null,
+        "mappingState": "QUARANTINED_PENDING_OWNER_ACCOUNTANT",
+        "gate": "Decide whether it is a Dreamcatcher department, another business or a shared allocation; require effective-date allocation rule."
+      }
+    ]
+  },
+  "transactionMappingCoverage": {
+    "state": "NOT_MEASURED_IN_THIS_UNIT",
+    "rule": "Catalog mapping does not classify historical transactions. Every financial record still needs its own scope and evidence or remains quarantined."
+  },
+  "defaultReportingRule": "No center enters Dreamcatcher reporting automatically. Center 1 is the only hotel routing candidate, but each record needs transaction-level scope evidence; centers 2-10 are excluded and center 11 is quarantined until approved.",
+  "crossScopeRule": "No raw cross-business consolidation. Any portfolio view must use an approved relationship, purpose, permission, aggregation level and effective period.",
+  "sharedCostRule": "A shared expense needs source document, legal entity, benefiting scopes, allocation basis, percentages or driver, effective dates, reviewer and reconciliation; otherwise PENDING_EVIDENCE.",
+  "sourceAuthorities": {
+    "accountingAndFiscalDocument": "Alegra",
+    "reservationStayAndLiveCharge": "Kross",
+    "moneyMovement": "bank_or_processor",
+    "originalDocumentCustody": "Dropbox",
+    "structuredControlAndReconciliation": "Supabase/TORO",
+    "humanReviewAndExceptionOwnership": "Airtable/TORO tasks"
+  },
+  "prohibitedActions": [
+    "cross_scope_sum_by_name",
+    "personal_or_related_party_as_hotel_opex_without_evidence",
+    "legacy_company_consolidation_without_bridge",
+    "cost_center_deactivation",
+    "historical_reclassification",
+    "accounting_post",
+    "external_write",
+    "ddl_or_backfill",
+    "permission_change",
+    "period_close"
+  ],
+  "controlPack": "data/toro_fin01_scope_control_pack_50_v1.json",
+  "completionScope": "DOCUMENTED_CATALOG_SCOPE_CONTRACT_ONLY_NO_TRANSACTION_RECLASSIFICATION",
+  "singleNextTaskId": "FIN01-P0-BANK-01"
+}

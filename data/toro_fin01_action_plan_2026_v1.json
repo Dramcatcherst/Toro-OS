@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "1.0",
+  "programId": "FIN-01-ALEGRA-TORO-2026",
+  "asOf": "2026-10-15",
+  "timezone": "America/Costa_Rica",
+  "scope": {
+    "organization": "Atrapasuenos",
+    "business": "Dreamcatcher Hotel & Villas",
+    "accountingAuthority": "Alegra",
+    "cashAuthority": "banks_and_processors",
+    "pmsAuthority": "Kross",
+    "documentCustody": "Dropbox",
+    "structuredControl": "Supabase",
+    "humanCoordination": "Airtable"
+  },
+  "overallStatus": "PENDING_EVIDENCE",
+  "externalWritesEnabled": false,
+  "automationState": "ACTIVE_READ_ONLY_HOURLY",
+  "automation": {
+    "id": "toro-alegra-cada-30-minutos",
+    "kind": "heartbeat",
+    "name": "TORO · FIONA · FIN-01 cada hora",
+    "status": "ACTIVE",
+    "rrule": "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0",
+    "timezone": "America/Costa_Rica",
+    "executionScope": "ONE_BOUNDED_READ_ONLY_FIN01_UNIT",
+    "notificationRule": "SILENT_WHEN_UNCHANGED_NOTIFY_ONLY_MATERIAL_PROGRESS_FAILURE_OR_REQUIRED_DECISION",
+    "externalWritesEnabled": false
+  },
+  "singleNextTaskId": "FIN01-P0-BANK-01",
+  "tasks": [
+    {
+      "id": "FIN01-P0-SEC-01",
+      "priority": "P0",
+      "state": "DONE",
+      "owner": "TORO Systems + FIONA",
+      "outcome": "Prepare least-privilege RLS remediation for the 12 observed finance/integration tables.",
+      "evidence": [
+        "Supabase security advisory 2026-10-15",
+        "data/toro_fin01_rls_inventory_2026_v1.json",
+        "supabase/drafts/20261015_fin01_server_only_rls_v1.sql",
+        "supabase/drafts/20261015_fin01_server_only_rls_v1_rollback.sql",
+        "tests/toro-fin01-rls-draft.test.mjs"
+      ],
+      "gate": "Exact table, consumer, grant and policy inventory plus owner approval before apply.",
+      "doneWhen": ["12/12 tables inventoried", "allow and deny tests specified", "rollback specified", "no SQL applied"]
+    },
+    {
+      "id": "FIN01-P0-CUR-01",
+      "priority": "P0",
+      "state": "DONE",
+      "owner": "FIONA + accountant",
+      "outcome": "Document CRC as the observed/corroborated base, USD as additional, all 18 account evidence states, and dated FX semantics while preserving originals.",
+      "completionScope": "DOCUMENTED_MATRIX_ONLY_PREPARED_NOT_APPLIED",
+      "evidence": [
+        "Alegra company configuration observed 2026-09-19",
+        "Alegra live currency and account catalogs read 2026-10-15 through both current links",
+        "data/toro_fin01_currency_policy_2026_v1.json",
+        "docs/product/TORO_FIN01_CURRENCY_AND_FX_POLICY_2026-10-15.md",
+        "tests/toro-fin01-currency-policy.test.mjs",
+        "docs/evidence/TORO_FIN01_CURRENCY_POLICY_RECEIPT_2026-10-15.md"
+      ],
+      "gate": "Accountant validates fiscal event and exchange-rate semantics.",
+      "doneWhen": ["base currency documented with confidence and conflict", "all account currency evidence states documented", "no implicit 500 FX", "historical records unchanged"]
+    },
+    {
+      "id": "FIN01-P0-SCOPE-01",
+      "priority": "P0",
+      "state": "DONE",
+      "owner": "FIONA + Mauricio",
+      "outcome": "Document the current and historical company boundary, identity layers and all 11 active cost centers as routed or quarantined, without transaction reclassification.",
+      "completionScope": "DOCUMENTED_CATALOG_SCOPE_CONTRACT_ONLY_TRANSACTION_APPLICATION_PENDING",
+      "evidence": [
+        "Alegra live cost-center catalogs read 2026-10-15 through both current links",
+        "data/toro_fin01_scope_matrix_2026_v1.json",
+        "data/toro_fin01_scope_control_pack_50_v1.json",
+        "docs/product/TORO_FIN01_SCOPE_AND_ENTITY_POLICY_2026-10-15.md",
+        "tests/toro-fin01-scope-policy.test.mjs",
+        "docs/evidence/TORO_FIN01_SCOPE_POLICY_RECEIPT_2026-10-15.md"
+      ],
+      "gate": "Documentary identity or owner/accountant decision per mapping.",
+      "doneWhen": ["11/11 active centers routed or quarantined", "ambiguous rows carry explicit gates", "legacy company isolated", "no automatic transaction inclusion or external write"]
+    },
+    {
+      "id": "FIN01-P0-BANK-01",
+      "priority": "P0",
+      "state": "NEXT",
+      "owner": "FIONA",
+      "outcome": "Reconcile bank and cash accounts by month and currency.",
+      "evidence": ["18 financial accounts", "11 open reconciliations", "2026 review queue"],
+      "gate": "Primary statement or processor settlement evidence.",
+      "doneWhen": ["account identity verified", "opening and closing balances tied", "unmatched items owned and dated", "CRC and USD separate"]
+    },
+    {
+      "id": "FIN01-P0-AP-01",
+      "priority": "P0",
+      "state": "QUEUED",
+      "owner": "FIONA + operations",
+      "outcome": "Rebuild supplier-document coverage and accounts payable.",
+      "evidence": ["No 2026 Alegra purchase bills at cutoff", "TORO supplier candidates incomplete"],
+      "gate": "Original document, fiscal identity and business purpose.",
+      "doneWhen": ["material suppliers covered", "missing amounts remain pending", "invoice and payment are separate", "duplicates rejected"]
+    },
+    {
+      "id": "FIN01-P1-SALES-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "FIONA + Revenue",
+      "outcome": "Explain the sales-report variance and link invoice, PMS event, collection and bank settlement.",
+      "evidence": ["Material variance between Alegra report surfaces"],
+      "gate": "Complete range and native IDs from both report surfaces.",
+      "doneWhen": ["variance equals explained items plus explicit open difference", "voids reviewed", "no double counting"]
+    },
+    {
+      "id": "FIN01-P1-COGS-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "FIONA + operations + accountant",
+      "outcome": "Build supported cost of sales and separate OPEX/non-operating items.",
+      "evidence": ["Alegra cost of sales reported as zero"],
+      "gate": "Classification rule and source support by material category.",
+      "doneWhen": ["cost drivers documented", "unknown is not zero", "gross margin labelled reliable or provisional"]
+    },
+    {
+      "id": "FIN01-P1-TAX-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "accountant + FIONA",
+      "outcome": "Reconcile VAT, retentions, credits, filings, acceptance and payment by period.",
+      "evidence": ["Tax package prepared but unposted", "September filing evidence gap"],
+      "gate": "Official filing/acceptance/payment evidence and professional review.",
+      "doneWhen": ["tax periods enumerated", "document and payment separated", "credits supported", "unposted proposals identified"]
+    },
+    {
+      "id": "FIN01-P1-ASSET-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "accountant + LILO + FIONA",
+      "outcome": "Reconstruct fixed assets, debt, equity and related parties outside hotel OPEX.",
+      "evidence": ["Fixed-asset register empty", "mixed equity labels"],
+      "gate": "Ownership, acquisition, valuation and legal/accounting evidence.",
+      "doneWhen": ["asset register reconciles to ledger", "depreciation policy documented", "related parties explicit", "no unsupported title claim"]
+    },
+    {
+      "id": "FIN01-P1-CLOSE-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "FIONA + accountant + Mauricio",
+      "outcome": "Close each 2026 month with one reproducible checklist.",
+      "evidence": ["All observed 2026 periods open"],
+      "gate": "Month-specific reconciliation and approval.",
+      "doneWhen": ["12 month rows", "partial months labelled", "exceptions owned", "closed months read back in Alegra"]
+    },
+    {
+      "id": "FIN01-P1-DOC-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "FIONA + document control",
+      "outcome": "Complete governed evidence coverage without uncontrolled copying.",
+      "evidence": ["Dropbox payment supports sparse", "Alegra attachment path not exposed by current connector"],
+      "gate": "Original identity, privacy, hash, target match and attachment capability.",
+      "doneWhen": ["document manifest complete for material items", "restore tested", "target document verified", "no orphan uploads"]
+    },
+    {
+      "id": "FIN01-P1-READ-01",
+      "priority": "P1",
+      "state": "QUEUED",
+      "owner": "TORO Systems",
+      "outcome": "Operate incremental read-only Alegra ingestion with durable checkpoints.",
+      "evidence": ["Connector reads available", "continuous parity not verified"],
+      "gate": "Stable company binding, pagination and privacy contract.",
+      "doneWhen": ["two identical replays create zero duplicates", "failed run does not advance cursor", "receipt and lag visible"]
+    },
+    {
+      "id": "FIN01-P2-WRITE-01",
+      "priority": "P2",
+      "state": "BLOCKED",
+      "owner": "FIONA + TORO Systems + accountant",
+      "outcome": "Validate one minimum-scope non-fiscal Alegra draft with readback and recovery.",
+      "evidence": ["Writer remains off", "PR 228 is not production authority"],
+      "gate": "P0/P1 controls passed plus exact document authorization.",
+      "doneWhen": ["duplicate rejection proven", "result-unknown recovery proven", "native readback matches", "no emission or payment"]
+    },
+    {
+      "id": "FIN01-P2-LEGACY-01",
+      "priority": "P2",
+      "state": "BLOCKED",
+      "owner": "TORO Systems + data owners",
+      "outcome": "Retire only proven duplicate mirrors and legacy finance surfaces.",
+      "evidence": ["Multiple Airtable finance mirrors and legacy company connection"],
+      "gate": "Consumer inventory, parity, retention, backup, restore and exact approval.",
+      "doneWhen": ["consumers migrated or zero", "restore proven", "rollback documented", "no authority loss"]
+    },
+    {
+      "id": "FIN01-P2-REPORT-01",
+      "priority": "P2",
+      "state": "QUEUED",
+      "owner": "FIONA + direction",
+      "outcome": "Publish one monthly management pack from closed, traceable metrics.",
+      "evidence": ["Existing FIN-01 report and metric contracts"],
+      "gate": "Closed source periods or explicit partial-status disclosure.",
+      "doneWhen": ["P&L, cash, AR, AP, tax, payroll, capex, debt and forecast included", "metric formulas and sources linked"]
+    }
+  ],
+  "prohibitedWithoutExactApproval": [
+    "post_accounting_entry",
+    "issue_or_void_invoice",
+    "move_money_or_pay",
+    "file_tax_return",
+    "close_accounting_period",
+    "change_permissions_or_rls",
+    "delete_or_retire_source",
+    "enable_external_writer",
+    "reactivate_automation"
+  ]
+}

@@ -23,7 +23,7 @@ Para servicios de terceros: la misma palabra «total» NO significa el mismo hec
 
 ## 2. Auditoría real — corte inicial 2026-10-15
 
-- Conector Alegra: el endpoint `getDefaultCurrency` devolvió USD y se leyeron 11 centros de costo, entre ellos DREAMCATCHER, SANTA TORO, VISTA ALEGRE, CASA TORO y RESTAURANTE. **CORRECCIÓN del mismo día:** el catálogo de monedas identifica **CRC con `main=true`**; USD activo no prueba que sea la moneda principal. La vinculación principal, el acceso duplicado y el legado YA estaban identificados por el propietario en `toro_alegra_connector_v2.account_binding_20260929`; reutilizarla, no repetir la pregunta ni inferir identidad por recuentos. La identidad legal y permisos de cada operación siguen sujetos a validación. Los dos accesos operativos devolvieron 1.191 facturas y el tercero cero: no son tres libros equivalentes.
+- Conector Alegra: `getDefaultCurrency` devolvió USD/500, pero la configuración visual de empresa observada el 19/09 muestra CRC y el catálogo vivo del 15/10 identifica **CRC con `main=true`**, USD adicional y `autoUpdate=no`. Por tanto, CRC queda como base observada/corroborada y el endpoint «default» como conflicto semántico, no autoridad para convertir. Ambos enlaces actuales devolvieron el mismo catálogo de monedas y 18/18 cuentas; 9 cuentas traen USD explícito y 9 omiten moneda nativa. Las omisiones permanecen `PENDING_EVIDENCE`, no CRC confirmado por nombre. La vinculación principal, el acceso duplicado y el legado YA estaban identificados por el propietario en `toro_alegra_connector_v2.account_binding_20260929`; reutilizarla, no repetir la pregunta ni inferir identidad por recuentos. La identidad legal y permisos de cada operación siguen sujetos a validación. Los dos accesos operativos devolvieron 1.191 facturas y el tercero cero: no son tres libros equivalentes.
 - Herramientas Alegra expuestas: lectura verificada; escritura contable general, adjuntos y cambios de catálogo NO expuestos como acciones ejecutables del conector actual. No declarar operativa una escritura ni usar un endpoint distinto como sustituto.
 - Supabase: 3 proyectos visibles, dos activos. El proyecto de trabajo que contiene `finance`, `integrations`, `operations` y control TORO albergaba al corte inicial 153 `finance.invoices`, 120 `finance.invoice_sources`, 303 `finance.evidence_documents`, 2.121 `finance.pms_payments`, 50 `finance.reconciliations`, 33 `operations.reservations`, 50 reglas `integrations.source_authority_rules`, 58 dependencias `integrations.external_dependency_registry` y 2 registros en `public.sync_outbox`. Son recuentos de tablas, NO paridad ni sincronización de producción. El piloto posterior dejó 313 evidencias y conservó 153 facturas; ver sección 8.
 - Otro proyecto, **dreamteam-recovery-sandbox**, tiene `public.roles` y `public.user_roles` **sin RLS** según inspección; incidencia de seguridad a evaluar antes de cualquier piloto de identidad, sin activar RLS a ciegas (podría romper acceso; crear y probar políticas de mínimo privilegio).
@@ -108,11 +108,11 @@ Estados diferenciados: `SOURCE_CAPTURED → TARGET_MATCHED → READY_TO_ATTACH �
 
 ### 8.3 Estrategia de monedas
 
-**Recomendación:** conservar CRC como base observada de Alegra y operar con USD/CRC por documento y por cuenta, sin cambiar todas las ventas a colones ni convertir todas las entradas de dólares. Las ventas pactadas en USD conservan USD; los gastos y cobros conservan moneda original; las cuentas bancarias/cajas se concilian por su moneda. El informe gerencial puede comparar en una moneda de presentación documentada, sin reemplazar los originales.
+**Decisión documentada en `FIN01-P0-CUR-01`:** conservar CRC como base observada y corroborada de Alegra, y operar con USD/CRC por documento y por cuenta, sin cambiar todas las ventas a colones ni convertir todas las entradas de dólares. Las ventas pactadas en USD conservan USD; los gastos y cobros conservan moneda original; las cuentas bancarias/cajas se concilian por su moneda. El informe gerencial puede comparar en una moneda de presentación documentada, sin reemplazar los originales. La ratificación fiscal y un readback simultáneo de identidad/moneda principal siguen como gates de contador, no como permiso de escritura.
 
-Mantener tres tasas distintas cuando existan: comercial acordada, fiscal del hecho generador y efectiva de liquidación bancaria. Guardar par/dirección, valor, fuente y fecha; separar comisiones, neto recibido, diferencias cambiarias y pagos parciales. Nunca usar 500 por defecto ni adivinar la moneda por el importe o el nombre del banco. Las dos omisiones del piloto permanecen pendientes hasta evidencia documental o semántica del endpoint corroborada.
+Mantener cuatro propósitos distintos cuando existan: documento/comercial, fiscal del hecho generador, efectiva de liquidación bancaria y presentación analítica. Guardar moneda origen/destino, convención de dirección, valor, fuente, fecha y propósito; separar comisiones, neto recibido, diferencias cambiarias y pagos parciales. Nunca usar 500 por defecto ni adivinar la moneda por el importe o el nombre del banco. Las nueve omisiones nativas de cuenta y cualquier evento sin moneda permanecen `PENDING_EVIDENCE` aunque la proyección TORO sea internamente consistente.
 
-Para la base de IVA en operaciones pactadas en moneda extranjera, el artículo 21 del Reglamento de la Ley del IVA establece el tipo de cambio de **venta de referencia BCCR vigente al hecho generador**. No sustituirlo por el spread comercial o la tasa bancaria. El contador valida el hecho generador y tratamiento de cada operación. Alegra documenta actualización diaria nativa BCCR: preferir esa capacidad tras confirmar configuración, lado de tasa y tratamiento de documentos fechados; no fue activada aquí. La tasa nueva no justifica reescribir históricos.
+Para la base de IVA en operaciones cuya contraprestación se fija en moneda distinta al colón, el **artículo 15 de la Ley 6826** establece el tipo de cambio de **venta de referencia BCCR vigente al hecho generador**. Esta referencia legal primaria corrige la cita anterior al artículo 21 del Reglamento. No sustituirla por el spread comercial o la tasa bancaria. El contador valida el hecho generador y tratamiento de cada operación. Alegra documenta actualización diaria nativa BCCR y edición por documento sin afectar documentos ya registrados; no se activó ni cambió configuración aquí. Una tasa nueva no justifica reescribir históricos.
 
 Tesorería propuesta: cubrir obligaciones confirmadas en su moneda y convertir únicamente la necesidad neta planificada de CRC, evitando conversiones de ida y vuelta. Esta recomendación no autoriza movimientos de dinero.
 
@@ -150,7 +150,8 @@ Cada pasada retoma evidencia y bloqueos del punto anterior, busca una unidad mat
 - API adjunto pago: https://developer.alegra.com/reference/post_payments-id-attachment
 - Tasa automática en Costa Rica: https://ayuda.alegra.com/cri/automatica-de-monedas-ac
 - Monedas y documentos históricos: https://ayuda.alegra.com/cri/crear-diferentes-monedas-en-alegra
-- Reglamento IVA, artículo 21, fuente oficial SINALEVI: https://sinalevi.go.cr/ResultadosNormativa/Informacion?param1=88953&param2=117169&param3=3&param4=22
+- Ley 6826, artículo 15, fuente oficial SINALEVI/PGR: https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_articulo.aspx?nValor1=1&nValor2=32526&nValor3=121985&nValor5=147811&param1=NRA
+- Series oficiales de tipo de cambio BCCR: https://gee.bccr.fi.cr/indicadoreseconomicos/IndicadoresEconomicos/frmEstructuraInformacion.aspx?DesTitulo=Tipos+de+Cambio&codMenu=+71&idioma=1
 
 **Cierre de esta etapa:** reglas y referencias guardadas/verificadas, continuación horaria programada, cero cambios en documentos fiscales, reservas, importes, permisos o catálogo del proveedor. Siguiente unidad: habilitar la ruta nativa autorizada de adjuntos y validar una carga con original/target/readback; en paralelo, completar catálogo Kross y equivalencias de servicios sin publicar los no verificados.
 
@@ -199,3 +200,81 @@ Cierre del piloto: enlaces y cortes recuperables, desglose del total final, cond
 Orden: recuperar el material previo → identificar fuentes y equivalencias → completar el piloto comparable → reutilizar el resultado en Revenue y evaluación de margen → evaluar actualización incremental solo con adaptador, límites y permisos verificados. No abrir otra automatización ni alterar los observadores financieros. No reactivar la API Kross pausada, contratar rate shoppers, esquivar restricciones de acceso, publicar promociones, igualar ofertas ni modificar reservas/precios sin aprobación independiente.
 
 **Estado de la incorporación:** requisito recuperado y especificado dentro del contrato subordinado al Plan General. Cotizaciones actuales, código de comparador integrado, despliegue y actualización automática permanecen NO VERIFICADOS. No se escribieron registros operativos ni se sustituyeron los datos de la conciliación Alegra/Booking/Kross por esta ampliación documental.
+
+## 10. Programa FIN-01 2026 aplicado a TORO Finance
+
+### 10.1 Resultado y límites
+
+Este programa convierte el corte de auditoría del 15/10/2026 en ejecución gobernada dentro de `TORO Finance`, con FIONA como responsable funcional de preparación y conciliación. No crea otro libro, base, módulo, agente o scheduler. Alegra conserva el libro contable/fiscal; bancos y procesadores conservan movimiento real; Kross conserva operación/reservas/cargos; Dropbox conserva originales; Supabase conserva control, correspondencias, estados y recibos; Airtable permanece como superficie humana transitoria.
+
+**Estado general:** `PARTIAL / PENDING_EVIDENCE / UNPOSTED`. La meta no es “cuadrar” por fuerza, sino poder explicar y reproducir cada saldo material por entidad, propiedad, período, moneda, documento y movimiento. Cualquier asiento, factura, pago, declaración, cierre de período, cambio de permisos o cambio de catálogo mantiene gate separado.
+
+El detalle financiero privado permanece en el expediente FIN-01 restringido. Este repositorio conserva únicamente el contrato, los conteos de control y el programa sin datos de huéspedes, credenciales, números bancarios completos o documentos fuente.
+
+### 10.2 Prioridad ejecutiva
+
+| Orden | Frente | Estado inicial | Resultado exigido | Gate |
+| ---: | --- | --- | --- | --- |
+| 1 | Seguridad RLS de 12 tablas `finance`/`integrations` | `P0 / OBSERVED` | inventario de consumidores, política por actor/acción, pruebas allow/deny, asesor limpio, rollback | aprobación del cambio SQL exacto |
+| 2 | Moneda, entidad y alcance | `P0 / DOCUMENTED_CONTRACT_DONE; TRANSACTIONS_PENDING` | moneda: CRC base observada/corroborada, USD adicional, 18/18 cuentas y FX por evento; alcance: compañía actual/histórica, identidades separadas y 11/11 centros ruteados o en cuarentena, sin inclusión automática | contador valida semántica fiscal; Mauricio/contador resuelven excepciones que cambien tratamiento |
+| 3 | Bancos y caja | `P0 / NEXT` | 18 cuentas identificadas; 11 conciliaciones resueltas o bloqueadas; movimientos 2026 con estado reproducible | extracto/comprobante primario |
+| 4 | Compras y cuentas por pagar | `P0 / COVERAGE_GAP` | proveedor, documento, fecha, moneda, impuesto, centro, vencimiento, pago y soporte; faltante nunca cero | original + identidad fiscal |
+| 5 | Ventas y cobros | `P1 / VARIANCE_OPEN` | puente factura↔reserva/cargo↔cobro↔banco; diferencias entre reportes explicadas | cobertura completa del rango |
+| 6 | Costos y margen | `P1 / NOT_VALIDATED` | costo de ventas y OPEX separados; no usar margen provisional para precio/bonos | clasificación y soporte |
+| 7 | Impuestos | `P1 / PENDING_EVIDENCE` | IVA/retenciones/créditos con período, documento, aceptación y pago separados | revisión profesional y fuente oficial |
+| 8 | Activos, deuda, patrimonio y partes relacionadas | `P1 / INCOMPLETE` | registro con titularidad, fecha, valor, depreciación, saldo y tratamiento; fuera de OPEX | documento jurídico/contable |
+| 9 | Cierre mensual 2026 | `P1 / OPEN_PERIODS` | enero–septiembre cerrables; octubre parcial; noviembre–diciembre preparados | checklist y aprobación por período |
+| 10 | Integración incremental de solo lectura | `P1 / PREPARED` | cursor durable, paginación, idempotencia, hash, cuarentena, recibo y replay sin duplicados | identidad/cobertura verificada |
+| 11 | Writer Alegra | `P2 / OFF` | un borrador no fiscal, deduplicado, con readback y recuperación | autorización específica del documento |
+| 12 | Retiro de duplicados y legado | `P2 / BLOCKED` | consumidor, paridad, retención, respaldo y restore probados antes de retirar | aprobación de retiro exacto |
+
+### 10.3 Secuencia de 90 días y cierre del año
+
+**Días 0–7 — proteger y fijar alcance.** Congelar nuevas rutas de escritura; documentar las 12 tablas sin RLS y sus consumidores; resolver la semántica de moneda; fijar `org_id`, `legal_entity_id`, `business_scope`, `property_id` y centro de costo; confirmar las dos conexiones que apuntan a la misma compañía y aislar el enlace histórico. Resultado: una matriz de autoridad/identidad aprobable y un paquete RLS revisable, sin aplicar.
+
+**Días 8–30 — recuperar evidencia y conciliación.** Trabajar en lotes por cuenta y mes: primero movimientos marcados para revisión, luego conciliaciones abiertas, facturas/proveedores y soportes. Cada lote termina con totales CRC/USD separados, duplicados, diferencias, evidencia faltante, dueño, fecha y estado. No avanzar el cursor si el lote falla.
+
+**Días 31–60 — reconstruir resultado y balance.** Resolver diferencia entre superficies de ventas, construir costo de ventas, separar OPEX/no operativo/partes relacionadas, verificar impuestos, activos, deuda y patrimonio. Reemitir el estado gerencial solo cuando cada subtotal tenga fuente y fórmula; una reclasificación propuesta continúa `UNPOSTED`.
+
+**Días 61–90 — cierre reproducible y piloto controlado.** Completar checklist enero–septiembre, mantener octubre como parcial por corte, preparar noviembre–diciembre, validar dos ejecuciones incrementales sin duplicados y someter a decisión un único borrador Alegra no fiscal. No activar emisión, adjuntos, pagos o asientos reales por el mero cumplimiento de pruebas locales.
+
+**Calendario 2026:** enero–septiembre se tratan como recuperación histórica priorizada por materialidad; octubre se cierra únicamente al concluir el mes; noviembre y diciembre usan el contrato desde origen. El cierre anual requiere doce cierres mensuales, auxiliares contra mayor, bancos/caja, impuestos, cartera/proveedores, activos/deuda/partes relacionadas y aprobación del contador. Un período abierto no se cierra para ocultar una diferencia.
+
+### 10.4 Contrato de cada lote
+
+Cada lote FIN-01 debe registrar: `batch_id`, entidad, propiedad, período, moneda, evento financiero, fuente autoritativa, IDs externos, cobertura esperada/observada, suma fuente, suma destino, delta, duplicados, cuarentena, evidencia, responsable, aprobación requerida, estado, pruebas, readback, reversión y única acción siguiente.
+
+Estados válidos: `DRAFT`, `PARTIAL`, `PENDING_EVIDENCE`, `UNPOSTED`, `READY_FOR_AUTHORIZED_POSTING`, `CLOSED_VERIFIED`. `READY_FOR_AUTHORIZED_POSTING` no permite publicar por sí solo. Solo `CLOSED_VERIFIED` puede alimentar métricas finales sin advertencia.
+
+### 10.5 Gobierno y responsabilidades
+
+| Actor | Responsable de | No puede asumir por este plan |
+| --- | --- | --- |
+| Mauricio | prioridades, alcance sensible, aprobación de cambios materiales | firma contable/fiscal por delegación implícita |
+| Contador/revisor autorizado | criterios fiscales, asientos, declaraciones y cierre profesional | inventar evidencia o saltar conciliaciones |
+| TORO/FIONA | recopilar, normalizar, reconciliar, preparar, alertar, documentar y verificar readback | mover dinero, declarar impuestos o publicar sin gate |
+| Recepción/operación | hechos de estancia, cargos, caja y soportes del turno | decidir tratamiento contable/fiscal |
+| SOBRESITO/TORO Systems | conectores, seguridad, idempotencia, observabilidad y recuperación | convertir disponibilidad técnica en autorización |
+
+### 10.6 Métricas y criterio de terminado
+
+El tablero existente de FIN-01 debe mostrar, con denominador: conciliación bancaria; movimientos con revisión pendiente; documentos de proveedor con monto/moneda/tercero/evidencia; ventas con puente PMS↔Alegra↔banco; cobertura de costo de ventas; períodos cerrados; activos con soporte; obligaciones fiscales con aceptación/pago separados; lotes incrementales sin duplicados; tablas financieras con RLS y pruebas negativas; propuestas `UNPOSTED`; y acciones externas con receipt/readback.
+
+FIN-01 2026 solo puede declararse `CLOSED_VERIFIED` cuando: las doce mensualidades tienen checklist; los bancos/cajas y auxiliares concilian o muestran diferencias aprobadas y explicadas; las compras/ventas materiales tienen documento y relación bancaria; costo de ventas no es un cero por ausencia; impuestos y patrimonio fueron revisados por la autoridad humana; no existen escrituras con resultado desconocido; cada excepción conserva dueño y fecha; y el reporte puede regenerarse desde fuentes/IDs sin copiar datos privados al repositorio.
+
+La proyección ejecutable está en [`data/toro_fin01_action_plan_2026_v1.json`](../../data/toro_fin01_action_plan_2026_v1.json). Su prueba estática exige IDs únicos, una sola tarea `NEXT`, estados/gates válidos y prohibición expresa de publicación autónoma.
+
+### 10.7 Estado de aplicación de esta unidad
+
+- `HECHO`: contrato ampliado, programa priorizado, proyección estructurada y prueba estática creados; Plan General enlazado.
+- `HECHO · PREPARACIÓN RLS`: 12/12 tablas inventariadas con dueño funcional, rol efectivo, alcance, dependencias, consumidor documentado/observable, tratamiento y prueba positiva/negativa. `anon` y `authenticated` tienen cero privilegios efectivos; `service_role` conserva acceso completo únicamente en las diez tablas `finance`; las dos tablas `integrations` permanecen solo para `postgres`. No se encontraron vistas, funciones de base, triggers externos ni código runtime directo dependiente.
+- `PREPARADO_NOT_APPLIED`: [`toro_fin01_rls_inventory_2026_v1.json`](../../data/toro_fin01_rls_inventory_2026_v1.json), SQL de aplicación/rollback en `supabase/drafts/20261015_fin01_server_only_rls_v1*.sql` y pruebas en `tests/toro-fin01-rls-draft.test.mjs`. La decisión es activar RLS sin políticas, grants, RPC, `FORCE RLS` ni cambios de datos; los prechecks abortan ante drift.
+- `HECHO · MATRIZ MONEDA/FX`: [`toro_fin01_currency_policy_2026_v1.json`](../../data/toro_fin01_currency_policy_2026_v1.json) documenta CRC como base observada/corroborada, USD adicional, 18/18 cuentas, conflicto del endpoint USD/500, campos originales obligatorios y reglas por evento. Nueve cuentas tienen USD nativo explícito y nueve omiten moneda; estas últimas conservan CRC solo como candidato `PENDING_EVIDENCE`. La proyección TORO 9 CRC/9 USD tiene consistencia interna, pero no sustituye la omisión nativa.
+- `PREPARADO_NOT_APPLIED · FX`: tasa 500 prohibida como fallback; documento/comercial, fiscal, liquidación y presentación se separan por propósito, dirección, fuente y fecha. La autoridad fiscal primaria adoptada es el artículo 15 de la Ley 6826. No hubo DDL, backfill, recalculo de `amount_converted_usd`, cambio de tasa ni reescritura histórica.
+- `HECHO · CONTRATO DE ALCANCE`: [`toro_fin01_scope_matrix_2026_v1.json`](../../data/toro_fin01_scope_matrix_2026_v1.json) cubre 11/11 centros vivos. Los dos conectores actuales se deduplican bajo `2087288`; `1254496` queda histórico/aislado; entidad, organización, negocio, propiedad, centro y persona/parte relacionada permanecen dimensiones distintas. Los centros personales están minimizados y en cuarentena; `RESTAURANTE` requiere decisión; centro 1 es solo candidato hotelero y no inclusión automática.
+- `HECHO · 50 CONTROLES`: [`toro_fin01_scope_control_pack_50_v1.json`](../../data/toro_fin01_scope_control_pack_50_v1.json) contiene 50/50 controles únicos aplicados al contrato y prueba local, con cero mutaciones externas. Esto no clasifica transacciones históricas ni cambia catálogos.
+- `BLOQUEADO`: cambios en RLS, asientos, facturas, pagos, impuestos, cierres y permisos hasta su gate exacto.
+- `DESCONOCIDO`: puede existir un cliente externo privilegiado no versionado; el paquete conserva sus grants y BYPASSRLS, pero la aplicación exige lectura fresca y aprobación humana. No hubo motor PostgreSQL aislado disponible; la validación local es estructural/contractual y no sustituye una ejecución de ensayo o el readback posterior. En moneda quedan pendientes el readback simultáneo de compañía/razón social/base, el campo nativo de nueve cuentas y la ratificación fiscal del contador. En alcance quedan pendientes el mapping transaccional, la identidad jurídica expuesta nativamente por Alegra y las decisiones de partes relacionadas/costos compartidos.
+- `AUTOMATIZACIÓN ACTIVA Y ACOTADA`: se reutilizó `toro-alegra-cada-30-minutos`, renombrada para FIN-01 y programada cada hora en `America/Costa_Rica`. Solo puede ejecutar una unidad documental/conciliatoria de lectura, dejar recibo y una siguiente acción; permanece silenciosa sin cambio material. Writer Alegra y toda mutación financiera siguen apagados.
+- `REVERSIÓN`: rollback SQL exacto preparado para restaurar RLS deshabilitado solo si no existen políticas o grants nuevos; para esta unidad local, revertir únicamente el delta documental/código porque no hubo mutación remota.
+- `SIGUIENTE ÚNICA`: ejecutar `FIN01-P0-BANK-01`: conciliar bancos y caja por cuenta, mes y moneda, verificando identidad/titularidad, saldos inicial/final y partidas sin correspondencia; mantener CRC y USD separados y no reabrir inventarios de moneda o centros.
