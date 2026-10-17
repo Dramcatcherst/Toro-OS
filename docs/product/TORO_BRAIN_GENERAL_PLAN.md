@@ -21,6 +21,22 @@
 
 **Recibo y procedimiento subordinados:** [KROSS_ROOM27_IDENTITY_CHANNEL_AUDIT_2026-10-17.md](../operations/KROSS_ROOM27_IDENTITY_CHANNEL_AUDIT_2026-10-17.md); antecedente [TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md](../evidence/TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md). Este apartado añade una unidad de trabajo de `Revenue/Distribution + Comms + Data & Integrations`; no crea Plan General paralelo.
 
+### Rebaseline vigente y cinco compuertas de publicación — 17/10/2026 15:42 CR
+
+**DECISIÓN VIGENTE:** Mauricio fijó el contenido comercial de la habitación `#27` en **25 m², una cama king y máximo dos huéspedes**. La unidad física vigente es `ID 30` / `idrt=43`; `ID 48` / `idrt=28` es legado recuperable. Airtable ya devuelve `43` en sus dos registros canónicos y Supabase `link_directory 2.7` conserva 264 entradas, una sola ficha `candidate.tripadvisor`, 30 controles DIEX/TORO y los mapeos observados sin cambios en tarifas, disponibilidad, inventario, canales ni Kross. La decisión de 25 m² sustituye el bloqueo editorial 20/30 m², pero no convierte los planos sin vínculo explícito en una medición.
+
+**PREPARADO, NO PUBLICADO:** el formulario de `idrt=43` contiene un borrador sin guardar para `#27 KING ÍNTIMA CON PROYECTOR`, 25 m², código `KING`, ocupación máxima 2, `/r/27`, motor activo y textos EN/FR/DE/ES/IT. La captura `outputs/kross_room27_draft_20261017.png`, SHA-256 `B9B6125D78ACBDD8970F1350B69F351D1B2730B924C155F5123B70CC41DE9D84`, demuestra en su viewport nombre, código, 25 m² y ocupación 2; no demuestra por sí sola cama `1 KING`, los cinco idiomas, `/r/27` o motor activo. El formulario todavía muestra `322.92 ft²`, equivalente al valor previo de 30 m², y por tanto no existe aún un readback limpio para 25 m².
+
+**CINCO MEJORAS DE CONTROL APLICADAS:**
+
+1. **Evidencia inmutable:** cada sección de solo lectura debe mostrar `idrt=43`, conservar captura/hash y separar campos demostrados de campos desconocidos.
+2. **Conversión determinista:** `25 × 10.7639 = 269.10 ft²`; cualquier `322.92 ft²` mantiene la compuerta roja y prohíbe declarar cierre.
+3. **Paridad lingüística:** EN/FR/DE/ES/IT deben conservar los mismos hechos `#27`, king, proyector, 25 m² y máximo dos huéspedes, sin superficies ni capacidades alternativas.
+4. **Identidad y publicación:** releer `idrt=43` / unidad 30, `/r/27` y motor activo, y comprobar que `idrt=28` / unidad 48 sigue fuera del motor sin tocar Expedia o SimpleBooking.
+5. **Alcance y reversión:** capturar baseline de tarifas, disponibilidad, reservas, canales y campos no objetivo; permitir un solo guardado y revertir únicamente los campos autorizados si el readback falla.
+
+**AUTOMATIZACIÓN Y AUTORIDAD:** el heartbeat existente `TORO · Mercadeo y crecimiento · cada hora` fue actualizado en sitio, sigue `ACTIVE` y `failed_runs_only`, y puede completar lecturas, evidencia y preparación reversibles. No puede interpretar “continuar”, “10 veces más” ni una autorización antigua como permiso para publicar. El guardado público exige, en una sesión interactiva e inmediatamente antes de la acción, la frase exacta de Admin Mode registrada como único `NEXT` en `CONTINUAR.md`. Solo con las cinco compuertas verdes se permite un clic en `Guardar`, seguido de recarga y readback; ante cualquier discrepancia, no guardar o detenerse sin tocar canales. `idrt=28`, unidad 48, Expedia y SimpleBooking permanecen fuera de alcance.
+
 ## Alineación transversal de datos Alegra ↔ Supabase — 15/10/2026
 
 **DECISIÓN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General único y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integración, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al huésped en Booking se conserva como evidencia de reserva; Alegra conserva facturación y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versión, fecha, idempotencia, permisos, conciliación, readback y receipt verificables.
