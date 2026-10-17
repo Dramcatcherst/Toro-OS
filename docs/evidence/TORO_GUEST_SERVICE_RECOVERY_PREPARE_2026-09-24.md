@@ -6,6 +6,18 @@
 **Guest sends enabled:** NO  
 **Internal task write executed by this contract:** NO
 
+## Rebaseline 2026-10-17 — feedback safety v1
+
+**CHECKPOINT_FEEDBACK_SAFETY_V1_20261017.** El contrato prepare-only fue endurecido sin activar envíos ni escrituras:
+
+- marcadores de enlaces sin resolver y HTTP fallan cerrados;
+- consentimiento de contacto y de entrada quedan separados;
+- seguridad/electricidad requieren atención humana inmediata y prioridad crítica;
+- desayuno separa aspecto del servicio y derecho comercial verificado/desconocido;
+- canal de origen y verificación de contexto quedan explícitos, conservando idempotencia.
+
+Verificación del candidato exacto: `npx vitest run src/features/guest/service-recovery.test.ts` → 9/9; `npx tsc --noEmit` → aprobado. Alcance real: código y pruebas en rama; sin despliegue, formulario publicado, huésped contactado, tarea productiva, reparación ni cambio PMS/OTA. Rollback: revertir únicamente los commits del contrato y sus pruebas.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
