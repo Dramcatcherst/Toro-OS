@@ -7,7 +7,9 @@ import {
   moduleAlertSignal,
   ownerAttentionSignal,
   prepareAlertDelivery,
+  prepareToroMailAlertDelivery,
   roomBindingRole,
+  validateToroMailAlertDeliveryReceipt,
   type WhatsAppGroupBinding,
 } from "./alert-delivery";
 
@@ -92,5 +94,108 @@ describe("TORO alert delivery routing", () => {
     expect(first.dedupeKey).not.toBe(next.dedupeKey);
     expect(first.dedupeKey).toContain("binding-management");
     expect(first.dedupeKey).toContain("invoice-1");
+  });
+});
+
+describe("TORO Mail to OpenClaw alert routing", () => {
+  const hash = `sha256:${"a".repeat(64)}`;
+  const mailAlert = {
+    scope: "organization" as const,
+    accountId: "hotel-mail",
+    providerMessageIdHash: hash,
+    privacyReviewed: true,
+    alertClass: "guest_service" as const,
+    version: "1",
+    priority: "high" as const,
+    title: "Seguimiento de huésped",
+    summary: "El caso requiere revisión humana.",
+    impact: "La respuesta está pendiente.",
+    requiredAction: "Verificar el caso y preparar respuesta.",
+    owner: "Recepción",
+    dueAt: "Hoy",
+    sourceSystem: "Gmail hotel",
+    sourceCutoff: "16 oct 2026 · 08:00 CR",
+  };
+  const receptionBinding: WhatsAppGroupBinding = {
+    ...verifiedManagementGroup,
+    id: "binding-reception",
+    businessRole: roomBindingRole("reception"),
+  };
+
+  it("routes hotel guest-service mail only to a verified reception group", () => {
+    const decision = prepareToroMailAlertDelivery(mailAlert, [receptionBinding]);
+    expect(decision).toMatchObject({
+      status: "ready",
+      target: "reception_group",
+      blockers: [],
+    });
+    expect(decision.candidate?.destinationBindingId).toBe("binding-reception");
+  });
+
+  it("routes hotel financial evidence to restricted management", () => {
+    const decision = prepareToroMailAlertDelivery({
+      ...mailAlert,
+      alertClass: "financial_evidence",
+      title: "Comprobante por verificar",
+      owner: "Gerencia",
+    }, [verifiedManagementGroup]);
+    expect(decision).toMatchObject({
+      status: "ready",
+      target: "management_group",
+      candidate: { privacy: "restricted", room: "management" },
+    });
+  });
+
+  it("never leaks personal or third-party mail into hotel groups", () => {
+    const decision = prepareToroMailAlertDelivery({
+      ...mailAlert,
+      scope: "personal",
+      alertClass: "security",
+    }, [verifiedManagementGroup, receptionBinding]);
+    expect(decision).toEqual({
+      status: "blocked",
+      target: "owner_direct",
+      candidate: null,
+      blockers: ["verified_owner_direct_binding_missing"],
+    });
+  });
+
+  it("requires privacy review and a hashed provider reference", () => {
+    const decision = prepareToroMailAlertDelivery({
+      ...mailAlert,
+      privacyReviewed: false,
+      providerMessageIdHash: "raw-provider-id",
+    }, [receptionBinding]);
+    expect(decision).toEqual({
+      status: "blocked",
+      target: "reception_group",
+      candidate: null,
+      blockers: ["privacy_review_required", "hashed_source_reference_required"],
+    });
+  });
+
+  it("treats provider acceptance as distinct from verified delivery", () => {
+    const decision = prepareToroMailAlertDelivery(mailAlert, [receptionBinding]);
+    const accepted = validateToroMailAlertDeliveryReceipt(decision, {
+      receiptId: "receipt-1",
+      dedupeKey: decision.candidate!.dedupeKey,
+      destinationBindingId: "binding-reception",
+      providerStatus: "accepted",
+      attemptedAt: "2026-10-16T14:00:00Z",
+      deliveredAt: null,
+      readbackAt: null,
+    });
+    expect(accepted).toEqual({ valid: true, deliveryVerified: false, errors: [] });
+
+    const delivered = validateToroMailAlertDeliveryReceipt(decision, {
+      receiptId: "receipt-2",
+      dedupeKey: decision.candidate!.dedupeKey,
+      destinationBindingId: "binding-reception",
+      providerStatus: "delivered",
+      attemptedAt: "2026-10-16T14:00:00Z",
+      deliveredAt: "2026-10-16T14:00:01Z",
+      readbackAt: "2026-10-16T14:00:02Z",
+    });
+    expect(delivered).toEqual({ valid: true, deliveryVerified: true, errors: [] });
   });
 });
