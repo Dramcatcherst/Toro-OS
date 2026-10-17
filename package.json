@@ -18,7 +18,7 @@
     "test:openclaw-host": "node --test tests/openclaw-host-diagnostics.test.mjs",
     "test:portal-auth": "vitest run src/features/auth src/features/context/hosted-session.test.ts src/lib/supabase/portal-refresh.test.ts src/proxy-refresh.test.ts",
     "test:portfolio-map": "node --test tests/portfolio-map-validator.test.mjs",
-    "test:kross-durable": "node --test tests/kross-durable-preflight.test.mjs"
+    "test:kross-durable": "node --test tests/kross-durable-preflight.test.mjs tests/kross-archive-mapping-audit.test.mjs tests/kross-archive-extractor.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.2.0",
