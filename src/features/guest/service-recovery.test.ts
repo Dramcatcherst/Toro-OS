@@ -28,6 +28,13 @@ describe("prepareGuestServiceRecovery", () => {
         dueDate: "2026-09-24",
         idempotencyKey: "guest:wespeak:case_0001",
       },
+      context: {
+        sourceChannel: "staff",
+        bookingContextVerified: false,
+        contactConsent: false,
+        roomEntryConsent: false,
+        breakfast: null,
+      },
       guestReplyDraft: {
         language: "es",
         sendState: "draft_only",
@@ -37,6 +44,7 @@ describe("prepareGuestServiceRecovery", () => {
         canonicalModule: "toro_operations",
         evidenceRequired: true,
         completionRequiresOperationalProof: true,
+        immediateHumanAttention: false,
       },
     });
     expect(result.value.guestReplyDraft.text).toContain("priorizar");
@@ -97,6 +105,113 @@ describe("prepareGuestServiceRecovery", () => {
         "sourceEventKey must be 8-122 characters using letters, numbers, :, _ or -.",
         "summary must be between 3 and 180 characters.",
       ]),
+    );
+  });
+
+  it("rejects unresolved or insecure template links before any send path can use them", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0003",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Comentario privado",
+      privateFeedbackLink: "[PRIVATE_FEEDBACK_LINK]",
+      guestPortalLink: "http://example.com/portal",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+
+    expect(result.errors).toEqual(
+      expect.arrayContaining([
+        "privateFeedbackLink contains an unresolved template placeholder.",
+        "guestPortalLink must use https.",
+      ]),
+    );
+  });
+
+  it("keeps contact consent, room-entry consent and booking verification independent", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "portal:case_0004",
+      sourceChannel: "portal",
+      category: "housekeeping",
+      summary: "Revisar limpieza",
+      contactConsent: true,
+      roomEntryConsent: false,
+      bookingContextVerified: true,
+      privateFeedbackLink: "https://example.com/feedback/opaque-token",
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.value.context).toMatchObject({
+      sourceChannel: "portal",
+      bookingContextVerified: true,
+      contactConsent: true,
+      roomEntryConsent: false,
+    });
+    expect(result.value.externalSend).toBe(false);
+  });
+
+  it("forces safety and electrical concerns into immediate critical human attention", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0005",
+      sourceChannel: "survey",
+      category: "electricity",
+      summary: "Olor eléctrico cerca de un tomacorriente",
+      urgency: "normal",
+      guestLanguage: "es",
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.value.internalWork).toMatchObject({
+      action: "maintenance.task",
+      priority: "critical",
+    });
+    expect(result.value.handoff).toMatchObject({
+      owner: "RICO",
+      immediateHumanAttention: true,
+    });
+  });
+
+  it("separates breakfast service concern from reservation entitlement", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0006",
+      sourceChannel: "survey",
+      category: "breakfast",
+      summary: "Demora en el desayuno",
+      breakfastConcern: "wait",
+      breakfastEntitlement: "unknown",
+      bookingContextVerified: false,
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+
+    expect(result.value.context.breakfast).toEqual({
+      concern: "wait",
+      entitlement: "unknown",
+    });
+    expect(result.value.internalWork.description).toContain(
+      "Breakfast concern: wait; entitlement: unknown",
+    );
+  });
+
+  it("does not accept breakfast-specific fields for unrelated issues", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0007",
+      category: "noise",
+      summary: "Ruido exterior",
+      breakfastConcern: "quality",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+
+    expect(result.errors).toContain(
+      "breakfastConcern is only valid for breakfast feedback.",
     );
   });
 });
