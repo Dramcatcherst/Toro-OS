@@ -64,7 +64,8 @@ export type KrossNormalizationIssue = {
     | "missing_source_reference"
     | "transport_not_authorized"
     | "transport_not_direct"
-    | "transport_not_read_only";
+    | "transport_not_read_only"
+    | "older_source_version";
   message: string;
 };
 
