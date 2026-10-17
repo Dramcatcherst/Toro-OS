@@ -89,9 +89,40 @@ Tripadvisor's current listings guidelines do not permit a second accommodation l
 
 Before a true TORO Tripadvisor listing is requested, verify the physical boundary, separate lodging license and OTA/Kross unit mapping. Creating a TORO listing from `34420954` or duplicating the main inventory is out of scope. Primary sources: [Tripadvisor Listings Guidelines](https://www.tripadvisor.com/Trust-lvz7RK0Xs9UI.html), [listing request duplicate rule](https://www.tripadvisor.com/Trust-l8rPRnqD79BM.html), and [Popularity Ranking factors](https://www.tripadvisor.com/business/insights/resources/tripadvisor-popularity-ranking).
 
+## DIEX source read and canonical drift — 2026-10-17
+
+This was a read-only evidence pass across Dropbox, the institutional Dreamcatcher Gmail account, Airtable `TORO OS — Master Brain` and Supabase. It did not change an OTA, Kross, rates, availability, inventory, channel mappings or database records.
+
+### Primary-document findings
+
+- Dropbox folder inspected: `/HOTEL ATRAPASUEÑOS Dropbox caché de espacio de equipo/HOTEL ATRAPASUEÑOS/CONSTRUCCION/DIEX PROYECTO NUEVO`.
+- `DOCUMENTOS/ART 010 RES 1670-2022-SETENA DIGITAL RVLA D1-0534-2022.pdf` grants environmental viability to **Casa de Habitación Diex de Santa Teresa**, expediente `D1-0534-2022-SETENA`, plano `6-986552-2005`, finca `2611-Z--000`, 1,277.07 m². Its stated purpose is a two-level single-family house with pool, terraces, parking, sidewalks and green areas. It is an environmental license, not a separate lodging/business license. The resolution also says a change in activity type must be reported to the municipality.
+- `PLANOS 2023/2023-10-24 Atrasueños LAMINAS_compressed (1).pdf` repeatedly identifies the project as `CASA DE HABITACION`, owned by DIEX de Santa Teresa S.A., on cadastral plan `6-986552-2005`.
+- `DOCUMENTOS/PLANO CATASTRO DIEX RNPDIGITAL-15579-2024.pdf` is the Registro Nacional certification for cadastral plan `6-986552-2005`. It proves the certified plan, not hotel-operation authorization.
+- `BIONEST/Carta Compromiso Firmada.pdf`, dated 2025-04-09, commits to operating and maintaining the wastewater treatment plant for `Hotel Atrapasueños`. It cites plan `6-985652-2005`, transposing the adjacent `65`/`56` digits found in the SETENA resolution, architectural plans and cadastral certification (`6-986552-2005`). This letter is wastewater-operation evidence, not a lodging license; the cadastral mismatch requires clarification against the signed original/filing.
+- Exact institutional Gmail searches for both cadastral numbers and for DIEX plus `licencia`, `patente` or `uso de suelo` returned zero messages. This is a scoped negative search, not proof that the document does not exist elsewhere.
+
+### Structured-system findings
+
+- Airtable Master Brain models `Villa Toro` as rooms 21–28 plus the whole-villa sellable unit. Both the eight component rooms and the whole villa are marked active/Kross-controlled/ready. This proves the current catalog model but not parent-child inventory locking or non-overlapping OTA inventory.
+- Supabase `kross_toro_housekeeping_integration_plan_2026_09_v1`, under `channel_alignment_audit_20261006`, maps room `#27` to Kross room type `43` for Agoda, Airbnb and both Booking.com properties (`14240671` and `14338337`). The statuses remain `observed_mapping_not_end_to_end`.
+- Airtable is stale in exactly two records: `07 Kross References/rec5Q2ezaVTcGJvg9` and `20 Kross BE Content Master/recmicop0rRJ1JKpk` still store Kross ID `28`. The current Kross correction receipt and Supabase map use `43`; legacy `28` is disabled but recoverable.
+- Supabase `dreamcatcher_system_database_directory_v1` already records the separate-listing gate and the current Kross overlap. Rewriting the same state without adding the document evidence would be redundant.
+
+### Decision and prepared correction
+
+- **HECHO:** the evidence set narrows DIEX to residential/environmental/construction proof plus a later PTAR commitment; no separate TORO lodging license was found in the searched sources.
+- **BLOQUEADO:** a separate TORO Tripadvisor/OTA listing remains ineligible until a current municipal/ICT lodging authorization, physical separation and non-overlapping channel inventory are proven.
+- **DESCONOCIDO:** current municipal patent/license, the legal effect of any later change of use, parent-child inventory lock across Kross/OTAs, and the correct explanation for the PTAR letter's cadastral mismatch.
+- **PREPARADO, NOT EXECUTED:** after exact TORO Admin Mode confirmation, change only the two Airtable Kross-ID fields from `28` to `43`, update their provenance/QA notes and last-sync date, then add the new document-status fields to existing Supabase `candidate.tripadvisor` and advance the same directory record from version `2.6` to `2.7`. Preserve 264 entries; do not create a record, table, base, listing or feed.
+
+Required exact confirmation:
+
+`CONFIRMO ADMIN MODE: corregir en Airtable los dos registros canónicos de la habitación 27 de Kross ID 28 a 43 y actualizar el registro Supabase candidate.tripadvisor con la evidencia DIEX/TORO sin cambiar tarifas, disponibilidad, inventario ni canales.`
+
 ## Optimization order after the submitted batch
 
-1. Send the exact duplicate-merge message only after action-time confirmation and record the case ID/provider response.
+1. After the current Airtable/Supabase correction is executed and read back, send the exact duplicate-merge message only after separate action-time confirmation and record the case ID/provider response.
 2. Verify completion of the name/description review, invitation acceptance and review moderation as three independent states.
 3. Verify TORO physical/license boundary and Kross/OTA unit mapping before proposing any second listing.
 4. Reconcile amenities with current operations and Kross accommodation details.
