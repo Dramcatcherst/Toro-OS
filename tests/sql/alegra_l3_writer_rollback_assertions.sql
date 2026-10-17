@@ -102,7 +102,10 @@ begin
          and trigger_row.tgname = 'toro_prevent_alegra_l3_owner_approval_mutation'
          and not trigger_row.tgisinternal
          and trigger_row.tgenabled = 'O'
-         and position('BEFORE UPDATE OR DELETE' in pg_catalog.pg_get_triggerdef(trigger_row.oid)) > 0
+         -- pg_get_triggerdef canonicalizes event order (DELETE OR UPDATE).
+         -- tgtype = 1 ROW + 2 BEFORE + 8 DELETE + 16 UPDATE; no extra events.
+         and trigger_row.tgfoid = 'public.toro_prevent_alegra_l3_owner_approval_mutation_v1()'::regprocedure
+         and trigger_row.tgtype = 27
      ) then
     raise exception 'rollback_ledger_immutability_not_retained';
   end if;
