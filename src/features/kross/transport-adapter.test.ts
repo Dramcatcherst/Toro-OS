@@ -115,4 +115,19 @@ describe("adaptKrossReservationPayload", () => {
       expect.objectContaining({ code: "invalid_payload" }),
     ]);
   });
+
+  it("distinguishes absent optional fields from explicit values for partial updates", () => {
+    const result = adaptKrossReservationPayload({
+      reservation: { id: "K-102", status: "confirmed", channel: null },
+      stay: { check_in: "2026-09-23", check_out: "2026-09-25" },
+      guests: { children: 0 },
+      extras: { breakfast: false },
+    }, config);
+
+    expect(result.issues).toEqual([]);
+    expect(result.candidate).not.toHaveProperty("roomCodeRaw");
+    expect(result.candidate).not.toHaveProperty("reservationKey");
+    expect(result.candidate).not.toHaveProperty("guestsCount");
+    expect(result.candidate).toMatchObject({ channel: null, children: 0, breakfastIncluded: false });
+  });
 });
