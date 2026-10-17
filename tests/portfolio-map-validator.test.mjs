@@ -13,4 +13,7 @@ test('keeps every original inventory reference',()=>{let m=map();m.inventory_ref
 test('relations never grant permission',()=>{let m=map();m.edges[0].grants_access=true;assert.match(validatePortfolioMap(m).join(),/cannot grant access/)});
 test('new relation vocabulary requires contract extension',()=>{let m=map();m.edges[0].type='same_as';assert.match(validatePortfolioMap(m).join(),/unknown relation/)});
 test('rejects unbound per-node relation references',()=>{let m=map();m.nodes[0].relations=['missing'];assert.match(validatePortfolioMap(m).join(),/missing relation reference/)});
+test('rejects encoded credential keys and fragments',()=>{for(const url of ['https://example.com/?to%6ben=secret','https://example.com/#token=secret','https://example.com/?to%256ben=x','https://example.com/#%2574oken=x']){let m=map();m.nodes[0].urls=[url];assert.match(validatePortfolioMap(m).join(),/unsafe URL/)}});
+test('rejects malformed relation provenance types and dates',()=>{for(const delta of [{observed_at:{}},{validation_state:{}},{evidence:[null]},{evidence:[' ']},{observed_at:'2026-02-30'},{observed_at:'not-a-date'},{validation_state:'made_up'}]){let m=map();Object.assign(m.edges[0],delta);assert.match(validatePortfolioMap(m).join(),/missing relation provenance/)}});
+test('accepts decoded safe URL and timestamp provenance',()=>{let m=map();m.nodes[0].urls=['https://example.com/?lang=es#room-1'];m.edges[0].observed_at='2026-10-15T20:30:00-06:00';assert.deepEqual(validatePortfolioMap(m),[])});
 
