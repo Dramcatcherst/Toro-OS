@@ -301,7 +301,9 @@ begin
      or position('actor_role_code' in v_constraint_defs) = 0
      or position('actor_toro_role' in v_constraint_defs) = 0
      or position('payload_hash' in v_constraint_defs) = 0
-     or position('expires_at=approved_at+' in v_constraint_defs) = 0
+     -- PostgreSQL 17.6 decompiles the exact 15-minute CHECK with
+     -- parentheses and an interval literal; preserve the full duration.
+     or position($alegra_check$expires_at=(approved_at+'00:15:00'::interval)$alegra_check$ in v_constraint_defs) = 0
      or position('decision_revision=approved_at' in v_constraint_defs) = 0
      or position('approved_at<=created_at' in v_constraint_defs) = 0 then
     raise exception 'alegra_l3_retained_ledger_constraint_definition_drifted';
