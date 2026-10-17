@@ -58,6 +58,33 @@ Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, 
 
 **WHATSAPP:** la documentación oficial consultada describe el canal WhatsApp Web/Baileys con sesión vinculada por QR; no equivale a Meta WhatsApp Business Platform/Cloud API. Confirmar transporte real y límites antes del diseño final. Conservar inicialmente número/canal vigente cuando sea viable; no cambiar a Cloud API sin analizar compatibilidad, grupos, costes y restricciones oficiales. Un único ejecutor activo por cuenta/sesión durante corte y recuperación: staging sin consumo ni envíos productivos. Contener read receipts, respuestas a histórico/reconnect y retries según contrato existente. Destinatario, identidad, scope, idempotencia y receipt de proveedor deben verificarse; un texto generado no prueba entrega.
 
+### Ampliación con el PC apagado — 16/10/2026, 19:08 CR
+
+**HECHO REPORTADO por Mauricio:** su PC está apagado. Esto permite continuar la planificación y revisión documental cloud; no demuestra que OpenClaw esté caído ni funcionando. La ausencia del PC no bloquea trabajo independiente. La auditoría local queda pendiente únicamente en los pasos que realmente requieran ese host; revisar primero inventario y despliegues remotos accesibles con identidad autorizada.
+
+**Orden por impacto:** P0 continuidad e identidad del canal; P1 contexto compartido autorizado y recepción documental/cierre en borrador; P2 ampliar capacidades y optimizar coste tras medir. Evitar una migración masiva de todos los proyectos antes de demostrar el circuito mínimo. No crear automatización nueva por esta ampliación.
+
+| Unidad preparable sin PC | Resultado exigido antes de ejecutar | Responsable funcional |
+| --- | --- | --- |
+| Inventario cloud | Proveedor/proyecto existente, propietario, entorno, persistencia, región, cuota y acceso comprobados; separar disponible de supuesto | Sobresito |
+| Matriz de dependencias | Cada capacidad marcada cloud, local o desconocida; ninguna capacidad crítica queda oculta detrás de localhost, Chrome relay o carpeta del PC | Sobresito |
+| Circuito mínimo | Mensaje de prueba autorizado → identidad/scope → consulta TORO → respuesta y receipt; una tarea canónica controlada con readback, cuando corresponda | TORO Comms + Sobresito |
+| Contexto entre canales | OpenClaw consulta proyectos y documentos canónicos permitidos; caso Los 50 de Caro recupera estado/fuente vigentes sin inventarlos ni copiar todo el Brain | TORO Comms |
+| Recepción y cierre | Voucher/mensaje autorizado queda vinculado a fecha, cuenta, actor y cierre en borrador; corrección versionada y original custodiado, sin asiento o pago automático | Rico + Fiona |
+| Presupuesto revisable | Coste mensual fijo/variable por componente, moneda/impuestos, límites y degradación; precio y fecha de consulta antes de contratar | Sobresito propone; Mauricio decide |
+
+Los responsables son roles de diseño; esta tabla no acredita agentes ejecutándose ni envíos de encargos.
+
+**Contrato mínimo de continuidad:** guardar el evento permitido y su referencia durable antes de marcarlo procesado por TORO; identificar cuenta + proveedor/message ID + tenant/scope; enlazar edición con original, fecha del evento y recepción. Reutilizar journal/outbox/receipts existentes con compatibilidad comprobada. Una interrupción conserva checkpoint y pendientes; los eventos ambiguos quedan en revisión. No prometer recuperar mensajes nunca recibidos ni histórico fuera de la cobertura real del proveedor.
+
+**Precisión de recuperación:** RPO <=24h es objetivo del respaldo de archivo, NO permiso para perder un día de trabajo. Definir aparte recuperación de eventos operativos y probar caídas antes/después de persistir y antes/después de enviar. Si faltan eventos o no se puede probar entrega, mostrar cobertura parcial y conciliar; no marcar éxito ni reemitir a ciegas.
+
+**Prueba de independencia corregida:** apagar o aislar únicamente el PC de Mauricio y verificar desde móvil con datos móviles. No desconectar el router ni interrumpir Wi-Fi, recepción, huéspedes o sistemas del hotel para probar. Simular pérdida de conectividad del worker en staging. Comprobar además reinicio, sesión expirada, proveedor IA caído, adjunto fallido, emisor no autorizado y replay; cada fallo debe conservar trabajo y mostrar qué función está afectada.
+
+**Operación objetivo:** vista compacta del estado del canal, conexión TORO, último evento procesado, pendientes, fallos y coste; sin secretos ni información personal para roles del hotel. Alertar por cambio material y caída comprobada, mediante canal alterno previamente autorizado; fallo de IA no debe confundirse con fallo de WhatsApp. Actualizaciones de versión con backup, prueba y reversión compatible; no actualización automática indiscriminada.
+
+**Cierre de esta ampliación:** requisitos y criterios documentados; inventario cloud, acceso al host, coste final y piloto aún pendientes de evidencia. Próxima unidad ejecutable sin PC: revisar infraestructura remota accesible y completar la matriz con fuentes verificadas. El PC solo se requiere si el estado activo o archivos necesarios residen exclusivamente allí; eventual vinculación de WhatsApp se realiza en su flujo oficial desde el teléfono.
+
 ### Secuencia dentro del trabajo existente
 
 | Fase | Responsable | Entregable y criterio de terminado |
@@ -66,7 +93,7 @@ Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, 
 | 2. Destino y coste | Sobresito propone; Mauricio decide gasto | Revisar primero infraestructura existente. Comparar capacidad persistente, backup, región, recursos, mantenimiento y coste total: servidor + disco + backup + IA/API + media + canal. Sin tarifa inventada ni asumir que ChatGPT Pro cubre API. Dimensionamiento después de medir carga; evitar planes que suspendan el servicio. |
 | 3. Piloto cloud aislado | Sobresito | Versión compatible fijada; servicio persistente, disco, acceso privado, secretos protegidos, límites de gasto, conexión autenticada a TORO y pruebas negativas. Solo datos sintéticos o muestra autorizada; sin sesión WhatsApp productiva simultánea. |
 | 4. Preparación y corte | Sobresito; Mauricio acepta ventana | Backup consistente y cifrado de estado/workspace mediante mecanismo compatible con versión instalada, restore probado, manifest privado y permisos; pausa acotada del emisor antiguo, traslado seguro o vinculación oficial si hace falta, activación única en nube y conciliación de pendientes. No copiar solo configuración ni pegar credenciales/QR en chats o repositorio. |
-| 5. Aceptación | Sobresito verifica; Mauricio acepta | PC apagado y red del hotel desconectada durante prueba acordada; consultas/tareas cloud y alertas previamente autorizadas funcionan. Reinicio del servidor, reconexión, replay y restore con resultados registrados. Observación inicial 24–48 h; retirar dependencia local solo después de aceptación. |
+| 5. Aceptación | Sobresito verifica; Mauricio acepta | PC apagado o aislado, verificación desde móvil con datos móviles sin interrumpir la red del hotel; consultas/tareas cloud y alertas previamente autorizadas funcionan. Reinicio del servidor, reconexión, replay y restore con resultados registrados. Observación inicial 24–48 h; retirar dependencia local solo después de aceptación. |
 
 **MÉTRICAS / terminado:** 0 mensajes/tareas duplicados en el lote controlado, 0 filtraciones entre ámbitos, 100% eventos del lote contabilizados (incluidas excepciones), evidencia de entrega en pruebas autorizadas, estado visible por capacidad y última sincronización. Objetivos iniciales de respaldo RPO <=24h/RTO <=4h por validar, no SLA. Medir latencia, fallos y coste diario para fijar presupuesto. Supervisión externa del servicio y caída por canal independiente: un WhatsApp caído no puede ser su único aviso. Reutilizar monitoreo/colas/scheduler existentes; reinicio del proceso no crea otro orquestador empresarial.
 
