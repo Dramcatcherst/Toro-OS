@@ -8,6 +8,16 @@ Supabase project: `abtyrbqlqbsastmridzp`
 
 Los 50s de Caro is the first operational pilot for a reusable Dreamcatcher/TORO group-event model. The public registration remains lightweight; internal operations are normalized into server-only tables after submission.
 
+## Canonical itinerary dates
+
+- Friday 27 Nov: Karol G optional pre-event.
+- Saturday 28 Nov: Arenal optional pre-event.
+- Sunday 29 Nov: **official trip start**, arrivals at SJO and immediate departure to Direct Santa Teresa or Manuel Antonio.
+- Monday 30 Nov: Manuel Antonio park + transfer to Santa Teresa.
+- Friday 4 Dec: main Los 50s de Caro party.
+- Saturday 5 Dec: Santa Teresa to San José.
+- Sunday 6 Dec: departures.
+
 ## Public package targets
 
 - Direct Santa Teresa: **USD 800 adult**
