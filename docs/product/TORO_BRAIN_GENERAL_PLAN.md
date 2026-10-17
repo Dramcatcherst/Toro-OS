@@ -19,6 +19,10 @@
 
 **Verificación proporcional sobre el candidato:** `vitest` focal aprobó 9/9 casos y `tsc --noEmit` aprobó. Esto acredita contrato y regresión local del código; no acredita formulario publicado, receptor real, tarea creada, mensaje enviado, despliegue, reparación física ni resultado económico. La meta 10x continúa **NO MEDIDA** por falta de línea base comparable.
 
+**CHECKPOINT_FEEDBACK_BATCH_V2_20261017 — segunda unidad de código, no runtime.** El mismo contrato ahora prepara una respuesta sintética con varios asuntos sin crear otra cola: máximo tres incidencias operativas únicas; duplicados exactos colapsados y contabilizados; claves idempotentes estables por envío/asunto; vínculo opcional al proyecto canónico resuelto por contexto confiable; y acuse agregado que prioriza el asunto crítico. Una carga con más de tres incidencias únicas falla cerrada para evitar fan-out no revisado. Sigue en `externalSend=false` e `internalWriteExecuted=false`.
+
+**Verificación del candidato v2:** 14/14 pruebas focales, `tsc --noEmit` y ESLint aprobados localmente. La prueba usó datos sintéticos y `dreamcatcher_hotel_reinvestment_2026`; no creó filas, no consultó reservas, no contactó huéspedes y no demuestra todavía que el receptor productivo acepte o persista el envío.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
