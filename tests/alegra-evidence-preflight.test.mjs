@@ -37,5 +37,23 @@ test('cross-tenant rows do not collide',()=>{const r=normalize(invoice(),context
 test('empty input never requests deletions',()=>assert.deepEqual(planEvidenceImport([],[]),{insert:[],unchanged:[],conflicts:[]}));
 test('same numeric ids never imply same service mapping',()=>assert.throws(()=>resolveServiceMapping({sourceSystem:'kross',sourceAccount:'hotel',sourceId:'3'},[]),/SERVICE_MAPPING_NOT_APPROVED/));
 test('unapproved breakfast mapping does not allow posting',()=>assert.throws(()=>resolveServiceMapping({sourceSystem:'kross',sourceAccount:'hotel',sourceId:'3'},[{sourceSystem:'kross',sourceAccount:'hotel',sourceId:'3',targetSystem:'alegra',targetAccount:'book',targetId:'2',status:'candidate'}]),/SERVICE_MAPPING_NOT_APPROVED/));
-test('explicit approved namespaced mapping returns correct target id',()=>assert.equal(resolveServiceMapping({sourceSystem:'kross',sourceAccount:'hotel',sourceId:'3'},[{sourceSystem:'kross',sourceAccount:'hotel',sourceId:'3',targetSystem:'alegra',targetAccount:'book',targetId:'2',status:'approved',version:1}]).targetId,'2'));
+test('explicit approved namespaced mapping returns correct target id',()=>{
+  // Synthetic complete approval: the test must not weaken fiscal / entity guards.
+  const source = {
+    orgId:'SYNTHETIC-ORG', legalEntityKey:'SYNTHETIC-ENTITY',
+    sourceSystem:'kross', sourceAccount:'SYNTHETIC-KROSS-ACCOUNT', sourceId:'3',
+    unit:'per_person', salesMode:'own', chargeClass:'extra', effectiveDate:'2026-10-15',
+  };
+  const approved = {
+    ...source, status:'approved', validFrom:'2026-01-01', validTo:null,
+    targetSystem:'alegra', targetAccount:'SYNTHETIC-ALEGRA-ACCOUNT', targetId:'2',
+    targetLegalEntityKey:'SYNTHETIC-ENTITY',
+    accountingAccountId:'SYNTHETIC-ACCOUNT-ID', accountingAccountVerified:true,
+    cabysCode:'SYNTHETIC-CABYS-ID', cabysVerified:true,
+    fiscalApproved:true, priceApproved:true, priceApprovedAt:'2026-10-15',
+    priceEvidenceRef:'synthetic-fixture-not-real-price', priceCurrency:'CRC', price:'1.00',
+    taxNativeId:'SYNTHETIC-TAX-ID', taxVerified:true, version:1,
+  };
+  assert.equal(resolveServiceMapping(source,[approved]).targetId,'2');
+});
 test('unreconciled observations are staged, not active accounting data',()=>assert.equal(normalize(invoice(),context).status,'staging'));
