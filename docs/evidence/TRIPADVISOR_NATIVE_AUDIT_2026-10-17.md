@@ -91,7 +91,7 @@ Before a true TORO Tripadvisor listing is requested, verify the physical boundar
 
 ## DIEX source read and canonical drift — 2026-10-17
 
-This was a read-only evidence pass across Dropbox, the institutional Dreamcatcher Gmail account, Airtable `TORO OS — Master Brain` and Supabase. It did not change an OTA, Kross, rates, availability, inventory, channel mappings or database records.
+The first pass was read-only across Dropbox, the institutional Dreamcatcher Gmail account, Airtable `TORO OS — Master Brain` and Supabase. Mauricio then supplied the exact Admin Mode phrase recorded below, authorizing only the two Airtable ID corrections and the evidence update to the existing Supabase candidate. No OTA, Kross, rate, availability, inventory or channel mapping was changed.
 
 ### Primary-document findings
 
@@ -106,15 +106,19 @@ This was a read-only evidence pass across Dropbox, the institutional Dreamcatche
 
 - Airtable Master Brain models `Villa Toro` as rooms 21–28 plus the whole-villa sellable unit. Both the eight component rooms and the whole villa are marked active/Kross-controlled/ready. This proves the current catalog model but not parent-child inventory locking or non-overlapping OTA inventory.
 - Supabase `kross_toro_housekeeping_integration_plan_2026_09_v1`, under `channel_alignment_audit_20261006`, maps room `#27` to Kross room type `43` for Agoda, Airbnb and both Booking.com properties (`14240671` and `14338337`). The statuses remain `observed_mapping_not_end_to_end`.
-- Airtable is stale in exactly two records: `07 Kross References/rec5Q2ezaVTcGJvg9` and `20 Kross BE Content Master/recmicop0rRJ1JKpk` still store Kross ID `28`. The current Kross correction receipt and Supabase map use `43`; legacy `28` is disabled but recoverable.
-- Supabase `dreamcatcher_system_database_directory_v1` already records the separate-listing gate and the current Kross overlap. Rewriting the same state without adding the document evidence would be redundant.
+- Before execution, Airtable was stale in exactly two records: `07 Kross References/rec5Q2ezaVTcGJvg9` and `20 Kross BE Content Master/recmicop0rRJ1JKpk` stored Kross ID `28`. The current Kross correction receipt and Supabase map use `43`; legacy `28` is disabled but recoverable.
+- Supabase `dreamcatcher_system_database_directory_v1` already recorded the separate-listing gate and the current Kross overlap. The authorized update therefore enriched the same `candidate.tripadvisor` object rather than creating another row, table or directory.
 
-### Decision and prepared correction
+### Admin Mode execution and readback — 2026-10-17 04:44 CR
 
 - **HECHO:** the evidence set narrows DIEX to residential/environmental/construction proof plus a later PTAR commitment; no separate TORO lodging license was found in the searched sources.
+- **HECHO — Airtable:** exact Admin Mode was received. `rec5Q2ezaVTcGJvg9` now stores numeric Kross ID `43` and a provenance note that identifies current `idrt=43`, disabled/recoverable legacy `idrt=28` and the four observed Supabase channel mappings. `recmicop0rRJ1JKpk` now stores text Kross ID `43`, last-sync `2026-10-17` and the same identity boundary in QA notes. Fresh independent reads returned `43` from both records.
+- **HECHO — Supabase:** the existing row `50df0e7d-1aed-489a-a942-274715734dd0`, key `dreamcatcher_system_database_directory_v1`, advanced only `link_directory.version` from `2.6` to `2.7`. Readback preserved 264 entries and exactly one `candidate.tripadvisor`; that object now contains 30 structured DIEX/TORO controls, four observed room-27 mappings, the cadastral conflict, missing-authority gates and explicit `false` receipts for rate, availability, inventory, channel and Kross-configuration changes.
+- **HECHO — Kross read-only comparison:** current `idrt=43` is `#27 Superior King Room`, 30 m², up to two guests, one king bed, private bathroom, no kitchen and seven images; its long description still mentions the projector. Disabled legacy `idrt=28` is `#27 Intimate King Room with Projector`, 20 m² and fourteen images. They also expose different location text. Common facts are two guests, one king bed, private bathroom and no kitchen. The duplicate identity is resolved in favor of `43`, but title, metrage, photo set, projector surfacing and location still require a factual room-master decision; no Kross content was copied or edited.
+- **HECHO — deleted Dropbox history, read-only:** the first two event pages for the exact DIEX folder exposed a deletion batch by `Atrapasuenos Santa Teresa` on `2026-05-20 15:39:27` CR: six 2024 architectural/distribution PDFs under `PLANOS 2024` and fourteen SUPERBLOQUE calculation, quotation and technical-sheet files. Revision metadata proves the sampled files are currently deleted; `PLANOS JUNIO 2024 PLANTA BAJA FINAL.pdf` and `PLANOS JUNIO 2024 PLANTA BAJA.pdf` share the same size and content hash, while `FINAL2` is a distinct variant. No deleted filename explicitly referenced a lodging license, patent, municipal/ICT authority, Villa Toro, either cadastral number or room 27. Dropbox could list revisions but could not extract deleted-file text without restoration. Nothing was restored, moved, deleted, renamed or shared.
 - **BLOQUEADO:** a separate TORO Tripadvisor/OTA listing remains ineligible until a current municipal/ICT lodging authorization, physical separation and non-overlapping channel inventory are proven.
-- **DESCONOCIDO:** current municipal patent/license, the legal effect of any later change of use, parent-child inventory lock across Kross/OTAs, and the correct explanation for the PTAR letter's cadastral mismatch.
-- **PREPARADO, NOT EXECUTED:** after exact TORO Admin Mode confirmation, change only the two Airtable Kross-ID fields from `28` to `43`, update their provenance/QA notes and last-sync date, then add the new document-status fields to existing Supabase `candidate.tripadvisor` and advance the same directory record from version `2.6` to `2.7`. Preserve 264 entries; do not create a record, table, base, listing or feed.
+- **DESCONOCIDO:** current municipal patent/license, the legal effect of any later change of use, parent-child inventory lock across Kross/OTAs, the correct explanation for the PTAR letter's cadastral mismatch, and which authoritative current-room source resolves the 20 m² versus 30 m² room-27 conflict.
+- **NEXT único:** locate one already-approved authoritative source for the physical current room 27 — room master, applicable plan, signed measurement or approved photo set — and use it to decide title, metrage, projector and location for `idrt=43`. Any Kross write needs a separate exact Admin Mode and must leave `idrt=28` disabled.
 
 Required exact confirmation:
 
