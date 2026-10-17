@@ -209,12 +209,14 @@ Examples:
 - TORO Finance
 - TORO Systems
 
-Specialist personas:
-- TORO TERE
-- TORO RICO
-- TORO FIONA
-- TORO SKY
-- TORO SOBRESITO
+Specialist personas use standalone canonical names:
+- TERE
+- RICO
+- FIONA
+- SKY
+- SOBRESITO
+
+The `TORO` prefix is reserved for the master product and internal subsystems. A specialist remains governed by TORO but is not renamed as `TORO <Specialist>`.
 
 Normal users experience one TORO.
 

@@ -1,8 +1,8 @@
 {
   "manifest_id": "TORO-CANONICAL-SKILL-PLAYBOOKS-v1",
-  "date": "2026-09-23",
+  "date": "2026-10-15",
   "authority": "docs/product/TORO_AGENT_AND_SKILL_SYSTEM_V1.md",
-  "principle": "Six canonical parent skills; capability families become internal playbooks before becoming new skills.",
+  "principle": "Exactly one optimized canonical skill per agent; capability families remain internal playbooks, not active skill aliases.",
   "split_gate": "Create a new subskill only when repeated evaluation shows a distinct trigger, context/input contract, permission boundary, evaluator, reusable method, or parent context-budget/false-routing problem.",
   "summary": {
     "canonical_skills": 6,
@@ -13,11 +13,8 @@
   },
   "agents": {
     "TORO": {
-      "canonical_skill": "toro-brain",
-      "aliases": [
-        "toro-os-hospitality",
-        "toro-manager"
-      ],
+      "canonical_skill": "toro-os-hospitality",
+      "aliases": [],
       "playbooks": [
         {
           "id": "toro-executive-control",
@@ -196,10 +193,8 @@
       ]
     },
     "TERE": {
-      "canonical_skill": "tere-revenue",
-      "aliases": [
-        "tere-guest-sales"
-      ],
+      "canonical_skill": "tere-guest-sales",
+      "aliases": [],
       "playbooks": [
         {
           "id": "tere-guest-lifecycle",
@@ -236,10 +231,8 @@
       ]
     },
     "RICO": {
-      "canonical_skill": "rico-operations",
-      "aliases": [
-        "rico-hotel-operations"
-      ],
+      "canonical_skill": "rico-hotel-operations",
+      "aliases": [],
       "playbooks": [
         {
           "id": "rico-operations-readiness",
@@ -299,10 +292,8 @@
       ]
     },
     "FIONA": {
-      "canonical_skill": "fiona-finance",
-      "aliases": [
-        "fiona-hotel-finance"
-      ],
+      "canonical_skill": "fiona-hotel-finance",
+      "aliases": [],
       "playbooks": [
         {
           "id": "fiona-finance-control",
@@ -368,10 +359,8 @@
       ]
     },
     "SKY": {
-      "canonical_skill": "sky-growth",
-      "aliases": [
-        "sky-experiences-growth"
-      ],
+      "canonical_skill": "sky-experiences-growth",
+      "aliases": [],
       "playbooks": [
         {
           "id": "sky-growth-demand",
@@ -432,10 +421,8 @@
       ]
     },
     "SOBRESITO": {
-      "canonical_skill": "sobresito-systems",
-      "aliases": [
-        "sobresito-hotel-systems"
-      ],
+      "canonical_skill": "sobresito-hotel-systems",
+      "aliases": [],
       "playbooks": [
         {
           "id": "sobresito-system-tools",
@@ -538,5 +525,6 @@
         }
       ]
     }
-  }
+  },
+  "active_skill_aliases": 0
 }

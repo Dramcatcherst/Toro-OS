@@ -57,7 +57,7 @@ Observed business-profile depth before this pass:
 
 This asymmetry creates inconsistent judgment, voice and handoff quality. It is corrected at configuration level in this pass. Runtime consumption remains separately unverified.
 
-Historical hospitality skill design from 2026-08-09 remains useful reference, but it predates the current TORO Brain naming/ownership split. Historical skill names are aliases/reference, not automatic current runtime truth.
+Historical hospitality skill design from 2026-08-09 remains useful reference, but it predates the current TORO naming/ownership split. Historical skill names are migration evidence only: they are neither routable aliases nor additional active skills.
 
 ## 4. Distinctive agent DNA
 
@@ -115,14 +115,16 @@ Historical hospitality skill design from 2026-08-09 remains useful reference, bu
 
 Skill identity is independent from agent identity and runtime deployment.
 
-| Owner | Canonical skill contract | Historical/compatibility aliases | Runtime evidence |
-|---|---|---|---|
-| TORO | `toro-brain` | `toro-os-hospitality`, `toro-manager` | Local-contract references observed; active runtime still requires direct verification |
-| TERE | `tere-revenue` | `tere-guest-sales` | Local-contract references observed; WeSpeak behavior/runtime must be QA-verified independently |
-| RICO | `rico-operations` | `rico-hotel-operations` | Local-contract references observed; active runtime still requires direct verification |
-| FIONA | `fiona-finance` | `fiona-hotel-finance` | Canonical contract name defined here; runtime installation not verified |
-| SKY | `sky-growth` | `sky-experiences-growth` | Local-contract references observed; active runtime still requires direct verification |
-| SOBRESITO | `sobresito-systems` | `sobresito-hotel-systems` | Canonical contract name defined here; runtime installation not verified |
+| Owner | Single active canonical skill | Active aliases | Runtime evidence |
+|---|---|---:|---|
+| TORO | `toro-os-hospitality` | 0 | Installed skill validated |
+| TERE | `tere-guest-sales` | 0 | Installed skill validated; WeSpeak behavior/runtime is verified independently |
+| RICO | `rico-hotel-operations` | 0 | Installed skill validated |
+| FIONA | `fiona-hotel-finance` | 0 | Installed skill validated |
+| SKY | `sky-experiences-growth` | 0 | Installed skill validated |
+| SOBRESITO | `sobresito-hotel-systems` | 0 | Installed skill validated |
+
+Historical contract names such as `toro-brain`, `tere-revenue`, `rico-operations`, `fiona-finance`, `sky-growth` and `sobresito-systems` may appear in migration evidence. They MUST NOT route, activate, register or count as skills.
 
 OpenAI/plugin skills available to ChatGPT are external platform capabilities. They are not automatically TORO-owned skills and must not be registered as such unless intentionally wrapped/authorized.
 
@@ -146,8 +148,8 @@ Every agent has explicit “never” behavior to prevent personality drift and d
 ### I06 — Own / support / route
 Every capability has one primary owner; other agents support or receive handoff. Cross-functional work has one final decision owner.
 
-### I07 — Canonical skill names + aliases
-Current names are stable; historical names remain aliases for migration/search only. Alias does not create a second skill.
+### I07 — One active skill per agent
+Each canonical agent resolves to exactly one optimized active skill. Active aliases are prohibited. Historical names remain searchable migration evidence only and never route or count as another skill.
 
 ### I08 — Trigger + negative trigger
 Each skill must define when it should activate and when it must not activate. Routing quality includes correct abstention.
@@ -192,7 +194,7 @@ TORO Agent Steward continuously evaluates reuse vs skill vs workflow vs capacity
 
 Every TORO-managed skill should eventually expose:
 
-- canonical name + aliases;
+- one canonical active name; historical names live only in migration evidence;
 - owner agent/subsystem;
 - purpose and business result;
 - positive triggers;
@@ -269,7 +271,7 @@ This system is not “done” because this document exists.
 Done for V1 requires:
 - six distinct agent profiles applied;
 - no duplicate active agent identity for the same role;
-- canonical skill aliases resolved;
+- each agent resolves to exactly one active canonical skill;
 - trigger/negative-trigger tests;
 - permission/contradiction/privacy tests;
 - runtime version evidence where activated;
@@ -481,12 +483,12 @@ Current coverage:
 
 | Parent skill | Internal playbooks |
 |---|---:|
-| TORO / `toro-brain` | 6 |
-| TERE / `tere-revenue` | 1 |
-| RICO / `rico-operations` | 2 |
-| FIONA / `fiona-finance` | 2 |
-| SKY / `sky-growth` | 2 |
-| SOBRESITO / `sobresito-systems` | 4 |
+| TORO / `toro-os-hospitality` | 6 |
+| TERE / `tere-guest-sales` | 1 |
+| RICO / `rico-hotel-operations` | 2 |
+| FIONA / `fiona-hotel-finance` | 2 |
+| SKY / `sky-experiences-growth` | 2 |
+| SOBRESITO / `sobresito-hotel-systems` | 4 |
 | **Total** | **17** |
 
 Every catalog capability is assigned to exactly one internal playbook. Support agents remain collaborators through the capability ownership map; they do not create duplicate primary ownership.
@@ -525,7 +527,7 @@ It checks:
 - all 54 capabilities are assigned to exactly one playbook;
 - playbook owner and canonical skill agree with the ownership map;
 - six expected canonical agent skills exist;
-- canonical names and aliases do not collide;
+- exactly one active canonical skill exists per agent and no active aliases exist;
 - the current map requests no unreviewed new agents;
 - external platform skills have not been copied into the canonical TORO registry;
 - the 60-case evaluation suite still contains all six canonical agents.

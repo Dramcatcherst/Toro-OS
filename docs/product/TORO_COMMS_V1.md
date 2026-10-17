@@ -28,11 +28,11 @@ TORO Comms is not a replacement for WhatsApp, email or Slack. It is the governed
 Normal users interact with **TORO**.
 
 Specialist routing stays internal:
-- TORO TERE — guests, sales, concierge, lifecycle;
-- TORO RICO — maintenance, housekeeping, laundry, operations;
-- TORO FIONA — finance/admin/HR-sensitive workflows;
-- TORO SKY — growth, experiences, providers and commercial opportunities;
-- TORO SOBRESITO — systems, integrations and technical incidents.
+- TERE — guests, sales, concierge, lifecycle;
+- RICO — maintenance, housekeeping, laundry, operations;
+- FIONA — finance/admin/HR-sensitive workflows;
+- SKY — growth, experiences, providers and commercial opportunities;
+- SOBRESITO — systems, integrations and technical incidents.
 
 A user should not need to choose an agent before asking for help.
 
@@ -119,23 +119,23 @@ Historical evidence from older TORO repositories does not prove the current Open
 
 | TORO lane | Primary use | Specialist route | Canonical output |
 | --- | --- | --- | --- |
-| Guest Booking | inquiry, direct-sale support | TORO TERE | reply draft, lead/handoff |
-| Guest Arrival | arrival/check-in questions | TORO TERE + TORO RICO | reply + operational handoff |
-| In-Stay Support | room/cleaning/maintenance request | TORO RICO + TORO TERE | incident/task + acknowledgement |
-| Complaint | complaint/reputation escalation | TORO TERE + TORO Core | escalation/decision + reply |
+| Guest Booking | inquiry, direct-sale support | TERE | reply draft, lead/handoff |
+| Guest Arrival | arrival/check-in questions | TERE + RICO | reply + operational handoff |
+| In-Stay Support | room/cleaning/maintenance request | RICO + TERE | incident/task + acknowledgement |
+| Complaint | complaint/reputation escalation | TERE + TORO Core | escalation/decision + reply |
 | Team Handoff | shift/department handover | TORO Operations | task/handoff/brief |
-| Maintenance | equipment/room/property issue | TORO RICO | maintenance_event |
-| HR/Admin | employee/HR/private admin | TORO FIONA / TORO People | private request/task |
-| Finance | invoice/payment/admin evidence | TORO FIONA | finance workflow/validation |
-| Provider | tours/wellness/service provider | TORO SKY | provider task/validation |
-| Social Lead | social inbox/lead | TORO TERE + TORO Growth | lead/handoff |
+| Maintenance | equipment/room/property issue | RICO | maintenance_event |
+| HR/Admin | employee/HR/private admin | FIONA / TORO People | private request/task |
+| Finance | invoice/payment/admin evidence | FIONA | finance workflow/validation |
+| Provider | tours/wellness/service provider | SKY | provider task/validation |
+| Social Lead | social inbox/lead | TERE + TORO Growth | lead/handoff |
 | Emergency | urgent safety/operational escalation | TORO Core + human | immediate escalation + minimal log |
-| Systems | connector/access/deployment issue | TORO SOBRESITO | systems incident/task |
+| Systems | connector/access/deployment issue | SOBRESITO | systems incident/task |
 
 
 ## 5A. Customer communication = one lifecycle, many channels
 
-For the hospitality proving ground, TORO Comms owns the governed omnichannel communication fabric while **TORO TERE** owns guest/customer-facing judgment, sales fit and relationship continuity.
+For the hospitality proving ground, TORO Comms owns the governed omnichannel communication fabric while **TERE** owns guest/customer-facing judgment, sales fit and relationship continuity.
 
 WeSpeak is a runtime/channel surface. It does not become the owner of customer truth, lifecycle state, pricing, permissions or TERE identity.
 
@@ -181,7 +181,7 @@ TORO Comms + TERE should be able to coordinate, according to permissions and aut
 - **TERE:** customer-facing reasoning, tone, fit, conversation and next-step conversion in hospitality.
 - **TORO Comms:** channel normalization, routing, continuity, delivery, follow-up state and deduplication.
 - **TORO Revenue / live PMS authority:** price, availability, booking truth.
-- **TORO FIONA / finance authority:** amount due, payment status, invoices and collection truth.
+- **FIONA / finance authority:** amount due, payment status, invoices and collection truth.
 - **TORO Growth/SKY:** campaigns, reputation strategy, retention and growth experiments.
 - **TORO Operations/RICO:** physical/service fulfillment and operational proof.
 
