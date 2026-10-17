@@ -2,6 +2,8 @@
 **Fecha de evidencia:** 2026-10-17, America/Costa_Rica  
 **Ámbito:** Dreamcatcher Hotel, módulo TORO Revenue/Distribution + TORO Comms/Tools + Data & Integrations  
 **Estado:** INTERNO CORREGIDO / PMS Y OTA SIN VERIFICACIÓN FINAL  
+**Clasificación:** `CURRENT` — evidencia y mapeos internos corregidos; `NEXT` — verificación autenticada de unidad física, Planner, historial, WeSpeak, OTA, tarifas, cargos, idiomas y bloqueo recíproco.
+
 **Autoridad:** Kross para inventario, reservas, planes y precios activos; Supabase para identificadores TORO y tareas; Airtable como superficie de control; WeSpeak/OTA para recepción efectiva.
 
 ## Decisión ejecutiva y por qué no renombrar
@@ -12,7 +14,7 @@ Una única habitación física **#27** aparece en el Planner de Kross dos veces 
 |---|---|---|
 | Habitación física | `27` / `DC-ROOM-27` | Una sola habitación, Villa Toro, segundo piso, máximo 2 |
 | Tipología vigente | `idrt=43` | `#27 Superior King Room`, 30 m² y 7 fotos publicados; descripción aún menciona proyector |
-| Tipología anterior | `idrt=28` | `#27 Intimate King Room with Projector`, 20 m² y 14 fotos; **deshabilitada pero recuperable** |
+| Tipología anterior | `idrt=28` | `#27 Intimate King Room with Projector`, 20 m² y 14 fotos; retirada solo de `Enabled booking engines > dreamcatcherhotel` / feed Google Vacation Rental; vendibilidad global en Planner y otras OTA **desconocida** |
 | URL pública canónica verificada | `https://dreamcatcherhotel.kross.travel/27?r=1&lang=es` | Responde página #27 (precios solo al indicar fechas) |
 | URL antigua | `/es/habitaciones?idrt=28` | Redirige a inicio en comprobación pública |
 | Otro alias antiguo | `/27-king-room-superior` | HTTP 404 en comprobación pública |
