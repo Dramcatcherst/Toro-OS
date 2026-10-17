@@ -71,6 +71,13 @@ wait_until_session_sleeps() {
   done
 
   echo "Timed out waiting for ${application_name} to hold its run lock" >&2
+  # A timeout must remain a failure. Print only synthetic session state,
+  # never the SQL text or credentials, so concurrency failures are diagnosable.
+  psql_test -c "
+    select application_name, state, wait_event_type, wait_event
+    from pg_catalog.pg_stat_activity
+    where application_name = '${application_name}';
+  " >&2 || true
   return 1
 }
 
