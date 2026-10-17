@@ -56,8 +56,16 @@ export type KrossDryRunResult = {
   pmsWriteCount: 0;
 };
 
-function runKey(evidence: KrossTransportEvidence) {
-  return `${evidence.sourceReference.trim()}::${evidence.sourceHash.trim()}`;
+function runKey(request: KrossDryRunRequest, externalReservationId: string | null) {
+  // A file checksum identifies an artifact, not each reservation within it.
+  // Encoding the tuple also avoids delimiter collisions in source references.
+  return JSON.stringify([
+    request.adapterConfig.orgId.trim(),
+    request.adapterConfig.propertyId.trim(),
+    request.evidence.sourceReference.trim(),
+    request.evidence.sourceHash.trim(),
+    externalReservationId,
+  ]);
 }
 
 function identityKey(reservation: NormalizedKrossReservation) {
@@ -86,13 +94,12 @@ export function executeKrossDryRun(
   request: KrossDryRunRequest,
   store: KrossDryRunMirrorStore,
 ): KrossDryRunResult {
-  const currentRunKey = runKey(request.evidence);
-  const existingRun = store.getImportRun(currentRunKey);
-
   const adapted = adaptKrossReservationPayload(
     request.payload,
     request.adapterConfig,
   );
+  const currentRunKey = runKey(request, adapted.candidate?.externalReservationId ?? null);
+  const existingRun = store.getImportRun(currentRunKey);
 
   if (!adapted.candidate) {
     const importRun: KrossDryRunImportRunEvidence = {
@@ -162,17 +169,62 @@ export function executeKrossDryRun(
 
   const key = identityKey(normalized.reservation);
   const existingMirror = store.getMirror(key);
+  if (
+    existingMirror &&
+    Date.parse(normalized.reservation.snapshot_as_of) < Date.parse(existingMirror.snapshot_as_of)
+  ) {
+    const importRun: KrossDryRunImportRunEvidence = {
+      runKey: currentRunKey,
+      mode: "dry_run",
+      status: "rejected",
+      operation: "reject",
+      identityKey: key,
+      sourceReference: request.evidence.sourceReference,
+      sourceHash: request.evidence.sourceHash,
+      readOnly: true,
+      pmsWriteCount: 0,
+    };
+    // Do not rewrite an earlier accepted receipt when an old event reappears.
+    if (!existingRun) store.saveImportRun(currentRunKey, importRun);
+    return {
+      status: "rejected",
+      operation: "reject",
+      reservation: null,
+      importRun,
+      adapterIssues: adapted.issues,
+      normalizationIssues: [
+        ...normalized.issues,
+        { code: "older_source_version", message: "An older source snapshot cannot replace the stored reservation." },
+      ],
+      canEnterSafeView: false,
+      pmsWriteCount: 0,
+    };
+  }
   if (existingRun) {
     return {
-      status: "accepted",
-      operation: "replay",
-      reservation: existingMirror ?? normalized.reservation,
+      status: existingRun.status,
+      operation: existingRun.status === "accepted" ? "replay" : "reject",
+      reservation: existingRun.status === "accepted" ? existingMirror ?? normalized.reservation : null,
       importRun: existingRun,
       adapterIssues: adapted.issues,
       normalizationIssues: normalized.issues,
       canEnterSafeView: false,
       pmsWriteCount: 0,
     };
+  }
+
+  const reservation = { ...normalized.reservation };
+  if (existingMirror) {
+    const optionalFieldMap = {
+      reservationKey: "reservation_key", roomId: "room_id", roomCodeRaw: "room_code_raw",
+      guestsCount: "guests_count", adults: "adults", children: "children",
+      channel: "channel", breakfastIncluded: "breakfast_included",
+    } as const;
+    for (const [field, column] of Object.entries(optionalFieldMap)) {
+      if (!Object.prototype.hasOwnProperty.call(adapted.candidate, field)) {
+        Object.assign(reservation, { [column]: existingMirror[column] });
+      }
+    }
   }
 
   const operation = existingMirror ? "update" : "insert";
@@ -188,13 +240,13 @@ export function executeKrossDryRun(
     pmsWriteCount: 0,
   };
 
-  store.saveMirror(key, normalized.reservation);
+  store.saveMirror(key, reservation);
   store.saveImportRun(currentRunKey, importRun);
 
   return {
     status: "accepted",
     operation,
-    reservation: normalized.reservation,
+    reservation,
     importRun,
     adapterIssues: adapted.issues,
     normalizationIssues: normalized.issues,
