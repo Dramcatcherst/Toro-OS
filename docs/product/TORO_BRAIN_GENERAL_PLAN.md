@@ -7,6 +7,20 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## Dreamcatcher — comentarios privados y recuperación segura (prepare-only) — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_SAFETY_V1_20261017.** Ámbito: proyecto existente `dreamcatcher_hotel_reinvestment_2026`, TORO Comms + TORO Operations + referencia Dreamcatcher. **CURRENT comprobado en código, no desplegado:** el contrato existente `prepareGuestServiceRecovery` sigue sin enviar mensajes ni ejecutar escrituras y ahora incorpora cinco controles materiales:
+
+1. **Enlaces resueltos:** rechaza marcadores como `[PRIVATE_FEEDBACK_LINK]` y URLs no HTTPS antes de que una ruta de envío pueda consumirlas.
+2. **Consentimientos separados:** contacto, entrada a la habitación y verificación del contexto de reserva quedan como estados independientes; ninguno se infiere de otro.
+3. **Urgencias humanas:** seguridad y electricidad se elevan a atención humana inmediata y prioridad crítica; agua conserva prioridad alta mínima. No cierra ni libera habitaciones.
+4. **Desayuno sin conclusiones falsas:** registra por separado el problema de calidad/espera/disponibilidad/cobro y el derecho comercial `included|extra|unknown`. Si no se comprobó la reserva, permanece `unknown`.
+5. **Fuente y trazabilidad:** conserva canal de origen, clave idempotente y si el contexto de reserva fue verificado, sin crear otra tarea o base.
+
+**Verificación proporcional sobre el candidato:** `vitest` focal aprobó 9/9 casos y `tsc --noEmit` aprobó. Esto acredita contrato y regresión local del código; no acredita formulario publicado, receptor real, tarea creada, mensaje enviado, despliegue, reparación física ni resultado económico. La meta 10x continúa **NO MEDIDA** por falta de línea base comparable.
+
+**TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
+
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
 
 **HECHO — causa y corrección interna verificada:** la captura del Planner 17/10 muestra la habitación física #27 en dos filas distintas: `#27 [KING]` y `#27 KING INTIMA CON...`. Auditoría Kross autenticada anterior del mismo día confirmó **tipología vigente `idrt=43`** (`#27 Superior King Room`, 30 m², 7 imágenes) y **tipología antigua `idrt=28` deshabilitada/reversible** (`#27 Intimate King Room with Projector`, 20 m², 14 imágenes); la superficie física, fotografía y el título comercial requieren fuente autorizada. La ficha directa válida es `https://dreamcatcherhotel.kross.travel/27?r=1&lang=es`; las direcciones antiguas con `idrt=28` o alias `/27-king-room-superior` son redirección a inicio o 404 respectivamente. **No está demostrado que el Planner venda dos veces la habitación**: aún falta comprobar por qué enseña ambas filas y los vínculos de reservas históricas.
