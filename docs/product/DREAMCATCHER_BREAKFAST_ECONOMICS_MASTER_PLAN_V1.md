@@ -5,6 +5,22 @@
 **Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations  
 **Objective:** determine whether breakfast increases contribution, conversion and guest value enough to justify its cost, and use real reservation data to decide when breakfast should be included, optional, upsold, repriced or removed.
 
+## 0. Aclaración del propietario y tratamiento de reseñas — 17/10/2026
+
+**Subordinación:** este documento desarrolla el ámbito de desayuno del [Plan General único](TORO_BRAIN_GENERAL_PLAN.md); su título histórico no crea otro plan maestro. Reutiliza el proyecto `dreamcatcher_hotel_reinvestment_2026`, el seguimiento `hotel_reviews_kross_google_routing_20260929` y los casos operativos existentes. No crea tareas, bases, agentes ni programadores.
+
+**HECHO confirmado por Mauricio:** no todas las tarifas incluyen desayuno. La inclusión depende de la tarifa y de las condiciones de la reserva concreta, no de la habitación ni del canal por sí solos. Antes de afirmar incluido/no incluido, contrastar la confirmación comercial aplicable con la tarifa reservada y el registro Kross. Una discrepancia queda POR VERIFICAR, sin cobrar otra vez ni prometer gratuidad. No modificar precios, horarios, reservas confirmadas o derechos adquiridos por esta aclaración.
+
+**Comunicación general:** «El desayuno está incluido en algunas tarifas; en otras se contrata por separado. La confirmación de tu reserva indica lo incluido». En inglés: “Breakfast is included in some rates and available separately with others. Your booking confirmation specifies what is included.”
+
+**Reseñas:** separar calidad del desayuno, espera/horario e inclusión/cobro. Una queja de calidad o demora se atiende aunque el servicio se haya contratado aparte; no se descarta diciendo que no estaba incluido. No atribuir a un huésped una tarifa sin desayuno sin comprobarla ni publicar datos privados de su reserva. La aclaración de inclusión no debe insertarse como respuesta genérica cuando el comentario trata otro problema.
+
+**Publicación autorizada:** responder únicamente reseñas pendientes elegibles, tras leer contenido íntegro, propiedad/canal, ID nativo y respuesta actual. Respetar respuestas previas y envíos en moderación. Conservar preparados, enviados, en moderación y publicados verificados como estados distintos. Sin acceso interactivo autenticado no se envía ni se declara publicación. Un hash o una bandera vacía de exportación no prueba que siga pendiente. Los casos sensibles mantienen revisión humana.
+
+**Mejoras:** vincular cada observación al caso existente de habitación o servicio, con fecha, fuente, hallazgo, prueba requerida y evidencia antes/después. Separar reporte del huésped, diagnóstico, reparación informada y verificación final. Una respuesta pública nunca cierra la incidencia física ni autoriza obra, compra o compensación. Conservar #11 en hospedaje hasta una decisión sustentada y #13 pendiente de identificación física.
+
+**Estado de esta ampliación:** aclaración y criterios documentales; no acredita actualización productiva de Kross, Supabase, TERE, Google, envíos a Pumba ni ejecución física. Los cortes y cifras de septiembre que siguen se conservan como antecedentes fechados, no datos actuales.
+
 ## 1. Decision questions
 
 This work must answer with real data:
