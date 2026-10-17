@@ -108,7 +108,32 @@ export function planEvidenceImport(incoming, existing) {
 /** A mapping is a routing candidate, not approval to emit an invoice or move money. */
 export function resolveServiceMapping(source, mappings) {
   if (!source || !Array.isArray(mappings)) fail('SERVICE_MAPPING_NOT_APPROVED');
-  const matches = mappings.filter(m => m.sourceSystem === source.sourceSystem && m.sourceAccount === source.sourceAccount && m.sourceId === source.sourceId && m.status === 'approved');
-  if (matches.length !== 1 || !matches[0].targetSystem || !matches[0].targetAccount || !matches[0].targetId || !Number.isInteger(matches[0].version) || matches[0].version < 1) fail('SERVICE_MAPPING_NOT_APPROVED');
-  return {...matches[0]};
+  const required = ['orgId','legalEntityKey','sourceSystem','sourceAccount','sourceId','unit','salesMode','chargeClass'];
+  const validDate = value => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const date = new Date(value + 'T00:00:00Z');
+    return Number.isFinite(date.getTime()) && date.toISOString().slice(0,10) === value;
+  };
+  if (required.some(key => !text(source[key])) || !validDate(source.effectiveDate) ||
+      !['own','intermediated'].includes(source.salesMode) || !['included','extra'].includes(source.chargeClass)) fail('SERVICE_MAPPING_NOT_APPROVED');
+  const matches = mappings.filter(m => m && m.status === 'approved' &&
+    required.every(key => text(m[key]) === text(source[key])) &&
+    validDate(m.validFrom) && m.validFrom <= source.effectiveDate &&
+    (m.validTo === null ? true : validDate(m.validTo) && m.validTo >= source.effectiveDate) &&
+    (m.validTo === null || m.validTo >= m.validFrom));
+  if (matches.length !== 1) fail('SERVICE_MAPPING_NOT_APPROVED');
+  const selected = matches[0];
+  const price = text(selected.price);
+  if (selected.targetSystem !== 'alegra' || !text(selected.targetAccount) || !text(selected.targetId) ||
+      selected.targetLegalEntityKey !== source.legalEntityKey || !text(selected.accountingAccountId) ||
+      !text(selected.cabysCode) || selected.cabysVerified !== true ||
+      selected.accountingAccountVerified !== true || selected.fiscalApproved !== true || selected.priceApproved !== true ||
+      !validDate(selected.priceApprovedAt) ||
+      !text(selected.priceEvidenceRef) || !['CRC','USD'].includes(selected.priceCurrency) ||
+      !/^\d+(?:\.\d{1,2})?$/.test(price) ||
+      (source.chargeClass === 'extra' && !/[1-9]/.test(price)) ||
+      (!text(selected.taxNativeId) && !(selected.taxTreatment === 'exempt' && selected.taxExemptionVerified === true)) ||
+      (text(selected.taxNativeId) && selected.taxVerified !== true) ||
+      !Number.isInteger(selected.version) || selected.version < 1) fail('SERVICE_MAPPING_NOT_APPROVED');
+  return {...selected};
 }
