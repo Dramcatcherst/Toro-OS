@@ -177,45 +177,55 @@ export function adaptKrossReservationPayload(
     return { candidate: null, issues };
   }
 
-  return {
-    candidate: {
-      orgId: config.orgId,
-      propertyId: config.propertyId,
-      externalReservationId,
-      reservationKey: mappedText(
-        source,
-        "reservationKey",
-        map.reservationKey,
-        false,
-        issues,
-      ),
-      roomId: mappedText(source, "roomId", map.roomId, false, issues),
-      roomCodeRaw: mappedText(
-        source,
-        "roomCodeRaw",
-        map.roomCodeRaw,
-        false,
-        issues,
-      ),
-      checkIn,
-      checkOut,
-      status,
-      guestsCount: mappedInteger(
-        source,
-        "guestsCount",
-        map.guestsCount,
-        issues,
-      ),
-      adults: mappedInteger(source, "adults", map.adults, issues),
-      children: mappedInteger(source, "children", map.children, issues),
-      channel: mappedText(source, "channel", map.channel, false, issues),
-      breakfastIncluded: mappedBoolean(
-        source,
-        "breakfastIncluded",
-        map.breakfastIncluded,
-        issues,
-      ),
-    },
-    issues,
+  const candidate: KrossReservationCandidate = {
+    orgId: config.orgId,
+    propertyId: config.propertyId,
+    externalReservationId,
+    reservationKey: mappedText(
+      source,
+      "reservationKey",
+      map.reservationKey,
+      false,
+      issues,
+    ),
+    roomId: mappedText(source, "roomId", map.roomId, false, issues),
+    roomCodeRaw: mappedText(
+      source,
+      "roomCodeRaw",
+      map.roomCodeRaw,
+      false,
+      issues,
+    ),
+    checkIn,
+    checkOut,
+    status,
+    guestsCount: mappedInteger(
+      source,
+      "guestsCount",
+      map.guestsCount,
+      issues,
+    ),
+    adults: mappedInteger(source, "adults", map.adults, issues),
+    children: mappedInteger(source, "children", map.children, issues),
+    channel: mappedText(source, "channel", map.channel, false, issues),
+    breakfastIncluded: mappedBoolean(
+      source,
+      "breakfastIncluded",
+      map.breakfastIncluded,
+      issues,
+    ),
   };
+
+  // An absent mapped field is different from an explicit null/false/zero.
+  // Keep presence through normalization so sparse updates cannot erase data.
+  const optionalFields = [
+    "reservationKey", "roomId", "roomCodeRaw", "guestsCount", "adults",
+    "children", "channel", "breakfastIncluded",
+  ] as const;
+  for (const field of optionalFields) {
+    const path = map[field];
+    if (!path || getPathValue(source, path) === undefined) delete candidate[field];
+  }
+
+  return { candidate, issues };
 }
