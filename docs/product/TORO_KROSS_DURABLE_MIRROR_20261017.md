@@ -65,7 +65,7 @@ Rollback: retirar solo este código/clave documental; para importación futura e
 `node --test tests/kross-durable-preflight.test.mjs`: 35/35 PASS.
 El evaluador verifica declaraciones del manifiesto, no autenticidad de referencias. Resultado completo = DECLARATIONS_COMPLETE_REVIEW_REQUIRED, nunca permiso de escribir ni prueba live.
 describeMirrorRead separa autorización, origen desconocido y snapshot histórico; nunca autoriza acción.
-No importer de producción, endpoint, scheduler, permisos, RLS, API Kross, mensajes o despliegue modificados. Lint/build/CI del repositorio completo pendientes.
+No importer de producción, endpoint, scheduler, permisos, RLS, API Kross, mensajes o despliegue modificados. CI del código verificado en head1002ae1:Tests/Lint/Build PASS; las11 pruebas Python de staging se verifican aparte localmente.
 NEXT: resolver transporte/exportaciones completas y acceso de escritura funcional; consumir preflight desde worker existente solo tras validación del adapter, RLS y recuperación.
 
 
@@ -77,8 +77,17 @@ NEXT: resolver transporte/exportaciones completas y acceso de escritura funciona
 - Payment/Pago es texto libre; Reservation/Reserva en pagos/servicios/reseñas es etiqueta de huésped, no ID. Conservar códigos por columna real; no usar esos textos como llave financiera. Datos sin reserva, negativos y ST quedan para conciliación. No moneda de reserva inventada.
 - `scripts/kross-source-staging.py` genera JSONL privado compatible con `integrations.source_row_archive`, sin red/SQL. Hash original, dedupe exacto, encabezados duplicados por posición, literales decimales XML, fechas sin zona supuesta, fórmulas omitidas y campos privados como flags.11 tests Python PASS. No cambio de tablas/RLS.
 - Dry-run existente corregido: replay por scope/archivo/reserva; sparse updates conservan campos omitidos; snapshot antiguo no revierte cancelación.9 casos Node sobre módulos TypeScript reales PASS; tsc estricto PASS. Sigue siendo memoria/dry-run, no importador persistente.
-- Preflight35 pruebas Node conservadas. CI del head anterior8f0e291:Tests/Lint/Build PASS; CI del nuevo delta pendiente. No merge/deploy.
+- Preflight35 pruebas Node conservadas. TORO Brain CI1169 run39035333483 SUCCESS sobre head1002ae1 (merge sintético340bad1 sobre basec5cf955):npm test, lint y build PASS. Suites Kross:dry-run11/11, adapter5/5 y normalizer6/6; Python11/11 PASS local, fuera del job npm. No merge/deploy.
 - Escritura Supabase volvió a devolver Invalid or expired requestState; readback tras intento confirmó clave ausente. La base sigue con33 reservas; no staging ni reservas cargadas en esta continuación. No intentar otra superficie para eludir permisos; fallback web exige autorización según política de navegador.
 - Activada continuación horaria específica Kross, separada de auditorías operativas y programa Cloud. Es programación de trabajo, no sync acreditado. Checkpoint privado incluye las fuentes y staging comprimido; no payloads en Git.
 
 NEXT: resolver transporte de escritura, cargar piloto revisable de fuente minimizada, readback de claves/hashes/conteos y permiso por rol; luego normalización, carga por lotes y lector servidor histórico. Antes de certificar automático: dos ciclos incrementales, modificaciones antiguas, fallo/replay y recuperación verificados. Histórico sigue consultable por corte una vez cargado, sin sustituir verdad comercial actual.
+
+
+### Ensayo preparado y acceso completo — checkpoint17/10/2026
+
+El readback posterior conserva33 reservas Kross,9 con amount_paid y cero filas schema_version=kross_source_archive_staging_v1. source_row_archive tiene RLS con roles de gestión por org; authenticated conserva solo SELECT a nivel de tabla. Sin triggers de usuario ni reglas de escritura. No modificar ACL/RLS para resolver un fallo de transporte.
+
+Piloto100 fuente:70 reservas,20 servicios,10 bloqueos,14 archivos. Todas las habitaciones se validaron explícitamente como Dreamcatcher,100IDs únicos y ninguna reserva repetida dentro de la muestra. Movimientos/reseñas excluidos de este piloto por propiedad no acreditada. La preparación no prueba preexistencia ni DML PostgreSQL; ensayo con ROLLBACK antes de persistir. Preservar claves/preexistentes y capturar únicamente inserted_ids propios para reversión. Payloads/manifiesto privados, fuera de Git.
+
+El staging minimizado no satisface por sí solo “toda la información”: faltan nombres/etiquetas, notas, referencias/documentos libres y otros campos redactados. Los originales privados permanecen identificados por archivo/versión/checksum. Evaluar registro documental y Storage privado existentes para custodia y lector servidor autorizado; no hay bucket/enlace Supabase ni acceso OpenClaw creados/verificados por este checkpoint. Excluir siempre secretos y tarjetas completas. No confundir esta ausencia con datos perdidos: comprobar exportaciones reales y cobertura por campo antes de certificar réplica íntegra.
