@@ -7,6 +7,20 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## Dreamcatcher Cabuya + Santa Teresa — prefactibilidad gobernada · 17/10/2026
+
+**DECISIÓN:** `dreamcatcher_cabuya_feasibility` se incorpora como proyecto real `PROJECT / BLOCKED` dentro de `property_corporate_portfolio`, separado de `cabuya_purchase_regularization`. El primero decide si un hotel/villas Dreamcatcher es viable; el segundo conserva compra, pagos, título, hipoteca, pozo y segregaciones. No renombrar ni fusionar ambos. Casa Toro y los demás activos permanecen separados hasta evidencia registral/corporativa y decisión posterior.
+
+**SANTA TERESA:** rooftop, local hacia la calle, habitaciones 11/13 y remodelación de habitaciones antiguas se registran como una tarea de prefactibilidad bajo `dreamcatcher_hotel_master`, no como otro proyecto maestro. La Habitación 11 sigue siendo alojamiento activo/vendible y queda fuera del caso base de bar/discoteca. Comparar tres paquetes —habitaciones, lounge/local de calle y rooftop restaurante— y evaluar 11+13 solo como alternativa de alto riesgo por ingreso desplazado, uso, estructura, aforo, evacuación, ruido y estacionamiento.
+
+**CURRENT verificado:** Supabase conserva proyecto y tareas canónicas con claves únicas; Airtable Central es la única proyección humana escrita; seis originales/referencias Dropbox quedaron indexados con límite de autoridad, sin mover ni cambiar bytes. El readback estructurado dio 13 proyectos activos, cero módulos canónicos duplicados y cero proyectos activos sin tarea/hijo al corte. La Declaratoria Turística ICT de 2021 prueba hospedaje hotelero; no prueba Contrato Turístico, exoneración de expansión, patente de licor, rooftop o discoteca autorizados.
+
+**GATES:** Cabuya no afirma titularidad, gravámenes, edificabilidad, vista al mar, agua, electricidad, acceso, ZMT, uso ni permisos mientras las referencias registrales/catastrales sigan en conflicto. Santa Teresa requiere planos/as-built, estructura, actividad y cambio de uso, SETENA/APC según alcance, Bomberos, Salud, patente/licor, acústica, estacionamiento, ICT y CAPEX/OPEX. BCR/SBD es candidato para inversión turística sostenible, no crédito aprobado. Prohibidas publicidad, preventa, captación o tokens hasta dictamen de valores/oferta, PSAV/AML, estructura registral/fiscal y consentimiento bancario.
+
+**CONTRATO subordinado:** [Dreamcatcher Cabuya and Santa Teresa expansion — governed prefeasibility](DREAMCATCHER_CABUYA_SANTA_TERESA_PREFEASIBILITY_2026-10-17.md). No crea sociedad, propiedad, base, aplicación, permiso, solicitud, pago, mensaje externo o cambio productivo.
+
+**SIGUIENTE ÚNICA:** obtener certificación literal autenticada de la referencia `615446-000` y consultar también `151446-000`; conciliar ambas con `P-6-62989-2024`, identificando titular, gravámenes, área y vínculo correcto. Criterio: una nota oficial fechada cambia el proyecto a continuar, permanecer bloqueado o detenerse.
+
 ## Alineación transversal de datos Alegra ↔ Supabase — 15/10/2026
 
 **DECISIÓN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General único y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integración, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al huésped en Booking se conserva como evidencia de reserva; Alegra conserva facturación y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versión, fecha, idempotencia, permisos, conciliación, readback y receipt verificables.
