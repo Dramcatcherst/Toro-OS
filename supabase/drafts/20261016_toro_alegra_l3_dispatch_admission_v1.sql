@@ -358,7 +358,9 @@ begin
       and not trigger_row.tgisinternal
       and trigger_row.tgenabled = 'O'
       and trigger_row.tgfoid = v_immutability_function
-      and position('BEFORE UPDATE OR DELETE' in pg_catalog.pg_get_triggerdef(trigger_row.oid)) > 0
+      -- pg_get_triggerdef canonicalizes event order (DELETE OR UPDATE).
+         -- tgtype = 1 ROW + 2 BEFORE + 8 DELETE + 16 UPDATE; no extra events.
+         and trigger_row.tgtype = 27
   ) then
     raise exception 'alegra_l3_retained_ledger_immutability_drifted';
   end if;
