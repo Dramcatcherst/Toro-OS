@@ -200,3 +200,13 @@ begin
   end;
 end;
 $$;
+
+
+-- Synthetic-only diagnostic: normalized restrictions retained for rollback/reapply
+-- The disposable GitHub Actions PostgreSQL database contains no hotel records.
+-- Print catalog expressions for an exact, reviewable fail-closed reapply repair.
+select constraint_row.conname, constraint_row.contype,
+       pg_catalog.pg_get_constraintdef(constraint_row.oid) as normalized_definition
+from pg_catalog.pg_constraint constraint_row
+where constraint_row.conrelid = 'public.toro_alegra_l3_owner_approvals'::regclass
+order by constraint_row.contype, constraint_row.conname;
