@@ -18,6 +18,18 @@
 
 Verificación del candidato exacto: `npx vitest run src/features/guest/service-recovery.test.ts` → 9/9; `npx tsc --noEmit` → aprobado. Alcance real: código y pruebas en rama; sin despliegue, formulario publicado, huésped contactado, tarea productiva, reparación ni cambio PMS/OTA. Rollback: revertir únicamente los commits del contrato y sus pruebas.
 
+### Segunda unidad sintética — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_BATCH_V2_20261017.** Se añadió preparación acotada de respuestas con varios asuntos sobre el mismo contrato:
+
+- máximo tres incidencias únicas por envío y máximo seis entradas brutas;
+- duplicados exactos colapsados con contador explícito;
+- replay idéntico conserva las mismas claves idempotentes;
+- cada incidencia puede enlazarse al proyecto canónico desde contexto confiable;
+- el acuse agregado utiliza el asunto que requiera atención humana inmediata.
+
+Prueba sintética local: 14/14 casos, TypeScript y ESLint aprobados. Estado: código probado en rama; cero escrituras productivas, cero mensajes, cero huéspedes reales y cero cambios Kross/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
