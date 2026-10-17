@@ -19,7 +19,7 @@
     "test:portal-auth": "vitest run src/features/auth src/features/context/hosted-session.test.ts src/lib/supabase/portal-refresh.test.ts src/proxy-refresh.test.ts",
     "test:portfolio-map": "node --test tests/portfolio-map-validator.test.mjs",
     "test:alegra-evidence": "node --test tests/alegra-evidence-preflight.test.mjs",
-    "test:alegra-writer": "vitest run src/features/finance/alegra-writer-dedupe.test.ts src/features/finance/alegra-writer-executor.test.ts src/features/finance/alegra-writer-contract.test.ts src/features/finance/alegra-document-custody.test.ts src/features/finance/alegra-writer-control-plane.test.ts src/features/finance/alegra-native-purchase-transport.test.ts src/features/finance/alegra-l3-dispatch-sql.test.ts src/features/control-plane/worker-runtime.test.ts"
+    "test:alegra-writer": "node --test tests/alegra-runtime-binding.test.mjs && vitest run src/features/finance/alegra-writer-dedupe.test.ts src/features/finance/alegra-writer-executor.test.ts src/features/finance/alegra-writer-contract.test.ts src/features/finance/alegra-document-custody.test.ts src/features/finance/alegra-writer-control-plane.test.ts src/features/finance/alegra-native-purchase-transport.test.ts src/features/finance/alegra-l3-dispatch-sql.test.ts src/features/control-plane/worker-runtime.test.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.2.0",
