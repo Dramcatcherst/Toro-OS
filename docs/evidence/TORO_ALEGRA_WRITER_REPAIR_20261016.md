@@ -76,3 +76,35 @@ Esta unidad repara el candidato de PR #228 sin aplicar SQL remoto ni crear una t
 Validar el draft exacto en PostgreSQL real dentro de una transacción controlada: compilación, ACL, firma y separación de roles, aprobación expirada→renovada, espera que atraviesa vencimiento, admisión↔revocación, heartbeat, recovery sin segundo POST, marker, finalización/replay tras timeout y ciclo `apply → fila histórica → rollback → reapply`. Criterio de terminado: todas las aserciones pasan, el rollback preserva exactamente la fila histórica, la base vuelve al estado operativo previo y el Writer permanece OFF. Solo después se decide una migración y un comprobante piloto compatibles mediante aprobaciones separadas.
 
 Referencias de proveedor verificadas: [crear compra de proveedor](https://developer.alegra.com/reference/post_bills), [leer compra por ID](https://developer.alegra.com/reference/get_bills-id), [listar compras](https://developer.alegra.com/reference/get_bills).
+
+## Cierre verificado del gate SQL y CI — 17/10/2026
+
+**ESTADO ACTUAL: SQL_CI_VERIFIED_RUNTIME_PENDING.** Esta actualización sustituye solamente el bloqueo de pruebas y la siguiente acción del corte histórico anterior. No declara migración productiva, Writer activo, adjuntos cargados, aceptación fiscal ni reconstrucción contable terminada.
+
+### Evidencia del código publicado
+
+Commit de código verificado: `c15a25705101154e5aafc4c0756ca52049e426e5`, en la misma PR #228. Las tres ejecuciones de GitHub Actions se consultaron directamente y finalizaron con `success`:
+
+| Workflow | Evidencia | Resultado |
+| --- | --- | --- |
+| TORO Brain CI | [run 39056591979](https://github.com/Dramcatcherst/Toro-OS/actions/runs/39056591979) | PASS |
+| Alegra L3 Writer SQL | [run 39056591961](https://github.com/Dramcatcherst/Toro-OS/actions/runs/39056591961) | PASS |
+| Workstation health tests | [run 39056592036](https://github.com/Dramcatcherst/Toro-OS/actions/runs/39056592036) | PASS |
+
+En PostgreSQL 17.6 desechable pasaron admisión y revocación concurrentes, carreras de finalización/recuperación, heartbeat al vencer el lease, recuperación/replay, quiescencia, rollback con evidencia inmutable, reaplicación sobre historia conservada y rollback final. Se comprobó cada paso del job SQL, no solo su estado agregado. Estas pruebas usan datos sintéticos; no constituyen un piloto en Alegra. Los conteos locales del apartado histórico no se presentan como una nueva suite ejecutada en esta actualización.
+
+### Comprobación productiva exclusivamente de lectura
+
+El catálogo del Supabase canónico conserva los cuerpos, propietario, modo de seguridad, search_path y ACL esperados de los dos RPC genéricos. El resolutor canónico también coincide con el cuerpo fijado por el draft; las tablas dependientes existen. `service_role` no tiene USAGE sobre `operations` y `authenticated` no tiene escritura directa sobre las decisiones. Son comprobaciones de prerrequisitos, no una aceptación integral de producción ni autorización para ampliar permisos.
+
+Las cuatro funciones L3 específicas siguen sin instalarse. El registro canónico conserva `runtime_write_enabled=false` y vinculación `READ_ONLY`; la consulta de ejecuciones no encontró un lease Alegra activo. No se cambió ninguna de esas condiciones.
+
+### Continuidad canónica
+
+Se guardó y releyó la evidencia en el registro existente `toro_alegra_connector_v2.writer_validation_20261017`. El alcance de reconstrucción enlaza esa evidencia sin duplicarla y la tarea financiera existente conserva `in_progress`. Las actualizaciones comprobaron versión, bloquearon las filas documentales pertinentes y preservaron la aceptación histórica. No se crearon conectores, bases, ledgers, tareas, agentes o schedulers.
+
+### Siguiente unidad, sin reabrir el gate superado
+
+Revisar y componer el runtime server-only existente: identidad mínima separada del firmante, caller de heartbeat/recuperación y autorización nativa por cuenta, entidad y operación. Después corresponde decidir el despliegue revisado y una prueba controlada del recurso exacto. Una compra no sustituye un asiento ni una emisión fiscal. La carga de originales exige su transporte específico, custodia/restauración independiente y readback contra hash.
+
+No activar por cambiar una bandera ni relajar permisos para conseguir una prueba verde. Los cambios productivos de permisos, migración y operaciones contables mantienen sus gates independientes. Esta actualización es documental y no modifica los archivos de código ya verificados.
