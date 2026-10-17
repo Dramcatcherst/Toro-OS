@@ -33,6 +33,7 @@ export type GuestBreakfastEntitlement = "included" | "extra" | "unknown";
 export type GuestServiceRecoveryPrepareInput = {
   sourceEventKey: string;
   sourceChannel?: GuestServiceRecoverySource;
+  projectKey?: string | null;
   category: GuestServiceRecoveryCategory;
   summary: string;
   locationLabel?: string | null;
@@ -82,7 +83,50 @@ export type GuestServiceRecoveryPrepareResult =
   | { ok: true; value: PreparedGuestServiceRecovery }
   | { ok: false; errors: string[] };
 
+export type GuestFeedbackBatchIssue = Omit<
+  GuestServiceRecoveryPrepareInput,
+  | "sourceEventKey"
+  | "sourceChannel"
+  | "projectKey"
+  | "guestLanguage"
+  | "contactConsent"
+  | "roomEntryConsent"
+  | "bookingContextVerified"
+  | "privateFeedbackLink"
+  | "guestPortalLink"
+>;
+
+export type GuestFeedbackBatchInput = {
+  submissionId: string;
+  sourceChannel: GuestServiceRecoverySource;
+  projectKey?: string | null;
+  guestLanguage?: "es" | "en" | "pt";
+  contactConsent?: boolean;
+  roomEntryConsent?: boolean;
+  bookingContextVerified?: boolean;
+  privateFeedbackLink?: string | null;
+  guestPortalLink?: string | null;
+  issues: GuestFeedbackBatchIssue[];
+};
+
+export type PreparedGuestFeedbackBatch = {
+  workflowState: "prepared";
+  externalSend: false;
+  internalWriteExecuted: false;
+  submissionId: string;
+  issueCount: number;
+  duplicateIssueCount: number;
+  immediateHumanAttention: boolean;
+  issues: PreparedGuestServiceRecovery[];
+  guestReplyDraft: PreparedGuestServiceRecovery["guestReplyDraft"];
+};
+
+export type GuestFeedbackBatchResult =
+  | { ok: true; value: PreparedGuestFeedbackBatch }
+  | { ok: false; errors: string[] };
+
 const SOURCE_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9:_-]{7,121}$/;
+const SUBMISSION_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{7,63}$/;
 const TEMPLATE_PLACEHOLDER_RE = /\[[A-Z][A-Z0-9_]{2,80}\]/;
 
 function clean(value: string | null | undefined) {
@@ -251,7 +295,7 @@ export function prepareGuestServiceRecovery(
     title,
     description: descriptionParts.join("\n"),
     priority: priorityFor(input.category, input.urgency),
-    projectKey: null,
+    projectKey: input.projectKey ?? null,
     dueDate: input.dueDate ?? null,
     idempotencyKey: `guest:${sourceEventKey}`,
   });
@@ -286,6 +330,107 @@ export function prepareGuestServiceRecovery(
         completionRequiresOperationalProof: true,
         immediateHumanAttention,
       },
+    },
+  };
+}
+
+function issueIdentity(issue: GuestFeedbackBatchIssue) {
+  return [
+    issue.category,
+    clean(issue.summary).toLocaleLowerCase(),
+    clean(issue.locationLabel).toLocaleLowerCase(),
+    clean(issue.detail).toLocaleLowerCase(),
+    issue.breakfastConcern ?? "",
+    issue.breakfastEntitlement ?? "",
+  ].join("|");
+}
+
+export function prepareGuestFeedbackBatch(
+  input: GuestFeedbackBatchInput,
+): GuestFeedbackBatchResult {
+  const submissionId = clean(input.submissionId);
+  const errors: string[] = [];
+
+  if (!SUBMISSION_ID_RE.test(submissionId)) {
+    errors.push(
+      "submissionId must be 8-64 characters using letters, numbers, _ or -.",
+    );
+  }
+  if (!Array.isArray(input.issues) || input.issues.length === 0) {
+    errors.push("At least one feedback issue is required.");
+  }
+  if (Array.isArray(input.issues) && input.issues.length > 6) {
+    errors.push("A feedback submission may contain at most 6 raw issues.");
+  }
+  if (errors.length) return { ok: false, errors };
+
+  const seen = new Set<string>();
+  const uniqueIssues: GuestFeedbackBatchIssue[] = [];
+  let duplicateIssueCount = 0;
+
+  for (const issue of input.issues) {
+    const identity = issueIdentity(issue);
+    if (seen.has(identity)) {
+      duplicateIssueCount += 1;
+      continue;
+    }
+    seen.add(identity);
+    uniqueIssues.push(issue);
+  }
+
+  if (uniqueIssues.length > 3) {
+    return {
+      ok: false,
+      errors: [
+        "A feedback submission may create at most 3 unique operational issues.",
+      ],
+    };
+  }
+
+  const prepared: PreparedGuestServiceRecovery[] = [];
+  for (const [index, issue] of uniqueIssues.entries()) {
+    const result = prepareGuestServiceRecovery({
+      ...issue,
+      sourceEventKey: `${input.sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
+      sourceChannel: input.sourceChannel,
+      projectKey: input.projectKey ?? null,
+      guestLanguage: input.guestLanguage,
+      contactConsent: input.contactConsent,
+      roomEntryConsent: input.roomEntryConsent,
+      bookingContextVerified: input.bookingContextVerified,
+      privateFeedbackLink: input.privateFeedbackLink,
+      guestPortalLink: input.guestPortalLink,
+    });
+
+    if (!result.ok) {
+      errors.push(
+        ...result.errors.map(
+          (error) => `Issue ${index + 1}: ${error}`,
+        ),
+      );
+      continue;
+    }
+    prepared.push(result.value);
+  }
+
+  if (errors.length) return { ok: false, errors };
+
+  const urgent = prepared.find(
+    (issue) => issue.handoff.immediateHumanAttention,
+  );
+
+  return {
+    ok: true,
+    value: {
+      workflowState: "prepared",
+      externalSend: false,
+      internalWriteExecuted: false,
+      submissionId,
+      issueCount: prepared.length,
+      duplicateIssueCount,
+      immediateHumanAttention: Boolean(urgent),
+      issues: prepared,
+      guestReplyDraft: (urgent ?? prepared[0]).guestReplyDraft,
     },
   };
 }
