@@ -67,3 +67,18 @@ El evaluador verifica declaraciones del manifiesto, no autenticidad de referenci
 describeMirrorRead separa autorización, origen desconocido y snapshot histórico; nunca autoriza acción.
 No importer de producción, endpoint, scheduler, permisos, RLS, API Kross, mensajes o despliegue modificados. Lint/build/CI del repositorio completo pendientes.
 NEXT: resolver transporte/exportaciones completas y acceso de escritura funcional; consumir preflight desde worker existente solo tras validación del adapter, RLS y recuperación.
+
+
+## Continuación verificada — 17/10/2026
+
+- Recuperadas 23 fuentes originales, preservadas con identidad y checksum en almacenamiento privado. Unión analítica: 3.965 números de reserva; no baseline completo certificado. Hay datos desde diciembre2024 hasta agosto2027 y cambios máximos de archivo al15oct2026.
+- Consulta UI autenticada Kross: periodo01/01/2020–31/12/2030 por fecha de reserva devuelve4.334 filas; fecha de gestión16oct2026. Incluye todo el alcance visible de la cuenta, no exclusivamente Dreamcatcher. Descarga nueva no completada. No comparar4.334 y3.965 como faltantes exactos sin reconciliar filtros/propiedad/estado.
+- Staging minimizado preparado:26.056 filas únicas por archivo/hoja/fila,17.657 con cuarto Dreamcatcher explícito,8.399 review_scope sin propiedad asignada. No son26.056 reservas; los snapshots se superponen. Tipos:15.209 filas reservas,7.570 movimientos,2.725 servicios,495 bloqueos,57 reseñas.
+- Payment/Pago es texto libre; Reservation/Reserva en pagos/servicios/reseñas es etiqueta de huésped, no ID. Conservar códigos por columna real; no usar esos textos como llave financiera. Datos sin reserva, negativos y ST quedan para conciliación. No moneda de reserva inventada.
+- `scripts/kross-source-staging.py` genera JSONL privado compatible con `integrations.source_row_archive`, sin red/SQL. Hash original, dedupe exacto, encabezados duplicados por posición, literales decimales XML, fechas sin zona supuesta, fórmulas omitidas y campos privados como flags.11 tests Python PASS. No cambio de tablas/RLS.
+- Dry-run existente corregido: replay por scope/archivo/reserva; sparse updates conservan campos omitidos; snapshot antiguo no revierte cancelación.9 casos Node sobre módulos TypeScript reales PASS; tsc estricto PASS. Sigue siendo memoria/dry-run, no importador persistente.
+- Preflight35 pruebas Node conservadas. CI del head anterior8f0e291:Tests/Lint/Build PASS; CI del nuevo delta pendiente. No merge/deploy.
+- Escritura Supabase volvió a devolver Invalid or expired requestState; readback tras intento confirmó clave ausente. La base sigue con33 reservas; no staging ni reservas cargadas en esta continuación. No intentar otra superficie para eludir permisos; fallback web exige autorización según política de navegador.
+- Activada continuación horaria específica Kross, separada de auditorías operativas y programa Cloud. Es programación de trabajo, no sync acreditado. Checkpoint privado incluye las fuentes y staging comprimido; no payloads en Git.
+
+NEXT: resolver transporte de escritura, cargar piloto revisable de fuente minimizada, readback de claves/hashes/conteos y permiso por rol; luego normalización, carga por lotes y lector servidor histórico. Antes de certificar automático: dos ciclos incrementales, modificaciones antiguas, fallo/replay y recuperación verificados. Histórico sigue consultable por corte una vez cargado, sin sustituir verdad comercial actual.
