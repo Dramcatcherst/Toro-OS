@@ -2,7 +2,7 @@
 
 **Corte:** 17/10/2026 · America/Costa_Rica  
 **Alcance:** hotel, villas y experiencias de Dreamcatcher en Santa Teresa.  
-**Fuente canónica:** Supabase `operations.knowledge_items`, clave `dreamcatcher_system_database_directory_v1`, versión `2.4`.
+**Fuente canónica:** Supabase `operations.knowledge_items`, clave `dreamcatcher_system_database_directory_v1`, versión `2.6`.
 **Naturaleza:** snapshot verificable para lectura humana. No sustituye Supabase ni crea una segunda fuente de verdad.
 
 ## Cómo leer el estado
@@ -65,12 +65,12 @@ La prioridad guía el orden: **P0** protege reservas, reputación, ubicación o 
 | Reddit for Business | Investigación y publicidad comunitaria | CANDIDATO experimental nuevo | P2; gasto solo con hipótesis y presupuesto aprobados |
 | Skyscanner Hotels | Metabuscador y distribución | CANDIDATO nuevo; requiere API/proveedor | P1; confirmar cobertura vía Kross/OTA |
 | Snapchat for Business | Alcance visual joven | CANDIDATO experimental nuevo | P2; solo prueba medida y aprobada |
-| Supabase | Directorio estructurado canónico | VERIFICADO; versión 2.4, 264 entradas | P0; por cambio con readback |
+| Supabase | Directorio estructurado canónico | VERIFICADO; versión 2.6, 264 entradas | P0; por cambio con readback |
 | Threads | Red social de Meta | CANDIDATO nuevo | P1; reutilizar identidad Meta y probar orgánico |
 | TikTok | Red de video corto | REGISTRADO `@dreamcatcherhotel` | P1; semanal contenido, mensual conversión |
 | TikTok Ads | Publicidad | REGISTRADO como capacidad; advertiser no verificado | P2; no crear/gastar sin lectura nativa |
 | Trip.com | OTA | REGISTRADO; eBooking localizado, canal no probado activo | P2; verificar antes de invertir mantenimiento |
-| Tripadvisor for Business | Reputación y descubrimiento | VERIFICADO nativo: propietario en `1655967`; 4,5/5, 210 reseñas, 144 sin respuesta, 208 fotos; cinco owners sin dominio institucional; duplicado `34420954` no administrado | P0; completar lote preparado con confirmación y readback |
+| Tripadvisor for Business | Reputación y descubrimiento | VERIFICADO nativo: propietario en `1655967`; nombre/descripción `Processing`; invitación institucional enviada y pendiente; respuesta a Barbara B `Response pending`; `34420954` verificado como duplicado de la ficha principal por su destino Booking | P0; solicitar fusión conservando `1655967`, sus 210 reseñas y acceso |
 | trivago Business Studio | Metabuscador y perfil hotelero | CANDIDATO nuevo | P1; reclamar; apps pagas solo con margen aprobado |
 | TrySoro | SEO y analítica de contenido | REGISTRADO activo | P2; mensual según utilidad |
 | Vercel | Producción, dominios y rollback web | VERIFICADO | P0; cada despliegue |
@@ -153,14 +153,16 @@ La prioridad inicial recomendada es:
 
 ## Hallazgo Tripadvisor
 
-- **Ficha principal administrada:** [Dreamcatcher Hotel](https://www.tripadvisor.com/Hotel_Review-g635538-d1655967-Reviews-Dreamcatcher_Hotel-Santa_Teresa_Province_of_Puntarenas.html), `locationId=1655967`, 4,5/5, 210 reseñas, 144 sin respuesta, 208 fotos nativas y 12 habitaciones. Management Center verificó acceso propietario, pero ninguno de los cinco owners visibles usa el dominio `dreamcatcherhotel.com`.
-- **Posible duplicado:** [Dreamcatcher Santa Teresa](https://www.tripadvisor.com/Hotel_Review-g309287-d34420954-Reviews-Dreamcatcher_Santa_Teresa-Puntarenas_Province_of_Puntarenas.html), sin reseñas ni fotos al corte, dirección descriptiva “C. Cóbano, Puntarenas 60111”.
+- **Ficha principal administrada:** [Dreamcatcher Hotel](https://www.tripadvisor.com/Hotel_Review-g635538-d1655967-Reviews-Dreamcatcher_Hotel-Santa_Teresa_Province_of_Puntarenas.html), `locationId=1655967`, 4,5/5, 210 reseñas, 144 sin respuesta al corte previo, 208 fotos nativas y 12 habitaciones. El 17/10/2026 Tripadvisor guardó `Dreamcatcher Hotel & Villas` y la nueva descripción; ambos siguen `Processing`.
+- **Acceso y reputación:** la invitación Verified owner/Owner a `admin@dreamcatcherhotel.com` fue aceptada para envío y sigue pendiente de aceptación; por eso el readback conserva cinco usuarios. La respuesta italiana a Barbara B quedó `Response pending` y muestra el control `Delete Response`.
+- **Duplicado verificado:** [Dreamcatcher Santa Teresa](https://www.tripadvisor.com/Hotel_Review-g309287-d34420954-Reviews-Dreamcatcher_Santa_Teresa-Puntarenas_Province_of_Puntarenas.html), `locationId=34420954`, aparece sin reclamar, sin reseñas, con cinco fotos de proveedor y dirección “C. Cóbano, Puntarenas 60111”. Su enlace de Booking abre `Dreamcatcher Hotel & Villas, the best kept secret of Santa Teresa`, la misma propiedad principal; no abre TORO.
 - **Rendimiento nativo 16/09–15/10/2026:** puesto 19 de 30 hoteles en Santa Teresa, 2.202 impresiones, 522 visitantes únicos, cinco clics de reserva y cero referencias directas.
-- **Riesgo:** dividir señales de reputación, identidad y conversión. La ficha duplicada no aparece en la cartera administrada; cualquier solicitud de fusión requiere evidencia y confirmación específica.
+- **Decisión de consolidación:** preservar `1655967`, sus 210 reseñas y acceso de propietario; solicitar la fusión de `34420954` dentro de esa ficha. No borrar la ficha histórica, no convertir el duplicado en TORO y no crear una tercera ficha.
+- **TORO by Dreamcatcher:** Booking.com confirma una propiedad activa separada, ID `14338337`, en `hotel/cr/toro-by-dreamcatcher.html`; el resultado público focal mostró tres reseñas. No apareció una ficha propia en Tripadvisor. Kross aún agrupa las 22 soluciones bajo `Dreamcatcher Hotel & Villas`, incluidas las unidades 21–28 y `Villa Toro`; por eso una segunda ficha en otras OTA solo avanzará con separación física, licencia propia, identidad reservable y mapeo de inventario/canal sin solapamiento.
 
 ## Autoridad, prueba y reversión
 
-- **Supabase:** registro estructurado canónico. Readback del 17/10/2026 confirmó 264 entradas totales y versión 2.4; `candidate.tripadvisor` conserva acceso, métricas, reputación y estado del duplicado.
+- **Supabase:** registro estructurado canónico. Readback del 17/10/2026 confirmó 264 entradas totales y versión 2.6; `candidate.tripadvisor` conserva los tres resultados nativos, los estados pendientes, la clasificación del duplicado, Booking `14338337` y el gate de `TORO by Dreamcatcher`.
 - **Airtable:** `DREAMCATCHER WEB + CHANNELS` fue leído; conserva habitaciones, villas, páginas, secciones, marca, experiencias y activos web. No se duplicó el directorio allí.
 - **Dropbox:** la cuenta conectada `Atrapasuenos Santa Teresa` contiene la biblioteca Dreamcatcher, evidencia web y logos, incluido `logo-dreamcatcher-oficial.png`. No se movió ni sobrescribió nada.
 - **Reversión Supabase:** retirar únicamente las entradas cuyo `id` empiece por `candidate.` y devolver `link_directory.version`/versión general a 2.2, después de confirmar que no existan cambios posteriores que dependan de ellas.
@@ -168,4 +170,4 @@ La prioridad inicial recomendada es:
 
 ## Siguiente acción única
 
-Con confirmación inmediatamente antes de la acción, ejecutar el lote ya cargado en Tripadvisor: guardar `Dreamcatcher Hotel & Villas` y la descripción inglesa; enviar la invitación Verified owner a `admin@dreamcatcherhotel.com`; y publicar la respuesta italiana preparada para Barbara B. Después leer el resultado nativo de los tres. No cambiar aún amenidades, teléfono, medios, productos pagos ni el duplicado.
+Con confirmación inmediatamente antes de la acción, enviar por el Virtual Support Assistant de Tripadvisor la solicitud ya preparada para fusionar `34420954` dentro de `1655967`, preservando la ficha principal, sus 210 reseñas y el acceso de propietario. Capturar el número de caso o la respuesta nativa. No reclamar, renombrar o reutilizar `34420954`, ni crear una ficha TORO en esta unidad.
