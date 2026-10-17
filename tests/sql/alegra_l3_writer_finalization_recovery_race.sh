@@ -58,7 +58,7 @@ wait_until_session_sleeps() {
           where application_name = '${application_name}'
             and state = 'active'
             and wait_event_type = 'Timeout'
-            and query like '%pg_sleep%'
+            and wait_event = 'PgSleep'
         );
       " 2>/dev/null || true
     )"
