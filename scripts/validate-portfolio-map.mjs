@@ -2,6 +2,21 @@ import fs from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 export const RELATIONS = new Set(['belongs_to','uses','depends_on','affects','managed_by','executed_by','approved_by','connected_via','sourced_from','evidenced_by','measured_by','governed_by']);
 const REQUIRED=['canonical_id','tenant_scope','brain_path','relations','source_authority','provenance','confidence','privacy','owner_agent','human_owner','capabilities','workflows','metrics','freshness','risk','action_ceiling','evidence','feedback'];
+const STATES=new Set(['observed','inferred','needs_verification','verified','conflict','historical','owner_decision']);
+function validDate(value){
+ if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2}))?$/.test(value)||!Number.isFinite(Date.parse(value)))return false;
+ const [year,month,day]=value.slice(0,10).split('-').map(Number),date=new Date(Date.UTC(year,month-1,day));
+ return date.getUTCFullYear()===year&&date.getUTCMonth()===month-1&&date.getUTCDate()===day;
+}
+function unsafeUrl(value){
+ const p=new URL(value);if(p.protocol!=='https:'||p.username||p.password)return true;
+ let components=[...p.searchParams.keys(),p.hash.slice(1)].join('&');
+ for(let i=0;i<4;i++){
+  if(/token|secret|password|api.?key|signature|credential/i.test(components))return true;
+  const decoded=decodeURIComponent(components);if(decoded===components)return false;components=decoded;
+ }
+ return true;
+}
 export function validatePortfolioMap(map){
  const issues=[];
  if(!map || map.schema_version!=='toro-portfolio-map-v1')return ['Unsupported map schema'];
@@ -15,7 +30,7 @@ export function validatePortfolioMap(map){
   if(!n.tenant_scope || !n.privacy)issues.push(n.canonical_id+': missing scope/privacy');
   if(n.record_kind==='technical_resource' && n.count_as_business_project!==false)issues.push(n.canonical_id+': resource cannot count as project');
   for(const u of n.urls??[]){
-   try{const p=new URL(u);if(p.protocol!=='https:' || p.username || p.password || /token|secret|password|api.?key|signature|credential/i.test(p.search))issues.push(n.canonical_id+': unsafe URL')}
+   try{if(unsafeUrl(u))issues.push(n.canonical_id+': unsafe URL')}
    catch{issues.push(n.canonical_id+': invalid URL')}
   }
  }
@@ -24,7 +39,7 @@ export function validatePortfolioMap(map){
   if(!e.id || edgeIds.has(e.id))issues.push('Missing or duplicate edge ID');else edgeIds.add(e.id);
   if(!nodes.has(e.from)||!nodes.has(e.to))issues.push(e.id+': dangling endpoint');
   if(!RELATIONS.has(e.type))issues.push(e.id+': unknown relation');
-  if(!e.evidence?.length || !e.observed_at || !e.validation_state)issues.push(e.id+': missing relation provenance');
+  if(!Array.isArray(e.evidence)||!e.evidence.length||!e.evidence.every(x=>typeof x==='string'&&x.trim())||!validDate(e.observed_at)||!STATES.has(e.validation_state))issues.push(e.id+': missing relation provenance');
   if(e.grants_access!==false)issues.push(e.id+': relation cannot grant access');
   if(e.type==='belongs_to' && e.validation_state==='observed'){
    const list=parents.get(e.from)??[];list.push(e.to);parents.set(e.from,list);
