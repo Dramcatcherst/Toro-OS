@@ -42,6 +42,18 @@ Prueba sintética local: 14/14 casos, TypeScript y ESLint aprobados. Estado: có
 
 Readback local del candidato: 19/19 pruebas focales; suite `npm test`, TypeScript, ESLint, `git diff --check` y `npm run build` aprobados. La PR #331 permanece en borrador hasta comprobar el commit remoto y su CI. El contrato sigue en `externalSend=false` e `internalWriteExecuted=false`; no acredita receptor real, persistencia, despliegue, contacto con huéspedes ni resultado operativo.
 
+### Límites de verdad v4 — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_TRUTH_BOUNDARIES_V4_20261017.** Cinco correcciones adicionales quedaron probadas en el mismo contrato prepare-only:
+
+- fuente omitida se conserva como `unknown`, nunca como reporte de `staff` inventado;
+- derecho de desayuno permanece `unknown` hasta que la reserva esté verificada;
+- payload raíz nulo de preparación individual falla con error controlado;
+- payload raíz nulo de lote falla con error controlado;
+- links opcionales de tipo no textual se rechazan en lugar de desaparecer silenciosamente.
+
+Readback local: 24/24 pruebas focales; 54 archivos/586 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Alcance: código, pruebas y documentación en la PR existente; cero envíos, escrituras de operación, cambios PMS/OTA o resultados físicos.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
