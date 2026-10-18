@@ -47,6 +47,10 @@
 
 **Verificación del candidato v8:** 50/50 pruebas focales combinadas, 54 archivos/606 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. El endpoint devolvería HTTP 409 ante conflicto, pero no fue invocado y el writer sigue deshabilitado. Estado: código probado en la misma PR; cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
 
+**CHECKPOINT_FEEDBACK_REPLAY_CANONICAL_V9_20261018 — cinco correcciones de código, no runtime.** La igualdad de replay deja fuera el área derivada del operador que reintenta, sin relajar prioridad, fecha límite, proyecto, categoría, descripción o módulo. Un mismo `task.create` ejecutado por ADMIN y reintentado por GERENCIA desde áreas distintas ya no produce un conflicto espurio. La fusión de duplicados equivalentes por mayúsculas o Unicode selecciona de forma determinista y normalizada NFC el resumen, la ubicación y el detalle; invertir el orden conserva así título y descripción, además de la clave idempotente. Estas correcciones cierran los dos hallazgos P2 abiertos sobre v8.
+
+**Verificación del candidato v9:** 52/52 pruebas focales combinadas, 54 archivos/608 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. Estado: mismo contrato prepare-only y PR #331; endpoint y writer no invocados, cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
