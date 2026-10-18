@@ -15,6 +15,7 @@ function context(
       ? R
       : never
     : never,
+  workArea = "Gerencia",
 ): ToroResolvedContext {
   return {
     userId: "user-1",
@@ -33,7 +34,7 @@ function context(
       positionId: null,
       positionCode: "OWNER",
       positionName: "Owner",
-      workArea: "Gerencia",
+      workArea,
       source: "legacy_user_roles",
     },
     availableOrgIds: ["org-1"],
@@ -180,6 +181,33 @@ describe("isExactToroInternalTaskReplay", () => {
         draft({ nowIso: "2026-10-18T07:00:00.000Z" }),
       ),
     ).toBe(true);
+  });
+
+  it("accepts an exact replay from an authorized operator in a different work area", () => {
+    const parsed = validateToroInternalWorkRequest({
+      action: "task.create",
+      title: "Revisar incidencia de huésped",
+      description: "Contact consent: unknown",
+      priority: "medium",
+      dueDate: "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    });
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+
+    const existing = buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["ADMIN"], "Gerencia"),
+      nowIso: "2026-10-18T06:00:00.000Z",
+    });
+    const retry = buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["GERENCIA"], "Guest Experience"),
+      nowIso: "2026-10-18T07:00:00.000Z",
+    });
+
+    expect(retry.area).not.toBe(existing.area);
+    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(true);
   });
 
   it("rejects a replay whose priority became stricter", () => {
