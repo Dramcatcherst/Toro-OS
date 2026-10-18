@@ -27,6 +27,10 @@
 
 **Verificación del candidato v3:** 19/19 pruebas focales, suite configurada completa, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Estado: PR #331 en borrador hasta readback de GitHub/CI. Alcance real: código, pruebas y documentación; cero escrituras Supabase/Kross/OTA, cero huéspedes contactados y ningún despliegue productivo acreditado. La meta 10x permanece **NO MEDIDA**.
 
+**CHECKPOINT_FEEDBACK_TRUTH_BOUNDARIES_V4_20261017 — cinco correcciones de código, no runtime.** El contrato deja de atribuir `staff` a fuentes omitidas y conserva `unknown`; fuerza `breakfastEntitlement=unknown` mientras el contexto de reserva no esté verificado; rechaza de forma controlada un payload raíz nulo en la preparación individual; aplica el mismo cierre al payload raíz del lote; y rechaza enlaces opcionales que no sean texto en vez de tratarlos como ausentes. Las dos primeras correcciones responden a observaciones abiertas de revisión de PR y preservan autoridad de fuente/comercial; las otras tres cierran fronteras de entrada reproducibles.
+
+**Verificación del candidato v4:** 24/24 pruebas focales, 54 archivos/586 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Estado: candidato en la misma PR #331, sin receptor habilitado, mensajes, tareas productivas ni despliegue acreditado. La meta 10x permanece **NO MEDIDA**.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
