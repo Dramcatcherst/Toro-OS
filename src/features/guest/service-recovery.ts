@@ -99,7 +99,7 @@ export type GuestFeedbackBatchIssue = Omit<
 
 export type GuestFeedbackBatchInput = {
   submissionId: string;
-  sourceChannel: GuestServiceRecoverySource;
+  sourceChannel?: GuestServiceRecoverySource;
   projectKey?: string | null;
   guestLanguage?: "es" | "en" | "pt";
   contactConsent?: boolean;
@@ -158,22 +158,24 @@ function clean(value: string | null | undefined) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function containsTemplatePlaceholder(value: string) {
+function inspectTemplatePlaceholder(
+  value: string,
+): "found" | "clear" | "invalid_encoding" {
   let candidate = value;
 
   for (let pass = 0; pass < 3; pass += 1) {
-    if (TEMPLATE_PLACEHOLDER_RE.test(candidate)) return true;
+    if (TEMPLATE_PLACEHOLDER_RE.test(candidate)) return "found";
 
     try {
       const decoded = decodeURIComponent(candidate);
-      if (decoded === candidate) return false;
+      if (decoded === candidate) return "clear";
       candidate = decoded;
     } catch {
-      return false;
+      return "invalid_encoding";
     }
   }
 
-  return TEMPLATE_PLACEHOLDER_RE.test(candidate);
+  return TEMPLATE_PLACEHOLDER_RE.test(candidate) ? "found" : "clear";
 }
 
 function validateOptionalLink(
@@ -190,7 +192,12 @@ function validateOptionalLink(
   const link = clean(value);
   if (!link) return;
 
-  if (containsTemplatePlaceholder(link)) {
+  const templateInspection = inspectTemplatePlaceholder(link);
+  if (templateInspection === "invalid_encoding") {
+    errors.push(`${label} must use valid URL encoding.`);
+    return;
+  }
+  if (templateInspection === "found") {
     errors.push(`${label} contains an unresolved template placeholder.`);
     return;
   }
@@ -288,8 +295,14 @@ export function prepareGuestServiceRecovery(
   if (location.length > 120) {
     errors.push("locationLabel must be <= 120 characters.");
   }
+  if (input.locationLabel != null && typeof input.locationLabel !== "string") {
+    errors.push("locationLabel must be a string.");
+  }
   if (detail.length > 3000) {
     errors.push("detail must be <= 3000 characters.");
+  }
+  if (input.detail != null && typeof input.detail !== "string") {
+    errors.push("detail must be a string.");
   }
   if (!["es", "en", "pt"].includes(language)) {
     errors.push("guestLanguage must be es, en, or pt.");
@@ -415,14 +428,22 @@ export function prepareGuestServiceRecovery(
   };
 }
 
-function issueIdentity(issue: GuestFeedbackBatchIssue) {
+function issueIdentity(
+  issue: GuestFeedbackBatchIssue,
+  bookingContextVerified: boolean,
+) {
+  const effectiveBreakfastEntitlement =
+    issue.category === "breakfast" && !bookingContextVerified
+      ? "unknown"
+      : issue.breakfastEntitlement ?? "";
+
   return JSON.stringify([
     issue.category,
     clean(issue.summary).toLocaleLowerCase(),
     clean(issue.locationLabel).toLocaleLowerCase(),
     clean(issue.detail).toLocaleLowerCase(),
     issue.breakfastConcern ?? "",
-    issue.breakfastEntitlement ?? "",
+    effectiveBreakfastEntitlement,
   ]);
 }
 
@@ -454,6 +475,7 @@ export function prepareGuestFeedbackBatch(
 
   const submissionId = clean(input.submissionId);
   const errors: string[] = [];
+  const sourceChannel = input.sourceChannel ?? "unknown";
 
   if (!SUBMISSION_ID_RE.test(submissionId)) {
     errors.push(
@@ -466,6 +488,15 @@ export function prepareGuestFeedbackBatch(
   if (Array.isArray(input.issues) && input.issues.length > 6) {
     errors.push("A feedback submission may contain at most 6 raw issues.");
   }
+  if (
+    !["survey", "whatsapp", "portal", "staff", "unknown"].includes(
+      sourceChannel,
+    )
+  ) {
+    errors.push(
+      "sourceChannel must be survey, whatsapp, portal, staff, or unknown.",
+    );
+  }
   if (errors.length) return { ok: false, errors };
 
   for (const [index, issue] of input.issues.entries()) {
@@ -476,8 +507,8 @@ export function prepareGuestFeedbackBatch(
 
     const validation = prepareGuestServiceRecovery({
       ...issue,
-      sourceEventKey: `${input.sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
-      sourceChannel: input.sourceChannel,
+      sourceEventKey: `${sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
+      sourceChannel,
       projectKey: input.projectKey ?? null,
       guestLanguage: input.guestLanguage,
       contactConsent: input.contactConsent,
@@ -501,7 +532,10 @@ export function prepareGuestFeedbackBatch(
   let duplicateIssueCount = 0;
 
   for (const issue of input.issues) {
-    const identity = issueIdentity(issue);
+    const identity = issueIdentity(
+      issue,
+      input.bookingContextVerified === true,
+    );
     const existingIndex = identities.get(identity);
     if (existingIndex !== undefined) {
       duplicateIssueCount += 1;
@@ -528,8 +562,8 @@ export function prepareGuestFeedbackBatch(
   for (const [index, issue] of uniqueIssues.entries()) {
     const result = prepareGuestServiceRecovery({
       ...issue,
-      sourceEventKey: `${input.sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
-      sourceChannel: input.sourceChannel,
+      sourceEventKey: `${sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
+      sourceChannel,
       projectKey: input.projectKey ?? null,
       guestLanguage: input.guestLanguage,
       contactConsent: input.contactConsent,
