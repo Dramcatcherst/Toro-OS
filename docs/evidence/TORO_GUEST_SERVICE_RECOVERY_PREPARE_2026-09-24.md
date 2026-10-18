@@ -114,6 +114,16 @@ El endpoint mapea el conflicto a HTTP 409. La política escogida es fallar cerra
 
 La prioridad, fecha límite, proyecto, categoría, descripción resultante y módulo continúan comparándose estrictamente. Readback local: 52/52 pruebas focales combinadas; 54 archivos/608 pruebas del bloque principal de `npm test` más suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Sigue en prepare-only: endpoint y writer no invocados, cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA.
 
+### Discriminador de ruta estable v10 — 18/10/2026
+
+**CHECKPOINT_FEEDBACK_REPLAY_ROUTE_V10_20261018.** Tres mejoras de código cierran el hallazgo P2 abierto sobre v9, sin forzar una cuota documental:
+
+- `module_lead` pasa a formar parte de la igualdad de replay como discriminador persistido e independiente del operador;
+- las lecturas iniciales y las del conflicto concurrente recuperan ese campo mediante el mismo `TASK_SELECT`;
+- una fila histórica o incompleta sin `module_lead` falla cerrada como no normalizable, en lugar de aceptar un replay ambiguo.
+
+La regresión reproduce `task.create` frente a `maintenance.task` con título, área, categoría, módulo, prioridad, fecha y descripción idénticos: ahora se rechaza porque TORO y RICO son rutas distintas. El replay del mismo `task.create` entre áreas de operadores diferentes continúa aceptado. Readback local: 53/53 pruebas focales combinadas; 54 archivos/609 pruebas del bloque principal de `npm test` más suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Endpoint y writer no invocados; cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
