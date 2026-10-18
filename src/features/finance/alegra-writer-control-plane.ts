@@ -1,6 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { admitApprovedAlegraExecutionRun, finalizeAlegraExecutionRun, type ToroWorkerRun } from "../control-plane/worker-runtime";
+import { admitApprovedAlegraExecutionRun, finalizeAlegraExecutionRun, heartbeatAlegraExecutionRun, type ToroWorkerRun } from "../control-plane/worker-runtime";
 import type { AlegraExecutionGate } from "./alegra-writer-executor";
 import { captureAlegraWriteAuthorization, validateAlegraWriteApproval } from "./alegra-writer-contract";
 export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; run: ToroWorkerRun; workerId: string; now: () => string; authorize: AlegraExecutionGate["beforeDispatch"] }): AlegraExecutionGate {
@@ -52,6 +52,23 @@ export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; 
       admittedHash = intent.payloadHash; approvedId = approval.approvalId; approvedActor = approval.actorId;
       evidenceRefs = [...intent.evidence.sourceRefs];
       return true;
+    },
+    async renewLease() {
+      // Never invent lease identity, change workers, or renew an unadmitted run.
+      if (!admittedHash || !preparedReceiptId) return false;
+      try {
+        const current = await heartbeatAlegraExecutionRun(supabase, {
+          orgId: run.orgId,
+          ...lease,
+          preparedReceiptId,
+          leaseSeconds: 60,
+        });
+        return current?.runId === run.id &&
+          current.fencingToken === lease.fencingToken &&
+          current.preparedReceiptId === preparedReceiptId;
+      } catch {
+        return false;
+      }
     },
     async persistReceipt(receipt) {
       const capturedReceipt = structuredClone(receipt);
