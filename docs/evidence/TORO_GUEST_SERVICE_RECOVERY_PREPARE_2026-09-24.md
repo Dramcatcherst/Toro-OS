@@ -66,6 +66,18 @@ Readback local: 24/24 pruebas focales; 54 archivos/586 pruebas del bloque princi
 
 Readback local: 29/29 pruebas focales; 54 archivos/591 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. El intake interno fue leído, pero no invocado: su writer y gate ADMIN/GERENCIA no se cambiaron. Cero tareas, mensajes, huéspedes, reservas o cambios OTA.
 
+### Límites de tipos e identidad v6 — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_TYPE_IDENTITY_V6_20261017.** Cinco correcciones adicionales quedaron aplicadas al mismo contrato prepare-only:
+
+- los placeholders con más de tres capas de codificación se detectan, y una entrada que continúa cambiando tras el límite de seguridad se rechaza;
+- desayuno verificado con derecho omitido y con `unknown` explícito comparte la misma identidad operativa;
+- consentimiento de contacto, permiso de entrada y verificación de reserva no booleanos se rechazan en vez de convertirse silenciosamente en `false`;
+- un `projectKey` no textual se rechaza en vez de perder el vínculo al proyecto;
+- una fecha límite no textual se rechaza en vez de desaparecer del trabajo preparado.
+
+Las dos primeras corrigen observaciones de revisión del commit remoto; las otras tres cierran pérdidas de contexto reproducidas sobre la misma frontera de entrada. Readback local: 34/34 pruebas focales; 54 archivos/596 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Continúa `externalSend=false` e `internalWriteExecuted=false`; no se invocó el endpoint, no se activó el writer y no hubo huésped, tarea ni cambio PMS/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
