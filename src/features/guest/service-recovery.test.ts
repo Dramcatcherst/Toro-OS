@@ -32,7 +32,7 @@ describe("prepareGuestServiceRecovery", () => {
         idempotencyKey: "guest:wespeak:case_0001",
       },
       context: {
-        sourceChannel: "staff",
+        sourceChannel: "unknown",
         bookingContextVerified: false,
         contactConsent: false,
         roomEntryConsent: false,
@@ -69,6 +69,30 @@ describe("prepareGuestServiceRecovery", () => {
     expect(result.value.internalWork.action).toBe("task.create");
     expect(result.value.handoff.owner).toBe("TORO");
     expect(result.value.guestReplyDraft.text).toContain("organizing");
+  });
+
+  it("preserves an omitted legacy source as unknown instead of inventing staff", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "web:case_000010",
+      category: "general",
+      summary: "Origen legado sin mapa verificado",
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.context.sourceChannel).toBe("unknown");
+    expect(result.value.internalWork.description).toContain(
+      "Source channel: unknown",
+    );
+  });
+
+  it("rejects a null root payload with a controlled error", () => {
+    const result = prepareGuestServiceRecovery(null as never);
+
+    expect(result).toEqual({
+      ok: false,
+      errors: ["feedback input must be an object."],
+    });
   });
 
   it("is deterministic for the same source event so later writes can dedupe", () => {
@@ -146,6 +170,26 @@ describe("prepareGuestServiceRecovery", () => {
     if (result.ok) return;
     expect(result.errors).toContain(
       "privateFeedbackLink contains an unresolved template placeholder.",
+    );
+  });
+
+  it("rejects non-string optional links instead of silently dropping them", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0010",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con tipo inválido",
+      privateFeedbackLink: 42 as never,
+      guestPortalLink: { href: "https://example.com" } as never,
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toEqual(
+      expect.arrayContaining([
+        "privateFeedbackLink must be a string URL.",
+        "guestPortalLink must be a string URL.",
+      ]),
     );
   });
 
@@ -241,6 +285,36 @@ describe("prepareGuestServiceRecovery", () => {
     );
   });
 
+  it("keeps unverified breakfast entitlement unknown", () => {
+    const unverified = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0011",
+      sourceChannel: "survey",
+      category: "breakfast",
+      summary: "Consulta de desayuno",
+      breakfastConcern: "entitlement_or_charge",
+      breakfastEntitlement: "included",
+      bookingContextVerified: false,
+    });
+    const verified = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0012",
+      sourceChannel: "survey",
+      category: "breakfast",
+      summary: "Consulta de desayuno verificada",
+      breakfastConcern: "entitlement_or_charge",
+      breakfastEntitlement: "included",
+      bookingContextVerified: true,
+    });
+
+    expect(unverified.ok).toBe(true);
+    expect(verified.ok).toBe(true);
+    if (!unverified.ok || !verified.ok) return;
+    expect(unverified.value.context.breakfast?.entitlement).toBe("unknown");
+    expect(unverified.value.internalWork.description).toContain(
+      "entitlement: unknown",
+    );
+    expect(verified.value.context.breakfast?.entitlement).toBe("included");
+  });
+
   it("does not accept breakfast-specific fields for unrelated issues", () => {
     const result = prepareGuestServiceRecovery({
       sourceEventKey: "survey:case_0007",
@@ -259,6 +333,15 @@ describe("prepareGuestServiceRecovery", () => {
 });
 
 describe("prepareGuestFeedbackBatch", () => {
+  it("rejects a null batch payload with a controlled error", () => {
+    const result = prepareGuestFeedbackBatch(null as never);
+
+    expect(result).toEqual({
+      ok: false,
+      errors: ["feedback batch input must be an object."],
+    });
+  });
+
   it("prepares several concerns from one synthetic submission without writes", () => {
     const result = prepareGuestFeedbackBatch({
       submissionId: "synthetic_0001",
