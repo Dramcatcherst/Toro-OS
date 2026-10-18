@@ -51,6 +51,10 @@
 
 **Verificación del candidato v9:** 52/52 pruebas focales combinadas, 54 archivos/608 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. Estado: mismo contrato prepare-only y PR #331; endpoint y writer no invocados, cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
 
+**CHECKPOINT_FEEDBACK_REPLAY_ROUTE_V10_20261018 — tres correcciones de código, no runtime.** `module_lead` se incorpora a la igualdad como discriminador de ruta persistido e independiente del llamador; todas las lecturas de idempotencia, incluida la recuperación tras carrera de unicidad, solicitan ese campo; y una fila sin ruta normalizable falla cerrada. Así, reutilizar una clave cambiando `task.create` a `maintenance.task` ya no devuelve silenciosamente la tarea general aunque coincidan área, categoría, módulo y contenido. Se aplicaron tres cambios materiales; no se forzaron dos cambios cosméticos para completar una cuota.
+
+**Verificación del candidato v10:** 53/53 pruebas focales combinadas, 54 archivos/609 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. Estado: misma PR #331 en borrador hasta CI/readback; endpoint y writer no invocados, cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
