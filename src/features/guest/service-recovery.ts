@@ -129,6 +129,7 @@ export type GuestFeedbackBatchResult =
 const SOURCE_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9:_-]{7,121}$/;
 const SUBMISSION_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{7,63}$/;
 const TEMPLATE_PLACEHOLDER_RE = /\[[A-Z][A-Z0-9_]{2,80}\]/;
+const MAX_TEMPLATE_DECODE_PASSES = 8;
 const CATEGORIES: readonly GuestServiceRecoveryCategory[] = [
   "maintenance",
   "housekeeping",
@@ -160,15 +161,16 @@ function clean(value: string | null | undefined) {
 
 function inspectTemplatePlaceholder(
   value: string,
-): "found" | "clear" | "invalid_encoding" {
+): "found" | "clear" | "invalid_encoding" | "decode_limit" {
   let candidate = value;
 
-  for (let pass = 0; pass < 3; pass += 1) {
+  for (let pass = 0; pass <= MAX_TEMPLATE_DECODE_PASSES; pass += 1) {
     if (TEMPLATE_PLACEHOLDER_RE.test(candidate)) return "found";
 
     try {
       const decoded = decodeURIComponent(candidate);
       if (decoded === candidate) return "clear";
+      if (pass === MAX_TEMPLATE_DECODE_PASSES) return "decode_limit";
       candidate = decoded;
     } catch {
       return "invalid_encoding";
@@ -195,6 +197,10 @@ function validateOptionalLink(
   const templateInspection = inspectTemplatePlaceholder(link);
   if (templateInspection === "invalid_encoding") {
     errors.push(`${label} must use valid URL encoding.`);
+    return;
+  }
+  if (templateInspection === "decode_limit") {
+    errors.push(`${label} must not use excessive URL encoding.`);
     return;
   }
   if (templateInspection === "found") {
@@ -303,6 +309,30 @@ export function prepareGuestServiceRecovery(
   }
   if (input.detail != null && typeof input.detail !== "string") {
     errors.push("detail must be a string.");
+  }
+  if (input.projectKey != null && typeof input.projectKey !== "string") {
+    errors.push("projectKey must be a string.");
+  }
+  if (input.dueDate != null && typeof input.dueDate !== "string") {
+    errors.push("dueDate must be a string.");
+  }
+  if (
+    input.contactConsent !== undefined &&
+    typeof input.contactConsent !== "boolean"
+  ) {
+    errors.push("contactConsent must be a boolean.");
+  }
+  if (
+    input.roomEntryConsent !== undefined &&
+    typeof input.roomEntryConsent !== "boolean"
+  ) {
+    errors.push("roomEntryConsent must be a boolean.");
+  }
+  if (
+    input.bookingContextVerified !== undefined &&
+    typeof input.bookingContextVerified !== "boolean"
+  ) {
+    errors.push("bookingContextVerified must be a boolean.");
   }
   if (!["es", "en", "pt"].includes(language)) {
     errors.push("guestLanguage must be es, en, or pt.");
@@ -433,9 +463,11 @@ function issueIdentity(
   bookingContextVerified: boolean,
 ) {
   const effectiveBreakfastEntitlement =
-    issue.category === "breakfast" && !bookingContextVerified
-      ? "unknown"
-      : issue.breakfastEntitlement ?? "";
+    issue.category === "breakfast"
+      ? bookingContextVerified
+        ? issue.breakfastEntitlement ?? "unknown"
+        : "unknown"
+      : "";
 
   return JSON.stringify([
     issue.category,
