@@ -173,6 +173,23 @@ describe("prepareGuestServiceRecovery", () => {
     );
   });
 
+  it("rejects malformed URL encoding instead of skipping placeholder inspection", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0013",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con codificación inválida",
+      privateFeedbackLink:
+        "https://example.com/%ZZ/%5BPRIVATE_FEEDBACK_LINK%5D",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toContain(
+      "privateFeedbackLink must use valid URL encoding.",
+    );
+  });
+
   it("rejects non-string optional links instead of silently dropping them", () => {
     const result = prepareGuestServiceRecovery({
       sourceEventKey: "survey:case_0010",
@@ -189,6 +206,26 @@ describe("prepareGuestServiceRecovery", () => {
       expect.arrayContaining([
         "privateFeedbackLink must be a string URL.",
         "guestPortalLink must be a string URL.",
+      ]),
+    );
+  });
+
+  it("rejects non-string optional detail fields instead of silently dropping them", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0014",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Detalles con tipo inválido",
+      locationLabel: 27 as never,
+      detail: { note: "reported" } as never,
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toEqual(
+      expect.arrayContaining([
+        "locationLabel must be a string.",
+        "detail must be a string.",
       ]),
     );
   });
@@ -390,6 +427,68 @@ describe("prepareGuestFeedbackBatch", () => {
       "guest:survey:synthetic_0001:01",
       "guest:survey:synthetic_0001:02",
     ]);
+  });
+
+  it("normalizes an omitted batch channel before creating source and idempotency keys", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0009",
+      issues: [{ category: "general", summary: "Origen no informado" }],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issues[0].context.sourceChannel).toBe("unknown");
+    expect(result.value.issues[0].internalWork.idempotencyKey).toBe(
+      "guest:unknown:synthetic_0009:01",
+    );
+    expect(result.value.issues[0].internalWork.description).not.toContain(
+      "undefined",
+    );
+  });
+
+  it("rejects an unsupported batch channel once before issue processing", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0010",
+      sourceChannel: "email" as never,
+      issues: [{ category: "general", summary: "Canal inválido" }],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      errors: [
+        "sourceChannel must be survey, whatsapp, portal, staff, or unknown.",
+      ],
+    });
+  });
+
+  it("dedupes unverified breakfast entitlement claims as unknown", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0011",
+      sourceChannel: "survey",
+      bookingContextVerified: false,
+      issues: [
+        {
+          category: "breakfast",
+          summary: "Consulta de desayuno",
+          breakfastConcern: "entitlement_or_charge",
+          breakfastEntitlement: "included",
+        },
+        {
+          category: "breakfast",
+          summary: "Consulta de desayuno",
+          breakfastConcern: "entitlement_or_charge",
+          breakfastEntitlement: "extra",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issueCount).toBe(1);
+    expect(result.value.duplicateIssueCount).toBe(1);
+    expect(result.value.issues[0].context.breakfast?.entitlement).toBe(
+      "unknown",
+    );
   });
 
   it("collapses exact duplicates and reports the avoided duplicate", () => {
