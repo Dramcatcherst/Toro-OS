@@ -54,6 +54,18 @@ Readback local del candidato: 19/19 pruebas focales; suite `npm test`, TypeScrip
 
 Readback local: 24/24 pruebas focales; 54 archivos/586 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Alcance: código, pruebas y documentación en la PR existente; cero envíos, escrituras de operación, cambios PMS/OTA o resultados físicos.
 
+### Canario de entradas v5 — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_INPUT_CANARY_V5_20261017.** Cinco correcciones adicionales fortalecen la frontera anterior al intake interno:
+
+- codificación URL inválida falla cerrada antes de aceptar el enlace;
+- canal de lote omitido se normaliza a `unknown` antes de construir fuente/idempotencia;
+- canal de lote no soportado se rechaza una vez antes del fan-out;
+- afirmaciones de desayuno no verificadas se deduplican bajo el valor efectivo `unknown`;
+- ubicación y detalle no textuales se rechazan, sin pérdida silenciosa.
+
+Readback local: 29/29 pruebas focales; 54 archivos/591 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. El intake interno fue leído, pero no invocado: su writer y gate ADMIN/GERENCIA no se cambiaron. Cero tareas, mensajes, huéspedes, reservas o cambios OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
