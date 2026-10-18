@@ -29,6 +29,8 @@ export async function POST(request: Request) {
       });
     case "invalid":
       return NextResponse.json(result, { status: 400 });
+    case "conflict":
+      return NextResponse.json(result, { status: 409 });
     case "unauthenticated":
       return NextResponse.json(result, { status: 401 });
     case "forbidden":
