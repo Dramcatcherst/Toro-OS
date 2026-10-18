@@ -19,7 +19,8 @@ export type GuestServiceRecoverySource =
   | "survey"
   | "whatsapp"
   | "portal"
-  | "staff";
+  | "staff"
+  | "unknown";
 
 export type GuestBreakfastConcern =
   | "quality"
@@ -177,9 +178,15 @@ function containsTemplatePlaceholder(value: string) {
 
 function validateOptionalLink(
   label: "privateFeedbackLink" | "guestPortalLink",
-  value: string | null | undefined,
+  value: unknown,
   errors: string[],
 ) {
+  if (value == null) return;
+  if (typeof value !== "string") {
+    errors.push(`${label} must be a string URL.`);
+    return;
+  }
+
   const link = clean(value);
   if (!link) return;
 
@@ -258,13 +265,17 @@ function replyFor(
 export function prepareGuestServiceRecovery(
   input: GuestServiceRecoveryPrepareInput,
 ): GuestServiceRecoveryPrepareResult {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return { ok: false, errors: ["feedback input must be an object."] };
+  }
+
   const errors: string[] = [];
   const sourceEventKey = clean(input.sourceEventKey);
   const summary = clean(input.summary);
   const location = clean(input.locationLabel);
   const detail = clean(input.detail);
   const language = input.guestLanguage ?? "es";
-  const sourceChannel = input.sourceChannel ?? "staff";
+  const sourceChannel = input.sourceChannel ?? "unknown";
 
   if (!SOURCE_KEY_RE.test(sourceEventKey)) {
     errors.push(
@@ -283,8 +294,14 @@ export function prepareGuestServiceRecovery(
   if (!["es", "en", "pt"].includes(language)) {
     errors.push("guestLanguage must be es, en, or pt.");
   }
-  if (!["survey", "whatsapp", "portal", "staff"].includes(sourceChannel)) {
-    errors.push("sourceChannel must be survey, whatsapp, portal, or staff.");
+  if (
+    !["survey", "whatsapp", "portal", "staff", "unknown"].includes(
+      sourceChannel,
+    )
+  ) {
+    errors.push(
+      "sourceChannel must be survey, whatsapp, portal, staff, or unknown.",
+    );
   }
   if (!CATEGORIES.includes(input.category)) {
     errors.push("category is not supported.");
@@ -333,7 +350,10 @@ export function prepareGuestServiceRecovery(
     input.category === "breakfast"
       ? {
           concern: input.breakfastConcern!,
-          entitlement: input.breakfastEntitlement ?? "unknown",
+          entitlement:
+            input.bookingContextVerified === true
+              ? input.breakfastEntitlement ?? "unknown"
+              : "unknown",
         }
       : null;
 
@@ -428,6 +448,10 @@ function mergeDuplicateIssue(
 export function prepareGuestFeedbackBatch(
   input: GuestFeedbackBatchInput,
 ): GuestFeedbackBatchResult {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return { ok: false, errors: ["feedback batch input must be an object."] };
+  }
+
   const submissionId = clean(input.submissionId);
   const errors: string[] = [];
 
