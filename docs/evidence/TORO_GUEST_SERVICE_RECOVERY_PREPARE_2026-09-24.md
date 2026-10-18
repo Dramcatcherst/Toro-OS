@@ -30,6 +30,18 @@ Verificación del candidato exacto: `npx vitest run src/features/guest/service-r
 
 Prueba sintética local: 14/14 casos, TypeScript y ESLint aprobados. Estado: código probado en rama; cero escrituras productivas, cero mensajes, cero huéspedes reales y cero cambios Kross/OTA.
 
+### Endurecimiento v3 — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_HARDENING_V3_20261017.** Se reprodujeron y corrigieron cinco fallos adicionales en el mismo contrato y rama:
+
+- los duplicados conservan la urgencia mayor y la fecha límite más temprana;
+- la identidad usa serialización estructurada y evita colisiones por contenido con `|`;
+- una incidencia `null` falla con respuesta controlada en lugar de lanzar excepción;
+- categoría, urgencia, aspecto de desayuno y derecho comercial se validan también en ejecución;
+- un marcador codificado, por ejemplo `%5BPRIVATE_FEEDBACK_LINK%5D`, falla cerrado.
+
+Readback local del candidato: 19/19 pruebas focales; suite `npm test`, TypeScript, ESLint, `git diff --check` y `npm run build` aprobados. La PR #331 permanece en borrador hasta comprobar el commit remoto y su CI. El contrato sigue en `externalSend=false` e `internalWriteExecuted=false`; no acredita receptor real, persistencia, despliegue, contacto con huéspedes ni resultado operativo.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
