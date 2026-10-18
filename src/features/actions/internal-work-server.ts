@@ -43,10 +43,11 @@ type SupabaseTaskRow = {
   due_date?: unknown;
   description?: unknown;
   canonical_module_key?: unknown;
+  module_lead?: unknown;
 };
 
 const TASK_SELECT =
-  "id, task_key, task_name, status, priority, area, project_id, category, due_date, description, canonical_module_key";
+  "id, task_key, task_name, status, priority, area, project_id, category, due_date, description, canonical_module_key, module_lead";
 
 function normalizeTask(row: SupabaseTaskRow) {
   if (
@@ -79,7 +80,8 @@ function normalizeReplayComparable(
     typeof row.priority !== "string" ||
     typeof row.category !== "string" ||
     typeof row.area !== "string" ||
-    typeof row.canonical_module_key !== "string"
+    typeof row.canonical_module_key !== "string" ||
+    typeof row.module_lead !== "string"
   ) {
     return null;
   }
@@ -107,6 +109,7 @@ function normalizeReplayComparable(
     due_date: dueDate,
     description,
     canonical_module_key: row.canonical_module_key,
+    module_lead: row.module_lead,
   };
 }
 
