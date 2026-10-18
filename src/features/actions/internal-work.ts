@@ -58,6 +58,7 @@ export type ToroInternalTaskReplayComparable = Pick<
   | "due_date"
   | "description"
   | "canonical_module_key"
+  | "module_lead"
 >;
 
 export type ToroInternalWorkValidation =
@@ -268,6 +269,7 @@ export function isExactToroInternalTaskReplay(
     existing.priority === candidate.priority &&
     existing.due_date === candidate.due_date &&
     existing.description === candidate.description &&
-    existing.canonical_module_key === candidate.canonical_module_key
+    existing.canonical_module_key === candidate.canonical_module_key &&
+    existing.module_lead === candidate.module_lead
   );
 }
