@@ -34,8 +34,8 @@ describe("prepareGuestServiceRecovery", () => {
       context: {
         sourceChannel: "unknown",
         bookingContextVerified: false,
-        contactConsent: false,
-        roomEntryConsent: false,
+        contactConsent: "unknown",
+        roomEntryConsent: "unknown",
         breakfast: null,
       },
       guestReplyDraft: {
@@ -382,10 +382,44 @@ describe("prepareGuestServiceRecovery", () => {
     expect(result.value.context).toMatchObject({
       sourceChannel: "portal",
       bookingContextVerified: true,
-      contactConsent: true,
+      contactConsent: "granted",
+      roomEntryConsent: "denied",
+    });
+    expect(result.value.internalWork.description).toContain(
+      "Contact consent: granted",
+    );
+    expect(result.value.internalWork.description).toContain(
+      "Room-entry consent: denied",
+    );
+    expect(result.value.externalSend).toBe(false);
+  });
+
+  it("preserves omitted consent as unknown instead of treating it as denial", () => {
+    const omitted = prepareGuestServiceRecovery({
+      sourceEventKey: "portal:case_0018",
+      sourceChannel: "portal",
+      category: "general",
+      summary: "Consentimiento no capturado",
+    });
+    const denied = prepareGuestServiceRecovery({
+      sourceEventKey: "portal:case_0019",
+      sourceChannel: "portal",
+      category: "general",
+      summary: "Consentimiento rechazado",
+      contactConsent: false,
       roomEntryConsent: false,
     });
-    expect(result.value.externalSend).toBe(false);
+
+    expect(omitted.ok).toBe(true);
+    expect(denied.ok).toBe(true);
+    if (!omitted.ok || !denied.ok) return;
+    expect(omitted.value.context.contactConsent).toBe("unknown");
+    expect(omitted.value.context.roomEntryConsent).toBe("unknown");
+    expect(omitted.value.internalWork.description).toContain(
+      "Contact consent: unknown",
+    );
+    expect(denied.value.context.contactConsent).toBe("denied");
+    expect(denied.value.context.roomEntryConsent).toBe("denied");
   });
 
   it("forces safety and electrical concerns into immediate critical human attention", () => {
