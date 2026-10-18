@@ -48,6 +48,18 @@ export type ToroInternalTaskDraft = {
   module_lead: string;
 };
 
+export type ToroInternalTaskReplayComparable = Pick<
+  ToroInternalTaskDraft,
+  | "task_name"
+  | "project_id"
+  | "category"
+  | "priority"
+  | "area"
+  | "due_date"
+  | "description"
+  | "canonical_module_key"
+>;
+
 export type ToroInternalWorkValidation =
   | { ok: true; value: ToroInternalWorkRequest }
   | { ok: false; error: string };
@@ -243,4 +255,20 @@ export function buildToroInternalTaskDraft(input: {
     canonical_module_key: route.module,
     module_lead: route.lead,
   };
+}
+
+export function isExactToroInternalTaskReplay(
+  existing: ToroInternalTaskReplayComparable,
+  candidate: ToroInternalTaskReplayComparable,
+) {
+  return (
+    existing.task_name === candidate.task_name &&
+    existing.project_id === candidate.project_id &&
+    existing.category === candidate.category &&
+    existing.priority === candidate.priority &&
+    existing.area === candidate.area &&
+    existing.due_date === candidate.due_date &&
+    existing.description === candidate.description &&
+    existing.canonical_module_key === candidate.canonical_module_key
+  );
 }
