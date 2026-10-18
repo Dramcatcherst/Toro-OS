@@ -128,9 +128,51 @@ export type GuestFeedbackBatchResult =
 const SOURCE_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9:_-]{7,121}$/;
 const SUBMISSION_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{7,63}$/;
 const TEMPLATE_PLACEHOLDER_RE = /\[[A-Z][A-Z0-9_]{2,80}\]/;
+const CATEGORIES: readonly GuestServiceRecoveryCategory[] = [
+  "maintenance",
+  "housekeeping",
+  "noise",
+  "amenity",
+  "breakfast",
+  "water",
+  "electricity",
+  "safety",
+  "general",
+];
+const URGENCIES = ["normal", "high", "critical"] as const;
+const BREAKFAST_CONCERNS: readonly GuestBreakfastConcern[] = [
+  "quality",
+  "wait",
+  "availability",
+  "entitlement_or_charge",
+  "other",
+];
+const BREAKFAST_ENTITLEMENTS: readonly GuestBreakfastEntitlement[] = [
+  "included",
+  "extra",
+  "unknown",
+];
 
 function clean(value: string | null | undefined) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function containsTemplatePlaceholder(value: string) {
+  let candidate = value;
+
+  for (let pass = 0; pass < 3; pass += 1) {
+    if (TEMPLATE_PLACEHOLDER_RE.test(candidate)) return true;
+
+    try {
+      const decoded = decodeURIComponent(candidate);
+      if (decoded === candidate) return false;
+      candidate = decoded;
+    } catch {
+      return false;
+    }
+  }
+
+  return TEMPLATE_PLACEHOLDER_RE.test(candidate);
 }
 
 function validateOptionalLink(
@@ -141,7 +183,7 @@ function validateOptionalLink(
   const link = clean(value);
   if (!link) return;
 
-  if (TEMPLATE_PLACEHOLDER_RE.test(link)) {
+  if (containsTemplatePlaceholder(link)) {
     errors.push(`${label} contains an unresolved template placeholder.`);
     return;
   }
@@ -223,10 +265,6 @@ export function prepareGuestServiceRecovery(
   const detail = clean(input.detail);
   const language = input.guestLanguage ?? "es";
   const sourceChannel = input.sourceChannel ?? "staff";
-  const immediateHumanAttention = requiresImmediateHumanAttention(
-    input.category,
-    input.urgency,
-  );
 
   if (!SOURCE_KEY_RE.test(sourceEventKey)) {
     errors.push(
@@ -248,6 +286,24 @@ export function prepareGuestServiceRecovery(
   if (!["survey", "whatsapp", "portal", "staff"].includes(sourceChannel)) {
     errors.push("sourceChannel must be survey, whatsapp, portal, or staff.");
   }
+  if (!CATEGORIES.includes(input.category)) {
+    errors.push("category is not supported.");
+  }
+  if (input.urgency !== undefined && !URGENCIES.includes(input.urgency)) {
+    errors.push("urgency must be normal, high, or critical.");
+  }
+  if (
+    input.breakfastConcern != null &&
+    !BREAKFAST_CONCERNS.includes(input.breakfastConcern)
+  ) {
+    errors.push("breakfastConcern is not supported.");
+  }
+  if (
+    input.breakfastEntitlement != null &&
+    !BREAKFAST_ENTITLEMENTS.includes(input.breakfastEntitlement)
+  ) {
+    errors.push("breakfastEntitlement is not supported.");
+  }
 
   validateOptionalLink(
     "privateFeedbackLink",
@@ -267,6 +323,11 @@ export function prepareGuestServiceRecovery(
   }
 
   if (errors.length) return { ok: false, errors };
+
+  const immediateHumanAttention = requiresImmediateHumanAttention(
+    input.category,
+    input.urgency,
+  );
 
   const breakfast =
     input.category === "breakfast"
@@ -335,14 +396,33 @@ export function prepareGuestServiceRecovery(
 }
 
 function issueIdentity(issue: GuestFeedbackBatchIssue) {
-  return [
+  return JSON.stringify([
     issue.category,
     clean(issue.summary).toLocaleLowerCase(),
     clean(issue.locationLabel).toLocaleLowerCase(),
     clean(issue.detail).toLocaleLowerCase(),
     issue.breakfastConcern ?? "",
     issue.breakfastEntitlement ?? "",
-  ].join("|");
+  ]);
+}
+
+function mergeDuplicateIssue(
+  current: GuestFeedbackBatchIssue,
+  duplicate: GuestFeedbackBatchIssue,
+) {
+  const urgencyRank = { normal: 1, high: 2, critical: 3 } as const;
+  const currentRank = current.urgency ? urgencyRank[current.urgency] : 0;
+  const duplicateRank = duplicate.urgency ? urgencyRank[duplicate.urgency] : 0;
+  const dueDates = [clean(current.dueDate), clean(duplicate.dueDate)]
+    .filter(Boolean)
+    .sort();
+
+  return {
+    ...current,
+    urgency:
+      duplicateRank > currentRank ? duplicate.urgency : current.urgency,
+    dueDate: dueDates[0] || undefined,
+  };
 }
 
 export function prepareGuestFeedbackBatch(
@@ -364,17 +444,50 @@ export function prepareGuestFeedbackBatch(
   }
   if (errors.length) return { ok: false, errors };
 
-  const seen = new Set<string>();
+  for (const [index, issue] of input.issues.entries()) {
+    if (!issue || typeof issue !== "object" || Array.isArray(issue)) {
+      errors.push(`Issue ${index + 1}: feedback issue must be an object.`);
+      continue;
+    }
+
+    const validation = prepareGuestServiceRecovery({
+      ...issue,
+      sourceEventKey: `${input.sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
+      sourceChannel: input.sourceChannel,
+      projectKey: input.projectKey ?? null,
+      guestLanguage: input.guestLanguage,
+      contactConsent: input.contactConsent,
+      roomEntryConsent: input.roomEntryConsent,
+      bookingContextVerified: input.bookingContextVerified,
+      privateFeedbackLink: input.privateFeedbackLink,
+      guestPortalLink: input.guestPortalLink,
+    });
+
+    if (!validation.ok) {
+      errors.push(
+        ...validation.errors.map((error) => `Issue ${index + 1}: ${error}`),
+      );
+    }
+  }
+
+  if (errors.length) return { ok: false, errors };
+
+  const identities = new Map<string, number>();
   const uniqueIssues: GuestFeedbackBatchIssue[] = [];
   let duplicateIssueCount = 0;
 
   for (const issue of input.issues) {
     const identity = issueIdentity(issue);
-    if (seen.has(identity)) {
+    const existingIndex = identities.get(identity);
+    if (existingIndex !== undefined) {
       duplicateIssueCount += 1;
+      uniqueIssues[existingIndex] = mergeDuplicateIssue(
+        uniqueIssues[existingIndex],
+        issue,
+      );
       continue;
     }
-    seen.add(identity);
+    identities.set(identity, uniqueIssues.length);
     uniqueIssues.push(issue);
   }
 
