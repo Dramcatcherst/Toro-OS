@@ -210,6 +210,44 @@ describe("isExactToroInternalTaskReplay", () => {
     expect(isExactToroInternalTaskReplay(existing, retry)).toBe(true);
   });
 
+  it("rejects a replay whose caller-independent route changed", () => {
+    const request = {
+      title: "Revisar incidencia de huésped",
+      description: "Contact consent: unknown",
+      priority: "medium" as const,
+      dueDate: "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    };
+    const general = validateToroInternalWorkRequest({
+      ...request,
+      action: "task.create",
+    });
+    const maintenance = validateToroInternalWorkRequest({
+      ...request,
+      action: "maintenance.task",
+    });
+    expect(general.ok).toBe(true);
+    expect(maintenance.ok).toBe(true);
+    if (!general.ok || !maintenance.ok) return;
+
+    const existing = buildToroInternalTaskDraft({
+      request: general.value,
+      context: context(["ADMIN"], "Maintenance"),
+      nowIso: "2026-10-18T06:00:00.000Z",
+    });
+    const retry = buildToroInternalTaskDraft({
+      request: maintenance.value,
+      context: context(["ADMIN"], "Maintenance"),
+      nowIso: "2026-10-18T07:00:00.000Z",
+    });
+
+    expect(existing.category).toBe(retry.category);
+    expect(existing.area).toBe(retry.area);
+    expect(existing.canonical_module_key).toBe(retry.canonical_module_key);
+    expect(existing.module_lead).not.toBe(retry.module_lead);
+    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(false);
+  });
+
   it("rejects a replay whose priority became stricter", () => {
     expect(
       isExactToroInternalTaskReplay(
