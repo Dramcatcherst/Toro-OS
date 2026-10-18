@@ -35,6 +35,10 @@
 
 **Verificación del candidato v5:** 29/29 pruebas focales, 54 archivos/591 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Sigue siendo un canario de contrato: no llamó al endpoint interno, no activó `TORO_INTERNAL_WORK_WRITE_ENABLED`, no escribió Supabase ni contactó huéspedes.
 
+**CHECKPOINT_FEEDBACK_TYPE_IDENTITY_V6_20261017 — cinco correcciones de código, no runtime.** El contrato continúa decodificando enlaces hasta un límite acotado y rechaza entradas que todavía cambian al alcanzarlo; así bloquea marcadores anidados sin abrir un bucle. En lotes con reserva verificada, derecho de desayuno omitido y `unknown` explícito comparten identidad y no generan dos trabajos equivalentes. Además, banderas de consentimiento/verificación no booleanas, `projectKey` no textual y fecha límite no textual fallan de forma explícita en vez de convertirse o perderse silenciosamente. Las dos primeras correcciones responden a la revisión del candidato v5.
+
+**Verificación del candidato v6:** 34/34 pruebas focales, 54 archivos/596 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Estado: código, pruebas y evidencia en la misma PR; writer deshabilitado, endpoint no invocado, cero mensajes, tareas productivas, huéspedes o cambios Kross/OTA. La meta 10x permanece **NO MEDIDA**.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
