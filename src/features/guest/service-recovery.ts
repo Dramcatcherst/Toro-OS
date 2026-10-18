@@ -162,19 +162,19 @@ function clean(value: string | null | undefined) {
 function inspectTemplatePlaceholder(
   value: string,
 ): "found" | "clear" | "invalid_encoding" | "decode_limit" {
+  if (/%(?![0-9A-Fa-f]{2})/.test(value)) return "invalid_encoding";
+
   let candidate = value;
 
   for (let pass = 0; pass <= MAX_TEMPLATE_DECODE_PASSES; pass += 1) {
     if (TEMPLATE_PLACEHOLDER_RE.test(candidate)) return "found";
 
-    try {
-      const decoded = decodeURIComponent(candidate);
-      if (decoded === candidate) return "clear";
-      if (pass === MAX_TEMPLATE_DECODE_PASSES) return "decode_limit";
-      candidate = decoded;
-    } catch {
-      return "invalid_encoding";
-    }
+    const decoded = candidate.replace(/%([0-9A-Fa-f]{2})/g, (_, hex) =>
+      String.fromCharCode(Number.parseInt(hex, 16)),
+    );
+    if (decoded === candidate) return "clear";
+    if (pass === MAX_TEMPLATE_DECODE_PASSES) return "decode_limit";
+    candidate = decoded;
   }
 
   return TEMPLATE_PLACEHOLDER_RE.test(candidate) ? "found" : "clear";
@@ -212,6 +212,9 @@ function validateOptionalLink(
     const parsed = new URL(link);
     if (parsed.protocol !== "https:") {
       errors.push(`${label} must use https.`);
+    }
+    if (parsed.username || parsed.password) {
+      errors.push(`${label} must not include URL credentials.`);
     }
   } catch {
     errors.push(`${label} must be a valid URL.`);
@@ -471,12 +474,30 @@ function issueIdentity(
 
   return JSON.stringify([
     issue.category,
-    clean(issue.summary).toLocaleLowerCase(),
-    clean(issue.locationLabel).toLocaleLowerCase(),
-    clean(issue.detail).toLocaleLowerCase(),
+    normalizeIdentityText(issue.summary),
+    normalizeIdentityText(issue.locationLabel),
+    normalizeIdentityText(issue.detail),
     issue.breakfastConcern ?? "",
     effectiveBreakfastEntitlement,
   ]);
+}
+
+function normalizeIdentityText(value: string | null | undefined) {
+  return clean(value).normalize("NFC").toLowerCase();
+}
+
+function stableIdentitySuffix(identity: string) {
+  const hashes = [0x811c9dc5, 0x9e3779b9, 0x85ebca6b, 0xc2b2ae35];
+  const primes = [0x01000193, 0x27d4eb2d, 0x165667b1, 0x85ebca77];
+
+  for (let index = 0; index < identity.length; index += 1) {
+    const code = identity.charCodeAt(index);
+    for (let lane = 0; lane < hashes.length; lane += 1) {
+      hashes[lane] = Math.imul(hashes[lane] ^ code, primes[lane]) >>> 0;
+    }
+  }
+
+  return hashes.map((hash) => hash.toString(16).padStart(8, "0")).join("");
 }
 
 function mergeDuplicateIssue(
@@ -592,9 +613,13 @@ export function prepareGuestFeedbackBatch(
 
   const prepared: PreparedGuestServiceRecovery[] = [];
   for (const [index, issue] of uniqueIssues.entries()) {
+    const identity = issueIdentity(
+      issue,
+      input.bookingContextVerified === true,
+    );
     const result = prepareGuestServiceRecovery({
       ...issue,
-      sourceEventKey: `${sourceChannel}:${submissionId}:${String(index + 1).padStart(2, "0")}`,
+      sourceEventKey: `${sourceChannel}:${submissionId}:${stableIdentitySuffix(identity)}`,
       sourceChannel,
       projectKey: input.projectKey ?? null,
       guestLanguage: input.guestLanguage,
