@@ -90,6 +90,18 @@ Las dos primeras corrigen observaciones de revisión del commit remoto; las otra
 
 Las dos primeras cierran el hallazgo P1 de revisión y la tercera el P2 asociado al commit v6. Readback local: 39/39 pruebas focales; 54 archivos/601 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Continúa `externalSend=false` e `internalWriteExecuted=false`; cero endpoint, writer, huésped, tarea productiva o cambio Kross/OTA.
 
+### Replay estricto y consentimiento persistible v8 — 18/10/2026
+
+**CHECKPOINT_FEEDBACK_REPLAY_CONSENT_V8_20261018.** Cinco correcciones de código cierran dos hallazgos nuevos de revisión sin activar el writer:
+
+- el intake solo clasifica como replay una tarea cuyo contenido operativo persistible coincide exactamente;
+- un aumento de prioridad con la misma clave queda como conflicto explícito, no como replay silencioso;
+- una fecha límite adelantada con la misma clave también queda como conflicto explícito para conciliación humana;
+- consentimiento de contacto se conserva como `granted|denied|unknown` y se incluye en la descripción persistible;
+- consentimiento de entrada se conserva con los mismos tres estados, separado del contacto; omisión ya no equivale a denegación.
+
+El endpoint mapea el conflicto a HTTP 409. La política escogida es fallar cerrado y exigir conciliación, no crear una segunda tarea ni actualizar una tarea existente sin un contrato transaccional aprobado. Readback local: 50/50 pruebas focales combinadas; 54 archivos/606 pruebas del bloque principal de `npm test` más suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Sigue sin invocar el endpoint ni ejecutar una escritura, mensaje, contacto con huésped o cambio Kross/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
