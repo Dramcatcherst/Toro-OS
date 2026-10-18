@@ -31,6 +31,8 @@ export type GuestBreakfastConcern =
 
 export type GuestBreakfastEntitlement = "included" | "extra" | "unknown";
 
+export type GuestConsentState = "granted" | "denied" | "unknown";
+
 export type GuestServiceRecoveryPrepareInput = {
   sourceEventKey: string;
   sourceChannel?: GuestServiceRecoverySource;
@@ -64,8 +66,8 @@ export type PreparedGuestServiceRecovery = {
   context: {
     sourceChannel: GuestServiceRecoverySource;
     bookingContextVerified: boolean;
-    contactConsent: boolean;
-    roomEntryConsent: boolean;
+    contactConsent: GuestConsentState;
+    roomEntryConsent: GuestConsentState;
     breakfast: {
       concern: GuestBreakfastConcern;
       entitlement: GuestBreakfastEntitlement;
@@ -157,6 +159,12 @@ const BREAKFAST_ENTITLEMENTS: readonly GuestBreakfastEntitlement[] = [
 
 function clean(value: string | null | undefined) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function consentState(value: boolean | undefined): GuestConsentState {
+  if (value === true) return "granted";
+  if (value === false) return "denied";
+  return "unknown";
 }
 
 function inspectTemplatePlaceholder(
@@ -404,16 +412,20 @@ export function prepareGuestServiceRecovery(
       : null;
 
   const title = location ? `${summary} — ${location}` : summary;
+  const contactConsent = consentState(input.contactConsent);
+  const roomEntryConsent = consentState(input.roomEntryConsent);
   const descriptionParts = [
     detail || null,
     location ? `Location: ${location}` : null,
     `Guest-service recovery source: ${sourceEventKey}`,
     `Source channel: ${sourceChannel}`,
     `Booking context verified: ${input.bookingContextVerified === true ? "yes" : "no"}`,
+    `Contact consent: ${contactConsent}`,
+    `Room-entry consent: ${roomEntryConsent}`,
     breakfast
       ? `Breakfast concern: ${breakfast.concern}; entitlement: ${breakfast.entitlement}`
       : null,
-    "Contact consent and room-entry consent are separate and must not be inferred from one another.",
+    "Contact consent and room-entry consent are separate; unknown or denied is not permission.",
     "External guest reply remains draft-only until an authorized send path is used.",
   ].filter(Boolean);
 
@@ -446,8 +458,8 @@ export function prepareGuestServiceRecovery(
       context: {
         sourceChannel,
         bookingContextVerified: input.bookingContextVerified === true,
-        contactConsent: input.contactConsent === true,
-        roomEntryConsent: input.roomEntryConsent === true,
+        contactConsent,
+        roomEntryConsent,
         breakfast,
       },
       handoff: {
