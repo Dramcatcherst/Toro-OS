@@ -190,6 +190,38 @@ describe("prepareGuestServiceRecovery", () => {
     );
   });
 
+  it("rejects deeply encoded template placeholders and decode-limit input", () => {
+    let excessivelyEncodedPath = "/";
+    for (let pass = 0; pass < 10; pass += 1) {
+      excessivelyEncodedPath = encodeURIComponent(excessivelyEncodedPath);
+    }
+    const nestedPlaceholder = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0015",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con marcador anidado",
+      privateFeedbackLink:
+        "https://example.com/%2525255BPRIVATE_FEEDBACK_LINK%2525255D",
+    });
+    const excessiveEncoding = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0016",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con codificación excesiva",
+      privateFeedbackLink: `https://example.com/${excessivelyEncodedPath}`,
+    });
+
+    expect(nestedPlaceholder.ok).toBe(false);
+    expect(excessiveEncoding.ok).toBe(false);
+    if (nestedPlaceholder.ok || excessiveEncoding.ok) return;
+    expect(nestedPlaceholder.errors).toContain(
+      "privateFeedbackLink contains an unresolved template placeholder.",
+    );
+    expect(excessiveEncoding.errors).toContain(
+      "privateFeedbackLink must not use excessive URL encoding.",
+    );
+  });
+
   it("rejects non-string optional links instead of silently dropping them", () => {
     const result = prepareGuestServiceRecovery({
       sourceEventKey: "survey:case_0010",
@@ -228,6 +260,58 @@ describe("prepareGuestServiceRecovery", () => {
         "detail must be a string.",
       ]),
     );
+  });
+
+  it("rejects non-boolean consent and verification flags", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0017",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Banderas con tipo inválido",
+      contactConsent: "true" as never,
+      roomEntryConsent: 1 as never,
+      bookingContextVerified: "false" as never,
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toEqual(
+      expect.arrayContaining([
+        "contactConsent must be a boolean.",
+        "roomEntryConsent must be a boolean.",
+        "bookingContextVerified must be a boolean.",
+      ]),
+    );
+  });
+
+  it("rejects a non-string project key instead of dropping its linkage", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0018",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Proyecto con tipo inválido",
+      projectKey: 27 as never,
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      errors: ["projectKey must be a string."],
+    });
+  });
+
+  it("rejects a non-string due date instead of dropping the deadline", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0019",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Fecha con tipo inválido",
+      dueDate: 20261018 as never,
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      errors: ["dueDate must be a string."],
+    });
   });
 
   it("rejects unsupported runtime enum values", () => {
@@ -478,6 +562,35 @@ describe("prepareGuestFeedbackBatch", () => {
           summary: "Consulta de desayuno",
           breakfastConcern: "entitlement_or_charge",
           breakfastEntitlement: "extra",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issueCount).toBe(1);
+    expect(result.value.duplicateIssueCount).toBe(1);
+    expect(result.value.issues[0].context.breakfast?.entitlement).toBe(
+      "unknown",
+    );
+  });
+
+  it("dedupes omitted and explicit unknown entitlement for verified bookings", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0012",
+      sourceChannel: "survey",
+      bookingContextVerified: true,
+      issues: [
+        {
+          category: "breakfast",
+          summary: "Consulta de desayuno verificada",
+          breakfastConcern: "entitlement_or_charge",
+        },
+        {
+          category: "breakfast",
+          summary: "Consulta de desayuno verificada",
+          breakfastConcern: "entitlement_or_charge",
+          breakfastEntitlement: "unknown",
         },
       ],
     });
