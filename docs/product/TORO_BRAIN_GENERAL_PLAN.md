@@ -31,6 +31,10 @@
 
 **Verificación del candidato v4:** 24/24 pruebas focales, 54 archivos/586 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Estado: candidato en la misma PR #331, sin receptor habilitado, mensajes, tareas productivas ni despliegue acreditado. La meta 10x permanece **NO MEDIDA**.
 
+**CHECKPOINT_FEEDBACK_INPUT_CANARY_V5_20261017 — cinco correcciones de código, no runtime.** El contrato rechaza codificación URL malformada en vez de omitir la inspección de placeholders; normaliza a `unknown` un canal de lote ausente antes de formar fuente y clave idempotente; rechaza una fuente de lote no admitida una sola vez antes de procesar asuntos; agrupa como un mismo asunto las afirmaciones no verificadas y contradictorias sobre derecho de desayuno porque su valor efectivo es `unknown`; y rechaza `locationLabel`/`detail` no textuales en vez de perderlos silenciosamente. Las dos primeras responden a la revisión del candidato v4.
+
+**Verificación del candidato v5:** 29/29 pruebas focales, 54 archivos/591 pruebas del bloque principal de `npm test` más sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Sigue siendo un canario de contrato: no llamó al endpoint interno, no activó `TORO_INTERNAL_WORK_WRITE_ENABLED`, no escribió Supabase ni contactó huéspedes.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
