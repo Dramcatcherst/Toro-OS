@@ -132,6 +132,45 @@ describe("prepareGuestServiceRecovery", () => {
     );
   });
 
+  it("rejects URL-encoded unresolved template placeholders", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0008",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Comentario privado",
+      privateFeedbackLink:
+        "https://example.com/%5BPRIVATE_FEEDBACK_LINK%5D",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toContain(
+      "privateFeedbackLink contains an unresolved template placeholder.",
+    );
+  });
+
+  it("rejects unsupported runtime enum values", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0009",
+      category: "pool" as never,
+      summary: "Valor no reconocido",
+      urgency: "urgent" as never,
+      breakfastConcern: "price" as never,
+      breakfastEntitlement: "free" as never,
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toEqual(
+      expect.arrayContaining([
+        "category is not supported.",
+        "urgency must be normal, high, or critical.",
+        "breakfastConcern is not supported.",
+        "breakfastEntitlement is not supported.",
+      ]),
+    );
+  });
+
   it("keeps contact consent, room-entry consent and booking verification independent", () => {
     const result = prepareGuestServiceRecovery({
       sourceEventKey: "portal:case_0004",
@@ -286,6 +325,78 @@ describe("prepareGuestFeedbackBatch", () => {
     if (!result.ok) return;
     expect(result.value.issueCount).toBe(1);
     expect(result.value.duplicateIssueCount).toBe(1);
+  });
+
+  it("merges duplicate urgency and due date without losing escalation", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0006",
+      sourceChannel: "survey",
+      issues: [
+        {
+          category: "maintenance",
+          summary: "A/C no enfría",
+          locationLabel: "Habitación 10",
+          urgency: "normal",
+          dueDate: "2026-10-20",
+        },
+        {
+          category: "maintenance",
+          summary: "A/C no enfría",
+          locationLabel: "Habitación 10",
+          urgency: "critical",
+          dueDate: "2026-10-18",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value).toMatchObject({
+      issueCount: 1,
+      duplicateIssueCount: 1,
+      immediateHumanAttention: true,
+    });
+    expect(result.value.issues[0].internalWork).toMatchObject({
+      priority: "critical",
+      dueDate: "2026-10-18",
+    });
+  });
+
+  it("keeps delimiter-like issue content collision-safe", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0007",
+      sourceChannel: "survey",
+      issues: [
+        {
+          category: "general",
+          summary: "Noise | outside",
+          locationLabel: "Pool",
+        },
+        {
+          category: "general",
+          summary: "Noise",
+          locationLabel: "outside | Pool",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issueCount).toBe(2);
+    expect(result.value.duplicateIssueCount).toBe(0);
+  });
+
+  it("rejects null issues with a controlled error", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0008",
+      sourceChannel: "survey",
+      issues: [null] as never,
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      errors: ["Issue 1: feedback issue must be an object."],
+    });
   });
 
   it("selects the urgent acknowledgement when any concern needs immediate attention", () => {
