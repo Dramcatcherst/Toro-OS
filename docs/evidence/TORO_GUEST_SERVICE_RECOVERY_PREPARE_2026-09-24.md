@@ -78,6 +78,18 @@ Readback local: 29/29 pruebas focales; 54 archivos/591 pruebas del bloque princi
 
 Las dos primeras corrigen observaciones de revisión del commit remoto; las otras tres cierran pérdidas de contexto reproducidas sobre la misma frontera de entrada. Readback local: 34/34 pruebas focales; 54 archivos/596 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Continúa `externalSend=false` e `internalWriteExecuted=false`; no se invocó el endpoint, no se activó el writer y no hubo huésped, tarea ni cambio PMS/OTA.
 
+### Idempotencia semántica y enlaces v7 — 17/10/2026
+
+**CHECKPOINT_FEEDBACK_SEMANTIC_IDEMPOTENCY_V7_20261017.** Cinco correcciones adicionales quedaron probadas sobre el contrato prepare-only:
+
+- cada asunto usa un sufijo estable derivado de su identidad normalizada, por lo que invertir el orden del reintento no intercambia tareas;
+- insertar un duplicado exacto en el reintento no cambia la clave de los demás asuntos;
+- un porcentaje literal codificado (`%25`) permanece válido, mientras codificación malformada, placeholders anidados y exceso de capas continúan fallando cerrados;
+- texto Unicode canónicamente equivalente y minúsculas independientes del locale comparten identidad operativa;
+- enlaces con usuario o contraseña embebidos se rechazan antes de cualquier ruta de envío.
+
+Las dos primeras cierran el hallazgo P1 de revisión y la tercera el P2 asociado al commit v6. Readback local: 39/39 pruebas focales; 54 archivos/601 pruebas del bloque principal de `npm test` y sus suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Continúa `externalSend=false` e `internalWriteExecuted=false`; cero endpoint, writer, huésped, tarea productiva o cambio Kross/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
