@@ -5,6 +5,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import {
   buildToroInternalTaskDraft,
   canCreateToroInternalWork,
+  isExactToroInternalTaskReplay,
   validateToroInternalWorkRequest,
 } from "./internal-work";
 
@@ -145,5 +146,66 @@ describe("buildToroInternalTaskDraft", () => {
       canonical_module_key: "toro_builder",
       module_lead: "SOBRESITO/CODEX",
     });
+  });
+});
+
+describe("isExactToroInternalTaskReplay", () => {
+  function draft(overrides: {
+    priority?: "medium" | "high" | "critical";
+    dueDate?: string | null;
+    description?: string;
+    nowIso?: string;
+  } = {}) {
+    const parsed = validateToroInternalWorkRequest({
+      action: "maintenance.task",
+      title: "Revisar incidencia de huésped",
+      description: overrides.description ?? "Contact consent: unknown",
+      priority: overrides.priority ?? "medium",
+      dueDate: overrides.dueDate ?? "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    });
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) throw new Error(parsed.error);
+    return buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["ADMIN"]),
+      nowIso: overrides.nowIso ?? "2026-10-18T06:00:00.000Z",
+    });
+  }
+
+  it("accepts an exact replay even when the new draft has a different creation time", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft(),
+        draft({ nowIso: "2026-10-18T07:00:00.000Z" }),
+      ),
+    ).toBe(true);
+  });
+
+  it("rejects a replay whose priority became stricter", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ priority: "medium" }),
+        draft({ priority: "critical" }),
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a replay whose due date moved earlier", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ dueDate: "2026-10-20" }),
+        draft({ dueDate: "2026-10-18" }),
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a replay whose persisted consent description changed", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ description: "Contact consent: unknown" }),
+        draft({ description: "Contact consent: granted" }),
+      ),
+    ).toBe(false);
   });
 });
