@@ -23,6 +23,10 @@
 
 **Verificación del candidato v2:** 14/14 pruebas focales, `tsc --noEmit` y ESLint aprobados localmente. La prueba usó datos sintéticos y `dreamcatcher_hotel_reinvestment_2026`; no creó filas, no consultó reservas, no contactó huéspedes y no demuestra todavía que el receptor productivo acepte o persista el envío.
 
+**CHECKPOINT_FEEDBACK_HARDENING_V3_20261017 — cinco correcciones de código, no runtime.** El candidato conserva ahora la urgencia más alta y la fecha límite más temprana al colapsar reportes duplicados; serializa la identidad de cada incidencia sin colisiones por delimitadores; rechaza incidencias nulas con error controlado; valida en ejecución categoría, urgencia y valores de desayuno; y detecta marcadores de enlace sin resolver aun cuando llegan codificados en URL. Estos cambios cierran cinco fallos reproducibles sin activar receptor, tarea, mensaje o publicación.
+
+**Verificación del candidato v3:** 19/19 pruebas focales, suite configurada completa, `tsc --noEmit`, ESLint, `git diff --check` y compilación Next.js aprobados localmente. Estado: PR #331 en borrador hasta readback de GitHub/CI. Alcance real: código, pruebas y documentación; cero escrituras Supabase/Kross/OTA, cero huéspedes contactados y ningún despliegue productivo acreditado. La meta 10x permanece **NO MEDIDA**.
+
 **TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sintética autorizada de extremo a extremo: enlace válido → recepción → una sola tarea canónica → acuse humano → evidencia → cierre/reapertura. Antes de huéspedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitación pública permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
 
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
