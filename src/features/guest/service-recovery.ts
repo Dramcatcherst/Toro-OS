@@ -512,6 +512,16 @@ function stableIdentitySuffix(identity: string) {
   return hashes.map((hash) => hash.toString(16).padStart(8, "0")).join("");
 }
 
+function canonicalEquivalentText(
+  first: string | null | undefined,
+  second: string | null | undefined,
+) {
+  return [clean(first), clean(second)]
+    .filter(Boolean)
+    .map((value) => value.normalize("NFC"))
+    .sort()[0] ?? "";
+}
+
 function mergeDuplicateIssue(
   current: GuestFeedbackBatchIssue,
   duplicate: GuestFeedbackBatchIssue,
@@ -525,6 +535,14 @@ function mergeDuplicateIssue(
 
   return {
     ...current,
+    summary: canonicalEquivalentText(current.summary, duplicate.summary),
+    locationLabel:
+      canonicalEquivalentText(
+        current.locationLabel,
+        duplicate.locationLabel,
+      ) || undefined,
+    detail:
+      canonicalEquivalentText(current.detail, duplicate.detail) || undefined,
     urgency:
       duplicateRank > currentRank ? duplicate.urgency : current.urgency,
     dueDate: dueDates[0] || undefined,
