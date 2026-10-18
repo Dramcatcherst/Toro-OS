@@ -102,6 +102,18 @@ Las dos primeras cierran el hallazgo P1 de revisión y la tercera el P2 asociado
 
 El endpoint mapea el conflicto a HTTP 409. La política escogida es fallar cerrado y exigir conciliación, no crear una segunda tarea ni actualizar una tarea existente sin un contrato transaccional aprobado. Readback local: 50/50 pruebas focales combinadas; 54 archivos/606 pruebas del bloque principal de `npm test` más suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Sigue sin invocar el endpoint ni ejecutar una escritura, mensaje, contacto con huésped o cambio Kross/OTA.
 
+### Replay independiente del operador y fusión determinista v9 — 18/10/2026
+
+**CHECKPOINT_FEEDBACK_REPLAY_CANONICAL_V9_20261018.** Cinco correcciones de código cierran los dos hallazgos P2 abiertos sobre el candidato v8:
+
+- el área de trabajo del operador que reintenta deja de formar parte de la igualdad estricta, porque es contexto del llamador y no contenido estable de la solicitud;
+- el mismo `task.create` preparado por ADMIN y reintentado por GERENCIA desde áreas distintas se reconoce como replay y no como conflicto espurio;
+- resúmenes equivalentes por mayúsculas o composición Unicode eligen una representación NFC determinista;
+- la ubicación equivalente usa la misma selección determinista;
+- el detalle equivalente también queda estable, por lo que invertir duplicados conserva título y descripción además de la clave idempotente.
+
+La prioridad, fecha límite, proyecto, categoría, descripción resultante y módulo continúan comparándose estrictamente. Readback local: 52/52 pruebas focales combinadas; 54 archivos/608 pruebas del bloque principal de `npm test` más suites encadenadas, TypeScript, ESLint, `git diff --check` y build aprobados. Sigue en prepare-only: endpoint y writer no invocados, cero tareas productivas, mensajes, huéspedes o cambios PMS/OTA.
+
 ## Reused canonical building blocks
 
 This preparation reuses:
