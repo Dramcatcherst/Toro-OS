@@ -765,6 +765,46 @@ describe("prepareGuestFeedbackBatch", () => {
     expect(result.value.duplicateIssueCount).toBe(1);
   });
 
+  it("keeps normalized duplicate content identical when retry order reverses", () => {
+    const variants = [
+      {
+        category: "general" as const,
+        summary: "Habitación Húmeda",
+        locationLabel: "Habitación 10",
+        detail: "Revisar Área",
+        urgency: "normal" as const,
+        dueDate: "2026-10-20",
+      },
+      {
+        category: "general" as const,
+        summary: "habitacio\u0301n hu\u0301meda",
+        locationLabel: "habitacio\u0301n 10",
+        detail: "revisar a\u0301rea",
+        urgency: "critical" as const,
+        dueDate: "2026-10-18",
+      },
+    ];
+    const first = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0016",
+      sourceChannel: "survey",
+      issues: variants,
+    });
+    const reordered = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0016",
+      sourceChannel: "survey",
+      issues: [...variants].reverse(),
+    });
+
+    expect(first.ok).toBe(true);
+    expect(reordered.ok).toBe(true);
+    if (!first.ok || !reordered.ok) return;
+    expect(first.value.duplicateIssueCount).toBe(1);
+    expect(reordered.value.duplicateIssueCount).toBe(1);
+    expect(reordered.value.issues[0].internalWork).toEqual(
+      first.value.issues[0].internalWork,
+    );
+  });
+
   it("rejects null issues with a controlled error", () => {
     const result = prepareGuestFeedbackBatch({
       submissionId: "synthetic_0008",
