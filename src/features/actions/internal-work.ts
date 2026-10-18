@@ -266,7 +266,6 @@ export function isExactToroInternalTaskReplay(
     existing.project_id === candidate.project_id &&
     existing.category === candidate.category &&
     existing.priority === candidate.priority &&
-    existing.area === candidate.area &&
     existing.due_date === candidate.due_date &&
     existing.description === candidate.description &&
     existing.canonical_module_key === candidate.canonical_module_key
