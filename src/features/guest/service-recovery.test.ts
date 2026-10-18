@@ -222,6 +222,34 @@ describe("prepareGuestServiceRecovery", () => {
     );
   });
 
+  it("accepts a valid HTTPS link containing an encoded literal percent", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0020",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con porcentaje válido",
+      privateFeedbackLink: "https://example.com/discount/20%25",
+    });
+
+    expect(result.ok).toBe(true);
+  });
+
+  it("rejects credentials embedded in feedback or portal links", () => {
+    const result = prepareGuestServiceRecovery({
+      sourceEventKey: "survey:case_0021",
+      sourceChannel: "survey",
+      category: "general",
+      summary: "Enlace con credenciales",
+      privateFeedbackLink: "https://guest:secret@example.com/feedback",
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.errors).toContain(
+      "privateFeedbackLink must not include URL credentials.",
+    );
+  });
+
   it("rejects non-string optional links instead of silently dropping them", () => {
     const result = prepareGuestServiceRecovery({
       sourceEventKey: "survey:case_0010",
@@ -508,9 +536,12 @@ describe("prepareGuestFeedbackBatch", () => {
     expect(
       result.value.issues.map((issue) => issue.internalWork.idempotencyKey),
     ).toEqual([
-      "guest:survey:synthetic_0001:01",
-      "guest:survey:synthetic_0001:02",
+      expect.stringMatching(/^guest:survey:synthetic_0001:[a-f0-9]{32}$/),
+      expect.stringMatching(/^guest:survey:synthetic_0001:[a-f0-9]{32}$/),
     ]);
+    expect(result.value.issues[0].internalWork.idempotencyKey).not.toBe(
+      result.value.issues[1].internalWork.idempotencyKey,
+    );
   });
 
   it("normalizes an omitted batch channel before creating source and idempotency keys", () => {
@@ -522,8 +553,8 @@ describe("prepareGuestFeedbackBatch", () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value.issues[0].context.sourceChannel).toBe("unknown");
-    expect(result.value.issues[0].internalWork.idempotencyKey).toBe(
-      "guest:unknown:synthetic_0009:01",
+    expect(result.value.issues[0].internalWork.idempotencyKey).toMatch(
+      /^guest:unknown:synthetic_0009:[a-f0-9]{32}$/,
     );
     expect(result.value.issues[0].internalWork.description).not.toContain(
       "undefined",
@@ -681,6 +712,25 @@ describe("prepareGuestFeedbackBatch", () => {
     expect(result.value.duplicateIssueCount).toBe(0);
   });
 
+  it("dedupes canonically equivalent Unicode issue text", () => {
+    const result = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0013",
+      sourceChannel: "survey",
+      issues: [
+        { category: "general", summary: "Habitación húmeda" },
+        {
+          category: "general",
+          summary: "Habitacio\u0301n hu\u0301meda",
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.issueCount).toBe(1);
+    expect(result.value.duplicateIssueCount).toBe(1);
+  });
+
   it("rejects null issues with a controlled error", () => {
     const result = prepareGuestFeedbackBatch({
       submissionId: "synthetic_0008",
@@ -754,5 +804,61 @@ describe("prepareGuestFeedbackBatch", () => {
     expect(first.value.issues.map((issue) => issue.internalWork.idempotencyKey)).toEqual(
       second.value.issues.map((issue) => issue.internalWork.idempotencyKey),
     );
+  });
+
+  it("keeps each issue key stable when a retry reverses issue order", () => {
+    const issues = [
+      { category: "housekeeping" as const, summary: "Revisar limpieza" },
+      { category: "water" as const, summary: "Revisar presión" },
+    ];
+    const first = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0014",
+      sourceChannel: "survey",
+      issues,
+    });
+    const reordered = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0014",
+      sourceChannel: "survey",
+      issues: [...issues].reverse(),
+    });
+
+    expect(first.ok).toBe(true);
+    expect(reordered.ok).toBe(true);
+    if (!first.ok || !reordered.ok) return;
+    const keysByTitle = (result: typeof first.value) =>
+      Object.fromEntries(
+        result.issues.map((issue) => [
+          issue.internalWork.title,
+          issue.internalWork.idempotencyKey,
+        ]),
+      );
+    expect(keysByTitle(reordered.value)).toEqual(keysByTitle(first.value));
+  });
+
+  it("does not re-key unrelated work when a retry includes a duplicate", () => {
+    const issueA = {
+      category: "housekeeping" as const,
+      summary: "Revisar limpieza",
+    };
+    const issueB = { category: "water" as const, summary: "Revisar presión" };
+    const first = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0015",
+      sourceChannel: "survey",
+      issues: [issueA, issueB],
+    });
+    const withDuplicate = prepareGuestFeedbackBatch({
+      submissionId: "synthetic_0015",
+      sourceChannel: "survey",
+      issues: [issueA, { ...issueA }, issueB],
+    });
+
+    expect(first.ok).toBe(true);
+    expect(withDuplicate.ok).toBe(true);
+    if (!first.ok || !withDuplicate.ok) return;
+    const pressureKey = (result: typeof first.value) =>
+      result.issues.find((issue) => issue.internalWork.title === "Revisar presión")
+        ?.internalWork.idempotencyKey;
+    expect(pressureKey(withDuplicate.value)).toBe(pressureKey(first.value));
+    expect(withDuplicate.value.duplicateIssueCount).toBe(1);
   });
 });
