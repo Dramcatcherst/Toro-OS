@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest";
 import type { ToroWorkerRun } from "../control-plane/worker-runtime";
 import { prepareAlegraWriteIntent } from "./alegra-writer-contract";
 import { evaluateAlegraDuplicatePreflight } from "./alegra-writer-dedupe";
-import { createAlegraControlPlaneGate } from "./alegra-writer-control-plane";
+import { createAlegraControlPlaneGate, recoverExpiredAlegraLease } from "./alegra-writer-control-plane";
+import { vi } from "vitest";
 import { executeApprovedAlegraIntent, type AlegraWriterReceipt } from "./alegra-writer-executor";
 
 const intent = prepareAlegraWriteIntent({ scope: { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity" }, evidence: { sourceRefs: ["fixture:original"], evidenceHash: "fixture-byte-hash" }, payload: { targetType: "purchase_bill", documentNumber: "fixture-1", issuerTaxId: "fixture-emitter", receiverTaxId: "fixture-receiver", currency: "USD", total: "1.00", accountNativeId: "fixture-account", costCenterNativeId: "fixture-center" } });
@@ -245,4 +246,87 @@ describe("Alegra atomic L3 Control Plane admission", () => {
     ]);
   });
 
+});
+
+
+describe("Alegra server-only expired lease recovery caller", () => {
+  const expiredRun = {
+    ...run,
+    status: "running" as const,
+    verificationStatus: "pending" as const,
+    attemptCount: 1,
+    maxAttempts: 1,
+    leaseOwner: "fixture-dispatch-worker",
+    fencingToken: 4,
+    leaseExpiresAt: "2026-10-11T00:20:00Z",
+  } satisfies ToroWorkerRun;
+  const parameters = {
+    run: expiredRun,
+    preparedReceiptId: "fixture-prepared-receipt",
+    recoveryWorkerId: "fixture-recovery-worker",
+    now: () => "2026-10-11T00:30:00Z",
+  };
+
+  it("invokes the existing fenced recovery RPC with the expired run and prepared marker", async () => {
+    const rpc = vi.fn(async () => ({
+      data: { runId: expiredRun.id, finalReceiptId: "fixture-recovery-receipt",
+        fencingToken: 5, runStatus: "blocked", verificationStatus: "partial",
+        providerState: "PROVIDER_STATE_UNKNOWN", replayed: false },
+      error: null,
+    }));
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    expect(result).toMatchObject({
+      runId: expiredRun.id, fencingToken: 5, finalReceiptId: "fixture-recovery-receipt",
+      providerState: "PROVIDER_STATE_UNKNOWN", runStatus: "blocked",
+    });
+    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledWith("toro_recover_expired_alegra_execution_v1", {
+      p_org_id: expiredRun.orgId,
+      p_run_id: expiredRun.id,
+      p_recovery_worker_id: "fixture-recovery-worker",
+      p_expected_fencing_token: 4,
+      p_prepared_receipt_id: "fixture-prepared-receipt",
+    });
+  });
+
+  it("rejects a live lease, invalid clock, or unadmitted run without calling any RPC", async () => {
+    const rpc = vi.fn();
+    const supabase = { rpc } as unknown as SupabaseClient;
+    for (const candidate of [
+      { ...parameters, now: () => "2026-10-11T00:10:00Z" },
+      { ...parameters, now: () => "not-a-date" },
+      { ...parameters, run: { ...expiredRun, status: "queued" as const } },
+      { ...parameters, run: { ...expiredRun, fencingToken: 0 } },
+      { ...parameters, run: { ...expiredRun, leaseExpiresAt: null } },
+      { ...parameters, recoveryWorkerId: expiredRun.actorRef },
+      { ...parameters, preparedReceiptId: "" },
+    ]) {
+      await expect(recoverExpiredAlegraLease({ ...candidate, supabase })).resolves.toBeNull();
+    }
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it("requires an exact native recovery receipt and rejects mismatched readback", async () => {
+    const rpc = vi.fn(async () => ({
+      data: { runId: "a-different-run", finalReceiptId: "fixture-recovery-receipt",
+        fencingToken: 5, runStatus: "blocked", verificationStatus: "partial",
+        providerState: "PROVIDER_STATE_UNKNOWN", replayed: false },
+      error: null,
+    }));
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    expect(result).toBeNull();
+    expect(rpc).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves the server-side RPC's idempotent recovery replay without a second provider POST", async () => {
+    const rpc = vi.fn(async () => ({
+      data: { runId: expiredRun.id, finalReceiptId: "fixture-recovery-receipt",
+        fencingToken: 5, runStatus: "blocked", verificationStatus: "partial",
+        providerState: "PROVIDER_STATE_UNKNOWN", replayed: true },
+      error: null,
+    }));
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    expect(result?.replayed).toBe(true);
+    expect(rpc).toHaveBeenCalledTimes(1);
+  });
 });
