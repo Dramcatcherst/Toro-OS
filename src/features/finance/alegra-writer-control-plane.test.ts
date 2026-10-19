@@ -20,7 +20,7 @@ const clearDuplicates = evaluateAlegraDuplicatePreflight({
   ],
 });
 
-function fixture(input: { onBoundary?: (name: string) => void; admit?: boolean; finalizeFromVerifying?: boolean } = {}) {
+function fixture(input: { onBoundary?: (name: string) => void; admit?: boolean; heartbeat?: boolean; finalizeFromVerifying?: boolean } = {}) {
   let status = "queued";
   const records: Array<Record<string, unknown>> = [];
   const calls: Array<{ name: string; args: Record<string, unknown> }> = [];
@@ -34,6 +34,15 @@ function fixture(input: { onBoundary?: (name: string) => void; admit?: boolean; 
         status = "running";
         records.push({ org_id: args.p_org_id, run_id: args.p_run_id, idempotency_key: intent.idempotencyKey, status: "prepared", evidence_refs: ["approval:locked-source", "toro-execution-receipt:fixture-approval-receipt"], desired_state: { payloadHash: args.p_payload_hash, approvalId: args.p_approval_id, actorId: args.p_approval_actor_id, decisionRevision: args.p_decision_revision } });
         return { data: { runId: args.p_run_id, fencingToken: 1, leaseExpiresAt: "2026-10-11T01:00:00Z", preparedReceiptId: "fixture-prepared-receipt" }, error: null };
+      }
+      if (name === "toro_heartbeat_alegra_execution_v1") {
+        if (input.heartbeat === false || status !== "running" ||
+            args.p_run_id !== "fixture-run" || args.p_worker_id !== "fixture-worker" ||
+            args.p_fencing_token !== 1 || args.p_prepared_receipt_id !== "fixture-prepared-receipt")
+          return { data: null, error: null };
+        return { data: { runId: "fixture-run", fencingToken: 1,
+          leaseExpiresAt: "2026-10-11T00:32:00Z",
+          preparedReceiptId: "fixture-prepared-receipt" }, error: null };
       }
       if (name === "toro_finalize_alegra_execution_v1") {
         if (input.finalizeFromVerifying && status === "running") status = "verifying";
@@ -207,4 +216,33 @@ describe("Alegra atomic L3 Control Plane admission", () => {
     expect(store.records.filter(row => row.status === "verified")).toHaveLength(1);
     expect(store.calls.filter(call => call.name === "toro_finalize_alegra_execution_v1")).toHaveLength(2);
   });
+
+  it("blocks provider POST if live L3 heartbeat rejects its exact fenced run", async () => {
+    const store = fixture({ heartbeat: false });
+    const gate = createAlegraControlPlaneGate({
+      supabase: store.client, run, workerId: "fixture-worker",
+      now: () => "2026-10-11T00:30:00Z", authorize: async () => true,
+    });
+    let providerPosts = 0;
+    const result = await executeApprovedAlegraIntent({
+      intent, approval, duplicateDecision: clearDuplicates, writerEnabled: true,
+      gate, now: "2026-10-11T00:30:00Z",
+      transport: {
+        create: async () => { providerPosts++; return { state: "created", nativeId: "fixture-bill" }; },
+        findByIdempotencyKey: async () => ({ state: "not_found" }),
+        readback: async () => { throw new Error("must not reach readback"); },
+      },
+    });
+    expect(providerPosts).toBe(0);
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("EXECUTION_LEASE_UNAVAILABLE");
+    expect(result.receipt.durableReceiptId).toBe("fixture-reconciliation-receipt");
+    expect(store.status()).toBe("blocked");
+    expect(store.calls.map(call => call.name)).toEqual([
+      "toro_admit_approved_alegra_execution_v1",
+      "toro_heartbeat_alegra_execution_v1",
+      "toro_finalize_alegra_execution_v1",
+    ]);
+  });
+
 });
