@@ -61,7 +61,7 @@ const gate = {
 };
 
 function executeCandidate(input: Parameters<typeof executeApprovedAlegraIntent>[0]) {
-  return executeApprovedAlegraIntent({ ...input, writerEnabled: true, gate });
+  return executeApprovedAlegraIntent({ ...input, writerEnabled: true, gate: input.gate ?? gate });
 }
 
 function verifiedReadback(nativeId = "bill-1") {
