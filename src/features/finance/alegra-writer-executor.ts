@@ -61,6 +61,8 @@ export type AlegraWriterReceipt = {
 export type AlegraExecutionGate = {
   // The canonical worker must atomically admit this action and persist its dispatch marker.
   beforeDispatch(input: { intent: AlegraWriteIntent; approval: AlegraWriteApproval }): Promise<boolean>;
+  // A fresh fenced heartbeat is required after admission and before provider create.
+  renewLease(): Promise<boolean>;
   persistReceipt(receipt: AlegraWriterReceipt): Promise<string | null>;
 };
 
@@ -191,6 +193,19 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
   if (!revalidated.ok) {
     return { ok: false, executedProviderMutation: false, admitted: true,
       receipt: blockedReceipt({ ...input, reason: revalidated.reason }) };
+  }
+
+  // A prepared marker is not permission to POST with an expired lease.
+  // On heartbeat failure keep the marker auditable and block without provider I/O.
+  let leaseReady = false;
+  try {
+    leaseReady = await input.gate!.renewLease();
+  } catch {
+    leaseReady = false;
+  }
+  if (!leaseReady) {
+    return { ok: false, executedProviderMutation: false, admitted: true,
+      receipt: blockedReceipt({ ...input, reason: "EXECUTION_LEASE_UNAVAILABLE" }) };
   }
 
   let createResult: AlegraProviderCreateResult;
