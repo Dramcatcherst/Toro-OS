@@ -23,6 +23,10 @@ export type AlegraWriteTransport = {
   create(input: {
     intent: AlegraWriteIntent;
     idempotencyKey: string;
+    // The native transport must check the admitted fenced lease again AFTER
+    // all provider preflight reads, immediately before its single POST.
+    // Optional only for legacy/test transports; native production fails closed.
+    beforeNativePost?: () => Promise<boolean>;
   }): Promise<AlegraProviderCreateResult>;
   findByIdempotencyKey(input: {
     intent: AlegraWriteIntent;
@@ -127,6 +131,12 @@ export async function executeApprovedAlegraIntent(input: AlegraExecutionInput): 
 }
 
 async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWriterExecutionResult> {
+  // Capture the already admitted gate's renewal method before any await,
+  // so the native transport uses the exact same worker/fence and receipt.
+  const originalGate = input.gate;
+  const renewLease = originalGate && typeof originalGate.renewLease === "function"
+    ? originalGate.renewLease.bind(originalGate)
+    : null;
   const approvalDecision = validateAlegraWriteApproval(input.intent, input.approval, input.now);
   if (!approvalDecision.ok) {
     return {
@@ -199,7 +209,7 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
   // On heartbeat failure keep the marker auditable and block without provider I/O.
   let leaseReady = false;
   try {
-    leaseReady = await input.gate!.renewLease();
+    leaseReady = renewLease ? await renewLease() === true : false;
   } catch {
     leaseReady = false;
   }
@@ -210,7 +220,11 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
 
   let createResult: AlegraProviderCreateResult;
   try {
-    createResult = await input.transport.create({ intent: input.intent, idempotencyKey: input.intent.idempotencyKey });
+    createResult = await input.transport.create({
+      intent: input.intent,
+      idempotencyKey: input.intent.idempotencyKey,
+      beforeNativePost: renewLease ?? undefined,
+    });
   } catch {
     createResult = { state: "ambiguous" };
   }
