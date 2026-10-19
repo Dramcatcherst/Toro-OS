@@ -1,10 +1,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { ToroWorkerRun } from "../control-plane/worker-runtime";
 import { prepareAlegraWriteIntent } from "./alegra-writer-contract";
 import { evaluateAlegraDuplicatePreflight } from "./alegra-writer-dedupe";
 import { createAlegraControlPlaneGate, recoverExpiredAlegraLease } from "./alegra-writer-control-plane";
-import { vi } from "vitest";
 import { executeApprovedAlegraIntent, type AlegraWriterReceipt } from "./alegra-writer-executor";
 
 const intent = prepareAlegraWriteIntent({ scope: { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity" }, evidence: { sourceRefs: ["fixture:original"], evidenceHash: "fixture-byte-hash" }, payload: { targetType: "purchase_bill", documentNumber: "fixture-1", issuerTaxId: "fixture-emitter", receiverTaxId: "fixture-receiver", currency: "USD", total: "1.00", accountNativeId: "fixture-account", costCenterNativeId: "fixture-center" } });
