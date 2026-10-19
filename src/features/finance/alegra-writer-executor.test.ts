@@ -56,6 +56,7 @@ const clearDuplicates = evaluateAlegraDuplicatePreflight({
 
 const gate = {
   beforeDispatch: async () => true,
+  renewLease: async () => true,
   persistReceipt: async () => "fixture-durable-receipt",
 };
 
@@ -345,4 +346,37 @@ describe("Alegra Writer governed executor", () => {
     expect(result.receipt.verificationState).toBe("READBACK_MISMATCH");
     expect(result.receipt.reasons).toContain("READBACK_TOTAL");
   });
+
+  it("heartbeats the admitted lease before any native provider POST", async () => {
+    const order: string[] = [];
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: {
+        create: async () => { order.push("provider"); return { state: "created", nativeId: "bill-1" }; },
+        findByIdempotencyKey: vi.fn(),
+        readback: async () => verifiedReadback(),
+      },
+      gate: { ...gate, renewLease: async () => { order.push("heartbeat"); return true; } },
+      now: validNow,
+    });
+    expect(result.ok).toBe(true);
+    expect(order).toEqual(["heartbeat", "provider"]);
+  });
+
+  it.each(["denied", "throws"] as const)("denies provider create when heartbeat %s", async (failure) => {
+    const create = vi.fn(async () => ({ state: "created" as const, nativeId: "bill-1" }));
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
+      transport: { create, findByIdempotencyKey: vi.fn(), readback: vi.fn() },
+      gate: { ...gate, renewLease: async () => {
+        if (failure === "throws") throw new Error("synthetic rpc unavailable");
+        return false;
+      } },
+      now: validNow,
+    });
+    expect(result.ok).toBe(false);
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("EXECUTION_LEASE_UNAVAILABLE");
+    expect(result.receipt.durableReceiptId).toBe("fixture-durable-receipt");
+    expect(create).not.toHaveBeenCalled();
+  });
+
 });
