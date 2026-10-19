@@ -63,9 +63,12 @@ export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; 
           preparedReceiptId,
           leaseSeconds: 60,
         });
+        const renewedExpiry = current?.leaseExpiresAt ? Date.parse(current.leaseExpiresAt) : Number.NaN;
+        // Never treat an expired or malformed provider lease as a live heartbeat.
         return current?.runId === run.id &&
           current.fencingToken === lease.fencingToken &&
-          current.preparedReceiptId === preparedReceiptId;
+          current.preparedReceiptId === preparedReceiptId &&
+          Number.isFinite(renewedExpiry) && renewedExpiry > Date.parse(currentTime());
       } catch {
         return false;
       }
