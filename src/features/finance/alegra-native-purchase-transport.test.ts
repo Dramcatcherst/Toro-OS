@@ -72,7 +72,7 @@ describe("Native Alegra purchase transport candidate", () => {
     const persist = vi.fn(async () => "fixture-blocked-receipt");
     const result = await executeApprovedAlegraIntent({ intent: prepared, approval: { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z", decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash, state: "approved" },
       duplicateDecision: { clear: true, state: "CLEAR", exactMatches: [], probableMatches: [], sourceStates: [], reasons: [] }, transport: store.transport,
-      now, writerEnabled: true, gate: { beforeDispatch: async () => true, persistReceipt: persist } });
+      now, writerEnabled: true, gate: { beforeDispatch: async () => true, renewLease: async () => true, persistReceipt: persist } });
     expect(result.executedProviderMutation).toBe(false); expect(result.receipt.durableReceiptId).toBe("fixture-blocked-receipt");
     expect(persist).toHaveBeenCalledTimes(1);
   });
@@ -158,7 +158,7 @@ describe("Native Alegra purchase transport candidate", () => {
     const result = await executeApprovedAlegraIntent({ intent: prepared,
       approval: { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z", decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash, state: "approved" },
       duplicateDecision: { clear: true, state: "CLEAR", exactMatches: [], probableMatches: [], sourceStates: [], reasons: [] },
-      transport: store.transport, now, writerEnabled: true, gate: { beforeDispatch: async () => true, persistReceipt: async () => "fixture-receipt" } });
+      transport: store.transport, now, writerEnabled: true, gate: { beforeDispatch: async () => true, renewLease: async () => true, persistReceipt: async () => "fixture-receipt" } });
     expect(result.ok).toBe(true); expect(result.receipt.verified).toBe(true);
     expect(store.requests.filter(r => r.method === "POST")).toHaveLength(1);
     expect(store.requests.some(r => r.path === "/bills/99")).toBe(true);
