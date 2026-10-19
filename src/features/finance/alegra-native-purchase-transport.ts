@@ -190,6 +190,18 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         const duplicate = await lookup(intent, request.idempotencyKey);
         if (duplicate.state !== "not_found") throw new Error("NATIVE_DUPLICATE_OR_COVERAGE_BLOCKED");
         if (!await authorize({ intent, body, company: observedCompany })) throw new Error("NATIVE_AUTHORIZATION_DENIED");
+        // Atomic admission/early heartbeat alone cannot cover the asynchronous
+        // company, resource, and duplicate lookups above. Require a SECOND
+        // successful fenced heartbeat at the actual native dispatch boundary.
+        // Direct transport.create calls without a gate fail closed.
+        let leaseFresh = false;
+        try {
+          leaseFresh = typeof request.beforeNativePost === "function" &&
+            await request.beforeNativePost() === true;
+        } catch {
+          leaseFresh = false;
+        }
+        if (!leaseFresh) throw new Error("NATIVE_LEASE_UNAVAILABLE");
       } catch (error) {
         return { state: "blocked", code: error instanceof Error && /^NATIVE_|^FOREIGN_/.test(error.message) ? error.message : "NATIVE_PREFLIGHT_UNAVAILABLE" };
       }
