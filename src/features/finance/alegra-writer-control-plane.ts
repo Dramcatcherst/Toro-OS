@@ -1,6 +1,13 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { admitApprovedAlegraExecutionRun, finalizeAlegraExecutionRun, heartbeatAlegraExecutionRun, type ToroWorkerRun } from "../control-plane/worker-runtime";
+import {
+  admitApprovedAlegraExecutionRun,
+  finalizeAlegraExecutionRun,
+  heartbeatAlegraExecutionRun,
+  recoverExpiredAlegraExecutionRun,
+  type ToroAlegraExpiredLeaseRecovery,
+  type ToroWorkerRun,
+} from "../control-plane/worker-runtime";
 import type { AlegraExecutionGate } from "./alegra-writer-executor";
 import { captureAlegraWriteAuthorization, validateAlegraWriteApproval } from "./alegra-writer-contract";
 export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; run: ToroWorkerRun; workerId: string; now: () => string; authorize: AlegraExecutionGate["beforeDispatch"] }): AlegraExecutionGate {
@@ -92,4 +99,80 @@ export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; 
       return finalized?.finalReceiptId ?? null;
     },
   };
+}
+
+
+/**
+ * An existing governed server-only worker may use this exact-target caller
+ * after reading the latest admitted run and durable prepared receipt.
+ * The database recovery RPC locks/fences the run and is the final authority;
+ * this preflight never revives a lease, grants permission or contacts Alegra.
+ *
+ * Runtime wiring and dedicated least-privilege principal remain separate
+ * deployment gates. In particular, do not supply a broad service_role client.
+ */
+export async function recoverExpiredAlegraLease(input: {
+  supabase: SupabaseClient;
+  run: ToroWorkerRun;
+  preparedReceiptId: string;
+  recoveryWorkerId: string;
+  now: () => string;
+}): Promise<ToroAlegraExpiredLeaseRecovery | null> {
+  const { supabase, recoveryWorkerId, preparedReceiptId, now: currentTime } = input;
+  // Capture the source/run identity once. A caller's later mutation must not
+  // redirect the recovery RPC toward another organization or run.
+  const run = { ...input.run };
+  const observedAt = Date.parse(currentTime());
+  const leaseExpiresAt = Date.parse(run.leaseExpiresAt ?? "");
+
+  // No generic queue claim or retry is permitted for L3. On a mismatch,
+  // leave the original prepared marker intact for manual reconciliation.
+  if (
+    !Number.isFinite(observedAt) ||
+    !Number.isFinite(leaseExpiresAt) ||
+    observedAt < leaseExpiresAt ||
+    !run.id?.trim() ||
+    !run.orgId?.trim() ||
+    !run.decisionId?.trim() ||
+    run.targetSystem !== "alegra" ||
+    run.actionKey !== "alegra_create_purchase_bill" ||
+    run.executionAuthorityLevel !== "L3" ||
+    run.actorKind !== "human" ||
+    !run.actorRef?.trim() ||
+    (run.businessRisk !== "High" && run.businessRisk !== "Critical") ||
+    (run.status !== "running" && run.status !== "verifying") ||
+    run.verificationStatus !== "pending" ||
+    run.attemptCount !== 1 ||
+    run.maxAttempts !== 1 ||
+    !Number.isSafeInteger(run.fencingToken) ||
+    run.fencingToken < 1 ||
+    run.fencingToken >= Number.MAX_SAFE_INTEGER ||
+    !run.leaseOwner?.trim() ||
+    !recoveryWorkerId?.trim() ||
+    recoveryWorkerId === run.actorRef ||
+    !preparedReceiptId?.trim()
+  ) {
+    return null;
+  }
+
+  const result = await recoverExpiredAlegraExecutionRun(supabase, {
+    orgId: run.orgId,
+    runId: run.id,
+    recoveryWorkerId,
+    expectedFencingToken: run.fencingToken,
+    preparedReceiptId,
+  });
+
+  if (
+    !result ||
+    result.runId !== run.id ||
+    result.fencingToken !== run.fencingToken + 1 ||
+    result.providerState !== "PROVIDER_STATE_UNKNOWN" ||
+    result.runStatus !== "blocked" ||
+    result.verificationStatus !== "partial"
+  ) return null;
+
+  // Whether recovered or SQL-replayed, this says nothing about the native
+  // purchase's existence. Never re-POST; reconcile by independent readback.
+  return result;
 }
