@@ -30,6 +30,7 @@ const contract = {
 const boundaries = {
   admitApprovedAlegraExecutionRun: (client, input) => client.admit(input),
   finalizeAlegraExecutionRun: (client, input) => client.finalize(input),
+  heartbeatAlegraExecutionRun: (client, input) => client.heartbeat(input),
 };
 const exports = {};
 vm.runInNewContext(compiled, {
@@ -48,6 +49,11 @@ function fixture() {
     async admit(input) {
       calls.push({ label, action: 'admit', input });
       return { runId: input.runId, fencingToken: 1, preparedReceiptId: 'synthetic-prepared', leaseExpiresAt: '2026-10-17T10:02:00Z' };
+    },
+    async heartbeat(input) {
+      calls.push({ label, action: 'heartbeat', input });
+      return { runId: input.runId, fencingToken: input.fencingToken,
+        preparedReceiptId: input.preparedReceiptId, leaseExpiresAt: '2026-10-17T10:01:00Z' };
     },
     async finalize(input) {
       calls.push({ label, action: 'finalize', input });
@@ -126,4 +132,30 @@ test('a gate admits at most once even with concurrent attempts', async () => {
   const results = await Promise.all([gate.beforeDispatch(f.request), gate.beforeDispatch(f.request)]);
   assert.deepEqual(results, [true, false]);
   assert.equal(f.calls.length, 1);
+});
+
+test('lease renewal is unavailable before atomic admission', async () => {
+  const f = fixture(), gate = createAlegraControlPlaneGate(f.options);
+  assert.equal(await gate.renewLease(), false);
+  assert.equal(f.calls.length, 0);
+});
+test('lease renewal keeps the original worker, fenced token and marker', async () => {
+  const f = fixture(), gate = createAlegraControlPlaneGate(f.options);
+  assert.equal(await gate.beforeDispatch(f.request), true);
+  f.options.workerId = 'replacement-worker';
+  assert.equal(await gate.renewLease(), true);
+  assert.deepEqual(f.calls.map(c => c.action), ['admit', 'heartbeat']);
+  assert.equal(f.calls[1].input.workerId, 'original-worker');
+  assert.equal(f.calls[1].input.fencingToken, 1);
+  assert.equal(f.calls[1].input.preparedReceiptId, 'synthetic-prepared');
+});
+test('lease renewal fails closed on a heartbeat with already-expired expiry', async () => {
+  const f = fixture();
+  f.options.supabase.heartbeat = async input => ({
+    runId: input.runId, fencingToken: input.fencingToken,
+    preparedReceiptId: input.preparedReceiptId, leaseExpiresAt: '2026-10-17T09:00:00Z',
+  });
+  const gate = createAlegraControlPlaneGate(f.options);
+  assert.equal(await gate.beforeDispatch(f.request), true);
+  assert.equal(await gate.renewLease(), false);
 });
