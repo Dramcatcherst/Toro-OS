@@ -173,7 +173,7 @@ describe("Native Alegra purchase transport candidate", () => {
       return undefined;
     });
     const prepared = intent();
-    expect(await store.transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey })).toMatchObject({ state: "ambiguous" });
+    expect(await store.transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true })).toMatchObject({ state: "ambiguous" });
     expect(await store.transport.findByIdempotencyKey({ intent: prepared, idempotencyKey: prepared.idempotencyKey })).toEqual({ state: "found", nativeId: "99" });
     expect(store.requests.filter(r => r.method === "POST")).toHaveLength(1);
   });
@@ -208,8 +208,68 @@ describe("Native Alegra purchase transport candidate", () => {
     const localBinding = structuredClone(binding); const prepared = intent(); const store = fixture();
     const transport = createNativeAlegraPurchaseTransport({ http: store.http, binding: localBinding, now: () => now, mutationEnabled: true,
       authorizeNativeCreate: async captured => { expect(Object.isFrozen(captured.body)).toBe(true); localBinding.receiverTaxId = "other"; prepared.payload.total = "999.00"; return true; } });
-    expect(await transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey })).toMatchObject({ state: "created", nativeId: "99" });
+    expect(await transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true })).toMatchObject({ state: "created", nativeId: "99" });
     const posted = store.requests.find(r => r.method === "POST")!;
     expect(posted.body).toMatchObject({ purchases: { categories: [{ price: 100 }] } });
+  });
+
+  it("enforces a final fenced lease immediately before the native POST", async () => {
+    const store = fixture();
+    const prepared = intent();
+    const finalHeartbeat = vi.fn(async () => {
+      // All native reads and the final business authorization must already
+      // have completed before attempting to renew the fenced dispatch lease.
+      expect(store.authorize).toHaveBeenCalledTimes(1);
+      expect(store.requests.some(r => r.method === "GET" && r.path === "/bills")).toBe(true);
+      expect(store.requests.some(r => r.method === "POST")).toBe(false);
+      return true;
+    });
+    const request = { intent: prepared, idempotencyKey: prepared.idempotencyKey,
+      beforeNativePost: finalHeartbeat };
+    const result = await store.transport.create(request);
+    expect(result).toMatchObject({ state: "created", nativeId: "99" });
+    expect(finalHeartbeat).toHaveBeenCalledTimes(1);
+    expect(store.requests.filter(r => r.method === "POST")).toHaveLength(1);
+  });
+
+  it("blocks direct native create without the admitted-run final heartbeat", async () => {
+    const store = fixture(), prepared = intent();
+    const result = await store.transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey });
+    expect(result).toMatchObject({ state: "blocked", code: "NATIVE_LEASE_UNAVAILABLE" });
+    expect(store.authorize).toHaveBeenCalledTimes(1);
+    expect(store.requests.some(r => r.method === "POST")).toBe(false);
+  });
+
+  it.each(["denied", "throws"] as const)("blocks the native POST when final heartbeat %s", async failure => {
+    const store = fixture(), prepared = intent();
+    const finalHeartbeat = vi.fn(async () => {
+      if (failure === "throws") throw new Error("fixture lease expired or RPC unavailable");
+      return false;
+    });
+    const request = { intent: prepared, idempotencyKey: prepared.idempotencyKey,
+      beforeNativePost: finalHeartbeat };
+    const result = await store.transport.create(request);
+    expect(result).toMatchObject({ state: "blocked", code: "NATIVE_LEASE_UNAVAILABLE" });
+    expect(finalHeartbeat).toHaveBeenCalledTimes(1);
+    expect(store.requests.filter(r => r.method === "POST")).toHaveLength(0);
+  });
+
+  it("binds two fenced lease renewals to the approved executor and only one native POST", async () => {
+    const store = fixture(), prepared = intent(), renewLease = vi.fn(async () => true);
+    const result = await executeApprovedAlegraIntent({
+      intent: prepared,
+      approval: { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt",
+        actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z",
+        decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash,
+        state: "approved" },
+      duplicateDecision: { clear: true, state: "CLEAR", exactMatches: [], probableMatches: [],
+        sourceStates: [], reasons: [] },
+      transport: store.transport, now, writerEnabled: true,
+      gate: { beforeDispatch: async () => true, renewLease,
+        persistReceipt: async () => "fixture-receipt" },
+    });
+    expect(result.ok).toBe(true);
+    expect(renewLease).toHaveBeenCalledTimes(2);
+    expect(store.requests.filter(r => r.method === "POST")).toHaveLength(1);
   });
 });
