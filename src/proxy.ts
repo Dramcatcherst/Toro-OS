@@ -8,6 +8,7 @@ const portalPages = new Set([
   "/booking-assist",
 ]);
 const portalReadApis = new Set(["/api/brain/context", "/api/brain/owner-attention"]);
+const portalContextSelectionApi = "/api/brain/context/selection";
 const portalAssets = new Set([
   "/brand/tools/whatsapp-official.svg", "/brand/tools/alegra-official.svg", "/brand/tools/google-calendar-official.svg",
   "/apple-icon.png", "/favicon.ico", "/icon.png", "/brand/tools/kross.png", "/brand/tools/wespeak.ico",
@@ -28,9 +29,10 @@ function portalResponse(request: NextRequest) {
   // of letting a later router normalization change an allowlisted destination.
   const canonical = !/[\\%\u0000-\u0020\u007f]/.test(path) &&
     !path.split("/").some(segment => segment.startsWith("."));
-  if (canonical && path === "/api/auth/login" && request.method === "POST" && !request.headers.has("Next-Action")) {
-    // Only this bounded, same-origin authentication handler may accept a POST.
-    // It does not admit operational writers or Server Actions.
+  if (canonical && (path === "/api/auth/login" || path === portalContextSelectionApi) &&
+      request.method === "POST" && !request.headers.has("Next-Action")) {
+    // Only bounded authentication and context-preference handlers may accept a
+    // POST. Neither admits operational writers or Server Actions.
     return privateResponse(NextResponse.next());
   }
   if (readOnly && canonical && path === "/") {
@@ -80,9 +82,15 @@ export function publicSurfaceDecision(request: NextRequest) {
 export async function proxy(request: NextRequest) {
   const response = publicSurfaceDecision(request);
   const path = request.nextUrl.pathname;
+  const fetchSite = request.headers.get("sec-fetch-site")?.trim().toLowerCase();
+  const contextSelectionPost = path === portalContextSelectionApi && request.method === "POST" &&
+    request.headers.get("origin") === request.nextUrl.origin &&
+    !request.headers.has("Next-Action") &&
+    (fetchSite === undefined || fetchSite === "same-origin");
   if (isPortalDeployment() && response.headers.get("x-middleware-next") === "1" &&
-      (request.method === "GET" || request.method === "HEAD") &&
-      ((portalPages.has(path) && path !== "/login" && path !== "/booking-assist") || portalReadApis.has(path)) &&
+      (((request.method === "GET" || request.method === "HEAD") &&
+        ((portalPages.has(path) && path !== "/login" && path !== "/booking-assist") || portalReadApis.has(path))) ||
+        contextSelectionPost) &&
       request.cookies.getAll().some(cookie => /^sb-[a-z0-9]+-auth-token(?:\.\d+)?$/.test(cookie.name))) {
     return refreshPortalSession(request, response);
   }

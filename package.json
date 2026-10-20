@@ -16,7 +16,7 @@
     "test:menu-profiles": "node --test tests/menu-profile-static-audit.test.mjs && node scripts/menu-profile-static-audit.mjs && npm run test:user-profiles",
     "test:user-profiles": "node --test tests/user-profile-static-audit.test.mjs && node scripts/user-profile-static-audit.mjs && vitest run src/features/profile/effective-profile.test.ts src/features/profile/channel-binding.test.ts",
     "test:openclaw-host": "node --test tests/openclaw-host-diagnostics.test.mjs",
-    "test:portal-auth": "vitest run src/features/auth src/features/context/hosted-session.test.ts src/lib/supabase/portal-refresh.test.ts src/proxy-refresh.test.ts",
+    "test:portal-auth": "vitest run src/features/auth src/features/context/hosted-session.test.ts src/features/context/organization-selection.test.ts src/app/api/brain/context/selection/route.test.ts src/lib/supabase/portal-refresh.test.ts src/proxy-refresh.test.ts",
     "test:portfolio-map": "node --test tests/portfolio-map-validator.test.mjs",
     "test:patrimony-contract": "node --test tests/patrimony-owner-summary-contract.test.mjs"
   },

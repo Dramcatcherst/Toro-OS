@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { canViewOwnerAttention } from "@/features/attention/owner-attention";
 import { OwnerAttentionPanel } from "@/features/attention/owner-attention-panel";
+import { loadToroOrganizationChoices } from "@/features/context/organization-selection";
 import {
   ArrowRight,
   LockKeyhole,
@@ -19,6 +20,8 @@ import { loadHotelDirectory } from "@/features/tools/server";
 import styles from "./my-toro.module.css";
 import { PortalToolLinks } from "@/features/tools/portal-tool-links";
 import { isPortalDeployment } from "@/lib/server/public-demo";
+
+const CONTEXT_SELECTION_ENDPOINT = "/api/brain/context/selection";
 
 const profileLabels: Record<string, string> = {
   owner_executive: "Dirección",
@@ -38,11 +41,15 @@ const profileLabels: Record<string, string> = {
 export default async function MyToroPage({
   searchParams,
 }: {
-  searchParams: Promise<{ focus?: string | string[] }>;
+  searchParams: Promise<{
+    focus?: string | string[];
+    context?: string | string[];
+  }>;
 }) {
   const params = await searchParams;
   const requestedFocus =
     typeof params.focus === "string" ? params.focus : null;
+  const contextError = params.context === "invalid";
   const view = await resolveCurrentToroReadOnlyMenu(requestedFocus);
 
   if (!view) {
@@ -70,6 +77,10 @@ export default async function MyToroPage({
   }
 
   if (view.state === "context_choice_required") {
+    const portalDeployment = isPortalDeployment();
+    const organizations = portalDeployment
+      ? await loadToroOrganizationChoices(view.context)
+      : { state: "unavailable" as const, choices: [] };
     return (
       <main className={styles.accessScreen}>
         <div className={styles.accessBox}>
@@ -77,14 +88,43 @@ export default async function MyToroPage({
             <UserRound className="h-4 w-4" /> Contexto
           </div>
           <h1 className="text-3xl font-black text-white">
-            {view.preferredDisplayName}, necesito saber en qué negocio quieres entrar.
+            {view.preferredDisplayName}, necesito saber en qué contexto quieres entrar.
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             Tu cuenta tiene más de un contexto autorizado. TORO no elegirá uno automáticamente porque eso podría mezclar permisos o información.
           </p>
-          <div className={styles.contextBox}>
-            Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
-          </div>
+          {portalDeployment && contextError ? (
+            <p role="alert" className={styles.contextError}>
+              No pude abrir ese contexto. Tu sesión sigue protegida; elige una opción autorizada.
+            </p>
+          ) : null}
+          {portalDeployment && organizations.state === "ready" ? (
+            <div className={styles.contextChoices} role="group" aria-label="Organizaciones disponibles">
+              {organizations.choices.map((organization) => (
+                <form key={organization.id} action={CONTEXT_SELECTION_ENDPOINT} method="post">
+                  <input type="hidden" name="intent" value="select" />
+                  <input type="hidden" name="organizationId" value={organization.id} />
+                  <button type="submit" className={styles.contextChoice}>
+                    <span>Entrar a</span>
+                    <strong>{organization.name}</strong>
+                    <ArrowRight aria-hidden="true" className="h-5 w-5" />
+                  </button>
+                </form>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.contextBox} role="status">
+              {portalDeployment ? <>
+                <strong>{view.context.availableOrgIds.length} organizaciones autorizadas.</strong>{" "}
+                No pude cargar sus nombres ahora y no seleccioné ninguna. Recarga la página para volver a intentar.
+              </> : <>
+                Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
+              </>}
+            </div>
+          )}
+          {portalDeployment ? <p className={styles.contextNote}>
+            TORO volverá a validar tu membresía antes de mostrar información del contexto elegido.
+          </p> : null}
         </div>
       </main>
     );
@@ -216,6 +256,14 @@ export default async function MyToroPage({
               <div><dt className="text-slate-400">Tu perfil</dt><dd className="mt-1">{roleLabel}</dd></div>
             </dl>
             <p className="mt-4 text-sm leading-6 text-slate-300">Ya tienes sesión en TORO. Si otra herramienta pide acceso, usa tu cuenta de ese servicio. Entrar aquí no inicia sesión automáticamente en las demás.</p>
+            {isPortalDeployment() && view.context.availableOrgIds.length > 1 ? (
+              <form action={CONTEXT_SELECTION_ENDPOINT} method="post" className="mt-3">
+                <input type="hidden" name="intent" value="clear" />
+                <button type="submit" className={actionClass + " border border-slate-700 text-cyan-200"}>
+                  Cambiar de contexto
+                </button>
+              </form>
+            ) : null}
             {!isPortalDeployment() ? <Link href="/onboarding" className={actionClass + " mt-3 border border-slate-700 text-cyan-200"}>Revisar mi perfil</Link> : null}
             {view.profileSummary.length ? <details className="mt-4 border-t border-slate-700 pt-3">
               <summary className="min-h-11 cursor-pointer content-center text-sm text-slate-300">Información de mi perfil</summary>
