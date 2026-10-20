@@ -7,6 +7,95 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:OWNER_AI_WEALTH_STRATEGY_20261020 -->
+## Política estratégica transversal — IA, patrimonio productivo y libertad operativa — 20/10/2026
+
+**DECISIÓN ADOPTADA POR EL PROPIETARIO (gobierno, no despliegue):** optimizar el portafolio para **beneficio neto recurrente, activos productivos duraderos, resiliencia y menos horas de intervención del propietario**. Dreamcatcher es primero el negocio generador de caja; TORO es segundo como multiplicador de capacidad/eficiencia y producto futuro sujeto a demostración; diversificación y liquidez son el tercer eje de protección. La experiencia humana del huésped, las relaciones y la calidad no se degradan para reducir nómina. El criterio no presupone desempleo masivo ni rentas futuras de IA.
+
+**Autoridades y ubicación:** Plan General único `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; contrato resumido y computable en `toro-context.yaml → owner_ai_wealth_strategy`. Portfolio `toro_os_portfolio_master`; ejecución `toro_executive_control`; hotel `dreamcatcher_hotel_master` con módulos ya existentes (`revenue_booking_stack`, operaciones, finanzas, web/canales, datos/integraciones). TORO Product Proof y TORO Governance conservan sus gates. No crea otro Plan General, agente, base, sistema de tareas, calendario ni programador.
+
+### Objetivo y filtro de decisión obligatorios
+
+- **Primero: P0 de seguridad, cumplimiento, datos comerciales, reservas y huéspedes.** El ROI nunca autoriza saltarse un deber legal, una sobreventa, la privacidad ni una incidencia física crítica.
+- **Después: impacto económico marginal y tiempo liberado.** Para cada iniciativa expresar `Δ contribución neta recurrente`, inversión inicial y mensual, plazo/certidumbre, carga humana, riesgo evitado, dependencia, alternativas y evidencia. Si no hay fuente fresca, marcar `NO_MEDIDO`; no poner dólares/porcentajes ficticios.
+- **Definiciones comparables:** ingreso por estancia no es cobro bancario; reserva no es venta conciliada; rentabilidad contable no es flujo de caja; ahorro proyectado no es ahorro realizado; villas son modalidad del mismo inventario físico, no habitaciones adicionales. Contribución por canal/servicio requiere ingresos atribuidos menos comisiones, descuentos financiados, reembolsos y costos incrementales verificables. Impuestos recaudados por remitir se separan, no se tratan como ganancia.
+- **Priorización sin falsa precisión:** P0 obligatorio; luego primero iniciativas con prueba verificable, retorno favorable, beneficio sostenido y poca dependencia/costo; finalmente crecimiento patrimonial con análisis de liquidez, concentración y reversibilidad. Documentar `DO / DELEGATE / DELAY / STOP` y el motivo. Costos hundidos no justifican continuar.
+- **Puertas de inversión y autonomía:** propuesta → baseline → piloto limitado → verificación económico-operativa → decisión de escalar/retirar. Cualquier gasto, pago, permiso, cambio tarifario, publicación, mensaje a terceros, reserva, contrato, obra, financiación o despliegue conserva su aprobación específica y control actual. No reactivar API Kross pagada pausada ni el Writer Alegra por esta política.
+- **Dirección ejecutiva:** el propietario recibe hasta tres decisiones materiales por corte; el trabajo rutinario se asigna por rol existente (no persona inventada), con estado, siguiente paso y criterio de terminado. El personal conserva supervisión, formación y vía de escalamiento. No sustituir empleos por promesas de automatización no validada.
+
+### 40 mejoras nuevas incorporadas como controles y oportunidades (NO como 40 implementaciones terminadas)
+
+Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta proyectos. **Aplicada documentalmente** significa que el criterio queda adoptado; el KPI de negocio continúa `NO_MEDIDO` hasta disponer de baseline, acción autorizada y medición posterior.
+
+| ID | Frente | Mejora / siguiente aplicación | Evidencia de resultado | Responsable funcional propuesto | Prioridad |
+| --- | --- | --- | --- | --- | --- |
+| E01 | Gobierno | Evaluar cada iniciativa por beneficio recurrente neto, horas del propietario y riesgo, no por volumen de tareas. | Ficha de decisión con tres resultados y fuente | TORO Control | P1 |
+| E02 | Gobierno | Medir contribución incremental después de comisiones, cargos, servicio, impuestos por remitir y costos tecnológicos. | Puente ingreso a contribución conciliable | TORO Finance | P1 |
+| E03 | Gobierno | Separar OPEX, CAPEX, costos hundidos, deuda, caja y activos; nunca sumar rentas y valor patrimonial. | Clasificación consistente por entidad y moneda | TORO Finance | P1 |
+| E04 | Gobierno | Financiar proyectos por etapas con hipótesis, límite de gasto, prueba, retorno y autorización correspondiente. | Cada fase con decisión continuar/ajustar/detener | TORO Control | P1 |
+| E05 | Gobierno | Congelar expansiones sin prueba y retirar herramientas duplicadas solo tras mapa de consumidores y reversión. | Costo evitado verificado, sin pérdida de servicio | TORO Tools | P1 |
+| E06 | Gobierno | Revisar mensualmente el portafolio por impacto, urgencia, esfuerzo, dependencia, liquidez y libertad de tiempo. | Hasta tres prioridades activas por corte, respaldadas | TORO Portfolio | P1 |
+| E07 | Revenue | Mantener inventario económico por unidad física; villa y habitaciones son modalidades mutuamente excluyentes. | Cero capacidad o ingreso contabilizado doble | Revenue / Kross | P0 |
+| E08 | Revenue | Establecer ocupación, ADR y RevPAR con denominadores, fechas y capacidad comparables. | Cobertura por período y fuente declarada | Revenue / Kross | P1 |
+| E09 | Revenue | Clasificar canales por contribución neta de adquisición, descuentos, cancelaciones y costo de atención. | Ranking por margen neto demostrado, no bruto | Revenue + Finance | P1 |
+| E10 | Revenue | Demostrar ventaja del canal directo por cotización total equivalente, sin prometer ahorro fijo no probado. | Comparación misma fecha/unidad/personas/reglas | Channels + Kross | P1 |
+| E11 | Revenue | Medir consultas perdidas, respuestas, cotizaciones, anticipos y reservas confirmadas sin atribución doble. | Embudo por ID único y conversión validada | TERE + Revenue | P1 |
+| E12 | Revenue | Priorizar ventanas 7/30/90 días con pickup y demanda observada antes de proponer tarifas. | Reporte de oportunidades con recomendación no aplicada | Revenue | P1 |
+| E13 | Revenue | Estandarizar propuestas de bodas, retiros y grupos con costos y opciones aprobadas. | Tiempo a cotización y margen previsto trazable | Events + Revenue | P1 |
+| E14 | Revenue | Calcular ingreso desplazado de habitaciones y uso de espacios antes de cotizar un buyout o evento. | Margen del evento neto del alojamiento desplazado | Events + Finance | P1 |
+| E15 | Ingresos extra | Medir margen de desayuno, yoga, surf, traslados y otros servicios por venta real. | Contribución neta por servicio y fuente | Restaurant + Revenue | P1 |
+| E16 | Ingresos extra | Distinguir desayuno incluido por reserva/tarifa del desayuno adicional vendido o consumido. | Derecho, cobro y consumo conciliados sin doble cargo | Restaurant + Kross | P0 |
+| E17 | Ingresos extra | Ofrecer mejoras y experiencias adecuadas sin prometer inventario o servicios no verificados. | Tasa oferta→venta y reclamaciones atribuibles | TERE + Reception | P1 |
+| E18 | Ingresos extra | Auditar cancelaciones, descuentos y reembolsos por recuperación permitida y costo real. | Fugas corregidas con evidencia por reserva | Revenue + Finance | P1 |
+| E19 | Huésped | Recoger feedback durante la estadía con consentimiento, respuesta y cierre; no filtrar reseñas públicas por nota. | Casos resueltos antes de salida y satisfacción | Reception + TERE | P1 |
+| E20 | Huésped | Vincular quejas recurrentes a causa raíz, mantenimiento, costo y prueba física de cierre. | Reincidencias y tiempo de resolución por causa | Operations | P1 |
+| E21 | Huésped | Monitorizar reputación en idioma original, deduplicar y preparar respuestas sin publicar sin aprobación. | Casos nuevos verificados, tiempo de reacción | Channels + Reputation | P1 |
+| E22 | Huésped | Elegir fotos por habitación, derechos y exactitud comercial antes de subirlas a web/OTA. | Cobertura de catálogo y conversión antes/después | Studio + Channels | P1 |
+| E23 | Operaciones | Medir habitaciones listas tras inspección, nunca equiparar limpieza con disponibilidad. | % verificadas antes de llegadas y errores | Housekeeping | P0 |
+| E24 | Operaciones | Ordenar reparaciones por seguridad, noches indisponibles, urgencia y costo evitado. | Noches recuperadas realmente y tiempos | Maintenance | P0 |
+| E25 | Operaciones | Gestionar consumibles por mínimo, máximo, consumo y plazos de compra comprobados. | Rupturas de stock y costo de inventario | Operations + Purchases | P1 |
+| E26 | Operaciones | Preservar identidad técnica Type/ID Kross y validar #27, WeSpeak y canales antes de publicar. | Una unidad física vendible, sin dobles ventas | Data + Revenue | P0 |
+| E27 | Operaciones | Medir cobertura histórica, frescura y errores de Kross→Supabase sin reactivar API pagada pausada. | Reservas reconciliadas, lag y huecos visibles | Data & Integrations | P0 |
+| E28 | Operaciones | Probar TORO/OpenClaw sin PC con identidad, respaldo, recibo y sin duplicar mensajes. | Prueba E2E, fallos/replay, PC apagado | TORO Systems + Comms | P0 |
+| E29 | Finanzas | Conciliar Kross, voucher, banco y Alegra por concepto, moneda, método y corte. | Diferencias investigadas y pagos realmente cotejados | Finance | P0 |
+| E30 | Finanzas | Mantener caja y obligaciones rolling 90 días con confirmado, estimado y desconocido separados. | Cobertura 90 días, riesgo liquidez por moneda | Finance + PayFlow | P1 |
+| E31 | Finanzas | Obtener contribución del hotel por centro de costo y línea de negocio con períodos comparables. | P&L reproducible, no cifra inventada | Finance | P1 |
+| E32 | Finanzas | Revisar suscripciones, proveedores, compras y comisiones buscando ahorro sin degradar calidad. | Ahorro anualizado solo tras pago/contrato comprobado | Finance + Purchases | P1 |
+| E33 | Finanzas | Evaluar remodelaciones por incremento de contribución, CAPEX, ocupación y recuperación real. | VAN/payback por escenarios y evidencia | Portfolio + Finance | P2 |
+| E34 | Finanzas | Estresar deuda, liquidez, cambios de moneda y caída de ingresos antes de adquirir activos. | Escenarios y umbrales aprobados, sin balances públicos | Portfolio + Finance | P1 |
+| E35 | TORO | Concentrar Product Proof en los 12 flujos existentes y medir valor, no número de prompts. | Flujos E2E verificados y subset con baseline | TORO Product | P1 |
+| E36 | TORO | Exigir mínimos de autorización, separación personal/empresa, reintentos idempotentes y receipts. | Pruebas negativas, rollback y cero fuga entre scopes | TORO Governance | P0 |
+| E37 | TORO | Medir costo completo por caso automatizado, retrabajo y ahorro humano real. | Costo marginal y minutos ahorrados comparables | TORO Systems | P1 |
+| E38 | TORO | Aplazar clientes externos hasta pasar readiness gate y probar portabilidad segura. | Gate superado y ROI repetible antes de vender | TORO Product | FUTURE |
+| E39 | Propietario | Registrar interrupciones, decisiones y horas del propietario; delegar por SOP con escalamiento. | Horas recuperadas medidas sin reducir seguridad/calidad | TORO People + Control | P1 |
+| E40 | Patrimonio | Proteger reserva de liquidez y diversificar gradualmente fuera de una sola empresa/ubicación. | Exposición y colchón privado evaluados por escenarios | Portfolio + Finance | P2 |
+
+### Primeros seis resultados ejecutables, sin duplicar responsables ni cola
+
+| Orden | Frente existente | NEXT y aceptación objetiva | Estado al 20/10 | Dependencia y protección |
+| --- | --- | --- | --- | --- |
+| 1 | `revenue_booking_stack` + Kross/WeSpeak | Resolver #27 (43 vigente/28 histórico) sin doble venta, probar enlaces, canales y bloqueo recíproco; conservar Type técnico. | **BLOQUEADO** a prueba E2E completa; mapeos internos previamente corregidos. | Sesión/fuente Kross/WeSpeak del ejecutor propietario; no editar reservas ni tarifas sin gate. |
+| 2 | Hotel Finance + Kross + Alegra | Línea base mensual comparable de ocupación, ADR, RevPAR, contribución por canal, caja y gastos; indicar cobertura, fecha y moneda. | **NO_MEDIDO** en esta actualización; no interpretar snapshot como vivo. | Lectura vigente Kross sin API pagada, centros de costo/contabilidad conciliados. |
+| 3 | Channels/Booking | Probar USD 10 por habitación OTA y USD 100 por villa completa por estadía, Mini=0, directa=0; 8–9/12 con condiciones idénticas, cargo una sola vez. | **PARCIAL / PENDIENTE** por canal; no declarar ventaja económica fija. | Cotejo OTA→Kross, taxes/policies/promos; no alterar reservas existentes. |
+| 4 | Revenue/Events y Guest | Elegir solicitudes de bodas/grupos ya abiertas, medir cotización→anticipo→confirmación y margen del evento neto del alojamiento desplazado. | **PROPUESTO** como métrica integral; propuestas históricas no son ventas. | Inventario físico, costos de proveedores y autorización antes de enviar ofertas. |
+| 5 | Hotel Operations/TORO Systems | Demostrar operaciones reproducibles con Kross→Supabase frescura visible, OpenClaw/WhatsApp y prueba sin PC para capacidades autorizadas. | **CONFIGURADO_NO_VERIFICADO** como flujo extremo a extremo. | Acceso/identidad/runtime reales, reintentos y recibos; no crear otro gateway. |
+| 6 | TORO Product Proof/Portfolio | Medir horas de propietario liberadas, costo por flujo y ROI de 12 flujos existentes antes de pilotos externos. | **PROPUESTO**; gate externo sigue bloqueado. | Baselines y pruebas E2E/aislamiento, revisión comercial; sin marketing de resultados no comprobados. |
+
+### Cadencia y horizonte propuesto (no fechas contractuales)
+
+- **20/10–03/11:** identificar fuentes vigentes y cobertura, empezar baseline del hotel y control simple de horas/interruptores del propietario; resolver primero riesgos P0 activos.
+- **04/11–19/11:** cerrar el primer lote de paridad comercial y conciliación; publicar únicamente mejoras autorizadas con pruebas. Medir diferencias entre antes y después.
+- **20/11–19/12:** experimentar con una mejora de reserva directa, una oferta de eventos y un upsell con denominador y costo verificables; no inventar conversiones o ingresos.
+- **20/12–18/01:** comparar contribución incremental, tiempo realmente ahorrado y costo total de TORO; continuar, simplificar, retirar o invertir solo con evidencia y aprobación de fondos.
+
+**REVISIÓN EXISTENTE:** consumir `Dreamcatcher · Ejecución del Plan` (coordinador transversal cada seis horas) y los cierres/reportes semanales y mensuales ya programados; coordinar con los responsables de #27, OTA/Tripadvisor, Alegra, OpenClaw y auditorías, sin reclamar leases ni repetir tareas. Cada ciclo elige una unidad desbloqueada, deja evidencia y `next_action`; la programación no acredita autonomía permanente. Los recibos rutinarios se guardan en estado privado TORO, no se concatenan como reportes al Plan General.
+
+**Protección de datos:** este repositorio es público; no agregar saldos, cuentas, documentos personales, listados de huéspedes, salarios, deudas, secretos ni datos patrimoniales privados. Los valores de inversión y buffer se evalúan en TORO Personal/Finance con acceso por ámbito. El aprendizaje reusable de TORO se abstrae sin información privada de Dreamcatcher.
+
+**ESTADO DE ESTA SECCIÓN:** HECHO = directiva estratégica y cuarenta criterios incorporados a la documentación del candidato versionado tras PR/CI/merge; PROPUESTO = seis unidades ejecutables y horizonte; BLOQUEADO/DESCONOCIDO = cobertura de datos/efecto económico por medir. Ningún criterio de la tabla acredita una corrección del PMS, una automatización desplegada, un ingreso extra ni una decisión de inversión ejecutada.
+
+<!-- END:OWNER_AI_WEALTH_STRATEGY_20261020 -->
+
 ## Dreamcatcher — comentarios privados y recuperación segura (prepare-only) — 17/10/2026
 
 **CHECKPOINT_FEEDBACK_SAFETY_V1_20261017.** Ámbito: proyecto existente `dreamcatcher_hotel_reinvestment_2026`, TORO Comms + TORO Operations + referencia Dreamcatcher. **CURRENT comprobado en código, no desplegado:** el contrato existente `prepareGuestServiceRecovery` sigue sin enviar mensajes ni ejecutar escrituras y ahora incorpora cinco controles materiales:
