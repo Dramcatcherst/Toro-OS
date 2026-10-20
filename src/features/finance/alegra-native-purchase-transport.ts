@@ -231,7 +231,9 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         const taxes = category.tax;
         if (!Array.isArray(taxes) || taxes.length !== (p.purchaseTax ? 1 : 0)) throw new Error();
         if (p.purchaseTax && (id(object(taxes[0]).id) !== id(p.purchaseTax.nativeId) || units(object(taxes[0]).percentage) !== units(p.purchaseTax.percentage))) throw new Error();
-        const currency = bill.currency ? text(object(bill.currency).code) : binding.mainCurrency;
+        // Never certify the currency of a document from the company's default.
+        // Unknown/missing native currency remains an unverified readback.
+        const currency = text(object(bill.currency).code);
         if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.date) !== p.issueDate ||
             text(bill.dueDate) !== p.dueDate || bill.status !== "open" || units(bill.totalPaid) !== BigInt(0) ||
             units(bill.balance) !== units(bill.total) || currency !== p.currency || id(category.id) !== id(p.accountNativeId) ||
