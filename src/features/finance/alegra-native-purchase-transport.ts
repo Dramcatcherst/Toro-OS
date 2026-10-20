@@ -124,7 +124,7 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         !provider.type.includes("provider") || !taxIdentity(p.issuerTaxId) || taxIdentity(identification) !== taxIdentity(p.issuerTaxId)) throw new Error("NATIVE_SUPPLIER_MISMATCH");
     if (id(category.id) !== id(p.accountNativeId) || (category.type !== "expense" && category.type !== "asset") ||
         (category.status !== "active" && category.status !== true)) throw new Error("NATIVE_CATEGORY_MISMATCH");
-    if (id(cost.id) !== id(p.costCenterNativeId) || cost.status !== true) throw new Error("NATIVE_COST_CENTER_MISMATCH");
+    if (id(cost.id) !== id(p.costCenterNativeId) || (cost.status !== true && cost.status !== "active")) throw new Error("NATIVE_COST_CENTER_MISMATCH");
     if (p.purchaseTax) {
       const tax = object(taxData);
       if (id(tax.id) !== id(p.purchaseTax.nativeId) || tax.status !== "active" || units(tax.percentage) !== units(p.purchaseTax.percentage)) throw new Error("NATIVE_TAX_MISMATCH");
