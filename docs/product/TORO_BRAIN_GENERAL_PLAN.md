@@ -96,6 +96,18 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 <!-- END:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 
+<!-- BEGIN:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
+## Alineación patrimonial Registro Nacional ↔ Supabase ↔ Airtable — 20/10/2026
+
+**CURRENT — verificado:** el registro patrimonial normalizado permanece en el ámbito privado canónico de Supabase, con aislamiento por filas y una única migración de inicialización ya aplicada. Esta alineación no reejecuta SQL, no duplica datos y no expone el esquema por la API pública. En el portafolio existente, el trabajo pertenece a `property_corporate_portfolio`; Cabuya conserva su proyecto separado `cabuya_purchase_regularization`. GitHub recibe únicamente gobierno y estado sanitizados, sin identificadores personales, títulos, valores, deudas, hashes ni referencias privadas.
+
+**Autoridad y proyección:** Registro Nacional conserva autoridad legal sobre asientos, titularidad y documentos emitidos; Supabase conserva el modelo privado normalizado, procedencia, relaciones, conflictos y auditoría; Airtable Central conserva una sola ficha `source_objects` como proyección humana del snapshot, enlazada lógicamente al destino privado y no como copia del contenido patrimonial; Dropbox conserva originales y expedientes cuando corresponda; el Plan General gobierna alcance, decisiones y siguiente acción. Una proyección, índice o interpretación de TORO no sustituye el documento oficial.
+
+**Alegra — PREPARADO/UNPOSTED:** no se crea asiento, activo fijo, deuda, pago ni saldo inicial. La evidencia registral no prueba por sí sola costo contable, base fiscal, obligación exigible, moneda, entidad contable o contrapartida. Cualquier contabilización futura exige entidad verificada, tratamiento aprobado, documento soporte, periodo, monto y autorización específica, seguida de lectura posterior en Alegra. Hasta entonces el estado no tiene efecto en libros.
+
+**NEXT — una sola unidad:** definir el primer consumidor autorizado del registro privado —actor, propósito, campos mínimos, ámbito y ruta de acceso— y probar lectura sin ampliar exposición. No crear otra base, otro proyecto patrimonial, una API genérica ni otra migración. Terminado cuando el consumidor autorizado lee únicamente su alcance, un actor fuera de alcance recibe denegación y ambos resultados quedan auditados.
+<!-- END:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
+
 ## Incidente P0 Kross habitación #27 — mapeo Type, WeSpeak, OTA y tarifas — 17/10/2026
 
 **Clasificación del Plan General:** `CURRENT` — conflicto interno identificado y mapeos TORO corregidos; `NEXT` — demostrar en Kross/WeSpeak/OTA la venta única, precios, cargos, idiomas y bloqueo recíproco antes de cerrar.
