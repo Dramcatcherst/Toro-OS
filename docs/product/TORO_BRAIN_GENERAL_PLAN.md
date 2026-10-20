@@ -29,6 +29,12 @@
 
 **GATES DE ACTIVACIÓN INDEPENDIENTES:** migración L3 revisada + rollback; principal server-only de privilegio mínimo sin acceso contable genérico; binding exacto de cuenta/entidad/moneda, autorización, heartbeat/recuperación y readback nativo; y piloto documental específicamente aprobado. Al corte observado, `runtime_write_enabled=false`, vínculo `READ_ONLY`, cero funciones L3 instaladas, cero ejecuciones/leases Alegra activos y ninguna transacción contable ejecutada. No activar cambiando una bandera ni ampliar roles/RLS para forzar la prueba. **NEXT:** validar primero la composición efectiva del runtime y el rol mínimo, sin desplegar ni modificar proveedor hasta superar sus gates.
 
+### Custodia Alegra — linaje de originales y derivados 20/10/2026
+
+**REGLA MATERIAL / CANDIDATO EN PR #228, SIN ADJUNTOS SUBIDOS:** la deduplicación de evidencia se realiza sobre bytes reales y el ámbito autorizado del documento; una vista derivada solo puede fusionar referencias de fuentes cuando conserva **el mismo hash del original padre**. Si el contenido derivado coincide pero dos originales tienen hashes diferentes, no se deben unir las fuentes ni perder su linaje; el paquete queda bloqueado para revisión (`CUSTODY_DERIVATIVE_PARENT_CONFLICT`). Esto no reemplaza la identificación y relectura del documento nativo Alegra, ni equivale a aprobación de Hacienda o respaldo independiente restaurado.
+
+**EVIDENCIA EN RAMA:** [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commits de pruebas [`cc038540`](https://github.com/Dramcatcherst/Toro-OS/commit/cc038540a4d5f955425ba3ec27d507cc6fd671b2) y corrección [`98233954`](https://github.com/Dramcatcherst/Toro-OS/commit/98233954b9926b57e2f616f57dc4e05589c10556), con lectura de hashes de archivos verificada. Aceptación CI del nuevo candidato pendiente al redactar; cero cambios en adjuntos/contabilidad/roles/deploy. Los receipts rutinarios permanecen en la evidencia privada existente.
+
 ## Gmail personal y limpieza controlada — 15/10/2026
 
 **Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General ÚNICO; la cuenta personal del propietario jamás se incorpora como buzón de la organización Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y ámbito; no una segunda copia masiva del buzón.
