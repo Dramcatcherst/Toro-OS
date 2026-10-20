@@ -11,6 +11,76 @@ GitHub conserva código/contratos; Supabase, datos operativos/identidad/permisos
 Reutilizar las cinco tareas `LOS50K-PORTAL-V2`, `LOS50K-DATA-COMPLETE`, `LOS50K-TRANSPORT`, `LOS50K-ROOMING`, `LOS50K-OPENCLAW`. No inventar responsables, estados ni fechas. Su presencia en Airtable no acredita dispatch canónico.
 Web base: `codex/website-progress-20260924`, SHA observado `c23a674ee1e9140f5bd9d9c82ce236411d966562`. Candidato: `los50s/align-installed-itinerary-20261007`, PR96 borrador. No merge ni publicación autorizados por esta ejecución.
 
+## Estado operativo vigente — V7, 15 octubre 2026
+
+Esta actualización es aditiva y prevalece sobre el snapshot V6 únicamente cuando describe el estado actual de PR96 y su preview. No convierte los diagnósticos históricos en hechos vigentes ni autoriza producción.
+
+- **CURRENT / superficie:** commit web `c5a2e2ae090933e524e608711f16e6c9c8d8a0c2`, deployment Vercel `dpl_D2U7yJy8fSDdfiYAG1qyoKXyGE36`, alias corto protegido `los50s-toro.vercel.app`, ruta `/los50sdecaro`; respuesta HTTP 200 y `noindex, nofollow` observados. Producción no cambió.
+- **CURRENT / experiencia TORO:** la familia Toro aparece como primer grupo familiar del piloto. TORO actúa como gerente, administrador y concierge digital; el contacto `+506 8844 4004` puede abrirse por WhatsApp, llamada o vCard. El álbum se explica como memoria familiar opcional y excluye pasaportes, comprobantes y documentos personales. Solo WhatsApp conserva logotipo de aplicación.
+- **CURRENT / límites:** TORO ordena, conserva, prepara y orienta. Mauricio, Dreamcatcher y responsables humanos confirman habitaciones, proveedores, pagos y decisiones sensibles. El preview no acredita identidad, consentimiento, receipt de WhatsApp, reserva, cobro ni autonomía.
+- **Verificación:** suite unitaria, TypeScript, lint, build, rutas, secretos, gobierno, medios, rendimiento, terminología y render estático aprobaron; navegador revisado a 390 px y escritorio sin desborde ni errores de consola. Vercel vinculó el deployment al SHA exacto.
+
+### Propiedad y mapeo canónico
+
+| Estado / tarea existente | Propietario funcional | Dependencias y criterio |
+| --- | --- | --- |
+| CURRENT / `LOS50K-PORTAL-V2` | Event Ops + TORO Brain | Superficie en PR96 y preview protegido; no equivale a liberación pública. |
+| NEXT P0 / `LOS50K-DATA-COMPLETE` | TORO Identity + Event Ops | Identidad individual, consentimiento, scope familiar privado, persistencia mínima y rechazo entre actores antes de compartir el directorio. |
+| NEXT P0 / `LOS50K-OPENCLAW` | TORO Comms + TORO Brain | Un actor autorizado, intención explícita, ACK/receipt y límites de acción; abrir WhatsApp no acredita envío. |
+| DEPENDENCY / `LOS50K-TRANSPORT` | RICO + Mauricio | Autoridad humana sobre modalidad, equipaje, cupo y proveedor; el concierge no confirma contratación. |
+| DEPENDENCY / `LOS50K-ROOMING` | RICO + Mauricio | Autoridad Kross/humana sobre capacidad y asignación; el concierge no convierte una preferencia en reserva. |
+
+**TARGET:** piloto familiar consentido y trazable sobre el mismo TORO, sin base, agente, memoria, plan ni scheduler paralelo. Los aprendizajes reutilizables se sanean antes de generalizarse y nunca incluyen datos familiares.
+
+**NEXT único:** cerrar y probar `LOS50K-DATA-COMPLETE`. No enviar invitaciones, quitar protección, abrir el directorio nominal, automatizar mensajes ni tratar el preview como producción antes de identidad, consentimiento y aislamiento verificados.
+
+**FUTURE:** probar `LOS50K-OPENCLAW` con un único actor autorizado y receipt; después medir preguntas resueltas, correcciones, tiempos y fallos. Por instrucción del propietario del16/10/2026, la continuidad horaria queda PAUSADA. El trabajo es a demanda y los candidatos de eventos no reactivan el scheduler. Un modo viaje futuro requiere periodo y autorización expresos; no acredita autonomía ni permiso para contactar participantes.
+
+## Estado operativo V8 — pausa y candidatos de eventos, 16 octubre 2026
+
+**DIRECTIVA DEL PROPIETARIO:** Los50deCaro no necesita revisión cada hora durante la preparación; considerar automatización cuando esté el viaje. Se pausó la automatización existente y se nombró «Los 50 de Caro · pausado · a demanda». Lectura posterior verificó PAUSED, mismo destino y regla histórica inactiva; no se creó otro scheduler ni sondeo. La pausa no borra el proyecto, sus cinco tareas ni la evidencia. Esta directiva prevalece sobre la posibilidad horaria del snapshot V7.
+
+**CURRENT:** pausa y perfil de operación verificados. **PREPARADO:** treinta reglas explícitas para candidatos de eventos. **NO ACREDITADO:** transporte de eventos, recepción externa, reactivación automática o autoapagado al terminar el viaje. Un heartbeat pausado conserva su antigua regla sin ejecutar revisiones; guardar estas reglas no conecta webhooks.
+
+Los candidatos son una petición expresa del dueño, nueva evidencia vinculada, RSVP revisado, cambio de itinerario, vencimiento sustentado y cambio técnico con SHA. Cada candidato requiere identidad, ámbito y revisión antes de trabajo; no es una autorización de acción externa. Hoy se trabaja únicamente a demanda. La futura ventana de viaje se decide con fechas y alcance comprobados, sin inferir una activación desde el calendario.
+
+### Treinta reglas del perfil operativo
+
+- **L50-EVT-01 — Modo actual a demanda:** Permanecer PAUSED; trabajar únicamente tras una solicitud puntual y autorizada en el contexto del proyecto.
+- **L50-EVT-02 — Reactivación específica:** Un «continuar», un superprompt o una auditoría global no autoriza reactivar el heartbeat.
+- **L50-EVT-03 — Modo viaje optativo:** Habilitar modo viaje solo tras instrucción expresa del propietario que indique alcance y periodo.
+- **L50-EVT-04 — Ventana explícita:** La futura activación debe tener inicio y fin, con zona America/Costa_Rica y zona del servicio cuando corresponda.
+- **L50-EVT-05 — Fechas sustentadas:** Contrastar fechas del viaje con evidencia vigente; no inferirlas de un chat antiguo o de una propuesta.
+- **L50-EVT-06 — Fin de ventana:** Al acabar un periodo expresamente habilitado, solicitar o ejecutar la pausa solo mediante la capacidad autorizada y acreditar el resultado; no afirmar que ya existe autoapagado.
+- **L50-EVT-07 — Solicitud del dueño:** Reconocer la orden expresa de Mauricio como candidato de trabajo puntual; resolver alcance y autorización antes de actuar.
+- **L50-EVT-08 — Nueva evidencia:** Considerar nueva evidencia solo si está vinculada a una tarea abierta del proyecto; un archivo irrelevante no dispara trabajo.
+- **L50-EVT-09 — RSVP revisado:** Un cambio RSVP es candidato pendiente de identidad y revisión; no confirma una reserva ni autoriza contacto.
+- **L50-EVT-10 — Cambio de itinerario:** Considerar un cambio de itinerario solo con origen, referencia y revisión identificados.
+- **L50-EVT-11 — Vencimiento auténtico:** Considerar un vencimiento solo con fecha, zona y fuente verificadas; no crear un recordatorio periódico sustituto.
+- **L50-EVT-12 — Cambio técnico concreto:** Para cambios de PR usar número y SHA exactos, consultando solo el delta pertinente; ningún cambio técnico reactiva el scheduler.
+- **L50-EVT-13 — Identificador mínimo:** El candidato conserva origen, identificador nativo y clave de tarea/proyecto; no genera otra tarea por defecto.
+- **L50-EVT-14 — Tipo y revisión:** Registrar tipo, revisión y fecha observada; distinguir un candidato de un evento aceptado por un transporte.
+- **L50-EVT-15 — Metadatos privados mínimos:** Mantener nombres, documentos y detalles financieros fuera del metadato genérico de disparo y del repositorio público.
+- **L50-EVT-16 — Deduplicación del evento:** Comparar origen+tipo+identificador+revisión con el último recibo autorizado antes de procesar.
+- **L50-EVT-17 — Orden de revisiones:** Un evento antiguo no puede revertir estado o cursor; contrastar con la revisión canónica actual.
+- **L50-EVT-18 — Último recibo:** Conservar la referencia del último evento procesado y su evidencia únicamente en el soporte permitido.
+- **L50-EVT-19 — Responsable único:** Reutilizar propietario/escritor y ejecución existentes; no arrancar otro worker para el mismo cambio.
+- **L50-EVT-20 — Comparación previa:** Comparar versión/hash inmediatamente antes de guardar cualquier cambio autorizado.
+- **L50-EVT-21 — Conflicto sin sobrescritura:** Ante concurrencia, conservar trabajo ajeno y cursor; dejar recibo solo donde esté permitido.
+- **L50-EVT-22 — Unidad puntual:** Cada activación manual resuelve una unidad con criterio de terminado; no abre una campaña de mejoras indefinida.
+- **L50-EVT-23 — Sin delta, espera:** Si no hay evidencia nueva ni una estrategia distinta justificable, detenerse sin trabajo artificial ni aviso repetido.
+- **L50-EVT-24 — Sin sondeo sustituto:** No crear otra tarea, monitor, recordatorio o consulta periódica que sustituya la revisión horaria pausada.
+- **L50-EVT-25 — Familia y hotel aislados:** Conservar Los50 como proyecto familiar; no llevar sus eventos, datos o compromisos a contabilidad u operación hotelera.
+- **L50-EVT-26 — Hechos distintos:** RSVP, reserva, comprobante, pago y compromiso son hechos distintos y requieren sus propias pruebas.
+- **L50-EVT-27 — Sin efectos implícitos:** Un candidato de evento no autoriza mensajes, invitaciones, pagos, contratación, reservas, permisos ni publicación.
+- **L50-EVT-28 — Recibo y prueba:** Un avance real conserva candidato/origen, cambio verificado, prueba, limitación y reversión.
+- **L50-EVT-29 — Superprompt puntual:** Dejar como máximo120palabras con un único NEXT y el evento o autorización que permitiría retomarlo; nunca ordenar reactivación automática.
+- **L50-EVT-30 — Estado honesto de disparadores:** Distinguir PAUSED, perfil preparado, evento conectado y recepción probada. Aquí no hay un trigger externo conectado por guardar este perfil.
+
+Son reglas documentadas y guardadas en un perfil pausado: no se cuentan como treinta funciones nuevas, resultados de negocio o disparadores operativos. El [contrato transversal de continuidad propuesto](https://github.com/Dramcatcherst/Toro-OS/pull/311) conserva el mismo Plan General y las autoridades existentes; su ampliación sigue en PR311.
+
+**Siguiente instrucción:** mantener PAUSED. Cuando Mauricio pida un trabajo concreto, continuar solo el NEXT propio de Los50 con el checkpoint y evidencia pertinentes; conservar identidad, consentimiento y aislamiento de LOS50K-DATA-COMPLETE como aceptación funcional pendiente. Activar modo viaje o conectar eventos es una decisión posterior, con periodo, transporte, permisos y recibo real. Ningún perfil genérico puede reactivar este caso.
+
 ## CURRENT — CI-01 cobertura corregida; CI-02 reparación probada fuera del commit
 
 PR96 conserva el arreglo de dos filtros en `.github/workflows/ci.yml` y seis pruebas de cobertura. El run original37728619852 dejó de ser omitido y falló en `npm ci` por entradas @emnapi inconsistentes. Los gates oficiales no se debilitaron.
