@@ -3,6 +3,9 @@ import { prepareAlegraWriteIntent } from "./alegra-writer-contract";
 import { createNativeAlegraPurchaseTransport, prepareNativeAlegraPurchaseBody, type AlegraNativeHttp } from "./alegra-native-purchase-transport";
 import { createAlegraNativeHttp } from "./alegra-native-http";
 import { executeApprovedAlegraIntent } from "./alegra-writer-executor";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { ToroWorkerRun } from "../control-plane/worker-runtime";
+import { executeGovernedAlegraPurchase } from "./alegra-writer-control-plane";
 
 const scope = { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity", propertyId: "fixture-property" };
 const binding = { scope, receiverTaxId: "fixture-receiver", mainCurrency: "USD", applicationVersion: "costaRica" };
@@ -271,5 +274,103 @@ describe("Native Alegra purchase transport candidate", () => {
     expect(result.ok).toBe(true);
     expect(renewLease).toHaveBeenCalledTimes(2);
     expect(store.requests.filter(r => r.method === "POST")).toHaveLength(1);
+  });
+});
+
+
+describe("Existing server-only Alegra purchase composition", () => {
+  const prepared = intent();
+  const ownerApproval = {
+    approvalId: "fixture-approval", approvalReceiptId: "fixture-approval-receipt",
+    actorId: "fixture-owner", approvedAt: now, expiresAt: "2026-10-11T09:15:00Z",
+    decisionId: "fixture-decision", decisionRevision: now, state: "approved" as const,
+    payloadHash: prepared.payloadHash,
+  };
+  const queuedRun = {
+    id: "fixture-run", orgId: scope.orgId, taskId: "fixture-task", decisionId: "fixture-decision",
+    runKey: "fixture-run-key", idempotencyKey: prepared.idempotencyKey,
+    correlationId: "fixture-correlation", traceId: null, actorKind: "human" as const,
+    actorRef: "fixture-owner", dotRef: null, agentRef: null, actionKey: prepared.action,
+    targetSystem: "alegra", executionAuthorityLevel: "L3" as const,
+    businessRisk: "High" as const, status: "queued" as const,
+    verificationStatus: "pending" as const, attemptCount: 0, maxAttempts: 1,
+    leaseOwner: null, fencingToken: 0, leaseExpiresAt: null,
+  } satisfies ToroWorkerRun;
+  const duplicateDecision = {
+    clear: true, state: "CLEAR" as const, exactMatches: [], probableMatches: [],
+    sourceStates: [
+      { source: "toro" as const, coverage: "complete" as const },
+      { source: "alegra" as const, coverage: "complete" as const },
+      { source: "receipt" as const, coverage: "complete" as const },
+    ], reasons: [],
+  };
+
+  function composedFixture() {
+    const native = fixture();
+    const rpc = vi.fn(async (name: string, args: Record<string, unknown>) => {
+      if (name === "toro_admit_approved_alegra_execution_v1") {
+        if (args.p_worker_id !== "fixture-worker" || args.p_approval_actor_id !== "fixture-owner")
+          return { data: null, error: null };
+        return { data: { runId: queuedRun.id, fencingToken: 1,
+          leaseExpiresAt: "2026-10-11T09:02:00Z",
+          preparedReceiptId: "fixture-prepared-receipt" }, error: null };
+      }
+      if (name === "toro_heartbeat_alegra_execution_v1") {
+        if (args.p_fencing_token !== 1 || args.p_prepared_receipt_id !== "fixture-prepared-receipt")
+          return { data: null, error: null };
+        return { data: { runId: queuedRun.id, fencingToken: 1,
+          leaseExpiresAt: "2026-10-11T09:02:00Z",
+          preparedReceiptId: "fixture-prepared-receipt" }, error: null };
+      }
+      if (name === "toro_finalize_alegra_execution_v1")
+        return { data: { runId: queuedRun.id, finalReceiptId: "fixture-durable-receipt",
+          runStatus: "succeeded", verificationStatus: "passed", replayed: false }, error: null };
+      throw new Error("Unexpected governed RPC");
+    });
+    const authorizeAdmission = vi.fn(async () => true);
+    const authorizeNativeCreate = vi.fn(async () => true);
+    const args = {
+      supabase: { rpc } as unknown as SupabaseClient,
+      run: queuedRun, workerId: "fixture-worker", now: () => now,
+      intent: prepared, approval: ownerApproval, duplicateDecision,
+      http: native.http, binding,
+      authorizeAdmission, authorizeNativeCreate,
+    };
+    return { native, rpc, authorizeAdmission, authorizeNativeCreate, args };
+  }
+
+  it.each([
+    { writerEnabled: false, nativeMutationEnabled: false },
+    { writerEnabled: true, nativeMutationEnabled: false },
+    { writerEnabled: false, nativeMutationEnabled: true },
+  ])("stays OFF without both independent runtime gates: %#", async flags => {
+    const ctx = composedFixture();
+    const outcome = await executeGovernedAlegraPurchase({ ...ctx.args, ...flags });
+    expect(outcome).toMatchObject({ ok: false, executedProviderMutation: false,
+      receipt: { verificationState: "NOT_ATTEMPTED", reasons: ["WRITER_DISABLED"] } });
+    expect(ctx.native.requests).toHaveLength(0);
+    expect(ctx.rpc).not.toHaveBeenCalled();
+    expect(ctx.authorizeAdmission).not.toHaveBeenCalled();
+    expect(ctx.authorizeNativeCreate).not.toHaveBeenCalled();
+  });
+
+  it("composes admission, two fenced heartbeats, one native POST, readback and durable finalization", async () => {
+    const ctx = composedFixture();
+    const outcome = await executeGovernedAlegraPurchase({
+      ...ctx.args, writerEnabled: true, nativeMutationEnabled: true,
+    });
+    expect(outcome).toMatchObject({ ok: true, executedProviderMutation: true,
+      receipt: { verified: true, verificationState: "VERIFIED", nativeId: "99",
+        durableReceiptId: "fixture-durable-receipt" } });
+    expect(ctx.rpc.mock.calls.map(call => call[0])).toEqual([
+      "toro_admit_approved_alegra_execution_v1",
+      "toro_heartbeat_alegra_execution_v1",
+      "toro_heartbeat_alegra_execution_v1",
+      "toro_finalize_alegra_execution_v1",
+    ]);
+    expect(ctx.native.requests.filter(request => request.method === "POST")).toHaveLength(1);
+    expect(ctx.native.requests.some(request => request.path === "/bills/99")).toBe(true);
+    expect(ctx.authorizeAdmission).toHaveBeenCalledTimes(1);
+    expect(ctx.authorizeNativeCreate).toHaveBeenCalledTimes(1);
   });
 });
