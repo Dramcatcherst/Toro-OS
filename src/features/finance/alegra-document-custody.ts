@@ -63,7 +63,17 @@ export function prepareAlegraDocumentCustody(input: CustodyInput): AlegraCustody
     if (original.role === "derived_preview" && !original.parentSha256) throw new Error("CUSTODY_DERIVATIVE_PARENT_REQUIRED");
     const hash = digest(original.bytes);
     const duplicate = assets.find(a => a.sha256 === hash && a.role === original.role && a.mime === original.mime);
-    if (duplicate) { duplicate.sourceRefs = [...new Set([...duplicate.sourceRefs, original.sourceRef.trim()])].sort(); continue; }
+    if (duplicate) {
+      // Identical preview bytes can be derived from distinct fiscal/source
+      // documents. Merging them would silently discard one parent hash and
+      // invent lineage for the combined source references. Refuse the ambiguous
+      // collision until the explicit one-to-many provenance contract exists.
+      if (duplicate.parentSha256 !== original.parentSha256) {
+        throw new Error("CUSTODY_DERIVATIVE_PARENT_CONFLICT");
+      }
+      duplicate.sourceRefs = [...new Set([...duplicate.sourceRefs, original.sourceRef.trim()])].sort();
+      continue;
+    }
     assets.push({ role: original.role, mime: original.mime, sha256: hash, sizeBytes: original.bytes.byteLength,
       sourceRefs: [original.sourceRef.trim()], parentSha256: original.parentSha256,
       path: `${scoped}/${input.documentKey}/${original.role}/${hash}.${ext}`,
