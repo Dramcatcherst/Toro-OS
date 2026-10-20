@@ -233,6 +233,7 @@ declare
   v_fencing_token bigint;
   v_claim_count integer;
   v_revocation text;
+  v_invalid_dispatch_worker text;
 begin
   select count(*)
     into v_claim_count
@@ -250,6 +251,34 @@ begin
   select * into v_context
   from public.alegra_l3_test_context
   where label = 'happy';
+
+  -- RED regression: signing and execution identities must be distinct.
+  -- The exception subtransaction rolls back any accidental admission.
+  foreach v_invalid_dispatch_worker in array
+    array[v_context.actor_id, '  ' || upper(v_context.actor_id) || '  ']
+  loop
+    begin
+      perform public.toro_admit_approved_alegra_execution_v1(
+        '10000000-0000-4000-8000-000000000001',
+        v_context.run_id,
+        v_invalid_dispatch_worker,
+        0,
+        v_context.approval_receipt_id,
+        v_context.approval_id,
+        v_context.actor_id,
+        v_context.approved_at,
+        v_context.expires_at,
+        v_context.payload_hash,
+        v_context.decision_revision::text,
+        120
+      );
+      raise exception 'alegra_l3_signer_worker_alias_was_admitted';
+    exception when others then
+      if sqlerrm <> 'alegra_l3_worker_must_be_distinct_from_signer' then
+        raise;
+      end if;
+    end;
+  end loop;
 
   v_result := public.toro_admit_approved_alegra_execution_v1(
     '10000000-0000-4000-8000-000000000001',
