@@ -4610,6 +4610,7 @@ Canonical subordinate contract:
 Rules:
 - do not mark an expense DONE merely because the file exists in Dropbox;
 - before any Alegra write, run duplicate checks on issuer, document number, date, amount, currency and existing references;
+- **Dreamcatcher — moneda de compras (confirmación del propietario, 20/10/2026):** el hotel opera en CRC y USD, pero sus compras habituales son en CRC. Mantener moneda nativa por factura y pago, sin heredar USD de ventas ni del endpoint de moneda predeterminada; cualquier compra documental en USD requiere origen explícito y revisión separada, sin FX automático. Documento sin moneda acreditable queda BLOQUEADO; el Writer Alegra sigue OFF. Contrato subordinado: `docs/product/TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md`, sección 8.3; PR #228, fixture CRC sin despliegue.
 - if already represented in Alegra, reconcile/link evidence rather than duplicate the expense;
 - attach evidence in Alegra when supported; otherwise preserve the original in Dropbox and retain a durable reference;
 - owner-paid expenses require verified business purpose and correct reimbursement/shareholder-current-account treatment;
