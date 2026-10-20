@@ -112,6 +112,23 @@ describe("Alegra atomic L3 Control Plane admission", () => {
     expect(await gate.persistReceipt(receipt)).toBe("fixture-verified-receipt");
   });
 
+  it.each(["exact", "upper-and-spaced"] as const)(
+    "rejects a dispatch worker that reuses the human signer identity (%s) before the admission RPC",
+    async alias => {
+      const store = fixture();
+      const workerId = alias === "exact" ? approval.actorId : "  " + approval.actorId.toUpperCase() + "  ";
+      const authorize = vi.fn(async () => true);
+      const gate = createAlegraControlPlaneGate({
+        supabase: store.client, run, workerId,
+        now: () => "2026-10-11T00:30:00Z", authorize,
+      });
+      expect(await gate.beforeDispatch({ intent, approval })).toBe(false);
+      expect(store.calls).toHaveLength(0);
+      expect(store.records).toHaveLength(0);
+      expect(authorize).not.toHaveBeenCalled();
+    },
+  );
+
   it("admits and marks the run in one RPC before provider dispatch", async () => {
     const store = fixture();
     const gate = createAlegraControlPlaneGate({ supabase: store.client, run, workerId: "fixture-worker", now: () => "2026-10-11T00:30:00Z", authorize: async () => true });
