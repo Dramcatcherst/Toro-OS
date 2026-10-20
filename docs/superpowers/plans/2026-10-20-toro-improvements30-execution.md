@@ -19,7 +19,7 @@ Usar `operations.tasks` para trabajo, los contratos existentes en `operations.kn
 
 Aplicado en esta intervención:
 - Matriz de 30 IDs únicos con referencias a tareas existentes; 0 rutas inválidas, 0 aceptaciones incompletas, 0 dependencias inexistentes y 0 ciclos.
-- Reconfiguración de la automatización existente **Dreamcatcher · Ejecución del Plan**; conserva ejecución cada seis horas, zona America/Costa_Rica, sin scheduler nuevo.
+- Reconfiguración de la automatización existente **Dreamcatcher · Ejecución del Plan**: el propietario sustituyó la frecuencia inicial de seis horas por ejecución **cada hora** el 20/10/2026, zona America/Costa_Rica, sin scheduler nuevo. La respuesta de configuración se verificó; no acredita futuras ejecuciones.
 - Uso real del Control Plane para el cambio documental: intento, claim, fencing, transición, escritura, readback y receipt.
 - Pruebas negativas sobre ese intento propio: claim competidor rechazado y fencing obsoleto rechazado. Esta prueba acotada NO certifica todos los flujos, proveedores o permisos de TORO.
 
@@ -96,7 +96,7 @@ M17/M18 se registran bajo la tarea coordinadora existente como alcance a enrutar
 6. Ante bloqueo, conservar motivo y seguir un resultado independiente elegible. No reactivar frentes pausados ni tomar trabajo de otro ejecutor.
 7. Cerrar con HECHO/BLOQUEADO/SIGUIENTE, fuentes, fecha, moneda y denominador. No notificar otra vez el mismo bloqueo sin novedad.
 
-**Cadencia conservada:** cada seis horas, 02:00/08:00/14:00/20:00 Costa Rica como horarios programados, no garantía de inicio/terminación exactos. **Presupuesto por corrida:** máximo 12 minutos observados o 40 llamadas útiles; hasta dos reintentos de lectura transitoria; cooldown de fuente de 10 minutos salvo nueva evidencia/P0. Respetar límites más estrictos del ejecutor vigente. No autoelevar frecuencia, gasto o permisos.
+**Cadencia vigente por instrucción expresa del propietario del 20/10/2026:** cada hora, al minuto 00, zona America/Costa_Rica. Sustituye la programación anterior de 02:00/08:00/14:00/20:00; la programación no garantiza inicio/terminación exactos ni resultados. **Presupuesto por corrida:** máximo 12 minutos observados o 40 llamadas útiles; hasta dos reintentos de lectura transitoria; cooldown de fuente de 10 minutos salvo nueva evidencia/P0. Respetar límites más estrictos del ejecutor vigente. No autoelevar frecuencia, gasto o permisos.
 
 ## Ejecución inicial y siguiente lote
 
@@ -107,11 +107,11 @@ M17/M18 se registran bajo la tarea coordinadora existente como alcance a enrutar
 - [x] Actualizar scheduler existente y verificar respuesta de configuración.
 - [x] Probar rechazo de claim competidor y fencing obsoleto en el intento propio.
 - [x] Crear receipt acotado: `fb2151e0-3e4c-45a7-9282-6c9cfb1e6dcb`.
-- [ ] Verificar frescura/cobertura actual del mirror Kross sin reactivar API pagada; guardar cobertura real, no promesa de carga completa.
+- [x] Diagnóstico inicial de frescura/cobertura del mirror registrado el 20/10/2026 a las 13:44 Costa Rica: no apto para respuestas operativas actuales y cobertura total PMS desconocida. Consumir `improvement_execution_20261020.last_checkpoint`; no repetir el diagnóstico completo sin nueva evidencia. La carga/sincronización permanece pendiente, sin activar API pagada.
 - [ ] Consumir evidencia vigente de identidad/recepción y seleccionar un flujo E2E elegible; no repetir provisión de cuentas.
 - [ ] Obtener baseline de tiempos y conciliación multimoneda con fuentes reales; no inferir resultados económicos.
 
-Las marcas corresponden al alcance indicado; las seis iniciales son gobernanza/configuración y la prueba acotada no convierte las treinta mejoras en software operativo.
+Las marcas corresponden al alcance indicado: gobernanza/configuración, pruebas y diagnóstico acotados no convierten las treinta mejoras en software operativo.
 
 ## Seguridad, reversión y validación de entrega
 
