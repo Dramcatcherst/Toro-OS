@@ -5,7 +5,7 @@ export type KrossTransportEvidence = {
   sourceAsOf: string;
   observedAt: string;
   sourceReference: string;
-  sourceHash: string;
+  recordHash: string;
 };
 
 export type KrossReservationCandidate = {
@@ -60,7 +60,9 @@ export type KrossNormalizationIssue = {
     | "checkout_before_checkin"
     | "future_source_time"
     | "future_observed_time"
+    | "source_after_observation"
     | "missing_source_hash"
+    | "invalid_source_hash"
     | "missing_source_reference"
     | "transport_not_authorized"
     | "transport_not_direct"
@@ -87,6 +89,11 @@ function nonNegativeInteger(value: number | null | undefined) {
   return Number.isInteger(value) && Number(value) >= 0 ? Number(value) : null;
 }
 
+function canonicalSha256(value: string | null | undefined) {
+  const normalized = clean(value);
+  return normalized && /^[a-f0-9]{64}$/.test(normalized) ? normalized : null;
+}
+
 function sourceRecordId(propertyId: string, externalReservationId: string) {
   // The database also has a global source-record unique index. Namespacing the
   // external id by property keeps Kross mirror identity tenant/property-safe
@@ -106,6 +113,8 @@ export function normalizeKrossReservationCandidate(
   const nowMs = Date.parse(nowIso);
   const sourceAsOfMs = Date.parse(evidence.sourceAsOf);
   const observedAtMs = Date.parse(evidence.observedAt);
+  const recordHash = clean(evidence.recordHash);
+  const canonicalRecordHash = canonicalSha256(evidence.recordHash);
 
   if (!externalReservationId) {
     issues.push({
@@ -147,10 +156,26 @@ export function normalizeKrossReservationCandidate(
     });
   }
 
-  if (!clean(evidence.sourceHash)) {
+  if (
+    Number.isFinite(sourceAsOfMs) &&
+    Number.isFinite(observedAtMs) &&
+    sourceAsOfMs > observedAtMs
+  ) {
+    issues.push({
+      code: "source_after_observation",
+      message: "Source timestamp cannot be later than its observation timestamp.",
+    });
+  }
+
+  if (!recordHash) {
     issues.push({
       code: "missing_source_hash",
       message: "A source checksum/hash is required for idempotency evidence.",
+    });
+  } else if (!canonicalRecordHash) {
+    issues.push({
+      code: "invalid_source_hash",
+      message: "Source checksum must be a 64-character SHA-256 hexadecimal value.",
     });
   }
 
@@ -187,9 +212,13 @@ export function normalizeKrossReservationCandidate(
     isDateOnly(candidate.checkIn) &&
     isDateOnly(candidate.checkOut) &&
     candidate.checkOut >= candidate.checkIn &&
+    Number.isFinite(nowMs) &&
     Number.isFinite(sourceAsOfMs) &&
     Number.isFinite(observedAtMs) &&
-    clean(evidence.sourceHash) !== null &&
+    sourceAsOfMs <= observedAtMs &&
+    sourceAsOfMs <= nowMs &&
+    observedAtMs <= nowMs &&
+    canonicalRecordHash !== null &&
     clean(evidence.sourceReference) !== null;
 
   if (!structurallyValid || !externalReservationId || !orgId || !propertyId) {
@@ -241,7 +270,7 @@ export function normalizeKrossReservationCandidate(
     source_record_id: sourceRecordId(propertyId, externalReservationId),
     snapshot_as_of: evidence.sourceAsOf,
     last_synced_at: evidence.observedAt,
-    source_hash: evidence.sourceHash.trim(),
+    source_hash: canonicalRecordHash,
     data_quality_status: liveEvidence ? "verified" : "review",
   };
 

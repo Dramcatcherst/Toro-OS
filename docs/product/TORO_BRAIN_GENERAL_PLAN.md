@@ -7,6 +7,668 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+## OpenClaw/WhatsApp — cierre de prueba Los 50 de Caro y resiliencia — 17/10/2026
+
+**Decisión:** continuar la tarea existente
+`OPENCLAW-WHATSAPP-CHROME-RESILIENCE-01` y el heartbeat existente
+`toro-control-operativo-cada-30-minutos`; no crear otra tarea, bot, cola,
+runtime ni scheduler. La prueba queda limitada al WhatsApp personal verificado
+de Mauricio, terminado en `3792`. No se autorizó ni realizó envío a Carolina,
+inscritos, huéspedes o grupos.
+
+**CAUSA COMPROBADA:** `voice_parent_unconfirmed (outcome uncertain)` pertenece
+a la coordinación Pumba/Codex. No aparece en logs, cola, ingresos ni ejecuciones
+de OpenClaw y, antes del envío, tampoco existían los Sentinel ni el texto de Los
+50 de Caro en esos registros. Por tanto, la orden de voz no había llegado a la
+ruta de envío y ese error no probaba una desconexión de WhatsApp. En paralelo,
+el watchdog local tenía una falla real e independiente: Task Scheduler terminaba
+la comprobación con `0x8007042B` porque su límite de 5 minutos era menor que su
+peor tiempo acotado de verificación; además, el keepalive se comprobaba solo
+cuando el puerto ya estaba caído y tres reintentos automáticos amplificaban cada
+fallo equivalente. Los reinicios de WSL observados incluyeron
+un `SIGTERM` al Gateway, pero el iniciador exacto de ese `SIGTERM` permanece
+desconocido; no se atribuye a WhatsApp ni se hicieron reinicios, reinstalaciones
+o cambios de credenciales a ciegas.
+
+**HECHO / PRUEBA ÚNICA:** se conciliaron primero tareas, cola y auditoría: cero
+órdenes previas de esta campaña alcanzaron OpenClaw y no había una entrada
+pendiente o con `platform_send_started`; el primer intento ambiguo tampoco dejó
+`LastOutboundAt`, entrada de cola ni auditoría, por lo que el único reintento fue
+seguro. Se recuperaron del chat Pumba los Sentinel
+`Sentinel_1afa089c9cb88191a6aafd07275c7908` y
+`Sentinel_05f1fc629e94819194d09bede5edb4d4`; el primero se personalizó como
+“Mau” y a ambos se les quitaron rótulos de ejemplo/borrador y notas internas.
+Se usó la portada oficial existente, 1122×1402, 291461 bytes, SHA-256
+`D794FCD0440077FD6E78E1861B3E1F4F922F00A42DD553187C7022B2AA88BA8A`;
+no se inventó ni sustituyó la imagen.
+
+WhatsApp aceptó exactamente dos componentes para el único destino verificado:
+
+- portada oficial + primer mensaje: 17/10/2026 15:10:08 CR, provider ID
+  `3EB051D5E7E6527958A1C1`;
+- segundo mensaje: 17/10/2026 15:10:46 CR, provider ID
+  `3EB019FB3277E68D0C0A50`.
+
+**ESTADOS DEL PROVEEDOR:** aceptación = **HECHO** para ambos IDs; entrega al
+dispositivo = **DESCONOCIDO**; lectura = **DESCONOCIDO**. El journal conserva
+los dos `Sent message`, pero no expone un evento posterior de `delivered` o
+`read`. Un ID aceptado no se contará como entrega ni lectura y no se reenviará
+por falta de esos estados.
+
+**CINCO MEJORAS APLICADAS:** (1) arranque en frío con consulta del estado de la
+unidad y gracia de hasta 150 segundos, sin reiniciar un Gateway que ya está
+`active/activating`; (2) salud de WhatsApp, nodo Windows y relay Chrome separada,
+sin usar un fallo de canal/relay para reiniciar el Gateway; (3) el lifecycle
+vivo `connected/healthy/ready` prevalece sobre una advertencia transitoria, que
+queda registrada sin falsear el estado; (4) el mismo watchdog conserva intervalo
+de 5 minutos y `IgnoreNew`, pero ahora asegura el keepalive antes de cualquier
+llamada WSL, tiene límite de 15 minutos, no admite terminación forzada ni se
+detiene por batería; se eliminaron los reintentos automáticos equivalentes y el
+script de restauración reproduce esos controles; (5) conciliación e idempotencia previa al envío,
+destino protegido único, huella de imagen, IDs separados y estados de
+aceptación/entrega/lectura explícitos.
+
+**VERIFICACIÓN DE RUNTIME:** Gateway de usuario activo, puerto 18789 disponible,
+cuenta `toro-interno` configurada, enlazada, ejecutándose, conectada,
+`healthy/ready`; el contacto protegido y el directorio vivo coinciden en el
+sufijo `3792`. El watchdog y su restaurador pasan el parser. La ejecución
+automática iniciada a las 15:50:50 cerró con resultado `0` y un nuevo
+`health-check` a las 15:52:31: `gateway=true`, `keepAlive=true` y
+`whatsapp=true`; WSL conservó el mismo boot ID. `extensionRelay=false` y
+`windowsNode=false` durante ese arranque en frío. Una segunda ejecución en
+caliente, iniciada a las 15:55:51, también cerró con resultado `0`; su
+`health-check` de las 15:56:15 registró `gateway`, `keepAlive`, `whatsapp`,
+`extensionRelay` y `windowsNode` todos en `true`. Una advertencia transitoria
+de canal quedó auditada sin reinicio. Esto prueba recuperación inmediata entre
+ciclos, no el E2E de ambos perfiles Chrome, el burn-in ni autonomía sin PC.
+El heartbeat existente quedó `ACTIVE`, cada hora y en el mismo hilo; su prompt
+prohíbe reenviar estos IDs, exige conciliar cola/recibos primero y se pausará al
+cumplir el criterio final, sin crear otro scheduler.
+
+**CONTINUACIÓN / BURN-IN Y COORDINACIÓN — 17/10/2026, 17:06 CR:** desde
+las 15:56:15 hasta las 17:06:06 el watchdog registró 15 comprobaciones: 14
+quedaron completamente verdes para Gateway, keepalive, WhatsApp, relay y nodo
+Windows. La única muestra degradada fue la de las 17:02:08 durante una ventana
+de mantenimiento de almacenamiento ya existente. La automatización
+`maufertoro-compactaci-n-segura-de-ubuntu` había comprobado que esta tarea no
+estaba activa, pausó temporalmente watchdog/keepalive, detuvo limpiamente el
+Gateway y terminó Ubuntu para intentar compactar el VHDX. La compactación no se
+ejecutó porque el archivo no obtuvo bloqueo exclusivo en 30 segundos; la misma
+ventana restauró las tareas, la bandeja y el Gateway. El ciclo de las 17:06:06
+volvió a registrar los cinco indicadores en `true`. Por tanto, el `SIGTERM` de
+las 17:00 queda conciliado como mantenimiento deliberado de otra tarea, no como
+falla espontánea de WhatsApp ni acción del watchdog.
+
+Para evitar una segunda interrupción equivalente, la automatización de
+compactación quedó `PAUSED` y conserva el fallo y la condición de no reintentar
+sin una estrategia distinta y una ventana posterior coordinada. El heartbeat
+principal de resiliencia continúa `ACTIVE`. La lectura viva posterior confirmó
+`toro-interno` habilitado, configurado, enlazado, ejecutándose, conectado,
+`healthy/ready`, un nodo Windows conectado y el puerto del Gateway disponible.
+Computer Use expuso tres conexiones Chrome actuales (`TORO`, `Your Chrome` y
+`dreamcatcherhotel.com`); dos pestañas públicas se renderizaron y el tercer
+perfil respondió con su metadato de nueva pestaña, sin navegación ni escritura.
+Esto prueba acceso de Computer Use a esos perfiles, pero no sustituye el E2E ni
+la reconexión del relay OpenClaw por perfil. No hubo otro envío y los estados
+de entrega y lectura de los dos IDs aceptados siguen **DESCONOCIDOS**.
+
+**BURN-IN LOCAL DE 24 HORAS CERRADO — 18/10/2026, 16:51 CR:** desde
+17/10/2026 15:56:15 hasta 18/10/2026 16:51:08 el mismo watchdog registró 300
+`health-checks`: 299 completamente verdes para Gateway, keepalive, WhatsApp,
+relay y nodo Windows. La única muestra degradada siguió siendo la de las
+17:02:08, ya conciliada arriba con la ventana deliberada de mantenimiento; no
+apareció otra degradación. La tarea cerró su ejecución de las 16:50:51 con
+resultado `0`, el Gateway de usuario seguía `active` y WSL conservó el mismo
+boot ID `781530b0-ec63-4174-81d5-8ccf09bfddce`. No hubo otro envío, reinicio,
+cambio de credenciales ni ampliación de permisos. Este gate prueba estabilidad
+local con la PC encendida; no prueba entrega/lectura de WhatsApp, E2E del relay
+por perfil ni operación independiente de la PC.
+
+**DECISIÓN AUTORIZADA — 19/10/2026, 15:30 CR:** Mauricio autorizó alinear en
+este mismo Plan General la arquitectura y la comparación de costos para alojar
+OpenClaw/WhatsApp 24/7 en la nube. Estado de esta unidad:
+**PREPARADO / NO CONTRATADO / NO MIGRADO / NO PRODUCCIÓN**. La autorización no
+incluye crear cuenta, contratar, instalar, trasladar sesión o credenciales,
+cambiar DNS/permisos/producción, apagar la PC ni ejecutar mensajes o pruebas
+E2E.
+
+**SELECCIÓN AUTORIZADA — 19/10/2026:** Mauricio eligió **AWS Lightsail,
+región Virginia, con tope máximo de USD 35/mes**. Esta decisión fija la opción
+de preparación y evita reabrir la comparación en cada pasada. No autoriza
+crear cuenta, registrar medio de pago, contratar recursos, instalar,
+transferir credenciales o sesión WhatsApp, cambiar producción ni efectuar el
+cutover.
+
+**HECHO — corte vivo 19/10/2026, 15:27 CR:** OpenClaw `2026.10.1`, Ubuntu/WSL
+y `openclaw-gateway.service` estaban activos; el Gateway quedó
+`active/running`, `NRestarts=0`, los puertos locales 18789/18799 escuchaban y
+la cuenta `toro-interno` estaba habilitada, configurada, enlazada,
+ejecutándose, conectada, `healthy/ready`, sin advisory vigente. El nodo Windows
+estaba conectado, OpenClaw Companion ejecutándose y la pasada del watchdog de
+las 15:25:51 terminó con resultado `0`; el `health-check` de las 15:26:05 dejó
+Gateway, keepalive, WhatsApp, relay y nodo en `true`. El relay OpenClaw para el
+perfil `chrome` estaba `running/cdpReady/pageReady`, pero devolvió cero pestañas:
+Chrome por OpenClaw todavía no tiene E2E utilizable. No se envió, reinició,
+emparejó, instaló ni modificó nada durante esta lectura.
+
+**ARQUITECTURA CLOUD RECOMENDADA:** primera migración controlada a una sola VM
+Linux siempre activa, inicialmente AWS Lightsail en Virginia con 2 vCPU, 4 GB
+RAM y 80 GB SSD. Ejecutar OpenClaw como usuario no administrador y servicio
+`systemd`, fijando la versión verificada al hacer el cambio; no combinar
+migración y actualización. Conservar estado y sesión en disco persistente
+cifrado, secretos fuera de repo/chat/logs, permisos owner-only, backup cifrado
+con hash y restauración probada. Gateway y relay permanecen privados; 18789 y
+18799 no se publican a Internet. Administración solo mediante canal privado o
+SSH restringido, firewall de mínimo privilegio, logs sin PII y readback de
+salud. El host local queda intacto como rollback frío, pero nunca habrá dos
+Gateways/sesiones WhatsApp activos a la vez.
+
+Chromium remoto queda fuera del primer cutover: WhatsApp/OpenClaw no necesita
+los perfiles Chrome locales para permanecer activo. Si una tarea aprobada exige
+navegador residente, se habilitará un perfil Chromium Linux separado en la VM y
+se subirá a 8 GB; los perfiles/extensiones Windows actuales no se transfieren ni
+funcionan con la PC apagada. Una VM Windows independiente se considerará solo
+si una aceptación posterior demuestra que Chromium Linux no cubre el dominio
+autorizado.
+
+**UNIDAD A CERRADA — especificación de lanzamiento, 19/10/2026:** sin entrar a
+una cuenta AWS ni crear recursos, queda fijado el candidato exacto:
+
+- región **US East (N. Virginia), `us-east-1`**; la zona se seleccionará entre
+  las que Lightsail muestre al contratar, porque AWS advierte que no siempre
+  expone todas las zonas;
+- nombre reservado `toro-openclaw-primary-us-east-1`, plataforma Linux/Unix,
+  arquitectura `x86_64`, red dual-stack y un único IPv4 estático adjunto; el
+  IPv4 no se crea antes del gate de contratación;
+- plan **Medium-4GB Linux with public IPv4**: USD 24/mes máximo, 2 vCPU, 4 GB
+  RAM, SSD 80 GB y 4 TB de transferencia incluidos; AWS publica 20% de CPU
+  baseline para este bundle. Quedan USD 11 bajo el tope para snapshot e
+  impuestos, todavía no garantizados;
+- imagen **OS Only → Ubuntu 24 LTS**, con IMDSv2 obligatorio. No se usará el
+  blueprint OpenClaw de AWS en el primer corte: aunque AWS recomienda 4 GB,
+  ese blueprint incorpora su propio ciclo/versionado, Bedrock/Marketplace y
+  rotación diaria del token de navegador; combinarlo con el traslado impediría
+  preservar la versión ya probada y ampliaría permisos y costos;
+- runtime fijado al corte: Node.js `v24.19.0` y **OpenClaw `2026.10.1`
+  (`e178c39`)**, instalados de forma reproducible y sin auto-update durante el
+  cutover. El estado local agregado mide 7,673,215,397 bytes; el SSD de 80 GB
+  deja margen material, sujeto al inventario mínimo y exclusiones de la unidad
+  D;
+- `systemd` administrará un solo Gateway. Los puertos 18789/18799 permanecerán
+  en loopback; la instancia no publicará dashboard, Gateway ni relay. La regla
+  final de administración/SSH se fija en la unidad C y no se abre ahora.
+
+Fuentes oficiales: [regiones de
+Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-regions-and-availability-zones-in-amazon-lightsail.html),
+[bundles y
+transferencia](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-bundles.html),
+[CPU
+baseline](https://docs.aws.amazon.com/lightsail/latest/userguide/baseline-cpu-performance.html),
+[Ubuntu 24 y blueprint
+OpenClaw](https://docs.aws.amazon.com/lightsail/latest/userguide/compare-options-choose-lightsail-instance-image.html),
+[guía oficial de OpenClaw en
+Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-quick-start-guide-openclaw.html)
+y [IPv4
+estático](https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-static-ip-addresses-in-amazon-lightsail.html).
+Resultado: **PREPARADO / NO CREADO / COSTO USD 0**.
+
+**UNIDAD B CERRADA — presupuesto y alarmas, 19/10/2026:** el tope de USD 35
+se gobierna como presupuesto mensual de infraestructura AWS, separado del uso
+de modelos/API. La envolvente preparada es: VM Lightsail USD 24; snapshots
+hasta USD 3 equivalentes a 60 GB-mes; reserva de impuestos/variación USD 4; y
+USD 4 de margen de emergencia. IPv4 estático adjunto, presupuestos y alertas
+no agregan costo; no se habilitan AWS Budget Reports, Bedrock, Marketplace,
+load balancer, base administrada, CDN, DNS pago ni almacenamiento adicional.
+
+El presupuesto propuesto `TORO-OpenClaw-Infrastructure` será mensual, USD 35,
+costo no combinado e **incluyendo impuestos**. Tendrá cuatro avisos, todavía
+no creados ni asociados a un destinatario: (1) forecast USD 24.50 / 70%:
+revisar proyección; (2) actual USD 28 / 80%: congelar extras; (3) actual o
+forecast USD 31.50 / 90%: decisión humana antes de cualquier gasto nuevo; (4)
+actual USD 35 / 100%: incidente de costo y prohibición de ampliar. Bedrock y
+Marketplace tendrán un presupuesto separado de detección por USD 1 si alguna
+vez se autorizan; por ahora su costo esperado y autorizado es USD 0.
+
+Estas alarmas no son un limitador instantáneo: AWS Budgets se actualiza hasta
+tres veces al día, normalmente cada 8–12 horas, y el gasto puede continuar tras
+el aviso. Tampoco se configura una acción automática que detenga o borre la VM:
+un bundle Lightsail continúa facturando mientras exista y un borrado automático
+sería destructivo. El control real del tope es no agregar servicios, conservar
+la envolvente de USD 31 y mantener USD 4 de margen; cualquier factura,
+impuesto, snapshot u overage que proyecte superar USD 31.50 exige decisión de
+Mauricio. La transferencia incluida es 4 TB; el exceso saliente en `us-east-1`
+cuesta USD 0.09/GB. Los snapshots cuestan USD 0.05/GB-mes, guardan siete copias
+automáticas y los sucesivos cobran solo bloques cambiados. Con el estado local
+actual de 7.67 GB, una primera copia equivalente costaría aproximadamente USD
+0.38/mes; el sobre de USD 3 es conservador, no una factura garantizada.
+
+Fuentes oficiales: [AWS Budgets y costo de
+monitoreo](https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/),
+[frecuencia y límites de las
+alertas](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html),
+[snapshots Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-faq-snapshots.html),
+[optimización de snapshots
+sucesivos](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-frequently-asked-questions-faq-billing-and-account-management.html)
+y [transferencia/overage](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-faq-data-transfer-allowance.html).
+Resultado: **PREPARADO / ALARMAS NO CREADAS / COSTO USD 0**.
+
+**COMPARACIÓN DE COSTOS — precios oficiales consultados 19/10/2026, USD/mes:**
+
+| Opción | Núcleo Linux 4 GB | Linux 8 GB con Chromium residente | Ventaja y límite |
+| --- | ---: | ---: | --- |
+| [AWS Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-bundles.html) | $24; 2 vCPU, 80 GB | $44; 2 vCPU, 160 GB | **Recomendada:** costo fijo, región Virginia y menor riesgo operativo; snapshots se cobran aparte por GB usado. |
+| [DigitalOcean Basic](https://www.digitalocean.com/pricing/droplets) | $24; 2 vCPU, 80 GiB | $48; 4 vCPU, 160 GiB | Operación simple y más CPU para navegador; backup semanal añade 20%. |
+| [Hetzner CPX Europa](https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/) | $23.59 incluido IPv4; 2 vCPU, 4 GB, 80 GB | $42.59 incluido IPv4; 4 vCPU, 8 GB, 160 GB | Menor costo regular, pero mayor distancia y residencia europea. CX23 puede bajar a $7.09 con IPv4, pero tiene disponibilidad limitada y no se presupuesta como garantizado. |
+
+Los montos no incluyen impuestos, uso de modelos/API, exceso de transferencia,
+dominio ni snapshots. El backup semanal de
+[DigitalOcean](https://docs.digitalocean.com/products/backups/details/pricing/)
+y los backups de [Hetzner](https://docs.hetzner.com/cloud/billing/faq/) agregan
+20% al servidor; [AWS Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-faq-snapshots.html)
+cobra snapshots a $0.05 por GB-mes almacenado.
+El tope seleccionado para la primera VM AWS es **$35/mes**; cuenta,
+facturación y contratación continúan pendientes de autorización específica.
+
+**GATES ANTES DE EJECUTAR:** (1) **HECHO:** AWS Lightsail/Virginia/USD 35;
+(2) autorizar cuenta/facturación por separado; (3) auditar el host con el runbook existente;
+(4) **HECHO:** Ubuntu 24 LTS OS Only + Node `v24.19.0` + OpenClaw
+`2026.10.1`; (5) generar backup cifrado, hash y prueba de
+restauración sin copiar secretos al repo/chat; (6) preparar la VM sin sesión
+WhatsApp; (7) autorizar posteriormente la ventana de cutover; (8) detener el
+host local antes de activar el cloud, migrar una sola sesión y verificar health,
+reinicio y un inbound/outbound auténtico únicamente con Mauricio, sin duplicado;
+(9) completar burn-in y una prueba controlada con la PC apagada. Ante cualquier
+gate fallido: detener cloud y reactivar el estado local respaldado.
+
+**MEJORA DEL HEARTBEAT — 19/10/2026:** el mismo timer
+`toro-control-operativo-cada-30-minutos` conserva frecuencia horaria y ahora
+opera con 30 controles numerados: alcance canónico, no duplicación, delta desde
+el último corte, conciliación previa, hash/escritor único, priorización por
+impacto, una unidad homogénea, criterio de terminado, lectura antes de cambio,
+gate de costo, selección AWS fijada, tope USD 35, costo estimado separado de
+factura, fuentes oficiales, versión fijada, mínimo privilegio, custodia de
+secretos, puertos privados, instancia única, backup restaurable, no reenvío de
+WhatsApp, envíos bajo autorización, Chrome como capacidad separada, rollback,
+escalera de aceptación, readback, estados probatorios, checkpoint único,
+silencio sin novedad y cursor/NEXT progresivo. El timer puede seguir preparando
+unidades documentales y verificaciones locales sin costo; no puede contratar ni
+migrar.
+
+**UNIDAD C CERRADA — identidad, red y custodia, 19/10/2026:** se diseñó el
+perímetro sin entrar a AWS, crear identidades, reglas o recursos, instalar
+software, mover secretos ni generar costo. La postura elegida es estricta para
+un host remoto con mensajería y datos privados: credenciales temporales para
+personas, un usuario Linux de runtime sin login ni sudo, administración por el
+tailnet privado existente y cero puertos OpenClaw públicos.
+
+**Matriz de identidad y permisos preparada:**
+
+| Principal | Permitido en el corte | Denegado explícitamente |
+| --- | --- | --- |
+| Usuario raíz AWS | Recuperación de cuenta y facturación excepcional, con MFA; sin uso cotidiano. | Sin claves de acceso, CLI, instalación, SSH, sesión WhatsApp ni operación normal. |
+| Mauricio administrador | Acceso humano federado/temporal con MFA; crear y revisar únicamente la VM Lightsail, IPv4 estático, firewall, snapshot y presupuesto ya autorizados cuando exista el gate de contratación. | Sin credenciales permanentes; sin Bedrock, Marketplace, load balancer, Route 53, RDS, CDN, recursos extra, ampliación de IAM ni gasto fuera del tope. |
+| Bootstrap Linux | Usuario administrativo temporal de Ubuntu para instalar versión fijada, crear servicio/usuario y verificar; sudo solo durante preparación y ventana aprobada. | Sin sesión WhatsApp durante staging, sin claves AWS guardadas, sin uso como runtime y sin acceso continuo tras aceptar el host. |
+| Usuario `openclaw` | Cuenta de sistema sin shell/login ni sudo; ejecutar un solo Gateway y leer únicamente configuración/credenciales necesarias mediante permisos de archivo o credenciales de `systemd`. | Sin firewall, SSH, paquetes, IAM, snapshots, facturación, otros homes o escritura fuera de estado/logs acotados. |
+| Servicio Gateway | Escuchar solo en loopback 127.0.0.1/::1; salida necesaria a WhatsApp, modelos y conectores autorizados. | Sin bind público, segundo Gateway, auto-update, Browser relay público, creación de infraestructura o envío de prueba antes del gate. |
+| Operador de backup | Proceso root acotado y auditable que detiene o congela la escritura, cifra antes de salir, calcula hash y prueba restauración aislada. | Sin leer secretos a stdout/logs/chat, sin mantener credenciales cloud permanentes y sin restaurar sobre producción durante la prueba. |
+
+La cuenta raíz queda bloqueada para operación normal. El acceso humano debe usar
+credenciales temporales y MFA; si IAM Identity Center todavía no existe, la
+creación de la primera identidad administrativa es parte del gate de cuenta y
+no se sustituye por una IAM user con claves largas. La VM no almacenará claves
+AWS: Lightsail no necesita permisos AWS para ejecutar OpenClaw; cualquier
+snapshot o cambio de firewall se hace desde el plano administrativo humano y se
+audita aparte.
+
+**Acceso administrativo privado preparado:** el canal normal será SSH sobre el
+tailnet existente, limitado por ACL a los dispositivos aprobados de Mauricio.
+Durante bootstrap se permite una sola regla temporal TCP/22 desde la IPv4
+pública exacta del administrador (/32 y, si se usa IPv6, /128); se elimina solo
+después de probar tailnet, una segunda sesión SSH y recuperación. El acceso SSH
+del navegador de Lightsail queda únicamente como ruptura de vidrio: abrir 22
+para la IP exacta, recuperar, registrar y cerrar en la misma ventana. Password
+SSH y root login quedan deshabilitados; solo claves, MFA del plano AWS y
+`sudo` del bootstrap. Tailscale normalmente no requiere puertos entrantes;
+conservará salida HTTPS/443, UDP con origen 41641 y STUN/3478 cuando sean
+necesarios. No se publica una IP o URL del dashboard.
+
+**Matriz de red preparada:**
+
+| Capa/flujo | Estado final | Denegación/prueba |
+| --- | --- | --- |
+| Firewall Lightsail IPv4 e IPv6 | Sin reglas entrantes permanentes; ambos se revisan por separado. TCP/22 temporal solo /32 o /128 durante bootstrap/recuperación. | No 0.0.0.0/0 ni ::/0; no 80/443, 18789, 18799, RDP, SMB, bases de datos o rangos amplios. |
+| Firewall Ubuntu | `deny incoming`, loopback permitido y SSH solo por `tailscale0`; salida permitida inicialmente y registrada para no romper WhatsApp/modelos/actualizaciones. | Un escaneo desde Internet debe fallar en todos los puertos; un dispositivo no autorizado del tailnet no obtiene SSH. |
+| Gateway/relay | 127.0.0.1 y ::1 únicamente para 18789/18799. | `ss` no muestra wildcard ni IP pública/tailnet; HTTP externo y conexión desde otra máquina fallan. |
+| Administración | SSH por tailnet desde identidad/dispositivo autorizado; sin password ni root. | SSH público falla tras bootstrap; usuario `openclaw` no tiene shell, sudo ni claves AWS. |
+| Salida | DNS, NTP, HTTPS y flujos de tailnet/WhatsApp/modelos/conectores necesarios. | Sin proxy público, forwarding, subnet router, exit node ni servicios AWS nuevos. Una política egress más cerrada solo después de capturar destinos reales sin romper operación. |
+
+Lightsail filtra solo tráfico entrante por IP pública y sus firewalls IPv4/IPv6
+son independientes; por eso el host conserva una segunda barrera y no se
+interpreta “sin regla IPv4” como cierre IPv6. Las reglas Lightsail son
+permisivas, no reglas de denegación: cualquier regla amplia prevalece y debe
+estar ausente. El IPv4 estático sirve para identidad de host y recuperación, no
+para exponer OpenClaw.
+
+**Custodia de secretos preparada:** configuración pública, estado operativo y
+secretos se inventariarán por separado. Tokens, sesión WhatsApp y credenciales
+se montarán al servicio desde archivos owner-only/`systemd` credentials, nunca
+en repo, imagen, cloud-init, argumentos de proceso, unit file, historial, chat o
+logs. El backup será cifrado antes de abandonar el host, tendrá hash y prueba de
+restauración aislada; la clave de recuperación quedará fuera de VM y backup.
+Los logs se minimizan y sanitizan; no incluyen teléfonos completos, mensajes,
+tokens, QR o payloads. La sesión WhatsApp no se copia en staging: solo durante
+la ventana aprobada, después de detener el escritor local, y nunca con ambos
+Gateways activos.
+
+**Aceptación y recuperación de la unidad C:** antes del cutover deben pasar:
+MFA/credenciales temporales; revisión de reglas IPv4 e IPv6; SSH tailnet desde
+un dispositivo permitido y denegación desde otro; `ss`/firewall sin binds
+públicos; usuario runtime sin sudo/login; ausencia de credenciales AWS en VM;
+reinicio con un solo Gateway; escaneo externo cerrado; logs sanitizados; y
+recuperación por consola temporal documentada. Si tailnet/firewall/SSH falla en
+staging, no se toca el host local: se usa consola Lightsail con 22 restringido a
+la IP exacta, se revierte firewall/ACL/servicio y se vuelve a cerrar. Si falla
+tras cutover, primero se detiene el Gateway cloud y se confirma que no escribe;
+luego se restaura el estado local respaldado y se activa un único Gateway. No
+se borra la VM ni el backup hasta verificar rollback.
+
+Fuentes oficiales: [firewalls IPv4/IPv6 de
+Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-firewall-and-port-mappings-in-amazon-lightsail.html),
+[conexión SSH a instancias
+Lightsail](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-connecting-to-linux-unix-instance-ssh.html),
+[prácticas IAM: credenciales temporales, MFA y mínimo
+privilegio](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html),
+[puertos y comportamiento de
+Tailscale](https://tailscale.com/docs/reference/faq/firewall-ports) y
+[credenciales de servicios
+systemd](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#Credentials).
+Resultado: **PREPARADO / SIN CUENTA / SIN CLAVES / SIN REGLAS REALES / COSTO USD 0**.
+
+**PREPARADO:** arquitectura, sizing, costos, proveedor/región/tope, presupuesto,
+alarmas, identidad, red, secretos y secuencia reversible documentados.
+**BLOQUEADO:** cuenta/facturación, contratación, instalación, credenciales,
+cutover y prueba con la PC apagada requieren una autorización específica
+posterior. **DESCONOCIDO:** cuenta AWS existente, impuestos finales,
+portabilidad real de la sesión WhatsApp, entrega/lectura de los IDs anteriores
+y E2E Chrome por perfil.
+
+**UNIDAD D CERRADA — estado, backup y restauración local, 19/10/2026:** se
+inventarió el estado sin leer ni imprimir valores secretos. El árbol
+`/home/personal/.openclaw` ocupaba 7,758,359,853 bytes; la selección
+conservadora preparada ocupa 4,134,474,864 bytes antes de compresión/cifrado.
+Incluye configuración vigente/last-good, huella del journal, `state`,
+`agents`, `credentials`, ambos workspaces, plugins privados, extensiones,
+medios/cola y registros de migración. Estado, credenciales, medios y sesión son
+`cutoverOnly`: no se copian mientras el Gateway/WhatsApp escriben.
+
+Se excluyen del primer paquete `tmp`, `cache`, `logs`, `browser`,
+`tools`, `npm`, backups anidados, locks, completions y artefactos de update o
+migraciones históricas. Node/OpenClaw se reinstalan en las versiones fijadas;
+los perfiles Chrome/Windows no migran. Se conservan completos ambos workspaces
+porque contienen continuidad, documentos y posibles deltas no publicados; una
+optimización posterior no puede descartarlos sin inventario Git/readback.
+
+**Paquete reproducible preparado:** `migration/openclaw-cloud-unit-d/`
+contiene `manifest.json`, `includes.txt`, `backup.sh` y
+`restore-test.sh`. El backup usa `tar` preservando ACL/xattrs/modos, cifra
+por streaming con GPG AES-256 y S2K SHA-512, genera SHA-256 del archivo cifrado y
+no imprime nombres/valores secretos. El restaurador valida hash, rechaza rutas
+absolutas/`..` y extrae solo en un destino aislado. La clave debe ser mode
+0400/0600 y, en la ejecución real, quedar fuera de VM y backup.
+
+**Prueba local sintética aprobada:** parser Bash PASS; creación cifrada PASS;
+SHA-256 PASS; descifrado/extracción PASS; comparación byte a byte PASS; sonda de
+texto plano PASS. Los guardrails también pasaron: una fuente viva sin gate
+termina con exit 78 y, aun con `OFFLINE_CONFIRMED=1`, un Gateway activo termina
+con exit 79. No se archivó, detuvo ni leyó la sesión viva; la prueba usó solo
+fixtures sintéticos temporales. Hashes de artefactos: manifest
+`76e85e06967b088295d44156e92086233ac38948a2bb2903b3651dbe76a297c4`,
+includes `1a5e892301cded8b4688030e9ffc193d581b853d51a7602041e85fb446d25789`,
+backup `08f16d4c2d9a2ba1d5932f9720d3600d035be9f0df20871943e5235e2d236946`
+y restore `f167d0c80fd3cae2416d8738ff8febf7edf32e4e7917204c44225d7fb5f21d87`.
+
+**Manifiesto single-writer:** para el backup real deben estar probados Gateway y
+escritor WhatsApp detenidos, cola conciliada sin `platform_send_started`,
+archivo cifrado/hash verificados y restauración aislada completada. El Gateway
+cloud permanece detenido hasta el gate de cutover. Ante fallo, no se altera el
+origen: se detiene cualquier proceso cloud, se prueba ausencia de escritor y se
+reactiva un único Gateway local. La copia real, contraseña/recipient, salida
+off-host y parada del servicio no se ejecutaron porque pertenecen a la ventana
+autorizada de migración.
+
+Resultado: **INVENTARIO Y HERRAMIENTAS PREPARADOS / RESTAURACIÓN SINTÉTICA
+VERIFICADA / BACKUP VIVO NO EJECUTADO / COSTO USD 0**.
+
+**NEXT ÚNICO / GATE HUMANO:** autorizar cuenta/facturación y contratación de la
+VM AWS Lightsail ya seleccionada, hasta USD 35/mes. Después se ejecutará la
+unidad E: crear presupuesto/alarmas, VM Ubuntu 24 LTS, IPv4 estático y perímetro
+C; instalar Node/OpenClaw fijados y verificar staging sin sesión WhatsApp. Esta
+autorización todavía no incluye copiar credenciales, detener el host local,
+activar WhatsApp cloud, cutover ni enviar mensajes; esos pasos conservan un gate
+posterior.
+
+**Reversión local conservada:** restaurar selectivamente los valores anteriores
+de la tarea y los dos scripts Windows; no tocar la sesión WhatsApp, credenciales,
+datos ni los dos mensajes aceptados. **Reversión de esta unidad documental:**
+revertir únicamente este addendum cloud; no existe recurso cloud que borrar.
+
+**UNIDAD E1 CERRADA — contratación y readback de VM, 19/10/2026 21:40 CR:**
+Mauricio confirmó en el paso final la contratación de una única instancia AWS
+Lightsail en la cuenta Dreamcatcher. AWS muestra `toro-openclaw-gateway-01` en
+estado `Running`, región Virginia zona A (`us-east-1a`), Ubuntu 24.04 LTS OS
+Only, red dual-stack, plan general purpose de 4 GB RAM, 2 vCPU, SSD de 80 GB y
+4 TB de transferencia. Etiquetas verificadas: `Project=TORO` y
+`Environment=staging`. La lista de instancias muestra exactamente una instancia
+en este alcance. El nombre real sustituye al nombre reservado en la Unidad A;
+no se crea un alias ni una segunda VM.
+
+La copia automática quedó habilitada a las 02:00 Costa Rica y AWS retendrá las
+siete más recientes; todavía no existe una primera copia creada. La VM base
+empieza a devengar hasta USD 24/mes mientras exista y el almacenamiento de
+snapshots se factura por uso; impuesto y factura real siguen desconocidos. No
+se creó Bedrock, Marketplace, load balancer, CDN, DNS, base administrada ni
+otro recurso. El presupuesto y sus avisos documentados aún no fueron creados.
+
+**HALLAZGO DE SEGURIDAD / NO ACEPTADO:** el firewall inicial que dejó Lightsail
+expone HTTP TCP/80 y SSH TCP/22 a cualquier IPv4 o IPv6. Los puertos OpenClaw
+18789/18799 no están publicados, pero el perímetro no cumple todavía la Unidad
+C. Tampoco hay IPv4 estático adjunto. No se cambió el firewall ni se abrió una
+sesión SSH en esta unidad, porque la confirmación de compra no sustituye el gate
+de permisos/red. Antes de instalar OpenClaw se deben eliminar HTTP/80, limitar
+SSH/22 al origen administrativo temporal exacto o al mecanismo privado
+aprobado, revisar IPv4 e IPv6 por separado y verificar desde fuera que los
+demás puertos fallen cerrados.
+
+**LÍMITES:** OpenClaw no está instalado en AWS; Node y la versión fijada aún no
+se verifican en la VM; no se copió configuración, backup, credenciales ni sesión
+WhatsApp; no se detuvo ni modificó el Gateway local; no hubo cutover, mensaje,
+reinicio ni prueba con la PC apagada. La instancia es solo staging contratado,
+no producción ni operación 24/7 aceptada. Reversión comercial si se abandona:
+detener cualquier preparación, conservar evidencia necesaria y eliminar la VM
+y sus snapshots únicamente con autorización destructiva explícita; mientras
+permanezca creada seguirá facturando.
+
+**NEXT ÚNICO / GATE HUMANO:** autorizar el cierre de seguridad y costo de esta
+misma VM: eliminar la regla HTTP/80, restringir temporalmente SSH/22 a la IP
+administrativa exacta en IPv4/IPv6, adjuntar un único IPv4 estático y crear el
+presupuesto `TORO-OpenClaw-Infrastructure` de USD 35 con avisos 70/80/90/100%.
+Después se podrá instalar Node `v24.19.0` y OpenClaw `2026.10.1` en staging, sin
+copiar todavía credenciales o sesión WhatsApp, sin activar el canal cloud y sin
+detener el host local.
+
+**UNIDAD E2 PREPARADA — bootstrap cloud fail-closed, 20/10/2026 CR:** Mauricio
+autorizó continuar la migración para que WhatsApp no dependa de la PC. Se añadió
+al expediente existente `openclaw-cloud-unit-d/bootstrap-staging.sh`, SHA-256
+`cd89f893d72dccbe60feab6d1596d70dbfd921f691be07bc22a631143e66e65e`.
+El instalador exige Ubuntu 24.04 y root, fija Node `v24.19.0` y OpenClaw
+`2026.10.1 (e178c39)`, verifica el SHA-256 oficial del binario Node, crea el
+principal sin login `openclaw` y una unidad systemd endurecida ligada solo a
+loopback. Falla si encuentra un Gateway activo y termina dejando el servicio
+`disabled` + `inactive`; no copia configuración, credenciales, sesión WhatsApp,
+colas ni medios. `bash -n` y los guardrails estáticos aprobaron; `shellcheck` no
+está instalado y el script todavía no fue ejecutado en AWS.
+
+**BLOQUEO DE EJECUCIÓN / SIN CUTOVER:** el control visual de Codex no pudo
+iniciar su kernel (`os error 3`) y el navegador administrado de OpenClaw bloqueó
+correctamente la consola AWS por su política SSRF estricta; no se debilitó esa
+protección. Tampoco existe AWS CLI autenticado. Por tanto no se cambiaron reglas
+de red, presupuesto, IPv4, paquetes o estado remoto. El Gateway local sigue
+siendo el único escritor y **la PC todavía no se puede apagar** sin perder el
+servicio. Reversión de E2: borrar solo el script preparado; no existe cambio
+remoto que revertir.
+
+**E2 EJECUTADA / E3 STAGING CERRADO — 20/10/2026 04:26 CR:** el terminal web
+de Lightsail devolvió `SERVER_ERROR 512`, pero una sonda externa confirmó TCP/22
+y OpenSSH 9.6 en Ubuntu. Se descargó la llave regional por la ruta oficial de
+Lightsail, se retiró herencia ACL local y quedó una sola regla explícita para el
+usuario propietario; su contenido no se imprimió ni copió al Plan. La huella
+del host fue verificada antes de fijarla. SSH directo a
+`toro-openclaw-gateway-01` confirmó Ubuntu 24.04, x86_64, 3832 MB y systemd
+`running`.
+
+El bootstrap local y remoto coincidió con SHA-256
+`cd89f893d72dccbe60feab6d1596d70dbfd921f691be07bc22a631143e66e65e`.
+La instalación remota devolvió `STAGING_READY`: Node `v24.19.0`, OpenClaw
+`2026.10.1 (e178c39)`, principal `openclaw` sin login, HOME privado mode 0700 y
+unidad endurecida con `--bind loopback --port 18789`. Readback independiente:
+servicio `disabled` + `inactive`, listeners solo 22/53, estado OpenClaw vacío y
+cero sesión/configuración/credenciales WhatsApp copiadas. El canal local
+`toro-interno` permaneció `running/ready/healthy`, sin error ni restart pendiente,
+como único escritor. No se envió ningún mensaje.
+
+**NEXT ÚNICO / CONFIRMACIÓN DE DATO SENSIBLE:** antes del cutover, confirmar
+explícitamente detener de forma temporal el Gateway local, crear un archivo
+cifrado de los 13 paths del manifiesto existente (4.16 GB sin comprimir:
+configuración, fingerprint, state, agents, credentials, dos workspaces, plugins,
+extensions, media, cola y migration), subirlo exclusivamente a
+`toro-openclaw-gateway-01` y restaurarlo bajo
+`/var/lib/openclaw/.openclaw`. Después se activará un único Gateway cloud,
+dejando el local detenido; no incluye mensajes externos. Ante cualquier fallo:
+detener cloud, verificar ausencia de escritor y reactivar el Gateway local.
+
+**UNIDAD E4 / CUTOVER CLOUD EJECUTADO — corte 20/10/2026 10:06 CR:** Mauricio
+confirmó detener el Gateway local, transferir cifrados los 13 componentes del
+manifiesto exclusivamente a `toro-openclaw-gateway-01`, activar un único
+Gateway cloud y mantener el local detenido, sin mensajes externos. El archivo
+vivo cifrado quedó verificado antes y después de transferir: 1,895,936,553 bytes,
+SHA-256 `546610dc0e9b04e166890e75f5e16aacbcce8bf020371e73501f9db0426d4bca`;
+la restauración produjo exactamente 13 entradas y conservó inventario de hashes.
+La copia local cifrada permanece como rollback y no se imprimió ninguna clave.
+
+**HECHO:** las tareas Windows `OpenClaw-WSL-KeepAlive` y
+`OpenClaw-WSL-Watchdog` están deshabilitadas; el servicio local está
+`disabled` + `inactive` y el puerto local 18789 cerrado. La VM ejecuta Node
+`v24.19.0` y OpenClaw `2026.10.1 (e178c39)` como usuario sin login `openclaw`.
+El plugin `toro-native-capabilities` se hizo portable mediante
+`OPENCLAW_MODULE_ROOT`; al detectar que su identidad protegida vivía fuera de
+los 13 paths, se transfirió un complemento mínimo cifrado de solo tres archivos:
+configuración de roles, secreto HMAC de sesión y credencial Airtable de lectura.
+Sus hashes coincidieron; no se copiaron secretos Meta, Alegra, escritura ni la
+auditoría histórica. `whatsapp`, `codex`, `diagnostics-otel`, `duckduckgo` y
+`parallel` fueron reinstalados desde sus paquetes oficiales, fijados en
+`2026.10.1`; `config validate` y `plugins doctor` terminaron limpios.
+
+**REPARACIONES CERRADAS Y REVERSIBLES:** el primer arranque falló cerrado antes
+de abrir puertos por rutas SQLite del host local; con el servicio parado se
+respaldó la base cloud y se sustituyeron únicamente rutas operativas en 2,218
+filas, con readback de cero coincidencias pendientes en ese alcance. El segundo
+arranque falló cerrado porque la configuración pedía `tailscale serve` sin
+binario instalado; se conservó backup y se cambió solo el modo cloud a `off`.
+El Gateway sigue ligado a `127.0.0.1/[::1]:18789`; 18789/18799 tienen cero
+listeners públicos. Los respaldos previos de `openclaw.json`, SQLite y el plugin
+permanecen bajo `/var/lib/openclaw/migration/` con acceso root. Los temporales
+remotos y la copia WSL de la llave SSH fueron eliminados; la llave regional
+original de Windows y el backup cifrado local se conservaron.
+
+**VERIFICACIÓN POST-REBOOT:** la VM reinició con boot ID nuevo y systemd volvió
+a levantar el servicio automáticamente. Readback final: servicio `enabled`,
+`active/running`, `NRestarts=0`; RPC conectado; versión y plugins sin deriva;
+event loop no degradado; `toro-interno` está `enabled`, `configured`, `linked`,
+`running`, `connected`, `healthy` y `ready`, con `busy=false`, `lastError=null`, cero issues y cero
+`platform_send_started` desde el reboot. No se envió ningún mensaje. Esto prueba
+continuidad cloud independiente del Gateway local encendido, pero no entrega,
+lectura ni un E2E auténtico posterior al corte.
+
+**PREPARADO:** Lightsail es ahora el único escritor configurado y sobrevivió un
+reinicio controlado; detener cloud y luego reactivar el servicio/tareas locales
+preservados es la reversión fría. **BLOQUEADO/DESCONOCIDO:** todavía no existe
+un inbound auténtico posterior al cutover, una respuesta única correlacionada ni
+una prueba física con la PC apagada. Los recibos históricos conservan entrega y
+lectura desconocidas. El relay Chrome sigue siendo una capacidad separada y no
+queda probado por este corte de WhatsApp.
+
+**NEXT ÚNICO:** Mauricio envía una entrada directa nueva desde su WhatsApp y,
+en una ventana controlada, apaga la PC local; aceptar el cierre solo si la VM
+permanece `healthy/ready`, el contrato `toro-trusted-requester-v1` reconoce
+`Mauricio/owner`, aparece exactamente una respuesta con referencia del proveedor
+y no existe duplicado. No provocar ni reenviar la prueba desde OpenClaw.
+
+## UNIDAD F — conciliación WhatsApp, paridad OTA y continuidad AWS — 20/10/2026 03:55 CR
+
+**WhatsApp / recibos:** el canal `toro-interno` estaba enlazado, corriendo,
+conectado y saludable al preflight, pero registró reconexiones 408 a las 02:02,
+03:23 y 03:28 CR, todas recuperadas. La portada aprobada
+`los-50-de-caro-portada.jpeg` del commit
+`d026c127f4858d3d80fddf5def94961d8c72ae88` y los dos textos exactos del
+prompt fueron aceptados por el proveedor a las 03:26 con tres IDs de plataforma,
+resultado `settled` y sin entrega parcial. El conector no expone confirmación
+de dispositivo entregado ni lectura: ambos estados siguen **DESCONOCIDOS**.
+
+**FALLO RECONOCIDO / idempotencia:** una conciliación posterior encontró un
+piloto propietario anterior, el 17/10/2026 a las 15:10 CR, con la misma portada
+y dos textos distintos. Los textos del 20/10 eran nuevos, pero la secuencia fue
+un episodio de campaña duplicado que debió impedirse. No reenviar, reintentar ni
+borrar sin instrucción explícita; conservar ambos hechos y sus recibos.
+
+**Comparación pública controlada:** estancia 08–09/12/2026, una habitación, dos
+adultos, cero niños, USD; ancla física habitación 27 / Kross type 43. El motor
+directo la mostró disponible como `#27 Intimate King Room with Projector`,
+25 m², una king, total USD 195, solo habitación y cancelación/cobro total a cinco
+días. Booking mapping exacto `14240671/1424067116` la expone como
+`Deluxe King Room`, 40 m², subtotal USD 357 (incluye limpieza USD 10 y excluye
+IVA 13%), desayuno USD 15 p/p/noche y cancelación gratuita hasta 05/12. Agoda
+mapping activo `96008429/1586546181` devolvió `Sold out` para la misma
+estancia mientras Kross directo estaba disponible. Expedia mapping
+`12816162/328975028` quedó activado el 19/10 sin cambio de precio o inventario,
+pero el readback público fue bloqueado por CAPTCHA. Airbnb conserva mapping
+interno sin URL pública resoluble para #27; Trip.com continúa bloqueado sin URL;
+Tripadvisor existe pero el precio público quedó bloqueado por CAPTCHA.
+
+**Makaiza / límites:** la página oficial es solo consulta y no publica precio,
+limpieza ni depósito; Kross público muestra cuartos 7–11 por separado y no un
+producto vendible Villa Makaiza. El USD 10 se verificó únicamente como limpieza
+en la oferta Booking de #27. No se verificó en Kross, website, Supabase ni
+Airtable una fianza Makaiza de USD 100. No cambiar tarifas/cargos hasta fijar
+producto, mapping y autoridad contractual.
+
+**Decisión revenue:** prioridad 1 es explicar Agoda cerrado versus Kross abierto;
+prioridad 2 reconciliar #27 (25 m² directo, 40 m² Booking y antecedente interno
+30 m²), título, proyector/balcón, fotos e impuesto final. Después obtener URL
+Airbnb/Trip.com y readback Expedia. Ninguna reserva, tarifa, disponibilidad,
+inventario, contenido OTA ni dato de huésped fue modificado.
+
+**AWS E2 autorizado pero no aplicado:** la VM existente
+`toro-openclaw-gateway-01` sigue siendo la única instancia del alcance. Quedan
+pendientes verificar créditos/vencimiento reales, retirar HTTP/80, restringir
+SSH/22 por IPv4 e IPv6, adjuntar un IPv4 estático y crear presupuesto USD 35 con
+avisos 70/80/90/100. El Gateway no tiene AWS CLI/credencial; el browser proxy
+Windows falla por owner mismatch, el nodo continúa en 2026.9.8-1 y su política
+denegó incluso una sonda de solo lectura. La pantalla pertenece además a otra
+tarea, por lo que no se tomó control. No hubo mutación AWS, copia de secretos,
+cutover, parada local ni activación WhatsApp cloud.
+
+**Evidencia privada:**
+`.private-audit/whatsapp-ota-20261020/REPORT.md` SHA-256
+`40745d0415295f4410cd0f3692765cd8ef7f2fca90ad4f8f8498e053f19391b1` y
+`receipt.json` SHA-256
+`aec400e2b92b89b6114716bb1c4741ece5005d91eba7ac958d48dce02716c8e6`,
+ambos mode 0600.
+
+**NEXT único / gate humano:** actualizar o reiniciar OpenClaw Node en el Dell
+bajo el mismo usuario/elevación que Chrome y devolver `actualizado`. Después,
+en esta misma VM y sin crear otra, completar el cierre E2, readback y presupuesto;
+no copiar todavía credenciales/sesión WhatsApp ni hacer cutover.
+
 ## TORO Supermenu estable y navegador gobernado — 16/10/2026
 
 **Decisión:** ampliar el sistema conversacional existente, sin crear otra app,
@@ -119,6 +781,96 @@ Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, 
 
 
 **ACTUALIZACIÓN AUTORIZADA 09/10/2026 — entrega personal por OpenClaw/WhatsApp:** Mauricio solicita recibir estas alertas por el canal privado existente y preparar su ejecución en Work. Encargo integrado en [issue #209](https://github.com/Dramcatcherst/Toro-OS/issues/209), con dependencias #122 (identidad) y #170 (lectura); no crear segundo backlog ni scheduler. Work/Codex es ejecutor acotado bajo TORO Comms + Sobresito y el Control Plane, no nueva autoridad. La autorización cubre una prueba no sensible y futuras alertas materiales/urgentes al propietario verificado; no grupos, huéspedes, nuevos gastos ni acciones financieras/comerciales. El worker de recepción conserva su Page, casos, deduplicación y triggers completos; adaptar solo entrega mediante el puente existente. Estado: encargo documentado, sesión de Work adicional no iniciada, autenticación y envío actuales sin prueba. Antes de declarar operativo: verificar host/sesión/identidad, obtener referencia de entrega de una prueba y una alerta real, probar replay sin duplicados y denegación por identidad/scope incorrectos. Mensajes “🧪 PRUEBA · Recepción”, máximo 120 palabras y enlace Page; sin novedades, no notificar. Ante fallo o resultado ambiguo conservar alerta aquí, verificar estado antes de reintentar y no anunciar envío. Reversión acotada al adapter de entrega, sin pausar el webhook ni alterar corte Kross o cierres humanos.
+
+**EJECUCIÓN AUTORIZADA 19/10/2026, 17:15:59 CR — única prueba al grupo de Recepción:** la autorización directa posterior de Mauricio amplió exclusivamente esta prueba desde el propietario al grupo protegido `reception`; no autorizó huéspedes, otros grupos, destinatarios individuales, campañas ni reenvíos. Se reutilizó `OPENCLAW-WHATSAPP-CHROME-RESILIENCE-01`, `toro-interno` y el binding privado existente, sin nueva tarea, cola, canal ni scheduler. Preflight: binding con formato de grupo y rol `reception`, fingerprint `93B33D8DCDF3`; Gateway/cuenta `healthy` + `ready`; cero coincidencias previas en cola/auditoría para la marca; dry-run exacto PASS. Texto enviado: “🧪 PRUEBA · Recepción · 19/10/2026 — Validación técnica del canal TORO/OpenClaw. No requiere acción ni respuesta.” **ACEPTACIÓN DEL PROVEEDOR: HECHA**, referencia `3EB0F76E1793BF5F643228`; los logs registran una sola operación aceptada y ningún error. **ENTREGA: DESCONOCIDA. LECTURA: DESCONOCIDA.** La cola interna no creó pendiente ni retry y el canal permaneció `healthy` + `ready`. No se cambiaron credenciales, permisos, configuración, sesión, `groupPolicy`, watchdog ni Gateway; no se reinició ningún proceso. No reenviar esta referencia para intentar resolver la ausencia de recibos; conciliar un evento posterior de entrega/lectura si el proveedor lo expone.
+
+### OPENCLAW-TRUSTED-IDENTITY-01 — reparación activada 19/10/2026; corrección cloud 20/10/2026 CR
+
+**CAUSA COMPROBADA:** el ingreso de WhatsApp ya entregaba un binding coincidente y rol `owner` para Mauricio, pero el rol verificado no se inyectaba al contexto del modelo. Por eso el agente veía el nombre de pantalla y, correctamente, se negaba a tratarlo como autoridad. No era evidencia de desconexión de WhatsApp.
+
+**HECHO:** `toro-native-capabilities` añade el contrato de prompt `toro-trusted-requester-v1`, únicamente para una sesión directa host-trusted de `toro-whatsapp`/`toro-interno`, con procedencia `external_user`, autoridad activa, binding admitido y rol aprobado. La identidad deriva de la clave de sesión directa creada por el host; si `senderId` o el remitente de canal están presentes, deben coincidir con ella o el hook falla cerrado. El contrato reconoce a Mauricio como nombre preferido y `owner`; para otros bindings reconoce el rol sin inventar nombre. No agrega herramientas ni amplía permisos. Se habilitaron solo `allowConversationAccess` y `allowPromptInjection` para este plugin explícitamente autorizado. Backup protegido previo en `/home/personal/.openclaw/private-backups/identity-prompt-20261019/`. Activación inicial en caliente, sin reiniciar Gateway, generación 4 y operación `7339ed52-bf26-4409-b4fe-5c8be16bffab`.
+
+**QA SIN ENVÍO:** PASS para los cinco roles soportados (`owner`, `admin`, `reception`, `staff`, `viewer`) en 6 casos positivos —incluido el contexto real sin `senderId` separado— y 10 negativas: binding desconocido con y sin `senderId`, contradicción remitente/sesión, cuenta incorrecta, canal incorrecto, grupo, mismatch de remitente de canal, origen interno, ausencia de autoridad y autoridad vencida. También PASS los cuatro conjuntos sintéticos existentes del plugin. Cero llamadas externas, cero entregas y cero escrituras; el prompt no contiene teléfono.
+
+**LÍMITE DE IDENTIDAD:** el binding local contiene 8 miembros, pero la allowlist admite 5; los otros 3 son 1 recepción y 2 staff. Supabase tiene 12 empleados `active/active`, 1 contradicción `terminated/active`, 12 perfiles IA `not_started` y cero `employee_channel_identities` de WhatsApp. No se creó wildcard ni se concedió acceso por teléfono/nombre: esos usuarios requieren identidad de canal verificada, estado laboral vigente, rol/scope/grant y onboarding antes de admisión.
+
+**HECHO / CORRECCIÓN P0 CLOUD — corte 20/10/2026 12:51 CR:** una entrada directa auténtica confirmó que canal, cuenta, sesión y binding resolvían un único `owner`, pero el prompt compilado no contenía el contrato porque el contexto real omitía el `senderId` redundante. Se corrigió únicamente `createTrustedIdentityPromptHook` para usar la identidad de la sesión directa host-trusted y mantener las comprobaciones de contradicción cuando existan `senderId` o remitente de canal. Backup exacto previo: `/var/lib/openclaw/migration/toro-trusted-requester-v1-20261020T184615Z/`. Readback de activación: hash desplegado `09f423ebf5ca0bb92c2110c2193dd24859073b78604c69290d479379fdea0340`; propietario `openclaw:openclaw`, modo `600`; configuración PASS; Gateway `active/running`, `NRestarts=0`; `toro-interno` enabled/configured/linked/running/connected, `busy=false`, `lastError=null`, cero incidencias; 18789 solo en `127.0.0.1` y `::1`, 18799 sin listener; cero errores de registro y cero `platform_send_started`. No se enviaron mensajes ni se ampliaron roles, herramientas, permisos, destinatarios o red.
+
+**DESCONOCIDO / criterio de cierre:** la implementación, pruebas y activación tienen evidencia, pero falta una entrada directa nueva posterior a esta corrección que demuestre E2E que el contexto contiene `toro-trusted-requester-v1` y que la respuesta reconoce `Mauricio`/`owner` sin ampliar permisos ni duplicarse. No provocar el evento con un envío saliente. Reversión exacta: restaurar `index.mjs` y `synthetic-identity-prompt-smoke.mjs` desde el backup cloud citado, reiniciar `openclaw-gateway.service` y repetir readback de hash, servicio, canal, listeners y cero envíos.
+
+**READBACK DE USUARIOS Y DREAMTEAM — corte 20/10/2026 12:56 CR:** el Gateway cloud permanece `active/running`, `NRestarts=0`; `toro-interno` continúa enabled/configured/linked/running/connected, `busy=false`, `lastError=null`. Con el mismo `TORO_WHATSAPP_CONFIG_DIR=/var/lib/openclaw/.config/toro-whatsapp` de systemd, `toro-native-capabilities` carga `status=loaded`, cuatro hooks y las políticas `allowPromptInjection`/`allowConversationAccess`. Una ejecución de CLI sin ese entorno produjo `ENOENT` hacia la antigua ruta local; fue un falso negativo del diagnóstico, no un fallo del servicio, y no se cambió ni reinició nada.
+
+**MATRIZ ACTUAL, SIN TELÉFONOS:** existen 8 bindings locales con roles `owner` 1, `admin` 1, `reception` 3, `staff` 2 y `viewer` 1. La allowlist admite 5: Mauricio (`owner`), Ana Carolina (`admin`), Alexandra (`reception`), un binding `reception` sin coincidencia DreamTeam y un binding `viewer` sin coincidencia DreamTeam. Quedan configurados pero no admitidos Camila (`reception`), Elizabeth (`staff`) y un binding `staff` sin coincidencia DreamTeam. La coincidencia de teléfono privado permitió conciliar cinco registros locales con DreamTeam, pero no sustituye enrolamiento: `employee_channel_identities` conserva 0 filas WhatsApp verificadas y cada coincidencia tiene 0 grants activos.
+
+**CONEXIÓN DREAMTEAM:** Supabase respondió en vivo y contiene 13 empleados no borrados: 12 `active/active` y una contradicción `terminated/active`; 12 perfiles IA, todos `onboarding_state=not_started`; 0 identidades WhatsApp verificadas y 0 grants activos. GitHub #122 (identidad verificada) y #209 (memoria/canal gobernado) permanecen abiertos. Vercel reporta `dream-team-public` en `READY`/production y `dream-team` en `READY`; esto prueba hosting, no el puente de identidad. Por tanto, hay conectividad técnica separada con Supabase y un despliegue DreamTeam disponible, pero **NO existe todavía sincronización operativa OpenClaw↔DreamTeam para reconocer o autorizar personas**. No se creó wildcard, grant, enrolamiento, envío ni ampliación de acceso.
+
+**FAIL E2E REAL — entradas 20/10/2026 13:34:03, 14:08:04 y 14:08:53 CR:** la primera entrada directa confirmó que el contrato no llegaba al modelo. Tras cambiar la salida del hook de `prependSystemContext` a `prependContext`, una nueva respuesta a las 14:08:04 sí reconoció a Mauricio por identidad visible, pero volvió a declarar que no recibió un rol verificado; la trayectoria compilada tampoco contenía `toro-trusted-requester-v1`. La entrada posterior «que falta para que me reconozca_» llegó como directa por `toro-interno` con `senderIsOwner=true`, pero agotó 9/9 reintentos por `429 Too Many Requests` y no produjo respuesta. En ambos cortes hubo 0 `platform_send_started`; no se reenvió ni se provocó ningún mensaje saliente.
+
+**DIAGNÓSTICO CORREGIDO:** el descarte de `prependSystemContext` por la fase autorizada era real y la migración a `prependContext` era necesaria, pero la prueba E2E demostró que no era causa suficiente. El hook aún declina antes de inyectar el contrato; la trayectoria no conserva la forma completa del contexto del hook y no permite distinguir con seguridad cuál gate falla. No se relajó ni se inferirá `agentId`, canal, cuenta, procedencia, sesión directa, remitente, allowlist, rol o autoridad a partir del nombre o teléfono.
+
+**SONDA CAUSAL MÍNIMA ACTIVADA — corte 20/10/2026 14:16 CR:** backup cloud exacto `/var/lib/openclaw/migration/toro-trusted-requester-v1-context-audit-20261020T201410Z/` y backup local gemelo `~/.openclaw/private-backups/identity-prompt-context-audit-20261020T201410Z/`. El hook registra solo resultado, motivo y booleanos de presencia/coincidencia, sin remitente, teléfono, sesión ni otros identificadores. Hash activo cloud/local de `index.mjs`: `a635aa98c09ed72ee80250c729a093793b3885247f9c1f96456c9bdf4c18aa20`; test: `5f8a8af0d46ed86aced890b39e59067314758fbcac11ea27eb067aebc0310ee3`; ambos `openclaw:openclaw`, modo `600` en cloud. Identidad PASS 6 positivas/10 negativas, 17 eventos de auditoría, `rawSenderLeak=false`; cuatro suites portables adicionales PASS, cero I/O externo; configuración PASS. Los hashes de `openclaw.json` (`38494623d60e799ec005098a3e8376edb1104a732a2f5967116c0a9478f96fcf`) y `toro-whatsapp/settings.json` (`e3bc744f4ab74b703b9f988baac15bee84c02fb6569ec9a1640734dfdd9c4611`) permanecen iguales. Readback: Gateway `active/running`, `NRestarts=0`; `toro-interno` enabled/configured/linked/running/connected, `busy=false`, `lastError=null`, cero incidencias; 18789 solo loopback, 18799 sin listener; cero `platform_send_started`. Una comprobación mecánica de `is-failed` devolvió código no cero aunque el estado era `inactive` y disparó el trap; el backup fue restaurado antes de repetir con `ActiveState/SubState`, sin cambio funcional ni envío.
+
+**NEXT ÚNICO de identidad:** Mauricio envía una sola entrada directa nueva posterior a las 14:16 CR; leer únicamente el motivo seguro emitido por la sonda, corregir ese gate exacto con regresión, activar con rollback y pedir otra entrada solo si la corrección lo exige. Cerrar exclusivamente cuando una entrada posterior a la corrección genere una única respuesta que reconozca `Mauricio` y `owner`, el contrato quede demostrado, `toro-interno` siga conectado, los dos hashes de configuración permanezcan idénticos y no exista envío de prueba ni duplicado.
+
+### OPENCLAW-MEDIA-AND-GOVERNED-WHATSAPP-ACTIONS-01 — activado 20/10/2026 13:52 CR
+
+**HECHO / alcance:** sobre el único Gateway cloud `toro-openclaw-gateway-01` se
+habilitó, sin crear otro bot, canal, runtime o fuente, la lectura gobernada de
+imágenes y PDF para la sesión directa verificada de Mauricio/owner y el envío
+preparado de texto a un contacto individual de WhatsApp. No se envió ningún
+mensaje durante la implementación. `toro-interno` permanece
+enabled/configured/linked/running/connected, `busy=false`, `lastError=null` y
+cero incidencias; systemd está enabled/active, `NRestarts=0`; 18789 escucha solo
+en loopback, 18799 no escucha y hay cero listeners OpenClaw públicos. El modelo
+`openai/gpt-5.6-sol` está disponible con entrada `text+image`; el plugin
+`toro-native-capabilities` está loaded/enabled sin error. `config validate` PASS
+y cero `platform_send_started` en el boot actual.
+
+**DIEZ MEJORAS Y CONTROLES CERRADOS:** (1) `pdf` y (2) `view_image` se admiten
+solo para el binding owner, cuenta/canal/sesión directa y run host-trusted
+exactos; (3) ningún grupo es destino válido; (4) el destino exige E.164
+individual exacto y se muestra enmascarado; (5) el texto exacto, con saltos de
+línea, se limita a 1.600 caracteres; (6) SHA-256 del contenido se calcula y
+verifica internamente; (7) preparar no envía y devuelve destino enmascarado más
+texto íntegro para revisión; (8) ejecutar exige `CONFIRMO <código>` único,
+ligado a sesión/owner/run y con expiración de 10 minutos; (9) la acción es de un
+solo uso, deduplicada y un resultado ambiguo queda `no-retry`; (10) se separan
+aceptación del proveedor, entrega y lectura; estas dos últimas permanecen
+`unknown` sin recibo. Además, la auditoría omite número y texto, y el adapter
+queda cerrado si `outboundEnabled` no es exactamente `true`.
+
+**PRUEBAS / revisión:** `synthetic-whatsapp-action-smoke` PASS con ocho
+negativas, una aceptación sintética y un resultado ambiguo sintético sin retry;
+`synthetic-owner-media-policy-smoke` PASS con dos negativas; Phase 5 PASS con 48
+tools, cero raw tools y cero efectos; identidad PASS con 6 admisiones y 10
+denegaciones. Los envíos de esas pruebas usan un adapter falso: mensajes
+externos = 0. Revisión focal de seguridad: 0 hallazgos P0/P1 pendientes.
+
+**PREPARADO / uso:** desde su chat directo, Mauricio puede adjuntar una imagen o
+PDF y pedir su análisis. Para enviar a otro contacto debe indicar un número
+individual E.164 y el texto exacto; OpenClaw primero devuelve la vista previa y
+el código, y solo un nuevo inbound exacto `CONFIRMO <código>` dentro de la
+ventana permite una única llamada al proveedor. Un nombre de contacto visible,
+un grupo, “sí” genérico o un código vencido no autorizan el envío.
+
+**BLOQUEADO / DESCONOCIDO:** la política, el modelo y las pruebas sintéticas
+están verificados, pero aún no existe un adjunto real posterior a esta activación
+que pruebe lectura E2E de PDF/imagen ni una orden real preparada/confirmada que
+pruebe el flujo completo. No llamar “entregado” o “leído” a un `messageId`.
+
+**PRIVACIDAD Y REVERSIÓN:** no se copiaron PDF, imágenes, teléfonos, texto de
+mensajes, PII ni secretos al Plan. Backup cloud exacto previo en
+`/var/lib/openclaw/.openclaw/backups/whatsapp-actions-v1-20261020`; para revertir,
+detener el servicio cloud, restaurar los tres módulos y `settings.json`, iniciar
+el servicio y repetir hashes, configuración, plugin, canal, listeners y cero
+envíos. El Gateway local continúa detenido y no debe activarse mientras cloud
+esté activo o ambiguo.
+
+**NEXT ÚNICO:** Mauricio envía desde su chat directo un PDF o imagen de prueba
+sin datos sensibles y pide una sola lectura concreta; conciliar identidad,
+herramienta, respuesta única, canal y cero envíos. Después de esa evidencia se
+podrá aceptar la lectura media E2E, sin provocar ni autorizar todavía un mensaje
+a terceros.
 
 
 **DIRECTIVA APROBADA por Mauricio el 08/10/2026.** [REPORTE RECEPCION](https://chatgpt.com/space/page_a6890f7962f88191abe44f53672fd8d4) es la vista operativa del hotel: huéspedes y canales comprobados, notas y antecedentes, cobros diferenciados, tareas/criterios de cierre, preparación hoy/mañana/7/30/90 días, Calendar y fechas especiales, MTD y comparación anual. No es otra fuente transaccional, CRM, cola o cerebro.

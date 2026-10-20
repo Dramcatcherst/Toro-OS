@@ -24,7 +24,8 @@ const evidence = {
   sourceAsOf: "2026-09-23T18:00:00.000Z",
   observedAt: "2026-09-23T18:01:00.000Z",
   sourceReference: "kross://reservations/run-1",
-  sourceHash: "abc123",
+  recordHash:
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 };
 
 describe("normalizeKrossReservationCandidate", () => {
@@ -104,14 +105,50 @@ describe("normalizeKrossReservationCandidate", () => {
       {
         ...evidence,
         sourceAsOf: "2026-09-23T19:00:00.000Z",
+        observedAt: "2026-09-23T19:01:00.000Z",
       },
       "2026-09-23T18:02:00.000Z",
     );
 
     expect(result.canEnterSafeView).toBe(false);
-    expect(result.reservation?.source_is_live).toBe(false);
+    expect(result.reservation).toBeNull();
     expect(result.issues.map((issue) => issue.code)).toContain(
       "future_source_time",
+    );
+  });
+
+  it("rejects a source timestamp later than its observation timestamp", () => {
+    const result = normalizeKrossReservationCandidate(
+      candidate,
+      {
+        ...evidence,
+        sourceAsOf: "2026-09-23T18:01:30.000Z",
+        observedAt: "2026-09-23T18:01:00.000Z",
+      },
+      "2026-09-23T18:02:00.000Z",
+    );
+
+    expect(result.reservation).toBeNull();
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.issues.map((issue) => issue.code)).toContain(
+      "source_after_observation",
+    );
+  });
+
+  it("rejects a non-SHA-256 source checksum before mirror admission", () => {
+    const result = normalizeKrossReservationCandidate(
+      candidate,
+      {
+        ...evidence,
+        recordHash: "not-a-sha256",
+      },
+      "2026-09-23T18:02:00.000Z",
+    );
+
+    expect(result.reservation).toBeNull();
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.issues.map((issue) => issue.code)).toContain(
+      "invalid_source_hash",
     );
   });
 
