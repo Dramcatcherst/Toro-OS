@@ -8,17 +8,18 @@ import type { ToroWorkerRun } from "../control-plane/worker-runtime";
 import { executeGovernedAlegraPurchase } from "./alegra-writer-control-plane";
 
 const scope = { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity", propertyId: "fixture-property" };
-const binding = { scope, receiverTaxId: "fixture-receiver", mainCurrency: "USD", applicationVersion: "costaRica" };
+// Costa Rica CRC purchase fixture. USD sales are handled as separate document currency.
+const binding = { scope, receiverTaxId: "fixture-receiver", mainCurrency: "CRC", applicationVersion: "costaRica" };
 const now = "2026-10-11T09:00:00Z";
 function intent(patch: Record<string, unknown> = {}) {
   return prepareAlegraWriteIntent({ scope, evidence: { sourceRefs: ["fixture:original"], evidenceHash: "fixture-hash" },
     payload: { targetType: "purchase_bill", documentNumber: "fixture-bill", supplierNativeId: "42", issuerTaxId: "fixture-issuer",
-      receiverTaxId: "fixture-receiver", issueDate: "2026-10-11", dueDate: "2026-10-21", currency: "USD", subtotal: "100.00",
+      receiverTaxId: "fixture-receiver", issueDate: "2026-10-11", dueDate: "2026-10-21", currency: "CRC", subtotal: "100.00",
       tax: "13.00", total: "113.00", accountNativeId: "51", costCenterNativeId: "7", purchaseTax: { nativeId: "3", percentage: "13" }, ...patch } });
 }
 function nativeBill(prepared = intent()) {
   return { id: "99", date: "2026-10-11", dueDate: "2026-10-21", provider: { id: "42" }, numberTemplate: { number: "fixture-bill" },
-    observations: prepared.idempotencyKey, status: "open", total: 113, totalPaid: 0, balance: 113, retentions: [], payments: [], currency: { code: "USD" },
+    observations: prepared.idempotencyKey, status: "open", total: 113, totalPaid: 0, balance: 113, retentions: [], payments: [], currency: { code: "CRC" },
     costCenter: { id: "7" }, purchases: { items: [], categories: [{ id: "51", price: 100, quantity: 1, discount: 0, tax: [{ id: "3", percentage: "13" }] }] } };
 }
 type NativeResponse = Awaited<ReturnType<AlegraNativeHttp["request"]>>;
@@ -27,7 +28,7 @@ function fixture(override: (request: Parameters<AlegraNativeHttp["request"]>[0])
   const http: AlegraNativeHttp = { async request(request) {
     requests.push(request);
     const alternative = await override(request); if (alternative) return alternative;
-    if (request.path === "/company") return { status: 200, data: { identification: "fixture-receiver", currency: { code: "USD" }, applicationVersion: "costaRica", decimalPrecision: "2" } };
+    if (request.path === "/company") return { status: 200, data: { identification: "fixture-receiver", currency: { code: "CRC" }, applicationVersion: "costaRica", decimalPrecision: "2" } };
     if (request.path === "/contacts/42") return { status: 200, data: { id: "42", identification: { number: "fixture-issuer" }, type: ["provider"], status: "active" } };
     if (request.path === "/categories/51") return { status: 200, data: { id: "51", type: "expense", status: "active" } };
     if (request.path === "/cost-centers/7") return { status: 200, data: { id: "7", status: true } };
@@ -119,7 +120,7 @@ describe("Native Alegra purchase transport candidate", () => {
   });
 
   it.each([
-    ["FOREIGN_CURRENCY_UNSUPPORTED", { currency: "CRC" }],
+    ["FOREIGN_CURRENCY_UNSUPPORTED", { currency: "USD" }],
     ["NATIVE_DATE_INVALID", { issueDate: "2026-02-30" }],
     ["NATIVE_DATE_INVALID", { dueDate: "2026-10-01" }],
     ["NATIVE_ID_INVALID", { supplierNativeId: "../other" }],
@@ -139,7 +140,7 @@ describe("Native Alegra purchase transport candidate", () => {
 
   it.each(["company", "supplier", "category", "cost", "tax"])("blocks native %s mismatch before any POST", async problem => {
     const store = fixture(async request => {
-      if (problem === "company" && request.path === "/company") return { status: 200, data: { identification: "other-receiver", currency: { code: "USD" }, applicationVersion: "costaRica", decimalPrecision: "2" } };
+      if (problem === "company" && request.path === "/company") return { status: 200, data: { identification: "other-receiver", currency: { code: "CRC" }, applicationVersion: "costaRica", decimalPrecision: "2" } };
       if (problem === "supplier" && request.path === "/contacts/42") return { status: 200, data: { id: "42", identification: null, type: ["provider"], status: "active" } };
       if (problem === "category" && request.path === "/categories/51") return { status: 200, data: { id: "51", type: "income", status: "active" } };
       if (problem === "cost" && request.path === "/cost-centers/7") return { status: 200, data: { id: "7", status: false } };
@@ -202,7 +203,7 @@ describe("Native Alegra purchase transport candidate", () => {
     if (problem === "tax") bill.purchases.categories[0].tax[0].id = "4";
     if (problem === "extra-line") bill.purchases.categories.push({ ...bill.purchases.categories[0] });
     if (problem === "payment") bill.totalPaid = 1;
-    const observed = problem === "foreign" ? { ...bill, currency: { code: "CRC" } } : bill;
+    const observed = problem === "foreign" ? { ...bill, currency: { code: "USD" } } : bill;
     const store = fixture(async request => request.path === "/bills/99" ? { status: 200, data: observed } : undefined);
     await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
   });
@@ -220,7 +221,7 @@ describe("Native Alegra purchase transport candidate", () => {
   it("verifies an explicitly observed native document currency", async () => {
     const store = fixture();
     await expect(store.transport.readback({ intent: intent(), nativeId: "99" }))
-      .resolves.toMatchObject({ targetType: "purchase_bill", currency: "USD", nativeId: "99" });
+      .resolves.toMatchObject({ targetType: "purchase_bill", currency: "CRC", nativeId: "99" });
     expect(store.requests.some(request => request.method === "POST")).toBe(false);
   });
 
