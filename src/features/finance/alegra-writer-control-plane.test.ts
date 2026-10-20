@@ -315,6 +315,7 @@ describe("Alegra server-only expired lease recovery caller", () => {
       { ...parameters, run: { ...expiredRun, fencingToken: 0 } },
       { ...parameters, run: { ...expiredRun, leaseExpiresAt: null } },
       { ...parameters, recoveryWorkerId: expiredRun.actorRef },
+      { ...parameters, recoveryWorkerId: "  " + expiredRun.actorRef.toUpperCase() + "  " },
       { ...parameters, preparedReceiptId: "" },
     ]) {
       await expect(recoverExpiredAlegraLease({ ...candidate, supabase })).resolves.toBeNull();
