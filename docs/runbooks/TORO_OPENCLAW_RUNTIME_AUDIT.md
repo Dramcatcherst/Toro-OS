@@ -9,6 +9,23 @@
 
 Verify the actual OpenClaw Gateway/channel/runtime without exposing credentials and without treating historical documentation as live proof.
 
+### One-command sanitized first pass
+
+On the **existing authorized OpenClaw host**, from a current checkout of this
+repository, run `node scripts/openclaw-host-diagnostics.mjs`. It invokes only
+read-only OpenClaw status, probe, capabilities, security-audit, backup-list and
+a bounded 200-line channel-log command. It prints a small allowlisted JSON
+summary; raw command output is processed transiently and is not printed or
+persisted by the script. Share only the summary with TORO Systems. Review
+local shell/session logging policy before running it on the host.
+
+The summary cannot prove live WhatsApp-to-TORO identity, action receipts,
+history persistence or the exact `Capability unavailable` trace. After this
+first pass, inspect the existing `toro-openclaw-integration` worktree and a
+bounded, sanitized failure trace on the host. Do not publish raw logs or run
+automatic fixes. The script does not change Gateway configuration or send a
+message.
+
 Official references:
 - https://docs.openclaw.ai/cli/channels
 - https://docs.openclaw.ai/gateway/security/running-the-audit
@@ -337,3 +354,18 @@ For M01 record only: timestamp with timezone, runtime version, Gateway reachabil
 Only after M01 passes and the target account and owner allowlist are confirmed, Mauricio can send `/status` as a standalone message from his own phone to the verified TORO test chat. It asks for channel status and does not itself establish TORO identity. For M02, send a harmless read-only owner request and inspect the real inbound sender mapping: exact channel account + sender ID -> canonical Mauricio user + Dreamcatcher organization + active membership; refuse display-name or message-text authorization. Record provider message ID, correlation ID and masked identifiers; no employee, guest or production writes. If identity or personal/work isolation fails, stop before testing tasks.
 
 Status for this first pass remains `CONFIGURED_UNVERIFIED` or `EVIDENCE_PACKET_COMPLETE_UNVERIFIED` until the authorized host and canonical resolver evidence agree. The evaluator cannot promote live runtime merely because references are nonempty. Reuse M01–M12 criteria in `operations.knowledge_items/openclaw_whatsapp_runtime_audit_2026_09_v1` after M01/M02 pass.
+
+## Recepción y cuenta personal: prueba de captura y respaldo — 13/10/2026 CR
+
+Aplicar TORO Comms sección 19 y la misma lane #122/#170/#209. Mantener endpoints públicos enmascarados (recepción …4004, propietario …3792); resolver completos desde registro protegido. Son cuentas a leer, no meramente destinatarios de mensajes.
+
+1. **Host y cuenta:** recuperar puente/worktree/perfil ya existente, confirmar versión usando ayuda de CLI instalada y M01/M02, comprobar cuenta Business/personal y actor/tenant actuales. Registry healthy/verified con last_sync_at=null no sustituye probe. Este entorno no dispone del host/CLI; no iniciar login/logout/reset o cambios de credenciales para completar el papel.
+2. **Observación:** probar entrantes, salientes del personal, grupos autorizados y adjuntos; documentar unsupported/unknown/history window. El reader debe observar sin responder, marcar leído o alterar el inbox. Verificar efectos de OpenClaw (read receipts por defecto, auto-reply tras reconnect) antes de activación; si no puede contenerlos, detener piloto y elegir ruta soportada/exports.
+3. **Piloto recepción:** hasta 20 eventos permitidos, un caso operativo; contar fuente -> journal -> archivo -> objeto canónico. Probar duplicado, edición, fuera de orden, adjunto ausente, outage y recuperación/checkpoint. No huéspedes contactados para demostrar funcionamiento.
+4. **Piloto personal:** hasta 10 eventos autorizados y un compromiso privado. Verificar cuenta personal realmente observada, no solo sender allowlist. Probar denegación a usuario de recepción, otro principal, org errónea y actor revocado; ninguna entrada privada llega a Page/Portal/archivo empresarial.
+5. **Respaldo y restore:** verificar directorios actuales/ACL y backups de datos y archivos separadamente. Restaurar muestra aislada por scope, validar hashes/conteos y búsqueda/linaje sin envíos ni tasks nuevas. No tratar sync/version history como backup independiente.
+6. **Promoción:** evidence packet + lectura independiente por ruta real, rollout autorizado y receipt. Completar un paquete no acredita LIVE; preservar el estado UNVERIFIED hasta observación del host y aceptación de cada workflow.
+
+Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominador, conteos de capturados/procesados/archivados/excepciones, checksums, cobertura, última sync confirmada, resultados de replay/negativas/restore y referencias privadas. Sin cuerpos de chat, teléfonos completos, grupo IDs, auth directories, QR/tokens o datos de terceros en GitHub.
+
+Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.

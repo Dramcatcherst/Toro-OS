@@ -1,8 +1,11 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 
 import { resolveToroContext } from "@/features/context/resolver";
 
 export async function GET() {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   try {
     const context = await resolveToroContext({ mode: "organization" });
 

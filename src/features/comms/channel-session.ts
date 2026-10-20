@@ -143,7 +143,23 @@ export function validateChannelSessionDraft(
     return { ok: false, error: "Session expiry is invalid." };
   }
 
-  return { ok: true, value: value as ToroChannelSessionDraft };
+  // Project only validated contract fields. Do not retain the input object or
+  // transport payloads that may contain private content or credentials.
+  return {
+    ok: true,
+    value: {
+      orgId: value.orgId,
+      userId: value.userId,
+      employeeId: value.employeeId,
+      identityId: value.identityId,
+      bindingId: value.bindingId,
+      conversationHash: value.conversationHash,
+      activeScope: value.activeScope,
+      humanLayerVersion: value.humanLayerVersion,
+      humanLayerHash: value.humanLayerHash,
+      expiresAt: value.expiresAt,
+    },
+  };
 }
 
 export function canResumeChannelSession(
@@ -188,6 +204,16 @@ export function buildChannelReceiptDraft(input: {
     !UUID.test(input.orgId)
   ) {
     throw new Error("Canonical receipt identifiers are invalid.");
+  }
+
+  // TypeScript types do not validate data received at runtime.
+  if (
+    (input.direction !== "inbound" && input.direction !== "outbound") ||
+    !["message", "ack", "action", "result", "error", "reminder"].includes(
+      input.eventKind,
+    )
+  ) {
+    throw new Error("Receipt direction or event kind is invalid.");
   }
 
   const type = input.canonicalObjectType?.trim() || null;

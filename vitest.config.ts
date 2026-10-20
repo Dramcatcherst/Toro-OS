@@ -5,6 +5,8 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     environment: "node",
+    // Existing suites model the internal runtime. Public-demo suites explicitly unset/override this.
+    env: { TORO_DEPLOYMENT_MODE: "internal" },
   },
   resolve: {
     alias: {

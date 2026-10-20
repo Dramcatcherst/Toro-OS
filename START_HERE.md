@@ -90,14 +90,12 @@ The only visible product/brand is **TORO**.
 
 The business is represented by the **blue bull**; TORO is represented by the fused **brain + microchip/circuit** intelligence at its center. The two are one metaphor: biological intelligence + AI/computation coordinating a much larger living system.
 
-Current masters:
-- Full logo: `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
-  - 1536×1536
-  - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- Isotype: `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+Current master, per `docs/product/TORO_BRAND_CONTRACT.md` (CURRENT, 2026-09-23):
+- `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`
   - 1536×1536
   - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
-- Brand manifest: `/TORO/Brand/01_Master/TORO_BRAIN_BRAND_MASTER_MANIFEST_v1.md`
+- The TORO BRAIN wordmark (`8828b0d...`), isotype filename and old manifest are historical references. File availability and exact bytes still require verification.
+- Portal design rules: `docs/product/TORO_PORTAL_DESIGN_RULES.md`; subordinate to the General Plan and brand contract.
 
 Legacy source artwork remains historical provenance only:
 - `Dramcatcherst/toro-os-v88-new/public/assets/toro-azul-logo.jpg`
@@ -108,6 +106,10 @@ Rules:
 - do not use bullfighting, violent or aggressive imagery as the brand language;
 - do not present TORO OS as a second brand or product;
 - old `TORO OS` / `toro_os_*` names may remain only as technical compatibility aliases until safely migrated.
+
+## Strategic operating lens — 2026-10-20
+
+Use the **single General Plan** section `OWNER_AI_WEALTH_STRATEGY_20261020` to prioritize verified Dreamcatcher net contribution, owner time recovered through governed TORO, productive assets and resilience. It contains 40 mapped controls, not 40 completed features. Do not invent financial results, create duplicate schedulers, or advance external client onboarding before the existing readiness gate.
 
 ## Product test
 
