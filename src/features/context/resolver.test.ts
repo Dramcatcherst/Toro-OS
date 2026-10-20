@@ -1,11 +1,20 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { createServerSupabaseClientMock } = vi.hoisted(() => ({
+const { createServerSupabaseClientMock, portalSessionAllowedMock, readSelectedToroOrganizationPreferenceMock } = vi.hoisted(() => ({
   createServerSupabaseClientMock: vi.fn(),
+  portalSessionAllowedMock: vi.fn(),
+  readSelectedToroOrganizationPreferenceMock: vi.fn(),
 }));
 
 vi.mock("@/lib/supabase/server", () => ({
   createServerSupabaseClient: createServerSupabaseClientMock,
+}));
+vi.mock("@/features/auth/portal-session", () => ({
+  portalSessionAllowed: portalSessionAllowedMock,
+}));
+
+vi.mock("./organization-selection", () => ({
+  readSelectedToroOrganizationPreference: readSelectedToroOrganizationPreferenceMock,
 }));
 
 import { resolveToroContext } from "./resolver";
@@ -90,7 +99,12 @@ function buildClient({
 describe("resolveToroContext", () => {
   beforeEach(() => {
     createServerSupabaseClientMock.mockReset();
+    portalSessionAllowedMock.mockReset();
+    portalSessionAllowedMock.mockResolvedValue(true);
+    readSelectedToroOrganizationPreferenceMock.mockReset();
+    readSelectedToroOrganizationPreferenceMock.mockResolvedValue(null);
   });
+  afterEach(() => vi.unstubAllEnvs());
 
   it("allows personal context for an authenticated user with no organization roles", async () => {
     createServerSupabaseClientMock.mockResolvedValue(buildClient());
@@ -165,6 +179,98 @@ describe("resolveToroContext", () => {
       canUseOrganizationData: false,
       requiresContextChoice: true,
     });
+  });
+
+  it("uses the session preference only after revalidating its active membership", async () => {
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+    readSelectedToroOrganizationPreferenceMock.mockResolvedValue({
+      userId: USER_ID,
+      organizationId: ORG_B,
+    });
+    createServerSupabaseClientMock.mockResolvedValue(
+      buildClient({
+        roleRows: [
+          { org_id: ORG_A, roles: { code: "ADMIN" } },
+          { org_id: ORG_B, roles: { code: "CONTABILIDAD" } },
+        ],
+      }),
+    );
+
+    await expect(resolveToroContext()).resolves.toMatchObject({
+      orgId: ORG_B,
+      membership: { orgId: ORG_B, roles: ["CONTABILIDAD"] },
+      canUseOrganizationData: true,
+      requiresContextChoice: false,
+    });
+  });
+
+  it("falls back to explicit choice when a stored organization is no longer authorized", async () => {
+    const revokedOrg = "00000000-0000-4000-8000-0000000000cc";
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+    readSelectedToroOrganizationPreferenceMock.mockResolvedValue({
+      userId: USER_ID,
+      organizationId: revokedOrg,
+    });
+    createServerSupabaseClientMock.mockResolvedValue(
+      buildClient({
+        roleRows: [
+          { org_id: ORG_A, roles: { code: "ADMIN" } },
+          { org_id: ORG_B, roles: { code: "GERENCIA" } },
+        ],
+      }),
+    );
+
+    await expect(resolveToroContext()).resolves.toMatchObject({
+      orgId: null,
+      availableOrgIds: [ORG_A, ORG_B],
+      canUseOrganizationData: false,
+      requiresContextChoice: true,
+    });
+  });
+
+  it("returns to explicit choice when a different user inherits the browser preference", async () => {
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+    readSelectedToroOrganizationPreferenceMock.mockResolvedValue({
+      userId: "00000000-0000-4000-8000-000000000099",
+      organizationId: ORG_B,
+    });
+    createServerSupabaseClientMock.mockResolvedValue(
+      buildClient({
+        roleRows: [
+          { org_id: ORG_A, roles: { code: "ADMIN" } },
+          { org_id: ORG_B, roles: { code: "GERENCIA" } },
+        ],
+      }),
+    );
+
+    await expect(resolveToroContext()).resolves.toMatchObject({
+      userId: USER_ID,
+      orgId: null,
+      availableOrgIds: [ORG_A, ORG_B],
+      requiresContextChoice: true,
+    });
+  });
+
+  it("never consumes the Portal preference in the internal runtime", async () => {
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", "internal");
+    readSelectedToroOrganizationPreferenceMock.mockResolvedValue({
+      userId: USER_ID,
+      organizationId: ORG_B,
+    });
+    createServerSupabaseClientMock.mockResolvedValue(
+      buildClient({
+        roleRows: [
+          { org_id: ORG_A, roles: { code: "ADMIN" } },
+          { org_id: ORG_B, roles: { code: "GERENCIA" } },
+        ],
+      }),
+    );
+
+    await expect(resolveToroContext()).resolves.toMatchObject({
+      orgId: null,
+      requiresContextChoice: true,
+    });
+    expect(readSelectedToroOrganizationPreferenceMock).not.toHaveBeenCalled();
   });
 
   it("resolves the requested organization when it is an active membership", async () => {
