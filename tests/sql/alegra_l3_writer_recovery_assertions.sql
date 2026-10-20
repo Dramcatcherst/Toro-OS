@@ -15,6 +15,7 @@ declare
   v_recovery_receipts_after integer;
   v_total_receipts_before integer;
   v_total_receipts_after integer;
+  v_invalid_recovery_worker text;
 begin
   select *
     into strict v_context
@@ -77,6 +78,26 @@ begin
 
   if v_run_after is distinct from v_run_before then
     raise exception 'expired_heartbeat_mutated_run';
+  end if;
+
+  -- A human signer may not impersonate the recovery service worker.
+  foreach v_invalid_recovery_worker in array
+    array[v_context.actor_id, '  ' || upper(v_context.actor_id) || '  ']
+  loop
+    if public.toro_recover_expired_alegra_execution_v1(
+         '10000000-0000-4000-8000-000000000001',
+         v_context.run_id,
+         v_invalid_recovery_worker,
+         v_context.fencing_token,
+         v_context.prepared_receipt_id
+       ) is not null then
+      raise exception 'alegra_l3_signer_recovery_alias_was_accepted';
+    end if;
+  end loop;
+  select * into strict v_run_after
+  from public.toro_execution_runs where id = v_context.run_id;
+  if v_run_after is distinct from v_run_before then
+    raise exception 'rejected_signer_recovery_mutated_run';
   end if;
 
   v_result := public.toro_recover_expired_alegra_execution_v1(
