@@ -31,7 +31,7 @@ function fixture(override: (request: Parameters<AlegraNativeHttp["request"]>[0])
     if (request.path === "/company") return { status: 200, data: { identification: "fixture-receiver", currency: { code: "CRC" }, applicationVersion: "costaRica", decimalPrecision: "2" } };
     if (request.path === "/contacts/42") return { status: 200, data: { id: "42", identification: { number: "fixture-issuer" }, type: ["provider"], status: "active" } };
     if (request.path === "/categories/51") return { status: 200, data: { id: "51", type: "expense", status: "active" } };
-    if (request.path === "/cost-centers/7") return { status: 200, data: { id: "7", status: true } };
+    if (request.path === "/cost-centers/7") return { status: 200, data: { id: "7", status: "active" } };
     if (request.path === "/taxes/3") return { status: 200, data: { id: "3", percentage: "13", status: "active" } };
     if (request.path === "/bills" && request.method === "GET") return { status: 200, data: { metadata: { total: 0 }, data: [] } };
     if (request.path === "/bills" && request.method === "POST") return { status: 201, data: { id: "99" } };
@@ -232,6 +232,27 @@ describe("Native Alegra purchase transport candidate", () => {
     expect(await transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true })).toMatchObject({ state: "created", nativeId: "99" });
     const posted = store.requests.find(r => r.method === "POST")!;
     expect(posted.body).toMatchObject({ purchases: { categories: [{ price: 100 }] } });
+  });
+
+  it.each(["inactive", false, null] as const)("rejects an inactive native cost center status: %s", async status => {
+    const store = fixture(async request => request.path === "/cost-centers/7"
+      ? { status: 200, data: { id: "7", status } } : undefined);
+    const prepared = intent();
+    const result = await store.transport.create({
+      intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true,
+    });
+    expect(result).toMatchObject({ state: "blocked", code: "NATIVE_COST_CENTER_MISMATCH" });
+    expect(store.requests.some(request => request.method === "POST")).toBe(false);
+  });
+
+  it("retains boolean true legacy cost center acceptance", async () => {
+    const store = fixture(async request => request.path === "/cost-centers/7"
+      ? { status: 200, data: { id: "7", status: true } } : undefined);
+    const prepared = intent();
+    expect(await store.transport.create({
+      intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true,
+    })).toMatchObject({ state: "created", nativeId: "99" });
+    expect(store.requests.filter(request => request.method === "POST")).toHaveLength(1);
   });
 
   it("enforces a final fenced lease immediately before the native POST", async () => {
