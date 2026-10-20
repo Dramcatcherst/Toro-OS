@@ -18,7 +18,7 @@ function intent(patch: Record<string, unknown> = {}) {
 }
 function nativeBill(prepared = intent()) {
   return { id: "99", date: "2026-10-11", dueDate: "2026-10-21", provider: { id: "42" }, numberTemplate: { number: "fixture-bill" },
-    observations: prepared.idempotencyKey, status: "open", total: 113, totalPaid: 0, balance: 113, retentions: [], payments: [],
+    observations: prepared.idempotencyKey, status: "open", total: 113, totalPaid: 0, balance: 113, retentions: [], payments: [], currency: { code: "USD" },
     costCenter: { id: "7" }, purchases: { items: [], categories: [{ id: "51", price: 100, quantity: 1, discount: 0, tax: [{ id: "3", percentage: "13" }] }] } };
 }
 type NativeResponse = Awaited<ReturnType<AlegraNativeHttp["request"]>>;
@@ -205,6 +205,23 @@ describe("Native Alegra purchase transport candidate", () => {
     const observed = problem === "foreign" ? { ...bill, currency: { code: "CRC" } } : bill;
     const store = fixture(async request => request.path === "/bills/99" ? { status: 200, data: observed } : undefined);
     await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
+  });
+
+  it.each(["omitted", "null", "empty"] as const)("does not infer a missing bill currency: %s", async variant => {
+    const observed: Record<string, unknown> = { ...nativeBill() };
+    if (variant === "omitted") delete observed.currency;
+    else if (variant === "null") observed.currency = null;
+    else observed.currency = { code: "" };
+    const store = fixture(async request => request.path === "/bills/99" ? { status: 200, data: observed } : undefined);
+    await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
+    expect(store.requests.some(request => request.method === "POST")).toBe(false);
+  });
+
+  it("verifies an explicitly observed native document currency", async () => {
+    const store = fixture();
+    await expect(store.transport.readback({ intent: intent(), nativeId: "99" }))
+      .resolves.toMatchObject({ targetType: "purchase_bill", currency: "USD", nativeId: "99" });
+    expect(store.requests.some(request => request.method === "POST")).toBe(false);
   });
 
   it("captures binding and payload before authorization awaits", async () => {
