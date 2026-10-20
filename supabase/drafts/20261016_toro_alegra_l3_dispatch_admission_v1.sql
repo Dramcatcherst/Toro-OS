@@ -1712,6 +1712,12 @@ begin
     raise exception 'approval_binding_required';
   end if;
 
+  -- The signed human cannot reuse their identity as the privileged L3 worker.
+  -- This also guards direct RPC callers that bypass the TypeScript preflight.
+  if lower(btrim(p_worker_id)) = lower(btrim(p_approval_actor_id)) then
+    raise exception 'alegra_l3_worker_must_be_distinct_from_signer';
+  end if;
+
   -- Sign, renewal, revocation, and admission serialize on the same run. Sample
   -- time only after this potentially blocking lock.
   select *
@@ -2758,6 +2764,7 @@ begin
   v_new_fencing_token := p_expected_fencing_token + 1;
 
   if v_run.execution_authority_level is distinct from 'L3'
+     or lower(btrim(p_recovery_worker_id)) = lower(btrim(v_run.actor_ref))
      or v_run.action_key is distinct from 'alegra_create_purchase_bill'
      or v_run.target_system is distinct from 'alegra'
      or v_run.actor_kind is distinct from 'human'
