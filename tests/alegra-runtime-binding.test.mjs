@@ -38,6 +38,14 @@ vm.runInNewContext(compiled, {
   require(name) {
     if (name === 'server-only') return {};
     if (name === './alegra-writer-contract') return contract;
+    // The isolated gate test only exercises admission, heartbeat, and finalize.
+    // Stub composed native dependencies, never allowing provider IO here.
+    if (name === './alegra-writer-executor') return {
+      executeApprovedAlegraIntent: () => { throw new Error('Unexpected composed execution in gate-only test'); },
+    };
+    if (name === './alegra-native-purchase-transport') return {
+      createNativeAlegraPurchaseTransport: () => { throw new Error('Unexpected native transport in gate-only test'); },
+    };
     if (name === '../control-plane/worker-runtime') return boundaries;
     throw new Error(`Unexpected dependency: ${name}`);
   },
