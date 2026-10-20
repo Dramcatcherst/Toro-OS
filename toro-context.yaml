@@ -12,6 +12,41 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+owner_ai_wealth_strategy:
+  decision_date: "2026-10-20"
+  status: adopted_governance_only
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  section_marker: OWNER_AI_WEALTH_STRATEGY_20261020
+  policy_scope: owner_portfolio_with_explicit_isolation
+  outcome_order:
+    - protect_guests_compliance_and_operational_truth
+    - increase_recurring_net_contribution_dreamcatcher
+    - reduce_owner_hours_with_verified_toro_workflows
+    - build_productive_assets_and_financial_resilience
+  financial_rules:
+    - separate_revenue_collections_cash_profit_and_capex
+    - never_double_count_villas_and_rooms
+    - require_source_period_scope_currency_and_cost_baseline
+    - never_invent_roi_or_owner_time_savings
+    - protect_private_owner_assets_from_public_repositories
+  decision_gates:
+    - materiality_and_source_authority
+    - existing_project_owner_and_dependency
+    - baseline_cost_benefit_risk_and_liquidity
+    - explicit_approval_for_irreversible_or_external_actions
+    - execution_receipt_and_measured_after_state
+    - stage_continue_adjust_stop
+  current_business_priority: dreamcatcher_hotel_master
+  existing_execution_coordinator: "Dreamcatcher · Ejecución del Plan"
+  existing_portfolio_root: toro_os_portfolio_master
+  existing_operating_layer: toro_executive_control
+  future_productization_requires_existing_readiness_gate: true
+  workstreams_documented: 40
+  workstreams_runtime_completed: unverified
+  no_new_backlog_or_scheduler: true
+  kross_paid_api_remains_paused: true
+
+
 target_navigation:
   decision_date: "2026-10-10"
   visible_cross_cutting_module: "Cerebro"
