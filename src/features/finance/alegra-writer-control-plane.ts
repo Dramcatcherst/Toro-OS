@@ -28,6 +28,11 @@ export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; 
       const captured = captureAlegraWriteAuthorization(request.intent, request.approval);
       const intent = captured.intent;
       const approval = captured.approval!;
+      // The signed human and the runtime worker must be distinct identities.
+      // Normalize only for comparison; do not modify the fenced worker ID.
+      const workerPrincipal = typeof workerId === "string" ? workerId.trim().toLowerCase() : "";
+      const signerPrincipal = approval?.actorId?.trim().toLowerCase() ?? "";
+      if (!workerPrincipal || !signerPrincipal || workerPrincipal === signerPrincipal) return false;
       const checkedAt = currentTime();
       const now = Date.parse(checkedAt);
       if (!validateAlegraWriteApproval(intent, approval, checkedAt).ok || !Number.isFinite(now) || run.orgId !== intent.scope.orgId || run.idempotencyKey !== intent.idempotencyKey ||
@@ -149,7 +154,7 @@ export async function recoverExpiredAlegraLease(input: {
     run.fencingToken >= Number.MAX_SAFE_INTEGER ||
     !run.leaseOwner?.trim() ||
     !recoveryWorkerId?.trim() ||
-    recoveryWorkerId === run.actorRef ||
+    recoveryWorkerId.trim().toLowerCase() === run.actorRef?.trim().toLowerCase() ||
     !preparedReceiptId?.trim()
   ) {
     return null;
