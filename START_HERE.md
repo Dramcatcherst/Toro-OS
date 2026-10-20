@@ -113,7 +113,7 @@ Use the **single General Plan** section `OWNER_AI_WEALTH_STRATEGY_20261020` to p
 
 ### Approved improvement execution — 2026-10-20
 
-For the owner's thirty approved improvements, consume the subordinate execution guide `docs/superpowers/plans/2026-10-20-toro-improvements30-execution.md` and the existing Supabase contract `toro_master_execution_contract_v1` at `structured_content.improvement_execution_20261020`. M01–M30 map to existing tasks and E01–E40; they are not thirty new projects or completed features. Reuse **Dreamcatcher · Ejecución del Plan** every six hours, at most three active outcomes and a target of up to five material verified steps per run within current budgets. Existing task ownership, approvals, pauses and readiness gates prevail. Runtime state stays in Supabase; this guide does not replace the single General Plan.
+For the owner's thirty approved improvements, consume the subordinate execution guide `docs/superpowers/plans/2026-10-20-toro-improvements30-execution.md` and the existing Supabase contract `toro_master_execution_contract_v1` at `structured_content.improvement_execution_20261020`. M01–M30 map to existing tasks and E01–E40; they are not thirty new projects or completed features. Reuse **Dreamcatcher · Ejecución del Plan** every hour, as explicitly requested by the owner on 2026-10-20, at most three active outcomes and a target of up to five material verified steps per run within current budgets. Existing task ownership, approvals, pauses and readiness gates prevail. Runtime state stays in Supabase; this guide does not replace the single General Plan.
 
 ## Product test
 
