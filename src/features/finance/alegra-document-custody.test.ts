@@ -1,4 +1,5 @@
 import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
@@ -126,4 +127,39 @@ describe("Alegra original document custody", () => {
     const captured = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-document", assets }), scope, source);
     await expect(restoreAlegraDocumentCustody(captured, scope, source, source)).rejects.toThrow("CUSTODY_RESTORE_DESTINATION_NOT_ISOLATED");
   });
+
+  it("rejects identical preview bytes linked to different originals instead of losing lineage", () => {
+    const pdfParent = createHash("sha256").update(assets[1].bytes).digest("hex");
+    const xmlParent = createHash("sha256").update(assets[2].bytes).digest("hex");
+    const preview = {
+      role: "derived_preview" as const,
+      mime: "application/pdf",
+      bytes: fixturePdf(),
+      sourceRef: "fixture:preview-pdf",
+      parentSha256: pdfParent,
+    };
+    expect(() => prepareAlegraDocumentCustody({
+      scope, documentKey: "fixture-document",
+      assets: [...assets, preview, { ...preview,
+        parentSha256: xmlParent, sourceRef: "fixture:preview-xml" }],
+    })).toThrow("CUSTODY_DERIVATIVE_PARENT_CONFLICT");
+  });
+
+  it("deduplicates the same preview from the same original without losing provenance", () => {
+    const pdfParent = createHash("sha256").update(assets[1].bytes).digest("hex");
+    const preview = {
+      role: "derived_preview" as const,
+      mime: "application/pdf", bytes: fixturePdf(),
+      sourceRef: "fixture:preview-a", parentSha256: pdfParent,
+    };
+    const result = prepareAlegraDocumentCustody({
+      scope, documentKey: "fixture-document",
+      assets: [...assets, preview, { ...preview, sourceRef: "fixture:preview-b" }],
+    });
+    const previews = result.assets.filter(a => a.role === "derived_preview");
+    expect(previews).toHaveLength(1);
+    expect(previews[0].parentSha256).toBe(pdfParent);
+    expect(previews[0].sourceRefs).toEqual(["fixture:preview-a", "fixture:preview-b"]);
+  });
+
 });
