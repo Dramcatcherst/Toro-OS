@@ -25,6 +25,20 @@ function sqlFunction(name: string, nextName?: string) {
 }
 
 describe("Alegra L3 SQL dispatch contract", () => {
+  it("rejects signed owner aliases as both dispatch and recovery workers", () => {
+    const admission = sqlFunction(
+      "public.toro_admit_approved_alegra_execution_v1",
+      "public.toro_finalize_alegra_execution_v1",
+    );
+    const recovery = sqlFunction(
+      "public.toro_recover_expired_alegra_execution_v1",
+      "public.toro_transition_execution_run_v1",
+    );
+    expect(admission).toContain("lower(btrim(p_worker_id)) = lower(btrim(p_approval_actor_id))");
+    expect(admission).toContain("raise exception 'alegra_l3_worker_must_be_distinct_from_signer'");
+    expect(recovery).toContain("lower(btrim(p_recovery_worker_id)) = lower(btrim(v_run.actor_ref))");
+  });
+
   it("keeps the generic targeted claim restricted to L0-L2", () => {
     const claimBody = genericClaimSql.slice(
       genericClaimSql.indexOf("create or replace function public.toro_claim_execution_run_by_id_v1"),
