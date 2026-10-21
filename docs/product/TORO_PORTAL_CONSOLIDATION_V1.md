@@ -7,8 +7,8 @@
 **Tecnología observada:** Next.js 16.3.8, React 19.2.4, TypeScript, CSS Modules y Vitest 4.1.11 del repositorio existente. Sin dependencias nuevas por este programa.
 **Especificación de origen:** `docs/product/TORO_USER_PORTAL_V1.md`, `docs/product/TORO_PORTAL_DESIGN_RULES.md` y la propuesta entregada `TORO_Estructura_Consolidada_Propuesta.md` (20/10/2026).
 **Autoridad:** `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, sección Human Experience; constitución y contextos vigentes.
-**Carril:** PR #347, `design/toro-future-color-20261020`, candidato observado `71a0c23f85ceb0c67570dc77f2546fff8939c85d`. No fusionar la PR documental #259 ni sustituir el build actual por inferencia. Revalidar propietario y head antes de ejecutar.
-**Corte:** 21/10/2026, Costa Rica. Estado: LOTE A IMPLEMENTADO Y PROBADO EN CANDIDATO; la interfaz todavía no consume la correspondencia. Lotes B/C, aceptación, merge y despliegue NO EJECUTADOS.
+**Carril:** PR #347, `design/toro-future-color-20261020`; lote B ejecutado sobre la base `708881d1d7337282b5c8dc3b3508f70c858b41fc`. No fusionar la PR documental #259 ni sustituir el build actual por inferencia. Revalidar propietario y head antes de publicar.
+**Corte:** 21/10/2026, Costa Rica. Estado: LOTES A/B IMPLEMENTADOS Y PROBADOS EN CANDIDATO. Lote C, aceptación, merge y despliegue NO EJECUTADOS.
 
 ## 1. Hallazgos que cambian la implementación
 
@@ -110,13 +110,13 @@ Orden de familias: clients, operations, team, money, growth, projects. Omitir fa
 
 **Interfaz:** mantener los props actuales `modules`, `links`, `catalogueItems`, `catalogueMode`, `hotelAllowed`, `attention`. Consumir `resolvePortalStructure` del loteA. No añadir una consulta desde el cliente ni retirar la clave usuario+organización de la página.
 
-- [ ] Escribir pruebas de tres pestañas llamadas exactamente Hoy/Agenda/Gestión, navegación ArrowLeft/ArrowRight/Home/End, foco y panel activo.
-- [ ] Añadir pruebas para las seis familias, acceso al Mapa, conservación del conteo manual/plantillas/catálogo/favoritos y todos los destinos de la fixture; denegados no se habilitan.
-- [ ] Ejecutar pruebas focales y comprobar el fallo esperado antes del cambio.
-- [ ] Reorganizar la presentación, no los cálculos ni los registros. Hoy no repite todos los paneles; Gestión abre grupos bajos con detalle progresivo. Mantener estado de formularios dentro del contexto y reinicio al cambiarlo.
-- [ ] Agenda: inspeccionar primero catálogo/adapter existente. Sin fuente autorizada, mostrar estado compacto "Agenda integrada no disponible en este contexto" y SOLO un enlace de origen si ya está autorizado/verificado. No crear un calendario ni eventos ficticios ni prometer búsqueda de eventos. El acceso de contingencia no cuenta como agenda integrada.
-- [ ] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas.
-- [ ] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; corregir regresiones sin rebajar gates. Commit reversible del lote.
+- [x] Escribir pruebas de tres pestañas llamadas exactamente Hoy/Agenda/Gestión, navegación ArrowLeft/ArrowRight/Home/End, foco y panel activo.
+- [x] Añadir pruebas para las seis familias, acceso al Mapa, conservación del conteo manual/plantillas/catálogo/favoritos y todos los destinos de la fixture; denegados no se habilitan.
+- [x] Ejecutar pruebas focales y comprobar el fallo esperado antes del cambio: cinco casos fallaron por la interfaz anterior y pasaron tras la implementación.
+- [x] Reorganizar la presentación, no los cálculos ni los registros. Hoy no repite todos los paneles; Gestión abre grupos bajos con detalle progresivo. Mantener estado de formularios dentro del contexto y reinicio al cambiarlo.
+- [x] Agenda: inspeccionar primero catálogo/adapter existente. Sin fuente autorizada, mostrar estado compacto "Agenda integrada no disponible en este contexto" y SOLO un enlace de origen si ya está autorizado/verificado. No crear un calendario ni eventos ficticios ni prometer búsqueda de eventos. El acceso de contingencia no cuenta como agenda integrada.
+- [x] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas.
+- [x] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; 203 pruebas Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron. Persisten dos advertencias lint preexistentes fuera del lote.
 
 **Terminado:** navegación funcional y conservación de accesos en candidato probado. Agenda integrada, WhatsApp y privacidad E2E no se consideran aprobados por tests de componentes.
 
@@ -140,8 +140,8 @@ Una herramienta solo es candidata a retirarse tras: función única inventariada
 
 ## 8. Verificación de esta entrega y siguiente unidad
 
-**Hecho hasta este corte:** `resolvePortalStructure` implementa la correspondencia pura 12ordinales→destinos sin alterar `resolvePortalModules`, objetos, estados, rutas, permisos o datos. Conserva ordinales futuros en `unmapped` y no muta la entrada. Pruebas focales, carril Portal, autorización Portal, lint dirigido y build de 52 páginas aprobados. La interfaz visible no consume todavía el contrato.
+**Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Nueve pruebas focales, 203 del carril Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron.
 
-**Siguiente unidad preparada:** loteB, después de revisar el contrato aplicado y mantener el gate de QA visual del candidato. Método recomendado: misma rama/carril acordado, pruebas primero y revisión del conjunto antes de publicación. No requiere servicios o agentes adicionales.
+**Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, con baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
 
 **Reversión de esta entrega documental:** revertir solo el commit de este documento; no tocar commits visuales previos. Las posibles reversiones de A/B/C se definirán con sus SHAs reales al ejecutarlos.
