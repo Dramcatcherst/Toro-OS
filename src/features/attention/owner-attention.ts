@@ -235,7 +235,8 @@ export function projectInvoiceAttention(
   row: InvoiceRow,
   today: string,
 ): OwnerAttentionItem | null {
-  const status = (row.payment_status ?? "unknown").trim().toLowerCase();
+  const rawStatus = row.payment_status ?? "unknown";
+  const status = rawStatus.trim().toLowerCase();
 
   // An invoice total is not an outstanding balance. Explicit final/verified
   // no-payment states do not belong in a debt-alert queue. Reconciliation
@@ -273,7 +274,7 @@ export function projectInvoiceAttention(
       ? `${row.issuer_name} — ${row.document_number}`
       : row.issuer_name,
     priority,
-    state: status,
+    state: rawStatus,
     dueDate: row.due_date,
     amount: parseNumber(row.total),
     currency: row.currency,
