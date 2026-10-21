@@ -42,6 +42,20 @@ describe("personal Gmail separation and action gates", () => {
     expect(canUsePersonalMailbox(personalContext, connection, "draft")).toBe(true);
   });
 
+  it("supports an independently granted personal Outlook connection", () => {
+    expect(canUsePersonalMailbox({
+      ...personalContext,
+      allowedTools: [
+        { provider: "outlook-email", actions: ["read"], owner: "personal", orgId: null },
+      ],
+    }, {
+      ...connection,
+      provider: "outlook",
+      draftEnabled: false,
+      modifyEnabled: false,
+    }, "read")).toBe(true);
+  });
+
   it("blocks any organization context even if it is the owner", () => {
     expect(canUsePersonalMailbox({
       ...personalContext,

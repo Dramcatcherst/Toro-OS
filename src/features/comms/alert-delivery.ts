@@ -63,6 +63,9 @@ const MODULE_ROOM_POLICY: Record<
   distribution: { room: "management", privacy: "restricted" },
   finance_control: { room: "management", privacy: "restricted" },
   growth_reputation: { room: "management", privacy: "restricted" },
+  mail_financial_evidence: { room: "management", privacy: "restricted" },
+  mail_guest_service: { room: "reception", privacy: "internal" },
+  mail_security: { room: "management", privacy: "restricted" },
   payflow: { room: "management", privacy: "restricted" },
   people_hr: { room: "people", privacy: "restricted" },
   security_guard: { room: "management", privacy: "restricted" },
@@ -229,5 +232,150 @@ export function prepareAlertDelivery(
     ].join(":"),
     message: formatAlertDelivery(signal),
     blockers,
+  };
+}
+
+export const TORO_MAIL_ALERT_CLASSES = [
+  "financial_evidence",
+  "guest_service",
+  "security",
+  "systems",
+] as const;
+
+export type ToroMailAlertClass = (typeof TORO_MAIL_ALERT_CLASSES)[number];
+export type ToroMailAlertScope = "personal" | "organization";
+
+export type ToroMailAlertInput = {
+  scope: ToroMailAlertScope;
+  accountId: string;
+  providerMessageIdHash: string;
+  privacyReviewed: boolean;
+  alertClass: ToroMailAlertClass;
+  version: string;
+  priority: AlertDeliveryPriority;
+  title: string;
+  summary: string;
+  impact: string;
+  requiredAction: string;
+  owner: string;
+  dueAt: string;
+  sourceSystem: string;
+  sourceCutoff: string;
+};
+
+export type ToroMailAlertDeliveryDecision = {
+  status: "ready" | "blocked";
+  target: "owner_direct" | "reception_group" | "management_group";
+  candidate: AlertDeliveryCandidate | null;
+  blockers: string[];
+};
+
+const MAIL_ALERT_MODULE: Record<ToroMailAlertClass, string> = {
+  financial_evidence: "mail_financial_evidence",
+  guest_service: "mail_guest_service",
+  security: "mail_security",
+  systems: "systems",
+};
+
+function isSha256Reference(value: string) {
+  return /^sha256:[a-f0-9]{64}$/.test(value);
+}
+
+/**
+ * Converts a privacy-reviewed mail signal into the existing OpenClaw group
+ * routing contract. Personal mail is intentionally never projected into hotel
+ * groups; it needs a separately verified owner-direct transport.
+ */
+export function prepareToroMailAlertDelivery(
+  input: ToroMailAlertInput,
+  bindings: WhatsAppGroupBinding[],
+): ToroMailAlertDeliveryDecision {
+  if (input.scope === "personal") {
+    return {
+      status: "blocked",
+      target: "owner_direct",
+      candidate: null,
+      blockers: ["verified_owner_direct_binding_missing"],
+    };
+  }
+
+  const blockers: string[] = [];
+  if (!input.privacyReviewed) blockers.push("privacy_review_required");
+  if (!isSha256Reference(input.providerMessageIdHash)) {
+    blockers.push("hashed_source_reference_required");
+  }
+  const target = input.alertClass === "guest_service"
+    ? "reception_group" as const
+    : "management_group" as const;
+  if (blockers.length > 0) {
+    return { status: "blocked", target, candidate: null, blockers };
+  }
+
+  const signal = moduleAlertSignal({
+    moduleKey: MAIL_ALERT_MODULE[input.alertClass],
+    alertKey: `${input.accountId}:${input.providerMessageIdHash}`,
+    version: input.version,
+    priority: input.priority,
+    title: input.title,
+    summary: input.summary,
+    impact: input.impact,
+    requiredAction: input.requiredAction,
+    owner: input.owner,
+    dueAt: input.dueAt,
+    sourceSystem: input.sourceSystem,
+    sourceCutoff: input.sourceCutoff,
+    sourceRef: input.providerMessageIdHash,
+  });
+  const candidate = prepareAlertDelivery(signal, bindings);
+  return {
+    status: candidate.status,
+    target,
+    candidate,
+    blockers: candidate.blockers,
+  };
+}
+
+export type ToroMailAlertDeliveryReceipt = {
+  receiptId: string;
+  dedupeKey: string;
+  destinationBindingId: string;
+  providerStatus: "accepted" | "delivered" | "failed";
+  attemptedAt: string;
+  deliveredAt: string | null;
+  readbackAt: string | null;
+};
+
+export function validateToroMailAlertDeliveryReceipt(
+  decision: ToroMailAlertDeliveryDecision,
+  receipt: ToroMailAlertDeliveryReceipt,
+) {
+  const errors: string[] = [];
+  const candidate = decision.candidate;
+  if (decision.status !== "ready" || !candidate?.destinationBindingId) {
+    errors.push("delivery_candidate_not_ready");
+  }
+  if (!receipt.receiptId.trim()) errors.push("missing_receipt_id");
+  if (!receipt.attemptedAt.trim()) errors.push("missing_attempt_time");
+  if (candidate && receipt.dedupeKey !== candidate.dedupeKey) {
+    errors.push("dedupe_key_mismatch");
+  }
+  if (
+    candidate?.destinationBindingId &&
+    receipt.destinationBindingId !== candidate.destinationBindingId
+  ) {
+    errors.push("destination_binding_mismatch");
+  }
+  if (receipt.providerStatus === "delivered") {
+    if (!receipt.deliveredAt) errors.push("missing_delivery_time");
+    if (!receipt.readbackAt) errors.push("missing_delivery_readback");
+  }
+  return {
+    valid: errors.length === 0,
+    deliveryVerified:
+      errors.length === 0 &&
+      receipt.providerStatus === "delivered" &&
+      Boolean(receipt.deliveredAt) &&
+      Boolean(receipt.readbackAt),
+    errors,
   };
 }

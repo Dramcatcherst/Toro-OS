@@ -161,6 +161,7 @@ canonical_product_specs:
   people_integration: docs/product/TORO_PEOPLE_DREAMTEAM_INTEGRATION.md
   people_code_migration: docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md
   communications: docs/product/TORO_COMMS_V1.md
+  mail: docs/product/TORO_MAIL_V1.md
   tools: docs/product/TORO_TOOLS_V1.md
   action_taxonomy: docs/product/TORO_ACTION_TAXONOMY_V1.md
   user_portal: docs/product/TORO_USER_PORTAL_V1.md

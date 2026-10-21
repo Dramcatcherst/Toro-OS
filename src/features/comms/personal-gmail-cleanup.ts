@@ -24,8 +24,8 @@ export type PersonalGmailRecommendation = {
 };
 
 const PROTECTED_TOPICS = [
-  /\b(invoic|receipt|statement|payment|refund|tax|salary|payroll|security|password|sign.?in|verify|verification|account|fraud|access|flight|booking|reservation|contract|legal|immigration|visa|passport)\b/i,
-  /factur|recibo|comprobante|transferenc|reembols|pago|dep[oó]sito|seguridad|contrase[ñn]a|acceso|alerta|banco|reserva|confirmaci[oó]n|vuel[oa]|pasaporte|visado|visa|impuesto|hacienda|asegur|contrato|n[oó]mina|suscripci[oó]n rechazada/i,
+  /\b(invoic|receipt|statement|payment|refund|tax|salary|payroll|security|password|sign.?in|verify|verification|account|fraud|access|flight|booking|reservation|contract|legal|immigration|visa|passport|order|purchase|shipping|delivery)\b/i,
+  /factur|recibo|comprobante|transferenc|reembols|pago|dep[oó]sito|seguridad|contrase[ñn]a|acceso|alerta|banco|reserva|confirmaci[oó]n|vuel[oa]|pasaporte|visado|visa|impuesto|hacienda|asegur|contrato|n[oó]mina|pedido|compra|env[ií]o|entrega|suscripci[oó]n rechazada/i,
 ];
 
 export function recommendPersonalGmailCleanup(
