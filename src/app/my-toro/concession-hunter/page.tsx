@@ -24,8 +24,7 @@ function canViewPrivatePortfolio(context: NonNullable<Awaited<ReturnType<typeof 
     hasPortalOrganizationContext(context) &&
       context.membership?.membershipType === "owner" &&
       context.membership.roles.includes("ADMIN") &&
-      context.canUsePersonalVault &&
-      context.allowedDataScopes.includes("personal"),
+      context.membership.status === "active",
   );
 }
 
