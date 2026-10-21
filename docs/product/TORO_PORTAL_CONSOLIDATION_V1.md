@@ -110,12 +110,12 @@ Orden de familias: clients, operations, team, money, growth, projects. Omitir fa
 
 **Interfaz:** mantener los props actuales `modules`, `links`, `catalogueItems`, `catalogueMode`, `hotelAllowed`, `attention`. Consumir `resolvePortalStructure` del loteA. No añadir una consulta desde el cliente ni retirar la clave usuario+organización de la página.
 
-- [x] Escribir pruebas de tres pestañas llamadas exactamente Hoy/Agenda/Gestión, navegación ArrowLeft/ArrowRight/Home/End, foco y panel activo.
+- [ ] Escribir pruebas de tres pestañas llamadas exactamente Hoy/Agenda/Gestión, navegación ArrowLeft/ArrowRight/Home/End, foco y panel activo. Cobertura parcial: nombres, índice de teclado y panel activo SSR pasan; el movimiento de foco real requiere montaje de navegador en lote C.
 - [x] Añadir pruebas para las seis familias, acceso al Mapa, conservación del conteo manual/plantillas/catálogo/favoritos y todos los destinos de la fixture; denegados no se habilitan.
 - [x] Ejecutar pruebas focales y comprobar el fallo esperado antes del cambio: cinco casos fallaron por la interfaz anterior y pasaron tras la implementación.
 - [x] Reorganizar la presentación, no los cálculos ni los registros. Hoy no repite todos los paneles; Gestión abre grupos bajos con detalle progresivo. Mantener estado de formularios dentro del contexto y reinicio al cambiarlo.
 - [x] Agenda: inspeccionar primero catálogo/adapter existente. Sin fuente autorizada, mostrar estado compacto "Agenda integrada no disponible en este contexto" y SOLO un enlace de origen si ya está autorizado/verificado. No crear un calendario ni eventos ficticios ni prometer búsqueda de eventos. El acceso de contingencia no cuenta como agenda integrada.
-- [x] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas.
+- [ ] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas. Cobertura parcial: fuente, restricción y módulo futuro están probados; cambio de contexto y permanencia del borrador solo tienen prueba estructural SSR, no interacción real.
 - [x] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; 204 pruebas Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron. Persisten dos advertencias lint preexistentes fuera del lote.
 
 **Terminado:** navegación funcional y conservación de accesos en candidato probado. Agenda integrada, WhatsApp y privacidad E2E no se consideran aprobados por tests de componentes.
@@ -142,6 +142,6 @@ Una herramienta solo es candidata a retirarse tras: función única inventariada
 
 **Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Nueve pruebas focales, 204 del carril Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron.
 
-**Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, con baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
+**Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, incluyendo foco real, cambio de contexto y conservación/reinicio de borradores con montaje de navegador y baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
 
 **Reversión de esta entrega documental:** revertir solo el commit de este documento; no tocar commits visuales previos. Las posibles reversiones de A/B/C se definirán con sus SHAs reales al ejecutarlos.
