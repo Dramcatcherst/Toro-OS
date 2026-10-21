@@ -4,6 +4,7 @@ import { ArrowRight, Building2, CalendarDays, CircleDollarSign, FolderKanban, La
   Megaphone, Network, Palette, ServerCog, ShieldCheck, Users, Workflow } from "lucide-react";
 import type { PortalModule } from "./model";
 import styles from "./portal.module.css";
+import interactions from "./module-card-interaction.module.css";
 
 const icons = [Network, CalendarDays, CircleDollarSign, Palette, Users, Workflow,
   Users, Megaphone, ShieldCheck, Building2, FolderKanban, ServerCog];
@@ -27,7 +28,7 @@ export function PortalModuleCard({ module }: { module: PortalModule }) {
   </>;
   const description = `${id}-description ${id}-status ${id}-note`;
   return module.href ? <Link href={module.href} prefetch={false}
-    className={styles.card + " " + styles.cardAvailable} data-module={module.ordinal} aria-labelledby={id} aria-describedby={description}>
+    className={styles.card + " " + styles.cardAvailable + " " + interactions.interactive} data-module={module.ordinal} aria-labelledby={id} aria-describedby={description}>
     {contents}
   </Link> : <article className={styles.card + " " + styles.cardPending} data-module={module.ordinal} aria-labelledby={id} aria-describedby={description}>
     {contents}
