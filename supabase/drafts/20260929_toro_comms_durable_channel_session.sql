@@ -102,6 +102,37 @@ create table if not exists integrations.communication_channel_receipts (
 comment on table integrations.communication_channel_receipts is
   'Minimal replay/delivery/action evidence. It links hashed channel events to canonical TORO objects without copying message bodies or secrets.';
 
+-- A receipt must retain the exact organization and connection of its session.
+-- Individual foreign keys alone allow valid but unrelated org/binding values.
+-- Use ALTER as well as CREATE IF NOT EXISTS so reapplying this draft to an
+-- existing isolated fixture adds the integrity rule instead of silently skipping it.
+-- Existing inconsistent rows fail validation; never repair/delete them implicitly.
+do $receipt_scope$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'integrations.communication_channel_sessions'::regclass
+      and conname = 'channel_sessions_id_binding_org_key'
+  ) then
+    alter table integrations.communication_channel_sessions
+      add constraint channel_sessions_id_binding_org_key
+      unique (id, binding_id, org_id);
+  end if;
+
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'integrations.communication_channel_receipts'::regclass
+      and conname = 'channel_receipts_session_scope_fk'
+  ) then
+    alter table integrations.communication_channel_receipts
+      add constraint channel_receipts_session_scope_fk
+      foreign key (session_id, binding_id, org_id)
+      references integrations.communication_channel_sessions (id, binding_id, org_id)
+      on delete cascade;
+  end if;
+end
+$receipt_scope$;
+
 alter table integrations.communication_channel_sessions enable row level security;
 alter table integrations.communication_channel_receipts enable row level security;
 
@@ -139,5 +170,6 @@ create index if not exists communication_channel_receipts_canonical_idx
 -- V1 intentionally defines no anon/authenticated policies.
 -- Reads/writes occur only through reviewed server-side TORO routes.
 -- Cross-table actor/org consistency must be re-resolved at the server boundary.
+-- The composite receipt FK enforces structural consistency, not authorization.
 -- Source payload retention/redaction remains governed by source_row_archive policy.
 -- No trigger sends an external message or performs a business action.
