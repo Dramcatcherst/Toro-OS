@@ -478,16 +478,29 @@
 .favoritesPanel .favoriteCard .toolVisual { color:#dff7ff; background:#07182eb8; border-color:#657aa8; }
 .favoritesPanel .favoriteCard .toolArrow { color:#79e3ff; }
 
+.pendingPanel { color-scheme:dark; color:#fff8eb; border-color:#c38a3e; background:linear-gradient(150deg,#4a2b18e8,#2a1d35e8); }
+.pendingPanel > .panelNote, .pendingPanel > .emptyNote { color:#ead9bd; }
+.pendingPanel > .criticalNote { color:#ffd2bd; }
+.pendingPanel > .panelHeading .textLink { color:#8fe7ff; }
+.peoplePanel { color-scheme:dark; color:#f2fffb; }
+.peoplePanel .panelBody, .peoplePanel .panelNote, .peoplePanel .subtleDisclosure { color:#c8e6e0; }
+.peoplePanel .textLink { color:#75e6c4; }
+.peoplePanel .subtleDisclosure { border-color:#3f7776; }
+
+.brandMark img { object-fit:contain; transform:none; }
+.brandName > span, .workspaceTitle > span, .toolMetadata > span, .toolPending, .headerUtilities .clock { font-size:12px; }
+
 @media (max-width:400px) {
  .brand { min-width:0; }
  .brandName > span { display:none; }
  .weatherLink { width:44px; justify-content:center; font-size:0; }
  .headerUtilities { min-width:0; gap:4px; }
- .headerUtilities .clock { font-size:11px; }
+ .headerUtilities .clock { font-size:12px; }
  .scope { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 }
 @media (prefers-reduced-motion:reduce) { .cardAvailable,.utilityRail :is(button,a),.favoritesPanel .favoriteCard { transition:none; transform:none; } }
 @media (forced-colors:active) {
- .card,.card .status,.headerMenu summary,.headerMenu nav,.utilityRail :is(button,a),.favoritesPanel .favoriteCard,.favoritesPanel .favoriteCard .toolVisual { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; }
+ .card,.card .status,.headerMenu summary,.headerMenu nav,.utilityRail :is(button,a),.favoritesPanel .favoriteCard,.favoritesPanel .favoriteCard .toolVisual,.pendingPanel,.peoplePanel { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; }
  .card :is(h3,.description,.note,.pendingLabel,.subtleDisclosure,.cardAction),.favoritesPanel .favoriteCard :is(.toolCopy strong,.toolBrand,.toolArrow) { color:CanvasText; }
+ .pendingPanel :is(.panelNote,.emptyNote,.criticalNote,.textLink),.peoplePanel :is(.panelBody,.panelNote,.subtleDisclosure,.textLink) { color:CanvasText; }
 }
