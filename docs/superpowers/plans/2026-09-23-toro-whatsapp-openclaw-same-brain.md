@@ -69,6 +69,7 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - [ ] Create canonical follow-up linked to project.
 - [ ] Ask for blocker/next action/owner.
 - [ ] Update status only through the governed project workflow.
+- [ ] “continuar proyecto X” restores safe project focus.
 
 ## Workstream F — Builder / Codex
 
