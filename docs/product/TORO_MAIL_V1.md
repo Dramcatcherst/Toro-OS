@@ -96,9 +96,9 @@ Do not claim TORO Mail operational until one account per intended scope proves:
 ChatGPT connector results remain operational evidence for the current session,
 not proof of this runtime acceptance.
 
-## Hourly governed loop
+## Governed loop every two hours
 
-Mauricio authorized one hourly heartbeat for the existing TORO Mail lane. It
+Mauricio authorized one heartbeat every two hours for the existing TORO Mail lane. It
 continues from this specification, the General Plan, the private audit receipt
 and the existing PR. It is an engineering/checkpoint loop, not a mailbox worker
 or evidence of production OAuth.
@@ -124,6 +124,14 @@ Owner correction on 2026-10-16 removed the earlier one-safe-unit-per-pass rule
 from the active automation, this contract and the tested control set. Safety is
 now bounded by authority, compatibility, batch homogeneity, readback and the
 existing action gates rather than by a unit counter.
+
+From 2026-10-21, each pass advances until the first real authority/evidence
+gate, may switch to another independent eligible unit instead of repeating a
+blocker, and records denominators for any coverage claim. Before heavy local
+work it reuses a fresh TORO PC Health receipt or runs the read-only probe; a
+`STOP_HEAVY_WORK` result restricts the pass to connectors, analysis,
+documentation and focused tests. This resource gate changes execution method,
+not mail permissions.
 
 ## Alert routing through OpenClaw
 
