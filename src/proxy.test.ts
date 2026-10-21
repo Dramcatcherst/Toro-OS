@@ -8,7 +8,7 @@ beforeEach(() => vi.stubEnv("TORO_DEPLOYMENT_MODE", undefined));
 afterEach(() => vi.unstubAllEnvs());
 
 const closed = ["/api/approvals", "/api/connectors/airtable?tableId=fake", "/api/connectors/vercel",
-  "/api/brain/context", "/api/brain/internal-work", "/api/brain/owner-attention",
+  "/api/brain/context", "/api/brain/context/selection", "/api/brain/internal-work", "/api/brain/owner-attention",
   "/api/connector-health", "/api/agent/prepare", "/api/modules", "/api/policy/evaluate",
   "/api/connectors/dropbox", "/api/connectors/github-codex", "/login", "/modules",
   "/modules/toro", "/my-toro", "/onboarding", "/booking-assist", "/dreamcatcher",
@@ -90,6 +90,24 @@ describe("published Portal perimeter", () => {
     }
     for (const method of ["GET", "POST"]) {
       expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method, headers: { "Next-Action": "synthetic-action" } })).status).toBe(404);
+    }
+  });
+
+  it("admits only a plain POST to the exact context-selection endpoint", async () => {
+    const path = "/api/brain/context/selection";
+    const admitted = proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST" }));
+    expect(admitted.headers.get("x-middleware-next")).toBe("1");
+    expect(admitted.headers.get("cache-control")).toBe("private, no-store, max-age=0");
+
+    for (const method of ["GET", "HEAD", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method })).status).toBe(404);
+    }
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, {
+      method: "POST",
+      headers: { "Next-Action": "synthetic-action" },
+    })).status).toBe(404);
+    for (const suffix of ["/extra", "%2fextra", "/..%2Fcontext"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}${suffix}`, { method: "POST" })).status).toBe(404);
     }
   });
 
