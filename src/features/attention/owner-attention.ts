@@ -192,8 +192,11 @@ export function projectObligationAttention(
   const reviewDays = daysFromToday(row.next_review_date, today);
   const verification = (row.verification_status ?? "").toLowerCase();
 
+  // Verified provider delinquency or suspension remains critical; a stale
+  // estimate, unverified external payment, or past review date does not prove
+  // that a debt is presently unpaid.
   const criticalSignal =
-    /declined|suspend|suspension|restriction|urgent|critical/.test(verification);
+    /declined|payment_failed|suspend|suspension|restriction|urgent|critical|confirmed_overdue/.test(verification);
   const dueSoon = dueDays !== null && dueDays <= 3;
   const reviewDue = reviewDays !== null && reviewDays <= 0;
 
@@ -207,7 +210,7 @@ export function projectObligationAttention(
   }
 
   let priority: OwnerAttentionPriority = "normal";
-  if (criticalSignal || (dueDays !== null && dueDays < 0)) {
+  if (criticalSignal || (row.status === "active" && dueDays !== null && dueDays < 0)) {
     priority = "critical";
   } else if (row.status === "needs_verification" || dueSoon || reviewDue) {
     priority = "high";
