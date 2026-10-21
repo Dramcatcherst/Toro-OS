@@ -25,11 +25,11 @@ Antes de modificar frontend, identificar el candidato y responsable del build co
 ## 3. Logo original recuperado y verificado
 
 - Maestro: `toro_logo_master_v1`.
-- Archivo: `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`.
-- Dimensiones verificadas: 1536×1536, PNG.
+- Ruta histórica declarada: `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`.
+- Bytes verificados: JPEG, 1536×1536; la extensión histórica `.png` no define el formato real.
 - SHA-256 verificado sobre los bytes recuperados: `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
 - El archivo sí fue localizado y materializado desde Library en esta unidad. No repetir el bloqueo histórico de archivo no encontrado sin comprobar este antecedente.
-- Esta verificación NO afirma que el asset ya esté incorporado al repositorio, servido por un CDN o publicado en el Portal.
+- El candidato #347 ya incorpora los bytes exactos, sin recomprimir, como `public/brand/toro/toro-logo-master-v1.jpg`; esto no afirma aceptación visual, fusión ni publicación en producción.
 
 Usar el toro azul con cuernos dorados y emblema cerebro-chip como marca reconocible en el inicio y la cabecera, con proporción original y `object-fit: contain`. No redibujarlo, sustituirlo por un toro genérico, recortarlo ni recolorearlo. A tamaño pequeño, comprobar que el chip se distingue; una simplificación nueva requiere derivado aprobado y trazable. Marca visible: TORO. No ocupar medio primer viewport con una ilustración decorativa.
 
@@ -93,6 +93,6 @@ La comprobación ocurre sobre HTML, recursos y rutas realmente servidos, no solo
 
 ## 11. Siguiente unidad del mismo carril
 
-Aceptar visualmente una pantalla principal completa y su adaptación móvil usando el maestro recuperado. Después reconciliar el delta en `portal-header.tsx`, `portal-workspace.tsx`, `portal.module.css` y componentes compartidos existentes con el responsable del build en curso; no desarrollar un Portal paralelo ni iniciar otra publicación.
+Cerrar una única aceptación autenticada de la pantalla principal y su adaptación móvil usando el maestro recuperado y el candidato ya implementado. Comprobar el SHA servido, Caja y Mensajes/Utilidades por click/teclado/foco/scroll, borradores dentro del mismo ámbito, limpieza al cambiar usuario/organización, contexto restringido, logo y legibilidad en 320/390/1440/pantalla amplia. No ampliar funciones, desarrollar un Portal paralelo ni iniciar otra publicación.
 
-El Plan General sigue siendo `docs/product/TORO_BRAIN_GENERAL_PLAN.md`. Antes de integrar este cambio a main, reflejar esta nueva dirección y la recuperación del maestro en su sección existente de rediseño mediante delta mínimo, preservando los cambios humanos concurrentes. Esta PR no afirma haber modificado ya ese archivo.
+El Plan General sigue siendo `docs/product/TORO_BRAIN_GENERAL_PLAN.md` y el candidato #347 ya contiene su delta mínimo de rediseño y recuperación del maestro. La rama también preserva la cobertura financiera vigente de main en el Plan, el contrato subordinado y `TORO_USER_PORTAL_V1.md`. Mantener la PR en draft hasta que CI/build del HEAD reconciliado y la aceptación autenticada permitan una decisión humana separada de integración y promoción.
