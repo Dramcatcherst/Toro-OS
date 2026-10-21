@@ -74,6 +74,50 @@ describe("buildCanonicalBrainProjection", () => {
     });
   });
 
+
+  it("maps the real NOW project state to Active rather than Review", () => {
+    const slice = makeSlice();
+    slice.projects[0] = { ...slice.projects[0], status: "NOW" };
+    const projected = buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    );
+    expect(projected).toMatchObject({
+      status: "Active",
+      verification: "verified",
+    });
+  });
+
+  it("does not interpret a future project update as current provenance", () => {
+    const slice = makeSlice();
+    slice.projects[0] = {
+      ...slice.projects[0],
+      updatedAt: "2026-09-23T12:00:00.001Z",
+    };
+    const projected = buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    );
+    expect(projected?.freshness).toBe("unknown");
+
+    slice.projects[0].updatedAt = "2026-09-23T11:59:59.999Z";
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    )?.freshness).toBe("current");
+  });
+
+  it("treats invalid governance next-review timestamps as unknown, not current", () => {
+    const slice = makeSlice();
+    slice.domainGovernance[0] = {
+      ...slice.domainGovernance[0],
+      nextReviewAt: "not-a-date",
+    };
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "governance:g0",
+    )).toMatchObject({
+      freshness: "unknown",
+      status: "Review",
+    });
+  });
+
   it("keeps the focused projection under the Stage B visual budget", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
 
