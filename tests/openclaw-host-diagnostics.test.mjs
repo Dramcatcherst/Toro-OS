@@ -14,12 +14,17 @@ test("diagnostic packet never copies raw phone, token, chat or host path and sco
     };
   });
   const serialized = JSON.stringify(packet);
-  assert.equal(packet.commandResults.length, 8);
+  assert.equal(packet.commandResults.length, 9);
   for (const fragment of [secret, "+506", "chat_id", "C:\\Users"]) {
     assert.equal(serialized.includes(fragment), false);
   }
   assert.equal(packet.commandResults[0].category, "authorization");
-  assert.deepEqual(calls[2][1], ["channels", "status", "--channel", "whatsapp", "--probe", "--json"]);
+  assert.deepEqual(calls.find(([, args]) => args[0] === "channels" && args[1] === "status")?.[1], [
+    "channels", "status", "--channel", "whatsapp", "--probe", "--json",
+  ]);
+  assert.deepEqual(calls.find(([, args]) => args[0] === "health")?.[1], [
+    "health", "--verbose", "--json", "--timeout", "10000",
+  ]);
 });
 
 test("top-level ready status cannot prove WhatsApp", () => {
@@ -180,6 +185,144 @@ test("account inventory without live fields remains inconclusive", () => {
   assert.equal(summary.result, "inconclusive");
   assert.equal(summary.category, "whatsapp_probe_unverified");
   assert.equal(summary.accountCount, 1);
+});
+
+
+test("fresh verbose Gateway health can prove a ready WhatsApp runtime", () => {
+  const now = 1_800_000_000_000;
+  assert.deepEqual(
+    summarizeHostCommand(
+      "whatsapp_health",
+      {
+        status: 0,
+        stdout: JSON.stringify({
+          ok: true,
+          ts: now - 250,
+          channels: {
+            whatsapp: {
+              accounts: {
+                default: {
+                  enabled: true,
+                  configured: true,
+                  linked: true,
+                  running: true,
+                  connected: true,
+                  lifecycle: "ready",
+                  healthState: "healthy",
+                },
+              },
+            },
+          },
+        }),
+      },
+      now,
+    ),
+    {
+      name: "whatsapp_health",
+      result: "executed",
+      json: "valid",
+      scope: "channels.whatsapp.accounts",
+      accountCount: 1,
+      liveHealth: true,
+      state: "connected",
+      evidence: "gateway_health_verbose",
+    },
+  );
+});
+
+test("stale verbose health cannot promote connected runtime flags", () => {
+  const now = 1_800_000_000_000;
+  const summary = summarizeHostCommand(
+    "whatsapp_health",
+    {
+      status: 0,
+      stdout: JSON.stringify({
+        ok: true,
+        ts: now - 30_001,
+        channels: {
+          whatsapp: {
+            accounts: {
+              default: {
+                configured: true,
+                linked: true,
+                running: true,
+                connected: true,
+                lifecycle: "ready",
+              },
+            },
+          },
+        },
+      }),
+    },
+    now,
+  );
+  assert.equal(summary.result, "inconclusive");
+  assert.equal(summary.liveHealth, false);
+  assert.equal(summary.category, "health_snapshot_stale");
+});
+
+test("fresh health without ready lifecycle remains unverified", () => {
+  const now = 1_800_000_000_000;
+  const summary = summarizeHostCommand(
+    "whatsapp_health",
+    {
+      status: 0,
+      stdout: JSON.stringify({
+        ok: true,
+        ts: now,
+        channels: {
+          whatsapp: {
+            accounts: {
+              default: {
+                configured: true,
+                linked: true,
+                running: true,
+                connected: true,
+                lifecycle: "recovering",
+              },
+            },
+          },
+        },
+      }),
+    },
+    now,
+  );
+  assert.equal(summary.result, "executed");
+  assert.equal(summary.liveHealth, true);
+  assert.equal(summary.state, "unknown");
+  assert.equal(summary.category, "whatsapp_health_unverified");
+});
+
+test("fresh unhealthy account is reported without identifiers", () => {
+  const now = 1_800_000_000_000;
+  const summary = summarizeHostCommand(
+    "whatsapp_health",
+    {
+      status: 0,
+      stdout: JSON.stringify({
+        ok: true,
+        ts: now,
+        channels: {
+          whatsapp: {
+            accounts: {
+              "private-account-id": {
+                configured: true,
+                linked: true,
+                running: false,
+                connected: false,
+                lifecycle: "stopped",
+                identity: "+50612345678",
+              },
+            },
+          },
+        },
+      }),
+    },
+    now,
+  );
+  assert.equal(summary.state, "disconnected");
+  assert.equal(JSON.stringify(summary).includes("private-account-id"), false);
+  assert.equal(JSON.stringify(summary).includes("+506"), false);
 });
 
 test("bounded logs reveal only error count, never message content", () => {
