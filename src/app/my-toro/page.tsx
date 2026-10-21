@@ -165,6 +165,7 @@ export default async function MyToroPage({
         <nav aria-label="Accesos de Mi espacio" className={styles.jump}>
           {available.length || alternatives.length || submenuParents.length ? <a href="#available-heading">Buscar y proyectos</a> : null}
           {canViewOwnerAttention(view.context) ? <a href="#owner-attention-heading">Hoy y Finance</a> : null}
+          {view.context.membership?.membershipType === "owner" && view.context.membership.roles.includes("ADMIN") ? <Link href="/my-toro/concession-hunter">Concession Hunter</Link> : null}
           {hotelAllowed ? <a href="#hotel-heading">Equipo y herramientas</a> : null}
         </nav>
         <div className={styles.layout}>
