@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 const COMMANDS = [
   ["version", ["--version"]],
   ["gateway", ["gateway", "status"]],
-  ["whatsapp_probe", ["channels", "status", "--probe", "--json"]],
+  ["whatsapp_probe", ["channels", "status", "--channel", "whatsapp", "--probe", "--json"]],
   ["whatsapp_capabilities", ["channels", "capabilities", "--channel", "whatsapp", "--json"]],
   ["deep_status", ["status", "--deep"]],
   ["security_audit", ["security", "audit", "--json"]],
@@ -25,20 +25,63 @@ function errorCategory(value) {
   return "command_failed";
 }
 
-function statusFromJson(value) {
-  if (!value || typeof value !== "object") return "unknown";
-  const candidates = [value.status, value.state, value.health, value.connected];
-  for (const item of candidates) {
-    if (item === true) return "connected";
-    if (item === false) return "disconnected";
-    if (typeof item === "string") {
-      const normalized = item.toLowerCase();
-      if (["ready", "connected", "healthy", "running", "degraded", "disconnected", "stopped", "error"].includes(normalized)) {
-        return normalized;
-      }
-    }
+function accountProbeState(account) {
+  if (!account || typeof account !== "object") return "unknown";
+  const probe = account.probe && typeof account.probe === "object" ? account.probe : null;
+  const audit = account.audit && typeof account.audit === "object" ? account.audit : null;
+  const lifecycle = typeof account.lifecycle === "string" ? account.lifecycle.toLowerCase() : null;
+
+  if (
+    probe?.ok === false ||
+    audit?.ok === false ||
+    lifecycle === "blocked" ||
+    account.connected === false ||
+    account.running === false
+  ) {
+    return "disconnected";
+  }
+  if (probe?.ok === true || (account.connected === true && account.running === true)) {
+    return "connected";
   }
   return "unknown";
+}
+
+function summarizeWhatsAppProbe(value) {
+  const base = {
+    scope: "channelAccounts.whatsapp",
+    accountCount: 0,
+    liveProbe: false,
+    state: "unknown",
+  };
+  if (!value || typeof value !== "object") return base;
+  if (String(value.status ?? "").toLowerCase() === "starting") {
+    return { ...base, category: "gateway_starting" };
+  }
+  if (value.configOnly === true || value.gatewayReachable === false) {
+    return { ...base, category: "config_only" };
+  }
+
+  const accounts = value.channelAccounts?.whatsapp;
+  if (!Array.isArray(accounts) || accounts.length === 0) {
+    return { ...base, category: "whatsapp_accounts_missing" };
+  }
+
+  const states = accounts.map(accountProbeState);
+  const connected = states.filter((state) => state === "connected").length;
+  const disconnected = states.filter((state) => state === "disconnected").length;
+  const liveProbe = states.some((state) => state !== "unknown");
+  let state = "unknown";
+  if (connected === states.length) state = "connected";
+  else if (disconnected === states.length) state = "disconnected";
+  else if (connected > 0 || disconnected > 0) state = "degraded";
+
+  return {
+    scope: base.scope,
+    accountCount: accounts.length,
+    liveProbe,
+    state,
+    ...(liveProbe ? {} : { category: "whatsapp_probe_unverified" }),
+  };
 }
 
 export function summarizeHostCommand(name, result) {
@@ -66,7 +109,16 @@ export function summarizeHostCommand(name, result) {
   if (["whatsapp_probe", "whatsapp_capabilities", "security_audit", "backup_inventory"].includes(name)) {
     try {
       const value = JSON.parse(String(result.stdout ?? ""));
-      return { name, result: "executed", json: "valid", state: name === "whatsapp_probe" ? statusFromJson(value) : "unclassified" };
+      if (name === "whatsapp_probe") {
+        const summary = summarizeWhatsAppProbe(value);
+        return {
+          name,
+          result: summary.liveProbe ? "executed" : "inconclusive",
+          json: "valid",
+          ...summary,
+        };
+      }
+      return { name, result: "executed", json: "valid", state: "unclassified" };
     } catch {
       return { name, result: "inconclusive", category: "invalid_json" };
     }
