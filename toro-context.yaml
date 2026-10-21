@@ -621,20 +621,40 @@ cognitive_proving_ground:
       rule: "PMS production, accounting, settlement and bank cash remain separate semantic lanes; historical volume is not current cash."
   people_pilot_prepared:
     value_stream: people_identity_access
-    status: CODE_IN_MAIN_CI_VERIFIED_HOSTED_QA_BLOCKED_BY_DEPLOYMENT_PROTECTION
-    owner_hold: NO_EMPLOYEE_CONTACT_OR_ONBOARDING_UNTIL_LAUNCH_DECISION
+    status: LIVE_CENSUS_RECONCILED_INVITATION_FLOW_NOT_READY
+    owner_hold: NO_INVITE_DISPATCH_UNTIL_IDENTITY_EXACT_DELIVERY_ROLE_AND_ROLLBACK_ARE_VERIFIED
     production_baseline:
-      organization_memberships_exists: false
+      readback_at_local: "2026-10-20 America/Costa_Rica"
+      source: canonical_supabase_abtyrbqlqbsastmridzp_read_only
+      organization_memberships_exists: true
       canonical_membership_table: identity.organization_memberships
       legacy_public_membership_draft_canonical: false
-      active_role_users: 5
-      active_role_orgs: 1
-      active_employees: 12
-      active_linked_employees: 4
-      active_unlinked_employees: 8
-      membership_candidates_employee: 4
-      membership_candidates_other_unclassified: 1
-      real_multi_org_users: 0
+      auth_users_enabled: 6
+      dreamcatcher_active_role_users: 6
+      dreamcatcher_active_role_orgs: 1
+      dreamcatcher_active_role_assignments: 19
+      dreamcatcher_inactive_or_revoked_role_assignments: 0
+      global_active_role_orgs: 2
+      global_active_role_assignments: 21
+      dreamcatcher_active_employees: 12
+      dreamcatcher_terminated_employees: 1
+      dreamcatcher_active_linked_employees: 5
+      dreamcatcher_active_unlinked_employees: 7
+      dreamcatcher_complete_employee_auth_membership_role_chains: 4
+      active_dreamcatcher_memberships_total: 5
+      active_global_memberships_total: 6
+      dreamcatcher_active_employee_memberships: 4
+      dreamcatcher_active_owner_memberships: 1
+      global_active_employee_memberships: 4
+      global_active_owner_memberships: 2
+      inactive_global_memberships: 0
+      legacy_dreamteam_internal_aliases: 4
+      active_aseo_without_auth_membership_role: 5
+      channel_enrollments: 0
+      employee_onboarding_progress_rows: 0
+      duplicate_auth_principals_same_human: 1
+      terminated_status_conflicts: 1
+      global_real_multi_org_users: 1
     phase1:
       pr: 15
       state: DRAFT_DIVERGED_FROM_MAIN
@@ -647,7 +667,8 @@ cognitive_proving_ground:
       legacy_session_adapter_tests: 8
       targeted_fixture_tests_total: 17
       vercel_status: success
-    current_main:
+    identity_foundation_main_snapshot:
+      observed_at: "2026-09-23"
       head: 280f8e17e8427718bd82a02a55fe0f96a79df049
       context_core: integrated
       auth_surface: integrated
@@ -664,12 +685,16 @@ cognitive_proving_ground:
       membership_app_ci_run: 35858881721
       membership_validation_evidence: docs/evidence/TORO_IDENTITY_MEMBERSHIP_ISOLATED_VALIDATION_2026-09-23.md
       verification_evidence: docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md
-    next_proof: "approved protected hosted synthetic identity isolation + explicit reviewed membership production-DDL decision; no employees"
+    next_proof: "reconcile Toro/Mauricio principal, incomplete Maintenance membership and terminated-status conflict; verify one Aseo pilot identity and exact delivery without dispatch"
     prohibit:
-      - employee_invites
+      - employee_invites_without_exact_verified_delivery
+      - bulk_employee_invites
+      - admin_created_or_shared_employee_passwords
+      - dreamteam_internal_alias_as_delivery_address
       - name_based_identity_linking
       - staff_credentials_as_fixtures
-      - production_membership_migration_without_explicit_reviewed_approval
+      - role_or_membership_activation_before_verified_claim
+      - duplicate_invitation_resend_without_durable_state
       - second_identity_system
   next_pilot_prepared:
     value_stream: breakfast_fnb
