@@ -105,3 +105,30 @@ it("same_scope_preserves_draft by keeping inactive form panels mounted", () => {
   expect(managementPanel).toContain('aria-label="Cantidad de billetes CRC');
   expect(managementPanel).toContain('id="management-draft"');
 });
+
+it("quick actions target their promised management sections", () => {
+  const html = render();
+  const cashTarget = html.match(/<button[^>]*aria-controls="([^"]+)"[^>]*>(?:(?!<\/button>)[\s\S])*Caja CRC \+ USD(?:(?!<\/button>)[\s\S])*<\/button>/)?.[1];
+  const toolsTarget = html.match(/<button[^>]*aria-controls="([^"]+)"[^>]*>(?:(?!<\/button>)[\s\S])*Mensajes y utilidades(?:(?!<\/button>)[\s\S])*<\/button>/)?.[1];
+
+  expect(cashTarget).toMatch(/management-cash$/);
+  expect(toolsTarget).toMatch(/management-tools$/);
+  expect(html).toContain(`id="${cashTarget}" tabindex="-1"`);
+  expect(html).toContain(`id="${toolsTarget}" tabindex="-1"`);
+});
+
+it("focuses and scrolls the requested management destination after activation", async () => {
+  const workspace = await import("./portal-workspace");
+  const activate = (workspace as Record<string, unknown>).activateManagementDestination as
+    | ((target: { focus: (options: FocusOptions) => void; scrollIntoView: (options: ScrollIntoViewOptions) => void }, schedule: (callback: () => void) => void) => void)
+    | undefined;
+  const calls: string[] = [];
+  const target = {
+    focus: (options: FocusOptions) => calls.push(`focus:${String(options.preventScroll)}`),
+    scrollIntoView: (options: ScrollIntoViewOptions) => calls.push(`scroll:${options.block}:${options.behavior}`),
+  };
+
+  expect(activate).toBeTypeOf("function");
+  activate!(target, callback => { calls.push("scheduled"); callback(); });
+  expect(calls).toEqual(["scheduled", "focus:true", "scroll:start:auto"]);
+});

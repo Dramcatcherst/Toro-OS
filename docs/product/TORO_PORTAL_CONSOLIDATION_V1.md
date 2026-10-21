@@ -8,7 +8,7 @@
 **Especificación de origen:** `docs/product/TORO_USER_PORTAL_V1.md`, `docs/product/TORO_PORTAL_DESIGN_RULES.md` y la propuesta entregada `TORO_Estructura_Consolidada_Propuesta.md` (20/10/2026).
 **Autoridad:** `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, sección Human Experience; constitución y contextos vigentes.
 **Carril:** PR #347, `design/toro-future-color-20261020`; lote B ejecutado sobre la base `708881d1d7337282b5c8dc3b3508f70c858b41fc`. No fusionar la PR documental #259 ni sustituir el build actual por inferencia. Revalidar propietario y head antes de publicar.
-**Corte:** 21/10/2026, Costa Rica. Estado: LOTES A/B IMPLEMENTADOS Y PROBADOS EN CANDIDATO. Lote C, aceptación, merge y despliegue NO EJECUTADOS.
+**Corte:** 21/10/2026, Costa Rica. Estado: LOTES A/B IMPLEMENTADOS Y PROBADOS EN CANDIDATO; Lote C PARCIAL EN CANDIDATO. Aceptación, merge y despliegue NO EJECUTADOS.
 
 ## 1. Hallazgos que cambian la implementación
 
@@ -114,6 +114,7 @@ Orden de familias: clients, operations, team, money, growth, projects. Omitir fa
 - [x] Añadir pruebas para las seis familias, acceso al Mapa, conservación del conteo manual/plantillas/catálogo/favoritos y todos los destinos de la fixture; denegados no se habilitan.
 - [x] Ejecutar pruebas focales y comprobar el fallo esperado antes del cambio: cinco casos fallaron por la interfaz anterior y pasaron tras la implementación.
 - [x] Reorganizar la presentación, no los cálculos ni los registros. Hoy no repite todos los paneles; Gestión abre grupos bajos con detalle progresivo. Mantener estado de formularios dentro del contexto y reinicio al cambiarlo.
+- [x] Corregir los accesos rápidos de Hoy para que Caja y Mensajes/Utilidades abran Gestión y enfoquen/desplacen su sección específica. Las secciones permanecen montadas, por lo que esta navegación no reinicia los borradores. Cobertura: correspondencia `aria-controls`→destino y efecto foco→scroll probados; el click/teclado con componente montado sigue pendiente del QA autenticado.
 - [x] Agenda: inspeccionar primero catálogo/adapter existente. Sin fuente autorizada, mostrar estado compacto "Agenda integrada no disponible en este contexto" y SOLO un enlace de origen si ya está autorizado/verificado. No crear un calendario ni eventos ficticios ni prometer búsqueda de eventos. El acceso de contingencia no cuenta como agenda integrada.
 - [ ] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas. Cobertura parcial: fuente, restricción y módulo futuro están probados; cambio de contexto y permanencia del borrador solo tienen prueba estructural SSR, no interacción real.
 - [x] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; 204 pruebas Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron. Persisten dos advertencias lint preexistentes fuera del lote.
@@ -127,6 +128,7 @@ Orden de familias: clients, operations, team, money, growth, projects. Omitir fa
 - [ ] Definir baseline con mismo rol, ámbito, dataset y viewport; registrar pasos, saltos externos, desplazamiento y errores antes/después. Metas no son resultados.
 - [ ] Probar tres recorridos: Caro abre documento y reporta evidencia sin pago; Recepción consulta llegada/preparación sin alterar reserva; empleado consulta turno publicado/solicitud sin ver salarios ajenos. Si falta conexión o identidad, marcar ese recorrido bloqueado, no sustituirlo por una demo y declararlo completo.
 - [ ] Comprobar anchos/zoom/teclado indicados en restricciones y enlaces antiguos. Las áreas se leen compactas; las acciones autorizadas y advertencias siguen accesibles.
+- [ ] Comprobar con componente montado que Caja y Mensajes/Utilidades enfocan su destino por click y teclado. El candidato ya implementa destinos distintos y prueba foco/scroll sin desmontar formularios; falta la interacción de navegador autenticada.
 - [ ] Leer preview del SHA exacto, contrastar permisos con sesión autorizada y revisión independiente cuando esté disponible. Auto-QA no se llama revisión independiente.
 - [ ] Solicitar aceptación del recorrido y autorización específica de publicación; solo entonces integrar conforme a AGENTS, verificar producción y preservar despliegue de reversión. No fusionar ramas antiguas sobre trabajo concurrente.
 
@@ -140,8 +142,8 @@ Una herramienta solo es candidata a retirarse tras: función única inventariada
 
 ## 8. Verificación de esta entrega y siguiente unidad
 
-**Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Nueve pruebas focales, 204 del carril Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron.
+**Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Los accesos rápidos de Caja y Mensajes/Utilidades ya tienen destinos focusables distintos y un activador diferido foco→scroll que conserva el montaje de formularios. Once pruebas focales, 207 del carril Portal y 128 de autorización aprobaron; lint terminó con 0 errores y las 2 advertencias preexistentes, y el build compiló TypeScript y 52 páginas. La interacción de navegador autenticada no se infiere de estos gates.
 
-**Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, incluyendo foco real, cambio de contexto y conservación/reinicio de borradores con montaje de navegador y baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
+**Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, incluyendo click/teclado de los dos accesos rápidos, cambio de contexto y conservación/reinicio de borradores con montaje de navegador y baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
 
 **Reversión de esta entrega documental:** revertir solo el commit de este documento; no tocar commits visuales previos. Las posibles reversiones de A/B/C se definirán con sus SHAs reales al ejecutarlos.

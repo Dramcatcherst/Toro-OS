@@ -15,6 +15,8 @@ import { resolvePortalStructure } from "./structure";
 import styles from "./portal.module.css";
 
 type Tab = "today" | "agenda" | "manage";
+type ManagementDestination = "cash" | "tools";
+type ManagementDestinationElement = Pick<HTMLElement, "focus" | "scrollIntoView">;
 const preferred = ["LINK-048", "PORTAL-POS", "LINK-178", "PORTAL-WHATSAPP", "LINK-086", "PORTAL-ALEGRA", "LINK-131", "LINK-056", "PORTAL-GMAIL"];
 
 export function nextPortalTabIndex(key: string, index: number, length: number): number | null {
@@ -26,6 +28,13 @@ export function nextPortalTabIndex(key: string, index: number, length: number): 
   return null;
 }
 
+export function activateManagementDestination(target: ManagementDestinationElement | null, schedule: (callback: () => void) => void = callback => requestAnimationFrame(() => callback())) {
+  schedule(() => {
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ block: "start", behavior: "auto" });
+  });
+}
+
 export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention }: {
   modules: PortalModule[]; links: ToolLink[]; catalogueItems: ToolCatalogueItem[]; catalogueMode: ToolCatalogueMode;
   hotelAllowed: boolean; attention: ReactNode;
@@ -34,6 +43,7 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
   const [favorites, setFavorites] = useState(() => [...preferred.filter(key => links.some(link => link.id === key)), ...links.filter(link => !preferred.includes(link.id)).map(link => link.id)].slice(0, 9));
   const id = useId();
   const controls = useRef<Array<HTMLButtonElement | null>>([]);
+  const managementTargets = useRef<Record<ManagementDestination, HTMLElement | null>>({ cash: null, tools: null });
   const structure = resolvePortalStructure(modules);
   const tabs = [
     { key: "today" as const, label: "Hoy", Icon: Home },
@@ -46,6 +56,10 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
   const favoritesLinks = hotelAllowed ? favorites.flatMap(key => links.filter(link => link.id === key)) : [];
 
   function openTab(next: Tab) { setTab(next); controls.current[tabs.findIndex(item => item.key === next)]?.focus(); }
+  function openManagementDestination(destination: ManagementDestination) {
+    setTab("manage");
+    activateManagementDestination(managementTargets.current[destination]);
+  }
   function navigateTabs(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const next = nextPortalTabIndex(event.key, index, tabs.length);
     if (next === null) return;
@@ -69,15 +83,15 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
         {hotelAllowed ? <><section className={`${styles.panel} ${styles.favoritesPanel}`} aria-labelledby="portal-favorites-heading"><div className={styles.panelHeading}><h2 id="portal-favorites-heading"><Star size={20} aria-hidden="true" />Favoritos</h2><button type="button" className={styles.textLink} onClick={() => openTab("manage")}>Ver todas<ArrowRight size={15} aria-hidden="true" /></button></div>{favoritesLinks.length ? <PortalToolLinks links={favoritesLinks} favorites idPrefix="favorite" /> : <p className={styles.emptyNote}>Selecciona tus favoritos abajo.</p>}{catalogueMode === "fallback" ? <p role="status" className={styles.panelNote}>La lista completa no está disponible ahora. Mostramos solo accesos públicos revisados.</p> : null}<details className={styles.subtleDisclosure}><summary>Personalizar · {favoritesLinks.length}/9</summary><p>Selecciona hasta nueve accesos para esta sesión.</p><div className={styles.favoriteOptions}>{links.map(link => <label key={link.id}><input type="checkbox" checked={favorites.includes(link.id)} disabled={!favorites.includes(link.id) && favorites.length >= 9} onChange={event => setFavorites(current => event.target.checked ? [...current, link.id].slice(0, 9) : current.filter(key => key !== link.id))} />{getToolPresentation(link).name}</label>)}</div></details></section><PortalKrossWidget available={Boolean(motor)} motorUrl={motor?.url} /></> : null}
       </div>
       <div className={styles.todayModules}>{structure.today.map(module => <PortalModuleCard key={module.ordinal} module={module} />)}</div>
-      <div className={styles.utilityRail}><button type="button" onClick={() => openTab("manage")}><Wallet size={19} aria-hidden="true" /><span>Caja CRC + USD</span></button><button type="button" onClick={() => openTab("manage")}><Wrench size={19} aria-hidden="true" /><span>Mensajes y utilidades</span></button>{hotelAllowed ? <a href="https://home.google.com/" target="_blank" rel="noopener noreferrer"><Home size={19} aria-hidden="true" /><span>Google Home ↗</span></a> : null}<Link href="/brain" prefetch={false}><LayoutGrid size={19} aria-hidden="true" /><span>Cerebro TORO</span></Link></div>
+      <div className={styles.utilityRail}><button type="button" aria-controls={`${id}-management-cash`} onClick={() => openManagementDestination("cash")}><Wallet size={19} aria-hidden="true" /><span>Caja CRC + USD</span></button><button type="button" aria-controls={`${id}-management-tools`} onClick={() => openManagementDestination("tools")}><Wrench size={19} aria-hidden="true" /><span>Mensajes y utilidades</span></button>{hotelAllowed ? <a href="https://home.google.com/" target="_blank" rel="noopener noreferrer"><Home size={19} aria-hidden="true" /><span>Google Home ↗</span></a> : null}<Link href="/brain" prefetch={false}><LayoutGrid size={19} aria-hidden="true" /><span>Cerebro TORO</span></Link></div>
     </>)}
 
     {panel("agenda", <section className={`${styles.panel} ${styles.agendaState}`} aria-labelledby="portal-agenda-heading"><div className={styles.sectionHeading}><h2 id="portal-agenda-heading">Agenda</h2><span>Fuente no conectada</span></div><p className={styles.panelBody}>Agenda integrada no disponible en este contexto</p><p className={styles.panelNote}>No se infieren eventos, citas ni disponibilidad desde la ausencia de una fuente integrada.</p>{calendar ? <a href={calendar.url} target="_blank" rel="noopener noreferrer" className={styles.guideLink}>Abrir origen autorizado<ArrowRight size={17} aria-hidden="true" /></a> : null}</section>)}
 
     {panel("manage", <>
       <section aria-labelledby="portal-management-heading"><div className={styles.sectionHeading}><h2 id="portal-management-heading">Gestión por áreas</h2><span>Todos los módulos autorizados</span></div><p className={styles.sectionNote}>La agrupación organiza la presentación; no cambia permisos, estados ni fuentes.</p><div className={styles.managementGrid}>{structure.families.map(family => moduleGroup(family.label, family.modules, true))}{moduleGroup("Mapa", structure.map)}{moduleGroup("Sistemas", structure.system)}{moduleGroup("Otros módulos", structure.unmapped)}</div></section>
-      <section className={`${styles.panel} ${styles.viewPanel}`} aria-labelledby="portal-cash-heading"><div className={styles.sectionHeading}><h2 id="portal-cash-heading">Dinero y cierre de caja</h2><span>Conteo manual · CRC + USD</span></div><PortalCashTools /></section>
-      <section className={`${styles.panel} ${styles.viewPanel}`} aria-labelledby="portal-tools-heading"><div className={styles.sectionHeading}><h2 id="portal-tools-heading">Catálogo de herramientas</h2><span>{catalogueItems.length} fichas visibles</span></div>{hotelAllowed ? <><PortalToolLinks links={links} wide idPrefix="management-tools" /><PortalToolCatalogue items={catalogueItems} idPrefix="catalog" mode={catalogueMode} /><div className={styles.toolsFooter}><Link href="/my-toro/herramientas" prefetch={false} className={styles.guideLink}>Directorio y guía del turno<ArrowRight size={17} aria-hidden="true" /></Link></div><h3 className={styles.toolsSubheading}>Respuestas listas para adaptar</h3><PortalResponseTools prefix="management" /></> : <p className={styles.panelNote}>Los accesos del hotel no corresponden al contexto de esta cuenta.</p>}</section>
+      <section ref={element => { managementTargets.current.cash = element; }} id={`${id}-management-cash`} tabIndex={-1} className={`${styles.panel} ${styles.viewPanel}`} aria-labelledby="portal-cash-heading"><div className={styles.sectionHeading}><h2 id="portal-cash-heading">Dinero y cierre de caja</h2><span>Conteo manual · CRC + USD</span></div><PortalCashTools /></section>
+      <section ref={element => { managementTargets.current.tools = element; }} id={`${id}-management-tools`} tabIndex={-1} className={`${styles.panel} ${styles.viewPanel}`} aria-labelledby="portal-tools-heading"><div className={styles.sectionHeading}><h2 id="portal-tools-heading">Catálogo de herramientas</h2><span>{catalogueItems.length} fichas visibles</span></div>{hotelAllowed ? <><PortalToolLinks links={links} wide idPrefix="management-tools" /><PortalToolCatalogue items={catalogueItems} idPrefix="catalog" mode={catalogueMode} /><div className={styles.toolsFooter}><Link href="/my-toro/herramientas" prefetch={false} className={styles.guideLink}>Directorio y guía del turno<ArrowRight size={17} aria-hidden="true" /></Link></div><h3 className={styles.toolsSubheading}>Respuestas listas para adaptar</h3><PortalResponseTools prefix="management" /></> : <p className={styles.panelNote}>Los accesos del hotel no corresponden al contexto de esta cuenta.</p>}</section>
     </>)}
   </>;
 }
