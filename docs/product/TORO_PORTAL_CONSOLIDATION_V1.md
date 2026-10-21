@@ -116,7 +116,7 @@ Orden de familias: clients, operations, team, money, growth, projects. Omitir fa
 - [x] Reorganizar la presentación, no los cálculos ni los registros. Hoy no repite todos los paneles; Gestión abre grupos bajos con detalle progresivo. Mantener estado de formularios dentro del contexto y reinicio al cambiarlo.
 - [x] Agenda: inspeccionar primero catálogo/adapter existente. Sin fuente autorizada, mostrar estado compacto "Agenda integrada no disponible en este contexto" y SOLO un enlace de origen si ya está autorizado/verificado. No crear un calendario ni eventos ficticios ni prometer búsqueda de eventos. El acceso de contingencia no cuenta como agenda integrada.
 - [x] Probar `source_unavailable_is_not_zero`, `context_change_clears_state`, `same_scope_preserves_draft`, `restricted_context_hides_hotel_data` y `future_module_is_not_dropped` con montaje del consumidor real y fixtures sintéticas.
-- [x] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; 203 pruebas Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron. Persisten dos advertencias lint preexistentes fuera del lote.
+- [x] Ejecutar `npm run test:hotel-tools`, `npm run test:portal-auth`, `npm run lint`, `npm run build`, `git diff --check`; 204 pruebas Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron. Persisten dos advertencias lint preexistentes fuera del lote.
 
 **Terminado:** navegación funcional y conservación de accesos en candidato probado. Agenda integrada, WhatsApp y privacidad E2E no se consideran aprobados por tests de componentes.
 
@@ -140,7 +140,7 @@ Una herramienta solo es candidata a retirarse tras: función única inventariada
 
 ## 8. Verificación de esta entrega y siguiente unidad
 
-**Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Nueve pruebas focales, 203 del carril Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron.
+**Hecho hasta este corte:** la interfaz consume `resolvePortalStructure` y presenta exactamente Hoy/Agenda/Gestión. Los doce ordinales aparecen una vez en su destino primario; seis familias, Mapa, Sistemas y módulos futuros permanecen accesibles. Conteo CRC/USD, plantillas, catálogo, favoritos, Kross, Google Home y rutas vigentes se conservan bajo el mismo permiso de entrada. Agenda declara la fuente no conectada y no fabrica eventos. Nueve pruebas focales, 204 del carril Portal, 128 de autorización, lint sin errores y build de 52 páginas aprobaron.
 
 **Siguiente unidad preparada:** lote C: recorridos autenticados y QA visual del SHA exacto en preview, con baseline comparable. Aceptación, merge y publicación siguen sujetos a autorización separada.
 
