@@ -69,7 +69,6 @@ Make WhatsApp a governed TORO client with two-way execution and follow-up while 
 - [ ] Create canonical follow-up linked to project.
 - [ ] Ask for blocker/next action/owner.
 - [ ] Update status only through the governed project workflow.
-- [ ] “continuar proyecto X” restores safe project focus.
 
 ## Workstream F — Builder / Codex
 
@@ -154,6 +153,42 @@ Then run end-to-end scenarios:
 10. cross-domain authorized read -> source/evidence returned;
 11. query all bound business mailboxes -> aggregated actionable summary without duplicate messages;
 12. forbidden/private scope -> denied without leakage.
+
+## Experience-sales pilot — owner directive 2026-10-20
+
+**Priority decision:** experiences are an intended near-term revenue line, not only informational recommendations. Reuse Workstreams B/C/G/I, TORO Services, Comms and Revenue under General Plan controls E11/E15/E17/E29/E36. Selling an experience to a visitor is not onboarding an external business to TORO SaaS; do not misuse the external-business readiness gate to block the hotel's legitimate service line. This section is commercial acceptance design, NOT live sales activation or permission to publish prices, send offers, charge or book.
+
+### Catalogue and economic truth
+
+Reuse `catalog.experiences`, `catalog.dining_services`, `catalog.menu_items`, publication/fulfillment gates and `operations.experience_booking_requests` where their current authorized schemas support the action. The prior `technical_preflight_20261020` query is a read-side selection, not a booking endpoint. Revalidate scope, version, source and all publication gates; archived products remain excluded. A historical label or readiness score never confirms today's supplier availability.
+
+For the first curated launch subset, require product/variant ID, named accountable operator, own-service versus intermediary model, current supplier acceptance route, approved retail currency/price, cost or commission basis, inclusions/exclusions, duration, meeting/transport details, quantities/ages/restrictions, weather/cancellation conditions and validity. No invented prices, percentages, dietary or safety claims. Unknown material fields block a binding quote, but a clearly labeled request for information may remain possible. Owner approval of a launch does not establish missing facts.
+
+Keep approved catalogue/commercial authority and provider availability distinct. Kross remains PMS authority and publisher for approved lodging rates; mapped service charges use exact system IDs and permissions. Never create a second pricing writer in WhatsApp. Do not treat an intermediary's gross customer payment as the hotel's earned contribution. Real contribution requires supplier cost/commission, refunds, payment fees and other attributable costs with evidence; use NO_MEDIDO before that evidence exists. Taxes and liability terms require the appropriate approved source, not inference by the assistant.
+
+### One case, independent status dimensions
+
+Preserve one canonical request/order reference across chat, quotation, supplier confirmation, booking/voucher, fulfillment and reconciliation. Session continuation stores references and resumable stage only, not a duplicate commercial ledger. A channel receipt is transport evidence, not a booking voucher or a financial receipt.
+
+Track request, quote, supplier, customer acceptance, booking, fulfillment and payment separately. A paid request may still be awaiting provider confirmation; an approved pay-on-arrival booking need not be prepaid. The configured approved payment condition, not an assumed universal rule, governs confirmation. Quote amount/currency/date/party/conditions must be versioned and expire explicitly; supplier refusal, expired quote, changed party, cancellation and refund preserve their own states and history. Never switch price or accept changed conditions silently.
+
+Only issue a booking confirmation/voucher when the exact offer is accepted, the supplier/capacity is confirmed, the applicable payment condition is satisfied and the native booking action/readback is evidenced. Do not infer confirmation from a positive-sounding chat or screenshot of payment. Timeouts require reconciliation before retry; late callbacks must reference the same request and quote version. A human assignee is proposed until accepted. Unanswered provider requests need accountable follow-up within the approved service standard; no invented response deadline.
+
+### Identity and release sequence
+
+The employee identity resolver proves the owner/staff control path only. Guests and non-staying experience buyers must use the existing guest/customer boundary and may see only their own verified request; never enroll them as employees or grant organization access. Team groups receive only role-appropriate operational summaries. Provider contact and margin/private finance stay out of public product cards and unrelated chats.
+
+The next pilot is one selected experience, initially synthetic: verified owner/staff reads request -> approved service selected -> request persisted -> provider response pending -> process/database reconnect -> same request resumes without duplicate booking/payment/notification. Reuse the actual recipient and provider routes only after their precise authorization and availability are proven. An isolated test of the pending stage is not an end-to-end sale.
+
+Acceptance cases, to execute in the existing lane rather than create new tasks:
+- Requested experience survives interruption, retaining unverified availability and unconfirmed booking/payment.
+- Duplicate inbound event and repeated provider callback produce one commercial action and one appropriate response.
+- Provider decline, expired quote, changed date/quantity and weather cancellation do not silently confirm or reuse obsolete terms.
+- Incorrect owner/employee/customer scope, private data in a group and stale source are denied without disclosure.
+- Confirmed booking, delivered service, charge, collection, refund and supplier settlement are traceable but never counted as the same event.
+- Funnel counts are unique inquiries -> valid quotes -> accepted/confirmed bookings -> fulfilled services; conversion has a denominator, contribution has costs and currency. No benefit is claimed from test counts alone.
+
+**Current:** supporting code and isolated tests are under PR210 / the existing identity lane. **Next:** finish durable identity/session proof, then compose the existing request handler and exact commercial gates. **Pending:** fresh product/provider data, quote/booking/fulfillment/payment implementation readback, live OpenClaw/WeSpeak delivery, retention review and production approvals. Functional owners proposed: TERE/Revenue for offer and follow-up, RICO for fulfillment, FIONA for reconciliation, SOBRESITO for technical proof; no human assignment or acceptance is inferred.
 
 ## Promotion rule
 
