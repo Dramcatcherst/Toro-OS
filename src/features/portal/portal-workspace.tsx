@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { ArrowRight, LayoutGrid, Search, Star, Users, BedDouble, Wallet, Megaphone, Wrench, ChartNoAxesCombined, Home } from "lucide-react";
+import { ArrowRight, LayoutGrid, Sparkles, Star, Users, BedDouble, Wallet, Megaphone, Wrench, ChartNoAxesCombined, Home } from "lucide-react";
 import { PortalToolLinks, getToolPresentation } from "@/features/tools/portal-tool-links";
 import type { ToolCatalogueItem, ToolCatalogueMode, ToolLink } from "@/features/tools/directory";
 import { PortalToolCatalogue } from "@/features/tools/portal-tool-catalogue";
@@ -10,7 +10,6 @@ import type { PortalModule } from "./model";
 import { PortalCashTools } from "./portal-cash-tools";
 import { PortalResponseTools } from "./portal-response-tools";
 import { PortalKrossWidget } from "./portal-kross-widget";
-import { PortalAgents } from "./portal-header";
 import styles from "./portal.module.css";
 type Tab = "home" | "operations" | "money" | "people" | "growth" | "tools" | "reports" | "modules";
 const preferred = ["LINK-048", "PORTAL-POS", "LINK-178", "PORTAL-WHATSAPP", "LINK-086", "PORTAL-ALEGRA", "LINK-131", "LINK-056", "PORTAL-GMAIL"];
@@ -51,8 +50,10 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
   </section>;
   return <>
     <div role="tablist" aria-label="Vistas del Portal" className={styles.workspaceTabs}>{tabs.map((item, index) => <button key={item.key} ref={element => { controls.current[index] = element; }} type="button" role="tab" id={`${id}-tab-${item.key}`} aria-selected={tab === item.key} aria-controls={`${id}-panel-${item.key}`} tabIndex={tab === item.key ? 0 : -1} onClick={() => setTab(item.key)} onKeyDown={event => navigateTabs(event, index)}><item.Icon size={17} aria-hidden="true" />{item.label}</button>)}</div>
-    <PortalAgents />
-    <div className={styles.workspaceToolbar}><h1 className={styles.srOnly}>{tabs.find(item => item.key === tab)?.label}</h1><Link href="/my-toro" prefetch={false} className={styles.searchEntry}><Search size={18} aria-hidden="true" /><span>Pide o busca…</span><ArrowRight size={17} aria-hidden="true" /></Link></div>
+    <div className={styles.workspaceToolbar}>
+      <div className={styles.workspaceTitle}><span><Sparkles size={14} aria-hidden="true" />Vista {tabs.find(item => item.key === tab)?.label}</span><h1>Centro de mando</h1></div>
+      <Link href="/my-toro" prefetch={false} className={styles.searchEntry}><span>Abrir Mi espacio</span><ArrowRight size={17} aria-hidden="true" /></Link>
+    </div>
     {panel("home", <>
       <div className={styles.homeGrid} data-hotel={hotelAllowed} data-attention={Boolean(attention)}>
         <div className={styles.homeColumn}>{attention}{peoplePanel}</div>
