@@ -448,3 +448,46 @@
  .viewPanel .card, .card .subtleDisclosure summary, .calcGrid { --toro-focus:Highlight; }
  .viewPanel :is(input,select):focus-visible, .calcGrid :is(input,select,button):focus-visible, .loginBox :focus-visible { outline-color:Highlight; }
 }
+
+/* Final future-surface guard: keep late legacy utilities from reversing the owner-approved direction. */
+.card { color:#f6f9ff; background:linear-gradient(145deg,#112b45,#0c1d34); border-color:#526b91; }
+.card h3 { color:#f7fbff; }
+.card .description { color:#cbd9e8; }
+.card .note, .card .pendingLabel, .card .subtleDisclosure { color:#aebfd1; border-color:#516b88; }
+.card .status { color:#e9f7ff; background:#173d58; border-color:#587c98; }
+.cardPending .status { color:#ffe4a8; background:#4a3518; border-color:#9d7942; }
+.cardAction { color:var(--module-accent); border-color:#516b88; }
+
+.headerMenu summary { border-color:#4fa9d9aa; border-radius:14px; background:#0d2744cc; }
+.headerMenu nav { border-color:#6559b6; border-radius:16px; background:#07172ef5; box-shadow:0 20px 50px #01040de6; }
+.headerMenu nav :is(a,button):hover { background:linear-gradient(135deg,#173a66,#4b2b70); border-radius:10px; }
+
+.utilityRail { gap:8px; }
+.utilityRail :is(button,a) { min-height:52px; border-color:#526d9a; border-radius:14px; background:linear-gradient(135deg,#102b48,#18244b); color:#f4f8ff; font-weight:700; }
+.utilityRail :is(button,a):nth-child(2) { background:linear-gradient(135deg,#3c286f,#6d295c); }
+.utilityRail :is(button,a):nth-child(3) { background:linear-gradient(135deg,#164b43,#185c5a); }
+.utilityRail :is(button,a):nth-child(4) { background:linear-gradient(135deg,#173c68,#283a79); }
+.utilityRail :is(button,a):hover { border-color:#8fe7ff; background:linear-gradient(135deg,#17446d,#553579); }
+.utilityRail :is(button,a) > svg { color:#79e3ff; }
+
+.favoritesPanel .favoriteCard { color-scheme:dark; border-color:#7061ad; background:linear-gradient(145deg,#152b50,#2a1d51); }
+.favoritesPanel .favoriteCard:nth-child(3n+2) { border-color:#8f4e87; background:linear-gradient(145deg,#342052,#572545); }
+.favoritesPanel .favoriteCard:nth-child(3n) { border-color:#367f7b; background:linear-gradient(145deg,#163d49,#193654); }
+.favoritesPanel .favoriteCard:hover { border-color:#8fe7ff; background:linear-gradient(145deg,#214d6d,#553579); }
+.favoritesPanel .favoriteCard :is(.toolCopy strong,.toolBrand) { color:#f3f7ff; }
+.favoritesPanel .favoriteCard .toolVisual { color:#dff7ff; background:#07182eb8; border-color:#657aa8; }
+.favoritesPanel .favoriteCard .toolArrow { color:#79e3ff; }
+
+@media (max-width:400px) {
+ .brand { min-width:0; }
+ .brandName > span { display:none; }
+ .weatherLink { width:44px; justify-content:center; font-size:0; }
+ .headerUtilities { min-width:0; gap:4px; }
+ .headerUtilities .clock { font-size:11px; }
+ .scope { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+}
+@media (prefers-reduced-motion:reduce) { .cardAvailable,.utilityRail :is(button,a),.favoritesPanel .favoriteCard { transition:none; transform:none; } }
+@media (forced-colors:active) {
+ .card,.card .status,.headerMenu summary,.headerMenu nav,.utilityRail :is(button,a),.favoritesPanel .favoriteCard,.favoritesPanel .favoriteCard .toolVisual { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; }
+ .card :is(h3,.description,.note,.pendingLabel,.subtleDisclosure,.cardAction),.favoritesPanel .favoriteCard :is(.toolCopy strong,.toolBrand,.toolArrow) { color:CanvasText; }
+}
