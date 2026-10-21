@@ -29,20 +29,11 @@ function accountProbeState(account) {
   if (!account || typeof account !== "object") return "unknown";
   const probe = account.probe && typeof account.probe === "object" ? account.probe : null;
   const audit = account.audit && typeof account.audit === "object" ? account.audit : null;
-  const lifecycle = typeof account.lifecycle === "string" ? account.lifecycle.toLowerCase() : null;
 
-  if (
-    probe?.ok === false ||
-    audit?.ok === false ||
-    lifecycle === "blocked" ||
-    account.connected === false ||
-    account.running === false
-  ) {
-    return "disconnected";
-  }
-  if (probe?.ok === true || (account.connected === true && account.running === true)) {
-    return "connected";
-  }
+  // Transport/lifecycle fields are runtime snapshots and can be stale. Only an
+  // explicit per-account probe or audit result is fresh enough for this gate.
+  if (probe?.ok === false || audit?.ok === false) return "disconnected";
+  if (probe?.ok === true || audit?.ok === true) return "connected";
   return "unknown";
 }
 

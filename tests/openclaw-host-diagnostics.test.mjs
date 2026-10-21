@@ -127,6 +127,32 @@ test("failed WhatsApp account probe is disconnected", () => {
   );
 });
 
+test("transport flags without fresh evidence remain inconclusive", () => {
+  const summary = summarizeHostCommand("whatsapp_probe", {
+    status: 0,
+    stdout: JSON.stringify({
+      channelAccounts: { whatsapp: [{ connected: true, running: true, lifecycle: "ready" }] },
+    }),
+  });
+  assert.equal(summary.result, "inconclusive");
+  assert.equal(summary.liveProbe, false);
+  assert.equal(summary.state, "unknown");
+  assert.equal(summary.category, "whatsapp_probe_unverified");
+});
+
+test("negative transport and lifecycle flags without fresh evidence remain inconclusive", () => {
+  const summary = summarizeHostCommand("whatsapp_probe", {
+    status: 0,
+    stdout: JSON.stringify({
+      channelAccounts: { whatsapp: [{ connected: false, running: false, lifecycle: "blocked" }] },
+    }),
+  });
+  assert.equal(summary.result, "inconclusive");
+  assert.equal(summary.liveProbe, false);
+  assert.equal(summary.state, "unknown");
+  assert.equal(summary.category, "whatsapp_probe_unverified");
+});
+
 test("mixed WhatsApp account evidence is degraded", () => {
   assert.deepEqual(
     summarizeHostCommand("whatsapp_probe", {
@@ -179,3 +205,4 @@ test("negative Gateway wording cannot be promoted to running", () => {
     { name: "gateway", result: "executed", state: "requires_host_review" },
   );
 });
+
