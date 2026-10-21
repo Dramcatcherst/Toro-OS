@@ -125,3 +125,133 @@ test('invalid session draft and raw conversation locator are rejected', () => {
   assert.equal(validateChannelSessionDraft(null).ok, false);
   assert.equal(validateChannelSessionDraft({ ...draft(), conversationHash: 'synthetic-raw-chat' }).ok, false);
 });
+
+
+// Experience continuation is an internal read/resume preflight, not a booking endpoint.
+const extension = await import(moduleUrl);
+const validateContinuation = (value) => {
+  assert.equal(typeof extension.validateExperienceContinuationState, 'function', 'continuation validator must exist');
+  return extension.validateExperienceContinuationState(value);
+};
+const prepareResume = (value) => {
+  assert.equal(typeof extension.prepareExperienceContinuationResume, 'function', 'resume preflight must exist');
+  return extension.prepareExperienceContinuationResume(value);
+};
+const requestId = '88888888-8888-4888-8888-888888888888';
+const quoteId = '99999999-9999-4999-8999-999999999999';
+const continuation = () => ({schemaVersion:1, workflow:'experience_request',requestId,requestVersion:'c'.repeat(64),quoteId,quoteVersion:'d'.repeat(64)});
+const resumeInput = () => ({
+  session:session(), actor:{...actor}, nowIso:now,
+  trustedAccess:{channelKind:'direct',identityVerified:true,membershipActive:true,canReadRequest:true,bindingId,conversationHash:'a'.repeat(64)},
+  sourceHealthy:true, sourceFresh:true,
+  request:{id:requestId,orgId:actor.orgId,version:'c'.repeat(64),status:'open',quote:{id:quoteId,version:'d'.repeat(64),expiresAt:'2026-10-20T13:00:00.000Z'}},
+  continuation:continuation(),
+});
+
+test('experience continuation keeps exactly six primitive references',()=>{
+  const value=continuation(), result=validateContinuation(value);
+  assert.equal(result.ok,true); assert.deepEqual(result.value,value); assert.notEqual(result.value,value);
+  value.requestId=otherId; assert.equal(result.value.requestId,requestId);
+});
+test('experience continuation accepts a request without a quote',()=>{
+  assert.equal(validateContinuation({...continuation(),quoteId:null,quoteVersion:null}).ok,true);
+});
+for(const field of ['messageBody','phone','token','price','supplierConfirmation','bookingConfirmed','paymentConfirmed']){
+  test(`experience continuation refuses private or commercial field ${field}`,()=>{
+    const result=validateContinuation({...continuation(),[field]:'synthetic-sensitive-value'});
+    assert.equal(result.ok,false); assert.equal(JSON.stringify(result).includes('synthetic-sensitive-value'),false);
+  });
+}
+for(const field of Object.keys(continuation())){
+  test(`experience continuation requires explicit ${field}`,()=>{
+    const value=continuation();delete value[field];assert.equal(validateContinuation(value).ok,false);
+  });
+}
+for(const [name,value] of [['null',null],['array',[]],['text','message'],['date',new Date()],['unknown-version',{...continuation(),schemaVersion:2}],['raw-reference',{...continuation(),requestId:'person@example.invalid'}],['wrong-hash',{...continuation(),requestVersion:'old'}],['quote-pair',{...continuation(),quoteVersion:null}],['wrong-workflow',{...continuation(),workflow:'paid'}]]){
+  test(`experience continuation rejects ${name}`,()=>assert.equal(validateContinuation(value).ok,false));
+}
+test('experience continuation rejects accessors without executing them',()=>{
+  let accessed=false;const value=continuation();Object.defineProperty(value,'requestId',{enumerable:true,get(){accessed=true;return requestId;}});
+  assert.equal(validateContinuation(value).ok,false);assert.equal(accessed,false);
+});
+test('experience continuation rejects inherited properties and symbol fields',()=>{
+  assert.equal(validateContinuation(Object.create(continuation())).ok,false);
+  assert.equal(validateContinuation({...continuation(),[Symbol('hidden')]:true}).ok,false);
+});
+test('verified exact session resumes without authorizing a booking or payment',()=>{
+  const result=prepareResume(resumeInput());
+  assert.equal(result.status,'READY_TO_RESUME');assert.deepEqual(result.continuation,continuation());
+  assert.equal(result.bookingAuthorized,false);assert.equal(result.paymentAuthorized,false);assert.equal(result.requiresCommercialRevalidation,true);
+});
+for(const [name,value] of [['group',{channelKind:'group'}],['unknown-channel',{channelKind:'unknown'}],['unverified',{identityVerified:false}],['inactive',{membershipActive:false}],['permission',{canReadRequest:false}],['truthy-permission',{canReadRequest:'true'}],['binding',{bindingId:otherId}],['conversation',{conversationHash:'f'.repeat(64)}]]){
+  test(`experience resume denies ${name} before returning request data`,()=>{
+    const input=resumeInput();input.trustedAccess={...input.trustedAccess,...value};
+    assert.deepEqual(prepareResume(input),{status:'DENIED'});
+  });
+}
+for(const field of ['orgId','userId','employeeId','identityId']){
+  test(`experience resume denies a different actor ${field}`,()=>{
+    const input=resumeInput();input.actor[field]=otherId;assert.deepEqual(prepareResume(input),{status:'DENIED'});
+  });
+}
+test('experience resume denies expired and revoked sessions',()=>{
+  for(const patch of [{expiresAt:now},{status:'revoked',revokedAt:now},{activeScope:'personal'}]){
+    const input=resumeInput();Object.assign(input.session,patch);assert.deepEqual(prepareResume(input),{status:'DENIED'});
+  }
+});
+test('experience resume denies request of another organization or reference',()=>{
+  for(const patch of [{orgId:otherId},{id:otherId}]){
+    const input=resumeInput();Object.assign(input.request,patch);assert.deepEqual(prepareResume(input),{status:'DENIED'});
+  }
+});
+test('experience resume refuses missing server authorization',()=>{
+  const input=resumeInput();delete input.trustedAccess;assert.deepEqual(prepareResume(input),{status:'DENIED'});
+});
+test('experience resume fails closed without a readable source',()=>{
+  const input=resumeInput();input.sourceHealthy=false;assert.deepEqual(prepareResume(input),{status:'UNAVAILABLE'});
+  delete input.sourceHealthy;assert.deepEqual(prepareResume(input),{status:'UNAVAILABLE'});
+});
+test('experience resume refuses stale or unknown freshness',()=>{
+  const input=resumeInput();input.sourceFresh=false;assert.deepEqual(prepareResume(input),{status:'STALE'});
+  delete input.sourceFresh;assert.deepEqual(prepareResume(input),{status:'STALE'});
+});
+test('experience resume rejects invalid continuation after authorization',()=>{
+  const input=resumeInput();input.continuation.price=100;assert.deepEqual(prepareResume(input),{status:'INVALID_CONTINUATION'});
+});
+test('experience resume requests refresh when current request changed',()=>{
+  const input=resumeInput();input.request.version='e'.repeat(64);assert.deepEqual(prepareResume(input),{status:'REFRESH_REQUIRED'});
+});
+for(const patch of [{id:otherId},{version:'e'.repeat(64)},{expiresAt:now},{expiresAt:'2026-10-19T12:00:00.000Z'}]){
+  test(`experience resume refuses replaced or expired quote ${JSON.stringify(patch)}`,()=>{
+    const input=resumeInput();Object.assign(input.request.quote,patch);assert.deepEqual(prepareResume(input),{status:'REQUOTE_REQUIRED'});
+  });
+}
+test('experience resume requires a new quote when removed or newly added',()=>{
+  const input=resumeInput();input.request.quote=null;assert.deepEqual(prepareResume(input),{status:'REQUOTE_REQUIRED'});
+  const other=resumeInput();other.continuation.quoteId=null;other.continuation.quoteVersion=null;assert.deepEqual(prepareResume(other),{status:'REQUOTE_REQUIRED'});
+});
+test('experience request without quote can resume but cannot confirm a sale',()=>{
+  const input=resumeInput();input.request.quote=null;input.continuation.quoteId=null;input.continuation.quoteVersion=null;
+  const result=prepareResume(input);assert.equal(result.status,'READY_TO_RESUME');assert.equal(result.bookingAuthorized,false);assert.equal(result.paymentAuthorized,false);
+});
+for(const status of ['cancelled','closed'])test(`experience resume preserves ${status}`,()=>{
+  const input=resumeInput();input.request.status=status;assert.deepEqual(prepareResume(input),{status:'CLOSED'});
+});
+for(const expiresAt of ['invalid','2026-10-20T13:00:00','2026-02-30T13:00:00Z',null])test(`experience resume refuses ambiguous or invalid quote time ${expiresAt}`,()=>{
+  const input=resumeInput();input.request.quote.expiresAt=expiresAt;assert.deepEqual(prepareResume(input),{status:'UNAVAILABLE'});
+});
+test('experience resume accepts explicit offset and compares the instant',()=>{
+  const input=resumeInput();input.request.quote.expiresAt='2026-10-20T07:00:00-06:00';assert.equal(prepareResume(input).status,'READY_TO_RESUME');
+});
+test('experience resume denies malformed context clock',()=>{
+  const input=resumeInput();input.nowIso='2026-10-20T12:00:00';assert.deepEqual(prepareResume(input),{status:'DENIED'});
+});
+test('experience resume does not disclose injected source data or mutate its input',()=>{
+  const input=resumeInput();input.request.internalNotes='synthetic-internal';input.request.quote.supplierCost=80;
+  const snapshot=structuredClone(input),result=prepareResume(input);assert.deepEqual(input,snapshot);
+  assert.equal(JSON.stringify(result).includes('synthetic-internal'),false);assert.equal(JSON.stringify(result).includes('supplierCost'),false);
+  input.continuation.requestId=otherId;assert.equal(result.continuation.requestId,requestId);
+});
+test('experience resume returns repeatable read decisions without creating effects',()=>{
+  assert.deepEqual(prepareResume(resumeInput()),prepareResume(resumeInput()));
+});

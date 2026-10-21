@@ -244,3 +244,140 @@ export function buildChannelReceiptDraft(input: {
     canonicalObjectKey: key,
   };
 }
+
+/** Minimal pointers only. Commercial truth must be reread from its authority. */
+export type ToroExperienceContinuationState = {
+  schemaVersion: 1;
+  workflow: "experience_request";
+  requestId: string;
+  requestVersion: string;
+  quoteId: string | null;
+  quoteVersion: string | null;
+};
+
+const EXPERIENCE_CONTINUATION_KEYS = [
+  "schemaVersion", "workflow", "requestId", "requestVersion", "quoteId", "quoteVersion",
+] as const;
+
+export function validateExperienceContinuationState(input: unknown):
+  | { ok: true; value: ToroExperienceContinuationState }
+  | { ok: false; error: string } {
+  const invalid = { ok: false as const, error: "Invalid experience continuation." };
+  if (!input || typeof input !== "object" || Array.isArray(input)) return invalid;
+  const prototype = Object.getPrototypeOf(input);
+  if (prototype !== Object.prototype && prototype !== null) return invalid;
+  const descriptors = Object.getOwnPropertyDescriptors(input);
+  if (Reflect.ownKeys(input).length !== EXPERIENCE_CONTINUATION_KEYS.length) return invalid;
+  if (!EXPERIENCE_CONTINUATION_KEYS.every((key) => {
+    const descriptor = descriptors[key];
+    return descriptor && "value" in descriptor && descriptor.enumerable;
+  })) return invalid;
+
+  // Read only data descriptors: never execute an accessor supplied by a caller.
+  const row = Object.fromEntries(EXPERIENCE_CONTINUATION_KEYS.map((key) => [key, descriptors[key].value]));
+  if (row.schemaVersion !== 1 || row.workflow !== "experience_request" ||
+      typeof row.requestId !== "string" || !UUID.test(row.requestId) ||
+      typeof row.requestVersion !== "string" || !SHA256.test(row.requestVersion)) return invalid;
+  if ((row.quoteId === null) !== (row.quoteVersion === null)) return invalid;
+  if (row.quoteId !== null && (typeof row.quoteId !== "string" || !UUID.test(row.quoteId) ||
+      typeof row.quoteVersion !== "string" || !SHA256.test(row.quoteVersion))) return invalid;
+
+  return { ok: true, value: {
+    schemaVersion: 1,
+    workflow: "experience_request",
+    requestId: row.requestId,
+    requestVersion: row.requestVersion,
+    quoteId: row.quoteId,
+    quoteVersion: row.quoteVersion,
+  } };
+}
+
+/** Normalized authorized read, not a declaration of the database's column names. */
+export type ToroExperienceRequestRead = {
+  id: string;
+  orgId: string;
+  version: string;
+  status: "open" | "closed" | "cancelled";
+  quote: { id: string; version: string; expiresAt: string } | null;
+};
+
+export type ToroExperienceContinuationResume =
+  | { status: "DENIED" | "UNAVAILABLE" | "STALE" | "INVALID_CONTINUATION" |
+      "CLOSED" | "REFRESH_REQUIRED" | "REQUOTE_REQUIRED" }
+  | {
+      status: "READY_TO_RESUME";
+      continuation: ToroExperienceContinuationState;
+      bookingAuthorized: false;
+      paymentAuthorized: false;
+      requiresCommercialRevalidation: true;
+    };
+
+function validZonedTimestamp(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return false;
+  if (!Number.isFinite(Date.parse(value))) return false;
+  // Date.parse normalizes some impossible calendar dates; reject that normalization.
+  const calendarDay = Date.parse(`${value.slice(0, 10)}T00:00:00Z`);
+  return Number.isFinite(calendarDay) && new Date(calendarDay).toISOString().slice(0, 10) === value.slice(0, 10);
+}
+
+/**
+ * Owner/staff direct-message read preflight. No writes, messages, booking or payment.
+ * trustedAccess MUST come from the reviewed server identity/policy/transport boundary,
+ * never from a chat, model output or request body. This helper cannot authenticate it.
+ * request MUST be a fresh, scoped canonical read with a deterministic version digest.
+ * A consumer still needs a governed compare-and-swap writer and commercial revalidation.
+ */
+export function prepareExperienceContinuationResume(input: {
+  session: ToroChannelSession;
+  actor: ToroChannelActor;
+  nowIso: string;
+  trustedAccess: {
+    channelKind: "direct" | "group";
+    identityVerified: boolean;
+    membershipActive: boolean;
+    canReadRequest: boolean;
+    bindingId: string;
+    conversationHash: string;
+  };
+  sourceHealthy: boolean;
+  sourceFresh: boolean;
+  request: ToroExperienceRequestRead | null;
+  continuation: unknown;
+}): ToroExperienceContinuationResume {
+  if (!input || !input.session || !input.actor || !input.trustedAccess) return { status: "DENIED" };
+  const access = input.trustedAccess;
+  if (access.channelKind !== "direct" || access.identityVerified !== true ||
+      access.membershipActive !== true || access.canReadRequest !== true ||
+      !validZonedTimestamp(input.nowIso) || !validZonedTimestamp(input.session.expiresAt) ||
+      typeof input.session.id !== "string" || !UUID.test(input.session.id) ||
+      typeof access.bindingId !== "string" || !UUID.test(access.bindingId) ||
+      typeof access.conversationHash !== "string" || !SHA256.test(access.conversationHash) ||
+      input.session.bindingId !== access.bindingId || input.session.conversationHash !== access.conversationHash ||
+      !canResumeChannelSession(input.session, input.actor, input.nowIso)) return { status: "DENIED" };
+
+  if (input.sourceHealthy !== true) return { status: "UNAVAILABLE" };
+  if (input.sourceFresh !== true) return { status: "STALE" };
+  const parsed = validateExperienceContinuationState(input.continuation);
+  if (!parsed.ok) return { status: "INVALID_CONTINUATION" };
+  const state = parsed.value;
+  const request = input.request;
+  if (!request || request.orgId !== input.actor.orgId || request.id !== state.requestId) return { status: "DENIED" };
+  if (typeof request.version !== "string" || !SHA256.test(request.version) ||
+      !["open", "closed", "cancelled"].includes(request.status)) return { status: "UNAVAILABLE" };
+  if (request.status !== "open") return { status: "CLOSED" };
+  if (request.version !== state.requestVersion) return { status: "REFRESH_REQUIRED" };
+
+  const quote = request.quote;
+  if (quote !== null && (!quote || typeof quote.id !== "string" || !UUID.test(quote.id) ||
+      typeof quote.version !== "string" || !SHA256.test(quote.version) || !validZonedTimestamp(quote.expiresAt))) return { status: "UNAVAILABLE" };
+  if ((quote?.id ?? null) !== state.quoteId || (quote?.version ?? null) !== state.quoteVersion ||
+      (quote !== null && Date.parse(quote.expiresAt) <= Date.parse(input.nowIso))) return { status: "REQUOTE_REQUIRED" };
+
+  return {
+    status: "READY_TO_RESUME",
+    continuation: state,
+    bookingAuthorized: false,
+    paymentAuthorized: false,
+    requiresCommercialRevalidation: true,
+  };
+}
