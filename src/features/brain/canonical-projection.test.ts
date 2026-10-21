@@ -227,6 +227,56 @@ describe("buildCanonicalBrainProjection", () => {
     )?.status).toBe("Review");
   });
 
+
+  it("recognizes a reviewed approved source rule as Ready policy, not as executable connector", () => {
+    const slice = makeSlice();
+    slice.sourceAuthority[0] = { ...slice.sourceAuthority[0], status: "approved" };
+    const projection = buildCanonicalBrainProjection(slice);
+    const rule = projection.nodes.find((n) => n.id === "authority:a0");
+    expect(rule).toMatchObject({
+      kind: "knowledge", status: "Ready", verification: "verified",
+      capabilities: { canExecute: false, actionCeiling: "observe" },
+    });
+    expect(projection.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: true, verification: "verified",
+    });
+  });
+
+  it("fails closed for inactive and unreviewed source authority, even when the source name is official", () => {
+    const retired = makeSlice();
+    retired.sourceAuthority[0] = { ...retired.sourceAuthority[0], status: "retired" };
+    const projection = buildCanonicalBrainProjection(retired);
+    expect(projection.nodes.find((n) => n.id === "authority:a0")).toMatchObject({
+      status: "Review", verification: "unverified",
+    });
+    expect(projection.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: false, verification: "unverified",
+    });
+
+    const unreviewed = makeSlice();
+    unreviewed.sourceAuthority[0] = {
+      ...unreviewed.sourceAuthority[0], status: "approved", lastReviewed: null,
+    };
+    const pending = buildCanonicalBrainProjection(unreviewed);
+    expect(pending.nodes.find((n) => n.id === "authority:a0")).toMatchObject({
+      status: "Review", verification: "unverified",
+    });
+    expect(pending.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: false, verification: "unverified",
+    });
+  });
+
+  it("cannot promote a quality score with unknown governance freshness to Ready", () => {
+    const slice = makeSlice();
+    slice.domainGovernance[1] = {
+      ...slice.domainGovernance[1], lastReviewedAt: null, nextReviewAt: null,
+    };
+    const projection = buildCanonicalBrainProjection(slice);
+    expect(projection.nodes.find((n) => n.id === "governance:g1")).toMatchObject({
+      freshness: "unknown", status: "Review",
+    });
+  });
+
   it("produces bounded rows for the existing graph renderer", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
     const layout = buildCanonicalBrainLayout(projection);
