@@ -1,7 +1,7 @@
 # Dreamcatcher Financial Control Center v1
 
-**Status:** GENERAL FINANCIAL PAGE / CURRENT MASTER VIEW  
-**As of:** 2026-09-30  
+**Status:** GENERAL FINANCIAL REFERENCE — HISTORICAL BASELINE, CURRENT RECONCILIATION REQUIRED  
+**Original baseline as of:** 2026-09-30; source reread 2026-10-20  
 **Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations
 
 This is the single general page for the ongoing financial analysis. It summarizes current truth, model rules, data quality, pending decisions and next actions. Detailed contracts remain subordinate and must not become parallel financial plans.
@@ -70,9 +70,11 @@ Every output must identify:
 - actual / inferred / estimated;
 - formula version.
 
-## 3. Current accounting baseline — Alegra Jan–Sep 2026
+## 3. Historical accounting baseline — Alegra Jan–Sep 2026 (captured 2026-09-30)
 
 Cost center: DREAMCATCHER.
+
+**HISTORICAL SNAPSHOT — DO NOT TREAT AS CURRENT:** Amounts below preserve the original September extraction for reproducibility. Alegra's later read of the same January–September range yields different results. The latest values are kept in authorized/private financial reporting, not replicated in this public repository.
 
 - Sales: CRC 265,585,084.46
 - Operating expenses: CRC 199,724,118.69
@@ -81,10 +83,25 @@ Cost center: DREAMCATCHER.
 - Tax expense: CRC 21,744,372.38
 - Net income: CRC 44,578,455.31
 
-Current provisional accounting break-even zone:
+Historical provisional accounting break-even zone (recompute before using):
 - approximately CRC 20.0M–21.5M monthly revenue depending on variable/fixed treatment.
 
 **Not yet a pricing floor.**
+
+### Source-validity gate discovered 2026-10-20 (E02/E29/E31)
+
+**OBSERVED:** A read-only Alegra Profit & Loss report for cost center **DREAMCATCHER (ID 1)** and the *same* 2026-01-01–2026-09-30 period no longer matches the historical totals in the preceding snapshot. The difference affects operating expenses, tax and net profit. This is **accounting-baseline drift**, not proof of a new cash loss, fraud, a supplier overcharge, or a room-pricing problem. The document's historical numbers remain untouched for audit; newer monetary values stay in private, authorized reporting. The fiscal and bank reconciliation status is **UNVERIFIED**.
+
+**Reproduction (read only):**
+
+1. Query the **native** Alegra P&L, costCenterId=1, `from=2026-01-01`, `to=2026-09-30`, `includeComparativeAnalysis=false`, `forceSummary=true`, and `decimalPrecision=2`; preserve the execution timestamp, report parameters, source and exact account/period scope.
+2. Extract **root** `Ventas` and the section `Total` lines, plus utility rows `Utilidad operativa`, `Utilidad antes de impuestos` and `Utilidad neta`. Do **not** add parent and child account balances together or treat period snapshots as transactions.
+3. Compare like-for-like accounting slices and identify **which account/document revisions** explain the divergence; inspect journal/bill IDs and dates, late postings, reallocations, credits, reversals and cost-center attribution with original evidence. The report alone does not identify cause.
+4. If differences remain, keep `FINANCE_BASELINE_RECONCILE` and do not recalculate price floors or claim a new savings figure. Close only with entry-level support, a reproducible updated balance, finance review and a versioned receipt in the **existing** finance-control record.
+
+**October 2026:** A 2026-10-01–2026-10-20 P&L can be queried, but it is an **open, partial period**. At this cut the OTA-commission category contains no recorded charge. Do not interpret that as zero acquisition cost, a complete monthly profit/loss, evidence of cash on hand or a valid hotel occupancy trend. The prior month and YTD comparisons must use matched accrual/closing states and source timing.
+
+**Next action:** TORO Finance/FIONA and the existing Alegra/PayFlow reconciliation lane own this case; Kross remains the commercial authority for actual room nights. Proposals to change inventory, rates, taxes, posts or accounts require their own approvals; do not create a second reconciliation job, database or scheduler.
 
 ## 4. Data-quality / reconciliation flags
 
