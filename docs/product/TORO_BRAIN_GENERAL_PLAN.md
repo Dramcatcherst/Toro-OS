@@ -116,6 +116,12 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 **NEXT sin duplicación:** reutilizar los carriles Kross/WeSpeak, Alegra/PayFlow y `Dreamcatcher · Ejecución del Plan` ya horarios. Primero QA del mismo SHA desplegado con sesión autorizada, sin publicaciones por inferencia; luego conciliar `finance.invoices` con saldo/estado real, y fuente Kross con frescura/paridad antes de computar ocupación/ADR/contribución. No crear un nuevo dashboard o scheduler. Los ahorros/cierres no se declaran hasta tener recibo operacional, comparación y, donde aplique, evidencia bancaria o fuente PMS.
 
+### FINANCE_BASELINE_RECONCILE — 20/10/2026 (E02/E29/E31; sin cifras privadas en GitHub)
+
+**OBSERVADO, no cerrado:** la relectura nativa de Alegra, centro DREAMCATCHER ID 1, con período 01/01–30/09/2026 produjo totales contables distintos de la extracción archivada el 30/09; varían gastos, impuestos y beneficio neto. No convertir esa diferencia de versiones en un nuevo gasto desembolsado ni recalcular automáticamente los pisos de tarifa/ROI. Las cifras nuevas y el análisis de variación son internos; el repositorio público conserva únicamente el estado y la metodología. Octubre 01–20 está **ABIERTO / PARCIAL**, con comisiones OTA aún sin registrar en el corte leído: no concluir margen, ocupación ni ahorro a partir de ese período. 
+
+**NEXT:** reutilizar TORO Finance/FIONA, PayFlow y `docs/product/DREAMCATCHER_FINANCIAL_CONTROL_CENTER_V1.md` (sección *Source-validity gate*) para comparar reportes Alegra por fecha/scope/centro, encontrar comprobantes de los ajustes, confirmar entidad beneficiaria y guardar un recibo versionado por Control Plane. Hasta conciliar, mantener `P&L=CORTE_PENDIENTE_CONCILIACION`, `cash=NO_COMPROBADO`, `pricing_floor=NO_APROBADO`; no crear otro sistema ni modificar asientos.
+
 <!-- END:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 
 <!-- BEGIN:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
