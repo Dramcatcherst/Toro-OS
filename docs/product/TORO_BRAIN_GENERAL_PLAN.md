@@ -6148,3 +6148,12 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 **Verificación:** build Next.js, TypeScript, lint, auditorías de rutas/robots/medios/rendimiento/terminología y suite unitaria aprobaron; seis pruebas de navegador aprobaron en 390 px y 1440 px. El alias exacto mostró las dos imágenes, los tres destinos oficiales, el texto del piloto y ancho sin desborde. No se abrió ni modificó contenido dentro de WhatsApp, Google Photos o Spotify y no se envió una inscripción durante QA.
 
 **Estado:** HECHO en preview y registrado en el Plan General; NO PUBLICADO en producción. **Siguiente acción única:** usar este preview con los participantes autorizados y registrar únicamente problemas o aprendizajes reales del flujo; cualquier traslado a producción, envío masivo, carga automática o ampliación de permisos requiere su gate separado.
+
+
+<!-- BEGIN:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
+### Control E29/E30/E32/E36 — cobertura de bancos, tarjetas y correo financiero (21/10/2026)
+
+**DIRECTIVA:** auditar instrumentos bancarios, tarjetas, SINPE, vouchers, procesadores y estados de cuenta por beneficiario real y no por nombre del titular. Documento confirmado del hotel que solo llega a correo personal = `CAMBIAR_DESTINATARIO`; personal puro = `PRIVADO_NO_REDIRECCIONAR`; mixto = `USO_MIXTO_REVISAR`. Una tarjeta nominal de una persona puede estar dedicada a gastos del hotel. Separar correos recibidos de extractos mensuales, transferencias de liquidaciones y comprobantes de facturas, con estado de frescura y evidencia. Mantener límites entre Dreamcatcher y otras entidades.
+
+**CONTRATO Y PORTAL:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md). En el portal existente, Finanzas/Cobertura documental es una vista objetivo por rol con colas de entrega, cuentas, tarjetas, transferencias rechazadas y cambios de destinatario; no una segunda aplicación. Solo metadatos en repositorio; originales y números completos permanecen privados. No cambiar destinatarios bancarios sin aprobación, ejecución autorizada y recibo de prueba. **ESTADO: DIRECTIVA DOCUMENTAL / AUDITORÍA PARCIAL; PORTAL NO IMPLEMENTADO.**
+<!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
