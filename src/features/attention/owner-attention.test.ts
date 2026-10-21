@@ -191,7 +191,7 @@ describe("Financial alert classification — never infer outstanding debt from d
     "unknown", "payment_reported", "payment_in_progress_2026_09_05",
     "duplicate_billing_dispute_unresolved",
     "paid_external_match_scope_pending", "paid_provider_confirmed_bank_match_pending",
-    "no_payment_due_unverified", "OPEN",
+    "no_payment_due_unverified", "no_payment_due_not_verified", "no_payment_due_extranet_pending", "OPEN",
   ])("marks %s as high verification rather than a verified overdue debt", (status) => {
     expect(projectInvoiceAttention(invoice(status), "2026-10-20")).toMatchObject({
       kind: "invoice", priority: "high", state: status, amount: 15000,
