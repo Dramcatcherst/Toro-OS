@@ -9,12 +9,27 @@ const COMMANDS = [
   ["version", ["--version"]],
   ["gateway", ["gateway", "status"]],
   ["whatsapp_probe", ["channels", "status", "--channel", "whatsapp", "--probe", "--json"]],
+  ["whatsapp_health", ["health", "--verbose", "--json", "--timeout", "10000"]],
   ["whatsapp_capabilities", ["channels", "capabilities", "--channel", "whatsapp", "--json"]],
   ["deep_status", ["status", "--deep"]],
   ["security_audit", ["security", "audit", "--json"]],
   ["backup_inventory", ["backup", "list", "--json"]],
   ["whatsapp_logs", ["channels", "logs", "--channel", "whatsapp", "--lines", "200", "--json"]],
 ];
+
+const HEALTH_SNAPSHOT_MAX_AGE_MS = 30_000;
+const HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS = 5_000;
+const UNHEALTHY_ACCOUNT_STATES = new Set([
+  "blocked",
+  "disconnected",
+  "ingress-unavailable",
+  "logged-out",
+  "not-running",
+  "stale-socket",
+  "stopped",
+  "stuck",
+  "terminal-disconnect",
+]);
 
 function errorCategory(value) {
   if (/unknown (command|option)|unrecognized (command|option)/i.test(value)) return "unsupported_command";
@@ -75,7 +90,86 @@ function summarizeWhatsAppProbe(value) {
   };
 }
 
-export function summarizeHostCommand(name, result) {
+
+function accountHealthState(account) {
+  if (!account || typeof account !== "object") return "unknown";
+  const healthState = String(account.healthState ?? "").toLowerCase();
+  if (
+    account.ingressUnavailable === true ||
+    account.terminalDisconnect === true ||
+    UNHEALTHY_ACCOUNT_STATES.has(healthState) ||
+    account.lifecycle === "blocked" ||
+    account.lifecycle === "stopped" ||
+    account.running === false ||
+    account.connected === false ||
+    account.linked === false
+  ) {
+    return "unhealthy";
+  }
+  if (
+    account.enabled !== false &&
+    account.configured === true &&
+    account.linked === true &&
+    account.running === true &&
+    account.connected === true &&
+    account.lifecycle === "ready"
+  ) {
+    return "healthy";
+  }
+  return "unknown";
+}
+
+function summarizeWhatsAppHealth(value, observedAt) {
+  const base = {
+    scope: "channels.whatsapp.accounts",
+    accountCount: 0,
+    liveHealth: false,
+    state: "unknown",
+    evidence: "gateway_health_verbose",
+  };
+  if (!value || typeof value !== "object") return base;
+  if (String(value.status ?? "").toLowerCase() === "starting") {
+    return { ...base, category: "gateway_starting" };
+  }
+
+  const snapshotAt = typeof value.ts === "number" && Number.isFinite(value.ts) ? value.ts : null;
+  const ageMs = snapshotAt === null ? null : observedAt - snapshotAt;
+  if (
+    value.ok !== true ||
+    ageMs === null ||
+    ageMs > HEALTH_SNAPSHOT_MAX_AGE_MS ||
+    ageMs < -HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS
+  ) {
+    return { ...base, category: snapshotAt === null ? "health_snapshot_unverified" : "health_snapshot_stale" };
+  }
+
+  const accountMap = value.channels?.whatsapp?.accounts;
+  const accounts =
+    accountMap && typeof accountMap === "object" && !Array.isArray(accountMap)
+      ? Object.values(accountMap).filter((account) => account && typeof account === "object")
+      : [];
+  if (accounts.length === 0) {
+    return { ...base, category: "whatsapp_health_accounts_missing" };
+  }
+
+  const states = accounts.map(accountHealthState);
+  const healthy = states.filter((state) => state === "healthy").length;
+  const unhealthy = states.filter((state) => state === "unhealthy").length;
+  let state = "unknown";
+  if (healthy === states.length) state = "connected";
+  else if (unhealthy === states.length) state = "disconnected";
+  else if (healthy > 0 || unhealthy > 0) state = "degraded";
+
+  return {
+    ...base,
+    accountCount: accounts.length,
+    liveHealth: true,
+    state,
+    ...(state === "unknown" ? { category: "whatsapp_health_unverified" } : {}),
+  };
+}
+
+export function summarizeHostCommand(name, result, observedAt = Date.now()) {
   const raw = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   if (result.error || result.status !== 0) {
     return { name, result: "fail", category: result.error?.code === "ENOENT" ? "not_installed" : result.error?.code === "ETIMEDOUT" ? "timeout" : errorCategory(raw) };
@@ -97,7 +191,7 @@ export function summarizeHostCommand(name, result) {
       privacy: "count_only",
     };
   }
-  if (["whatsapp_probe", "whatsapp_capabilities", "security_audit", "backup_inventory"].includes(name)) {
+  if (["whatsapp_probe", "whatsapp_health", "whatsapp_capabilities", "security_audit", "backup_inventory"].includes(name)) {
     try {
       const value = JSON.parse(String(result.stdout ?? ""));
       if (name === "whatsapp_probe") {
@@ -105,6 +199,15 @@ export function summarizeHostCommand(name, result) {
         return {
           name,
           result: summary.liveProbe ? "executed" : "inconclusive",
+          json: "valid",
+          ...summary,
+        };
+      }
+      if (name === "whatsapp_health") {
+        const summary = summarizeWhatsAppHealth(value, observedAt);
+        return {
+          name,
+          result: summary.liveHealth ? "executed" : "inconclusive",
           json: "valid",
           ...summary,
         };
