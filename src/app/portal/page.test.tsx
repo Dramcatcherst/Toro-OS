@@ -87,7 +87,7 @@ it("presents the canonical structure without rendering fabricated links for pend
   expect(html).toContain('role="tablist"');
   expect(html).not.toContain("Santa Toro");
   expect(html).toContain('data-toro-master="verified"');
-  expect(html).toContain("%2Fbrand%2Ftoro%2Ftoro-logo-master-v1.jpg");
+  expect(html).toContain('src="/brand/toro/toro-logo-master-v1.jpg"');
   expect(html).toContain("Abrir Mi espacio");
   expect(html).not.toContain("Pide o busca");
   expect(html).not.toContain("Sin señal");

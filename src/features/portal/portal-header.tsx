@@ -21,7 +21,7 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
     <div className={styles.headerInner}>
       <Link href="/portal" prefetch={false} className={styles.brand} aria-label="TORO · Portal empresarial">
         <span className={styles.brandMark} data-toro-master="verified">
-          <Image src="/brand/toro/toro-logo-master-v1.jpg" alt="" width={64} height={64} priority />
+          <Image src="/brand/toro/toro-logo-master-v1.jpg" alt="" width={64} height={64} unoptimized preload />
         </span>
         <span className={styles.brandName}><strong>TORO</strong><span>BUSINESS INTELLIGENCE</span></span>
       </Link>
