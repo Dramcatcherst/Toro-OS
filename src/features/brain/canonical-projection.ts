@@ -121,19 +121,34 @@ function projectNode(
   };
 }
 
+// A reviewed, approved authority rule is governance metadata, not proof of a
+// live connector, booking, payment or permission to execute transactions.
+function authorityPolicyApproved(
+  rule: CanonicalSourceAuthoritySummary,
+  generatedAt: string,
+): boolean {
+  const status = rule.status.trim().toLowerCase();
+  return (
+    (status === "approved" || status === "active") &&
+    freshnessFromDate(rule.lastReviewed, generatedAt) !== "unknown"
+  );
+}
+
 function authorityNode(
   rule: CanonicalSourceAuthoritySummary,
   scopeRef: string,
   generatedAt: string,
 ): BrainNode {
+  const approved = authorityPolicyApproved(rule, generatedAt);
+  const active = rule.status.trim().toLowerCase() === "active";
   return {
     id: rule.ref,
     kind: "knowledge",
     label: `${rule.domain} authority`,
     scopeRef,
-    status: rule.status.trim().toLowerCase() === "active" ? "Active" : "Review",
+    status: approved ? (active ? "Active" : "Ready") : "Review",
     risk: rule.approvalRequired ? "Medium" : "Low",
-    verification: rule.lastReviewed ? "verified" : "unverified",
+    verification: approved ? "verified" : "unverified",
     freshness: freshnessFromDate(rule.lastReviewed, generatedAt),
     sourceSystem: "TORO Data",
     authoritySystem: rule.officialSource,
@@ -176,7 +191,7 @@ function governanceNode(
     label: `${item.domain} governance`,
     scopeRef,
     status:
-      verification === "verified" && freshness !== "stale" ? "Ready" : "Review",
+      verification === "verified" && freshness === "current" ? "Ready" : "Review",
     risk: criticalityRisk(item.criticality),
     verification,
     freshness,
@@ -246,12 +261,13 @@ function sourceSummary(
   rule: CanonicalSourceAuthoritySummary,
   generatedAt: string,
 ): BrainSourceSummary {
+  const approved = authorityPolicyApproved(rule, generatedAt);
   return {
     sourceSystem: rule.officialSource,
     authoritySystem: rule.officialSource,
     freshness: freshnessFromDate(rule.lastReviewed, generatedAt),
-    verification: rule.lastReviewed ? "verified" : "unverified",
-    authoritative: true,
+    verification: approved ? "verified" : "unverified",
+    authoritative: approved,
   };
 }
 
