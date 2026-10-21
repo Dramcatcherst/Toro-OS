@@ -5,23 +5,41 @@ function finiteNumber(value, fallback = 0) {
   return Number.isFinite(number) ? number : fallback;
 }
 
+function optionalFiniteNumber(value) {
+  if (value === undefined || value === null || value === "") return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
 export function classifyMetrics(input = {}) {
   const metrics = {
     diskFreeGB: finiteNumber(input.diskFreeGB),
+    diskFreePercent: optionalFiniteNumber(input.diskFreePercent),
     ramAvailableGB: finiteNumber(input.ramAvailableGB),
     ramAvailablePercent: finiteNumber(input.ramAvailablePercent),
     cpuPercent: finiteNumber(input.cpuPercent),
+    pageFileUsagePercent: optionalFiniteNumber(input.pageFileUsagePercent),
     heavyProcessCount: finiteNumber(input.heavyProcessCount),
+    heavyWorkingSetGB: optionalFiniteNumber(input.heavyWorkingSetGB),
+    processCount: optionalFiniteNumber(input.processCount),
+    uptimeHours: optionalFiniteNumber(input.uptimeHours),
     largestGeneratedFolderGB: finiteNumber(input.largestGeneratedFolderGB),
   };
 
   const critical = [];
   const warnings = [];
 
-  if (metrics.diskFreeGB < 10) {
-    critical.push(`Free disk is critically low (${metrics.diskFreeGB} GB < 10 GB).`);
-  } else if (metrics.diskFreeGB < 20) {
-    warnings.push(`Free disk is low (${metrics.diskFreeGB} GB < 20 GB).`);
+  if (metrics.diskFreeGB < 10 || (metrics.diskFreePercent !== null && metrics.diskFreePercent < 5)) {
+    critical.push(
+      `Free disk is critically low (${metrics.diskFreeGB} GB${metrics.diskFreePercent === null ? "" : ` / ${metrics.diskFreePercent}%`}).`,
+    );
+  } else if (
+    metrics.diskFreeGB < 20 ||
+    (metrics.diskFreePercent !== null && metrics.diskFreePercent < 10)
+  ) {
+    warnings.push(
+      `Free disk is low (${metrics.diskFreeGB} GB${metrics.diskFreePercent === null ? "" : ` / ${metrics.diskFreePercent}%`}).`,
+    );
   }
 
   if (metrics.ramAvailableGB < 1 || metrics.ramAvailablePercent < 5) {
@@ -36,6 +54,18 @@ export function classifyMetrics(input = {}) {
 
   if (metrics.cpuPercent >= 90) {
     warnings.push(`CPU load is high (${metrics.cpuPercent}%).`);
+  }
+
+  if (
+    metrics.pageFileUsagePercent !== null &&
+    metrics.pageFileUsagePercent >= 95 &&
+    metrics.ramAvailablePercent < 10
+  ) {
+    critical.push(
+      `Virtual-memory pressure is critical (${metrics.pageFileUsagePercent}% page file used).`,
+    );
+  } else if (metrics.pageFileUsagePercent !== null && metrics.pageFileUsagePercent >= 80) {
+    warnings.push(`Page file usage is high (${metrics.pageFileUsagePercent}%).`);
   }
 
   if (metrics.heavyProcessCount >= 5) {

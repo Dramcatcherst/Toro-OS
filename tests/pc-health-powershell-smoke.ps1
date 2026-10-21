@@ -11,7 +11,14 @@ if ($allowed -notcontains $result.state) {
   throw "Unexpected workstation health state: $($result.state)"
 }
 
-if ($null -eq $result.metrics.diskFreeGB -or $null -eq $result.metrics.ramAvailableGB) {
+if (
+  $null -eq $result.metrics.diskFreeGB -or
+  $null -eq $result.metrics.diskFreePercent -or
+  $null -eq $result.metrics.ramAvailableGB -or
+  $null -eq $result.metrics.pageFileUsagePercent -or
+  $null -eq $result.metrics.processCount -or
+  $null -eq $result.metrics.uptimeHours
+) {
   throw 'Required workstation metrics are missing.'
 }
 

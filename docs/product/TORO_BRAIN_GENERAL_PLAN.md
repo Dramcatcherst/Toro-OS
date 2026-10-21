@@ -4014,6 +4014,10 @@ Sistemas se integra con Proyectos para cambios, Dinero para consumo, Hoy para ex
 
 El módulo está entregado cuando la salud declarada coincide con evidencia, el fallo no genera datos falsos y una prueba de recuperación funciona. Se mide disponibilidad de capacidades, tiempo de recuperación, costo por resultado y fallos repetidos.
 
+**Salud local reutilizable — 21/10/2026:** TORO Systems reutiliza el comando de solo lectura `npm run health:pc` y el Systems Auditor existente; no crea otro agente, dashboard, base o scheduler. La sonda clasifica espacio absoluto y porcentual del disco del sistema, RAM física, CPU, presión de pagefile, procesos, uptime y, solo bajo petición, carpetas regenerables del repositorio. Sus estados son evidencia de elegibilidad para trabajo local pesado, no permiso de limpiar: borrar cachés, cerrar procesos, detener/compactar WSL, cambiar pagefile o servicios continúa requiriendo autorización específica y recibo antes/después. Las automatizaciones notifican únicamente transición material, umbral nuevo o decisión humana; sin cambio permanecen silenciosas.
+
+**Alineación de automatizaciones — 21/10/2026:** el inventario local mostró 16 automatizaciones (13 activas y 3 pausadas). Se actualizaron en sitio únicamente los dos carriles afectados por esta decisión: `toro-mail-avance-seguro-cada-hora` continúa cada dos horas y puede cerrar múltiples lotes compatibles hasta un gate real; `maufertoro-compactaci-n-segura-de-ubuntu` se renombra como salud del equipo y recuperación de espacio, reutiliza la sonda de Sistemas y pasa a cada dos horas en el minuto 30. Las otras 14 conservan nombre, cadencia, estado y ámbito: una instrucción global de “avanzar más” no mezcla BETORO, finanzas, Kross, web, OpenClaw ni marketing. Ningún cambio de prompt amplía permisos de correo, producción, borrado, WSL o servicios.
+
 ### Conversación y herramientas compartidas
 
 Texto, voz, adjuntos, WhatsApp, Portal y correo se conectan al mismo contexto, permisos y trabajo. La conversación puede responder, preparar una acción, registrar un incidente, solicitar una decisión o dar seguimiento. No se vuelve por sí sola memoria permanente.
