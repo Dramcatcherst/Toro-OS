@@ -242,7 +242,8 @@ export function projectInvoiceAttention(
   // no-payment states do not belong in a debt-alert queue. Reconciliation
   // remains the responsibility of Finance's original evidence workflow.
   const noPaymentDueVerified =
-    /^no_payment_due_(?:[a-z0-9]+_)*verified(?:_|$)/.test(status);
+    status === "no_payment_due_verified" ||
+    /^no_payment_due_(?:extranet|provider)_verified(?:_|$)/.test(status);
   if (status === "paid" || status === "credited" || noPaymentDueVerified) {
     return null;
   }
