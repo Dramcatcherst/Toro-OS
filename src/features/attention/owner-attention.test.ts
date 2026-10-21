@@ -166,3 +166,46 @@ describe("Owner Attention projection", () => {
     expect(item).toBeNull();
   });
 });
+
+describe("Financial alert classification — never infer outstanding debt from document date alone", () => {
+  const invoice = (payment_status: string | null, due_date: string | null = "2026-10-01") => ({
+    invoice_key: "synthetic-finance-invoice",
+    issuer_name: "Synthetic Provider",
+    document_number: "QA-1",
+    due_date,
+    currency: "CRC",
+    total: 15000,
+    payment_status,
+    obligation_key: null,
+    mailbox: null,
+    source_url: null,
+  });
+
+  it.each(["paid", "PAID", "credited", "no_payment_due_extranet_verified_2026_09_29"])(
+    "suppresses non-payable or settled status %s from overdue-payment alerts", (status) => {
+      expect(projectInvoiceAttention(invoice(status), "2026-10-20")).toBeNull();
+    },
+  );
+
+  it.each([
+    "unknown", "payment_reported", "payment_in_progress_2026_09_05",
+    "duplicate_billing_dispute_unresolved",
+    "paid_external_match_scope_pending", "paid_provider_confirmed_bank_match_pending",
+    "no_payment_due_unverified", "OPEN",
+  ])("marks %s as high verification rather than a verified overdue debt", (status) => {
+    expect(projectInvoiceAttention(invoice(status), "2026-10-20")).toMatchObject({
+      kind: "invoice", priority: "high", state: status, amount: 15000,
+    });
+  });
+
+  it.each(["due", "overdue", "unpaid"])(
+    "retains critical attention for explicit overdue status %s", (status) => {
+      expect(projectInvoiceAttention(invoice(status), "2026-10-20")?.priority).toBe("critical");
+    },
+  );
+
+  it("keeps a future due invoice out of attention unless dispute or processing warrants follow-up", () => {
+    expect(projectInvoiceAttention(invoice("unknown", "2026-11-10"), "2026-10-20")).toBeNull();
+    expect(projectInvoiceAttention(invoice("duplicate_billing_dispute_unresolved", null), "2026-10-20")?.priority).toBe("high");
+  });
+});
