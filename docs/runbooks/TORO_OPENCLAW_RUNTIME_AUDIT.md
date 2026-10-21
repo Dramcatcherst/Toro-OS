@@ -345,11 +345,12 @@ Run on the existing authorized Gateway host, with its actual profile. These comm
 openclaw --version
 openclaw gateway status
 openclaw channels status --channel whatsapp --probe --json
+openclaw health --verbose --json --timeout 10000
 openclaw status --deep
 openclaw channels capabilities --channel whatsapp --json
 ```
 
-For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether the WhatsApp probe is **live** and successful, and any error category. A config-only fallback or `starting` is not a pass; wait for the Gateway to become ready and repeat the probe. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
+For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether an explicit provider probe/audit succeeded when supported, and the result of the forced live Gateway health snapshot. The current WhatsApp adapter does not expose `probeAccount` or `auditAccount`; therefore absence of those fields is not a pass or a failure by itself, and `channels status --probe` is supplemental. For the supported path, require a fresh `openclaw health --verbose --json` timestamp and every target WhatsApp account to be configured, linked, running, connected and lifecycle `ready`, with no unhealthy or ingress-failure state. A config-only fallback, stale/future health timestamp, `starting`, or ordinary runtime flags outside that forced live health snapshot is not a pass. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
 
 Only after M01 passes and the target account and owner allowlist are confirmed, Mauricio can send `/status` as a standalone message from his own phone to the verified TORO test chat. It asks for channel status and does not itself establish TORO identity. For M02, send a harmless read-only owner request and inspect the real inbound sender mapping: exact channel account + sender ID -> canonical Mauricio user + Dreamcatcher organization + active membership; refuse display-name or message-text authorization. Record provider message ID, correlation ID and masked identifiers; no employee, guest or production writes. If identity or personal/work isolation fails, stop before testing tasks.
 
