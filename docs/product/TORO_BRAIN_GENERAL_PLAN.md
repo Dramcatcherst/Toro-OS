@@ -94,6 +94,16 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 **ESTADO DE ESTA SECCIÓN:** HECHO = directiva estratégica y cuarenta criterios incorporados a la documentación del candidato versionado tras PR/CI/merge; PROPUESTO = seis unidades ejecutables y horizonte; BLOQUEADO/DESCONOCIDO = cobertura de datos/efecto económico por medir. Ningún criterio de la tabla acredita una corrección del PMS, una automatización desplegada, un ingreso extra ni una decisión de inversión ejecutada.
 
+### Checkpoint técnico E06 / E27 / E36 — 20/10/2026, Costa Rica
+
+**HECHO verificado en código:** [PR #340](https://github.com/Dramcatcherst/Toro-OS/pull/340) fusionada a `main`, commit `a992783d8238537a78ebb166b0c59ff8500934fd`: el Cerebro ya no debe mostrar como `Ready/healthy/verified` una fuente diferida (`live_required=false`), caducada, con fecha ausente/futura o que supere seis horas, aunque un indicador aislado diga `safe_for_current_state=true`. Pruebas TDD: regresiones RED en SHA de pruebas anterior y pipeline completo GREEN en SHA del parche; lectura posterior confirmó los archivos en main. Esto no demuestra despliegue ni aceptación de sesión real.
+
+**OBSERVADO en Supabase, solo consulta agregada 20/10:** `operations.reservations` contiene **4.352 filas fuente Kross**, de las cuales **4.350** están en `review` y **2** en `conflict`, todas con `source_is_live=false`; `operations.current_reservations_safe` devuelve **0**. El registro fuente más reciente indica `snapshot_as_of=2026-10-20 22:03:34.982+00`, pero una fecha de importación reciente no equivale a prueba comercial viva. `integrations.kross_snapshot_health` muestra fuentes históricas/deferred con `freshness_status=stale`, `live_required=false` y `safe_for_current_state=true`: la presentación debe interpretar conjuntamente todos los indicadores. Estas son filas, no reservas únicas ni cobertura histórica completa. El diagnóstico de 33 filas de septiembre es corte histórico, no inventario actual.
+
+**OBSERVADO en proyectos:** siete registros `operations.projects` están en estado `NOW` y `active=true`; el parser anterior del Cerebro los mostraba como `Review`. Se preparó un cambio acotado en rama separada para reconocer `NOW` como `Active`, rechazar timestamps futuros como frescura válida y no tratar fechas inválidas de revisión como actuales. Hasta CI/merge/readback, ese segundo cambio es **CANDIDATO**, no HECHO en main.
+
+**PRÓXIMA UNIDAD, SIN DUPLICAR TRABAJO:** el dueño del carril de importación Kross/PR #315 revalida fuentes, 4.352 filas, conflictos, deduplicación por `org_id+property_id+external_reservation_id`, run/receipt de importación y un ciclo incremental autorizado. Mantener apagada la API paga. Probar la presentación del Cerebro autenticada solo tras CI y publicación verificada. Ningún dashboard debe calcular ocupación, ventas ni reservas actuales a partir de esas 4.352 filas hasta superar autoridad, completitud, reconciliación y vigencia. Los registros financieros y de huéspedes permanecen privados; este checkpoint contiene solo agregados.
+
 <!-- END:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 
 <!-- BEGIN:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
