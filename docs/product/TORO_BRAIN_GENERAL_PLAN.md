@@ -204,6 +204,24 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 **ESTADO:** HECHO = inventario de lectura y contrato incorporado en main mediante PR #299; PROPUESTO = piloto y mejoras controladas; BLOQUEADO = writer Alegra, frescura comercial Kross y paridad de source IDs; DESCONOCIDO = fingerprint fiscal de cada enlace y completitud histórica por período. **GATE:** no mutar Alegra, reservas, facturas, RLS ni eliminar bases antes de pruebas, aprobación adecuada y recibos independientes.
 
+### Writer Alegra — reparación controlada 16/10/2026
+
+**HECHO EN CANDIDATO PR #228:** rama reconciliada con `main` sin downgrade; firma humana canónica separada del futuro runtime Writer y ligada a actor/rol/membresía/decisión/revisión/TTL/hash; claims, transición y cierre genéricos limitados a L0-L2; draft L3 especializado para una compra con lock, fencing, marker y finalización atómicos, revocación autenticada/renovación serializadas, primitivas de heartbeat/recovery sin segundo POST y replay idempotente. La migración es transaccional, fija hashes/ACL vivos antes del primer DDL y el rollback conserva el ledger inmutable para un reapply validado; 154/154 pruebas focales + 36/36 evidencia + TypeScript, lint y build PASS. **NO HECHO:** heartbeat/recovery aún no tienen caller operativo; no SQL remoto, grant, configuración, secreto, POST, asiento, compra, pago, declaración, despliegue ni merge. El Writer sigue OFF y `service_role` no será el principal Writer. La evidencia Starlink observada no es piloto compatible por identidad de proveedor y cargo adicional no modelado. Recibo completo: [TORO_ALEGRA_WRITER_REPAIR_20261016.md](../evidence/TORO_ALEGRA_WRITER_REPAIR_20261016.md). **NEXT único:** validar el draft exacto en PostgreSQL real con compilación, ACL, carreras, recovery y ciclo `apply → fila histórica → rollback → reapply`, sin activar el Writer; después, y solo con gates separados, decidir migración y un comprobante compatible.
+
+### Writer Alegra — heartbeat en frontera nativa 19/10/2026
+
+**DECISIÓN MATERIAL / CURRENT EN PR #228, NO DESPLEGADO:** el Writer debe renovar y verificar el lease L3 dos veces: (1) tras la admisión atómica, antes de iniciar el transporte; y (2) **después** de validar entidad, proveedor, cuenta, impuestos, cobertura de duplicados y aprobación, inmediatamente antes del único `POST /bills`. Ambos heartbeats usan el mismo gate capturado (worker, fencing token y receipt preparado). El transporte nativo falla cerrado si no recibe una renovación verificable o si esta falla/vence. Invocar el transporte directamente sin esa renovación no habilita una compra.
+
+**EVIDENCIA:** pruebas RED reprodujeron el envío sin renovación final en CI sobre `ad2ad7f3`; corrección publicada en [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commit [`b718d510`](https://github.com/Dramcatcherst/Toro-OS/commit/b718d51055a9d5ce1b87010679e97dc8409d4a43), y sus tres workflows (TORO Brain CI, Alegra L3 Writer SQL y Workstation health) concluyeron `success`. Son pruebas sintéticas y código de rama, no autorización para crear facturas ni prueba de runtime productivo.
+
+**GATES DE ACTIVACIÓN INDEPENDIENTES:** migración L3 revisada + rollback; principal server-only de privilegio mínimo sin acceso contable genérico; binding exacto de cuenta/entidad/moneda, autorización, heartbeat/recuperación y readback nativo; y piloto documental específicamente aprobado. Al corte observado, `runtime_write_enabled=false`, vínculo `READ_ONLY`, cero funciones L3 instaladas, cero ejecuciones/leases Alegra activos y ninguna transacción contable ejecutada. No activar cambiando una bandera ni ampliar roles/RLS para forzar la prueba. **NEXT:** validar primero la composición efectiva del runtime y el rol mínimo, sin desplegar ni modificar proveedor hasta superar sus gates.
+
+### Custodia Alegra — linaje de originales y derivados 20/10/2026
+
+**REGLA MATERIAL / CANDIDATO EN PR #228, SIN ADJUNTOS SUBIDOS:** la deduplicación de evidencia se realiza sobre bytes reales y el ámbito autorizado del documento; una vista derivada solo puede fusionar referencias de fuentes cuando conserva **el mismo hash del original padre**. Si el contenido derivado coincide pero dos originales tienen hashes diferentes, no se deben unir las fuentes ni perder su linaje; el paquete queda bloqueado para revisión (`CUSTODY_DERIVATIVE_PARENT_CONFLICT`). Esto no reemplaza la identificación y relectura del documento nativo Alegra, ni equivale a aprobación de Hacienda o respaldo independiente restaurado.
+
+**EVIDENCIA EN RAMA:** [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commits de pruebas [`cc038540`](https://github.com/Dramcatcherst/Toro-OS/commit/cc038540a4d5f955425ba3ec27d507cc6fd671b2) y corrección [`98233954`](https://github.com/Dramcatcherst/Toro-OS/commit/98233954b9926b57e2f616f57dc4e05589c10556), con lectura de hashes de archivos verificada. Aceptación CI del nuevo candidato pendiente al redactar; cero cambios en adjuntos/contabilidad/roles/deploy. Los receipts rutinarios permanecen en la evidencia privada existente.
+
 ## Gmail personal y limpieza controlada — 15/10/2026
 
 **Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General ÚNICO; la cuenta personal del propietario jamás se incorpora como buzón de la organización Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y ámbito; no una segunda copia masiva del buzón.
@@ -1308,6 +1326,70 @@ Owner decision and rollout gate (2026-09-25 CR):
 - DreamTeam #39 core and #45 verified channel identity/atomic consumption merged; #41/#42 closed as superseded. Supabase migrations `20260926053026_toro_people_channel_identity_foundation_20260925` and `20260926053030_toro_people_atomic_enrollment_consume_20260925` applied and read back: two empty RLS tables, no anon/authenticated SELECT, service_role-only invoker RPC; the consumed-token sender regression was covered by synthetic SQL tests and CI. This is backend readiness only: no issued enrollment, verified staff sender, hosted employee flow or live WhatsApp E2E. Evidence: `docs/evidence/TORO_PEOPLE_CHANNEL_IDENTITY_FOUNDATION_20260925.md`;
 - roll out one verified employee at a time after these gates pass; no broad provisioning, name-based links or claims of activation.
 
+### CURRENT — identidad única, censo integral e invitación segura — 20/10/2026
+
+**Decisiones del propietario y nombres canónicos**
+
+- `Mauricio` y `Mauricio Fernandez` representan a la misma persona. Los dos registros Auth actuales son principales técnicos distintos y no se fusionan por coincidencia de nombre, teléfono o correo; primero se reconcilian sesiones, referencias laborales, membresías, roles, recuperación, MFA y auditoría.
+- La cuenta institucional de propietario cuyo identificador actual es `admin@dreamcatcherhotel.com` se presenta como **Toro** para distinguirla del segundo principal técnico. Ese rótulo no crea otra persona, otro agente ni un rol nuevo.
+- **TORO y TORO OS son el mismo proyecto y producto.** `TORO` sigue siendo el nombre visible canónico; `TORO OS` se conserva solo como alias técnico legado donde haga falta compatibilidad. No existe un segundo sistema, Plan General, identidad o base llamado TORO OS.
+- Recomendación TARGET, todavía no ejecutada: consolidar a la persona Mauricio bajo un solo principal Auth, preferentemente el principal institucional Toro si supera login, recuperación/MFA y conservación de auditoría; enlazar allí la relación laboral de Gerencia y retirar el principal duplicado solo después de un ensayo reversible y un readback completo. No borrar ni revocar ninguna de las dos cuentas por inferencia.
+
+**Readback vivo de solo lectura — Supabase canónico `abtyrbqlqbsastmridzp`, corte 20/10/2026 Costa Rica**
+
+- plantilla: 13 empleados no eliminados, 12 activos y 1 terminado;
+- cuentas: 6 principales Auth habilitados; 5 empleados activos enlazados a Auth y 7 empleados activos todavía sin Auth;
+- cadena de acceso: solo 4 empleados activos tienen empleado + Auth + membresía + rol completos; en Dreamcatcher existen 5 membresías activas, 0 inactivas, 19 asignaciones activas de rol y 0 inactivas/revocadas; la membresía Personal separada de Toro no se cuenta como personal del hotel;
+- Aseo: 5 empleadas activas y ninguna con Auth, membresía o rol; el censo de usuarios nunca debe confundirse con el censo de personal;
+- Mantenimiento: un empleado conserva Auth y rol `EMPLEADO` sin membresía; otro empleado activo no tiene Auth, membresía ni rol;
+- Recepción: dos empleadas activas tienen cadena de acceso completa, una activa sigue sin cuenta y la empleada terminada no tiene cuenta;
+- excepción de baja: el registro terminado conserva un campo técnico `status=active`; debe reconciliarse antes de usarlo en elegibilidad, métricas o invitaciones;
+- cuatro cuentas existentes usan `@dreamteam.internal`; están confirmadas técnicamente, pero ese dominio es un alias legado no entregable y nunca constituye correo real, contacto verificado ni prueba de aceptación;
+- 0 filas de inscripción de canal y 0 filas de progreso de onboarding; los 13 empleados tienen `property_id` vacío y los 5 departamentos carecen de `manager_employee_id`;
+- los conteos anteriores de 5 usuarios de aplicación, 9 roles, 4 empleados vinculados y 8 activos sin vínculo quedan como snapshots históricos, no como censo actual.
+
+Los nombres, datos de contacto y estado individual continúan en Supabase bajo sus controles; el Plan conserva decisiones, agregados y excepciones, no una segunda lista manual que pueda quedar obsoleta.
+
+**Problema de acceso confirmado**
+
+La interfaz DreamTeam vigente crea usuario + clave temporal y deriva `usuario@dreamteam.internal`; ese camino no sirve para invitación, recuperación normal ni verificación de un buzón. Existe una ruta legado basada en `inviteUserByEmail`, pero hoy activa `app_users`/rol antes de aceptación, no exige la membresía canónica, permite vínculo de empleado insuficientemente protegido, carece de ledger durable/idempotencia/rollback completo y no tiene interfaz ni pruebas focales demostradas. Ninguno de los dos caminos se considera listo para una campaña real.
+
+**TARGET — un solo flujo de alta gobernado por TORO Identity + TORO People**
+
+1. El candidato nace únicamente de un empleado activo y no eliminado, con organización, puesto, alcance y estado laboral reconciliados. Tener reloj, teléfono, nombre o expediente no crea cuenta.
+2. Se verifica la persona y que no exista otro principal Auth suyo. Se clasifica como `linked`, `candidate`, `contact_pending`, `duplicate_review`, `no_account_required`, `terminated` o `blocked`.
+3. Se elige una entrega individual verificable:
+   - enlace de un solo uso al correo personal/laboral real previamente confirmado; o
+   - entrega presencial supervisada de QR/código individual cuando todavía no exista correo, para que la persona registre y verifique su propio canal.
+   Un teléfono visto en otro sistema o pertenecer a un chat no prueba identidad. WhatsApp solo puede entregar después de un binding individual verificado.
+4. La invitación es privada, expira, se consume una vez y no habilita acceso por sí sola. No hay registro público, contraseña compartida ni clave creada/enviada por el administrador.
+5. La persona acepta, verifica el canal y define su propia contraseña en Supabase Auth. Recuperación, MFA y política de sesión se validan antes de privilegios sensibles.
+6. Una operación server-side idempotente valida que el empleado siga elegible y activa atómicamente `organization_memberships`, el rol mínimo y el vínculo empleado ↔ usuario. El rol inicial normal es `EMPLEADO`; las capacidades de Aseo, Recepción, Mantenimiento o Administración derivan del puesto y alcance comprobados. Una invitación nunca concede ADMIN, RRHH, GERENCIA, auditoría, acceso personal ni conectores externos por analogía.
+7. Se registra un único lifecycle auditable: `candidate -> identity_reviewed -> delivery_ready -> issued -> claimed -> contact_verified -> membership_active -> role_active -> onboarding_started -> first_login_verified`, con salidas `expired`, `revoked` y `failed`. Reintentos no crean otra cuenta ni reenvían una invitación ambigua.
+8. Baja, cambio de puesto o cambio de organización revocan/suspenden membresía, roles y sesiones aplicables sin borrar la identidad personal ni el historial de auditoría.
+
+No se enviaron invitaciones en esta unidad. Antes de cualquier envío real se exige destinatario exacto, canal verificado, rol/organización aprobados, estado previo guardado y criterio de reversión.
+
+**Contrato de integración y autoridad**
+
+| Dato o acción | Autoridad | Regla |
+|---|---|---|
+| Identidad y credencial | Supabase Auth / TORO Identity | Un principal por persona; nunca guardar ni repartir contraseñas. |
+| Relación laboral y puesto | `public.employees` + perfiles privados autorizados | Fuente laboral; no concede acceso por sí sola. |
+| Relación con la organización | `identity.organization_memberships` | Debe estar activa y concordar con empleado/organización antes de autorizar. |
+| Roles y capacidades | `public.user_roles` + catálogo de puesto aprobado | Menor privilegio; navegación no sustituye RLS/RPC/policy. |
+| Estado de invitación y recibos | TORO Identity/Governance, ledger durable único | Estados idempotentes, actor, fechas, caducidad, resultado y rollback; no reutilizar progreso de capacitación. |
+| Contacto privado | Perfil privado verificado en Supabase | Airtable puede ayudar a revisar, pero no es autoridad Auth ni prueba de entrega. |
+| Email/WhatsApp/TORO Comms | Transporte | Entrega y receipt solamente; no crean identidad, membresía ni rol. |
+| DreamTeam legado | Implementación transitoria de People | Se conserva hasta paridad; no mantiene un universo Auth paralelo a largo plazo. |
+| Dropbox | Originales laborales con ACL/retención | Evidencia/documentos; no contraseñas, tokens ni lista de acceso maestra. |
+| GitHub y este Plan | Contrato, código, decisiones y evidencia versionada | No duplicar el roster vivo ni datos privados. |
+| Notion/Airtable/Sheets | Superficie narrativa o revisión transitoria | No segunda fuente de verdad ni escritor de permisos. |
+
+**NEXT único — reconciliación antes del primer piloto**
+
+Completar una matriz privada y actual de los 12 empleados activos, resolver el principal canónico Toro/Mauricio, corregir la cadena incompleta de Mantenimiento y la baja contradictoria, confirmar alcance/puesto y obtener un canal real verificado o una entrega presencial autorizada. Criterio de terminado: cada persona queda clasificada sin duplicados, la cuenta canónica de Mauricio conserva acceso y auditoría, el candidato piloto de Aseo tiene identidad/entrega/rol mínimo/rollback aprobados y todavía no se ha enviado nada. Solo entonces se implementa y prueba el flujo, y una aprobación de envío separada autoriza una primera invitación real individual.
+
 ---
 
 # 11. Recognition & Points
@@ -1536,7 +1618,11 @@ Fiscal/accounting authority.
 
 **Alcance:** Accounting & Tax dentro de TORO Finance, Connector Fabric y Governance & Resilience. FIONA mantiene el contrato financiero; SOBRESITO mantiene conectores, integridad y recuperación. Se conserva el carril existente de controles financieros y FIN-01. El diseño subordinado es [Alegra Connector v2](../superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md#document-custody-and-platform-optimization--2026-10-10).
 
-**CURRENT — verificado:** el conector expone 218 herramientas de lectura. No expone creación/edición de comprobantes ni carga de adjuntos. Los scripts existentes preparan respaldos JSON y manifiestos; no prueban custodia binaria de PDF, XML o fotografías. La revisión acotada de Dropbox encontró evidencia contable y paquetes históricos, sin certificar cobertura completa, hashes de los originales o restauración actual. Dos conexiones a la misma cuenta no constituyen respaldo independiente. Existe preparación de escritura controlada en el carril de implementación previo; su disponibilidad parcial no acredita un escritor operativo. La cobertura financiera vigente de Kross y la sincronización persistente requieren pruebas separadas.
+**CURRENT — verificado:** el catálogo expone 218 herramientas, predominantemente de consulta. No expone creación/edición de comprobantes contables ni carga de sus adjuntos. Una operación de URL de carga de Nómina está marcada como escritura y requiere aprobación propia; no habilita facturas/pagos/asientos ni se ejecutó. Los scripts originales preparan respaldos JSON y manifiestos; no prueban custodia binaria productiva de PDF, XML o fotografías. La revisión acotada de Dropbox encontró evidencia contable y paquetes históricos, sin certificar cobertura completa, hashes de los originales o restauración actual. Dos conexiones a la misma cuenta no constituyen respaldo independiente. La cobertura financiera vigente de Kross y la sincronización persistente requieren pruebas separadas.
+
+**CURRENT — candidato preparado en PR228, 2026-10-11:** el carril existente se reconcilió con main y corrige tipos de transporte, identidad de negocio separada de contenido, aprobación frente a cambios, totales decimales y reintento incierto. Incorpora gate apagado por defecto, binding a los runs/receipts y fencing existentes, y custodia/restauración de un paquete local simulado JSON/PDF/XML/foto con manifiesto persistido y verificado. La revisión independiente identificó cuatro fallos importantes; se corrigieron con regresiones: autoridad capturada antes de esperas, referencias de almacenamiento confinadas, factura/movimiento del pago comprobados y dedupe nativo independiente del importe/moneda. El adapter legado recuperado conserva ventas draft/servicios; no se trasplanta a compras/pagos. Pruebas de contrato y fixture no acreditan autorización server-side, transporte nativo, carga en Dropbox/Alegra, activación del Portal o entrega WhatsApp. El estado continúa PREPARADO, pendiente de aceptación de runtime.
+
+**CURRENT — transporte de compras preparado, 2026-10-11:** la misma PR228 incorpora cuerpo y rutas REST de factura de proveedor verificados en documentación oficial de Costa Rica, cliente HTTP de origen/rutas fijos sin reintentos, preflight de empresa/proveedor/cuenta/centro/impuesto, búsqueda completa acotada y lectura posterior estricta. Usa impuestos vinculados al hash aprobado y conserva la moneda principal del libro; no convierte monedas ni crea pagos, inventario o emisión fiscal. Otros escenarios se bloquean. El cliente autenticado y callback de autorización/periodo/corrección deben venir del host seguro existente; no se accedió a secretos ni se activó una ruta o escritor. La lectura nativa confirmó USD principal, pero la identidad de empresa, permisos de escritura y un expediente real aún no están aceptados. La preparación técnica no equivale a conexión productiva.
 
 **TARGET — aprobado como dirección documental, sin activación:**
 
@@ -2964,7 +3050,7 @@ Current migration rule:
 
 
 
-### Employee identity reconciliation update — 2026-09-23
+### HISTORICAL — Employee identity reconciliation update — 2026-09-23
 
 CURRENT:
 - 8 active employees remain without TORO user linkage.
@@ -2980,9 +3066,9 @@ NEXT:
 - onboarding must use the future organization_memberships + role model once approved.
 
 
-### organization_memberships validation gate — 2026-09-23
+### HISTORICAL — organization_memberships validation gate — 2026-09-23 (resolved by production readback 26/09/2026)
 
-CURRENT:
+AT THAT TIME:
 - reversible/auto-rollback SQL draft exists on PR #42;
 - production Supabase has no `organization_memberships` table yet;
 - read-only backfill preview finds 5 membership candidates: 4 employee-linked + 1 non-employee ADMIN relationship requiring classification;
@@ -2994,6 +3080,8 @@ BLOCKED:
 RULE:
 - do not apply membership DDL to production until isolated Postgres/Supabase QA validates constraints, grants, RLS positive/negative cases, backfill idempotency and rollback;
 - do not infer the non-employee ADMIN membership type as owner from role alone.
+
+This historical gate is not current authority: production `identity.organization_memberships` is now present. Use the 20/10/2026 CURRENT readback in section 10 and the Phase 1 membership readback above for decisions.
 
 
 ---
@@ -4781,6 +4869,8 @@ Canonical subordinate contract:
 Rules:
 - do not mark an expense DONE merely because the file exists in Dropbox;
 - before any Alegra write, run duplicate checks on issuer, document number, date, amount, currency and existing references;
+- **Dreamcatcher — patrón monetario habitual (confirmación del propietario, 20/10/2026):** ingresos generalmente USD; gastos generalmente CRC. Es pauta de operación, **no inferencia de la moneda de un registro**. Conservar moneda nativa separada de ventas, facturas, cobros, pagos y cuentas; reportar USD/CRC por separado y calcular consolidación solo con FX fechado y fuente verificada. Excepciones documentadas en cualquiera de las monedas; nunca usar tasa500 por defecto. Regla ampliada en `docs/product/TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md` §8.3; sin cambios de cuentas, asientos o Writer.
+- **Dreamcatcher — moneda de compras (confirmación del propietario, 20/10/2026):** el hotel opera en CRC y USD, pero sus compras habituales son en CRC. Mantener moneda nativa por factura y pago, sin heredar USD de ventas ni del endpoint de moneda predeterminada; cualquier compra documental en USD requiere origen explícito y revisión separada, sin FX automático. Documento sin moneda acreditable queda BLOQUEADO; el Writer Alegra sigue OFF. Contrato subordinado: `docs/product/TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md`, sección 8.3; PR #228, fixture CRC sin despliegue.
 - if already represented in Alegra, reconcile/link evidence rather than duplicate the expense;
 - attach evidence in Alegra when supported; otherwise preserve the original in Dropbox and retain a durable reference;
 - owner-paid expenses require verified business purpose and correct reimbursement/shareholder-current-account treatment;

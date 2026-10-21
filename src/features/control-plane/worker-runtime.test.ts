@@ -1,9 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  admitApprovedAlegraExecutionRun,
   claimToroExecutionRunById,
   completeToroExecutionRun,
+  finalizeAlegraExecutionRun,
+  heartbeatAlegraExecutionRun,
   normalizeToroWorkerRun,
+  recoverExpiredAlegraExecutionRun,
+  revokeAlegraExecutionApproval,
 } from "./worker-runtime";
 
 describe("TORO worker runtime normalization", () => {
@@ -56,6 +61,332 @@ describe("TORO worker runtime normalization", () => {
 });
 
 describe("TORO targeted worker primitives", () => {
+  it.each(["revoked", "already_revoked", "dispatch_already_admitted"] as const)("returns the bounded Alegra revocation result %s", async (state) => {
+    const rpc = vi.fn(async () => ({ data: state, error: null }));
+    await expect(revokeAlegraExecutionApproval(
+      { rpc } as never,
+      { orgId: "org-1", runId: "run-1", approvalReceiptId: "approval-receipt-1" },
+    )).resolves.toBe(state);
+    expect(rpc).toHaveBeenCalledWith(
+      "toro_revoke_alegra_execution_authority_v1",
+      {
+        p_org_id: "org-1",
+        p_run_id: "run-1",
+        p_approval_receipt_id: "approval-receipt-1",
+      },
+    );
+    expect((rpc.mock.calls as unknown[][])[0]?.[1]).not.toHaveProperty("p_revoked_by_actor_id");
+  });
+
+  it("uses the dedicated atomic Alegra L3 admission RPC", async () => {
+    const rpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        fencingToken: 4,
+        leaseExpiresAt: "2026-10-16T12:02:00Z",
+        preparedReceiptId: "receipt-prepared-1",
+      },
+      error: null,
+    }));
+
+    const result = await admitApprovedAlegraExecutionRun(
+      { rpc } as never,
+      {
+        orgId: "org-1",
+        runId: "run-1",
+        workerId: "worker-1",
+        expectedFencingToken: 3,
+        approval: {
+          approvalReceiptId: "approval-receipt-1",
+          approvalId: "approval-1",
+          approvalActorId: "owner-1",
+          approvalApprovedAt: "2026-10-16T12:00:00Z",
+          approvalExpiresAt: "2026-10-16T12:15:00Z",
+          payloadHash: "sha256:fixture",
+          decisionRevision: "2026-10-16T12:00:00Z",
+        },
+      },
+    );
+
+    expect(result).toEqual({
+      runId: "run-1",
+      fencingToken: 4,
+      leaseExpiresAt: "2026-10-16T12:02:00Z",
+      preparedReceiptId: "receipt-prepared-1",
+    });
+    expect(rpc).toHaveBeenCalledWith(
+      "toro_admit_approved_alegra_execution_v1",
+      expect.objectContaining({
+        p_run_id: "run-1",
+        p_expected_fencing_token: 3,
+        p_approval_receipt_id: "approval-receipt-1",
+        p_approval_approved_at: "2026-10-16T12:00:00Z",
+        p_approval_expires_at: "2026-10-16T12:15:00Z",
+        p_payload_hash: "sha256:fixture",
+      }),
+    );
+  });
+
+  it.each([
+    ["stale", 3],
+    ["skipped", 5],
+  ])("fails closed on %s Alegra L3 admission fence", async (_case, returnedFence) => {
+    const rpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        fencingToken: returnedFence,
+        leaseExpiresAt: "2026-10-16T12:02:00Z",
+        preparedReceiptId: "receipt-prepared-1",
+      },
+      error: null,
+    }));
+
+    await expect(admitApprovedAlegraExecutionRun(
+      { rpc } as never,
+      {
+        orgId: "org-1",
+        runId: "run-1",
+        workerId: "worker-1",
+        expectedFencingToken: 3,
+        approval: {
+          approvalReceiptId: "approval-receipt-1",
+          approvalId: "approval-1",
+          approvalActorId: "owner-1",
+          approvalApprovedAt: "2026-10-16T12:00:00Z",
+          approvalExpiresAt: "2026-10-16T12:15:00Z",
+          payloadHash: "sha256:fixture",
+          decisionRevision: "2026-10-16T12:00:00Z",
+        },
+      },
+    )).resolves.toBeNull();
+  });
+
+  it.each([
+    ["verified", "succeeded", "passed"],
+    ["reconciliation_required", "blocked", "partial"],
+  ] as const)("uses the atomic Alegra %s finalization RPC", async (outcome, runStatus, verificationStatus) => {
+    const rpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        finalReceiptId: "receipt-final-1",
+        runStatus,
+        verificationStatus,
+        replayed: false,
+      },
+      error: null,
+    }));
+
+    await expect(finalizeAlegraExecutionRun(
+      { rpc } as never,
+      {
+        orgId: "org-1",
+        runId: "run-1",
+        workerId: "worker-1",
+        fencingToken: 4,
+        preparedReceiptId: "receipt-prepared-1",
+        outcome,
+        receipt: {
+          external_reference: "bill-1",
+          observed_after: { verified: outcome === "verified" },
+          evidence_refs: ["fixture:original"],
+          integrity_hash: "sha256:fixture",
+        },
+      },
+    )).resolves.toEqual({
+      runId: "run-1",
+      finalReceiptId: "receipt-final-1",
+      runStatus,
+      verificationStatus,
+      replayed: false,
+    });
+    expect(rpc).toHaveBeenCalledWith(
+      "toro_finalize_alegra_execution_v1",
+      expect.objectContaining({
+        p_org_id: "org-1",
+        p_run_id: "run-1",
+        p_fencing_token: 4,
+        p_prepared_receipt_id: "receipt-prepared-1",
+        p_outcome: outcome,
+      }),
+    );
+  });
+
+  it("fails closed when Alegra finalization reports the wrong terminal state", async () => {
+    const rpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        finalReceiptId: "receipt-final-1",
+        runStatus: "blocked",
+        verificationStatus: "partial",
+        replayed: false,
+      },
+      error: null,
+    }));
+
+    await expect(finalizeAlegraExecutionRun(
+      { rpc } as never,
+      {
+        orgId: "org-1",
+        runId: "run-1",
+        workerId: "worker-1",
+        fencingToken: 4,
+        preparedReceiptId: "receipt-prepared-1",
+        outcome: "verified",
+        receipt: {
+          observed_after: { verified: true },
+          integrity_hash: "sha256:fixture",
+        },
+      },
+    )).resolves.toBeNull();
+  });
+
+  it("uses the specialized same-fence Alegra heartbeat with a narrow default TTL", async () => {
+    const rpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        fencingToken: 4,
+        leaseExpiresAt: "2026-10-16T12:03:00Z",
+        preparedReceiptId: "receipt-prepared-1",
+      },
+      error: null,
+    }));
+
+    await expect(
+      heartbeatAlegraExecutionRun(
+        { rpc } as never,
+        {
+          orgId: "org-1",
+          runId: "run-1",
+          workerId: "worker-1",
+          fencingToken: 4,
+          preparedReceiptId: "receipt-prepared-1",
+        },
+      ),
+    ).resolves.toEqual({
+      runId: "run-1",
+      fencingToken: 4,
+      leaseExpiresAt: "2026-10-16T12:03:00Z",
+      preparedReceiptId: "receipt-prepared-1",
+    });
+    expect(rpc).toHaveBeenCalledWith(
+      "toro_heartbeat_alegra_execution_v1",
+      {
+        p_org_id: "org-1",
+        p_run_id: "run-1",
+        p_worker_id: "worker-1",
+        p_fencing_token: 4,
+        p_prepared_receipt_id: "receipt-prepared-1",
+        p_lease_seconds: 60,
+      },
+    );
+  });
+
+  it("fails closed when the Alegra heartbeat changes the fence or returns null", async () => {
+    const wrongFenceRpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        fencingToken: 5,
+        leaseExpiresAt: "2026-10-16T12:03:00Z",
+        preparedReceiptId: "receipt-prepared-1",
+      },
+      error: null,
+    }));
+    const nullRpc = vi.fn(async () => ({ data: null, error: null }));
+    const input = {
+      orgId: "org-1",
+      runId: "run-1",
+      workerId: "worker-1",
+      fencingToken: 4,
+      preparedReceiptId: "receipt-prepared-1",
+    };
+
+    await expect(
+      heartbeatAlegraExecutionRun({ rpc: wrongFenceRpc } as never, input),
+    ).resolves.toBeNull();
+    await expect(
+      heartbeatAlegraExecutionRun({ rpc: nullRpc } as never, input),
+    ).resolves.toBeNull();
+  });
+
+  it.each([false, true])(
+    "uses the idempotent expired-lease recovery RPC (replayed=%s)",
+    async (replayed) => {
+      const rpc = vi.fn(async () => ({
+        data: {
+          runId: "run-1",
+          finalReceiptId: "receipt-recovery-1",
+          fencingToken: 5,
+          runStatus: "blocked",
+          verificationStatus: "partial",
+          providerState: "PROVIDER_STATE_UNKNOWN",
+          replayed,
+        },
+        error: null,
+      }));
+
+      await expect(
+        recoverExpiredAlegraExecutionRun(
+          { rpc } as never,
+          {
+            orgId: "org-1",
+            runId: "run-1",
+            recoveryWorkerId: "recovery-worker-1",
+            expectedFencingToken: 4,
+            preparedReceiptId: "receipt-prepared-1",
+          },
+        ),
+      ).resolves.toEqual({
+        runId: "run-1",
+        finalReceiptId: "receipt-recovery-1",
+        fencingToken: 5,
+        runStatus: "blocked",
+        verificationStatus: "partial",
+        providerState: "PROVIDER_STATE_UNKNOWN",
+        replayed,
+      });
+      expect(rpc).toHaveBeenCalledWith(
+        "toro_recover_expired_alegra_execution_v1",
+        {
+          p_org_id: "org-1",
+          p_run_id: "run-1",
+          p_recovery_worker_id: "recovery-worker-1",
+          p_expected_fencing_token: 4,
+          p_prepared_receipt_id: "receipt-prepared-1",
+        },
+      );
+    },
+  );
+
+  it("fails closed on null or non-incremented expired-lease recovery output", async () => {
+    const nullRpc = vi.fn(async () => ({ data: null, error: null }));
+    const staleFenceRpc = vi.fn(async () => ({
+      data: {
+        runId: "run-1",
+        finalReceiptId: "receipt-recovery-1",
+        fencingToken: 4,
+        runStatus: "blocked",
+        verificationStatus: "partial",
+        providerState: "PROVIDER_STATE_UNKNOWN",
+        replayed: false,
+      },
+      error: null,
+    }));
+    const input = {
+      orgId: "org-1",
+      runId: "run-1",
+      recoveryWorkerId: "recovery-worker-1",
+      expectedFencingToken: 4,
+      preparedReceiptId: "receipt-prepared-1",
+    };
+
+    await expect(
+      recoverExpiredAlegraExecutionRun({ rpc: nullRpc } as never, input),
+    ).resolves.toBeNull();
+    await expect(
+      recoverExpiredAlegraExecutionRun({ rpc: staleFenceRpc } as never, input),
+    ).resolves.toBeNull();
+  });
+
   it("claims only the requested run id", async () => {
     const rpc = vi.fn(async (name: string, args: Record<string, unknown>) => ({
       data:
