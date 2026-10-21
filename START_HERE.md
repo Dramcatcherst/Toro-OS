@@ -107,6 +107,10 @@ Rules:
 - do not present TORO OS as a second brand or product;
 - old `TORO OS` / `toro_os_*` names may remain only as technical compatibility aliases until safely migrated.
 
+## Strategic operating lens — 2026-10-20
+
+Use the **single General Plan** section `OWNER_AI_WEALTH_STRATEGY_20261020` to prioritize verified Dreamcatcher net contribution, owner time recovered through governed TORO, productive assets and resilience. It contains 40 mapped controls, not 40 completed features. Do not invent financial results, create duplicate schedulers, or advance external client onboarding before the existing readiness gate.
+
 ## Product test
 
 Every feature should improve at least one of these outcomes:

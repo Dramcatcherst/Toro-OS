@@ -8,11 +8,11 @@ const genericClaimSql = readFileSync(
 const admissionSql = readFileSync(
   new URL("../../../supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1.sql", import.meta.url),
   "utf8",
-);
+).replaceAll("\r\n", "\n");
 const rollbackSql = readFileSync(
   new URL("../../../supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1_rollback.sql", import.meta.url),
   "utf8",
-);
+).replaceAll("\r\n", "\n");
 
 function sqlFunction(name: string, nextName?: string) {
   const start = admissionSql.indexOf(`create or replace function ${name}`);

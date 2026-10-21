@@ -35,6 +35,23 @@ it("allows only POST to the bounded authentication handler, preserving the close
   expect((await proxy(new NextRequest("https://toro.invalid/api/brain/internal-work", { method: "POST" }))).status).toBe(404);
 });
 
+it("refreshes a session only for a same-origin exact context-selection POST", async () => {
+  const cookie = "sb-abtyrbqlqbsastmridzp-auth-token.0=synthetic-untrusted";
+  const accepted = await proxy(new NextRequest("https://toro.invalid/api/brain/context/selection", {
+    method: "POST",
+    headers: { cookie, origin: "https://toro.invalid", "sec-fetch-site": "same-origin" },
+  }));
+  expect(accepted.headers.get("x-middleware-next")).toBe("1");
+  expect(refresh).toHaveBeenCalledOnce();
+
+  refresh.mockClear();
+  await proxy(new NextRequest("https://toro.invalid/api/brain/context/selection", {
+    method: "POST",
+    headers: { cookie, origin: "https://attacker.invalid", "sec-fetch-site": "cross-site" },
+  }));
+  expect(refresh).not.toHaveBeenCalled();
+});
+
 it("does not treat an arbitrary cookie as a reason to refresh or grant access", async () => {
   await proxy(new NextRequest("https://toro.invalid/portal", { headers: { cookie: "role=ADMIN; session=fake" } }));
   expect(refresh).not.toHaveBeenCalled();

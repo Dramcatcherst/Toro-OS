@@ -7,6 +7,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { deriveToroContextPolicy } from "./policy";
+import { readSelectedToroOrganizationPreference } from "./organization-selection";
 import type {
   ResolveToroContext,
   ToroCanonicalRole,
@@ -292,5 +293,25 @@ export const resolveToroContext: ResolveToroContext = async (
 ) => {
   if (isPublicDemo()) return null;
   const supabase = await createServerSupabaseClient();
-  return resolveToroContextWithSupabase(supabase, request);
+  const mode = request.mode ?? "organization";
+  const cookiePreference =
+    isPortalDeployment() && mode === "organization" && request.orgId === undefined
+      ? await readSelectedToroOrganizationPreference()
+      : null;
+  const selectedRequest = cookiePreference
+    ? { ...request, mode: "organization" as const, orgId: cookiePreference.organizationId }
+    : request;
+  const resolved = await resolveToroContextWithSupabase(supabase, selectedRequest);
+
+  if (!cookiePreference || (resolved && resolved.userId === cookiePreference.userId)) {
+    return resolved;
+  }
+
+  // The cookie is only a Portal preference, never authority. A revoked
+  // organization or a different signed-in user returns to explicit choice.
+  return resolveToroContextWithSupabase(supabase, {
+    ...request,
+    mode: "organization",
+    orgId: null,
+  });
 };
