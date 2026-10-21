@@ -186,11 +186,36 @@ function governanceNode(
   };
 }
 
+// Kross first-live-read gate: source and observation age must both be
+// <= six hours. The database view's safe flag is intentionally permissive for
+// non-live-required (archival/deferred) sources; it is not proof of current PMS truth.
+const KROSS_CURRENT_AGE_CEILING_MS = 6 * 60 * 60 * 1000;
+
 function krossNode(
   item: CanonicalKrossHealthSummary,
   scopeRef: string,
+  generatedAt: string,
 ): BrainNode {
-  const safe = item.safeForCurrentState;
+  const freshness = freshnessFromSource(item.freshness);
+  const sourceAsOf = item.sourceAsOf ? Date.parse(item.sourceAsOf) : NaN;
+  const observedAt = item.observedAt ? Date.parse(item.observedAt) : NaN;
+  const now = Date.parse(generatedAt);
+
+  const timestampsCurrent =
+    Number.isFinite(sourceAsOf) &&
+    Number.isFinite(observedAt) &&
+    Number.isFinite(now) &&
+    sourceAsOf <= observedAt &&
+    observedAt <= now &&
+    now - sourceAsOf <= KROSS_CURRENT_AGE_CEILING_MS &&
+    now - observedAt <= KROSS_CURRENT_AGE_CEILING_MS;
+
+  const safe =
+    item.liveRequired &&
+    item.safeForCurrentState &&
+    freshness === "current" &&
+    timestampsCurrent;
+
   return {
     id: item.ref,
     kind: "connector",
@@ -199,7 +224,7 @@ function krossNode(
     status: safe ? "Ready" : "Review",
     risk: safe ? "Low" : "High",
     verification: safe ? "verified" : "unverified",
-    freshness: freshnessFromSource(item.freshness),
+    freshness,
     sourceSystem: item.sourceName ?? "Kross",
     authoritySystem: "Kross",
     capabilities: observeOnly,
@@ -255,7 +280,7 @@ export function buildCanonicalBrainProjection(
     ...projects.map((item) =>
       projectNode(item, slice.scopeRef, slice.generatedAt),
     ),
-    ...kross.map((item) => krossNode(item, slice.scopeRef)),
+    ...kross.map((item) => krossNode(item, slice.scopeRef, slice.generatedAt)),
     ...authority.map((item) =>
       authorityNode(item, slice.scopeRef, slice.generatedAt),
     ),
