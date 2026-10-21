@@ -8,7 +8,7 @@
 **Especificación de origen:** `docs/product/TORO_USER_PORTAL_V1.md`, `docs/product/TORO_PORTAL_DESIGN_RULES.md` y la propuesta entregada `TORO_Estructura_Consolidada_Propuesta.md` (20/10/2026).
 **Autoridad:** `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, sección Human Experience; constitución y contextos vigentes.
 **Carril:** PR #347, `design/toro-future-color-20261020`, candidato observado `71a0c23f85ceb0c67570dc77f2546fff8939c85d`. No fusionar la PR documental #259 ni sustituir el build actual por inferencia. Revalidar propietario y head antes de ejecutar.
-**Corte:** 20/10/2026, Costa Rica. Estado: PROGRAMA PREPARADO; implementación estructural, pruebas de producto y despliegue NO EJECUTADOS por esta entrega.
+**Corte:** 21/10/2026, Costa Rica. Estado: LOTE A IMPLEMENTADO Y PROBADO EN CANDIDATO; la interfaz todavía no consume la correspondencia. Lotes B/C, aceptación, merge y despliegue NO EJECUTADOS.
 
 ## 1. Hallazgos que cambian la implementación
 
@@ -96,11 +96,11 @@ type PortalStructure = {
 ```
 Orden de familias: clients, operations, team, money, growth, projects. Omitir familias sin módulos recibidos. En la prueba de conservación, aplanar todos los destinos y comprobar `expect(sortedOrdinals).toEqual([0,1,2,3,4,5,6,7,8,9,10,11])`; para cada objeto comprobar `expect(mappedModule).toBe(inputModule)`. La entrada vacía devuelve todos los arreglos vacíos. El ordinal99 de una fixture permanece una vez en unmapped, sin inventar capacidades.
 
-- [ ] Escribir primero `preserves_all_ordinals_once`, `preserves_module_identity_and_status`, `empty_input_is_empty`, `preserves_unknown_ordinal` y `does_not_mutate_input`.
-- [ ] Ejecutar `npx vitest run src/features/portal/structure.test.ts`; observar fallo por implementación ausente, no por infraestructura.
-- [ ] Implementar únicamente la correspondencia de la sección3. Exigir conjunto primario0–11 completo y sin duplicados en fixture autorizada; rechazar pruebas que pasen porque faltan módulos.
-- [ ] Reejecutar pruebas focales y `npm run test:hotel-tools`; registrar resultado, no cantidad esperada de pruebas.
-- [ ] Revisar el diff documental: dirección de presentación como TARGET, runtime como CURRENT sin cambios; un solo Plan General. Commit pequeño, reversible, en carril acordado.
+- [x] Escribir primero `preserves_all_ordinals_once`, `preserves_module_identity_and_status`, `empty_input_is_empty`, `preserves_unknown_ordinal` y `does_not_mutate_input`.
+- [x] Ejecutar `npx vitest run src/features/portal/structure.test.ts`; se observó el fallo esperado por implementación ausente, no por infraestructura.
+- [x] Implementar únicamente la correspondencia de la sección3. La fixture exige el conjunto0–11 completo y conserva módulos futuros en `unmapped`.
+- [x] Reejecutar pruebas focales y `npm run test:hotel-tools`; 5 pruebas focales y 184 pruebas del carril Portal aprobadas. `test:portal-auth` aprobó 128 pruebas.
+- [x] Revisar el diff documental: dirección de presentación continúa TARGET y runtime visible continúa CURRENT sin cambios; un solo Plan General. Cambio pequeño y reversible en el carril #347.
 
 **Terminado:** mapa puro probado y contrato coherente. No significa navegación desplegada, permisos ampliados ni herramientas retiradas.
 
@@ -140,8 +140,8 @@ Una herramienta solo es candidata a retirarse tras: función única inventariada
 
 ## 8. Verificación de esta entrega y siguiente unidad
 
-**Hecho en esta entrega:** inspección del contrato, main y candidato visual; correspondencia12ordinales→destinos; programa técnico preparado y revisión de conservación de capacidades. No se ejecutaron tests de producto ni se modificó frontend/datos.
+**Hecho hasta este corte:** `resolvePortalStructure` implementa la correspondencia pura 12ordinales→destinos sin alterar `resolvePortalModules`, objetos, estados, rutas, permisos o datos. Conserva ordinales futuros en `unmapped` y no muta la entrada. Pruebas focales, carril Portal, autorización Portal, lint dirigido y build de 52 páginas aprobados. La interfaz visible no consume todavía el contrato.
 
-**Siguiente unidad preparada:** loteA, después de revisar este programa y confirmar ejecución. Método recomendado: ejecución directa en la misma rama/carril acordado, pruebas primero y revisión del conjunto antes de publicación. No requiere servicios o agentes adicionales.
+**Siguiente unidad preparada:** loteB, después de revisar el contrato aplicado y mantener el gate de QA visual del candidato. Método recomendado: misma rama/carril acordado, pruebas primero y revisión del conjunto antes de publicación. No requiere servicios o agentes adicionales.
 
 **Reversión de esta entrega documental:** revertir solo el commit de este documento; no tocar commits visuales previos. Las posibles reversiones de A/B/C se definirán con sus SHAs reales al ejecutarlos.
