@@ -167,6 +167,58 @@ describe("Owner Attention projection", () => {
   });
 });
 
+describe("Obligations: overdue review dates are not automatically confirmed payment delinquency", () => {
+  const obligation = (status: string, verification_status: string) => ({
+    obligation_key: "synthetic-obligation",
+    obligation_name: "Synthetic service",
+    counterparty: "Synthetic supplier",
+    status,
+    verification_status,
+    next_due_date: "2026-10-01",
+    next_review_date: "2026-10-15",
+    current_amount: "9500",
+    current_amount_currency: "CRC",
+    owner_agent: "FIONA",
+    human_owner: null,
+    source_system: "Alegra",
+    source_path: null,
+  });
+
+  it.each([
+    "ESTIMADO_POR_HISTORIAL_CURRENT_PAYMENT_UNKNOWN",
+    "PAYMENT_REPORTED_ALEGRA_CANDIDATES_BANK_UNVERIFIED_SCOPE_AMOUNT_CURRENCY_MISMATCH",
+    "current_invoice_verified_payment_external_unconfirmed",
+    "TRIAL_EXPIRED_RUNTIME_DEPENDENCY_UNVERIFIED_DO_NOT_PURCHASE_YET",
+  ])("keeps %s as verification HIGH instead of invented debt CRITICAL", (evidence) => {
+    const item = projectObligationAttention(
+      obligation("needs_verification", evidence), "2026-10-20",
+    );
+    expect(item).toMatchObject({
+      priority: "high",
+      kind: "obligation",
+      state: "needs_verification",
+      amount: 9500,
+    });
+  });
+
+  it.each([
+    "PROVIDER_CONFIRMED_OVERDUE_DATE_BANK_UNMATCHED",
+    "PAYMENT_FAILED_PROVIDER_CONFIRMED_SUSPENSION_RISK_BANK_UNVERIFIED",
+  ])("preserves a real critical signal from %s", (evidence) => {
+    const item = projectObligationAttention(
+      obligation("needs_verification", evidence), "2026-10-20",
+    );
+    expect(item?.priority).toBe("critical");
+  });
+
+  it("keeps an active, unconfirmed overdue cycle critical for investigation", () => {
+    const item = projectObligationAttention(
+      obligation("active", "CONFIRMADO_INVOICE_OPEN_PAYMENT_UNVERIFIED"), "2026-10-20",
+    );
+    expect(item?.priority).toBe("critical");
+  });
+});
+
 describe("Financial alert classification — never infer outstanding debt from document date alone", () => {
   const invoice = (payment_status: string | null, due_date: string | null = "2026-10-01") => ({
     invoice_key: "synthetic-finance-invoice",
