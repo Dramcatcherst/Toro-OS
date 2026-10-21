@@ -46,7 +46,7 @@ const observeOnly = {
 
 function projectStatus(status: string | null): OperationalStatus {
   const normalized = status?.trim().toLowerCase() ?? "";
-  if (["active", "in_progress", "in progress", "running"].includes(normalized)) {
+  if (["active", "in_progress", "in progress", "running", "now"].includes(normalized)) {
     return "Active";
   }
   if (["completed", "complete", "done", "ready"].includes(normalized)) {
@@ -67,7 +67,9 @@ function freshnessFromDate(
   const generated = Date.parse(generatedAt);
   if (!Number.isFinite(observed) || !Number.isFinite(generated)) return "unknown";
 
-  const age = Math.max(0, generated - observed);
+  // A future observation is not proof of current business state.
+  if (observed > generated) return "unknown";
+  const age = generated - observed;
   if (age <= 48 * 60 * 60 * 1000) return "current";
   if (age <= 7 * 24 * 60 * 60 * 1000) return "aging";
   return "stale";
@@ -158,10 +160,14 @@ function governanceNode(
   generatedAt: string,
 ): BrainNode {
   const verification = governanceVerification(item);
+  const nextReview = item.nextReviewAt ? Date.parse(item.nextReviewAt) : NaN;
+  const projectionTime = Date.parse(generatedAt);
   const freshness = item.nextReviewAt
-    ? Date.parse(item.nextReviewAt) < Date.parse(generatedAt)
-      ? "stale"
-      : "current"
+    ? !Number.isFinite(nextReview) || !Number.isFinite(projectionTime)
+      ? "unknown"
+      : nextReview < projectionTime
+        ? "stale"
+        : "current"
     : freshnessFromDate(item.lastReviewedAt, generatedAt);
 
   return {
