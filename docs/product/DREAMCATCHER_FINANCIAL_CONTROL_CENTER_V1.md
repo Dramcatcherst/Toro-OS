@@ -163,6 +163,14 @@ El corte histórico de 33 filas fechado en septiembre se conserva arriba por tra
 
 **Próximo trabajo ejecutable:** reutilizar el mismo FIN/PayFlow y los recibos existentes para (1) verificar documentos prioritarios sin declarar mora a partir del bruto o la fecha; (2) reconciliar discrepancia de ventas Alegra y asignación por entidad/costo; (3) recuperar una fuente Kross vigente y los márgenes por habitación/canal antes de optimizar precios. Para cada oportunidad reportar `HECHO / POR VERIFICAR / NO_MEDIDO`, fuente, período, moneda, decisión, siguiente responsable y beneficio marginal solo si se observa. Ningún asiento, pago, cancelación de proveedor o promoción queda autorizado aquí.
 
+### Obligation urgency guard — 2026-10-20 (E29/E30/E36)
+
+**OBSERVED, read-only:** Nine active `operations.obligations` records classified `needs_verification` also carry a `next_due_date` before 20 October 2026. Two have explicit critical-source signals; seven do not. These are historical-status counts, **not nine verified unpaid debts**. An old date can be a forecast, pending bank match, an administrative control date or an unresolved obligation; the source must distinguish them.
+
+The existing Owner Attention classifier is being hardened in [PR #346](https://github.com/Dramcatcherst/Toro-OS/pull/346): if `status=needs_verification`, a past date alone yields **HIGH / verification required**. Preserve **CRITICAL** when source evidence explicitly signals failed/declined payment, suspension/restriction or provider-confirmed overdue, or when an active obligation has a genuinely elapsed payment due date. The display continues to identify invoice **total** versus outstanding balance. This code change does not certify the source's correctness, pay anything, send an alert or reconcile bank evidence; read back CI and merger state before declaring the fix in `main`.
+
+**NEXT:** the existing TORO Finance/FIONA / PayFlow lane reviews source notices, bank match and current billing periods, then closes cases only with evidence and approval. Do not rewrite the original due date or `verification_status` to make alerts disappear. No new ledger, scheduler, role, phone channel or invoice writer.
+
 ## 5. Preliminary management classification
 
 | Cost line | Current management treatment |
