@@ -11,12 +11,12 @@ export const EXPECTED_CANONICAL_AGENTS = Object.freeze([
 ]);
 
 const EXPECTED_AGENT_SKILLS = Object.freeze({
-  TORO: "toro-brain",
-  TERE: "tere-revenue",
-  RICO: "rico-operations",
-  FIONA: "fiona-finance",
-  SKY: "sky-growth",
-  SOBRESITO: "sobresito-systems",
+  TORO: "toro-os-hospitality",
+  TERE: "tere-guest-sales",
+  RICO: "rico-hotel-operations",
+  FIONA: "fiona-hotel-finance",
+  SKY: "sky-experiences-growth",
+  SOBRESITO: "sobresito-hotel-systems",
 });
 
 function unique(values) {
@@ -71,7 +71,13 @@ export function auditAgentSkillArchitecture({
     canonicalSkillsByAgent[agent] = contract.canonical_skill;
     canonicalNames.push(contract.canonical_skill);
 
-    for (const alias of contract.aliases ?? []) {
+    const activeAliases = contract.aliases ?? [];
+    if (activeAliases.length > 0) {
+      errors.push(
+        `active skill aliases are not allowed for ${agent}: ${activeAliases.join(", ")}`,
+      );
+    }
+    for (const alias of activeAliases) {
       aliases.push(alias);
     }
 
@@ -186,6 +192,9 @@ export function auditAgentSkillArchitecture({
   if (errors.some((e) => e.includes("skill/alias collision"))) {
     recommendations.push("RESOLVE_ALIAS_COLLISION_PRESERVE_CANONICAL_IDENTITY");
   }
+  if (errors.some((e) => e.includes("active skill aliases are not allowed"))) {
+    recommendations.push("REMOVE_ACTIVE_SKILL_ALIAS_USE_MIGRATION_EVIDENCE_ONLY");
+  }
   if (errors.some((e) => e.includes("current map requests new agents"))) {
     recommendations.push("REVIEW_AGENT_CANDIDATE_AGAINST_SKILL_WORKFLOW_REUSE_GATE");
   }
@@ -212,6 +221,7 @@ export function auditAgentSkillArchitecture({
       playbooks: playbookCount,
       canonicalAgents: EXPECTED_CANONICAL_AGENTS.length,
       canonicalSkillsByAgent,
+      activeSkillAliases: aliases.length,
       orphanCapabilities: [...catalogKeys].filter((key) => !ownershipByKey.has(key)).length,
       duplicatePlaybookAssignments: duplicates.length,
       newAgentsRequired: mappedNewAgentRequirements.length,

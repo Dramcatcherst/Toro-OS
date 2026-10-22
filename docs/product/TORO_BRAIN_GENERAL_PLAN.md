@@ -905,12 +905,15 @@ Next:
 ---
 
 ## Specialist personas
+
+**Owner decision — 2026-10-15:** specialist identities are standalone. The `TORO` prefix is reserved for the master product and internal subsystems. Each specialist has exactly one active canonical skill; older names are migration evidence only.
+
 Internal routing, not separate systems:
-- TORO TERE
-- TORO RICO
-- TORO FIONA
-- TORO SKY
-- TORO SOBRESITO
+- TERE
+- RICO
+- FIONA
+- SKY
+- SOBRESITO
 
 ---
 
@@ -5665,7 +5668,7 @@ Google y Chrome — TORO Comms/Tools/Systems
 - [V1-078] Chrome captura página/selección elegida conURL/fecha/ámbito y minimización.
 - [V1-079] Portal presenta panelnativo yAbriroriginal cuando embebido no es soportado.
 - [V1-080] SidePanelChrome futuro evalúa extensión existente y acceso temporalactiveTab.
-Comunicación proactiva — TORO TERE/SKY
+Comunicación proactiva — TERE/SKY
 - [V1-081] Buzón/binding existente detecta nueva reserva conhistorialincremental.
 - [V1-082] Señal perdida/vencida recupera sincronización y evidencia, no silencio indefinido.
 - [V1-083] Ausencia de notificaciones diagnostica y prepara activaciónmínima revisable.
