@@ -84,6 +84,25 @@ describe("validateToroInternalWorkRequest", () => {
 
     expect(result.ok).toBe(false);
   });
+
+  it.each([
+    { projectKey: 42 }, { projectKey: "x".repeat(129) },
+    { dueDate: true }, { dueDate: "2026-02-31" }, { dueDate: "2026-02-29" }, { dueDate: "2026-04-31" },
+    { priority: ["critical"] }, { priority: "x".repeat(17) },
+  ])("rejects present invalid intake fields rather than losing intent: %j", (change) => {
+    expect(validateToroInternalWorkRequest({
+      action: "task.create", title: "Review fixture task", idempotencyKey: "fixture:request:0001", ...change,
+    }).ok).toBe(false);
+  });
+
+  it("allows optional omissions and a real leap day", () => {
+    const result = validateToroInternalWorkRequest({
+      action: "task.create", title: "Review fixture task", idempotencyKey: "fixture:request:0001",
+      dueDate: "2028-02-29", projectKey: null,
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value).toMatchObject({ priority: "medium", projectKey: null, dueDate: "2028-02-29" });
+  });
 });
 
 describe("canCreateToroInternalWork", () => {
@@ -183,7 +202,7 @@ describe("isExactToroInternalTaskReplay", () => {
     ).toBe(true);
   });
 
-  it("accepts an exact replay from an authorized operator in a different work area", () => {
+  it("rejects a replay when the effective work area differs", () => {
     const parsed = validateToroInternalWorkRequest({
       action: "task.create",
       title: "Revisar incidencia de huésped",
@@ -207,7 +226,7 @@ describe("isExactToroInternalTaskReplay", () => {
     });
 
     expect(retry.area).not.toBe(existing.area);
-    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(true);
+    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(false);
   });
 
   it("rejects a replay whose caller-independent route changed", () => {

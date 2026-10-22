@@ -37,6 +37,39 @@ const baseInput = {
 };
 
 describe("TORO Alegra Writer v3 contract", () => {
+  it("uses one versioned business identity for equivalent native document and issuer formatting", () => {
+    const original = prepareAlegraWriteIntent(baseInput);
+    const reformatted = prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, documentNumber: "inv-100", issuerTaxId: "3101000000" } });
+    expect(original.idempotencyKey).toMatch(/^alegra:v4:/);
+    expect(reformatted.idempotencyKey).toBe(original.idempotencyKey);
+    expect(reformatted.payloadHash).not.toBe(original.payloadHash);
+    expect(reformatted.payload.documentNumber).toBe("inv-100");
+    expect(original.payload.issuerTaxId).toBe("3-101-000000");
+    expect(prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, issuerTaxId: "3101000001" } }).idempotencyKey).not.toBe(original.idempotencyKey);
+    expect(prepareAlegraWriteIntent({ ...baseInput, scope: { ...baseInput.scope, legalEntityKey: "another-entity" } }).idempotencyKey).not.toBe(original.idempotencyKey);
+  });
+  it("validates an existing v3 identity without rewriting its approved payload or historic key", () => {
+    const current = prepareAlegraWriteIntent(baseInput);
+    const historic = { ...current, duplicateKey: "ce63845373391d634d082629067450e50b9a550f36791357fc6197a658498910", idempotencyKey: "alegra:v3:ce63845373391d634d082629067450e50b9a550f36791357fc6197a658498910" };
+    expect(historic.payloadHash).toBe("266a1eb4de19d97f74716a2672021bdc01a216c0171d1d047fde4a2667453208");
+    const granted = { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: "2026-10-11T00:00:00Z", expiresAt: "2026-10-11T00:15:00Z", decisionId: "fixture-decision", decisionRevision: "2026-10-11T00:00:00Z", payloadHash: historic.payloadHash, state: "approved" as const };
+    expect(validateAlegraWriteApproval(historic, granted, "2026-10-11T00:05:00Z").ok).toBe(true);
+    expect(historic.idempotencyKey).toMatch(/^alegra:v3:/);
+    expect(validateAlegraWriteApproval({ ...historic, idempotencyKey: historic.idempotencyKey + "changed" }, granted, "2026-10-11T00:05:00Z").ok).toBe(false);
+  });
+  it.each([
+    { issueDate: undefined }, { issueDate: "2026-02-30" }, { issueDate: "2026-10-11T00:00:00Z" },
+    { dueDate: undefined }, { dueDate: "broken" }, { dueDate: "2026-10-01" },
+    { period: "1900-01" }, { period: "2026-13" }, { period: "" },
+  ])("blocks an invalid accounting calendar before approval %#", patch => {
+    expect(prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, ...patch } }).validation.ready).toBe(false);
+  });
+  it("accepts a matching explicit period without asserting that accounting is open", () => {
+    const prepared = prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, issueDate: " 2026-10-09 ", dueDate: " 2026-10-19 ", period: " 2026-10 " } });
+    expect(prepared.validation.ready).toBe(true);
+    expect(prepared.payload.issueDate).toBe("2026-10-09");
+    expect(prepared.payload.period).toBe("2026-10");
+  });
   it("compares monetary value independently of native decimal display formatting", () => {
     const prepared = prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, issueDate: undefined, dueDate: undefined } });
     expect(verifyAlegraReadback(prepared, { nativeId: "fixture-bill", targetType: "purchase_bill", documentNumber: "INV-100", supplierNativeId: "supplier-42", currency: "USD", total: "113", accountNativeId: "expense-software", costCenterNativeId: "dreamcatcher" }).ok).toBe(true);

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { PortalSignOut } from "@/features/auth/portal-sign-out";
+import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 import { Suspense } from "react";
 
 import { canViewOwnerAttention } from "@/features/attention/owner-attention";
@@ -50,7 +52,13 @@ export default async function MyToroPage({
   const requestedFocus =
     typeof params.focus === "string" ? params.focus : null;
   const contextError = params.context === "invalid";
-  const view = await resolveCurrentToroReadOnlyMenu(requestedFocus);
+  let view;
+  try { view = await resolveCurrentToroReadOnlyMenu(requestedFocus); }
+  catch {
+    return <main className={styles.accessScreen}><div className={styles.accessBox}>
+      <PortalAccessRecovery retryPath="/my-toro" />
+    </div></main>;
+  }
 
   if (!view) {
     return (
@@ -71,6 +79,7 @@ export default async function MyToroPage({
           >
             <LogIn className="h-4 w-4" /> Iniciar sesión
           </Link>
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );
@@ -125,6 +134,7 @@ export default async function MyToroPage({
           {portalDeployment ? <p className={styles.contextNote}>
             TORO volverá a validar tu membresía antes de mostrar información del contexto elegido.
           </p> : null}
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );

@@ -56,4 +56,14 @@ describe("Supabase worker secret resolution", () => {
 
     expect(hasSupabaseWorkerSecret({})).toBe(false);
   });
+
+  it.each(["{not-json", "null", "[]", '{"default":42}', '{"other":"synthetic-modern"}'])(
+    "does not downgrade to a legacy authority when an explicit modern bundle is invalid: %s",
+    (bundle) => {
+      expect(resolveSupabaseWorkerSecret({
+        SUPABASE_SECRET_KEYS: bundle,
+        SUPABASE_SERVICE_ROLE_KEY: "synthetic-legacy-never-use",
+      })).toBeNull();
+    },
+  );
 });

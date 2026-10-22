@@ -1,6 +1,6 @@
 import "server-only";
 import {
-  captureAlegraWriteAuthorization, prepareAlegraWriteIntent,
+  captureAlegraWriteAuthorization, prepareAlegraWriteIntent, matchesAlegraWriteIntentIdentity,
   type AlegraWriteIntent, type AlegraWriteScope, type AlegraReadback,
 } from "./alegra-writer-contract";
 import type { AlegraWriteTransport, AlegraProviderLookupResult } from "./alegra-writer-executor";
@@ -65,7 +65,7 @@ function assertIntent(intent: AlegraWriteIntent, binding: AlegraNativeBinding) {
   if (intent.targetType !== "purchase_bill" || intent.payload.targetType !== "purchase_bill" ||
       intent.action !== "alegra_create_purchase_bill") throw new Error("NATIVE_RESOURCE_UNSUPPORTED");
   const current = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: intent.payload });
-  if (current.targetType !== "purchase_bill" || !current.validation.ready || current.payloadHash !== intent.payloadHash || current.idempotencyKey !== intent.idempotencyKey ||
+  if (current.targetType !== "purchase_bill" || !current.validation.ready || current.payloadHash !== intent.payloadHash || !matchesAlegraWriteIntentIdentity(intent, current) ||
       current.action !== intent.action || intent.version !== current.version) throw new Error("NATIVE_INTENT_INVALID");
   const keys = ["tenantId", "orgId", "legalEntityKey", "propertyId", "projectId"] as const;
   if (binding.scope.scopeConflict || keys.some(k => text(binding.scope[k]) !== text(intent.scope[k])) ||
@@ -234,7 +234,7 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         // Never certify the currency of a document from the company's default.
         // Unknown/missing native currency remains an unverified readback.
         const currency = text(object(bill.currency).code);
-        if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.date) !== p.issueDate ||
+        if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.observations) !== intent.idempotencyKey || text(bill.date) !== p.issueDate ||
             text(bill.dueDate) !== p.dueDate || bill.status !== "open" || units(bill.totalPaid) !== BigInt(0) ||
             units(bill.balance) !== units(bill.total) || currency !== p.currency || id(category.id) !== id(p.accountNativeId) ||
             Number(category.quantity) !== 1 || (category.discount !== undefined && units(category.discount) !== BigInt(0)) ||

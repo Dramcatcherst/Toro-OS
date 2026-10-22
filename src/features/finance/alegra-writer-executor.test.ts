@@ -24,6 +24,8 @@ const intent = prepareAlegraWriteIntent({
     supplierNativeId: "supplier-42",
     issuerTaxId: "3-101-000000",
     receiverTaxId: "3-101-999999",
+    issueDate: "2026-10-09",
+    dueDate: "2026-10-19",
     currency: "USD",
     total: "113.00",
     accountNativeId: "expense-software",
@@ -47,10 +49,12 @@ const validNow = "2026-10-09T08:05:00Z";
 const clearDuplicates = evaluateAlegraDuplicatePreflight({
   intent,
   candidates: [],
+  now: validNow,
+  maxAgeMs: 60_000,
   sourceStates: [
-    { source: "toro", coverage: "complete" },
-    { source: "alegra", coverage: "complete" },
-    { source: "receipt", coverage: "complete" },
+    { source: "toro", coverage: "complete", checkedAt: validNow },
+    { source: "alegra", coverage: "complete", checkedAt: validNow },
+    { source: "receipt", coverage: "complete", checkedAt: validNow },
   ],
 });
 
@@ -78,6 +82,17 @@ function verifiedReadback(nativeId = "bill-1") {
 }
 
 describe("Alegra Writer governed executor", () => {
+  it("preserves and reconciles a prior v3 receipt instead of posting again under a v4 identity", async () => {
+    const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: "alegra:v3:ce63845373391d634d082629067450e50b9a550f36791357fc6197a658498910", payloadHash: intent.payloadHash,
+      approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "fixture-historic-durable" };
+    const transport: AlegraWriteTransport = { create: vi.fn(async () => ({ state: "created" as const, nativeId: "bill-1" })), findByIdempotencyKey: vi.fn(), readback: vi.fn(async () => verifiedReadback()) };
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, priorReceipt: prior, now: validNow });
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("PRIOR_IDENTITY_VERSION_REQUIRES_RECONCILIATION");
+    expect(transport.create).not.toHaveBeenCalled();
+    expect(prior.idempotencyKey).toMatch(/^alegra:v3:/);
+    expect(prior.durableReceiptId).toBe("fixture-historic-durable");
+  });
   it("does not replay an in-memory verification without a durable receipt ID", async () => {
     const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
       transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
@@ -222,6 +237,8 @@ describe("Alegra Writer governed executor", () => {
     const staleDuplicates = evaluateAlegraDuplicatePreflight({
       intent,
       candidates: [],
+      now: validNow,
+      maxAgeMs: 60_000,
       sourceStates: [
         { source: "toro", coverage: "complete" },
         { source: "alegra", coverage: "stale" },

@@ -23,6 +23,7 @@ export type KrossReservationCandidate = {
   children?: number | null;
   channel?: string | null;
   breakfastIncluded?: boolean | null;
+  mappingIssues?: ReadonlyArray<{ code: string; field?: string }>;
 };
 
 export type NormalizedKrossReservation = {
@@ -58,6 +59,13 @@ export type KrossNormalizationIssue = {
     | "missing_scope"
     | "invalid_date"
     | "checkout_before_checkin"
+    | "invalid_now"
+    | "observation_before_source"
+    | "stale_source_time"
+    | "stale_observed_time"
+    | "source_mapping_issue"
+    | "invalid_guest_count"
+    | "inconsistent_guest_count"
     | "future_source_time"
     | "future_observed_time"
     | "missing_source_hash"
@@ -80,11 +88,19 @@ function clean(value: string | null | undefined) {
 }
 
 function isDateOnly(value: string) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`));
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const timestamp = Date.parse(`${value}T00:00:00Z`);
+  return Number.isFinite(timestamp) && new Date(timestamp).toISOString().slice(0, 10) === value;
+}
+
+function evidenceTime(value: string) {
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!match || !isDateOnly(match[1]) || Number(match[2]) > 23 || Number(match[3]) > 59 || Number(match[4]) > 59) return Number.NaN;
+  return Date.parse(value);
 }
 
 function nonNegativeInteger(value: number | null | undefined) {
-  return Number.isInteger(value) && Number(value) >= 0 ? Number(value) : null;
+  return Number.isSafeInteger(value) && Number(value) >= 0 ? Number(value) : null;
 }
 
 function sourceRecordId(propertyId: string, externalReservationId: string) {
@@ -103,9 +119,39 @@ export function normalizeKrossReservationCandidate(
   const externalReservationId = clean(candidate.externalReservationId);
   const orgId = clean(candidate.orgId);
   const propertyId = clean(candidate.propertyId);
-  const nowMs = Date.parse(nowIso);
-  const sourceAsOfMs = Date.parse(evidence.sourceAsOf);
-  const observedAtMs = Date.parse(evidence.observedAt);
+  const nowMs = evidenceTime(nowIso);
+  const sourceAsOfMs = evidenceTime(evidence.sourceAsOf);
+  const observedAtMs = evidenceTime(evidence.observedAt);
+
+  if (!Number.isFinite(nowMs)) {
+    issues.push({ code: "invalid_now", message: "A valid evaluation timestamp with timezone is required." });
+  }
+  if (Number.isFinite(sourceAsOfMs) && Number.isFinite(observedAtMs) && observedAtMs < sourceAsOfMs) {
+    issues.push({ code: "observation_before_source", message: "Observation cannot precede the source timestamp." });
+  }
+
+  const maxAgeMs = 6 * 60 * 60 * 1000;
+  if (Number.isFinite(nowMs) && nowMs - sourceAsOfMs > maxAgeMs) {
+    issues.push({ code: "stale_source_time", message: "Source evidence exceeds the six-hour current-state ceiling." });
+  }
+  if (Number.isFinite(nowMs) && nowMs - observedAtMs > maxAgeMs) {
+    issues.push({ code: "stale_observed_time", message: "Sync evidence exceeds the six-hour current-state ceiling." });
+  }
+  if (candidate.mappingIssues?.length) {
+    issues.push({ code: "source_mapping_issue", message: "Source mapping contains unresolved validation issues." });
+  }
+  for (const value of [candidate.guestsCount, candidate.adults, candidate.children]) {
+    if (value !== null && value !== undefined && nonNegativeInteger(value) === null) {
+      issues.push({ code: "invalid_guest_count", message: "Guest counts must be non-negative safe integers when present." });
+      break;
+    }
+  }
+  const guestsCount = nonNegativeInteger(candidate.guestsCount);
+  const adults = nonNegativeInteger(candidate.adults);
+  const children = nonNegativeInteger(candidate.children);
+  if (guestsCount !== null && adults !== null && children !== null && (!Number.isSafeInteger(adults + children) || guestsCount !== adults + children)) {
+    issues.push({ code: "inconsistent_guest_count", message: "Total guests conflicts with the supplied adult and child counts." });
+  }
 
   if (!externalReservationId) {
     issues.push({
@@ -187,6 +233,7 @@ export function normalizeKrossReservationCandidate(
     isDateOnly(candidate.checkIn) &&
     isDateOnly(candidate.checkOut) &&
     candidate.checkOut >= candidate.checkIn &&
+    Number.isFinite(nowMs) &&
     Number.isFinite(sourceAsOfMs) &&
     Number.isFinite(observedAtMs) &&
     clean(evidence.sourceHash) !== null &&
@@ -204,16 +251,7 @@ export function normalizeKrossReservationCandidate(
     evidence.authorizedTransport &&
     evidence.directFromKross &&
     evidence.readOnly &&
-    issues.every(
-      (issue) =>
-        ![
-          "future_source_time",
-          "future_observed_time",
-          "transport_not_authorized",
-          "transport_not_direct",
-          "transport_not_read_only",
-        ].includes(issue.code),
-    );
+    issues.length === 0;
 
   const reservation: NormalizedKrossReservation = {
     org_id: orgId,
@@ -225,9 +263,9 @@ export function normalizeKrossReservationCandidate(
     check_in: candidate.checkIn,
     check_out: candidate.checkOut,
     status: clean(candidate.status) ?? "unknown",
-    guests_count: nonNegativeInteger(candidate.guestsCount),
-    adults: nonNegativeInteger(candidate.adults),
-    children: nonNegativeInteger(candidate.children),
+    guests_count: guestsCount,
+    adults,
+    children,
     channel: clean(candidate.channel),
     breakfast_included:
       typeof candidate.breakfastIncluded === "boolean"

@@ -7,6 +7,18 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+## Fiabilidad conjunta de Alegra, Kross, Portal y OpenClaw — 21/10/2026
+
+**CURRENT — implementado y verificado localmente; integración/publicación según recibos de PR y Vercel:** la petición del propietario se concreta en cuarenta cambios de conducta sobre módulos existentes: nueve Writer/Alegra, once Kross, ocho acceso/Portal, ocho OpenClaw/WhatsApp y cuatro configuración segura. El [listado trazable y aceptación](../evidence/TORO_INTEGRATION_RELIABILITY_40_20261021.md) es subordinado a este Plan. Las pruebas/documentación acreditan cambios; no se suman como mejoras independientes ni como avance contable o beneficio económico.
+
+**Alineación:** una identidad y contexto TORO para Portal/WhatsApp; permisos por actor/organización, evidencia válida y fresca, idempotencia coherente, dependencias con deadline y recuperación humana segura. GitHub conserva código/contratos; Supabase identidad/runtime/auditoría; Kross reservas/estancias; Alegra documentos contables; bancos liquidación y Dropbox originales. Un contrato preparado no es una integración productiva ni un recibo de entrega.
+
+**NEXT del carril existente:** completar los gates remotos de PR/preview del mismo árbol; después aceptación de acceso/rol/salida en el Portal con sesión autorizada, y recuperar fuentes/binding del Gateway Lightsail existente antes de cualquier activación Writer/OpenClaw. Las claves nuevas de idempotencia y las firmas reforzadas requieren reconciliación de compatibilidad en el caller existente; no crear otro adapter, Gateway, scheduler o ledger. El cutover a lectura de membresías canónicas sigue pendiente de verificar su transporte, sin ampliar Data API/RLS.
+
+**Conservado:** Writer OFF, Kross API pagada pausada, aprobación exacta de operaciones sensibles, original Starlink sin conciliación inequívoca, sesiones/contraseñas reales fuera de los artefactos, ningún cambio de precios/reservas/postings/permisos/secretos o producción por este lote.
+<!-- END:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+
 <!-- BEGIN:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 ## Política estratégica transversal — IA, patrimonio productivo y libertad operativa — 20/10/2026
 

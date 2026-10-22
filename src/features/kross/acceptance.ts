@@ -32,6 +32,7 @@ export type KrossLiveReadAcceptanceResult = {
 export function evaluateKrossFirstLiveRead(
   input: KrossLiveReadAcceptanceInput,
 ): KrossLiveReadAcceptanceResult {
+  const validCount = (value: number) => Number.isSafeInteger(value) && value >= 0;
   const checks: KrossAcceptanceCheck[] = [
     {
       key: "authorized_real_run",
@@ -67,14 +68,15 @@ export function evaluateKrossFirstLiveRead(
       key: "live_evidence",
       passed:
         input.sourceIsLiveEvidenceVerified &&
+        validCount(input.safeCurrentHealthSources) &&
         input.safeCurrentHealthSources > 0,
       detail: "source_is_live is evidence-backed and Kross health is current-safe.",
     },
     {
       key: "current_state_truth",
-      passed: input.eligibleCurrentReservationExpected
-        ? input.currentReservationsSafeRows > 0
-        : input.zeroCurrentStateProvenFromKross,
+      passed: validCount(input.currentReservationsSafeRows) && (input.eligibleCurrentReservationExpected
+        ? input.currentReservationsSafeRows > 0 && !input.zeroCurrentStateProvenFromKross
+        : input.zeroCurrentStateProvenFromKross && input.currentReservationsSafeRows === 0),
       detail:
         "Current reservation presence/absence is proven from Kross authority.",
     },

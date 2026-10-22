@@ -12,12 +12,20 @@ import { PortalConnectionNote, PortalHeader } from "@/features/portal/portal-hea
 import styles from "@/features/portal/portal.module.css";
 import { isPublicDemo } from "@/lib/server/public-demo";
 import { redirect } from "next/navigation";
+import { PortalSignOut } from "@/features/auth/portal-sign-out";
+import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 
 export const dynamic = "force-dynamic";
 
 export default async function PortalPage() {
   if (isPublicDemo()) redirect("/brain");
-  const view = await resolveCurrentToroReadOnlyMenu();
+  let view;
+  try { view = await resolveCurrentToroReadOnlyMenu(); }
+  catch {
+    return <main id="portal-content" className={styles.page}><div className={styles.content}>
+      <PortalAccessRecovery retryPath="/portal" />
+    </div></main>;
+  }
   if (!view || view.state !== "resolved" || !hasPortalOrganizationContext(view.context)) {
     return <main id="portal-content" className={styles.page}><div className={styles.content}>
       <p className={styles.eyebrow}>TORO · OPERATION SYSTEM</p><h1 className={styles.accessHeading}>Tu espacio de trabajo</h1>
@@ -25,6 +33,7 @@ export default async function PortalPage() {
       <Link className={styles.personalLink + " mt-6"} href={view ? "/my-toro" : "/login?next=/portal"} prefetch={false}>
         {view ? "Ir a Mi espacio" : "Iniciar sesión"}<ArrowRight size={16} aria-hidden="true" />
       </Link>
+      {view ? <PortalSignOut className={styles.textLink} /> : null}
     </div></main>;
   }
   const modules = resolvePortalModules(view);

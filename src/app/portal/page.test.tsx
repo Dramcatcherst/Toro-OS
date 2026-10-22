@@ -36,6 +36,16 @@ it("shows login without private navigation to anonymous visitors", async () => {
   expect(mocks.directory).not.toHaveBeenCalled();
 });
 
+it("recovers safely from a thrown identity lookup without querying private tools", async () => {
+  mocks.menu.mockRejectedValue(new Error("PRIVATE_AUTH_DIAGNOSTIC"));
+  const html = renderToStaticMarkup(await PortalPage());
+  expect(html).toContain("No pudimos verificar tu acceso ahora");
+  expect(html).toContain('href="/portal"');
+  expect(html).toContain('action="/api/auth/logout"');
+  expect(html).not.toContain("PRIVATE_AUTH_DIAGNOSTIC");
+  expect(mocks.directory).not.toHaveBeenCalled();
+});
+
 it.each(["denied", "unavailable"])("does not expose supplied directory rows when %s", async state => {
   mocks.menu.mockResolvedValue(view());
   const links = [{ id: "LINK-086", label: "Private", url: "https://private.example/" }];
@@ -75,6 +85,7 @@ it.each(["choice", "inactive"])("hides modules for %s context", async reason => 
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).not.toContain("MÓDULO 00");
   expect(html).not.toContain('aria-label="Portal TORO"');
+  expect(html).toContain('action="/api/auth/logout"');
 });
 it("presents the canonical structure without rendering fabricated links for pending modules", async () => {
   mocks.menu.mockResolvedValue(view());
