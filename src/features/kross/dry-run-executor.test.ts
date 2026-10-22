@@ -102,6 +102,31 @@ describe("executeKrossDryRun", () => {
     expect(store.mirrorCount()).toBe(0);
   });
 
+  it("keeps known-ID rejections scoped to their row within one source artifact", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const invalidK100 = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: {
+          ...payload(),
+          stay: { ...payload().stay, check_in: "2026-02-30" },
+        },
+      },
+      store,
+    );
+    const validK101 = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
+    expect(invalidK100.status).toBe("rejected");
+    expect(validK101.status).toBe("accepted");
+    expect(validK101.operation).toBe("insert");
+    expect(validK101.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
+  });
+
   it("does not report accepted replay when its stored mirror is missing", () => {
     const backing = createInMemoryKrossDryRunStore();
     const request = { ...baseRequest, payload: payload() };
