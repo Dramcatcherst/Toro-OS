@@ -86,3 +86,21 @@ Observed exceptions:
 
 Therefore the current 📩 / `CONFIGURAR_A_ADMIN` remediation remains valid for the tracked business instruments, subject to scope/holder verification for mixed or personal products. Do not mark any of these as already configured merely because alerts or third-party references arrive.
 <!-- END:ADMIN_MAIL_VERIFICATION_20261021 -->
+
+<!-- BEGIN:INVOICE_ADMIN_ROUTING_20261021 -->
+## Supplier invoice routing verification — 2026-10-21
+
+Direct mailbox review shows that supplier invoices are **not consistently arriving at `admin@dreamcatcherhotel.com`**.
+
+Observed patterns:
+- some Costa Rican electronic invoices arrive at `info@dreamcatcherhotel.com` instead of admin;
+- at least one ICE electronic invoice reached a personal mailbox first and was manually forwarded to admin;
+- foreign invoices/receipts may arrive to different hotel aliases and must be normalized separately;
+- arrival of one supplier's invoice does not prove the supplier list is correctly configured.
+
+**Owner rule:** extend 📩 / `CONFIGURAR_A_ADMIN` to **supplier invoices and fiscal documents** used by Dreamcatcher, not just bank/card statements. For verified hotel suppliers, configure the billing recipient to `admin@dreamcatcherhotel.com` where the provider permits it; retain `info@dreamcatcherhotel.com` only as an approved secondary copy when useful.
+
+For Costa Rican electronic invoicing, the target evidence package is the fiscal document set actually issued (for example XML/PDF and response/acceptance artifacts when applicable), plus payment evidence. A forwarded copy is useful evidence but does not prove the supplier's billing destination is correctly configured.
+
+Routing is complete only after a new supplier invoice is received directly at admin and matched to the correct supplier/entity.
+<!-- END:INVOICE_ADMIN_ROUTING_20261021 -->
