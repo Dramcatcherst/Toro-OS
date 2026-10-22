@@ -4,11 +4,12 @@ import { evaluateSourceAwareCapabilityStates } from "./source-aware";
 
 const probe = (
   rows: number,
-  options: { readable?: boolean; fresh?: boolean } = {},
+  options: { readable?: boolean; fresh?: boolean; latestAt?: string | null } = {},
 ) => ({
   readable: options.readable ?? true,
   rows,
   fresh: options.fresh,
+  latestAt: options.latestAt,
 });
 
 describe("evaluateSourceAwareCapabilityStates", () => {
@@ -200,4 +201,55 @@ describe("evaluateSourceAwareCapabilityStates", () => {
 
     expect(result.states["projects.status"]).toBe("BLOCKED");
   });
+
+  it("allows labeled historical internal reads without unlocking transactional flows", () => {
+    const snapshot = {
+      executiveDecisions: probe(2, { fresh: false, latestAt: "2026-09-20T10:00:00Z" }),
+      projects: probe(3, { fresh: false, latestAt: "2026-09-20T12:00:00Z" }),
+      tasks: probe(1, { fresh: false }), maintenanceEvents: probe(0),
+      inspectionFieldCapture: probe(0), reservations: probe(4352, { fresh: false }),
+      currentReservationsSafe: probe(0), krossCurrentHealth: probe(0),
+      stays: probe(0), rooms: probe(20), villas: probe(3), experiences: probe(85),
+      bankTransactions: probe(1839, { fresh: false }),
+    };
+    const result = evaluateSourceAwareCapabilityStates({
+      "executive.decisions": "BLOCKED", "projects.status": "BLOCKED",
+      "executive.brief": "BLOCKED", "finance.exceptions": "BLOCKED",
+      "guest.arrivals_departures": "BLOCKED", "hospitality.quote": "BLOCKED",
+      "comms.guest_messages": "BLOCKED",
+    }, snapshot);
+    expect(result.states["executive.decisions"]).toBe("READ_ONLY");
+    expect(result.states["projects.status"]).toBe("READ_ONLY");
+    expect(result.readiness.degradedReads).toEqual([
+      { capability: "executive.decisions", label: "Decisiones", sourceAsOf: "2026-09-20T10:00:00Z" },
+      { capability: "projects.status", label: "Proyectos", sourceAsOf: "2026-09-20T12:00:00Z" },
+    ]);
+    expect(result.readiness.readyReads).toEqual([]);
+    for (const key of ["executive.brief", "finance.exceptions", "guest.arrivals_departures", "hospitality.quote", "comms.guest_messages"]) {
+      expect(result.states[key]).toBe("BLOCKED");
+    }
+  });
+
+  it("rejects unreadable and future-dated fallback but marks unknown dates", () => {
+    const base = {
+      executiveDecisions: probe(2, { fresh: false, latestAt: "2999-01-01T00:00:00Z" }),
+      projects: probe(3, { fresh: false }), tasks: probe(0),
+      maintenanceEvents: probe(0), inspectionFieldCapture: probe(0),
+      reservations: probe(0), currentReservationsSafe: probe(0),
+      krossCurrentHealth: probe(0), stays: probe(0), rooms: probe(0),
+      villas: probe(0), experiences: probe(0), bankTransactions: probe(0),
+    };
+    const denied = evaluateSourceAwareCapabilityStates(
+      { "executive.decisions": "BLOCKED", "projects.status": "BLOCKED" },
+      { ...base, projects: probe(3, { readable: false, fresh: false }) },
+    );
+    expect(denied.states["executive.decisions"]).toBe("BLOCKED");
+    expect(denied.states["projects.status"]).toBe("BLOCKED");
+    const unknown = evaluateSourceAwareCapabilityStates({ "projects.status": "BLOCKED" }, base);
+    expect(unknown.states["projects.status"]).toBe("READ_ONLY");
+    expect(unknown.readiness.degradedReads).toEqual([
+      { capability: "projects.status", label: "Proyectos", sourceAsOf: null },
+    ]);
+  });
+
 });
