@@ -651,3 +651,47 @@ Medidas: mensajes observables vs capturados/archivados (denominador y ventana de
 - Supabase oficial: https://supabase.com/docs/guides/platform/backups — el backup de base de datos no incluye los binarios guardados mediante Storage API; configuración/retención real del proyecto todavía no comprobadas.
 - OpenClaw oficial: https://docs.openclaw.ai/channels/whatsapp — leído para cuentas, WhatsApp Web/Baileys, políticas, history y efectos de lectura/reconnect. Versión instalada y capacidad local sin verificar.
 - Meta oficial: https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users — recuperación fallida; elegibilidad y límites requieren documentación vigente/soporte autorizado antes de elegir esa ruta.
+
+## 20. QA comparativa de conversaciones: WeSpeak hoy y TERE propia mañana — 22/10/2026
+
+**Estado:** contrato/candidatos de respuesta, no configuración efectiva del proveedor ni despliegue. El Plan General único sigue siendo la autoridad. Reutilizar `wespeak_qa_cadence_contract_2026_09_v1`, `wespeak_tere_compact_context_packet_2026_09_v1`, TERE V5 y Product Proof #6/#7/#8; la migración será parte de TORO Comms, no un sistema paralelo.
+
+### 20.1. Ficha mínima de evaluación por intención
+
+De la QA diaria vigente, extraer solo el delta por `chat_id + intent + event` y la procedencia del mensaje. Preservar pregunta exacta de forma privada, respuesta real y configuración/versiones; enlazar sin copiar innecesariamente el hecho canónico y la fecha; preparar una mejor respuesta; evaluar resultado y seguimiento realmente verificados. Un hilo Gmail no equivale al chat o a la reserva. Los fragmentos privados no se suben al repositorio público.
+
+| Dimensión | Prueba obligatoria | Señal de éxito |
+| --- | --- | --- |
+| Verdad física | Habitación `room_key`, cama, terraza, fotos vs `core.rooms`/inspección | Cero atributos falsos en la batería controlada |
+| Verdad comercial | Kross confirma disponibilidad, precio TOTAL, moneda, ocupación, limpieza, cancelación y promo | No se afirma tarifa/reserva vigente sin readback |
+| Experiencia | Responde primero la pregunta, no vuelve a pedir dato ya aportado | Resolución clara con un siguiente paso |
+| Handoff | Misma intención, dueño único, acuse comprobado y tarea existente | No dice «ya va alguien» sin aceptación real |
+| Servicios | Ficha `ready` separada de disponibilidad, alérgenos, pedido, cargo y pago | Ningún cupo o seguridad alimentaria inventados |
+| Privacidad/HR | Empleo/voluntariado deriva una vez a Carolina sin prometer conservar CV | No crea promesas de almacenamiento ni marketing |
+| Economía | Reserva confirmada en Kross, costo incremental y seguimiento atribuible | Conversión/margen solo con denominador y recibos |
+
+### 20.2. Preguntas de regresión y respuestas candidatas (no mensajes enviados)
+
+1. **«¿La habitación 21 tiene terraza?»** Canon `has_terrace=false`: «La #21 no tiene terraza privada. Si una terraza es importante, puedo ayudarte a revisar otras habitaciones que sí la tienen». No sugerir habitación alternativa sin confirmar su atributo.
+2. **«¿Está disponible la #27 del 8 al 9 de diciembre y cuánto cuesta?»** «Puedo ayudarte con la #27. Para confirmar disponibilidad y total de esa fecha debemos consultarlo en el motor oficial de Kross; no quiero darte un precio que no corresponda». Si falta ocupación, preguntar solo el dato indispensable; no usar Type 28 ni enlace roto.
+3. **«Ya hice SINPE. ¿Mi reserva está garantizada?»** «Gracias por avisar. El comprobante no significa que el pago ya esté aplicado. Voy a solicitar la verificación del pago y del estado de tu reserva; te confirmaremos cuando ambos estén comprobados». No afirmar que ya se creó una tarea sin recibo.
+4. **«Busco trabajo o voluntariado»** «Puedo pasar tu solicitud a la persona encargada de selección. Antes, dime cómo prefieres que te contacten». No ofrecer guardar CV ni derivar varias veces; consentimiento y política aplicables.
+5. **«No tengo agua caliente»** «Voy a trasladar el problema al equipo para que lo revise. Te confirmaré cuando la solicitud sea recibida». Sin prometer asistencia física hasta ACK; sin vender tours/desayuno durante una incidencia.
+6. **«¿Hay cupo hoy en yoga / es seguro si tengo alergia?»** «Puedo consultar disponibilidad y condiciones con el encargado. No tengo confirmado el cupo ni los detalles necesarios para darte una garantía». Preguntar la información estrictamente necesaria y escalar a proveedor/cocina.
+
+Las seis frases son **candidatas editoriales**: nunca se activan en WeSpeak a partir de un PR; TERE debe adaptar el contexto conocido y no repetir preguntas contestadas. Ninguna implica enviar mensaje, crear pago, confirmar reserva ni iniciar un flujo externo.
+
+### 20.3. Comparación justa y despliegue por compuertas
+
+- **Baseline:** usar únicamente la muestra etiquetada de la QA diaria; `5 casos` del 22/10 son una muestra parcial sesgada, no el denominador global. El proveedor nativo no ha certificado cobertura completa ni versión de contexto consumida.
+- **Evaluación offline:** misma pregunta redacted/aislada, mismas fuentes vigentes para el corte y misma intención para respuesta observada WeSpeak frente a candidata TERE; marcar diferencias por verdad, riesgo, utilidad, handoff y costo humano. No considerar una mejora de tono como mejoría de facturación.
+- **Runtime actual:** conservar el requisito de hash/version y las cinco pruebas V5 (`data/tere_v5_runtime_qa_cases_v1.json`); los casos anteriores se agregan como regresiones, no reemplazan las cinco obligatorias. Sin aislamiento demostrado no ejecutar `/test` nativo.
+- **Propio en sombra:** canal observado con consentimiento y scopes correctos, pero sin enviar mensajes ni escribir Kross; recibo de evento, respuesta propuesta y comparación autorizada. No crear inbox/DB/memoria/gateway duplicados.
+- **Copiloto:** sugerir la respuesta al asesor. Un humano envía y confirma por el canal original; medir intervenciones y recontactos reales.
+- **Autonomía acotada y cutover:** solo tras paridad de identidades, respuesta y ACK, recuperación de webhooks/eventos, reintentos idempotentes, control Meta verificado, propiedad/número/canal y rollback con prueba. El cambio de número, coexistencia App/Cloud API o publicación requiere gate aparte.
+
+### 20.4. Cadencias y propietarios
+
+Una sola lectura diaria del corpus por `WeSpeak · Calidad diaria`; síntesis semanal/mensual derivada del checkpoint. El ejecutor horario consume hallazgos sin rehacer la QA. TERE/Comms diseña respuestas, RICO hechos/cierre, SOBRESITO compara hashes/transporte, FIONA verifica cobros, SKY mide contribución, dueño aprueba cambios materiales. Estados: `OBSERVED`, `PROPOSED`, `SYNTHETIC_TESTED`, `RUNTIME_VERIFIED`, `BUSINESS_OUTCOME_VERIFIED` y `BLOCKED`; un documento o `connected` no equivale a `RUNTIME_VERIFIED`.
+
+**Siguiente unidad:** evaluar offline, sin datos privados en Github, la falsa terraza #21 y la venta sin Kross vigente, contrastar con `core.rooms`/PMS y dejar candidata preparada para validación del entorno real; actualizar solo el expediente existente con exclusividad confirmada.
