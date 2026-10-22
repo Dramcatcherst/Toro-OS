@@ -119,11 +119,12 @@ async function probeLatest(
   const raw = row?.[latestColumn];
   const latestAt = typeof raw === "string" ? raw : null;
   const latestMs = latestAt ? Date.parse(latestAt) : Number.NaN;
+  const ageMs = Date.now() - latestMs;
   const fresh =
     freshnessHours === undefined
       ? undefined
-      : Number.isFinite(latestMs) &&
-        Date.now() - latestMs <= freshnessHours * 60 * 60 * 1000;
+      : Number.isFinite(latestMs) && ageMs >= 0 &&
+        ageMs <= freshnessHours * 60 * 60 * 1000;
 
   return {
     ...base,
@@ -844,6 +845,7 @@ export async function resolveCurrentToroReadOnlyMenu(
   let sourceReadiness: ToroSourceReadiness = {
     readyReads: [],
     blockedReads: ["Fuentes de esta vista"],
+    degradedReads: [],
   };
 
   let supabase: SupabaseServerClient | null = null;
@@ -858,7 +860,7 @@ export async function resolveCurrentToroReadOnlyMenu(
       // Historical/partial rows are inspectable without claiming current readiness.
       if ("projects.status" in baseline && projectSlice.projects.length > 0) {
         capabilityStates = { ...baseline, "projects.status": "READ_ONLY" };
-        sourceReadiness = { readyReads: ["Proyectos · lectura parcial"], blockedReads: ["Otras fuentes de esta vista"] };
+        sourceReadiness = { readyReads: ["Proyectos · lectura parcial"], blockedReads: ["Otras fuentes de esta vista"], degradedReads: [] };
       }
     } else {
     const [snapshot, summary] = await Promise.all([
@@ -931,6 +933,13 @@ export async function resolveCurrentToroReadOnlyMenu(
       capabilityNote(item.capability, item.state),
     ]),
   );
+  for (const read of sourceReadiness.degradedReads) {
+    const timestamp = read.sourceAsOf ? Date.parse(read.sourceAsOf) : Number.NaN;
+    const date = Number.isFinite(timestamp) && timestamp <= Date.now()
+      ? new Date(timestamp).toISOString() : "fecha no verificada";
+    capabilityNotes[read.capability] =
+      `Lectura interna de corte anterior (${date}); no representa estado actual ni autoriza reservas, precios, cobros o publicaciones.`;
+  }
   if (rpcMode && capabilityStates["projects.status"] === "READ_ONLY") {
     capabilityNotes["projects.status"] = "Proyectos del lote autorizado; cobertura parcial y vigencia por registro.";
   }
