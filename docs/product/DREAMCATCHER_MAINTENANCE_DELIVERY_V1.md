@@ -114,4 +114,3 @@ Fuentes primarias de capacidad consultadas el 21/10/2026; contrastar con la vers
 - https://docs.openclaw.ai/automation/cron-jobs/delivery
 - https://docs.openclaw.ai/providers/whatsapp
 - https://support.google.com/calendar/answer/37082
-
