@@ -38,3 +38,69 @@ Existing portal, no new app or navigation silo. A compact **Finanzas › Cobertu
 - Close each item only with a new incoming test document and matching ledger/account mapping.
 
 **Implementation status:** policy proposal in GitHub documentation only. Existing TORO portal UI, source integrations and banking recipients remain unchanged.
+
+<!-- BEGIN:OWNER_2026_STATEMENT_CONTROL_20261021 -->
+## Owner control — 2026 statements, routing and completion
+
+### Compact inventory
+| Instrument | 2026 evidence observed | Required next state | Route |
+| --- | --- | --- | --- |
+| BAC bank CRC ••••3660 / USD ••••3588 | Jan–Aug indexed; Sep original recovered | Validate originals; Oct at cycle close | 📩 |
+| BAC cards ••••4966 / ••••4961 / ••••5042 / ••••7161; Visa ••••4701 | Current/partial statements only | Complete cycles; map holder/use/ledger | 📩 |
+| BN CRC ••••9468 / USD ••••8174 | No company originals localized in current audit | Recover missing 2026 originals | 📩 |
+| BCR CRC ••••7251 / USD ••••7849 | No company originals localized | Recover missing 2026 originals | 📩 |
+| LAFISE bank CRC ••••1998 / USD ••••7740 | Historical ZIP exists, months unclassified | Inspect first; request only gaps | 📩 |
+| LAFISE card ••••7930 | Monthly coverage incomplete | Complete cycles and CRC/USD mapping | 📩 |
+| WINK CRC ••••1547 | Personal-context reference exists | Verify business identity; then fill gaps | 📩 conditional |
+| PayPal USD | Partial operational evidence | Monthly exports incl. gross/fees/refunds/FX/net payout | 📩 after business validation |
+| BAC loan ••••2411 | Product observed | Contractual schedule; principal/interest/insurance split | 📩 |
+
+**📩 means:** configure verified business-use statements/documents to arrive automatically at `admin@dreamcatcherhotel.com`. It does **not** mean the routing change is already executed. Close this action only after authenticated provider change + new test document received at admin + retained receipt.
+
+### Completeness rule
+A month/account is complete only when TORO can resolve: issuer + masked instrument + legal/business scope + period/cutoff + original statement/export + opening/closing balance when applicable + movements + payment/settlement evidence where applicable + mapped Alegra ledger + reconciliation status. Index rows, alerts, screenshots, derived spreadsheets and ZIP filenames are discovery evidence, not substitutes for the original.
+
+### Recovery workflow
+1. Search existing approved archive/mail first; never request a duplicate by default.
+2. Validate instrument identity and business scope.
+3. Mark periods genuinely missing.
+4. Obtain originals through bank/provider portal, authorized email delivery or export.
+5. For 📩 items, configure admin delivery only after authorization and scope verification.
+6. Confirm with a newly received statement/document.
+7. Store original privately, fingerprint/reference it, reconcile to Alegra and mark the period complete.
+8. Keep personal-only products outside company routing and reporting.
+
+### Assistance boundary
+TORO may inventory, compare, prepare provider-specific steps, detect missing periods, reconcile documents and verify receipt when connected access permits. Login/MFA/signature/bank-recipient changes that require the authorized account holder remain an authenticated human/provider action unless a governed connector explicitly supports them. Never claim configuration succeeded without a provider receipt or test delivery.
+<!-- END:OWNER_2026_STATEMENT_CONTROL_20261021 -->
+
+<!-- BEGIN:ADMIN_MAIL_VERIFICATION_20261021 -->
+## Admin mailbox verification — 2026-10-21
+
+Direct search of `admin@dreamcatcherhotel.com` for 2026 found **no monthly account/card statements** for the currently tracked BAC, Banco Nacional, BCR, LAFISE, WINK or PayPal instruments.
+
+Observed exceptions:
+- BAC does send some **transaction/transfer alerts** to the hotel mailbox; these are not monthly statements.
+- PayPal references appear inside Airbnb/Meta/operational emails, but no PayPal monthly statement/export from PayPal was found.
+- WINK appears only in accounting/support context, not as an official WINK statement delivered to admin.
+
+Therefore the current 📩 / `CONFIGURAR_A_ADMIN` remediation remains valid for the tracked business instruments, subject to scope/holder verification for mixed or personal products. Do not mark any of these as already configured merely because alerts or third-party references arrive.
+<!-- END:ADMIN_MAIL_VERIFICATION_20261021 -->
+
+<!-- BEGIN:INVOICE_ADMIN_ROUTING_20261021 -->
+## Supplier invoice routing verification — 2026-10-21
+
+Direct mailbox review shows that supplier invoices are **not consistently arriving at `admin@dreamcatcherhotel.com`**.
+
+Observed patterns:
+- some Costa Rican electronic invoices arrive at `info@dreamcatcherhotel.com` instead of admin;
+- at least one ICE electronic invoice reached a personal mailbox first and was manually forwarded to admin;
+- foreign invoices/receipts may arrive to different hotel aliases and must be normalized separately;
+- arrival of one supplier's invoice does not prove the supplier list is correctly configured.
+
+**Owner rule:** extend 📩 / `CONFIGURAR_A_ADMIN` to **supplier invoices and fiscal documents** used by Dreamcatcher, not just bank/card statements. For verified hotel suppliers, configure the billing recipient to `admin@dreamcatcherhotel.com` where the provider permits it; retain `info@dreamcatcherhotel.com` only as an approved secondary copy when useful.
+
+For Costa Rican electronic invoicing, the target evidence package is the fiscal document set actually issued (for example XML/PDF and response/acceptance artifacts when applicable), plus payment evidence. A forwarded copy is useful evidence but does not prove the supplier's billing destination is correctly configured.
+
+Routing is complete only after a new supplier invoice is received directly at admin and matched to the correct supplier/entity.
+<!-- END:INVOICE_ADMIN_ROUTING_20261021 -->
