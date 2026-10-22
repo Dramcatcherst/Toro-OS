@@ -250,6 +250,14 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 **EVIDENCIA EN RAMA:** [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commits de pruebas [`cc038540`](https://github.com/Dramcatcherst/Toro-OS/commit/cc038540a4d5f955425ba3ec27d507cc6fd671b2) y corrección [`98233954`](https://github.com/Dramcatcherst/Toro-OS/commit/98233954b9926b57e2f616f57dc4e05589c10556), con lectura de hashes de archivos verificada. Aceptación CI del nuevo candidato pendiente al redactar; cero cambios en adjuntos/contabilidad/roles/deploy. Los receipts rutinarios permanecen en la evidencia privada existente.
 
+### Custodia Alegra — revalidación de procedencia 21/10/2026
+
+**CANDIDATO VERIFICADO, SIN ACTIVACIÓN:** la materialización y restauración del paquete existente vuelven a comprobar las referencias de origen y el padre de cada derivado antes de cualquier lectura o escritura de almacenamiento. Un plan o manifiesto alterado, incluso con checksum consistente, no puede recibir `INTEGRITY_VERIFIED` o `RESTORE_TESTED` si sus fuentes están vacías, contienen posiciones sin valor o su padre no está en el paquete. Se reutiliza la validación del módulo de custodia; no se crea otro archivo maestro, conector o registro financiero.
+
+**EVIDENCIA:** regresiones RED/GREEN y 27 pruebas focales, con rechazo antes de I/O y conservación de bytes, referencias y linaje en una restauración aislada válida. Las pruebas usan almacenamiento local/simulado; no acreditan respaldo externo completo, adjuntos en Alegra, aceptación fiscal ni un piloto contable. La PR #228 ya se fusionó el 20/10/2026 a las 18:46 Costa Rica; el runtime productivo, principal mínimo, migración L3 y documento exacto conservan sus gates independientes. Este cambio de custodia no activa el Writer.
+
+**NEXT:** integrar esta corrección por el carril de PR existente del repositorio y continuar la recuperación/vinculación del host autorizado y la conciliación del comprobante piloto, sin sustituir esos bloqueos por pruebas sintéticas.
+
 ## Gmail personal y limpieza controlada — 15/10/2026
 
 **Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General ÚNICO; la cuenta personal del propietario jamás se incorpora como buzón de la organización Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y ámbito; no una segunda copia masiva del buzón.
