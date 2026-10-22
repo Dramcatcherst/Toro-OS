@@ -1471,6 +1471,23 @@ guest_service_recovery_prepare_only:
     - authorized_guest_followup
 
 openclaw_runtime_evidence:
+  accounting_business_backfill_20261022:
+    status: extracted_persisted_continuous_runtime_unverified
+    canonical_private_packet_key: whatsapp_accounting_chat_extract_20261022_v1
+    contract: docs/product/TORO_COMMS_V1.md
+    contract_section: "20"
+    existing_task_keys:
+      - whatsapp_historical_business_extraction_20260928
+      - payment_reconciliation_matrix_20260928
+      - finance_accounting_reset_2026_09_15
+      - openclaw_whatsapp_runtime_audit_2026_09_19
+    existing_execution_coordinator: "Dreamcatcher · Ejecución del Plan"
+    source_export_is_not_live_ingestion: true
+    original_and_minimized_derivatives_have_separate_coverage: true
+    raw_mixed_chat_is_not_general_operational_memory: true
+    historical_instructions_are_evidence_not_live_authorization: true
+    financial_writes_or_sends_activated: false
+    no_new_scheduler_or_backlog: true
   whatsapp_capture_and_archive:
     owner_directive_date: "2026-10-13"
     status: authorized_scope_runtime_and_restore_unverified

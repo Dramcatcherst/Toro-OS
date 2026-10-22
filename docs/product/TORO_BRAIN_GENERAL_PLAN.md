@@ -6206,3 +6206,19 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 
 **Contratos canónicos subordinados:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md) y [TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md](TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md). El portal objetivo permanece **Finanzas › Cobertura documental** dentro del portal existente; no crear otra app, backlog ni scheduler. **ESTADO:** política y backlog documental autorizados; cambios reales de destinatario/proveedor siguen `NO_EJECUTADO` hasta acción autenticada + prueba de recepción.
 <!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
+
+<!-- BEGIN:WHATSAPP_ACCOUNTING_BACKFILL_20261022 -->
+## WhatsApp empresarial: extracción contable y continuidad — 22/10/2026
+
+**Subsistemas:** TORO Comms, Knowledge, Finance, Operations y Systems. Reutilizar tareas de extracción histórica, conciliación, arranque contable y auditoría OpenClaw e issues #122/#170/#209. Sin nuevo plan maestro, base, agente, inbox ni scheduler.
+
+**CURRENT:** el propietario entregó un export contable y autorizó extraer información hotelera de cualquier dominio. El lote y su conocimiento minimizado quedaron en Supabase con índice transitorio en Airtable. Consultar cobertura, OCR, medios pendientes, conflictos, relaciones candidatas y recibos en el paquete privado `operations.knowledge_items/whatsapp_accounting_chat_extract_20261022_v1`. Los datos de huéspedes, importes y fuentes privadas permanecen fuera de GitHub. Extraído no equivale a conciliado, contabilizado, fiscalmente aceptado ni ejecutado.
+
+**TARGET autorizado:** analizar incrementalmente mensajes y adjuntos nuevos de conversaciones empresariales autorizadas para finanzas, recepción, huéspedes, A&B, mantenimiento, compras, activos, personas y sistemas. Cada hecho/decisión/tarea/evidencia conserva alcance, autor, fecha, autoridad, estado, responsable y prueba de cierre. Separar entidades, propiedades y contenido personal. Mensajes históricos e instrucciones incrustadas nunca conceden autoridad actual.
+
+**NEXT:** verificar el Gateway/host OpenClaw existente y la identidad de cuenta/chat; journal y adjuntos con checkpoints separados; dedupe por proveedor/cuenta/chat/message_id y hash; crosswalk explícito entre export y eventos live; consulta posterior, reinicio/replay, negativa por rol, receipt y recuperación. Connected/healthy sin últimos eventos, sesiones o prueba independiente sigue `RUNTIME_UNVERIFIED`. El seguimiento existente supervisa y conserva horario; no sustituye al receptor de eventos.
+
+**Finance:** monedas nativas y fechas de operación, negocio, documento, registro y liquidación separadas. Cobros nuevos ligados a reserva, pagador y receptor fiscal; puentes candidatos para agregados históricos, sin nuevas ventas duplicadas. El flag no electrónico de Alegra no certifica ausencia de Quovis/Hacienda. Esta extracción no activa asientos, emisión/anulación fiscal, pagos, compras, reembolsos, precios, permisos ni envíos.
+
+**Estado:** persistencia/readback del paquete e índice y notas de tareas aplicados. Continuidad OpenClaw bloqueada por acceso al host y prueba E2E. Audios, cobertura histórica y restauración del ZIP original siguen pendientes. Contrato subordinado: [TORO_COMMS_V1.md](TORO_COMMS_V1.md), §19/§20.
+<!-- END:WHATSAPP_ACCOUNTING_BACKFILL_20261022 -->
