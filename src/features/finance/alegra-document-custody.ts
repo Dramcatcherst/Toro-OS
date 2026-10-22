@@ -51,6 +51,14 @@ function extension(asset: AlegraOriginalAsset) {
   throw new Error("CUSTODY_FORMAT_UNSUPPORTED_OR_INVALID");
 }
 
+function validateProvenance(assets: Pick<AlegraPlannedAsset, "role" | "sha256" | "sourceRefs" | "parentSha256">[]) {
+  for (const asset of assets) {
+    if (!Array.isArray(asset.sourceRefs) || !asset.sourceRefs.length || [...asset.sourceRefs].some(ref => typeof ref !== "string" || !ref.trim())) throw new Error("CUSTODY_SOURCE_REQUIRED");
+    if (asset.role === "derived_preview" && !asset.parentSha256) throw new Error("CUSTODY_DERIVATIVE_PARENT_REQUIRED");
+    if (asset.parentSha256 && !assets.some(parent => parent.sha256 === asset.parentSha256 && parent.role !== "derived_preview")) throw new Error("CUSTODY_PARENT_NOT_IN_PACKAGE");
+  }
+}
+
 export function prepareAlegraDocumentCustody(input: CustodyInput): AlegraCustodyPlan {
   if (!/^[A-Za-z0-9_-]{1,128}$/.test(input.documentKey)) throw new Error("CUSTODY_DOCUMENT_KEY_INVALID");
   const scoped = scopeKey(input.scope);
@@ -81,9 +89,7 @@ export function prepareAlegraDocumentCustody(input: CustodyInput): AlegraCustody
         : original.bytes.byteLength > input.attachmentLimitBytes ? "ALEGRA_ATTACH_OVER_LIMIT" : "ALEGRA_ATTACH_PENDING",
       bytes: new Uint8Array(original.bytes) });
   }
-  for (const asset of assets) {
-    if (asset.parentSha256 && !assets.some(a => a.sha256 === asset.parentSha256 && a.role !== "derived_preview")) throw new Error("CUSTODY_PARENT_NOT_IN_PACKAGE");
-  }
+  validateProvenance(assets);
   return { scopeKey: scoped, documentKey: input.documentKey, state: "PREPARED", externalUpload: false, assets };
 }
 
@@ -99,6 +105,7 @@ function validateScopeAndPaths(value: AlegraCustodyPlan | AlegraCustodyManifest,
     const ext = formats[asset.role]?.[asset.mime];
     if (!ext || !/^[a-f0-9]{64}$/.test(asset.sha256) || asset.path !== `${value.scopeKey}/${value.documentKey}/${asset.role}/${asset.sha256}.${ext}` || !Number.isSafeInteger(asset.sizeBytes) || asset.sizeBytes <= 0) throw new Error("CUSTODY_MANIFEST_INVALID");
   }
+  validateProvenance(value.assets);
 }
 
 function manifestBytes(manifest: Omit<AlegraCustodyManifest, "manifestReceipt">) {

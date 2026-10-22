@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { prepareAlegraDocumentCustody, materializeAlegraDocumentCustody, restoreAlegraDocumentCustody, type AlegraCustodyStorage } from "./alegra-document-custody";
+import { prepareAlegraDocumentCustody, materializeAlegraDocumentCustody, restoreAlegraDocumentCustody, type AlegraCustodyStorage, type AlegraPlannedAsset } from "./alegra-document-custody";
 
 const scope = { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity", propertyId: "fixture-property" };
 function fixturePdf() {
@@ -22,6 +22,18 @@ const assets = [
   { role: "original_xml" as const, mime: "application/xml", bytes: Buffer.from('<?xml version="1.0"?><Factura><Numero>fixture-1</Numero></Factura>'), sourceRef: "fixture:xml" },
   { role: "original_photo" as const, mime: "image/png", bytes: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j1xkAAAAASUVORK5CYII=", "base64"), sourceRef: "fixture:photo" },
 ];
+const preview = {
+  ...assets[3], role: "derived_preview" as const, sourceRef: "fixture:preview",
+  parentSha256: createHash("sha256").update(assets[2].bytes).digest("hex"),
+};
+const invalidProvenanceCases: [string, string, (entries: AlegraPlannedAsset[]) => void][] = [
+  ["missing source references", "CUSTODY_SOURCE_REQUIRED", entries => { entries[0].sourceRefs = []; }],
+  ["sparse source references", "CUSTODY_SOURCE_REQUIRED", entries => { entries[0].sourceRefs = new Array<string>(1); }],
+  ["blank source reference", "CUSTODY_SOURCE_REQUIRED", entries => { entries[0].sourceRefs = [" "]; }],
+  ["blank additional source reference", "CUSTODY_SOURCE_REQUIRED", entries => { entries[0].sourceRefs.push(" "); }],
+  ["missing preview parent", "CUSTODY_DERIVATIVE_PARENT_REQUIRED", entries => { delete entries.at(-1)!.parentSha256; }],
+  ["orphaned preview parent", "CUSTODY_PARENT_NOT_IN_PACKAGE", entries => { entries.at(-1)!.parentSha256 = "f".repeat(64); }],
+];
 
 async function storage(name: string): Promise<AlegraCustodyStorage> {
   const root = await mkdtemp(join(tmpdir(), `toro-custody-${name}-`));
@@ -39,6 +51,62 @@ async function storage(name: string): Promise<AlegraCustodyStorage> {
 }
 
 describe("Alegra original document custody", () => {
+  it.each(invalidProvenanceCases)("rejects %s in a prepared package before storage I/O", async (_label, error, mutate) => {
+    const plan = prepareAlegraDocumentCustody({ scope, documentKey: "fixture-document", assets: [...assets, preview] });
+    mutate(plan.assets);
+    const source = await storage("invalid-provenance");
+    const read = vi.spyOn(source, "read");
+    const write = vi.spyOn(source, "putImmutable");
+
+    await expect(materializeAlegraDocumentCustody(plan, scope, source)).rejects.toThrow(error);
+    expect(read).not.toHaveBeenCalled();
+    expect(write).not.toHaveBeenCalled();
+  });
+
+  it.each(invalidProvenanceCases)("rejects %s in a checksum-valid manifest before storage I/O", async (_label, error, mutate) => {
+    const source = await storage("invalid-manifest-provenance");
+    const captured = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({
+      scope, documentKey: "fixture-document", assets: [...assets, preview],
+    }), scope, source);
+    // Simulate a legacy manifest whose bytes are intact but whose lineage is incomplete.
+    const persisted = JSON.parse(Buffer.from(await source.read(captured.manifestReceipt.storageRef)).toString());
+    mutate(persisted.assets);
+    const bytes = Buffer.from(JSON.stringify(persisted));
+    const hash = createHash("sha256").update(bytes).digest("hex");
+    const path = `${captured.scopeKey}/${captured.documentKey}/manifests/${hash}.json`;
+    await source.putImmutable(path, bytes);
+    captured.assets = persisted.assets;
+    captured.manifestReceipt = { path, storageRef: path, sha256: hash, revision: "fixture-immutable" };
+    const destination = await storage("invalid-manifest-restore");
+    const sourceRead = vi.spyOn(source, "read");
+    const sourceWrite = vi.spyOn(source, "putImmutable");
+    const destinationRead = vi.spyOn(destination, "read");
+    const destinationWrite = vi.spyOn(destination, "putImmutable");
+
+    await expect(restoreAlegraDocumentCustody(captured, scope, source, destination)).rejects.toThrow(error);
+    expect(sourceRead).not.toHaveBeenCalled();
+    expect(sourceWrite).not.toHaveBeenCalled();
+    expect(destinationRead).not.toHaveBeenCalled();
+    expect(destinationWrite).not.toHaveBeenCalled();
+  });
+
+  it("preserves source references and preview lineage through an isolated restore", async () => {
+    const source = await storage("valid-lineage");
+    const captured = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({
+      scope, documentKey: "fixture-document", assets: [...assets, preview],
+    }), scope, source);
+    const destination = await storage("valid-lineage-restore");
+    const restored = await restoreAlegraDocumentCustody(captured, scope, source, destination);
+
+    expect(restored.state).toBe("RESTORE_TESTED");
+    for (const original of [...assets, preview]) {
+      const entry = restored.assets.find(asset => asset.role === original.role)!;
+      expect(entry.sourceRefs).toEqual([original.sourceRef]);
+      expect(Buffer.from(await destination.read(entry.storageRef))).toEqual(original.bytes);
+    }
+    expect(restored.assets.find(asset => asset.role === "derived_preview")!.parentSha256).toBe(preview.parentSha256);
+  });
+
   it.each(["../another-tenant/private.json", "other-scope/document/original_xml/file.xml"])("rejects an unconfined storage reference before any read: %s", async (ref) => {
     const source = await storage("confinement");
     const captured = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-document", assets }), scope, source);
