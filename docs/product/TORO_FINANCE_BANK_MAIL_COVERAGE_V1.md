@@ -49,7 +49,7 @@ Existing portal, no new app or navigation silo. A compact **Finanzas › Cobertu
 | BAC cards ••••4966 / ••••4961 / ••••5042 / ••••7161; Visa ••••4701 | Current/partial statements only | Complete cycles; map holder/use/ledger | 📩 |
 | BN CRC ••••9468 / USD ••••8174 | No company originals localized in current audit | Recover missing 2026 originals | 📩 |
 | BCR CRC ••••7251 / USD ••••7849 | No company originals localized | Recover missing 2026 originals | 📩 |
-| LAFISE bank CRC ••••1998 / USD ••••7740 | Historical ZIP exists, months unclassified | Inspect first; request only gaps | 📩 |
+| LAFISE bank CRC ••••1998 / USD ••••7740 | Historical archives classified as Alegra financial statements/notes; they do not prove 2026 bank statements | Recover 2026 originals by account/period; verify the historical card scope separately | 📩 |
 | LAFISE card ••••7930 | Monthly coverage incomplete | Complete cycles and CRC/USD mapping | 📩 |
 | WINK CRC ••••1547 | Personal-context reference exists | Verify business identity; then fill gaps | 📩 conditional |
 | PayPal USD | Partial operational evidence | Monthly exports incl. gross/fees/refunds/FX/net payout | 📩 after business validation |
