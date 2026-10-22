@@ -19,7 +19,9 @@ export function getToroMcpRuntimeConfig(): ToroMcpRuntimeConfig | null {
   const resourceUrl = normalizeToroMcpResourceUrl(process.env.TORO_MCP_RESOURCE_URL);
   if (!resourceUrl) return null;
 
-  const { url } = getSupabasePublicConfig();
+  let url: string;
+  try { ({ url } = getSupabasePublicConfig()); }
+  catch { return null; }
   const authServerUrl = `${url.replace(/\/$/, "")}/auth/v1`;
 
   return {

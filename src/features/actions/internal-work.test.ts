@@ -294,3 +294,18 @@ describe("isExactToroInternalTaskReplay", () => {
     ).toBe(false);
   });
 });
+
+
+describe("C50-07 coherent internal-work membership", () => {
+  it.each(["invited", "suspended", "offboarded"] as const)("denies %s ADMIN even with stale broad permission", (status) => {
+    const actor = context(["ADMIN"]);
+    expect(canCreateToroInternalWork({ ...actor, membership: { ...actor.membership!, status } })).toBe(false);
+  });
+  it("requires actor, work scope and the same membership organization", () => {
+    const actor = context(["GERENCIA"]);
+    expect(canCreateToroInternalWork({ ...actor, userId: "" })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, userId: " user-1" })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, allowedDataScopes: [] })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, membership: { ...actor.membership!, orgId: "other" } })).toBe(false);
+  });
+});

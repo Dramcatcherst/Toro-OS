@@ -166,8 +166,8 @@ export function planEvidenceImport(incoming, existing) {
     const revisions = new Set([...rows,...current].map(hashOf));
     if (revisions.size !== 1 || current.length > 1 || revisions.has(undefined)) {
       result.conflicts.push({key,reason:'SOURCE_REVISION_CONFLICT'});
-    } else if (current.length) result.unchanged.push(rows[0]);
-    else result.insert.push(rows[0]);
+    } else if (current.length) result.unchanged.push(structuredClone(rows[0]));
+    else result.insert.push(structuredClone(rows[0]));
   }
   return result;
 }

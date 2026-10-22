@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { evaluateKrossFirstLiveRead } from "./acceptance";
+import { evaluateKrossFirstLiveRead, type KrossLiveReadAcceptanceInput } from "./acceptance";
 
 const passing = {
   authorizedRealRunEvidenced: true,
@@ -21,6 +21,13 @@ const passing = {
 };
 
 describe("evaluateKrossFirstLiveRead", () => {
+  it.each(["authorizedRealRunEvidenced", "runReadOnly", "idempotentReplayPassed", "sourceIsLiveEvidenceVerified", "receptionRlsReadPassed", "unauthorizedReservationReadBlocked", "rollbackEvidencePresent", "eligibleCurrentReservationExpected", "zeroCurrentStateProvenFromKross"])("blocks a malformed proof boolean %s", key => {
+    const result = evaluateKrossFirstLiveRead({ ...passing, [key]: "false" } as unknown as KrossLiveReadAcceptanceInput);
+    expect(result.passed).toBe(false);
+    expect(result.unlocks).toEqual([]);
+    expect(result.checks.every(check => typeof check.passed === "boolean")).toBe(true);
+  });
+
   it("blocks a claim of zero reservations contradicted by safe-view rows", () => {
     const result = evaluateKrossFirstLiveRead({ ...passing, eligibleCurrentReservationExpected: false, zeroCurrentStateProvenFromKross: true, currentReservationsSafeRows: 4 });
     expect(result.passed).toBe(false);

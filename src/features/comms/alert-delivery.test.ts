@@ -27,7 +27,8 @@ const verifiedManagementGroup: WhatsAppGroupBinding = {
 };
 
 // A caller must supply its protected scope and health policy; an event is not a probe.
-const deliveryContext = { orgId: "org-hotel", nowMs: Date.parse("2026-10-13T20:01:00Z"), maxHealthAgeMs: 120_000 };
+const messageBudget = { maxFieldBytes: 1024, maxMessageBytes: 4096 };
+const deliveryContext = { messageBudget, orgId: "org-hotel", nowMs: Date.parse("2026-10-13T20:01:00Z"), maxHealthAgeMs: 120_000 };
 const prepare = (signal = managementSignal(), bindings = [verifiedManagementGroup]) =>
   prepareAlertDelivery(signal, bindings, deliveryContext);
 
@@ -88,7 +89,7 @@ describe("TORO alert delivery routing", () => {
   });
 
   it("formats an actionable message under 120 words", () => {
-    const message = formatAlertDelivery(managementSignal());
+    const message = formatAlertDelivery(managementSignal(), messageBudget);
     for (const label of ["Qué pasó:", "Impacto:", "Acción:", "Responsable:", "Plazo:", "Fuente/corte:", "Referencia:"]) {
       expect(message).toContain(label);
     }
@@ -152,5 +153,42 @@ describe("TORO alert delivery routing", () => {
       { ...managementSignal(), sourceKey: "x:y", version: "z" },
       [{ ...verifiedManagementGroup, id: "other-binding" }],
     ).dedupeKey);
+  });
+});
+
+
+describe("C50-01 protected alert byte budget", () => {
+  it("rejects giant tokens before a delivery can become ready", () => {
+    const signal = { ...managementSignal(), title: "x".repeat(20_000) };
+    expect(() => formatAlertDelivery(signal, messageBudget)).toThrow();
+    expect(prepare(signal)).toMatchObject({ status: "blocked", destinationBindingId: null, message: "" });
+    expect(prepare({ ...managementSignal(), sourceRef: "reference:" + "x".repeat(20_000) })).toMatchObject({
+      status: "blocked", destinationBindingId: null, message: "",
+    });
+  });
+
+  it("counts UTF-8 bytes and keeps complete provenance without word clipping", () => {
+    const sourceRef = "fixture reference with more than eight words and an exact immutable identity";
+    const signal = { ...managementSignal(), title: "🐂".repeat(257), sourceRef };
+    expect(() => formatAlertDelivery(signal, messageBudget)).toThrow();
+    const message = formatAlertDelivery({ ...signal, title: "🐂".repeat(256) }, messageBudget);
+    expect(message).toContain(`Referencia: ${sourceRef}`);
+    expect(Buffer.byteLength(message, "utf8")).toBeLessThanOrEqual(messageBudget.maxMessageBytes);
+  });
+
+  it("enforces the caller total budget even when individual fields fit", () => {
+    const signal = managementSignal();
+    const exact = Buffer.byteLength(formatAlertDelivery(signal, messageBudget), "utf8");
+    expect(formatAlertDelivery(signal, { maxFieldBytes: 100, maxMessageBytes: exact })).toBeTruthy();
+    expect(() => formatAlertDelivery(signal, { maxFieldBytes: 100, maxMessageBytes: exact - 1 })).toThrow();
+    expect(prepareAlertDelivery(signal, [verifiedManagementGroup], {
+      ...deliveryContext, messageBudget: { maxFieldBytes: 100, maxMessageBytes: exact - 1 },
+    })).toMatchObject({ status: "blocked", destinationBindingId: null, message: "" });
+  });
+
+  it.each([0, -1, Number.NaN, Number.POSITIVE_INFINITY, 1.5])("rejects an invalid protected budget: %s", (maxMessageBytes) => {
+    expect(prepareAlertDelivery(managementSignal(), [verifiedManagementGroup], {
+      ...deliveryContext, messageBudget: { maxFieldBytes: 10, maxMessageBytes },
+    }).status).toBe("blocked");
   });
 });

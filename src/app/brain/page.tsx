@@ -1,3 +1,4 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import { toBrainClientView } from "@/features/brain/presentation";
 import { loadBrainProjectionView } from "@/lib/server/brain-projection";
 import { BrainExplorer } from "./brain-explorer";
@@ -29,7 +30,7 @@ export default async function BrainPage() {
       <PortalAccessRecovery retryPath="/brain" />
     </div></main>;
   }
-  return <>
+  const content = <>
     {hasPortalOrganizationContext(context) ? <PortalHeader current="brain"
       scopeLabel={canReadHotelDirectory(context) ? "Dreamcatcher" : "Organización activa"} /> : null}
     {isPortalDeployment() && !hasPortalOrganizationContext(context) ? <section className={styles.content} aria-label="Acceso al Cerebro">
@@ -41,4 +42,5 @@ export default async function BrainPage() {
     </section> : null}
     <BrainExplorer view={toBrainClientView(view)} />
   </>;
+  return context ? <PrivateViewGuard>{content}</PrivateViewGuard> : content;
 }

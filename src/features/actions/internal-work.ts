@@ -175,8 +175,12 @@ export function validateToroInternalWorkRequest(
 export function canCreateToroInternalWork(context: ToroResolvedContext) {
   if (
     context.mode !== "organization" ||
-    !context.orgId ||
+    !context.userId || context.userId !== context.userId.trim() ||
+    !context.orgId || context.orgId !== context.orgId.trim() ||
     !context.membership ||
+    context.membership.orgId !== context.orgId ||
+    context.membership.status !== "active" ||
+    !context.allowedDataScopes.includes("work_org") ||
     !context.canUseOrganizationData ||
     context.requiresContextChoice
   ) {

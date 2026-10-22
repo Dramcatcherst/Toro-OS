@@ -13,8 +13,8 @@ const { resolveContext, createClient, loadBrainView } = vi.hoisted(() => ({
 // authorization policy and projection builder all execute their real code.
 vi.mock("@/features/context/resolver", () => ({ resolveToroContext: resolveContext }));
 vi.mock("@/lib/supabase/server", () => ({ createServerSupabaseClient: createClient }));
-// The separately tested Brain reader is another external read boundary here.
-// MCP, Owner Attention provider, policy and projection still execute real code.
+// Priorities must not depend on this unrelated read boundary. MCP and the
+// Owner Attention provider, policy and projection still execute real code.
 vi.mock("@/lib/server/brain-projection", () => ({ loadBrainProjectionView: loadBrainView }));
 
 import { loadOwnerAttentionProjection } from "@/features/attention/owner-attention-server";
@@ -138,16 +138,18 @@ const disabledConfigurations = [
 ] as const;
 
 describe("MCP consumer preserves the Owner Attention read boundary", () => {
-  // Removing the provider's gate must expose synthetic invoice priorities and
-  // fail these assertions: the real MCP consumer cannot bypass that gate.
+  // The MCP consumer and provider each enforce their own capability boundary.
+  // Disabled capability is unavailable; a failing enabled source is degraded.
   it.each(disabledConfigurations)("returns no priorities or database reads for flags %s / %s", async (brain, attention) => {
     vi.stubEnv("TORO_BRAIN_CANONICAL_READ_ENABLED", brain);
     vi.stubEnv("TORO_OWNER_ATTENTION_READ_ENABLED", attention);
     const result = await runToroMcpReadTool("get_priorities", { correlationId: "synthetic-correlation" });
-    expect(result.error?.code).toBe("degraded");
+    expect(result.error?.code).toBe("capability_unavailable");
     expect(result).not.toHaveProperty("data");
     expect(JSON.stringify(result)).not.toMatch(/Synthetic supplier|TEST-1|synthetic-invoice/);
     expect(createClient).not.toHaveBeenCalled();
+    expect(loadBrainView).not.toHaveBeenCalled();
+    expect(queries).toEqual([]);
   });
 
   it("projects a synthetic priority through the real provider when both capabilities and role allow it", async () => {
@@ -156,6 +158,7 @@ describe("MCP consumer preserves the Owner Attention read boundary", () => {
     expect(result.data).toMatchObject({ items: [expect.objectContaining({ objectRef: "synthetic-invoice", title: "Synthetic supplier — TEST-1", sourceSystem: "TORO Finance", freshness: "unknown", verification: "unverified" })] });
     expect(queries.map(query => query.source)).toEqual(["operations.communication_followups", "operations.obligations", "finance.invoices"]);
     expect(queries.every(query => query.filters.some(([key, value]) => key === "org_id" && value === "synthetic-org"))).toBe(true);
+    expect(loadBrainView).not.toHaveBeenCalled();
   });
 
   it("keeps priorities unavailable for a role without Owner Attention permission", async () => {
@@ -168,13 +171,37 @@ describe("MCP consumer preserves the Owner Attention read boundary", () => {
     expect(createClient).not.toHaveBeenCalled();
   });
 
-  it("does not reach Owner Attention when Brain is a demonstration", async () => {
-    const view = await loadBrainView();
-    loadBrainView.mockResolvedValue({ ...view, runtime: { realData: false } });
+  it.each([undefined, "public_demo"])("does not reach identity or Owner Attention on public deployment %s", async mode => {
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", mode);
+    const result = await runToroMcpReadTool("get_priorities");
+    expect(result.error?.code).toBe("capability_unavailable");
+    expect(result).not.toHaveProperty("data");
+    expect(resolveContext).not.toHaveBeenCalled();
+    expect(createClient).not.toHaveBeenCalled();
+    expect(loadBrainView).not.toHaveBeenCalled();
+    expect(queries).toEqual([]);
+  });
+
+  it.each(["operations.communication_followups", "operations.obligations", "finance.invoices"])("returns no priorities when its own canonical source %s fails", async source => {
+    failingSource = source;
+    const result = await runToroMcpReadTool("get_priorities");
+    expect(result.error?.code).toBe("degraded");
+    expect(result).not.toHaveProperty("data");
+    expect(JSON.stringify(result)).not.toMatch(/Synthetic supplier|TEST-1|synthetic-private-source-error/);
+    expect(loadBrainView).not.toHaveBeenCalled();
+  });
+
+  it("rechecks MCP capabilities after asynchronous context resolution before reading priorities", async () => {
+    resolveContext.mockImplementation(async () => {
+      vi.stubEnv("TORO_OWNER_ATTENTION_READ_ENABLED", "false");
+      return ownerContext();
+    });
     const result = await runToroMcpReadTool("get_priorities");
     expect(result.error?.code).toBe("capability_unavailable");
     expect(result).not.toHaveProperty("data");
     expect(createClient).not.toHaveBeenCalled();
+    expect(loadBrainView).not.toHaveBeenCalled();
+    expect(queries).toEqual([]);
   });
 });
 

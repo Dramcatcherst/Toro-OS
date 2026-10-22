@@ -1,6 +1,7 @@
 import {
   captureAlegraWriteAuthorization,
   isAlegraWriteBusinessKey,
+  parseAlegraTimestamp,
   validateAlegraWriteApproval,
   verifyAlegraReadback,
   type AlegraReadback,
@@ -119,10 +120,26 @@ export async function executeApprovedAlegraIntent(input: AlegraExecutionInput): 
     return { ok: false, executedProviderMutation: false,
       receipt: blockedReceipt({ ...input, reason: "WRITER_DISABLED" }) };
   }
+  // Capture capabilities and mutable evidence without freezing the host's objects.
+  const transport = input.transport;
+  const gate = input.gate;
+  const create = transport?.create, find = transport?.findByIdempotencyKey, readback = transport?.readback;
+  const beforeDispatch = gate.beforeDispatch, renewLease = gate.renewLease, persistReceipt = gate.persistReceipt;
+  if ([create, find, readback, beforeDispatch, renewLease, persistReceipt].some(method => typeof method !== "function")) {
+    return { ok: false, executedProviderMutation: false,
+      receipt: blockedReceipt({ ...input, reason: "EXECUTION_CAPABILITY_INVALID" }) };
+  }
+  input = { ...input,
+    priorReceipt: input.priorReceipt ? structuredClone(input.priorReceipt) : input.priorReceipt,
+    priorVerifiedReceipt: input.priorVerifiedReceipt ? structuredClone(input.priorVerifiedReceipt) : input.priorVerifiedReceipt,
+    duplicateDecision: structuredClone(input.duplicateDecision),
+    transport: { create: create.bind(transport), findByIdempotencyKey: find.bind(transport), readback: readback.bind(transport) },
+    gate: { beforeDispatch: beforeDispatch.bind(gate), renewLease: renewLease.bind(gate), persistReceipt: persistReceipt.bind(gate) },
+  };
   const result = await executeWithGate(input);
   if (!result.executedProviderMutation && !result.admitted) return result;
   try {
-    const receiptId = await input.gate.persistReceipt(result.receipt);
+    const receiptId = await input.gate!.persistReceipt(result.receipt);
     if (!receiptId) throw new Error("Missing durable receipt");
     return { ...result, receipt: { ...result.receipt, durableReceiptId: receiptId } };
   } catch {
@@ -165,6 +182,19 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
     return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
       reason: "PRIOR_EFFECT_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
   }
+
+  if (prior?.idempotencyKey === input.intent.idempotencyKey && prior.verified && (
+    typeof prior.actorId !== "string" || !prior.actorId.trim() ||
+    typeof prior.approvalId !== "string" || !prior.approvalId.trim() ||
+    prior.verified !== true || prior.version !== "TORO-ALEGRA-WRITER-RECEIPT-v1" ||
+    typeof prior.nativeId !== "string" || !prior.nativeId.trim() ||
+    typeof prior.durableReceiptId !== "string" || !prior.durableReceiptId.trim() ||
+    prior.verificationState !== "VERIFIED" ||
+    !["provider_created", "provider_ambiguous_recovered", "replayed_verified"].includes(prior.executionState) ||
+    !Array.isArray(prior.reasons) || prior.reasons.some(reason => reason !== "IDEMPOTENT_REPLAY") ||
+    !Number.isFinite(parseAlegraTimestamp(prior.createdAt))
+  )) return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
+    reason: "PRIOR_RECEIPT_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
 
   if (!input.duplicateDecision.clear || input.duplicateDecision.state !== "CLEAR") {
     return {
@@ -234,6 +264,15 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
     createResult = { state: "ambiguous" };
   }
 
+  // A malformed result cannot establish that the admitted POST had no effect.
+  if (!createResult || typeof createResult !== "object" || Array.isArray(createResult) ||
+      !["blocked", "failed", "created", "ambiguous"].includes(createResult.state) ||
+      (createResult.state === "created" && (typeof createResult.nativeId !== "string" || !createResult.nativeId.trim())) ||
+      ((createResult.state === "blocked" || createResult.state === "failed") && (typeof createResult.code !== "string" || !createResult.code.trim())) ||
+      (createResult.state === "failed" && typeof createResult.retryable !== "boolean")) {
+    createResult = { state: "ambiguous" };
+  }
+
   let nativeId: string | null = null;
   let executionState: AlegraWriterReceipt["executionState"] = "provider_created";
 
@@ -270,6 +309,9 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
       lookup = { state: "unavailable" };
     }
 
+    if (!lookup || typeof lookup !== "object" || Array.isArray(lookup) ||
+        !["found", "not_found", "unavailable"].includes(lookup.state) ||
+        (lookup.state === "found" && (typeof lookup.nativeId !== "string" || !lookup.nativeId.trim()))) lookup = { state: "unavailable" };
     if (lookup.state !== "found") {
       return {
         ok: false,
@@ -308,17 +350,18 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
   }
 
   let readback: AlegraReadback;
+  let verification: ReturnType<typeof verifyAlegraReadback>;
   try {
     readback = await input.transport.readback({ intent: input.intent, nativeId });
+    verification = verifyAlegraReadback(input.intent, readback);
+    if (readback.nativeId !== nativeId) {
+      verification.ok = false;
+      verification.state = "READBACK_MISMATCH";
+      verification.mismatches.push("NATIVE_ID");
+    }
   } catch {
     return { ok: false, executedProviderMutation: true, receipt: { ...blockedReceipt({ ...input,
       reason: "READBACK_UNAVAILABLE", verificationState: "PROVIDER_STATE_UNKNOWN" }), nativeId, executionState } };
-  }
-  const verification = verifyAlegraReadback(input.intent, readback);
-  if (readback.nativeId !== nativeId) {
-    verification.ok = false;
-    verification.state = "READBACK_MISMATCH";
-    verification.mismatches.push("NATIVE_ID");
   }
 
   return {

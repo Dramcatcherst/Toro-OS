@@ -204,7 +204,7 @@ it("keeps DreamTeam as reviewed navigation inside the compact Portal without cla
   const html=await render();expect(html).toContain("DreamTeam · TORO People");
   expect(html).toContain("Equipo · sesión propia");expect(html).toContain("cada servicio conserva su sesión");
   expect(html).toContain('href="/my-toro/herramientas#guide-catalogue-heading"');
-  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true});
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true,expectedContext:expect.objectContaining({userId:expect.any(String),orgId:expect.any(String)})});
   expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
 });
 

@@ -1,3 +1,4 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
@@ -17,7 +18,7 @@ import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 
 export const dynamic = "force-dynamic";
 
-export default async function PortalPage() {
+async function PortalContent() {
   if (isPublicDemo()) redirect("/brain");
   let view;
   try { view = await resolveCurrentToroReadOnlyMenu(); }
@@ -45,7 +46,7 @@ export default async function PortalPage() {
     try { return { state: "ready", projection: await loadOwnerAttentionProjection(view!.context) }; }
     catch { return { state: "unavailable", projection: null }; }
   }
-  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true}) : Promise.resolve(null), readAttention()]);
+  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true,expectedContext:view.context}) : Promise.resolve(null), readAttention()]);
   const directoryAuthorized = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true);
   const operationalLinks = directoryAuthorized ? directory.links : [];
   const catalogueItems = directoryAuthorized ? directory.catalogueItems : [];
@@ -63,4 +64,8 @@ export default async function PortalPage() {
       <PortalConnectionNote />
     </div></main>
   </>;
+}
+
+export default async function PortalPage() {
+  return <PrivateViewGuard>{await PortalContent()}</PrivateViewGuard>;
 }
