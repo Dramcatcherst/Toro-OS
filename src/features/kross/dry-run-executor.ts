@@ -57,6 +57,15 @@ export type KrossDryRunResult = {
   pmsWriteCount: 0;
 };
 
+function artifactRunKey(request: KrossDryRunRequest) {
+  return JSON.stringify([
+    request.adapterConfig.orgId.trim(),
+    request.adapterConfig.propertyId.trim(),
+    request.evidence.sourceReference.trim(),
+    request.evidence.sourceHash.trim(),
+  ]);
+}
+
 function runKey(request: KrossDryRunRequest, externalReservationId: string | null) {
   return JSON.stringify([
     request.adapterConfig.orgId.trim(),
@@ -120,6 +129,7 @@ export function executeKrossDryRun(
   );
   const currentRunKey = runKey(request, adapted.candidate?.externalReservationId ?? null);
   const existingRun = store.getImportRun(currentRunKey);
+  const existingArtifactRejection = store.getImportRun(artifactRunKey(request));
 
   function reject(
     normalizationIssues: KrossNormalizationIssue[],
@@ -128,7 +138,7 @@ export function executeKrossDryRun(
     // Keep an accepted receipt immutable when a later conflicting attempt fails.
     const rejectedKey = existingRun?.status === "accepted"
       ? JSON.stringify([currentRunKey, "reject", executionIssue ?? "validation"])
-      : currentRunKey;
+      : artifactRunKey(request);
     const storedRejection = store.getImportRun(rejectedKey);
     const importRun: KrossDryRunImportRunEvidence = {
       runKey: rejectedKey,
@@ -176,7 +186,9 @@ export function executeKrossDryRun(
 
   const key = identityKey(normalized.reservation);
   const existingMirror = store.getMirror(key);
-  if (existingRun?.status === "rejected") return reject(normalized.issues, "rejected_source_replay");
+  if (existingArtifactRejection?.status === "rejected" || existingRun?.status === "rejected") {
+    return reject(normalized.issues, "rejected_source_replay");
+  }
   if (existingRun && (!existingMirror || existingRun.identityKey !== key)) {
     return reject(normalized.issues, existingMirror ? "source_replay_conflict" : "missing_replay_mirror");
   }
