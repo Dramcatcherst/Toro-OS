@@ -127,6 +127,33 @@ describe("executeKrossDryRun", () => {
     expect(store.importRunCount()).toBe(2);
   });
 
+  it("keeps incomplete known-ID rows from rejecting other rows in one source artifact", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const invalidK100 = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: {
+          reservation: { id: "K-100", status: "confirmed" },
+          stay: { room: "26", check_out: "2026-09-27" },
+        },
+      },
+      store,
+    );
+    const validK101 = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
+    expect(invalidK100.status).toBe("rejected");
+    expect(invalidK100.adapterIssues.map(issue => issue.field)).toContain("checkIn");
+    expect(invalidK100.importRun.identityKey).toContain("K-100");
+    expect(validK101.status).toBe("accepted");
+    expect(validK101.operation).toBe("insert");
+    expect(validK101.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
+  });
+
   it("does not report accepted replay when its stored mirror is missing", () => {
     const backing = createInMemoryKrossDryRunStore();
     const request = { ...baseRequest, payload: payload() };
