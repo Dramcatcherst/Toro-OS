@@ -59,11 +59,16 @@ finance_document_control:
   routing_symbol: "📩"
   routing_symbol_meaning: CONFIGURAR_A_ADMIN
   routing_requires_verified_business_scope: true
+  routing_includes_supplier_invoices_and_fiscal_documents: true
+  supplier_scope_must_be_verified_before_routing: true
+  routing_complete_requires_new_document_received_directly_at_admin: true
   personal_only_statements_must_not_be_redirected: true
   provider_change_requires_authenticated_action_and_test_receipt: true
   original_statement_required_for_period_completion: true
   index_or_alert_is_not_original_statement: true
   recover_existing_originals_before_requesting_duplicates: true
+  lafise_historical_archives_classified: true
+  lafise_2026_business_statements_still_missing: true
   accounting_chain:
     - source_document_or_support
     - payment_evidence
