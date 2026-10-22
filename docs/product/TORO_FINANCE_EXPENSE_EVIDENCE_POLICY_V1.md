@@ -201,3 +201,19 @@ TORO should surface:
 - wrong cost-center/category candidates;
 - stale OPEN items;
 - month-close completeness percentage.
+
+<!-- BEGIN:SUPPLIER_INVOICE_ROUTING_20261021 -->
+## Supplier billing mailbox — owner directive 2026-10-21
+
+For Dreamcatcher suppliers whose invoices support hotel expenses, the preferred billing destination is `admin@dreamcatcherhotel.com`. Mark the supplier 📩 / `CONFIGURAR_A_ADMIN` when billing still arrives to a personal mailbox, another hotel alias, or is only recovered manually.
+
+Do not treat the routing action as complete until a subsequent invoice arrives directly at admin. Where a provider cannot use admin, record the actual delivery mechanism and approved fallback instead of pretending the rule is satisfied.
+
+The routing rule applies to:
+- Costa Rican electronic invoices and related fiscal files;
+- recurring utility/provider bills;
+- foreign invoices/receipts used as expense evidence;
+- credit/debit notes and supplier statements when material.
+
+It does not require redirecting personal-only invoices or unrelated personal financial data.
+<!-- END:SUPPLIER_INVOICE_ROUTING_20261021 -->
