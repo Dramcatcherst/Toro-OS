@@ -73,3 +73,16 @@ A month/account is complete only when TORO can resolve: issuer + masked instrume
 ### Assistance boundary
 TORO may inventory, compare, prepare provider-specific steps, detect missing periods, reconcile documents and verify receipt when connected access permits. Login/MFA/signature/bank-recipient changes that require the authorized account holder remain an authenticated human/provider action unless a governed connector explicitly supports them. Never claim configuration succeeded without a provider receipt or test delivery.
 <!-- END:OWNER_2026_STATEMENT_CONTROL_20261021 -->
+
+<!-- BEGIN:ADMIN_MAIL_VERIFICATION_20261021 -->
+## Admin mailbox verification — 2026-10-21
+
+Direct search of `admin@dreamcatcherhotel.com` for 2026 found **no monthly account/card statements** for the currently tracked BAC, Banco Nacional, BCR, LAFISE, WINK or PayPal instruments.
+
+Observed exceptions:
+- BAC does send some **transaction/transfer alerts** to the hotel mailbox; these are not monthly statements.
+- PayPal references appear inside Airbnb/Meta/operational emails, but no PayPal monthly statement/export from PayPal was found.
+- WINK appears only in accounting/support context, not as an official WINK statement delivered to admin.
+
+Therefore the current 📩 / `CONFIGURAR_A_ADMIN` remediation remains valid for the tracked business instruments, subject to scope/holder verification for mixed or personal products. Do not mark any of these as already configured merely because alerts or third-party references arrive.
+<!-- END:ADMIN_MAIL_VERIFICATION_20261021 -->
