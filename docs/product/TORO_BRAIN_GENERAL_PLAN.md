@@ -6151,9 +6151,26 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 
 
 <!-- BEGIN:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
-### Control E29/E30/E32/E36 — cobertura de bancos, tarjetas y correo financiero (21/10/2026)
+### Control E29/E30/E32/E36 — cobertura bancaria, tarjetas, estados y correo financiero (21/10/2026)
 
-**DIRECTIVA:** auditar instrumentos bancarios, tarjetas, SINPE, vouchers, procesadores y estados de cuenta por beneficiario real y no por nombre del titular. Documento confirmado del hotel que solo llega a correo personal = `CAMBIAR_DESTINATARIO`; personal puro = `PRIVADO_NO_REDIRECCIONAR`; mixto = `USO_MIXTO_REVISAR`. Una tarjeta nominal de una persona puede estar dedicada a gastos del hotel. Separar correos recibidos de extractos mensuales, transferencias de liquidaciones y comprobantes de facturas, con estado de frescura y evidencia. Mantener límites entre Dreamcatcher y otras entidades.
+**DECISIÓN DEL PROPIETARIO:** consolidar en el mismo carril de TORO Finance el control de cuentas bancarias, tarjetas, PayPal/Wink, préstamos, estados de cuenta, facturas y comprobantes. El objetivo no es acumular archivos: cada movimiento material debe poder reconstruirse como **documento/soporte → pago → banco/tarjeta/pasarela → Alegra → entidad/propiedad/centro de costo → verificación**.
 
-**CONTRATO Y PORTAL:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md). En el portal existente, Finanzas/Cobertura documental es una vista objetivo por rol con colas de entrega, cuentas, tarjetas, transferencias rechazadas y cambios de destinatario; no una segunda aplicación. Solo metadatos en repositorio; originales y números completos permanecen privados. No cambiar destinatarios bancarios sin aprobación, ejecución autorizada y recibo de prueba. **ESTADO: DIRECTIVA DOCUMENTAL / AUDITORÍA PARCIAL; PORTAL NO IMPLEMENTADO.**
+**Regla de entrega:** el símbolo operativo **📩** significa `CONFIGURAR_A_ADMIN`: cuando el instrumento esté confirmado como empresarial o de uso hotelero autorizado, sus estados/documentos financieros deben configurarse para llegar automáticamente a `admin@dreamcatcherhotel.com`. Esta marca es una **acción pendiente**, no prueba de que el banco/proveedor ya haya cambiado el destinatario. Productos personales puros no se redirigen; productos mixtos requieren delimitar el alcance antes del cambio.
+
+**Cobertura 2026 conocida, sin datos completos en repositorio público:**
+- BAC banco CRC `••••3660` / USD `••••3588`: enero–agosto indexados; septiembre con original recuperado; completar validación de originales y octubre al cierre. 📩
+- BAC tarjetas: estado `••••4966`, instrumentos observados `••••4961 / ••••5042 / ••••7161` y Visa Carolina `••••4701`: completar ciclos 2026, vigencia y separación hotel/personal. 📩
+- Banco Nacional CRC `••••9468` / USD `••••8174`: originales empresariales 2026 no localizados en la auditoría actual; recuperar períodos faltantes. 📩
+- BCR CRC `••••7251` / USD `••••7849`: originales empresariales 2026 no localizados; recuperar períodos faltantes. 📩
+- LAFISE banco CRC `••••1998` / USD `••••7740`: existe ZIP histórico por clasificar; pedir solo los meses realmente faltantes. 📩
+- LAFISE tarjeta corporativa `••••7930`: completar estados 2026 y correspondencia con ledgers CRC/USD. 📩
+- WINK CRC `••••1547`: validar titularidad/alcance hotel antes de usar referencias personales; completar cobertura empresarial. 📩 si se confirma hotel.
+- PayPal USD asociado históricamente a `info@atrapasuenos.net`: evidencia parcial, no extractos mensuales completos; recuperar bruto, fees, devoluciones, conversiones y depósitos. 📩 tras validar la cuenta empresarial.
+- Préstamo BAC `••••2411`: recuperar cronograma contractual y separar capital, interés, seguro y otros cargos por cuota. 📩
+
+**Estados documentales obligatorios:** `COMPLETO`, `FALTA_DOCUMENTO`, `FALTA_PAGO`, `SIN_RESPALDO`, `RECLASIFICAR`, `OTRO_SOPORTE`, más `CONFIGURAR_A_ADMIN` cuando aplique. Un registro en Alegra/Supabase/Airtable, una alerta de tarjeta, un ZIP o un movimiento bancario **no equivalen** al estado de cuenta original ni a la factura fiscal.
+
+**Orden de ejecución:** (1) no pedir duplicados: buscar originales ya custodiados; (2) recuperar BN/BCR y clasificar LAFISE; (3) completar tarjetas BAC/LAFISE; (4) validar WINK/PayPal; (5) centralizar entrega en admin para instrumentos confirmados; (6) verificar cada cambio con un documento nuevo recibido; (7) conciliar con Alegra y cerrar solo con evidencia. No modificar beneficiarios, MFA, PIN, límites, pagos o cuentas por esta directiva.
+
+**Contratos canónicos subordinados:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md) y [TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md](TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md). El portal objetivo permanece **Finanzas › Cobertura documental** dentro del portal existente; no crear otra app, backlog ni scheduler. **ESTADO:** política y backlog documental autorizados; cambios reales de destinatario/proveedor siguen `NO_EJECUTADO` hasta acción autenticada + prueba de recepción.
 <!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->

@@ -38,3 +38,38 @@ Existing portal, no new app or navigation silo. A compact **Finanzas › Cobertu
 - Close each item only with a new incoming test document and matching ledger/account mapping.
 
 **Implementation status:** policy proposal in GitHub documentation only. Existing TORO portal UI, source integrations and banking recipients remain unchanged.
+
+<!-- BEGIN:OWNER_2026_STATEMENT_CONTROL_20261021 -->
+## Owner control — 2026 statements, routing and completion
+
+### Compact inventory
+| Instrument | 2026 evidence observed | Required next state | Route |
+| --- | --- | --- | --- |
+| BAC bank CRC ••••3660 / USD ••••3588 | Jan–Aug indexed; Sep original recovered | Validate originals; Oct at cycle close | 📩 |
+| BAC cards ••••4966 / ••••4961 / ••••5042 / ••••7161; Visa ••••4701 | Current/partial statements only | Complete cycles; map holder/use/ledger | 📩 |
+| BN CRC ••••9468 / USD ••••8174 | No company originals localized in current audit | Recover missing 2026 originals | 📩 |
+| BCR CRC ••••7251 / USD ••••7849 | No company originals localized | Recover missing 2026 originals | 📩 |
+| LAFISE bank CRC ••••1998 / USD ••••7740 | Historical ZIP exists, months unclassified | Inspect first; request only gaps | 📩 |
+| LAFISE card ••••7930 | Monthly coverage incomplete | Complete cycles and CRC/USD mapping | 📩 |
+| WINK CRC ••••1547 | Personal-context reference exists | Verify business identity; then fill gaps | 📩 conditional |
+| PayPal USD | Partial operational evidence | Monthly exports incl. gross/fees/refunds/FX/net payout | 📩 after business validation |
+| BAC loan ••••2411 | Product observed | Contractual schedule; principal/interest/insurance split | 📩 |
+
+**📩 means:** configure verified business-use statements/documents to arrive automatically at `admin@dreamcatcherhotel.com`. It does **not** mean the routing change is already executed. Close this action only after authenticated provider change + new test document received at admin + retained receipt.
+
+### Completeness rule
+A month/account is complete only when TORO can resolve: issuer + masked instrument + legal/business scope + period/cutoff + original statement/export + opening/closing balance when applicable + movements + payment/settlement evidence where applicable + mapped Alegra ledger + reconciliation status. Index rows, alerts, screenshots, derived spreadsheets and ZIP filenames are discovery evidence, not substitutes for the original.
+
+### Recovery workflow
+1. Search existing approved archive/mail first; never request a duplicate by default.
+2. Validate instrument identity and business scope.
+3. Mark periods genuinely missing.
+4. Obtain originals through bank/provider portal, authorized email delivery or export.
+5. For 📩 items, configure admin delivery only after authorization and scope verification.
+6. Confirm with a newly received statement/document.
+7. Store original privately, fingerprint/reference it, reconcile to Alegra and mark the period complete.
+8. Keep personal-only products outside company routing and reporting.
+
+### Assistance boundary
+TORO may inventory, compare, prepare provider-specific steps, detect missing periods, reconcile documents and verify receipt when connected access permits. Login/MFA/signature/bank-recipient changes that require the authorized account holder remain an authenticated human/provider action unless a governed connector explicitly supports them. Never claim configuration succeeded without a provider receipt or test delivery.
+<!-- END:OWNER_2026_STATEMENT_CONTROL_20261021 -->
