@@ -26,6 +26,7 @@ export type ToroMenuSourceSnapshot = {
 export type ToroSourceReadiness = {
   readyReads: string[];
   blockedReads: string[];
+  degradedReads: Array<{ capability: string; label: string; sourceAsOf: string | null }>;
 };
 
 function usable(probe: ToroSourceProbe) {
@@ -34,6 +35,13 @@ function usable(probe: ToroSourceProbe) {
 
 function current(probe: ToroSourceProbe) {
   return usable(probe) && probe.fresh === true;
+}
+
+function usableHistorical(probe: ToroSourceProbe) {
+  if (!usable(probe)) return false;
+  if (!probe.latestAt) return true; // Unknown dates must be labeled.
+  const timestamp = Date.parse(probe.latestAt);
+  return Number.isFinite(timestamp) && timestamp <= Date.now();
 }
 
 export function evaluateSourceAwareCapabilityStates(
@@ -46,13 +54,20 @@ export function evaluateSourceAwareCapabilityStates(
   const states = { ...baseline };
   const readyReads: string[] = [];
   const blockedReads: string[] = [];
+  const degradedReads: ToroSourceReadiness["degradedReads"] = [];
 
-  const enableRead = (capability: string, label: string, condition: boolean) => {
+  const enableRead = (
+    capability: string, label: string, condition: boolean,
+    historicalFallback?: ToroSourceProbe,
+  ) => {
     if (!(capability in states)) return;
 
     if (condition) {
       states[capability] = "READ_ONLY";
       readyReads.push(label);
+    } else if (historicalFallback && usableHistorical(historicalFallback)) {
+      states[capability] = "READ_ONLY";
+      degradedReads.push({ capability, label, sourceAsOf: historicalFallback.latestAt ?? null });
     } else {
       states[capability] = "BLOCKED";
       blockedReads.push(label);
@@ -71,8 +86,9 @@ export function evaluateSourceAwareCapabilityStates(
     "executive.decisions",
     "Decisiones",
     current(snapshot.executiveDecisions),
+    snapshot.executiveDecisions,
   );
-  enableRead("projects.status", "Proyectos", current(snapshot.projects));
+  enableRead("projects.status", "Proyectos", current(snapshot.projects), snapshot.projects);
   enableRead(
     "operations.exceptions",
     "Excepciones operativas",
@@ -140,6 +156,7 @@ export function evaluateSourceAwareCapabilityStates(
     readiness: {
       readyReads: [...new Set(readyReads)],
       blockedReads: [...new Set(blockedReads)],
+      degradedReads,
     },
   };
 }
