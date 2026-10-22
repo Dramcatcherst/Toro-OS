@@ -87,3 +87,51 @@ describe("evaluateOpenClawRuntimeEvidence", () => {
     );
   });
 });
+
+
+describe("C50-10 strict bounded runtime packet", () => {
+  it.each(["false", "true", 1, null])("requires literal true for gate passed=%j", (passed) => {
+    const packet = passingPacket();
+    packet.gates = packet.gates.map((gate) => ({ ...gate, passed })) as never;
+    expect(evaluateOpenClawRuntimeEvidence(packet).packetComplete).toBe(false);
+  });
+
+  it.each([
+    { profileKey: "not-a-profile" }, { channelAliases: [""] }, { channelAliases: [" "] },
+    { channelAliases: null }, { runtimeVersion: "x".repeat(129) }, { gates: null },
+    { gates: [null] }, { channelAliases: Array(129).fill("fixture") },
+  ])("blocks malformed packet identity or collections %j", (patch) => {
+    expect(evaluateOpenClawRuntimeEvidence({ ...passingPacket(), ...patch } as never)).toMatchObject({
+      packetComplete: false, state: "CONFIGURED_UNVERIFIED",
+    });
+  });
+
+  it("blocks unknown gate keys and oversized references instead of ignoring malformed evidence", () => {
+    const packet = passingPacket();
+    packet.gates.push({ key: "not-a-gate", passed: true, evidenceReference: "audit:fixture" } as never);
+    expect(evaluateOpenClawRuntimeEvidence(packet).packetComplete).toBe(false);
+    const oversize = passingPacket();
+    oversize.gates[0].evidenceReference = "x".repeat(2049);
+    expect(evaluateOpenClawRuntimeEvidence(oversize).packetComplete).toBe(false);
+  });
+
+  it("bounds optional evidence fields and rejects unknown or sparse schema members", () => {
+    for (const patch of [
+      { notes: "x".repeat(4097) }, { findingIds: Array(129).fill("fixture") },
+      { findingIds: new Array(2) }, { extraPrivatePayload: "fixture" },
+    ]) {
+      const packet = passingPacket();
+      packet.gates[0] = { ...packet.gates[0], ...patch };
+      expect(evaluateOpenClawRuntimeEvidence(packet).packetComplete).toBe(false);
+    }
+    expect(evaluateOpenClawRuntimeEvidence({ ...passingPacket(), extraPayload: "fixture" }).packetComplete).toBe(false);
+    expect(evaluateOpenClawRuntimeEvidence({ ...passingPacket(), gates: new Array(14) }).packetComplete).toBe(false);
+    expect(evaluateOpenClawRuntimeEvidence({ ...passingPacket(), gates: Array(129).fill(passingPacket().gates[0]) }).packetComplete).toBe(false);
+  });
+
+  it("returns a safe blocker for nonobject packet input", () => {
+    for (const input of [null, undefined, [], "packet"]) {
+      expect(evaluateOpenClawRuntimeEvidence(input as never)).toMatchObject({ packetComplete: false, state: "CONFIGURED_UNVERIFIED", evidenceCoverage: 0 });
+    }
+  });
+});

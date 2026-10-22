@@ -236,3 +236,33 @@ describe("TORO Alegra Writer v3 contract", () => {
     expect(intent.validation.errors).toContain("JOURNAL_PHASE_NOT_ENABLED");
   });
 });
+
+describe("Finance approval boundary regressions", () => {
+  it.each(["arbitrary", null, {}])("blocks unsupported runtime target %j before approval", targetType => {
+    const prepared = prepareAlegraWriteIntent({ ...baseInput, payload: { ...baseInput.payload, targetType } } as unknown as Parameters<typeof prepareAlegraWriteIntent>[0]);
+    expect(prepared.validation.ready).toBe(false);
+    expect(prepared.validation.errors).toContain("TARGET_TYPE_UNSUPPORTED");
+  });
+  it.each(["2026-02-30T08:00:00Z", "2026-03-02 08:00:00", "2026-03-02T08:00:00"])("rejects invalid approval timestamp %s", approvedAt => {
+    const prepared = prepareAlegraWriteIntent(baseInput);
+    expect(validateAlegraWriteApproval(prepared, { approvalId: "a", approvalReceiptId: "r", actorId: "h", decisionId: "d", state: "approved", payloadHash: prepared.payloadHash,
+      approvedAt, decisionRevision: approvedAt, expiresAt: "2026-03-02T08:15:00Z" }, "2026-03-02T08:05:00Z").ok).toBe(false);
+  });
+  it("keeps exact valid leap-day timezone approval semantics", () => {
+    const prepared = prepareAlegraWriteIntent(baseInput);
+    expect(validateAlegraWriteApproval(prepared, { approvalId: "a", approvalReceiptId: "r", actorId: "h", decisionId: "d", state: "approved", payloadHash: prepared.payloadHash,
+      approvedAt: "2024-02-29T08:00:00-06:00", decisionRevision: "2024-02-29T14:00:00.000Z", expiresAt: "2024-02-29T14:15:00Z" }, "2024-02-29T14:05:00Z").ok).toBe(true);
+  });
+  it("detaches validated evidence plans from their source rows", async () => {
+    const { normalizeAlegraInvoiceEvidence, planEvidenceImport } = await import("../../../scripts/finance/alegra-evidence-preflight.mjs");
+    const row = normalizeAlegraInvoiceEvidence({ id: "1", date: "2026-10-11", subtotal: 100, tax: 13, total: 113, costCenter: { id: "7" }, currency: { code: "CRC" }, payments: [{ id: "p1" }] },
+      { orgId: "fixture-org", sourceAccountKey: "fixture-account", expectedCostCenterId: "7", accountBindingVerified: true, observedAt: "2026-10-11T09:00:00Z" });
+    const plan = planEvidenceImport([row], []);
+    const unchanged = planEvidenceImport([row], [structuredClone(row)]);
+    const expected = structuredClone(plan.insert[0]);
+    row.amount = "999999.00"; row.metadata.total = "999999.00"; row.metadata.payment_native_ids.push("p2"); row.metadata.issues.push("changed");
+    expect(plan.insert[0]).toEqual(expected);
+    expect(unchanged.unchanged[0]).toEqual(expected);
+    expect(Object.isFrozen(row)).toBe(false);
+  });
+});

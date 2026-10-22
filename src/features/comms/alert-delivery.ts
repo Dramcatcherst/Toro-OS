@@ -53,7 +53,14 @@ export type WhatsAppGroupBinding = {
   healthCheckedAt: string | null;
 };
 
+/** Protected caller policy in UTF-8 bytes; no transport-specific ceiling is assumed. */
+export type AlertMessageBudget = {
+  maxFieldBytes: number;
+  maxMessageBytes: number;
+};
+
 export type AlertDeliveryContext = {
+  messageBudget: AlertMessageBudget;
   orgId: string;
   nowMs: number;
   /** Protected caller policy; this preparation helper does not invent a health window. */
@@ -196,8 +203,19 @@ export function moduleAlertSignal(input: {
   };
 }
 
-export function formatAlertDelivery(signal: AlertDeliverySignal) {
-  return [
+function validMessageBudget(budget: AlertMessageBudget) {
+  return budget && Number.isSafeInteger(budget.maxFieldBytes) && budget.maxFieldBytes > 0 &&
+    Number.isSafeInteger(budget.maxMessageBytes) && budget.maxMessageBytes >= budget.maxFieldBytes;
+}
+
+export function formatAlertDelivery(signal: AlertDeliverySignal, budget: AlertMessageBudget) {
+  if (!validMessageBudget(budget)) throw new Error("Alert message budget is invalid.");
+  for (const value of Object.values(signal)) {
+    if (typeof value !== "string" || Buffer.byteLength(value, "utf8") > budget.maxFieldBytes) {
+      throw new Error("Alert field exceeds the protected message budget.");
+    }
+  }
+  const message = [
     `🚨 ${PRIORITY_LABELS[signal.priority]} · ${ROOM_LABELS[signal.room]}`,
     `Asunto: ${clipWords(signal.title, 12)}`,
     `Qué pasó: ${clipWords(signal.summary, 18)}`,
@@ -205,9 +223,13 @@ export function formatAlertDelivery(signal: AlertDeliverySignal) {
     `Acción: ${clipWords(signal.requiredAction, 18)}`,
     `Responsable: ${clipWords(signal.owner, 8)}`,
     `Plazo: ${clipWords(signal.dueAt, 10)}`,
-    `Fuente/corte: ${clipWords(`${signal.sourceSystem} · ${signal.sourceCutoff}`, 14)}`,
-    `Referencia: ${clipWords(signal.sourceRef, 8)}`,
+    `Fuente/corte: ${signal.sourceSystem} · ${signal.sourceCutoff}`,
+    `Referencia: ${signal.sourceRef}`,
   ].join("\n");
+  if (Buffer.byteLength(message, "utf8") > budget.maxMessageBytes) {
+    throw new Error("Alert message exceeds the protected message budget.");
+  }
+  return message;
 }
 
 function healthTimestamp(value: string | null) {
@@ -245,6 +267,16 @@ export function prepareAlertDelivery(
   context: AlertDeliveryContext,
 ): AlertDeliveryCandidate {
   const blockers: string[] = [];
+  let message = "";
+  if (!validMessageBudget(context.messageBudget)) {
+    blockers.push("alert_message_policy_invalid");
+  } else {
+    try {
+      message = formatAlertDelivery(signal, context.messageBudget);
+    } catch {
+      blockers.push("alert_message_budget_exceeded");
+    }
+  }
   const contextValid = typeof context.orgId === "string" && context.orgId.trim().length > 0 &&
     context.orgId === context.orgId.trim() && Number.isFinite(context.nowMs) &&
     Number.isSafeInteger(context.maxHealthAgeMs) && context.maxHealthAgeMs > 0;
@@ -268,7 +300,7 @@ export function prepareAlertDelivery(
       signal.sourceKey,
       signal.version,
     ])).digest("hex"),
-    message: formatAlertDelivery(signal),
+    message,
     blockers,
   };
 }

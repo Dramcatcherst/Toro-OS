@@ -1,3 +1,4 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import Link from "next/link";
 import { PortalSignOut } from "@/features/auth/portal-sign-out";
 import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
@@ -40,7 +41,7 @@ const profileLabels: Record<string, string> = {
   employee_general: "Empleado",
 };
 
-export default async function MyToroPage({
+async function MyToroContent({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -144,7 +145,7 @@ export default async function MyToroPage({
   const menu = view.menu;
   const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
   const hotelAllowed = canReadHotelDirectory(view.context);
-  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true}) : null;
+  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true,expectedContext:view.context}) : null;
   const hotelLinks = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true) ? directory.links : [];
   const available = menu?.items.filter(item =>
     item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
@@ -291,4 +292,8 @@ export default async function MyToroPage({
     </main>
     </>
   );
+}
+
+export default async function MyToroPage(props: Parameters<typeof MyToroContent>[0]) {
+  return <PrivateViewGuard>{await MyToroContent(props)}</PrivateViewGuard>;
 }

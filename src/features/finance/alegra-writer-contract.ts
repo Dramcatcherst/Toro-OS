@@ -195,6 +195,8 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
   const errors: string[] = [];
   const { scope, evidence, payload } = input;
 
+  if (!(ALEGRA_WRITE_TYPES as readonly unknown[]).includes(payload.targetType)) errors.push("TARGET_TYPE_UNSUPPORTED");
+
   if (!normalizeText(scope.tenantId)) errors.push("TENANT_REQUIRED");
   if (!normalizeText(scope.orgId)) errors.push("ORG_REQUIRED");
   if (!normalizeText(scope.legalEntityKey)) errors.push("LEGAL_ENTITY_REQUIRED");
@@ -351,6 +353,11 @@ export function isAlegraWriteBusinessKey(intent: AlegraWriteIntent, candidateKey
     candidateKey === `alegra:v3:${sha256(duplicateIdentity(intent, true))}`;
 }
 
+export function parseAlegraTimestamp(value: unknown): number {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.test(value) || !isCalendarDate(value.slice(0, 10))) return Number.NaN;
+  return Date.parse(value);
+}
+
 export function validateAlegraWriteApproval(
   intent: AlegraWriteIntent,
   approval: AlegraWriteApproval | null | undefined,
@@ -372,10 +379,10 @@ export function validateAlegraWriteApproval(
     return { ok: false, reason: "APPROVAL_NOT_ACTIVE" };
   }
 
-  const checkedAt = Date.parse(now);
-  const approvedAt = Date.parse(approval.approvedAt);
-  const expiresAt = Date.parse(approval.expiresAt);
-  const decisionRevision = Date.parse(approval.decisionRevision);
+  const checkedAt = parseAlegraTimestamp(now);
+  const approvedAt = parseAlegraTimestamp(approval.approvedAt);
+  const expiresAt = parseAlegraTimestamp(approval.expiresAt);
+  const decisionRevision = parseAlegraTimestamp(approval.decisionRevision);
 
   if (
     !approval.approvalId.trim() ||

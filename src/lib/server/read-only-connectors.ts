@@ -58,6 +58,9 @@ export async function readAirtableRecords(input: {
   if (!internalCapabilityEnabled("TORO_LEGACY_OPERATIONS_ENABLED")) {
     return { configured: false, externalWrite: false, mode: "read_only", data: null, error: "Operational reads are disabled." };
   }
+  if (input.pageSize !== undefined && (!Number.isInteger(input.pageSize) || input.pageSize < 1 || input.pageSize > 100)) {
+    return { configured: Boolean(process.env.AIRTABLE_TOKEN?.trim()), externalWrite: false, mode: "read_only", data: null, error: "Airtable pageSize must be an integer between 1 and 100." };
+  }
   const token = process.env.AIRTABLE_TOKEN?.trim();
 
   if (!token) {

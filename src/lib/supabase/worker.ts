@@ -5,8 +5,9 @@ import { createClient } from "@supabase/supabase-js";
 
 import { getSupabasePublicConfig } from "./env";
 import { resolveSupabaseWorkerSecret } from "./worker-config";
+import { boundedSupabaseReadFetch } from "./read-fetch";
 
-export function createWorkerSupabaseClient() {
+export function createWorkerSupabaseClient(readOptions?: { signal: AbortSignal }) {
   assertInternalRuntime();
   const { url } = getSupabasePublicConfig();
   const resolved = resolveSupabaseWorkerSecret(process.env);
@@ -24,6 +25,8 @@ export function createWorkerSupabaseClient() {
       persistSession: false,
     },
     global: {
+      // Only protected read probes opt in. Worker mutation semantics stay intact.
+      ...(readOptions ? { fetch: boundedSupabaseReadFetch(readOptions.signal) } : {}),
       headers: {
         "X-Client-Info": "toro-control-plane-worker-v1",
       },

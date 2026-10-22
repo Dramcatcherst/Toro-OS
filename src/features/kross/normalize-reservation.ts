@@ -57,6 +57,7 @@ export type KrossNormalizationIssue = {
   code:
     | "missing_external_id"
     | "missing_scope"
+    | "missing_status"
     | "invalid_date"
     | "checkout_before_checkin"
     | "invalid_now"
@@ -119,6 +120,7 @@ export function normalizeKrossReservationCandidate(
   const externalReservationId = clean(candidate.externalReservationId);
   const orgId = clean(candidate.orgId);
   const propertyId = clean(candidate.propertyId);
+  const status = clean(candidate.status);
   const nowMs = evidenceTime(nowIso);
   const sourceAsOfMs = evidenceTime(evidence.sourceAsOf);
   const observedAtMs = evidenceTime(evidence.observedAt);
@@ -207,21 +209,25 @@ export function normalizeKrossReservationCandidate(
     });
   }
 
-  if (!evidence.authorizedTransport) {
+  if (!status) {
+    issues.push({ code: "missing_status", message: "A supplied reservation status is required." });
+  }
+
+  if (evidence.authorizedTransport !== true) {
     issues.push({
       code: "transport_not_authorized",
       message: "The transport has not been explicitly authorized for Kross read use.",
     });
   }
 
-  if (!evidence.directFromKross) {
+  if (evidence.directFromKross !== true) {
     issues.push({
       code: "transport_not_direct",
       message: "The payload is not directly evidenced from Kross authority.",
     });
   }
 
-  if (!evidence.readOnly) {
+  if (evidence.readOnly !== true) {
     issues.push({
       code: "transport_not_read_only",
       message: "The transport is not proven read-only.",
@@ -229,7 +235,7 @@ export function normalizeKrossReservationCandidate(
   }
 
   const structurallyValid =
-    Boolean(externalReservationId && orgId && propertyId) &&
+    Boolean(externalReservationId && orgId && propertyId && status) &&
     isDateOnly(candidate.checkIn) &&
     isDateOnly(candidate.checkOut) &&
     candidate.checkOut >= candidate.checkIn &&
@@ -239,7 +245,7 @@ export function normalizeKrossReservationCandidate(
     clean(evidence.sourceHash) !== null &&
     clean(evidence.sourceReference) !== null;
 
-  if (!structurallyValid || !externalReservationId || !orgId || !propertyId) {
+  if (!structurallyValid || !externalReservationId || !orgId || !propertyId || !status) {
     return {
       reservation: null,
       issues,
@@ -248,9 +254,9 @@ export function normalizeKrossReservationCandidate(
   }
 
   const liveEvidence =
-    evidence.authorizedTransport &&
-    evidence.directFromKross &&
-    evidence.readOnly &&
+    evidence.authorizedTransport === true &&
+    evidence.directFromKross === true &&
+    evidence.readOnly === true &&
     issues.length === 0;
 
   const reservation: NormalizedKrossReservation = {
@@ -262,7 +268,7 @@ export function normalizeKrossReservationCandidate(
     room_code_raw: clean(candidate.roomCodeRaw),
     check_in: candidate.checkIn,
     check_out: candidate.checkOut,
-    status: clean(candidate.status) ?? "unknown",
+    status,
     guests_count: guestsCount,
     adults,
     children,

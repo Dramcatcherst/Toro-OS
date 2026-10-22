@@ -7,6 +7,16 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+## Continuación de fiabilidad — cincuenta mejoras adicionales — 22/10/2026 UTC
+
+**CURRENT — implementado y verificado localmente; integración/publicación según recibos de PR y Vercel:** continuación autorizada de PR #358 sobre los mismos flujos existentes: doce Finance/Alegra, ocho Kross, diez identidad/Portal, diez Comms y diez runtime/MCP. Los [cincuenta resultados trazables](../evidence/TORO_INTEGRATION_RELIABILITY_50_20261022.md) son evidencia subordinada; no vuelven a contar las cuarenta mejoras previas ni convierten pruebas/documentación en nuevas capacidades.
+
+**Prioridad y alineación:** primero integridad de recibos, custodia, identidad/ámbito, exposición de datos y recuperación; después disponibilidad, navegación y trabajo de lectura evitado. No cambia arquitectura, fuentes de autoridad, permisos ni alcance comercial. La mejora de fiabilidad se demuestra con regresiones; ahorro y rendimiento productivo permanecen NO MEDIDOS.
+
+**NEXT existente:** completar gates remotos de PR/preview del mismo árbol; posteriormente aceptación autorizada del Portal, transporte de membresías y recuperación de fuentes/binding del Lightsail original. Se preservan Writer OFF, Kross API pagada pausada, conciliaciones documentales pendientes y control de operaciones sensibles. No se confunden código integrado y despliegue operativo.
+<!-- END:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+
 <!-- BEGIN:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
 ## Fiabilidad conjunta de Alegra, Kross, Portal y OpenClaw — 21/10/2026
 

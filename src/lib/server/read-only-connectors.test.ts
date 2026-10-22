@@ -99,3 +99,10 @@ it("recognizes reachable empty endpoints without inventing business records", as
     expect(result.records.find((record) => record.id === id)).toMatchObject({ configured: true, live: true, mode: "live_read" });
   }
 });
+
+it.each([NaN, Infinity, 0, -1, 1.5, 101])("R50-09 rejects invalid Airtable pageSize %s before provider I/O", async pageSize => {
+  vi.stubEnv("TORO_LEGACY_OPERATIONS_ENABLED", "true"); vi.stubEnv("AIRTABLE_TOKEN", "synthetic-token");
+  const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
+  const result = await readAirtableRecords({ baseId: "base", tableId: "table", pageSize });
+  expect(result.error).toContain("pageSize"); expect(fetchMock).not.toHaveBeenCalled();
+});

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeKrossReservationCandidate } from "./normalize-reservation";
+import { normalizeKrossReservationCandidate, type KrossTransportEvidence } from "./normalize-reservation";
 import { adaptKrossReservationPayload } from "./transport-adapter";
 
 const candidate = {
@@ -29,6 +29,26 @@ const evidence = {
 };
 
 describe("normalizeKrossReservationCandidate", () => {
+  it.each(["authorizedTransport", "directFromKross", "readOnly"])("does not promote malformed authority flag %s", key => {
+    const malformed = { ...evidence, [key]: "false" } as unknown as KrossTransportEvidence;
+    const result = normalizeKrossReservationCandidate(candidate, malformed, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.reservation?.source_is_live).toBe(false);
+    expect(result.issues.length).toBeGreaterThan(0);
+  });
+
+  it.each(["", "  ", undefined])("does not verify missing required reservation status %s", status => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, status: status as string }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.issues.map(issue => issue.code)).toContain("missing_status");
+  });
+
+  it("preserves a nonempty official status without guessing a vendor whitelist", () => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, status: "vendor_status_v2" }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(true);
+    expect(result.reservation?.status).toBe("vendor_status_v2");
+  });
+
   it.each(["2026-02-29", "2026-02-30", "2026-04-31"])("rejects impossible calendar date %s", (checkIn) => {
     const result = normalizeKrossReservationCandidate({ ...candidate, checkIn }, evidence, "2026-09-23T18:02:00Z");
     expect(result.reservation).toBeNull();

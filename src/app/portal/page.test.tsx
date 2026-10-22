@@ -75,7 +75,7 @@ it("incorporates reviewed tools into the same Portal without nested controls", a
   expect(html).toContain("Equipo · sesión propia");
   expect(html).toContain('rel="noopener noreferrer"');
   expect(html).not.toMatch(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a[\s>]/);
-  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true,includeCompleteCatalogue:true});
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true,includeCompleteCatalogue:true,expectedContext:expect.objectContaining({userId:expect.any(String),orgId:expect.any(String)})});
 });
 it.each(["choice", "inactive"])("hides modules for %s context", async reason => {
   const data = view();
