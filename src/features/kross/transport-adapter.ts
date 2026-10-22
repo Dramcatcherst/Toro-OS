@@ -38,6 +38,7 @@ export type KrossAdapterIssue = {
 
 export type KrossAdapterResult = {
   candidate: KrossReservationCandidate | null;
+  externalReservationId: string | null;
   issues: KrossAdapterIssue[];
 };
 
@@ -162,6 +163,7 @@ export function adaptKrossReservationPayload(
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     return {
       candidate: null,
+      externalReservationId: null,
       issues: [
         {
           code: "invalid_payload",
@@ -186,7 +188,7 @@ export function adaptKrossReservationPayload(
   const status = mappedText(source, "status", map.status, true, issues);
 
   if (!externalReservationId || !checkIn || !checkOut || !status) {
-    return { candidate: null, issues };
+    return { candidate: null, externalReservationId, issues };
   }
 
   const candidate: KrossReservationCandidate = {
@@ -228,5 +230,5 @@ export function adaptKrossReservationPayload(
       ),
   };
   if (issues.length) candidate.mappingIssues = issues.map(({ code, field }) => ({ code, field }));
-  return { candidate, issues };
+  return { candidate, externalReservationId, issues };
 }

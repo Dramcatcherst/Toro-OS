@@ -102,6 +102,58 @@ describe("executeKrossDryRun", () => {
     expect(store.mirrorCount()).toBe(0);
   });
 
+  it("keeps known-ID rejections scoped to their row within one source artifact", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const invalidK100 = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: {
+          ...payload(),
+          stay: { ...payload().stay, check_in: "2026-02-30" },
+        },
+      },
+      store,
+    );
+    const validK101 = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
+    expect(invalidK100.status).toBe("rejected");
+    expect(validK101.status).toBe("accepted");
+    expect(validK101.operation).toBe("insert");
+    expect(validK101.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
+  });
+
+  it("keeps incomplete known-ID rows from rejecting other rows in one source artifact", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const invalidK100 = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: {
+          reservation: { id: "K-100", status: "confirmed" },
+          stay: { room: "26", check_out: "2026-09-27" },
+        },
+      },
+      store,
+    );
+    const validK101 = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
+    expect(invalidK100.status).toBe("rejected");
+    expect(invalidK100.adapterIssues.map(issue => issue.field)).toContain("checkIn");
+    expect(invalidK100.importRun.identityKey).toContain("K-100");
+    expect(validK101.status).toBe("accepted");
+    expect(validK101.operation).toBe("insert");
+    expect(validK101.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
+  });
+
   it("does not report accepted replay when its stored mirror is missing", () => {
     const backing = createInMemoryKrossDryRunStore();
     const request = { ...baseRequest, payload: payload() };
@@ -219,6 +271,16 @@ describe("executeKrossDryRun", () => {
       "mapped_value_missing",
     );
     expect(result.pmsWriteCount).toBe(0);
+    expect(store.mirrorCount()).toBe(0);
+    expect(store.importRunCount()).toBe(1);
+
+    const correctedReplay = executeKrossDryRun(
+      { ...baseRequest, payload: payload() },
+      store,
+    );
+    expect(correctedReplay.status).toBe("rejected");
+    expect(correctedReplay.executionIssues).toContain("rejected_source_replay");
+    expect(correctedReplay.importRun.runKey).toBe(result.importRun.runKey);
     expect(store.mirrorCount()).toBe(0);
     expect(store.importRunCount()).toBe(1);
   });
