@@ -48,6 +48,28 @@ owner_ai_wealth_strategy:
 
 
 
+source_evidence_use_policy:
+  owner_directive_date: "2026-10-22"
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  scope: dreamcatcher_and_toro_governed_read_only
+  historical_internal_read_allowed_when_source_is_readable: true
+  source_date_and_coverage_required_or_explicit_unknown: true
+  historical_data_never_becomes_current_inventory_or_cash: true
+  evidence_modes:
+    - historical_reference
+    - provisional_analysis
+    - verified_current_read
+    - exact_approved_external_action
+  two_booking_property_ids_are_deliberate_strategy: true
+  room27_current_type: 43
+  room27_legacy_type_preserved: 28
+  owner_commercial_rule_changes_require_exact_scope_and_readback: true
+  kross_owns_current_rates_inventory_and_reservations: true
+  no_automatic_promotion_of_source_is_live: true
+  keep_existing_wespeak_daily_and_kross_hourly_cadence: true
+  no_paid_api_activation_or_writer_enablement: true
+  privacy_security_idempotency_and_finance_gates_unchanged: true
+  runtime_acceptance_pending: true
 finance_document_control:
   owner_directive_date: "2026-10-21"
   status: policy_active_runtime_routing_unverified
