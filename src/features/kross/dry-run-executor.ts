@@ -138,9 +138,11 @@ export function executeKrossDryRun(
     // Keep an accepted receipt immutable when a later conflicting attempt fails.
     const rejectedKey = existingRun?.status === "accepted"
       ? JSON.stringify([currentRunKey, "reject", executionIssue ?? "validation"])
-      : adapted.candidate
-        ? currentRunKey
-        : artifactRunKey(request);
+      : existingArtifactRejection?.status === "rejected"
+        ? artifactRunKey(request)
+        : adapted.candidate
+          ? currentRunKey
+          : artifactRunKey(request);
     const storedRejection = store.getImportRun(rejectedKey);
     const importRun: KrossDryRunImportRunEvidence = {
       runKey: rejectedKey,
