@@ -221,5 +221,15 @@ describe("executeKrossDryRun", () => {
     expect(result.pmsWriteCount).toBe(0);
     expect(store.mirrorCount()).toBe(0);
     expect(store.importRunCount()).toBe(1);
+
+    const correctedReplay = executeKrossDryRun(
+      { ...baseRequest, payload: payload() },
+      store,
+    );
+    expect(correctedReplay.status).toBe("rejected");
+    expect(correctedReplay.executionIssues).toContain("rejected_source_replay");
+    expect(correctedReplay.importRun.runKey).toBe(result.importRun.runKey);
+    expect(store.mirrorCount()).toBe(0);
+    expect(store.importRunCount()).toBe(1);
   });
 });
