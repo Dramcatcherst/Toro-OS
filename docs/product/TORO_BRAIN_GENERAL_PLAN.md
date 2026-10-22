@@ -7,6 +7,23 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_DATA_FRESHNESS_AND_EXECUTION_GATES_20261022 -->
+## 22/10/2026 — Lectura histórica útil y ejecución con compuertas independientes
+
+**DIRECTIVA HUMANA DEL PROPIETARIO, ADOPTADA COMO POLÍTICA NO COMO DESPLIEGUE:** reemplazar rechazos globales de datos que no estén sincronizados al minuto por controles proporcionales al uso. La decisión comercial permite evaluar y preparar cambios concretos de tarifas y condiciones Kross, pero nunca inventar precios, reactivar APIs pagadas, ni alterar contratos/reservas por una autorización genérica. Dreamcatcher Booking 14240671 y Toro by Dreamcatcher 14338337 son dos escaparates deliberados que deben respetar el mismo inventario físico.
+
+**Cuatro usos distintos, no un único frozen:**
+- **Referencia histórica:** leer datos con fuente, fecha de corte o fecha desconocida explícita, ámbito, cobertura y conflicto. El dato antiguo no es mentira, pero tampoco disponibilidad actual.
+- **Análisis provisional:** generar comparaciones, detectar discrepancias, calcular escenarios y preparar conciliaciones sin transformar estimaciones en importes exigibles ni reservas confirmadas.
+- **Lectura vigente:** fuente de autoridad comprobada, identidad consistente, antigüedad proporcionada al dato y reconciliación de recibos; Kross gobierna tarifas, reservas y capacidad; OTA confirma lo recibido.
+- **Ejecución externa:** un cambio de tarifas, promociones, condiciones, inventario, publicaciones, reservas, mensajes, cobros o permisos requiere acción/objeto preciso, dueño/lease, antes/después, versión, aprobación correspondiente, respaldo, readback y rollback. Leer bien no autoriza escribir.
+
+**Primera corrección candidata de código, NO OPERATIVA:** el menú interno permite consultar decisiones ejecutivas y proyectos con un corte anterior cuando son legibles, bajo estado `READ_ONLY` y aviso explícito de antigüedad en `capabilityNotes` y `degradedReads`. Fechas futuras malformadas no habilitan lectura provisional; si no existe una fecha comprobable, se marca desconocida. La corrección no modifica RLS, roles, canales ni datos. El resumen ejecutivo compuesto y Hotel hoy conservan la exigencia de actualidad; caja actual, llegadas/salidas, cotización Kross/TERE, mensajes reales y pagos permanecen bloqueados sin fuente actual y permiso. Código probado en CI y aceptación productiva siguen gates separados.
+
+**HECHO verificado en Supabase a la revisión:** espejo Kross con 4.352 filas, cero live y 4.352 sin `room_id`; el corte más reciente del origen importado corresponde al 20/10/2026. Se puede trabajar para conciliación histórica por IDs seguros, pero no inferir unidad física, apertura ni bloqueo de Villa Toro. El bloqueo de #27 Type 43/28 y los dos Booking ID se resuelve en el carril vigente; el importador PR #315 debe conciliar aceptados/rechazados sin otra base.
+
+**Siguiente aceptación exacta:** pruebas focalizadas de los estados degradados, CI de rama y lectura autenticada por rol; ver sello de fecha real en Portal y denegaciones de operaciones actuales. Luego extender el patrón gradualmente a reportes/servicios históricos manteniendo precios/stock/cargos transaccionales en su propia autoridad. API pagada Kross pausada, Writer Alegra OFF y temporizadores vigentes sin cambios.
+<!-- END:TORO_DATA_FRESHNESS_AND_EXECUTION_GATES_20261022 -->
 <!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
 ## Continuación de fiabilidad — cincuenta mejoras adicionales — 22/10/2026 UTC
 
