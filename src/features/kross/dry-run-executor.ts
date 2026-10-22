@@ -127,7 +127,7 @@ export function executeKrossDryRun(
     request.payload,
     request.adapterConfig,
   );
-  const currentRunKey = runKey(request, adapted.candidate?.externalReservationId ?? null);
+  const currentRunKey = runKey(request, adapted.externalReservationId);
   const existingRun = store.getImportRun(currentRunKey);
   const existingArtifactRejection = store.getImportRun(artifactRunKey(request));
 
@@ -140,7 +140,7 @@ export function executeKrossDryRun(
       ? JSON.stringify([currentRunKey, "reject", executionIssue ?? "validation"])
       : existingArtifactRejection?.status === "rejected"
         ? artifactRunKey(request)
-        : adapted.candidate
+        : adapted.externalReservationId
           ? currentRunKey
           : artifactRunKey(request);
     const storedRejection = store.getImportRun(rejectedKey);
@@ -149,7 +149,7 @@ export function executeKrossDryRun(
       mode: "dry_run",
       status: "rejected",
       operation: "reject",
-      identityKey: adapted.candidate ? JSON.stringify([adapted.candidate.orgId.trim(), adapted.candidate.propertyId.trim(), adapted.candidate.externalReservationId]) : null,
+      identityKey: adapted.externalReservationId ? JSON.stringify([request.adapterConfig.orgId.trim(), request.adapterConfig.propertyId.trim(), adapted.externalReservationId]) : null,
       sourceReference: request.evidence.sourceReference,
       sourceHash: request.evidence.sourceHash,
       readOnly: true,
