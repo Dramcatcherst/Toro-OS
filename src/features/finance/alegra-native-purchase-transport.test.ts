@@ -44,6 +44,10 @@ function fixture(override: (request: Parameters<AlegraNativeHttp["request"]>[0])
 }
 
 describe("Native Alegra purchase transport candidate", () => {
+  it.each([undefined, "unrelated-marker"])("rejects an otherwise matching native readback without its admitted marker: %s", observations => {
+    const store = fixture(request => request.path === "/bills/99" ? { status: 200, data: { ...nativeBill(), observations } } : undefined);
+    return expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
+  });
   it("serializes a single native request through the supplied secure host client", async () => {
     const wire = vi.fn(async () => new Response('{"id":"99"}', { status: 201, headers: { "Content-Type": "application/json" } }));
     const http = createAlegraNativeHttp({ authenticatedFetch: wire });
@@ -121,8 +125,8 @@ describe("Native Alegra purchase transport candidate", () => {
 
   it.each([
     ["FOREIGN_CURRENCY_UNSUPPORTED", { currency: "USD" }],
-    ["NATIVE_DATE_INVALID", { issueDate: "2026-02-30" }],
-    ["NATIVE_DATE_INVALID", { dueDate: "2026-10-01" }],
+    ["NATIVE_INTENT_INVALID", { issueDate: "2026-02-30" }],
+    ["NATIVE_INTENT_INVALID", { dueDate: "2026-10-01" }],
     ["NATIVE_ID_INVALID", { supplierNativeId: "../other" }],
     ["NATIVE_TAX_MAPPING_REQUIRED", { purchaseTax: null }],
     ["NATIVE_TAX_TOTAL_MISMATCH", { purchaseTax: { nativeId: "3", percentage: "12" } }],

@@ -28,6 +28,8 @@ export type KrossAdapterIssue = {
     | "invalid_payload"
     | "missing_required_mapping"
     | "mapped_value_missing"
+    | "invalid_text_value"
+    | "invalid_mapping_path"
     | "invalid_numeric_value"
     | "invalid_boolean_value";
   field?: keyof KrossReservationFieldMap;
@@ -41,18 +43,24 @@ export type KrossAdapterResult = {
 
 function clean(value: unknown) {
   if (value === null || value === undefined) return null;
+  if (typeof value !== "string" && !(typeof value === "number" && Number.isSafeInteger(value))) return null;
   const text = String(value).trim();
   return text ? text : null;
 }
 
-function getPathValue(payload: Record<string, unknown>, path: string) {
-  const parts = path.split(".").map((part) => part.trim()).filter(Boolean);
+function getPathValue(payload: Record<string, unknown>, path: string, field: keyof KrossReservationFieldMap, issues: KrossAdapterIssue[]) {
+  const parts = path.split(".").map((part) => part.trim());
+  if (parts.some(part => !part || ["__proto__", "constructor", "prototype"].includes(part))) {
+    issues.push({ code: "invalid_mapping_path", field, message: `Mapping path for ${field} is invalid.` });
+    return undefined;
+  }
   let current: unknown = payload;
 
   for (const part of parts) {
     if (!current || typeof current !== "object" || Array.isArray(current)) {
       return undefined;
     }
+    if (!Object.hasOwn(current, part)) return undefined;
     current = (current as Record<string, unknown>)[part];
   }
 
@@ -77,7 +85,11 @@ function mappedText(
     return null;
   }
 
-  const value = clean(getPathValue(payload, path));
+  const raw = getPathValue(payload, path, field, issues);
+  const value = clean(raw);
+  if (raw !== null && raw !== undefined && value === null && typeof raw !== "string") {
+    issues.push({ code: "invalid_text_value", field, message: `Mapped source value for ${field} is not an admissible text scalar.` });
+  }
   if (!value && required) {
     issues.push({
       code: "mapped_value_missing",
@@ -95,8 +107,8 @@ function mappedInteger(
   issues: KrossAdapterIssue[],
 ) {
   if (!path) return null;
-  const raw = getPathValue(payload, path);
-  if (raw === null || raw === undefined || raw === "") return null;
+  const raw = getPathValue(payload, path, field, issues);
+  if (raw === null || raw === undefined || (typeof raw === "string" && !raw.trim())) return null;
 
   const value =
     typeof raw === "number"
@@ -105,7 +117,7 @@ function mappedInteger(
         ? Number(raw.trim())
         : Number.NaN;
 
-  if (!Number.isInteger(value) || value < 0) {
+  if (!Number.isSafeInteger(value) || value < 0) {
     issues.push({
       code: "invalid_numeric_value",
       field,
@@ -123,7 +135,7 @@ function mappedBoolean(
   issues: KrossAdapterIssue[],
 ) {
   if (!path) return null;
-  const raw = getPathValue(payload, path);
+  const raw = getPathValue(payload, path, field, issues);
   if (raw === null || raw === undefined || raw === "") return null;
   if (typeof raw === "boolean") return raw;
 
@@ -177,8 +189,7 @@ export function adaptKrossReservationPayload(
     return { candidate: null, issues };
   }
 
-  return {
-    candidate: {
+  const candidate: KrossReservationCandidate = {
       orgId: config.orgId,
       propertyId: config.propertyId,
       externalReservationId,
@@ -215,7 +226,7 @@ export function adaptKrossReservationPayload(
         map.breakfastIncluded,
         issues,
       ),
-    },
-    issues,
   };
+  if (issues.length) candidate.mappingIssues = issues.map(({ code, field }) => ({ code, field }));
+  return { candidate, issues };
 }

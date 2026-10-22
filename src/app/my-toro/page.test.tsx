@@ -60,6 +60,16 @@ it("does not query or expose the hotel directory without a session", async () =>
   expect(html).not.toContain("Herramientas del hotel");
 });
 
+it("offers retry and local logout when an identity lookup throws", async () => {
+  mocks.menu.mockRejectedValue(new Error("PRIVATE_AUTH_DIAGNOSTIC"));
+  const html = await render();
+  expect(html).toContain("No pudimos verificar tu acceso ahora");
+  expect(html).toContain('href="/my-toro"');
+  expect(html).toContain('action="/api/auth/logout"');
+  expect(html).not.toContain("PRIVATE_AUTH_DIAGNOSTIC");
+  expect(mocks.directory).not.toHaveBeenCalled();
+});
+
 it.each(["other_org", "inactive", "context_choice"])("does not load hotel links for %s", async reason => {
   const data = view();
   if (reason === "other_org") data.context.orgId = "another-org";
@@ -98,10 +108,10 @@ it("renders every authorized organization as an explicit accessible choice", asy
   expect(html).toContain('role="group" aria-label="Organizaciones disponibles"');
   expect(html).toContain("en qué contexto quieres entrar");
   expect(html.match(/action="\/api\/brain\/context\/selection"/g)).toHaveLength(2);
-  expect(html.match(/method="post"/g)).toHaveLength(2);
+  expect(html.match(/method="post"/g)).toHaveLength(3);
   expect(html.match(/name="intent" value="select"/g)).toHaveLength(2);
   expect(html.match(/name="organizationId"/g)).toHaveLength(2);
-  expect(html.match(/type="submit"/g)).toHaveLength(2);
+  expect(html.match(/type="submit"/g)).toHaveLength(3);
   expect(html).toContain("volverá a validar tu membresía");
   expect(mocks.directory).not.toHaveBeenCalled();
 });
@@ -119,6 +129,7 @@ it("shows a safe retry instead of a partial organization selector", async () => 
   expect(html).toContain("No pude abrir ese contexto");
   expect(html).toContain("2 organizaciones autorizadas");
   expect(html).not.toContain('name="organizationId"');
+  expect(html).toContain('action="/api/auth/logout"');
 });
 
 it("keeps context switching available after resolving a multi-organization account", async () => {

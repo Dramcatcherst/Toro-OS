@@ -1,5 +1,6 @@
 import {
   captureAlegraWriteAuthorization,
+  isAlegraWriteBusinessKey,
   validateAlegraWriteApproval,
   verifyAlegraReadback,
   type AlegraReadback,
@@ -152,6 +153,10 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
   }
 
   const prior = input.priorReceipt ?? input.priorVerifiedReceipt;
+  if (prior && prior.idempotencyKey !== input.intent.idempotencyKey && isAlegraWriteBusinessKey(input.intent, prior.idempotencyKey)) {
+    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
+      reason: "PRIOR_IDENTITY_VERSION_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
+  }
   if (prior?.verified && prior.idempotencyKey === input.intent.idempotencyKey && !prior.durableReceiptId) {
     return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "PRIOR_RECEIPT_NOT_DURABLE" }) };
   }

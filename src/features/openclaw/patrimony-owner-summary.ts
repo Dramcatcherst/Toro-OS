@@ -107,17 +107,23 @@ export type OpenClawPatrimonyRequestEvaluation = {
 
 const SAFE_KEY = /^[A-Za-z0-9._:-]{8,180}$/;
 
-function validDate(value: string | null) {
-  return value === null || Number.isFinite(Date.parse(value));
+function timestampMs(value: unknown) {
+  if (typeof value !== "string") return Number.NaN;
+  const parts = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!parts) return Number.NaN;
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText] = parts;
+  const [year, month, day, hour, minute, second] = [yearText, monthText, dayText, hourText, minuteText, secondText].map(Number);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > days[month - 1] || hour > 23 || minute > 59 || second > 59) return Number.NaN;
+  return Date.parse(value);
 }
 
 export function evaluateOpenClawPatrimonyRequest(
   input: OpenClawPatrimonyRequest,
   nowMs = Date.now(),
 ): OpenClawPatrimonyRequestEvaluation {
-  const expiresAt = input.session.expiresAt
-    ? Date.parse(input.session.expiresAt)
-    : Number.POSITIVE_INFINITY;
+  const expiresAt = timestampMs(input.session.expiresAt);
 
   const checks: ControlCheck[] = [
     { key: "canonical_cloud_host", passed: Boolean(input.runtime.expectedHostId) && input.runtime.hostId === input.runtime.expectedHostId && input.runtime.mode === "cloud", detail: "The observed host matches the protected cloud host configuration." },
@@ -131,7 +137,7 @@ export function evaluateOpenClawPatrimonyRequest(
     { key: "binding_org_matches_target", passed: input.channel.bindingOrgId === input.request.orgId, detail: "The binding and patrimony target use the same organization." },
     { key: "active_session", passed: input.session.status === "active", detail: "The durable channel session is active." },
     { key: "session_not_revoked", passed: input.session.revokedAt === null, detail: "The session has not been revoked." },
-    { key: "session_not_expired", passed: validDate(input.session.expiresAt) && expiresAt > nowMs, detail: "The session is not expired." },
+    { key: "session_not_expired", passed: Number.isFinite(expiresAt) && expiresAt > nowMs, detail: "The session has a finite expiration after the current time." },
     { key: "session_org_matches_target", passed: input.session.orgId === input.request.orgId, detail: "The session and patrimony target use the same organization." },
     { key: "actor_bound", passed: typeof input.session.actorUserId === "string" && input.session.actorUserId.length > 0, detail: "The session is durably bound to a canonical user." },
     { key: "actor_matches_request", passed: input.session.actorUserId === input.actor.userId && input.actor.userId === input.request.actorId, detail: "Session, actor and RPC actor are identical." },
@@ -197,7 +203,7 @@ function hasExactKeys(value: unknown, expected: readonly string[]) {
 }
 
 function nonNegativeInteger(value: unknown) {
-  return Number.isInteger(value) && Number(value) >= 0;
+  return Number.isSafeInteger(value) && Number(value) >= 0;
 }
 
 function containsForbiddenKey(value: unknown): boolean {
@@ -221,17 +227,21 @@ export function evaluateOpenClawPatrimonyResponse(
   const counts = isRecord(row.counts) ? row.counts : {};
   const conflicts = isRecord(row.conflicts) ? row.conflicts : {};
   const snapshot = row.snapshot;
+  const generatedAt = timestampMs(row.generatedAt);
+  const snapshotDatesSafe = isRecord(snapshot) &&
+    (snapshot.observedAt === null || (Number.isFinite(timestampMs(snapshot.observedAt)) && timestampMs(snapshot.observedAt) <= generatedAt)) &&
+    (snapshot.verifiedAt === null || (Number.isFinite(timestampMs(snapshot.verifiedAt)) && timestampMs(snapshot.verifiedAt) <= generatedAt)) &&
+    (snapshot.observedAt === null || snapshot.verifiedAt === null || timestampMs(snapshot.observedAt) <= timestampMs(snapshot.verifiedAt));
   const snapshotSafe = snapshot === null ||
     (hasExactKeys(snapshot, ["matrixVersion", "observedAt", "verifiedAt"]) &&
       isRecord(snapshot) &&
-      typeof snapshot.matrixVersion === "string" &&
-      (snapshot.observedAt === null || typeof snapshot.observedAt === "string") &&
-      (snapshot.verifiedAt === null || typeof snapshot.verifiedAt === "string"));
+      typeof snapshot.matrixVersion === "string" && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,179}$/.test(snapshot.matrixVersion) &&
+      snapshotDatesSafe);
 
   const checks: ControlCheck[] = [
     { key: "aggregate_top_level_shape", passed: hasExactKeys(row, TOP_LEVEL_KEYS) && snapshotSafe, detail: "The response exposes only the approved aggregate envelope and snapshot metadata." },
-    { key: "response_contract_and_scope", passed: row.contract === "patrimony-owner-summary-v1" && row.orgId === expected.orgId && row.actorId === expected.actorId && typeof row.generatedAt === "string" && Number.isFinite(Date.parse(row.generatedAt)), detail: "The contract, actor, organization and timestamp match the request." },
-    { key: "numeric_aggregates", passed: hasExactKeys(counts, COUNT_KEYS) && COUNT_KEYS.every((key) => nonNegativeInteger(counts[key])) && hasExactKeys(conflicts, CONFLICT_KEYS) && CONFLICT_KEYS.every((key) => nonNegativeInteger(conflicts[key])) && Number(conflicts.critical) <= Number(conflicts.open) && Number(conflicts.high) <= Number(conflicts.open), detail: "All approved aggregate values are non-negative integers with coherent conflict totals." },
+    { key: "response_contract_and_scope", passed: row.contract === "patrimony-owner-summary-v1" && row.orgId === expected.orgId && row.actorId === expected.actorId && Number.isFinite(generatedAt), detail: "The contract, actor, organization and timestamp match the request." },
+    { key: "numeric_aggregates", passed: hasExactKeys(counts, COUNT_KEYS) && COUNT_KEYS.every((key) => nonNegativeInteger(counts[key])) && hasExactKeys(conflicts, CONFLICT_KEYS) && CONFLICT_KEYS.every((key) => nonNegativeInteger(conflicts[key])) && Number(conflicts.critical) + Number(conflicts.high) <= Number(conflicts.open) && Number(conflicts.open) <= Number(counts.conflicts), detail: "All approved aggregate values are safe non-negative integers with coherent conflict totals." },
     { key: "forbidden_registry_fields_absent", passed: !containsForbiddenKey(row), detail: "No registry identity, folio, vehicle, amount, document, hash, path or details field is present." },
   ];
 

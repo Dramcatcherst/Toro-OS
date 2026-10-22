@@ -166,6 +166,12 @@ function isPositiveAmount(value: string): boolean {
   return value.length <= 128 && /^\d+(?:\.\d+)?$/.test(value) && /[1-9]/.test(value);
 }
 
+function isCalendarDate(value?: string | null): value is string {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === value;
+}
+
 function sumMatches(subtotal: string, tax: string, total: string) {
   const values = [subtotal, tax, total];
   if (values.some(v => v.length > 128 || !/^\d+(?:\.\d+)?$/.test(v))) return false;
@@ -212,6 +218,15 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
     if (!normalizeText(payload.receiverTaxId)) errors.push("RECEIVER_TAX_ID_REQUIRED");
     if (!normalizeText(payload.accountNativeId)) errors.push("ACCOUNT_MAPPING_REQUIRED");
     if (!normalizeText(payload.costCenterNativeId)) errors.push("COST_CENTER_MAPPING_REQUIRED");
+    const validIssueDate = isCalendarDate(payload.issueDate);
+    const validDueDate = isCalendarDate(payload.dueDate);
+    if (!validIssueDate) errors.push("ISSUE_DATE_INVALID");
+    if (!validDueDate) errors.push("DUE_DATE_INVALID");
+    if (validIssueDate && validDueDate && payload.dueDate! < payload.issueDate!) errors.push("DUE_DATE_BEFORE_ISSUE");
+    // A matching period is still subject to the independent open-period
+    // authorization in the native server host; syntax never proves it is open.
+    if (payload.period !== undefined && payload.period !== null &&
+        (!/^\d{4}-(?:0[1-9]|1[0-2])$/.test(payload.period) || !validIssueDate || payload.period !== payload.issueDate!.slice(0, 7))) errors.push("PERIOD_ISSUE_DATE_MISMATCH");
   }
 
   if (payload.targetType === "outgoing_payment") {
@@ -227,7 +242,7 @@ function validateInput(input: AlegraWriteIntentInput): string[] {
   return errors;
 }
 
-function duplicateIdentity(input: AlegraWriteIntentInput): Record<string, unknown> {
+function duplicateIdentity(input: AlegraWriteIntentInput, legacy = false): Record<string, unknown> {
   const { scope, payload } = input;
 
   return {
@@ -237,9 +252,9 @@ function duplicateIdentity(input: AlegraWriteIntentInput): Record<string, unknow
     targetType: payload.targetType,
     businessReference: payload.targetType === "outgoing_payment"
       ? normalizeText(payload.paymentMovementRef)
-      : normalizeText(payload.documentNumber),
+      : legacy ? normalizeText(payload.documentNumber) : normalizeText(payload.documentNumber).toLowerCase(),
     issuer: payload.targetType === "purchase_bill"
-      ? normalizeText(payload.issuerTaxId) || normalizeText(payload.supplierNativeId)
+      ? (legacy ? normalizeText(payload.issuerTaxId) : normalizeText(payload.issuerTaxId).replace(/[\s-]/g, "").toLowerCase()) || normalizeText(payload.supplierNativeId)
       : null,
   };
 }
@@ -268,6 +283,9 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
       supplierNativeId: normalizeText(input.payload.supplierNativeId) || null,
       issuerTaxId: normalizeText(input.payload.issuerTaxId) || null,
       receiverTaxId: normalizeText(input.payload.receiverTaxId) || null,
+      ...(input.payload.issueDate !== undefined ? { issueDate: normalizeText(input.payload.issueDate) || null } : {}),
+      ...(input.payload.dueDate !== undefined ? { dueDate: normalizeText(input.payload.dueDate) || null } : {}),
+      ...(input.payload.period !== undefined && input.payload.period !== null ? { period: normalizeText(input.payload.period) } : {}),
       currency: normalizeCurrency(input.payload.currency),
       subtotal: normalizeText(input.payload.subtotal) || null,
       tax: normalizeText(input.payload.tax) || null,
@@ -285,7 +303,9 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
   const errors = validateInput(normalized);
   const payloadHash = sha256(normalized);
   const duplicateKey = sha256(duplicateIdentity(normalized));
-  const idempotencyKey = `alegra:v3:${duplicateKey}`;
+  // v4 changes business-identity normalization only. The exact payload hash
+  // remains independent, and existing v3 intents/receipts are never rewritten.
+  const idempotencyKey = `alegra:v4:${duplicateKey}`;
 
   return {
     version: "TORO-ALEGRA-WRITER-v3",
@@ -314,13 +334,30 @@ export function prepareAlegraWriteIntent(input: AlegraWriteIntentInput): AlegraW
   };
 }
 
+export function matchesAlegraWriteIntentIdentity(intent: AlegraWriteIntent, current: AlegraWriteIntent): boolean {
+  if (intent.duplicateKey === current.duplicateKey && intent.idempotencyKey === current.idempotencyKey) return true;
+  // Validate an existing historic intent with its original identity semantics.
+  // New preparation always emits v4; callers must search/reconcile prior v3
+  // receipts and provider markers rather than assigning a new key to old work.
+  const legacyKey = sha256(duplicateIdentity({ scope: current.scope, evidence: current.evidence, payload: current.payload }, true));
+  return intent.duplicateKey === legacyKey && intent.idempotencyKey === `alegra:v3:${legacyKey}`;
+}
+
+export function isAlegraWriteBusinessKey(intent: AlegraWriteIntent, candidateKey: string): boolean {
+  // A key version change must not hide historic receipts from duplicate search.
+  // Legacy-only receipts with another raw spelling need source reconciliation;
+  // this recognizes the exact available v3 identity without rewriting it.
+  return candidateKey === `alegra:v4:${sha256(duplicateIdentity(intent))}` ||
+    candidateKey === `alegra:v3:${sha256(duplicateIdentity(intent, true))}`;
+}
+
 export function validateAlegraWriteApproval(
   intent: AlegraWriteIntent,
   approval: AlegraWriteApproval | null | undefined,
   now: string,
 ): { ok: boolean; reason: string } {
   const current = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: intent.payload });
-  if (current.payloadHash !== intent.payloadHash || current.idempotencyKey !== intent.idempotencyKey) {
+  if (current.payloadHash !== intent.payloadHash || !matchesAlegraWriteIntentIdentity(intent, current)) {
     return { ok: false, reason: "INTENT_CHANGED_AFTER_PREPARATION" };
   }
   if (!intent.validation.ready || !current.validation.ready) {

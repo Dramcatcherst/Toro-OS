@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import type { OwnerAttentionItem } from "@/features/attention/owner-attention";
 
 export const TORO_INTERNAL_ROOMS = [
@@ -14,6 +16,7 @@ export type AlertDeliveryPriority = "critical" | "high" | "normal";
 export type AlertPrivacy = "internal" | "restricted";
 
 export type AlertDeliverySignal = {
+  orgId: string;
   sourceKind: "owner_attention" | "module_alert";
   sourceKey: string;
   version: string;
@@ -32,6 +35,9 @@ export type AlertDeliverySignal = {
 };
 
 export type WhatsAppGroupBinding = {
+  orgId: string;
+  scope: "organization" | "private" | "shared";
+  privacy: AlertPrivacy;
   id: string;
   channel: string;
   provider: string;
@@ -43,6 +49,15 @@ export type WhatsAppGroupBinding = {
   sendEnabled: boolean;
   active: boolean;
   lastEventAt: string | null;
+  /** Timestamp of a successful trusted health probe, never inferred from message traffic. */
+  healthCheckedAt: string | null;
+};
+
+export type AlertDeliveryContext = {
+  orgId: string;
+  nowMs: number;
+  /** Protected caller policy; this preparation helper does not invent a health window. */
+  maxHealthAgeMs: number;
 };
 
 export type AlertDeliveryCandidate = {
@@ -113,6 +128,7 @@ export function moduleAlertRoute(moduleKey: string) {
 export function ownerAttentionSignal(
   item: OwnerAttentionItem,
   details: {
+    orgId: string;
     version: string;
     summary: string;
     impact: string;
@@ -123,6 +139,7 @@ export function ownerAttentionSignal(
   },
 ): AlertDeliverySignal {
   return {
+    orgId: required(details.orgId, "organization"),
     sourceKind: "owner_attention",
     sourceKey: required(item.key, "source key"),
     version: required(details.version, "version"),
@@ -142,6 +159,7 @@ export function ownerAttentionSignal(
 }
 
 export function moduleAlertSignal(input: {
+  orgId: string;
   moduleKey: string;
   alertKey: string;
   version: string;
@@ -159,6 +177,7 @@ export function moduleAlertSignal(input: {
   const route = moduleAlertRoute(input.moduleKey);
   if (!route) throw new Error("Module alert has no approved TORO room policy.");
   return {
+    orgId: required(input.orgId, "organization"),
     sourceKind: "module_alert",
     sourceKey: required(input.alertKey, "source key"),
     version: required(input.version, "version"),
@@ -191,27 +210,47 @@ export function formatAlertDelivery(signal: AlertDeliverySignal) {
   ].join("\n");
 }
 
-function eligibleBinding(binding: WhatsAppGroupBinding, room: ToroInternalRoom) {
+function healthTimestamp(value: string | null) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return Number.NaN;
+  const calendar = value.slice(0, 10);
+  const midnight = Date.parse(`${calendar}T00:00:00Z`);
+  if (!Number.isFinite(midnight) || new Date(midnight).toISOString().slice(0, 10) !== calendar) return Number.NaN;
+  return Date.parse(value);
+}
+
+function eligibleBinding(binding: WhatsAppGroupBinding, signal: AlertDeliverySignal, context: AlertDeliveryContext) {
+  const checkedAt = healthTimestamp(binding.healthCheckedAt);
   return (
+    binding.orgId === context.orgId &&
+    binding.scope === "organization" &&
+    (signal.privacy !== "restricted" || binding.privacy === "restricted") &&
     binding.active &&
     binding.channel === "whatsapp" &&
     binding.provider === "openclaw" &&
     binding.endpointKind === "group" &&
-    binding.businessRole === roomBindingRole(room) &&
+    binding.businessRole === roomBindingRole(signal.room) &&
     binding.authStatus === "connected" &&
     binding.ingestionStatus === "healthy" &&
     binding.verificationStatus === "verified" &&
     binding.sendEnabled &&
-    Boolean(binding.lastEventAt)
+    Number.isFinite(checkedAt) &&
+    checkedAt <= context.nowMs &&
+    context.nowMs - checkedAt <= context.maxHealthAgeMs
   );
 }
 
 export function prepareAlertDelivery(
   signal: AlertDeliverySignal,
   bindings: WhatsAppGroupBinding[],
+  context: AlertDeliveryContext,
 ): AlertDeliveryCandidate {
-  const matches = bindings.filter((binding) => eligibleBinding(binding, signal.room));
   const blockers: string[] = [];
+  const contextValid = typeof context.orgId === "string" && context.orgId.trim().length > 0 &&
+    context.orgId === context.orgId.trim() && Number.isFinite(context.nowMs) &&
+    Number.isSafeInteger(context.maxHealthAgeMs) && context.maxHealthAgeMs > 0;
+  if (!contextValid) blockers.push("delivery_context_invalid");
+  if (!signal.orgId || signal.orgId !== context.orgId) blockers.push("alert_scope_mismatch");
+  const matches = blockers.length ? [] : bindings.filter((binding) => eligibleBinding(binding, signal, context));
   if (matches.length === 0) blockers.push("verified_group_binding_missing");
   if (matches.length > 1) blockers.push("ambiguous_group_binding");
   const destination = matches.length === 1 ? matches[0] : null;
@@ -220,13 +259,15 @@ export function prepareAlertDelivery(
     room: signal.room,
     privacy: signal.privacy,
     destinationBindingId: destination?.id ?? null,
-    dedupeKey: [
-      "alert-delivery-v1",
+    dedupeKey: "alert-delivery-v2:" + createHash("sha256").update(JSON.stringify([
+      context.orgId,
       destination?.id ?? roomBindingRole(signal.room),
+      signal.room,
+      signal.privacy,
       signal.sourceKind,
       signal.sourceKey,
       signal.version,
-    ].join(":"),
+    ])).digest("hex"),
     message: formatAlertDelivery(signal),
     blockers,
   };

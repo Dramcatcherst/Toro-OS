@@ -7,9 +7,11 @@ import { resolveVercelRuntimeConfig } from "@/lib/vercel-runtime";
 
 function summarizeVercelLiveRead(data: unknown) {
   const deployments = (data as { deployments?: Array<{ name?: string; state?: string; url?: string }> } | null)?.deployments;
-  if (!Array.isArray(deployments) || deployments.length === 0) {
+  if (!Array.isArray(deployments)) {
     return null;
   }
+
+  if (deployments.length === 0) return "Deployment endpoint reachable; no deployments returned.";
 
   const latest = deployments[0];
   return latest ? `${latest.name ?? "deployment"} / ${latest.state ?? "unknown"} / ${latest.url ?? "no-url"}` : null;
@@ -19,21 +21,20 @@ export async function getConnectorHealth(): Promise<{
   records: ConnectorHealthRecord[];
   summary: { live: number; configured: number; blocked: number };
 }> {
-  const airtableRead = await readAirtableRecords({
-    baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
-    tableId: airtableBase.blueprintTableId,
-    pageSize: 1,
-  });
-
   const vercelRuntime = resolveVercelRuntimeConfig();
-  const vercelRead = await readVercelDeployments({
-    projectId: vercelRuntime.projectId,
-    teamId: vercelRuntime.teamId,
-  });
+  const [airtableRead, vercelRead] = await Promise.all([
+    readAirtableRecords({
+      baseId: process.env.AIRTABLE_BASE_ID ?? airtableBase.id,
+      tableId: airtableBase.blueprintTableId,
+      pageSize: 1,
+    }),
+    readVercelDeployments({ projectId: vercelRuntime.projectId, teamId: vercelRuntime.teamId }),
+  ]);
 
   const records = connectors.map<ConnectorHealthRecord>((connector) => {
     if (connector.id === "airtable") {
-      const hasLiveData = Boolean((airtableRead.data as { records?: unknown[] } | null)?.records?.length);
+      const hasLiveData = airtableRead.configured && !airtableRead.error &&
+        Array.isArray((airtableRead.data as { records?: unknown[] } | null)?.records);
       return {
         ...connector,
         configured: airtableRead.configured,
