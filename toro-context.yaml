@@ -172,6 +172,8 @@ scope_graph:
 
 canonical_product_specs:
   general_plan: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  integrated_evolution_guide: docs/product/TORO_INTEGRATED_EVOLUTION_GUIDE_V1.md
+  integral_audit_20261022: docs/evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md
   brain_constitution: docs/product/TORO_BRAIN_CONSTITUTION.md
   brain_master_architecture: docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
   brain_north_star: docs/product/TORO_BRAIN_NORTH_STAR_V1.md
