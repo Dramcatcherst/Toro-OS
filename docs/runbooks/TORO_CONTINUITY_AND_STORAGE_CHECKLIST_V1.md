@@ -36,6 +36,43 @@ La fecha objetivo y el responsable humano confirmado pertenecen a cada tarea pri
 
 **Autonomía por flujo:** observar -> preparar -> operación reversible autorizada -> verificar -> ampliar con evidencia. PUMBA conserva los gates del [runbook de activación](TORO_MCP_PUMBA_ACTIVATION_V1.md). Este documento no los levanta.
 
+### 2.1. Cortes operativos: prueba de frescura, traspaso y cierre
+
+**Estado: TARGET — criterio de aceptación documental, no despliegue ni cambio de scheduler.** La auditoría matinal y la preparación de llegadas reutilizan la única tarea programada y sus cortes flexibles existentes. No sustituyen precierre financiero ni reporte ejecutivo, ni crean cola paralela. Distinguir hora programada, inicio real, término real y hora local del hotel en el recibo privado. Un retraso flexible no demuestra fallo humano.
+
+**Lectura incremental.** Antes de investigar otra vez, recuperar último corte, alcance, fuente/cursor pendiente, estado de incidencias y cierres humanos verificados. Deduplicar dentro del almacén privado autorizado mediante ámbito, fecha local, tipo de corte, fuente y referencia estable de evento. Una observación repetida actualiza evidencia en la tarea existente; una alerta vieja no reabre un cierre probado sin hecho posterior nuevo.
+
+**Recibo privado mínimo**, mediante objetos existentes y sin crear tablas: scope, local_business_date, cut_type, scheduled_for, started_at, finished_at, source, authority, source_effective_at, retrieved_at, last_sync_at/last_event_at si aplica, source_cursor_or_object, coverage, freshness, evidence_ref, existing_task_ref, owner_role, next_action, due_at, verification_state y continuation_point. Ausencia de campo = **DESCONOCIDO**, nunca cero o false por defecto. No publicar valores privados.
+
+| Comprobación | Evidencia exigida | Conclusión que no se permite |
+|---|---|---|
+| Reservas, estancias, llegadas y salidas | PMS o exportación vigente, fecha efectiva y unidad física | Un correo o snapshot anterior prueba disponibilidad, tarifa o presencia hoy |
+| Desayunos | Derecho incluido, extra, casa, por confirmar, preparado, entregado, no consumido y cambios diferenciados; acuse real de apertura/cocina | Ocupación es desayuno, pedido es consumo o lista preparada es entrega |
+| Aseo y accesos | Limpieza, inspección/QA, bloqueo técnico, acceso entregado y aceptado como hechos independientes | Limpia significa lista; instrucciones redactadas prueban ingreso |
+| Mantenimiento | Tarea original, responsable que acepta, prueba física/funcional fechada y verified_closed_at cuando exista | Reportado reparado equivale a verificado |
+| Compras e inventario | Conteos por SKU/ubicación con fecha, responsable y mínimos/máximos comprobados | Pedido es stock; tabla sin filas equivale a existencias cero |
+| Conectores y comunicación | Estado conectado contrastado con salud, último evento/sincronización y prueba de canal con recibo | Cuenta conectada equivale a canal entregando mensajes |
+| Contabilidad y pagos | Comprobante, procesador/banco y asiento contable conservan sus respectivas fuentes y estados | Aviso de pago enviado equivale a ingreso recibido o conciliado |
+
+**Despacho de desayuno.** Preparar fecha/hora, habitación/referencia mínima, incluidos confirmados, extras confirmados, casa autorizados, por confirmar, franja, restricción estrictamente necesaria, preparado/entregado/no consumido y cambios trazables. Exigir al responsable de apertura reporte nativo PMS como contingencia y acuse real de cocina: la programación flexible no garantiza la entrega. Sin acuse no declarar recibido. No modificar reglas del proveedor ni liquidar consumos inferidos.
+
+**Preparación de llegadas.** No representar con una sola bandera de listo. Exigir reserva/unidad vigente, limpieza, inspección independiente, reparación impediente, acceso, saldo confirmado por su fuente, petición especial y llegada tardía, cada uno con actor/fecha/recibo o POR_CONFIRMAR. No cambiar disponibilidad/precio, cobrar ni despachar comunicaciones por esta auditoría.
+
+**Salida humana y persistencia.** Todo hallazgo relevante indica problema, área/unidad mínima, fuente/fecha, responsable humano confirmado o rol propuesto, siguiente paso, urgencia/plazo y prueba requerida para terminar. Elevar al propietario hasta tres decisiones materiales. El reporte de las 20:00 consume estas evidencias, sin repetir ingesta. Una Page inaccesible o no editable queda NO_GUARDADO; una URL conocida no prueba actualización. Sin identificador y recibo de canal el trabajo sigue PREPARADO_NO_DESPACHADO.
+
+**Pruebas negativas de aceptación para el flujo existente:**
+
+1. Sin PMS fresco no declarar cero huéspedes/desayunos ni habitaciones listas.
+2. Una alerta duplicada cerrada no reabre trabajo sin evidencia posterior al cierre.
+3. Sin inspección fechada una limpieza finalizada no autoriza el estado listo.
+4. Sin banco/procesador comprobado, aviso de cobro no se trata como dinero conciliado.
+5. Conector conectado con last_event_at antiguo o sin prueba de canal no acredita WhatsApp entregado.
+6. Reparación sin verified_closed_at o evidencia equivalente queda por verificar.
+7. Denegación de seguridad no se elude mediante otra herramienta o ruta de escritura.
+8. La auditoría finita cierra con cobertura, dependencia, siguiente fuente/cursor y NO_GUARDADO cuando corresponda.
+
+**Aceptación de una mejora implementada:** prueba del corte real, recibo de escritura y lectura posterior en ruta autorizada, aceptación humana donde aplique, ningún duplicado nuevo y ninguna alteración de scheduler, datos comerciales ni autoridad transaccional. Mientras tanto el presente texto es especificación, no resultado operativo.
+
 ## 3. Separar cuatro significados de almacenamiento
 
 - **Bodega física:** consumibles, blancos, repuestos y movimientos reales.
