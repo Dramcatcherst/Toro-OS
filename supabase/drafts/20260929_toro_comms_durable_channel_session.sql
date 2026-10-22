@@ -133,6 +133,62 @@ begin
 end
 $receipt_scope$;
 
+-- Enforce the existing six-reference experience continuation contract at storage,
+-- including server-role writes that do not call the TypeScript validator.
+-- Either experience marker activates the rule; both must then agree. Other
+-- workflows retain their existing contract. Missing keys/JSON null must not turn
+-- a CHECK into SQL NULL (which PostgreSQL would accept), hence IS TRUE below.
+-- No business status, price, raw message or credential belongs in this pointer.
+-- Existing invalid rows stop installation; no data is rewritten or deleted.
+do $experience_continuation$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'integrations.communication_channel_sessions'::regclass
+      and conname = 'channel_sessions_experience_continuation_check'
+  ) then
+    alter table integrations.communication_channel_sessions
+      add constraint channel_sessions_experience_continuation_check
+      check (
+        case when current_workflow_key = 'experience_request'
+          or continuation_state ->> 'workflow' = 'experience_request'
+        then (
+          case when jsonb_typeof(continuation_state) = 'object' then
+            current_workflow_key = 'experience_request'
+            and continuation_state ?& array[
+              'schemaVersion','workflow','requestId','requestVersion','quoteId','quoteVersion'
+            ]
+            and (continuation_state - array[
+              'schemaVersion','workflow','requestId','requestVersion','quoteId','quoteVersion'
+            ]) = '{}'::jsonb
+            and continuation_state -> 'schemaVersion' = '1'::jsonb
+            and continuation_state -> 'workflow' = '"experience_request"'::jsonb
+            and jsonb_typeof(continuation_state -> 'requestId') = 'string'
+            and (continuation_state ->> 'requestId') ~*
+              '^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+            and jsonb_typeof(continuation_state -> 'requestVersion') = 'string'
+            and (continuation_state ->> 'requestVersion') ~ '^[a-f0-9]{64}$'
+            and (
+              (continuation_state -> 'quoteId' = 'null'::jsonb
+                and continuation_state -> 'quoteVersion' = 'null'::jsonb)
+              or (
+                jsonb_typeof(continuation_state -> 'quoteId') = 'string'
+                and (continuation_state ->> 'quoteId') ~*
+                  '^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+                and jsonb_typeof(continuation_state -> 'quoteVersion') = 'string'
+                and (continuation_state ->> 'quoteVersion') ~ '^[a-f0-9]{64}$'
+              )
+            )
+          else false end
+        ) is true
+        else true end
+      );
+  end if;
+  alter table integrations.communication_channel_sessions
+    validate constraint channel_sessions_experience_continuation_check;
+end
+$experience_continuation$;
+
 alter table integrations.communication_channel_sessions enable row level security;
 alter table integrations.communication_channel_receipts enable row level security;
 
