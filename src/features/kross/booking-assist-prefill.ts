@@ -1,3 +1,5 @@
+import { isKrossDateOnly } from "./public-search-link";
+
 export type BookingAssistPrefill = {
   from: string;
   to: string;
@@ -7,17 +9,7 @@ export type BookingAssistPrefill = {
 };
 
 function cleanDate(value: string | null) {
-  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return "";
-  const [year, month, day] = value.split("-").map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day));
-  if (
-    date.getUTCFullYear() !== year ||
-    date.getUTCMonth() !== month - 1 ||
-    date.getUTCDate() !== day
-  ) {
-    return "";
-  }
-  return value;
+  return isKrossDateOnly(value) ? value : "";
 }
 
 function boundedInt(
@@ -37,10 +29,12 @@ export function parseBookingAssistPrefill(
   params: Pick<URLSearchParams, "get">,
 ): BookingAssistPrefill {
   const currency = params.get("currency");
+  const from = cleanDate(params.get("from"));
+  const to = cleanDate(params.get("to"));
 
   return {
-    from: cleanDate(params.get("from")),
-    to: cleanDate(params.get("to")),
+    from,
+    to: from && to && to <= from ? "" : to,
     adults: boundedInt(params.get("adults"), 2, 1, 12),
     children: boundedInt(params.get("children"), 0, 0, 6),
     currency: currency === "CRC" ? "CRC" : "USD",

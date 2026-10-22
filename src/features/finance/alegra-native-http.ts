@@ -15,11 +15,35 @@ export function createAlegraNativeHttp(input: { authenticatedFetch: (url: string
       if (request.method !== "GET" || request.path !== "/bills" || !allowedQuery.has(key) || typeof value !== "string") throw new Error("NATIVE_HTTP_QUERY_FORBIDDEN");
       url.searchParams.set(key, value);
     }
-    const response = await authenticatedFetch(url.toString(), {
-      method: request.method, headers: { accept: "application/json", ...(request.method === "POST" ? { "content-type": "application/json" } : {}) },
-      ...(request.method === "POST" ? { body: JSON.stringify(request.body) } : {}),
-      redirect: "error", credentials: "omit", cache: "no-store", signal: AbortSignal.timeout(20_000),
+    const controller = new AbortController();
+    let response: Response | undefined;
+    const cancelBody = () => {
+      try { void response?.body?.cancel().catch(() => {}); } catch { /* Cancellation is best effort. */ }
+    };
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const deadline = new Promise<never>((_resolve, reject) => {
+      timer = setTimeout(() => {
+        reject(new Error("NATIVE_HTTP_TIMEOUT"));
+        controller.abort();
+        cancelBody();
+      }, 20_000);
     });
-    return { status: response.status, data: await response.json() };
+    try {
+      return await Promise.race([
+        (async () => {
+          response = await authenticatedFetch(url.toString(), {
+            method: request.method, headers: { accept: "application/json", ...(request.method === "POST" ? { "content-type": "application/json" } : {}) },
+            ...(request.method === "POST" ? { body: JSON.stringify(request.body) } : {}),
+            redirect: "error", credentials: "omit", cache: "no-store", signal: controller.signal,
+          });
+          // A wrapper may settle after timeout despite aborting its signal.
+          if (controller.signal.aborted) { cancelBody(); throw new Error("NATIVE_HTTP_TIMEOUT"); }
+          return { status: response.status, data: await response.json() };
+        })(),
+        deadline,
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
   } };
 }

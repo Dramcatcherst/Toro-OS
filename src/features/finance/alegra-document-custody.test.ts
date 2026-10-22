@@ -231,3 +231,46 @@ describe("Alegra original document custody", () => {
   });
 
 });
+
+describe("Finance custody adapter binding regressions", () => {
+  it("keeps the original isolated destination across source awaits", async () => {
+    const source = await storage("binding-source"), destination = await storage("binding-destination");
+
+    const manifest = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-binding", assets }), scope, source);
+    const sourceRead = source.read.bind(source);
+    source.read = async ref => { destination.locationKey = source.locationKey; destination.read = sourceRead; destination.putImmutable = source.putImmutable.bind(source); return sourceRead(ref); };
+    await expect(restoreAlegraDocumentCustody(manifest, scope, source, destination)).rejects.toThrow("CUSTODY_STORAGE_BINDING_CHANGED");
+    expect(Object.isFrozen(destination)).toBe(false);
+  });
+  it.each([{ locationKey: "" }, { locationKey: " " }, { mode: "anything" }, { read: undefined }, { putImmutable: undefined }])("rejects malformed initial adapter %j before any I/O", async patch => {
+    const adapter = await storage("bad-binding"); const read = vi.spyOn(adapter, "read"), write = vi.spyOn(adapter, "putImmutable");
+    Object.assign(adapter, patch);
+    await expect(materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-binding", assets }), scope, adapter)).rejects.toThrow("CUSTODY_STORAGE_BINDING_INVALID");
+    expect(read).not.toHaveBeenCalled(); expect(write).not.toHaveBeenCalled();
+  });
+});
+it("aborts an async adapter that routes through its changed this.locationKey", async () => {
+  const buckets = new Map<string, Map<string, Uint8Array>>([["source", new Map()], ["independent", new Map()]]);
+  function routed(locationKey: string): AlegraCustodyStorage { return { locationKey, mode: "simulation",
+    async putImmutable(path, bytes) { const bucket = buckets.get(this.locationKey)!; bucket.set(path, new Uint8Array(bytes)); return { ref: path, revision: "fixture-1" }; },
+    async read(path) { return new Uint8Array(buckets.get(this.locationKey)!.get(path)!); } }; }
+  const source = routed("source"), destination = routed("independent");
+  const manifest = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-binding", assets }), scope, source);
+  const read = source.read;
+  source.read = async function(path) { await Promise.resolve(); destination.locationKey = "source"; return read.call(this, path); };
+  await expect(restoreAlegraDocumentCustody(manifest, scope, source, destination)).rejects.toThrow("CUSTODY_STORAGE_BINDING_CHANGED");
+  expect(buckets.get("independent")!.size).toBe(0);
+});
+it("preserves frozen class adapters with private state and their original receiver", async () => {
+  class PrivateStorage implements AlegraCustodyStorage {
+    #objects = new Map<string, Uint8Array>();
+    readonly mode = "simulation" as const;
+    constructor(readonly locationKey: string) {}
+    async putImmutable(path: string, bytes: Uint8Array) { this.#objects.set(path, new Uint8Array(bytes)); return { ref: path, revision: "fixture-private" }; }
+    async read(path: string) { return new Uint8Array(this.#objects.get(path)!); }
+  }
+  const source = Object.freeze(new PrivateStorage("private-source")), destination = Object.freeze(new PrivateStorage("private-independent"));
+  const manifest = await materializeAlegraDocumentCustody(prepareAlegraDocumentCustody({ scope, documentKey: "fixture-private", assets }), scope, source);
+  const restored = await restoreAlegraDocumentCustody(manifest, scope, source, destination);
+  expect(restored.state).toBe("RESTORE_TESTED"); expect(restored.locationKey).toBe("private-independent");
+});

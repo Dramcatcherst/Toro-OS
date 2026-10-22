@@ -1,12 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isPortalDeployment, isPublicDemo } from "@/lib/server/public-demo";
 import { refreshPortalSession } from "@/lib/supabase/portal-refresh";
+import { isPortalPagePath } from "@/features/auth/portal-paths";
 
-const portalPages = new Set([
-  "/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain",
-  // This page only prepares a public Kross search; it has no private reader or PMS writer.
-  "/booking-assist",
-]);
 const portalReadApis = new Set(["/api/brain/context", "/api/brain/owner-attention"]);
 const portalContextSelectionApi = "/api/brain/context/selection";
 const portalAssets = new Set([
@@ -30,17 +26,17 @@ function portalResponse(request: NextRequest) {
   // of letting a later router normalization change an allowlisted destination.
   const canonical = !/[\\%\u0000-\u0020\u007f]/.test(path) &&
     !path.split("/").some(segment => segment.startsWith("."));
-  if (canonical && (path === "/api/auth/login" || path === portalContextSelectionApi) &&
+  if (canonical && (path === "/api/auth/login" || path === "/api/auth/logout" || path === portalContextSelectionApi) &&
       request.method === "POST" && !request.headers.has("Next-Action")) {
-    // Only bounded authentication and context-preference handlers may accept a
-    // POST. Neither admits operational writers or Server Actions.
+    // Only bounded authentication, local logout and context-preference handlers may accept a
+    // POST. None admits operational writers or Server Actions.
     return privateResponse(NextResponse.next());
   }
   if (readOnly && canonical && path === "/") {
     return privateResponse(NextResponse.redirect(new URL("/portal", request.url)));
   }
   const asset = portalAssets.has(path) || path.startsWith("/_next/static/");
-  if (readOnly && canonical && (portalPages.has(path) || portalReadApis.has(path) || asset)) {
+  if (readOnly && canonical && (isPortalPagePath(path) || portalReadApis.has(path) || asset)) {
     // SSR pages and the two read APIs retain their own verified identity, role,
     // organization and RLS checks. A session-looking cookie is never a grant.
     return privateResponse(NextResponse.next());
@@ -51,7 +47,7 @@ function portalResponse(request: NextRequest) {
 }
 
 /** Public surface allowlist, not a replacement for internal auth/RLS. */
-export function publicSurfaceDecision(request: NextRequest) {
+function surfaceDecision(request: NextRequest) {
   if (isPortalDeployment()) return portalResponse(request);
   if (!isPublicDemo()) return NextResponse.next();
 
@@ -80,6 +76,15 @@ export function publicSurfaceDecision(request: NextRequest) {
   );
 }
 
+export function publicSurfaceDecision(request: NextRequest) {
+  const response = surfaceDecision(request);
+  // Restrict who may embed TORO without restricting its own Kross iframe or
+  // Next scripts. Apply to failures and redirects as well as admitted pages.
+  response.headers.set("Content-Security-Policy", "frame-ancestors 'none'");
+  response.headers.set("X-Frame-Options", "DENY");
+  return response;
+}
+
 export async function proxy(request: NextRequest) {
   const response = publicSurfaceDecision(request);
   const path = request.nextUrl.pathname;
@@ -90,7 +95,7 @@ export async function proxy(request: NextRequest) {
     (fetchSite === undefined || fetchSite === "same-origin");
   if (isPortalDeployment() && response.headers.get("x-middleware-next") === "1" &&
       (((request.method === "GET" || request.method === "HEAD") &&
-        ((portalPages.has(path) && path !== "/login" && path !== "/booking-assist") || portalReadApis.has(path))) ||
+        ((isPortalPagePath(path) && path !== "/login" && path !== "/booking-assist") || portalReadApis.has(path))) ||
         contextSelectionPost) &&
       request.cookies.getAll().some(cookie => /^sb-[a-z0-9]+-auth-token(?:\.\d+)?$/.test(cookie.name))) {
     return refreshPortalSession(request, response);

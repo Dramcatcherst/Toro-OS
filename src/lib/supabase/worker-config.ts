@@ -24,9 +24,12 @@ export function resolveSupabaseWorkerSecret(
   const bundle = env.SUPABASE_SECRET_KEYS?.trim();
   if (bundle) {
     try {
-      const parsed = JSON.parse(bundle) as Record<string, unknown>;
+      const parsed: unknown = JSON.parse(bundle);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
+      if (!Object.hasOwn(parsed, "default")) return null;
+      const value = (parsed as Record<string, unknown>).default;
       const defaultKey =
-        typeof parsed.default === "string" ? parsed.default.trim() : "";
+        typeof value === "string" ? value.trim() : "";
       if (defaultKey) {
         return {
           key: defaultKey,
@@ -34,8 +37,11 @@ export function resolveSupabaseWorkerSecret(
           legacy: false,
         };
       }
+      return null;
     } catch {
-      // Fail closed below. Never log the raw secret bundle.
+      // An explicit broken modern configuration must not select another authority.
+      // Never log the raw secret bundle.
+      return null;
     }
   }
 

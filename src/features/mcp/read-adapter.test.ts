@@ -212,3 +212,12 @@ describe("TORO MCP read adapter", () => {
     expect(executionReceiptsFromProjection(p)).toEqual([]);
   });
 });
+
+it("R50-08 compares receipt time bounds as instants and rejects reversed or invalid ranges", () => {
+  const p = projection();
+  p.recentEvents![0].occurredAt = "2026-09-30T17:00:00Z";
+  expect(executionReceiptsFromProjection(p, { until: "2026-09-30T17:00:00.000Z" })).toHaveLength(1);
+  expect(executionReceiptsFromProjection(p, { since: "2026-09-30T18:00:00+01:00" })).toHaveLength(1);
+  expect(() => executionReceiptsFromProjection(p, { since: "invalid" })).toThrow();
+  expect(() => executionReceiptsFromProjection(p, { since: "2026-10-01T00:00:00Z", until: "2026-09-30T00:00:00Z" })).toThrow();
+});

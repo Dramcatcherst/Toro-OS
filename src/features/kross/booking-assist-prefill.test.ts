@@ -6,6 +6,15 @@ import {
 } from "./booking-assist-prefill";
 
 describe("booking assist prefill", () => {
+  it.each(["2026-11-01", "2026-11-04"])("clears only a contradictory departure %s", to => {
+    expect(parseBookingAssistPrefill(new URLSearchParams(`from=2026-11-04&to=${to}&adults=4&children=2&currency=CRC`))).toEqual({ from: "2026-11-04", to: "", adults: 4, children: 2, currency: "CRC" });
+  });
+
+  it.each(["from", "to"])("preserves useful one-sided date prefill %s", key => {
+    const parsed = parseBookingAssistPrefill(new URLSearchParams(`${key}=2026-11-04`));
+    expect(parsed[key as "from" | "to"]).toBe("2026-11-04");
+  });
+
   it("accepts valid bounded prefill values", () => {
     const params = new URLSearchParams(
       "from=2026-10-10&to=2026-10-12&adults=4&children=2&currency=CRC",

@@ -24,6 +24,8 @@ const intent = prepareAlegraWriteIntent({
     supplierNativeId: "supplier-42",
     issuerTaxId: "3-101-000000",
     receiverTaxId: "3-101-999999",
+    issueDate: "2026-10-09",
+    dueDate: "2026-10-19",
     currency: "USD",
     total: "113.00",
     accountNativeId: "expense-software",
@@ -47,10 +49,12 @@ const validNow = "2026-10-09T08:05:00Z";
 const clearDuplicates = evaluateAlegraDuplicatePreflight({
   intent,
   candidates: [],
+  now: validNow,
+  maxAgeMs: 60_000,
   sourceStates: [
-    { source: "toro", coverage: "complete" },
-    { source: "alegra", coverage: "complete" },
-    { source: "receipt", coverage: "complete" },
+    { source: "toro", coverage: "complete", checkedAt: validNow },
+    { source: "alegra", coverage: "complete", checkedAt: validNow },
+    { source: "receipt", coverage: "complete", checkedAt: validNow },
   ],
 });
 
@@ -78,6 +82,17 @@ function verifiedReadback(nativeId = "bill-1") {
 }
 
 describe("Alegra Writer governed executor", () => {
+  it("preserves and reconciles a prior v3 receipt instead of posting again under a v4 identity", async () => {
+    const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: "alegra:v3:ce63845373391d634d082629067450e50b9a550f36791357fc6197a658498910", payloadHash: intent.payloadHash,
+      approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "fixture-historic-durable" };
+    const transport: AlegraWriteTransport = { create: vi.fn(async () => ({ state: "created" as const, nativeId: "bill-1" })), findByIdempotencyKey: vi.fn(), readback: vi.fn(async () => verifiedReadback()) };
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, priorReceipt: prior, now: validNow });
+    expect(result.executedProviderMutation).toBe(false);
+    expect(result.receipt.reasons).toContain("PRIOR_IDENTITY_VERSION_REQUIRES_RECONCILIATION");
+    expect(transport.create).not.toHaveBeenCalled();
+    expect(prior.idempotencyKey).toMatch(/^alegra:v3:/);
+    expect(prior.durableReceiptId).toBe("fixture-historic-durable");
+  });
   it("does not replay an in-memory verification without a durable receipt ID", async () => {
     const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates,
       transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() },
@@ -222,6 +237,8 @@ describe("Alegra Writer governed executor", () => {
     const staleDuplicates = evaluateAlegraDuplicatePreflight({
       intent,
       candidates: [],
+      now: validNow,
+      maxAgeMs: 60_000,
       sourceStates: [
         { source: "toro", coverage: "complete" },
         { source: "alegra", coverage: "stale" },
@@ -379,4 +396,71 @@ describe("Alegra Writer governed executor", () => {
     expect(create).not.toHaveBeenCalled();
   });
 
+});
+
+describe("Finance execution receipt and capability regressions", () => {
+  function prior(): AlegraWriterReceipt { return { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "durable" }; }
+  it.each([{ version: "unknown" }, { nativeId: null }, { verificationState: "NOT_ATTEMPTED" }, { executionState: "failed" }, { reasons: ["failure"] }, { createdAt: "2026-02-30T08:00:00Z" }])("reconciles contradictory historical receipt %j without posting", async patch => {
+    const create = vi.fn();
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, priorReceipt: { ...prior(), ...patch } as AlegraWriterReceipt, now: validNow,
+      transport: { create, findByIdempotencyKey: vi.fn(), readback: vi.fn() } });
+    expect(result.ok).toBe(false); expect(create).not.toHaveBeenCalled();
+    expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN");
+  });
+  it.each([null, undefined, [], { state: "unknown" }])("durably reconciles malformed create %j without a second POST", async response => {
+    const create = vi.fn(async () => response) as unknown as AlegraWriteTransport["create"];
+    const persist = vi.fn(async () => "reconciliation");
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, now: validNow, gate: { ...gate, persistReceipt: persist },
+      transport: { create, findByIdempotencyKey: async () => ({ state: "not_found" }), readback: vi.fn() } });
+    expect(result.ok).toBe(false); expect(result.executedProviderMutation).toBe(true);
+    expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN"); expect(result.receipt.durableReceiptId).toBe("reconciliation");
+    expect(create).toHaveBeenCalledTimes(1); expect(persist).toHaveBeenCalledTimes(1);
+  });
+  it.each([null, undefined, [], { total: true }])("durably reconciles malformed readback %j preserving native identity", async response => {
+    const persist = vi.fn(async () => "reconciliation");
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, now: validNow, gate: { ...gate, persistReceipt: persist },
+      transport: { create: async () => ({ state: "created", nativeId: "bill-1" }), findByIdempotencyKey: vi.fn(), readback: async () => response } as unknown as AlegraWriteTransport });
+    expect(result.ok).toBe(false); expect(result.receipt.nativeId).toBe("bill-1"); expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN");
+    expect(persist).toHaveBeenCalledTimes(1); expect(result.receipt.durableReceiptId).toBe("reconciliation");
+  });
+  it("binds callbacks and prior receipt without freezing caller objects", async () => {
+    const replacement = vi.fn(); const originalCreate = vi.fn(async () => ({ state: "created" as const, nativeId: "bill-1" }));
+    const originalRead = vi.fn(async () => verifiedReadback()); const originalPersist = vi.fn(async () => "original-durable");
+    const transport = { create: originalCreate, readback: originalRead, findByIdempotencyKey: vi.fn() };
+    const mutableGate = { ...gate, persistReceipt: originalPersist, beforeDispatch: async () => { transport.create = replacement; transport.readback = replacement; mutableGate.persistReceipt = replacement; return true; } };
+    const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport, gate: mutableGate, now: validNow });
+    expect(result.ok).toBe(true); expect(result.receipt.durableReceiptId).toBe("original-durable");
+    expect(originalCreate).toHaveBeenCalledTimes(1); expect(originalRead).toHaveBeenCalledTimes(1); expect(originalPersist).toHaveBeenCalledTimes(1); expect(replacement).not.toHaveBeenCalled();
+    expect(Object.isFrozen(transport)).toBe(false); expect(Object.isFrozen(mutableGate)).toBe(false);
+  });
+});
+
+it.each([null, { create: "invalid" }, { create: undefined }])("fails closed on malformed execution capabilities %j before admission", async malformed => {
+  const beforeDispatch = vi.fn(async () => true);
+  const transport = malformed === null ? null : Object.assign({ create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() }, malformed);
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, transport: transport as unknown as AlegraWriteTransport,
+    gate: { ...gate, beforeDispatch }, now: validNow });
+  expect(result.ok).toBe(false); expect(result.receipt.reasons).toEqual(["EXECUTION_CAPABILITY_INVALID"]); expect(beforeDispatch).not.toHaveBeenCalled();
+});
+it("keeps Writer OFF with an absent transport capability", async () => {
+  const result = await executeApprovedAlegraIntent({ intent, approval, duplicateDecision: clearDuplicates, transport: null as unknown as AlegraWriteTransport,
+    writerEnabled: false, now: validNow });
+  expect(result.receipt.reasons).toEqual(["WRITER_DISABLED"]);
+});
+it("detaches a replay receipt from caller mutation without freezing it", async () => {
+  const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "durable" };
+  const pending = executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, priorReceipt: prior, now: validNow, transport: { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() } });
+  prior.nativeId = null; prior.reasons.push("changed");
+  const result = await pending; expect(result.ok).toBe(true); expect(result.receipt.nativeId).toBe("bill-1"); expect(result.receipt.reasons).toEqual(["IDEMPOTENT_REPLAY"]); expect(Object.isFrozen(prior)).toBe(false);
+});
+it.each([null, undefined, { state: "found", nativeId: true }])("durably reconciles malformed lookup %j after possible POST", async response => {
+  const persist = vi.fn(async () => "reconciliation");
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, now: validNow, gate: { ...gate, persistReceipt: persist }, transport: { create: async () => ({ state: "ambiguous" }), findByIdempotencyKey: async () => response, readback: vi.fn() } as unknown as AlegraWriteTransport });
+  expect(result.ok).toBe(false); expect(result.executedProviderMutation).toBe(true); expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN"); expect(persist).toHaveBeenCalledTimes(1);
+});
+it.each([{ actorId: "" }, { approvalId: " " }])("requires historical authority identity on verified replay %j", async patch => {
+  const transport = { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() };
+  const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "durable", ...patch };
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, priorReceipt: prior, transport, now: validNow });
+  expect(result.ok).toBe(false); expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN"); expect(transport.create).not.toHaveBeenCalled();
 });

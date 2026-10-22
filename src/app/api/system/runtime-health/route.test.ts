@@ -165,3 +165,48 @@ describe("TORO runtime health route", () => {
     expect(body).not.toContain("synthetic-private-error");
   });
 });
+
+it("R50-04 blocks runtime probes on a Portal deployment before worker allocation", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  const response = await GET(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-health-token" } }));
+  expect(response.status).toBe(404);
+  expect(createWorkerClient).not.toHaveBeenCalled();
+});
+it("R50-05 returns a fixed degraded response for a stalled probe and aborts its read client", async () => {
+  vi.useFakeTimers();
+  let readSignal: AbortSignal | undefined;
+  createWorkerClient.mockImplementation((options?: { signal?: AbortSignal }) => {
+    readSignal = options?.signal;
+    return { from: () => ({ select: () => new Promise(() => {}) }) };
+  });
+  const pending = GET(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-health-token" } }));
+  await vi.advanceTimersByTimeAsync(20_000);
+  const response = await pending;
+  expect(response.status).toBe(503);
+  expect(await response.text()).not.toContain("synthetic-private");
+  expect(readSignal?.aborted).toBe(true);
+  vi.useRealTimers();
+});
+it.each(["headers", "body"])("R50-05 cancels real worker SDK %s reads without later I/O", async phase => {
+  vi.useFakeTimers();
+  const actual = await vi.importActual<typeof import("@/lib/supabase/worker")>("@/lib/supabase/worker");
+  createWorkerClient.mockImplementation(actual.createWorkerSupabaseClient);
+  const signals: AbortSignal[] = [];
+  const lateResponses: ((value: Response) => void)[] = [];
+  const fetchMock = vi.fn<typeof fetch>().mockImplementation(async (_input, init) => {
+    signals.push(init!.signal as AbortSignal);
+    if (phase === "headers") return new Promise<Response>(resolve => { lateResponses.push(resolve); });
+    return new Response(new ReadableStream({ start() {} }), { headers: { "content-type": "application/json" } });
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  try {
+    const pending = GET(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-health-token" } }));
+    await vi.advanceTimersByTimeAsync(20_000);
+    expect((await pending).status).toBe(503);
+    expect(signals).toHaveLength(2);
+    expect(signals.every(signal => signal.aborted)).toBe(true);
+    for (const deliver of lateResponses) deliver(new Response(null, { headers: { "content-range": "0-0/0" } }));
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  } finally { vi.useRealTimers(); vi.unstubAllGlobals(); }
+});

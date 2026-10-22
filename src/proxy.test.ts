@@ -52,6 +52,16 @@ it("internal mode delegates to existing authorization, not a fabricated demo ses
   expect(proxy(new NextRequest("https://demo.invalid/api/brain/context")).headers.get("x-middleware-next")).toBe("1");
 });
 
+it.each(["portal", "internal", undefined])("prevents framing pages and denied responses in deployment %s", mode => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", mode);
+  for (const path of ["/login", "/portal", "/brain", "/api/brain/context", "/api/approvals"]) {
+    const response = proxy(new NextRequest(`https://toro.invalid${path}`));
+    expect(response.headers.get("content-security-policy")).toBe("frame-ancestors 'none'");
+    expect(response.headers.get("x-frame-options")).toBe("DENY");
+    expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+  }
+});
+
 describe("published Portal perimeter", () => {
   beforeEach(() => {
     vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
@@ -125,6 +135,16 @@ describe("published Portal perimeter", () => {
     for (const suffix of ["/extra", "%2fextra", "/..%2Fcontext"]) {
       expect(proxy(new NextRequest(`https://toro.invalid${path}${suffix}`, { method: "POST" })).status).toBe(404);
     }
+  });
+
+  it("admits local logout as an exact POST without granting another auth route or write method", () => {
+    const path = "/api/auth/logout";
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST" })).headers.get("x-middleware-next")).toBe("1");
+    for (const method of ["GET", "HEAD", "PUT", "DELETE", "OPTIONS"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method })).status).toBe(404);
+    }
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST", headers: { "Next-Action": "synthetic" } })).status).toBe(404);
+    expect(proxy(new NextRequest(`https://toro.invalid${path}/extra`, { method: "POST" })).status).toBe(404);
   });
 
   it("redirects root to the Portal without carrying untrusted query parameters", () => {
