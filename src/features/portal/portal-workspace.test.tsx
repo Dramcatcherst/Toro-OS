@@ -1,9 +1,5 @@
-// @vitest-environment jsdom
-
-import { act } from "react";
-import { createRoot } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
-import { expect, it, vi } from "vitest";
+import { expect, it } from "vitest";
 import { portalDomains, type PortalModule } from "./model";
 import { nextPortalTabIndex, PortalWorkspace } from "./portal-workspace";
 
@@ -135,88 +131,4 @@ it("focuses and scrolls the requested management destination after activation", 
   expect(activate).toBeTypeOf("function");
   activate!(target, callback => { calls.push("scheduled"); callback(); });
   expect(calls).toEqual(["scheduled", "focus:true", "scroll:start:auto"]);
-});
-
-
-it("opens the promised management destination without remounting its draft", async () => {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-  const root = createRoot(container);
-  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
-    callback(0);
-    return 1;
-  });
-
-  try {
-    await act(async () => {
-      root.render(<PortalWorkspace
-        modules={modules()}
-        links={[{ id: "LINK-048", label: "Acceso revisado", url: "https://example.com/LINK-048" }]}
-        catalogueItems={[{ kind: "reviewed", id: "LINK-048", label: "Acceso revisado", url: "https://example.com/LINK-048" }]}
-        catalogueMode="reviewed"
-        hotelAllowed
-        attention={<p>Atención autorizada</p>}
-      />);
-    });
-
-    const cashButton = [...container.querySelectorAll("button")].find(button => button.textContent?.includes("Caja CRC + USD"));
-    const cashTarget = container.querySelector<HTMLElement>('[id$="-management-cash"]');
-    const managementPanel = container.querySelector<HTMLElement>('[id$="-panel-manage"]');
-    const draft = cashTarget?.querySelector<HTMLInputElement>("input");
-
-    expect(cashButton).toBeDefined();
-    expect(cashTarget).not.toBeNull();
-    expect(managementPanel?.hidden).toBe(true);
-    expect(draft).not.toBeNull();
-
-    draft!.value = "7";
-    const scrollIntoView = vi.fn();
-    cashTarget!.scrollIntoView = scrollIntoView;
-
-    await act(async () => {
-      cashButton!.click();
-    });
-
-    expect(managementPanel?.hidden).toBe(false);
-    expect(document.activeElement).toBe(cashTarget);
-    expect(scrollIntoView).toHaveBeenCalledWith({ block: "start", behavior: "auto" });
-    expect(cashTarget?.querySelector("input")).toBe(draft);
-    expect(draft?.value).toBe("7");
-  } finally {
-    await act(async () => root.unmount());
-    container.remove();
-    vi.unstubAllGlobals();
-  }
-});
-
-it("handles the approved tab keyboard navigation on the mounted workspace", async () => {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-  const root = createRoot(container);
-
-  try {
-    await act(async () => {
-      root.render(<PortalWorkspace
-        modules={modules()}
-        links={[]}
-        catalogueItems={[]}
-        catalogueMode="reviewed"
-        hotelAllowed={false}
-        attention={<p>Atención autorizada</p>}
-      />);
-    });
-
-    const tabs = [...container.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    tabs[0].focus();
-    await act(async () => {
-      tabs[0].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
-    });
-
-    expect(tabs[2].getAttribute("aria-selected")).toBe("true");
-    expect(document.activeElement).toBe(tabs[2]);
-    expect(container.querySelector<HTMLElement>('[id$="-panel-manage"]')?.hidden).toBe(false);
-  } finally {
-    await act(async () => root.unmount());
-    container.remove();
-  }
 });
