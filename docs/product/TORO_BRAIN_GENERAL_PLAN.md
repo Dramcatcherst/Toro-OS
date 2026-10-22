@@ -6208,3 +6208,12 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 
 **Contratos canónicos subordinados:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md) y [TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md](TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md). El portal objetivo permanece **Finanzas › Cobertura documental** dentro del portal existente; no crear otra app, backlog ni scheduler. **ESTADO:** política y backlog documental autorizados; cambios reales de destinatario/proveedor siguen `NO_EJECUTADO` hasta acción autenticada + prueba de recepción.
 <!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
+
+
+## Mantenimiento preventivo mensual — Calendar, OpenClaw y Kross — 21/10/2026
+
+CURRENT: calendario Dreamcatcher · Mantenimiento creado bajo la cuenta hotelera, no público y con lectura organizacional; serie de CONTROL para revisión humana mensual desde el 01/11. Acceso individual de empleados pendiente: alias Auth internos no acreditan buzón Google. OpenClaw tiene binding interno telefónico, pero no grupo de mantenimiento verificado ni receipts de entrega observados. Kross Maintenance transicional sin filas; no hay integración viva demostrada.
+
+TARGET/NEXT: reutilizar tareas y ronda existentes; integrar candidatos de entrega/calendar con el worker gobernado, verificar grupo/receipt y acceso individual, y conciliar una muestra real Kross antes de automatizar ventanas. Mantener el disparador mensual existente hasta un corte único probado; sin nuevo cron ni escritura PMS.
+
+Candidato de código y 50 controles con estados explícitos en [contrato de mantenimiento](DREAMCATCHER_MAINTENANCE_DELIVERY_V1.md). Las pruebas locales de preparación no equivalen a despliegue, envío o cierre físico. No marcar cincuenta mejoras productivas por tener cincuenta requisitos documentados.
