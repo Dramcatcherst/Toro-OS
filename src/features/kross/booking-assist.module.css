@@ -24,6 +24,8 @@
 .primaryAction { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:44px; border:1px solid #387c93; border-radius:6px; padding:9px 12px; background:#145d77; color:#fff; font-size:13px; font-weight:650; cursor:pointer; }
 .primaryAction:hover { background:#1e6b83; }
 .actionNote { flex:1; min-width:min(100%,180px); color:#455969; font-size:12px; line-height:1.5; }
+.fallback { grid-column:1 / -1; display:flex; align-items:center; flex-wrap:wrap; gap:0 8px; color:#455969; font-size:12px; line-height:1.5; }
+.fallback a { display:inline-flex; align-items:center; min-height:44px; color:#145d77; font-size:13px; font-weight:650; text-underline-offset:3px; }
 .limits { margin-top:12px; border:1px solid #bdc9d0; border-radius:6px; padding:8px 10px; background:#e3edf3; color:#455969; font-size:12px; line-height:1.5; }
 .limits summary { min-height:44px; align-content:center; cursor:pointer; color:#203c50; font-weight:600; }
 .limits p { margin:6px 0 0; }
@@ -32,7 +34,8 @@
 @media(prefers-reduced-motion:reduce) { .shell *, .shell *::before, .shell *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
 @media(forced-colors:active) {
  .shell, .panel, .badge, .officialBadge, .prefill, .issues, .limits, .field { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; }
- .intro, .actionNote, .label, .field::placeholder { color:CanvasText; }
+ .intro, .actionNote, .fallback, .label, .field::placeholder { color:CanvasText; }
+ .fallback a { color:LinkText; }
  .backLink, .backLink:hover { color:LinkText; }
  .primaryAction, .primaryAction:hover { background:ButtonFace; color:ButtonText; border-color:ButtonText; }
  .shell :is(a,button,input,select):focus-visible { outline-color:Highlight; }

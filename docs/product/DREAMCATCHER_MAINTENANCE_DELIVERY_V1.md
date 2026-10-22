@@ -1,6 +1,6 @@
 # Dreamcatcher — mantenimiento preventivo, Calendar y OpenClaw
 
-Estado: **CURRENT parcial / TARGET con dependencias externas**. Corte: 21/10/2026, Costa Rica.
+Estado: **CURRENT parcial / TARGET con dependencias externas**. Corte: 22/10/2026, Costa Rica.
 Subordinado al único Plan General TORO. Operations/RICO coordina ejecución física; Systems/SOBRESITO coordina integración.
 
 ## Control y continuidad
@@ -81,13 +81,15 @@ Distribución de esta revisión: 33 controles en código candidato, 15 reglas/aj
 | M49 | Obtener muestra real y conciliar primer caso Kross Maintenance | BLOQUEADO |
 | M50 | Continuidad manual y rollback sin perder historial | CONFIGURACIÓN |
 
-Código candidato: `src/features/maintenance/preventive-plan.ts`; pruebas contiguas. Reutiliza `prepareAlertDelivery`. Genera candidatos; no contiene clientes de red, escribe, envía, instala cron ni altera permisos. Un resultado `ready` solo permite continuar al siguiente gate.
+Código candidato: `src/features/maintenance/preventive-plan.ts`; pruebas contiguas. Reutiliza `prepareAlertDelivery` con su contrato actual: ámbito organizacional, prueba de salud confiable independiente del tráfico y presupuesto de bytes del llamador aplicado al mensaje completo. Genera candidatos; no contiene clientes de red, escribe, envía, instala cron ni altera permisos. Un resultado `ready` solo permite continuar al siguiente gate.
 
 ## Calendar y OpenClaw
 
 Se conserva el día 1 por la mañana en Costa Rica. El único destino externo autorizado es el grupo de mantenimiento, pendiente de identificación y prueba. Una salida ChatGPT no cuenta como entrega WhatsApp. Antes de mover el disparador a OpenClaw, inventariar jobs del host, verificar grupo, versión instalada y receipt, cambiar un solo disparador y demostrar ausencia de doble envío.
 
 La serie Calendar es **CONTROL: revisión humana del plan mensual**, no una auditoría del agente, visita técnica confirmada ni reparación realizada. Los eventos de intervención requieren ventana futura confirmada por recepción, responsable y técnico cuando corresponda. El calendario principal con información financiera no se comparte con empleados.
+
+El propietario autorizó el 22/10 retirar Meet y la autoinvitación del administrador de esa serie. La autoinvitación se retiró y una lectura posterior confirmó invitados vacíos y recurrencia conservada. Meet sigue pendiente de reconexión del navegador: el conector no ofrece eliminación de conferencia y el acceso seguro se interrumpió. La autorización ya está concedida; falta acceso y verificación de ejecución.
 
 La dirección `*.internal` confirmada en Auth no es un buzón Google entregable. Se requieren direcciones reales de mantenimiento y prueba individual. No invitar alias internos ni usar empleados cesados; mantener mínimo acceso lector al calendario operativo.
 

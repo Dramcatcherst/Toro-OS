@@ -11,11 +11,13 @@ const work = (change: Partial<MaintenanceWork> = {}): MaintenanceWork => ({ ...s
   ownerRole: "Mantenimiento", sourceRef: "synthetic-evidence", sourceAt: now, technicianRequired: false,
   staffSafe: true, closure: { state: "open" }, ...change });
 const binding = (change: Partial<ScopedMaintenanceBinding> = {}): ScopedMaintenanceBinding => ({ ...scope,
+  scope: "organization", privacy: "internal", healthCheckedAt: now,
   id: "synthetic-maintenance-group", channel: "whatsapp", provider: "openclaw", endpointKind: "group",
   businessRole: "room:maintenance", authStatus: "connected", ingestionStatus: "healthy",
   verificationStatus: "verified", sendEnabled: true, active: true, lastEventAt: now, ...change });
 const dispatch = () => ({ ...scope, canonicalTaskKey: "existing-preventive-task", period: "2026-11",
   sourceCutoff: now, sourceRef: "synthetic-source", now, maxEvidenceAgeHours: 24,
+  messageBudget: { maxFieldBytes: 1024, maxMessageBytes: 4096 },
   approvedRequestRef: "synthetic-owner-directive", runtime: { liveVerified: true,
     receiptRoundtripVerified: true, observedAt: now, evidenceRef: "synthetic-receipt-roundtrip" },
   work: [work()], bindings: [binding()], receipts: [] as Parameters<typeof prepareMaintenanceDispatch>[0]["receipts"] });
@@ -101,7 +103,8 @@ describe("OpenClaw maintenance preparation", () => {
   });
   it.each([
     { endpointKind: "phone" }, { businessRole: "room:management" }, { propertyId: "another-hotel" },
-    { lastEventAt: "2026-09-01T12:00:00Z" }, { sendEnabled: false },
+    { healthCheckedAt: "2026-09-01T12:00:00Z" }, { sendEnabled: false },
+    { scope: "private" as const }, { orgId: "other-org" },
   ])("does not fall back to a phone, another group, stale route or property: %j", (change) => {
     expect(prepareMaintenanceDispatch({ ...dispatch(), bindings: [binding(change)] }).status).toBe("blocked");
   });
@@ -110,6 +113,20 @@ describe("OpenClaw maintenance preparation", () => {
     expect(prepareMaintenanceDispatch(i).blockers).toContain("runtime_not_verified_current");
     i.runtime.receiptRoundtripVerified = true; i.runtime.observedAt = "2027-01-01T00:00:00Z";
     expect(prepareMaintenanceDispatch(i).status).toBe("blocked");
+  });
+  it("accepts a fresh health probe without inventing recent message traffic", () => {
+    expect(prepareMaintenanceDispatch({ ...dispatch(), bindings: [binding({ lastEventAt: null })] }).status).toBe("ready");
+    expect(prepareMaintenanceDispatch({ ...dispatch(), bindings: [binding({ healthCheckedAt: null })] }).status).toBe("blocked");
+  });
+  it("applies the caller byte budget to the complete message including maintenance details", () => {
+    const i = dispatch();
+    const full = prepareMaintenanceDispatch(i).message;
+    const budget = Buffer.byteLength(full.split("\n").slice(0, -1).join("\n"), "utf8") + 1;
+    expect(Buffer.byteLength(full, "utf8")).toBeGreaterThan(budget);
+    const p = prepareMaintenanceDispatch({ ...i, messageBudget: { maxFieldBytes: 200, maxMessageBytes: budget } });
+    expect(p.status).toBe("blocked");
+    expect(p.blockers).toContain("alert_message_budget_exceeded");
+    expect(p.message).toBe("");
   });
   it("requires explicit send authorization and current source data", () => {
     expect(prepareMaintenanceDispatch({ ...dispatch(), approvedRequestRef: null }).blockers).toContain("send_authorization_missing");

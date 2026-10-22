@@ -7,6 +7,30 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+## Continuación de fiabilidad — cincuenta mejoras adicionales — 22/10/2026 UTC
+
+**CURRENT — integrado en código, sin promoción productiva:** PR [#359](https://github.com/Dramcatcherst/Toro-OS/pull/359) merged como `b7d97a59dba1c4ee233a6e8b267f90f9c15dbf63`, con CI estándar y preview exacto aprobados. Continúa PR #358 sobre los mismos flujos existentes: doce Finance/Alegra, ocho Kross, diez identidad/Portal, diez Comms y diez runtime/MCP. Los [cincuenta resultados trazables](../evidence/TORO_INTEGRATION_RELIABILITY_50_20261022.md) son evidencia subordinada; no vuelven a contar las cuarenta mejoras previas ni convierten pruebas/documentación en nuevas capacidades.
+
+**Prioridad y alineación:** primero integridad de recibos, custodia, identidad/ámbito, exposición de datos y recuperación; después disponibilidad, navegación y trabajo de lectura evitado. No cambia arquitectura, fuentes de autoridad, permisos ni alcance comercial. La mejora de fiabilidad se demuestra con regresiones; ahorro y rendimiento productivo permanecen NO MEDIDOS.
+
+**Aceptación adicional del 22/10:** [Next Portal real, anónimo y aislado](../evidence/TORO_PORTAL_ANONYMOUS_ACCEPTANCE_20261022.md) sobre `ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32`, después de reconciliar PR #360 y #357. Dependencias instaladas desde lockfile, Next 16.3.8, build estándar, 182 pruebas focales y 14 comprobaciones HTTP PASS; login a 320/390/1280 sin overflow ni errores de consola, payload privado ausente, rutas de runtime excluidas y cookies de salida eliminadas. Configuración sintética sin sesión ni credenciales reales; no acredita roles/RLS ni publicación. Readback Vercel mantiene producción en `349d15fb93061cba6a285fa3977f03e4d6b6b449`.
+
+**NEXT existente:** acceso/roles/salida con sesión autorizada en el Portal, transporte de membresías y recuperación de fuentes/binding del Lightsail original. Dependencias observadas: esta ejecución sigue cloud sin acceso AWS/SSH ni control del Chrome del usuario; la integración Vercel devuelve403 al listar metadata de variables del proyecto, incluso sin descifrar. No se repite la consulta sin cambios ni se modifica configuración para eludirla. Se preservan Writer OFF, Kross API pagada pausada, conciliaciones documentales pendientes y control de operaciones sensibles. No se confunden código integrado y despliegue operativo.
+<!-- END:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+## Fiabilidad conjunta de Alegra, Kross, Portal y OpenClaw — 21/10/2026
+
+**CURRENT — integrado en código, sin promoción productiva:** PR [#358](https://github.com/Dramcatcherst/Toro-OS/pull/358) merged como `2f0396d52f3d28c458972247392c92dd62bb4f13`, con CI estándar y preview exacto aprobados. La petición del propietario se concreta en cuarenta cambios de conducta sobre módulos existentes: nueve Writer/Alegra, once Kross, ocho acceso/Portal, ocho OpenClaw/WhatsApp y cuatro configuración segura. El [listado trazable y aceptación](../evidence/TORO_INTEGRATION_RELIABILITY_40_20261021.md) es subordinado a este Plan. Las pruebas/documentación acreditan cambios; no se suman como mejoras independientes ni como avance contable o beneficio económico.
+
+**Alineación:** una identidad y contexto TORO para Portal/WhatsApp; permisos por actor/organización, evidencia válida y fresca, idempotencia coherente, dependencias con deadline y recuperación humana segura. GitHub conserva código/contratos; Supabase identidad/runtime/auditoría; Kross reservas/estancias; Alegra documentos contables; bancos liquidación y Dropbox originales. Un contrato preparado no es una integración productiva ni un recibo de entrega.
+
+**NEXT del carril existente:** aceptación de acceso/rol/salida en el Portal con sesión autorizada, y recuperar fuentes/binding del Gateway Lightsail existente antes de cualquier activación Writer/OpenClaw. Las claves nuevas de idempotencia y las firmas reforzadas requieren reconciliación de compatibilidad en el caller existente; no crear otro adapter, Gateway, scheduler o ledger. El cutover a lectura de membresías canónicas sigue pendiente de verificar su transporte, sin ampliar Data API/RLS.
+
+**Conservado:** Writer OFF, Kross API pagada pausada, aprobación exacta de operaciones sensibles, original Starlink sin conciliación inequívoca, sesiones/contraseñas reales fuera de los artefactos, ningún cambio de precios/reservas/postings/permisos/secretos o producción por este lote.
+<!-- END:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+
 <!-- BEGIN:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 ## Política estratégica transversal — IA, patrimonio productivo y libertad operativa — 20/10/2026
 
@@ -6163,14 +6187,14 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 
 **DECISIÓN DEL PROPIETARIO:** consolidar en el mismo carril de TORO Finance el control de cuentas bancarias, tarjetas, PayPal/Wink, préstamos, estados de cuenta, facturas y comprobantes. El objetivo no es acumular archivos: cada movimiento material debe poder reconstruirse como **documento/soporte → pago → banco/tarjeta/pasarela → Alegra → entidad/propiedad/centro de costo → verificación**.
 
-**Regla de entrega:** el símbolo operativo **📩** significa `CONFIGURAR_A_ADMIN`: cuando el instrumento esté confirmado como empresarial o de uso hotelero autorizado, sus estados/documentos financieros deben configurarse para llegar automáticamente a `admin@dreamcatcherhotel.com`. Esta marca es una **acción pendiente**, no prueba de que el banco/proveedor ya haya cambiado el destinatario. Productos personales puros no se redirigen; productos mixtos requieren delimitar el alcance antes del cambio.
+**Regla de entrega:** el símbolo operativo **📩** significa `CONFIGURAR_A_ADMIN`: cuando el instrumento financiero o el proveedor/documento fiscal esté confirmado como empresarial o de uso hotelero autorizado, sus estados, facturas y documentos financieros deben configurarse para llegar automáticamente a `admin@dreamcatcherhotel.com`. Esta marca es una **acción pendiente**, no prueba de que el banco/proveedor ya haya cambiado el destinatario. Productos personales puros no se redirigen; productos mixtos requieren delimitar el alcance antes del cambio.
 
 **Cobertura 2026 conocida, sin datos completos en repositorio público:**
 - BAC banco CRC `••••3660` / USD `••••3588`: enero–agosto indexados; septiembre con original recuperado; completar validación de originales y octubre al cierre. 📩
 - BAC tarjetas: estado `••••4966`, instrumentos observados `••••4961 / ••••5042 / ••••7161` y Visa Carolina `••••4701`: completar ciclos 2026, vigencia y separación hotel/personal. 📩
 - Banco Nacional CRC `••••9468` / USD `••••8174`: originales empresariales 2026 no localizados en la auditoría actual; recuperar períodos faltantes. 📩
 - BCR CRC `••••7251` / USD `••••7849`: originales empresariales 2026 no localizados; recuperar períodos faltantes. 📩
-- LAFISE banco CRC `••••1998` / USD `••••7740`: existe ZIP histórico por clasificar; pedir solo los meses realmente faltantes. 📩
+- LAFISE banco CRC `••••1998` / USD `••••7740`: archivos históricos clasificados a nivel documental; el índice y texto extraído de los dos ZIP no acreditan extractos bancarios empresariales 2026. Recuperar originales por cuenta y período, evitando duplicados. 📩
 - LAFISE tarjeta corporativa `••••7930`: completar estados 2026 y correspondencia con ledgers CRC/USD. 📩
 - WINK CRC `••••1547`: validar titularidad/alcance hotel antes de usar referencias personales; completar cobertura empresarial. 📩 si se confirma hotel.
 - PayPal USD asociado históricamente a `info@atrapasuenos.net`: evidencia parcial, no extractos mensuales completos; recuperar bruto, fees, devoluciones, conversiones y depósitos. 📩 tras validar la cuenta empresarial.
@@ -6178,7 +6202,9 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 
 **Estados documentales obligatorios:** `COMPLETO`, `FALTA_DOCUMENTO`, `FALTA_PAGO`, `SIN_RESPALDO`, `RECLASIFICAR`, `OTRO_SOPORTE`, más `CONFIGURAR_A_ADMIN` cuando aplique. Un registro en Alegra/Supabase/Airtable, una alerta de tarjeta, un ZIP o un movimiento bancario **no equivalen** al estado de cuenta original ni a la factura fiscal.
 
-**Orden de ejecución:** (1) no pedir duplicados: buscar originales ya custodiados; (2) recuperar BN/BCR y clasificar LAFISE; (3) completar tarjetas BAC/LAFISE; (4) validar WINK/PayPal; (5) centralizar entrega en admin para instrumentos confirmados; (6) verificar cada cambio con un documento nuevo recibido; (7) conciliar con Alegra y cerrar solo con evidencia. No modificar beneficiarios, MFA, PIN, límites, pagos o cuentas por esta directiva.
+**LAFISE — clasificación documental del archivo histórico (21/10/2026):** el índice y texto extraído de los dos ZIP existentes separan documentos contables de extractos. El paquete empresarial lista dos estados de situación financiera exportados de Alegra, con cortes junio/agosto de 2026, y dos notas a estados financieros de 2021–2023 dirigidas al banco; el paquete de titular por verificar lista un estado de tarjeta con corte abril de 2025. Esta inspección no certifica los bytes o la restauración de los originales, no resuelve la titularidad de la tarjeta y no acredita cobertura bancaria 2026. **NEXT:** recuperar los extractos empresariales LAFISE 2026 por cuenta/período y validar el alcance de la tarjeta antes de incorporarla; la clasificación de estos archivos no cierra conciliaciones ni modifica saldos o el avance contable.
+
+**Orden de ejecución:** (1) no pedir duplicados: buscar originales ya custodiados; (2) recuperar BN/BCR y completar los extractos LAFISE 2026; (3) completar tarjetas BAC/LAFISE; (4) validar WINK/PayPal; (5) centralizar entrega en admin para instrumentos confirmados y proveedores hoteleros verificados; (6) verificar cada cambio con un documento nuevo recibido; (7) conciliar con Alegra y cerrar solo con evidencia. No modificar beneficiarios, MFA, PIN, límites, pagos o cuentas por esta directiva.
 
 **Contratos canónicos subordinados:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md) y [TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md](TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md). El portal objetivo permanece **Finanzas › Cobertura documental** dentro del portal existente; no crear otra app, backlog ni scheduler. **ESTADO:** política y backlog documental autorizados; cambios reales de destinatario/proveedor siguen `NO_EJECUTADO` hasta acción autenticada + prueba de recepción.
 <!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->

@@ -115,12 +115,18 @@ function safeDestination(value: unknown): string | null | undefined {
   let parsed: URL;
   try { parsed = new URL(value); } catch { return undefined; }
   if (parsed.protocol === "mailto:") {
+    try {
+      if (CONTROL_CHAR.test(decodeURIComponent(value))) return undefined;
+    } catch { return undefined; }
     return /^mailto:[^?\s@]+@[^?\s@]+(?:\?[^\s]*)?$/.test(value) &&
       ![...parsed.searchParams.keys()].some(key => SENSITIVE_QUERY_KEY.test(key)) ? value : undefined;
   }
   if (parsed.protocol !== "https:" || parsed.username || parsed.password) return undefined;
-  const fragmentQuery = parsed.hash.slice(1).replace(/^.*\?/, "");
-  if ([...parsed.searchParams.keys(), ...new URLSearchParams(fragmentQuery).keys()]
+  const fragment = parsed.hash.slice(1);
+  const firstQuestion = fragment.indexOf("?");
+  const fragmentQuery = firstQuestion < 0 ? "" : fragment.slice(firstQuestion + 1);
+  if ([...parsed.searchParams.keys(), ...new URLSearchParams(fragment).keys(),
+    ...new URLSearchParams(fragmentQuery).keys()]
     .some(key => SENSITIVE_QUERY_KEY.test(key))) return undefined;
   return value;
 }

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { prepareAlertDelivery, type WhatsAppGroupBinding } from "@/features/comms/alert-delivery";
+import { prepareAlertDelivery, type AlertMessageBudget, type WhatsAppGroupBinding } from "@/features/comms/alert-delivery";
 
 // Preparation only. Existing control-plane workers own writes, sends and receipts.
 export type MaintenanceScope = { orgId: string; propertyId: string };
@@ -107,6 +107,7 @@ export type ScopedMaintenanceBinding = WhatsAppGroupBinding & MaintenanceScope;
 export function prepareMaintenanceDispatch(input: MaintenanceScope & {
   canonicalTaskKey: string; period: string; sourceCutoff: string; sourceRef: string;
   now: string; maxEvidenceAgeHours: number; approvedRequestRef: string | null;
+  messageBudget: AlertMessageBudget;
   runtime: { liveVerified: boolean; receiptRoundtripVerified: boolean; observedAt: string; evidenceRef: string };
   work: MaintenanceWork[]; bindings: ScopedMaintenanceBinding[];
   receipts: { dedupeKey: string; state: "sent" | "delivered" | "unknown" | "failed" }[];
@@ -124,8 +125,10 @@ export function prepareMaintenanceDispatch(input: MaintenanceScope & {
   if (plan.conflicts.length) blockers.push("work_identity_conflict");
   if (plan.items.some((w) => !w.staffSafe)) blockers.push("staff_safe_projection_required");
   if (plan.items.length === 0) blockers.push("no_pending_work");
-  const bindings = input.bindings.filter((b) => sameScope(input, b) && b.lastEventAt && recent(b.lastEventAt));
+  // A trusted health probe establishes route health; message traffic does not.
+  const bindings = input.bindings.filter((b) => sameScope(input, b));
   const candidate = prepareAlertDelivery({
+    orgId: input.orgId,
     sourceKind: "module_alert", sourceKey: digest([input.orgId, input.propertyId, input.canonicalTaskKey, input.period]),
     version: plan.fingerprint, room: "maintenance", privacy: "internal",
     priority: plan.items.some((w) => w.priority === "P0") ? "critical" : plan.items.some((w) => w.priority === "P1") ? "high" : "normal",
@@ -134,15 +137,17 @@ export function prepareMaintenanceDispatch(input: MaintenanceScope & {
     requiredAction: "Confirmar responsable y ventana; adjuntar prueba de cierre",
     owner: "Mantenimiento", dueAt: "Según plan y ventanas confirmadas", sourceSystem: "TORO Operations",
     sourceCutoff: input.sourceCutoff, sourceRef: input.sourceRef,
-  }, bindings);
+  }, bindings, { orgId: input.orgId, nowMs, maxHealthAgeMs: maxAge, messageBudget: input.messageBudget });
   blockers.push(...candidate.blockers);
   const prior = input.receipts.filter((r) => r.dedupeKey === candidate.dedupeKey);
   if (prior.length) blockers.push(prior.every((r) => r.state === "sent" || r.state === "delivered") ? "already_sent" : "provider_receipt_reconciliation_required");
   const details = plan.items.filter((w) => w.staffSafe).slice(0, 8).map((w) =>
     `${w.priority} · ${line(w.assetLabel).slice(0, 60)} · ${w.reviewClosure ? "Verificar cierre" : line(w.actionLabel).slice(0, 70)} · ${line(w.ownerRole).slice(0, 45)}${w.technicianRequired ? " · TÉCNICO" : ""}`);
+  const message = [candidate.message, ...details, ...(plan.items.length > 8 ? [`+${plan.items.length - 8} casos en el plan canónico`] : [])].join("\n");
+  if (Buffer.byteLength(message, "utf8") > input.messageBudget.maxMessageBytes) blockers.push("alert_message_budget_exceeded");
   return { ...candidate, status: blockers.length ? "blocked" as const : "ready" as const,
     blockers: [...new Set(blockers)], plan,
-    message: [candidate.message, ...details, ...(plan.items.length > 8 ? [`+${plan.items.length - 8} casos en el plan canónico`] : [])].join("\n"),
+    message: blockers.includes("alert_message_budget_exceeded") || blockers.includes("alert_message_policy_invalid") ? "" : message,
     sendsPerformed: 0 as const };
 }
 

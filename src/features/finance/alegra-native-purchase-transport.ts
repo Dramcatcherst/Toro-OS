@@ -1,6 +1,6 @@
 import "server-only";
 import {
-  captureAlegraWriteAuthorization, prepareAlegraWriteIntent,
+  captureAlegraWriteAuthorization, prepareAlegraWriteIntent, matchesAlegraWriteIntentIdentity,
   type AlegraWriteIntent, type AlegraWriteScope, type AlegraReadback,
 } from "./alegra-writer-contract";
 import type { AlegraWriteTransport, AlegraProviderLookupResult } from "./alegra-writer-executor";
@@ -65,7 +65,7 @@ function assertIntent(intent: AlegraWriteIntent, binding: AlegraNativeBinding) {
   if (intent.targetType !== "purchase_bill" || intent.payload.targetType !== "purchase_bill" ||
       intent.action !== "alegra_create_purchase_bill") throw new Error("NATIVE_RESOURCE_UNSUPPORTED");
   const current = prepareAlegraWriteIntent({ scope: intent.scope, evidence: intent.evidence, payload: intent.payload });
-  if (current.targetType !== "purchase_bill" || !current.validation.ready || current.payloadHash !== intent.payloadHash || current.idempotencyKey !== intent.idempotencyKey ||
+  if (current.targetType !== "purchase_bill" || !current.validation.ready || current.payloadHash !== intent.payloadHash || !matchesAlegraWriteIntentIdentity(intent, current) ||
       current.action !== intent.action || intent.version !== current.version) throw new Error("NATIVE_INTENT_INVALID");
   const keys = ["tenantId", "orgId", "legalEntityKey", "propertyId", "projectId"] as const;
   if (binding.scope.scopeConflict || keys.some(k => text(binding.scope[k]) !== text(intent.scope[k])) ||
@@ -91,6 +91,17 @@ export function prepareNativeAlegraPurchaseBody(intent: AlegraWriteIntent, bindi
     costCenter: id(p.costCenterNativeId), observations: intent.idempotencyKey };
 }
 
+const safePreflightCodes = new Set([
+  "NATIVE_AMOUNT_UNSUPPORTED", "NATIVE_AUTHORIZATION_DENIED", "NATIVE_CATEGORY_MISMATCH", "NATIVE_COMPANY_MISMATCH",
+  "NATIVE_COST_CENTER_MISMATCH", "NATIVE_DATE_INVALID", "NATIVE_DOCUMENT_IDENTITY_INVALID", "NATIVE_DUPLICATE_OR_COVERAGE_BLOCKED",
+  "NATIVE_ID_INVALID", "NATIVE_INTENT_INVALID", "NATIVE_KEY_OR_TIME_INVALID", "NATIVE_LEASE_UNAVAILABLE", "NATIVE_READ_UNAVAILABLE",
+  "NATIVE_RESOURCE_UNSUPPORTED", "NATIVE_RESPONSE_INVALID", "NATIVE_SCOPE_MISMATCH", "NATIVE_SUPPLIER_MISMATCH",
+  "NATIVE_TAX_MAPPING_REQUIRED", "NATIVE_TAX_MISMATCH", "NATIVE_TAX_TOTAL_MISMATCH", "FOREIGN_CURRENCY_UNSUPPORTED",
+]);
+function validHttpStatus(status: unknown): status is number {
+  return typeof status === "number" && Number.isInteger(status) && status >= 100 && status <= 599;
+}
+
 export function createNativeAlegraPurchaseTransport(input: NativeTransportInput): AlegraWriteTransport {
   const binding = freeze(structuredClone(input.binding));
   // Capture capability callbacks at construction, not from a caller-mutable config.
@@ -100,7 +111,7 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
   const now = input.now;
   async function get(path: string, query?: Record<string, string>) {
     const response = await http.request({ method: "GET", path, query });
-    if (response.status < 200 || response.status >= 300) throw new Error("NATIVE_READ_UNAVAILABLE");
+    if (!validHttpStatus(response.status) || response.status < 200 || response.status >= 300) throw new Error("NATIVE_READ_UNAVAILABLE");
     return response.data;
   }
   async function company(intent: AlegraWriteIntent) {
@@ -203,12 +214,12 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         }
         if (!leaseFresh) throw new Error("NATIVE_LEASE_UNAVAILABLE");
       } catch (error) {
-        return { state: "blocked", code: error instanceof Error && /^NATIVE_|^FOREIGN_/.test(error.message) ? error.message : "NATIVE_PREFLIGHT_UNAVAILABLE" };
+        return { state: "blocked", code: error instanceof Error && safePreflightCodes.has(error.message) ? error.message : "NATIVE_PREFLIGHT_UNAVAILABLE" };
       }
       try {
         // One POST only. HTTP errors/timeouts never trigger retries in this layer.
         const response = await http.request({ method: "POST", path: "/bills", body });
-        if (response.status >= 500 || response.status === 408 || response.status === 409) return { state: "ambiguous" };
+        if (!validHttpStatus(response.status) || response.status >= 500 || response.status === 408 || response.status === 409) return { state: "ambiguous" };
         if (response.status < 200 || response.status >= 300) return { state: "failed", code: "NATIVE_HTTP_" + response.status, retryable: false };
         try { return { state: "created", nativeId: String(id(object(response.data).id)) }; }
         catch { return { state: "ambiguous" }; }
@@ -234,13 +245,13 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         // Never certify the currency of a document from the company's default.
         // Unknown/missing native currency remains an unverified readback.
         const currency = text(object(bill.currency).code);
-        if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.date) !== p.issueDate ||
+        if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.observations) !== intent.idempotencyKey || text(bill.date) !== p.issueDate ||
             text(bill.dueDate) !== p.dueDate || bill.status !== "open" || units(bill.totalPaid) !== BigInt(0) ||
             units(bill.balance) !== units(bill.total) || currency !== p.currency || id(category.id) !== id(p.accountNativeId) ||
-            Number(category.quantity) !== 1 || (category.discount !== undefined && units(category.discount) !== BigInt(0)) ||
+            (typeof category.quantity !== "number" && typeof category.quantity !== "string") || Number(category.quantity) !== 1 || (category.discount !== undefined && units(category.discount) !== BigInt(0)) ||
             units(category.price) !== units(p.subtotal) || units(bill.total) !== units(p.total) ||
-            (bill.payments && (!Array.isArray(bill.payments) || bill.payments.length)) ||
-            (bill.retentions && (!Array.isArray(bill.retentions) || bill.retentions.length)) ||
+            (bill.payments != null && (!Array.isArray(bill.payments) || bill.payments.length)) ||
+            (bill.retentions != null && (!Array.isArray(bill.retentions) || bill.retentions.length)) ||
             id(object(bill.costCenter).id) !== id(p.costCenterNativeId)) throw new Error();
         return { nativeId, targetType: "purchase_bill", documentNumber: text(object(bill.numberTemplate).number),
           supplierNativeId: String(id(object(bill.provider).id)), currency, total: formatted(units(bill.total)),

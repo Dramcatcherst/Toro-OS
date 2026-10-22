@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type {
   OwnerAttentionProjection,
 } from "@/features/attention/owner-attention";
@@ -178,6 +179,20 @@ function isReceiptEvent(eventType: string) {
   ].includes(eventType);
 }
 
+const receiptTimestamp = z.string().datetime({ offset: true });
+
+export function assertMcpReceiptTimeRange(input: { since?: unknown; until?: unknown }) {
+  const parse = (value: unknown) => {
+    if (value === undefined) return undefined;
+    if (!receiptTimestamp.safeParse(value).success) throw new Error("Invalid receipt timestamp.");
+    return Date.parse(value as string);
+  };
+  const since = parse(input.since);
+  const until = parse(input.until);
+  if (since !== undefined && until !== undefined && since > until) throw new Error("Reversed receipt range.");
+  return { since, until };
+}
+
 export function executionReceiptsFromProjection(
   projection: BrainProjection,
   input: {
@@ -189,6 +204,7 @@ export function executionReceiptsFromProjection(
     limit?: number;
   } = {},
 ): ToroMcpExecutionReceipt[] {
+  const { since, until } = assertMcpReceiptTimeRange(input);
   return (projection.recentEvents ?? [])
     .filter((event) => isReceiptEvent(event.eventType))
     .filter(
@@ -200,8 +216,11 @@ export function executionReceiptsFromProjection(
       (event) =>
         !input.workflowRunRef || event.workflowRunRef === input.workflowRunRef,
     )
-    .filter((event) => !input.since || event.occurredAt >= input.since)
-    .filter((event) => !input.until || event.occurredAt <= input.until)
+    .filter((event) => {
+      const occurred = Date.parse(event.occurredAt);
+      return receiptTimestamp.safeParse(event.occurredAt).success &&
+        (since === undefined || occurred >= since) && (until === undefined || occurred <= until);
+    })
     .slice(0, boundedMcpReadLimit(input.limit))
     .map((event) => ({
       receiptRef: event.eventId,

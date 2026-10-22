@@ -1,12 +1,12 @@
 import { beforeEach, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ context: vi.fn(), client: vi.fn() }));
-vi.mock("@/features/context/resolver", () => ({ resolveToroContext: mocks.context }));
+const mocks = vi.hoisted(() => ({ context: vi.fn(), client: vi.fn(), revalidate: vi.fn() }));
+vi.mock("@/features/context/resolver", () => ({ resolveToroContext: mocks.context, resolveToroContextWithSupabase: mocks.revalidate }));
 vi.mock("@/lib/supabase/server", () => ({ createServerSupabaseClient: mocks.client }));
 import { loadHotelDirectory } from "./server";
 import { REVIEWED_HOTEL_LINKS } from "./directory";
 import { authorizedContext, completeCatalogueRows } from "./fixtures.test-utils";
 
-beforeEach(() => vi.resetAllMocks());
+beforeEach(() => { vi.resetAllMocks(); mocks.revalidate.mockImplementation(async () => manager); });
 const manager = {...authorizedContext(),email:"admin@example.test"};
 const auditor = {...manager,membership:{...manager.membership!,roles:["AUDITOR"] as const}};
 const reviewedRows = REVIEWED_HOTEL_LINKS.map(([id, , url]) => ({id,url}));
@@ -26,7 +26,7 @@ it("uses the complete strict RPC only for GERENCIA and keeps its rows out of ope
   const view=await loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true});
   expect(view.state).toBe("ready");
   expect(view.catalogueMode).toBe("complete");
-  expect(view.catalogueItems).toHaveLength(244);
+  expect(view.catalogueItems.filter(item => item.kind === "directory")).toHaveLength(244);
   expect(view.links).toHaveLength(REVIEWED_HOTEL_LINKS.length + 6);
   expect(view.links.every(link => !link.id.match(/^LINK-(?:1\d\d|2[0-3]\d)$/) || REVIEWED_HOTEL_LINKS.some(([id]) => id === link.id))).toBe(true);
   expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_catalog_v1");
@@ -53,7 +53,7 @@ it("keeps a valid complete catalogue independent from missing operational shortc
   mocks.client.mockResolvedValue({rpc});
   const view=await loadHotelDirectory({includeCompleteCatalogue:true});
   expect(view).toMatchObject({state:"ready",catalogueMode:"complete"});
-  expect(view.catalogueItems).toHaveLength(244);
+  expect(view.catalogueItems.filter(item => item.kind === "directory")).toHaveLength(244);
   expect(view.links.some(link => link.id === "LINK-048")).toBe(false);
   expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_catalog_v1");
 });
@@ -156,4 +156,51 @@ it("keeps navigation authorization separate from optional email", async () => {
   expect(view.account).toBeUndefined();
   expect(view.links).toHaveLength(6);
   expect(view.catalogueItems).toHaveLength(6);
+});
+
+// I50-02: approved manual actions must remain discoverable in complete mode.
+it("keeps each approved manual destination searchable alongside all directory records", async () => {
+  mocks.context.mockResolvedValue(manager);
+  mocks.client.mockResolvedValue({rpc:vi.fn().mockResolvedValue({error:null,data:completeCatalogueRows()})});
+  const view = await loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true});
+  const manual = view.catalogueItems.filter(item => item.id.startsWith("PORTAL-"));
+  expect(manual).toHaveLength(6);
+  expect(new Set(view.catalogueItems.map(item => item.id)).size).toBe(250);
+});
+it("attempts reviewed fallback when full transport rejects and preserves only approved navigation on total source outage", async () => {
+  mocks.context.mockResolvedValue(manager);
+  const rpc=vi.fn().mockRejectedValue(new Error("private transport"));
+  mocks.client.mockResolvedValue({rpc});
+  const view=await loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true});
+  expect(rpc.mock.calls.map(call=>call[0])).toEqual(["dreamcatcher_tool_catalog_v1","dreamcatcher_tool_links_v1"]);
+  expect(view).toMatchObject({state:"unavailable",catalogueMode:"fallback",navigationAuthorized:true});
+  expect(view.links).toHaveLength(6);
+  expect(view.links.every(link=>link.id.startsWith("PORTAL-"))).toBe(true);
+  expect(JSON.stringify(view)).not.toContain("private transport");
+});
+
+it.each(["revoked","actor","scope","role"])("discards a delayed complete read after %s changes", async change => {
+  mocks.context.mockResolvedValue(manager);
+  let release!: (value: unknown) => void;
+  const rpc = vi.fn(() => new Promise(resolve => { release=resolve; }));
+  const client={rpc}; mocks.client.mockResolvedValue(client);
+  const pending=loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true,expectedContext:manager});
+  await vi.waitFor(()=>expect(rpc).toHaveBeenCalled());
+  mocks.revalidate.mockResolvedValue(change === "revoked" ? null : change === "actor"
+    ? {...manager,userId:"other"} : change === "scope" ? {...manager,orgId:"other"} : auditor);
+  release({error:null,data:completeCatalogueRows()});
+  const view=await pending;
+  expect(view.state).toBe("denied"); expect(view.links).toEqual([]); expect(view.catalogueItems).toEqual([]);
+  expect(mocks.revalidate).toHaveBeenCalledWith(client,{mode:"organization",orgId:manager.orgId});
+});
+it("rejects a page actor mismatch before directory I/O", async () => {
+  mocks.context.mockResolvedValue({...manager,userId:"other"});
+  const view=await loadHotelDirectory({expectedContext:manager});
+  expect(view.state).toBe("denied");expect(mocks.client).not.toHaveBeenCalled();
+});
+it("does not preserve navigation after a revoked session even when both source transports reject", async () => {
+  mocks.context.mockResolvedValue(manager);mocks.revalidate.mockResolvedValue(null);
+  mocks.client.mockResolvedValue({rpc:vi.fn().mockRejectedValue(Error("transport"))});
+  const view=await loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true});
+  expect(view.state).toBe("denied");expect(view.links).toEqual([]);
 });
