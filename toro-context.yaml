@@ -12,6 +12,45 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+operating_configuration:
+  decision_date: "2026-10-22"
+  status: adopted_governance_runtime_changes_not_applied
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  section_marker: TORO_OPERATING_CONFIGURATION_20261022
+  deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
+  channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
+  topology: existing_cloud_runtime_plus_local_development_and_recovery
+  one_canonical_brain_identity_and_control_plane: true
+  local_runtime_is_cold_standby_not_second_production_consumer: true
+  one_active_writer_per_provider_account_and_action: true
+  openclaw_gateway_is_single_trust_boundary: true
+  session_partition_is_not_host_or_tenant_isolation: true
+  untrusted_ingress_must_not_inherit_owner_tools_or_sessions: true
+  public_portal_must_not_hold_worker_or_provider_write_secrets: true
+  privileged_internal_surface_must_be_separately_verified: true
+  channel_capture_read_draft_send_and_business_write_are_separate: true
+  configured_binding_is_not_runtime_or_delivery_proof: true
+  bounded_model_tools_time_cost_and_retries_required_before_enablement: true
+  minimal_task_context_and_authoritative_retrieval: true
+  no_new_gateway_scheduler_database_or_ledger_by_default: true
+  no_advisor_fix_without_scope_consumers_and_rollback_review: true
+  production_promotion_requires_exact_sha_config_auth_scope_receipts_and_rollback: true
+  state_claims:
+    - configured
+    - tested
+    - integrated
+    - deployed
+    - runtime_verified
+    - measured
+  privacy:
+    raw_credentials_in_git_chats_logs_or_archives: forbidden
+    hosted_agent_retention_and_residency_require_review: true
+  activation_gates_preserved:
+    alegra_writer: off_pending_existing_pilot_gates
+    kross_paid_api: paused
+    whatsapp_parity: unverified_pending_end_to_end_receipts
+    external_business_onboarding: blocked
+
 owner_ai_wealth_strategy:
   decision_date: "2026-10-20"
   status: adopted_governance_only
