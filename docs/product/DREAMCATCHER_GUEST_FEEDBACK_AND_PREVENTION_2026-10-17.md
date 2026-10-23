@@ -76,7 +76,7 @@ Piloto propuesto de 14 días o 20 estancias, sin activación automática. Medir 
 
 ## 7. Mantenimiento preventivo en las estructuras existentes
 
-Reutilizar inventario, `facilities.preventive_room_plan`, historial de activos, eventos, rondas y cola de verificación; no crear otra autoridad. La matriz por habitación no sustituye un calendario por activo.
+Reutilizar el inventario, las tareas vigentes documentadas en [DREAMCATCHER_MAINTENANCE_DELIVERY_V1.md](DREAMCATCHER_MAINTENANCE_DELIVERY_V1.md) y las estructuras canónicas verificadas `facilities.inspection_rounds`, `facilities.inspection_checks` y `facilities.maintenance_events`. Antes de implementar, comprobar esquema, organización/propiedad, lectura posterior y vigencia de la fuente. `facilities.preventive_room_plan` queda solo como etiqueta antecedente no verificada: no crearla ni usarla como autoridad sin evidencia gobernada posterior. La matriz por habitación no sustituye un calendario por activo.
 
 Cada equipo necesita: identificador físico, ubicación, marca/modelo/serie cuando exista, manual o recomendación técnica, criticidad, última intervención comprobada, intervalo por fecha/horas/ciclos, próximo vencimiento derivado, responsable y evidencia. Si falta el último servicio, marcar por verificar; no inventar una fecha pasada o un vencimiento.
 
