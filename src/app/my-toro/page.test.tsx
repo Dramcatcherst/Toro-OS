@@ -1,11 +1,18 @@
-import { beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { authorizedContext } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
 
-const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  menu: vi.fn(),
+  directory: vi.fn(),
+  organizationChoices: vi.fn(),
+}));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
+vi.mock("@/features/context/organization-selection", () => ({
+  loadToroOrganizationChoices: mocks.organizationChoices,
+}));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 import MyToroPage from "./page";
 
@@ -14,8 +21,13 @@ function view(): ToroRealMenuView {
     sourceReadiness: null, profileSummary: [], capabilityNotes: {}, capabilityAlternatives: {},
     focusableCapabilities: [], availableSubmenus: {}, focus: null, state: "resolved" };
 }
-const render = async () => renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve({}) }));
-beforeEach(() => vi.resetAllMocks());
+const render = async (searchParams: { focus?: string; context?: string } = {}) =>
+  renderToStaticMarkup(await MyToroPage({ searchParams: Promise.resolve(searchParams) }));
+beforeEach(() => {
+  vi.resetAllMocks();
+  mocks.organizationChoices.mockResolvedValue({ state: "unavailable", choices: [] });
+});
+afterEach(() => vi.unstubAllEnvs());
 
 it("keeps the account read surface without linking to blocked onboarding in hosted mode", async () => {
   vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
@@ -48,6 +60,16 @@ it("does not query or expose the hotel directory without a session", async () =>
   expect(html).not.toContain("Herramientas del hotel");
 });
 
+it("offers retry and local logout when an identity lookup throws", async () => {
+  mocks.menu.mockRejectedValue(new Error("PRIVATE_AUTH_DIAGNOSTIC"));
+  const html = await render();
+  expect(html).toContain("No pudimos verificar tu acceso ahora");
+  expect(html).toContain('href="/my-toro"');
+  expect(html).toContain('action="/api/auth/logout"');
+  expect(html).not.toContain("PRIVATE_AUTH_DIAGNOSTIC");
+  expect(mocks.directory).not.toHaveBeenCalled();
+});
+
 it.each(["other_org", "inactive", "context_choice"])("does not load hotel links for %s", async reason => {
   const data = view();
   if (reason === "other_org") data.context.orgId = "another-org";
@@ -56,6 +78,87 @@ it.each(["other_org", "inactive", "context_choice"])("does not load hotel links 
   mocks.menu.mockResolvedValue(data);
   expect(await render()).not.toContain("Equipo y herramientas");
   expect(mocks.directory).not.toHaveBeenCalled();
+});
+
+it("renders every authorized organization as an explicit accessible choice", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  const data = view();
+  data.state = "context_choice_required";
+  data.context.orgId = null;
+  data.context.membership = null;
+  data.context.requiresContextChoice = true;
+  data.context.canUseOrganizationData = false;
+  data.context.availableOrgIds = [
+    "00000000-0000-4000-8000-0000000000aa",
+    "00000000-0000-4000-8000-0000000000bb",
+  ];
+  mocks.menu.mockResolvedValue(data);
+  mocks.organizationChoices.mockResolvedValue({
+    state: "ready",
+    choices: [
+      { id: data.context.availableOrgIds[0], name: "Dreamcatcher Hotel & Villas" },
+      { id: data.context.availableOrgIds[1], name: "Mauricio Fernández Toro — Personal" },
+    ],
+  });
+
+  const html = await render();
+
+  expect(html).toContain("Dreamcatcher Hotel &amp; Villas");
+  expect(html).toContain("Mauricio Fernández Toro — Personal");
+  expect(html).toContain('role="group" aria-label="Organizaciones disponibles"');
+  expect(html).toContain("en qué contexto quieres entrar");
+  expect(html.match(/action="\/api\/brain\/context\/selection"/g)).toHaveLength(2);
+  expect(html.match(/method="post"/g)).toHaveLength(3);
+  expect(html.match(/name="intent" value="select"/g)).toHaveLength(2);
+  expect(html.match(/name="organizationId"/g)).toHaveLength(2);
+  expect(html.match(/type="submit"/g)).toHaveLength(3);
+  expect(html).toContain("volverá a validar tu membresía");
+  expect(mocks.directory).not.toHaveBeenCalled();
+});
+
+it("shows a safe retry instead of a partial organization selector", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  const data = view();
+  data.state = "context_choice_required";
+  data.context.requiresContextChoice = true;
+  data.context.availableOrgIds = ["org-1", "org-2"];
+  mocks.menu.mockResolvedValue(data);
+
+  const html = await render({ context: "invalid" });
+
+  expect(html).toContain("No pude abrir ese contexto");
+  expect(html).toContain("2 organizaciones autorizadas");
+  expect(html).not.toContain('name="organizationId"');
+  expect(html).toContain('action="/api/auth/logout"');
+});
+
+it("keeps context switching available after resolving a multi-organization account", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  const data = view();
+  data.context.availableOrgIds = ["org-1", "org-2"];
+  mocks.menu.mockResolvedValue(data);
+  mocks.directory.mockResolvedValue({ state: "unavailable", links: [] });
+
+  const html = await render();
+
+  expect(html).toContain("Cambiar de contexto");
+  expect(html).toContain('action="/api/brain/context/selection"');
+  expect(html).toContain('name="intent" value="clear"');
+});
+
+it("does not expose the Portal selector to internal-runtime writers", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "internal");
+  const data = view();
+  data.state = "context_choice_required";
+  data.context.requiresContextChoice = true;
+  data.context.availableOrgIds = ["org-1", "org-2"];
+  mocks.menu.mockResolvedValue(data);
+
+  const html = await render();
+
+  expect(html).toContain("Organizaciones disponibles: <strong>2</strong>");
+  expect(html).not.toContain("/api/brain/context/selection");
+  expect(mocks.organizationChoices).not.toHaveBeenCalled();
 });
 
 it.each(["denied", "unavailable"])("does not render supplied links when the directory is %s", async state => {
@@ -101,7 +204,7 @@ it("keeps DreamTeam as reviewed navigation inside the compact Portal without cla
   const html=await render();expect(html).toContain("DreamTeam · TORO People");
   expect(html).toContain("Equipo · sesión propia");expect(html).toContain("cada servicio conserva su sesión");
   expect(html).toContain('href="/my-toro/herramientas#guide-catalogue-heading"');
-  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true});
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({includeApprovedNavigation:true,expectedContext:expect.objectContaining({userId:expect.any(String),orgId:expect.any(String)})});
   expect(html).toContain('aria-label="Accesos y cuenta"');expect(html).toContain('href="#owner-attention-heading"');
 });
 

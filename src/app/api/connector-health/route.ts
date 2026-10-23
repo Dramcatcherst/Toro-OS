@@ -11,5 +11,5 @@ export async function GET() {
     mode: "read_only",
     externalWrite: false,
     ...connectorHealth,
-  });
+  }, { headers: { "Cache-Control": "private, no-store, max-age=0" } });
 }

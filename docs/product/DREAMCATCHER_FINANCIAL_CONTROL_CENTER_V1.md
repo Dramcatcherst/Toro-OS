@@ -1,7 +1,7 @@
 # Dreamcatcher Financial Control Center v1
 
-**Status:** GENERAL FINANCIAL PAGE / CURRENT MASTER VIEW  
-**As of:** 2026-09-30  
+**Status:** GENERAL FINANCIAL REFERENCE — HISTORICAL BASELINE, CURRENT RECONCILIATION REQUIRED  
+**Original baseline as of:** 2026-09-30; source reread 2026-10-20  
 **Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations
 
 This is the single general page for the ongoing financial analysis. It summarizes current truth, model rules, data quality, pending decisions and next actions. Detailed contracts remain subordinate and must not become parallel financial plans.
@@ -70,9 +70,11 @@ Every output must identify:
 - actual / inferred / estimated;
 - formula version.
 
-## 3. Current accounting baseline — Alegra Jan–Sep 2026
+## 3. Historical accounting baseline — Alegra Jan–Sep 2026 (captured 2026-09-30)
 
 Cost center: DREAMCATCHER.
+
+**HISTORICAL SNAPSHOT — DO NOT TREAT AS CURRENT:** Amounts below preserve the original September extraction for reproducibility. Alegra's later read of the same January–September range yields different results. The latest values are kept in authorized/private financial reporting, not replicated in this public repository.
 
 - Sales: CRC 265,585,084.46
 - Operating expenses: CRC 199,724,118.69
@@ -81,10 +83,25 @@ Cost center: DREAMCATCHER.
 - Tax expense: CRC 21,744,372.38
 - Net income: CRC 44,578,455.31
 
-Current provisional accounting break-even zone:
+Historical provisional accounting break-even zone (recompute before using):
 - approximately CRC 20.0M–21.5M monthly revenue depending on variable/fixed treatment.
 
 **Not yet a pricing floor.**
+
+### Source-validity gate discovered 2026-10-20 (E02/E29/E31)
+
+**OBSERVED:** A read-only Alegra Profit & Loss report for cost center **DREAMCATCHER (ID 1)** and the *same* 2026-01-01–2026-09-30 period no longer matches the historical totals in the preceding snapshot. The difference affects operating expenses, tax and net profit. This is **accounting-baseline drift**, not proof of a new cash loss, fraud, a supplier overcharge, or a room-pricing problem. The document's historical numbers remain untouched for audit; newer monetary values stay in private, authorized reporting. The fiscal and bank reconciliation status is **UNVERIFIED**.
+
+**Reproduction (read only):**
+
+1. Query the **native** Alegra P&L, costCenterId=1, `from=2026-01-01`, `to=2026-09-30`, `includeComparativeAnalysis=false`, `forceSummary=true`, and `decimalPrecision=2`; preserve the execution timestamp, report parameters, source and exact account/period scope.
+2. Extract **root** `Ventas` and the section `Total` lines, plus utility rows `Utilidad operativa`, `Utilidad antes de impuestos` and `Utilidad neta`. Do **not** add parent and child account balances together or treat period snapshots as transactions.
+3. Compare like-for-like accounting slices and identify **which account/document revisions** explain the divergence; inspect journal/bill IDs and dates, late postings, reallocations, credits, reversals and cost-center attribution with original evidence. The report alone does not identify cause.
+4. If differences remain, keep `FINANCE_BASELINE_RECONCILE` and do not recalculate price floors or claim a new savings figure. Close only with entry-level support, a reproducible updated balance, finance review and a versioned receipt in the **existing** finance-control record.
+
+**October 2026:** A 2026-10-01–2026-10-20 P&L can be queried, but it is an **open, partial period**. At this cut the OTA-commission category contains no recorded charge. Do not interpret that as zero acquisition cost, a complete monthly profit/loss, evidence of cash on hand or a valid hotel occupancy trend. The prior month and YTD comparisons must use matched accrual/closing states and source timing.
+
+**Next action:** TORO Finance/FIONA and the existing Alegra/PayFlow reconciliation lane own this case; Kross remains the commercial authority for actual room nights. Proposals to change inventory, rates, taxes, posts or accounts require their own approvals; do not create a second reconciliation job, database or scheduler.
 
 ## 4. Data-quality / reconciliation flags
 
@@ -137,6 +154,22 @@ Total explicitly flagged: **CRC 9,553,061.17**.
 Status: **RECLASSIFY / VERIFY BENEFITING ENTITY**.
 
 Do not remove these from accounting automatically. Determine whether they belong to Dreamcatcher, another entity/property, shared overhead or a project, then allocate correctly.
+
+### Validación reciente 20/10/2026 — Kross y alertas financieras (no reemplaza cierres históricos)
+
+El corte histórico de 33 filas fechado en septiembre se conserva arriba por trazabilidad, pero **no describe la cobertura actual de la tabla**. Lectura agregada de Supabase `abtyrbqlqbsastmridzp` realizada el 20/10/2026: `operations.reservations` tenía **4.352 filas Kross**, con 4.352 claves compuestas `org_id+property_id+external_reservation_id` distintas, 4.350 clasificadas `review`, 2 `conflict`, 44 sin identidad de habitación y 26 sin canal. `source_is_live=true`: **0**; `operations.current_reservations_safe`: **0**. `integrations.import_runs` registró la carga de 4.352 filas, que no equivale a disponibilidad/precio/ocupación vigentes ni garantiza paridad histórica. El responsable del carril Kross [PR #315](https://github.com/Dramcatcherst/Toro-OS/pull/315) conserva reconciliación, deduplicación, prueba de transportes y tratamiento de conflictos; la API paga permanece pausada. No volver a importar los mismos archivos simplemente por este reporte.
+
+**Riesgo de falsas urgencias:** el lote `finance.invoices` mostró **27 registros** con fechas anteriores al 20/10 y estados diferentes de deuda exigible: 13 `unknown`, 10 `payment_reported`, 2 `duplicate_billing_dispute_unresolved` y 2 `no_payment_due_extranet_verified_2026_09_29`. La cifra **no son 27 impagos, 27 pagos ni 27 casos nuevos**; son candidatos a clasificación errónea por fecha. La corrección versionada en el carril de [PR #342](https://github.com/Dramcatcherst/Toro-OS/pull/342) distingue el total de la factura del saldo deudor y evita usar la fecha pasada como prueba suficiente de mora: `due/unpaid/overdue` explícito vencido conserva criticidad; aviso `unknown/reported/processing/disputed` conserva revisión sin convertirse en deuda confirmada; `paid/credited/no_payment_due_*verified` no genera alerta de impago. El pago registrado aún exige contraste con banco/factura/cuenta y no cierra obligación por implicación. Consultar el CI y el estado de merge de la PR antes de declarar el arreglo incorporado o publicado.
+
+**Próximo trabajo ejecutable:** reutilizar el mismo FIN/PayFlow y los recibos existentes para (1) verificar documentos prioritarios sin declarar mora a partir del bruto o la fecha; (2) reconciliar discrepancia de ventas Alegra y asignación por entidad/costo; (3) recuperar una fuente Kross vigente y los márgenes por habitación/canal antes de optimizar precios. Para cada oportunidad reportar `HECHO / POR VERIFICAR / NO_MEDIDO`, fuente, período, moneda, decisión, siguiente responsable y beneficio marginal solo si se observa. Ningún asiento, pago, cancelación de proveedor o promoción queda autorizado aquí.
+
+### Obligation urgency guard — 2026-10-20 (E29/E30/E36)
+
+**OBSERVED, read-only:** Nine active `operations.obligations` records classified `needs_verification` also carry a `next_due_date` before 20 October 2026. Two have explicit critical-source signals; seven do not. These are historical-status counts, **not nine verified unpaid debts**. An old date can be a forecast, pending bank match, an administrative control date or an unresolved obligation; the source must distinguish them.
+
+The existing Owner Attention classifier is being hardened in [PR #346](https://github.com/Dramcatcherst/Toro-OS/pull/346): if `status=needs_verification`, a past date alone yields **HIGH / verification required**. Preserve **CRITICAL** when source evidence explicitly signals failed/declined payment, suspension/restriction or provider-confirmed overdue, or when an active obligation has a genuinely elapsed payment due date. The display continues to identify invoice **total** versus outstanding balance. This code change does not certify the source's correctness, pay anything, send an alert or reconcile bank evidence; read back CI and merger state before declaring the fix in `main`.
+
+**NEXT:** the existing TORO Finance/FIONA / PayFlow lane reviews source notices, bank match and current billing periods, then closes cases only with evidence and approval. Do not rewrite the original due date or `verification_status` to make alerts disappear. No new ledger, scheduler, role, phone channel or invoice writer.
 
 ## 5. Preliminary management classification
 

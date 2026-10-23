@@ -173,7 +173,7 @@ export function routeDreamcatcherGmailLabels(
   labels: string[],
 ): ToroCommsRoute {
   const matches = labels
-    .map((label) => ({ label, rule: LABEL_RULES[label] }))
+    .map((label) => ({ label, rule: Object.hasOwn(LABEL_RULES, label) ? LABEL_RULES[label] : undefined }))
     .filter((item): item is { label: string; rule: LabelRule } =>
       Boolean(item.rule),
     );
@@ -193,7 +193,18 @@ export function routeDreamcatcherGmailLabels(
   let needsSecondaryClassification = false;
   const agents = new Set<string>();
 
-  for (const { rule } of matches) {
+  // Keep every matching label as provenance, but current labels own migration decisions.
+  const current = matches.filter(({ label }) => /^\d{2}(?:\.\d+)? · /.test(label));
+  const selected = current.length ? current : matches;
+  // A numbered child refines its broad parent (e.g. Finance -> Advertising).
+  const effective = selected.filter(({ label }) => !selected.some(({ label: other }) =>
+    /^\d{2} · /.test(label) && other.startsWith(`${label.slice(0, 2)}.`),
+  ));
+  const domains = new Set(effective.map(({ rule }) => rule.domain).filter(
+    (candidate) => candidate !== "unclassified" && candidate !== "archive",
+  ));
+
+  for (const { rule } of effective) {
     if (DOMAIN_SPECIFICITY[rule.domain] > DOMAIN_SPECIFICITY[domain]) {
       domain = rule.domain;
     }
@@ -214,19 +225,20 @@ export function routeDreamcatcherGmailLabels(
   if (
     domain !== "unclassified" &&
     domain !== "providers_hr" &&
-    matches.some(({ rule }) => rule.domain !== "unclassified")
+    effective.some(({ rule }) => rule.domain !== "unclassified")
   ) {
-    needsSecondaryClassification = matches.some(
+    needsSecondaryClassification = effective.some(
       ({ rule }) =>
         rule.needsSecondaryClassification && rule.domain !== "unclassified",
     );
   }
 
+  const ambiguous = domains.size > 1;
   return {
-    domain,
-    agents: [...agents],
+    domain: ambiguous ? "unclassified" : domain,
+    agents: ambiguous ? ["TORO"] : [...agents].sort(),
     attention: explicitAttention ?? "normal",
-    needsSecondaryClassification,
-    matchedLabels: matches.map(({ label }) => label),
+    needsSecondaryClassification: ambiguous || needsSecondaryClassification,
+    matchedLabels: [...new Set(matches.map(({ label }) => label))].sort(),
   };
 }

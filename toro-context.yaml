@@ -12,6 +12,111 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+operating_configuration:
+  decision_date: "2026-10-22"
+  status: adopted_governance_runtime_changes_not_applied
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  section_marker: TORO_OPERATING_CONFIGURATION_20261022
+  deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
+  channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
+  topology: existing_cloud_runtime_plus_local_development_and_recovery
+  one_canonical_brain_identity_and_control_plane: true
+  local_runtime_is_cold_standby_not_second_production_consumer: true
+  one_active_writer_per_provider_account_and_action: true
+  openclaw_gateway_is_single_trust_boundary: true
+  session_partition_is_not_host_or_tenant_isolation: true
+  untrusted_ingress_must_not_inherit_owner_tools_or_sessions: true
+  public_portal_must_not_hold_worker_or_provider_write_secrets: true
+  privileged_internal_surface_must_be_separately_verified: true
+  channel_capture_read_draft_send_and_business_write_are_separate: true
+  configured_binding_is_not_runtime_or_delivery_proof: true
+  bounded_model_tools_time_cost_and_retries_required_before_enablement: true
+  minimal_task_context_and_authoritative_retrieval: true
+  no_new_gateway_scheduler_database_or_ledger_by_default: true
+  no_advisor_fix_without_scope_consumers_and_rollback_review: true
+  production_promotion_requires_exact_sha_config_auth_scope_receipts_and_rollback: true
+  state_claims:
+    - configured
+    - tested
+    - integrated
+    - deployed
+    - runtime_verified
+    - measured
+  privacy:
+    raw_credentials_in_git_chats_logs_or_archives: forbidden
+    hosted_agent_retention_and_residency_require_review: true
+  activation_gates_preserved:
+    alegra_writer: off_pending_existing_pilot_gates
+    kross_paid_api: paused
+    whatsapp_parity: unverified_pending_end_to_end_receipts
+    external_business_onboarding: blocked
+
+owner_ai_wealth_strategy:
+  decision_date: "2026-10-20"
+  status: adopted_governance_only
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  section_marker: OWNER_AI_WEALTH_STRATEGY_20261020
+  policy_scope: owner_portfolio_with_explicit_isolation
+  outcome_order:
+    - protect_guests_compliance_and_operational_truth
+    - increase_recurring_net_contribution_dreamcatcher
+    - reduce_owner_hours_with_verified_toro_workflows
+    - build_productive_assets_and_financial_resilience
+  financial_rules:
+    - separate_revenue_collections_cash_profit_and_capex
+    - never_double_count_villas_and_rooms
+    - require_source_period_scope_currency_and_cost_baseline
+    - never_invent_roi_or_owner_time_savings
+    - protect_private_owner_assets_from_public_repositories
+  decision_gates:
+    - materiality_and_source_authority
+    - existing_project_owner_and_dependency
+    - baseline_cost_benefit_risk_and_liquidity
+    - explicit_approval_for_irreversible_or_external_actions
+    - execution_receipt_and_measured_after_state
+    - stage_continue_adjust_stop
+  current_business_priority: dreamcatcher_hotel_master
+  existing_execution_coordinator: "Dreamcatcher · Ejecución del Plan"
+  existing_portfolio_root: toro_os_portfolio_master
+  existing_operating_layer: toro_executive_control
+  future_productization_requires_existing_readiness_gate: true
+  workstreams_documented: 40
+  workstreams_runtime_completed: unverified
+  no_new_backlog_or_scheduler: true
+  kross_paid_api_remains_paused: true
+
+
+
+finance_document_control:
+  owner_directive_date: "2026-10-21"
+  status: policy_active_runtime_routing_unverified
+  authority:
+    - docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    - docs/product/TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md
+    - docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md
+  preferred_business_statement_mailbox: admin@dreamcatcherhotel.com
+  routing_symbol: "📩"
+  routing_symbol_meaning: CONFIGURAR_A_ADMIN
+  routing_requires_verified_business_scope: true
+  routing_includes_supplier_invoices_and_fiscal_documents: true
+  supplier_scope_must_be_verified_before_routing: true
+  routing_complete_requires_new_document_received_directly_at_admin: true
+  personal_only_statements_must_not_be_redirected: true
+  provider_change_requires_authenticated_action_and_test_receipt: true
+  original_statement_required_for_period_completion: true
+  index_or_alert_is_not_original_statement: true
+  recover_existing_originals_before_requesting_duplicates: true
+  lafise_historical_archives_classified: true
+  lafise_2026_business_statements_still_missing: true
+  accounting_chain:
+    - source_document_or_support
+    - payment_evidence
+    - bank_card_wallet_or_processor
+    - alegra
+    - entity_property_cost_center
+    - verification_receipt
+  no_new_scheduler: true
+
 target_navigation:
   decision_date: "2026-10-10"
   visible_cross_cutting_module: "Cerebro"
@@ -132,6 +237,8 @@ canonical_product_specs:
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   product_proof_and_commercialization: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
   product_proof_workflow_board: docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
+  finance_bank_mail_coverage: docs/product/TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md
+  finance_expense_evidence: docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md
   progressive_onboarding: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   conversational_menus: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   conversational_menu_profiles: data/toro_conversational_menu_profiles_v1.json
@@ -586,20 +693,40 @@ cognitive_proving_ground:
       rule: "PMS production, accounting, settlement and bank cash remain separate semantic lanes; historical volume is not current cash."
   people_pilot_prepared:
     value_stream: people_identity_access
-    status: CODE_IN_MAIN_CI_VERIFIED_HOSTED_QA_BLOCKED_BY_DEPLOYMENT_PROTECTION
-    owner_hold: NO_EMPLOYEE_CONTACT_OR_ONBOARDING_UNTIL_LAUNCH_DECISION
+    status: LIVE_CENSUS_RECONCILED_INVITATION_FLOW_NOT_READY
+    owner_hold: NO_INVITE_DISPATCH_UNTIL_IDENTITY_EXACT_DELIVERY_ROLE_AND_ROLLBACK_ARE_VERIFIED
     production_baseline:
-      organization_memberships_exists: false
+      readback_at_local: "2026-10-20 America/Costa_Rica"
+      source: canonical_supabase_abtyrbqlqbsastmridzp_read_only
+      organization_memberships_exists: true
       canonical_membership_table: identity.organization_memberships
       legacy_public_membership_draft_canonical: false
-      active_role_users: 5
-      active_role_orgs: 1
-      active_employees: 12
-      active_linked_employees: 4
-      active_unlinked_employees: 8
-      membership_candidates_employee: 4
-      membership_candidates_other_unclassified: 1
-      real_multi_org_users: 0
+      auth_users_enabled: 6
+      dreamcatcher_active_role_users: 6
+      dreamcatcher_active_role_orgs: 1
+      dreamcatcher_active_role_assignments: 19
+      dreamcatcher_inactive_or_revoked_role_assignments: 0
+      global_active_role_orgs: 2
+      global_active_role_assignments: 21
+      dreamcatcher_active_employees: 12
+      dreamcatcher_terminated_employees: 1
+      dreamcatcher_active_linked_employees: 5
+      dreamcatcher_active_unlinked_employees: 7
+      dreamcatcher_complete_employee_auth_membership_role_chains: 4
+      active_dreamcatcher_memberships_total: 5
+      active_global_memberships_total: 6
+      dreamcatcher_active_employee_memberships: 4
+      dreamcatcher_active_owner_memberships: 1
+      global_active_employee_memberships: 4
+      global_active_owner_memberships: 2
+      inactive_global_memberships: 0
+      legacy_dreamteam_internal_aliases: 4
+      active_aseo_without_auth_membership_role: 5
+      channel_enrollments: 0
+      employee_onboarding_progress_rows: 0
+      duplicate_auth_principals_same_human: 1
+      terminated_status_conflicts: 1
+      global_real_multi_org_users: 1
     phase1:
       pr: 15
       state: DRAFT_DIVERGED_FROM_MAIN
@@ -612,7 +739,8 @@ cognitive_proving_ground:
       legacy_session_adapter_tests: 8
       targeted_fixture_tests_total: 17
       vercel_status: success
-    current_main:
+    identity_foundation_main_snapshot:
+      observed_at: "2026-09-23"
       head: 280f8e17e8427718bd82a02a55fe0f96a79df049
       context_core: integrated
       auth_surface: integrated
@@ -629,12 +757,16 @@ cognitive_proving_ground:
       membership_app_ci_run: 35858881721
       membership_validation_evidence: docs/evidence/TORO_IDENTITY_MEMBERSHIP_ISOLATED_VALIDATION_2026-09-23.md
       verification_evidence: docs/evidence/TORO_CONTEXT_MAIN_VERIFICATION_2026-09-23.md
-    next_proof: "approved protected hosted synthetic identity isolation + explicit reviewed membership production-DDL decision; no employees"
+    next_proof: "reconcile Toro/Mauricio principal, incomplete Maintenance membership and terminated-status conflict; verify one Aseo pilot identity and exact delivery without dispatch"
     prohibit:
-      - employee_invites
+      - employee_invites_without_exact_verified_delivery
+      - bulk_employee_invites
+      - admin_created_or_shared_employee_passwords
+      - dreamteam_internal_alias_as_delivery_address
       - name_based_identity_linking
       - staff_credentials_as_fixtures
-      - production_membership_migration_without_explicit_reviewed_approval
+      - role_or_membership_activation_before_verified_claim
+      - duplicate_invitation_resend_without_durable_state
       - second_identity_system
   next_pilot_prepared:
     value_stream: breakfast_fnb

@@ -21,6 +21,36 @@ const config = {
 };
 
 describe("adaptKrossReservationPayload", () => {
+  it.each([{ id: "R1" }, ["R1"], true, Number.MAX_SAFE_INTEGER + 1])("rejects invalid mapped identity %j", id => {
+    const result = adaptKrossReservationPayload({ reservation: { id, status: "confirmed" }, stay: { check_in: "2026-09-23", check_out: "2026-09-25" } }, config);
+    expect(result.candidate).toBeNull();
+    expect(result.issues.map(issue => issue.code)).toContain("invalid_text_value");
+  });
+
+  it.each([".", "reservation..id", "toString", "__proto__.id"])("rejects unsafe mapped identity path %s", externalReservationId => {
+    const result = adaptKrossReservationPayload({ reservation: { id: "R1", status: "confirmed" }, stay: { check_in: "2026-09-23", check_out: "2026-09-25" } }, { ...config, fieldMap: { ...config.fieldMap, externalReservationId } });
+    expect(result.candidate).toBeNull();
+  });
+
+  it("keeps explicitly mapped safe numeric identities", () => {
+    const result = adaptKrossReservationPayload({ reservation: { id: 123, status: "confirmed" }, stay: { check_in: "2026-09-23", check_out: "2026-09-25" } }, config);
+    expect(result.candidate?.externalReservationId).toBe("123");
+  });
+
+  it.each([".", "__proto__.guests"])("reports invalid optional mapping path %s instead of treating it as absent", guestsCount => {
+    const result = adaptKrossReservationPayload({ reservation: { id: "R1", status: "confirmed" }, stay: { check_in: "2026-09-23", check_out: "2026-09-25" } }, { ...config, fieldMap: { ...config.fieldMap, guestsCount } });
+    expect(result.candidate).not.toBeNull();
+    expect(result.issues.map(issue => issue.code)).toContain("invalid_mapping_path");
+    expect(result.candidate?.mappingIssues).toEqual(expect.arrayContaining([expect.objectContaining({ field: "guestsCount", code: "invalid_mapping_path" })]));
+  });
+
+  it("preserves blank numeric values as absent and rejects imprecise integers", () => {
+    const source = { reservation: { id: "R1", status: "confirmed" }, stay: { check_in: "2026-09-23", check_out: "2026-09-25" }, guests: { total: "   ", adults: Number.MAX_SAFE_INTEGER + 1 } };
+    const result = adaptKrossReservationPayload(source, config);
+    expect(result.candidate?.guestsCount).toBeNull();
+    expect(result.candidate?.adults).toBeNull();
+    expect(result.issues.map(issue => issue.code)).toContain("invalid_numeric_value");
+  });
   it("maps a synthetic official-shape candidate without embedding vendor field names in core normalization", () => {
     const result = adaptKrossReservationPayload(
       {

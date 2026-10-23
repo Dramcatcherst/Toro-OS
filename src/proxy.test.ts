@@ -8,7 +8,7 @@ beforeEach(() => vi.stubEnv("TORO_DEPLOYMENT_MODE", undefined));
 afterEach(() => vi.unstubAllEnvs());
 
 const closed = ["/api/approvals", "/api/connectors/airtable?tableId=fake", "/api/connectors/vercel",
-  "/api/brain/context", "/api/brain/internal-work", "/api/brain/owner-attention",
+  "/api/brain/context", "/api/brain/context/selection", "/api/brain/internal-work", "/api/brain/owner-attention",
   "/api/connector-health", "/api/agent/prepare", "/api/modules", "/api/policy/evaluate",
   "/api/connectors/dropbox", "/api/connectors/github-codex", "/login", "/modules",
   "/modules/toro", "/my-toro", "/onboarding", "/booking-assist", "/dreamcatcher",
@@ -33,7 +33,7 @@ describe.each([false, true])("public perimeter, session cookie %s", (session) =>
   });
 });
 
-it.each(["/brain", "/favicon.ico", "/_next/static/chunks/fake.js"])("allows safe GET/HEAD to %s, not POST", (path) => {
+it.each(["/brain", "/apple-icon.png", "/favicon.ico", "/icon.png", "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image", "/_next/static/chunks/fake.js"])("allows safe GET/HEAD to %s, not POST", (path) => {
   for (const method of ["GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"]) {
     const request = new NextRequest(`https://demo.invalid${path}`, { method, headers: { "Next-Action": "fake-action" } });
     expect(unstable_doesProxyMatch({ config, nextConfig: {}, url: request.url })).toBe(true);
@@ -52,6 +52,16 @@ it("internal mode delegates to existing authorization, not a fabricated demo ses
   expect(proxy(new NextRequest("https://demo.invalid/api/brain/context")).headers.get("x-middleware-next")).toBe("1");
 });
 
+it.each(["portal", "internal", undefined])("prevents framing pages and denied responses in deployment %s", mode => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", mode);
+  for (const path of ["/login", "/portal", "/brain", "/api/brain/context", "/api/approvals"]) {
+    const response = proxy(new NextRequest(`https://toro.invalid${path}`));
+    expect(response.headers.get("content-security-policy")).toBe("frame-ancestors 'none'");
+    expect(response.headers.get("x-frame-options")).toBe("DENY");
+    expect(response.headers.get("content-security-policy")).not.toContain("script-src");
+  }
+});
+
 describe("published Portal perimeter", () => {
   beforeEach(() => {
     vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
@@ -59,7 +69,7 @@ describe("published Portal perimeter", () => {
     vi.stubEnv("TORO_INTERNAL_WORK_WRITE_ENABLED", "true");
   });
 
-  it.each(["/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain", "/booking-assist", "/api/brain/context", "/api/brain/owner-attention", "/brand/tools/kross.png", "/brand/tools/wespeak.ico", "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg", "/favicon.ico", "/_next/static/chunks/app.js"])("delegates only safe reads to %s and leaves auth to its guarded reader", path => {
+  it.each(["/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain", "/booking-assist", "/api/brain/context", "/api/brain/owner-attention", "/brand/tools/kross.png", "/brand/tools/wespeak.ico", "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg", "/apple-icon.png", "/favicon.ico", "/icon.png", "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image", "/_next/static/chunks/app.js"])("delegates only safe reads to %s and leaves auth to its guarded reader", path => {
     for (const method of ["GET", "HEAD"]) {
       for (const cookie of ["", "session=synthetic-expired; TORO_DEPLOYMENT_MODE=internal"]) {
         const request = new NextRequest(`https://toro.invalid${path}`, { method, headers: { cookie } });
@@ -91,6 +101,34 @@ describe("published Portal perimeter", () => {
     for (const method of ["GET", "POST"]) {
       expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method, headers: { "Next-Action": "synthetic-action" } })).status).toBe(404);
     }
+  });
+
+  it("admits only a plain POST to the exact context-selection endpoint", async () => {
+    const path = "/api/brain/context/selection";
+    const admitted = proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST" }));
+    expect(admitted.headers.get("x-middleware-next")).toBe("1");
+    expect(admitted.headers.get("cache-control")).toBe("private, no-store, max-age=0");
+
+    for (const method of ["GET", "HEAD", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method })).status).toBe(404);
+    }
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, {
+      method: "POST",
+      headers: { "Next-Action": "synthetic-action" },
+    })).status).toBe(404);
+    for (const suffix of ["/extra", "%2fextra", "/..%2Fcontext"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}${suffix}`, { method: "POST" })).status).toBe(404);
+    }
+  });
+
+  it("admits local logout as an exact POST without granting another auth route or write method", () => {
+    const path = "/api/auth/logout";
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST" })).headers.get("x-middleware-next")).toBe("1");
+    for (const method of ["GET", "HEAD", "PUT", "DELETE", "OPTIONS"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method })).status).toBe(404);
+    }
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method: "POST", headers: { "Next-Action": "synthetic" } })).status).toBe(404);
+    expect(proxy(new NextRequest(`https://toro.invalid${path}/extra`, { method: "POST" })).status).toBe(404);
   });
 
   it("redirects root to the Portal without carrying untrusted query parameters", () => {

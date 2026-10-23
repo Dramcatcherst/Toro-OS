@@ -73,3 +73,11 @@ La solicitud de seguir mejorando todas las páginas extiende la misma dirección
 
 ## Catálogo de accesos revisados — 13/10/2026
 Una presentación compartida para todos los destinos permitidos de la consulta: nombre/tarea/sección, grupos con conteos, restablecer filtros y fallback con icono genérico cuando un destino autorizado no tiene marca. PC agrupa en dos columnas y evita cajas vacías anchas; móvil mantiene filas legibles y favoritos2columnas. Texto de apertura en otra pestaña disponible al lector de pantalla, sin repetirlo visualmente en cada tarjeta. Filtros de cada instancia se conservan al cambiar pestañas. Se mantienen navegación e integración como estados separados: enlaces revisados no acreditan datos sincronizados. Mi espacio abre el ancla del catálogo en la guía existente. Fuente indisponible indica cobertura parcial; sesión/revisión/destinos pendientes no se presentan como autenticación fallida ni como capacidades activas.
+
+## Metadata y salida web obligatorias — 15/10/2026
+
+Cada build web de TORO y cada superficie web relacionada debe cerrar su propia identidad y metadata antes de publicación: favicon e iconos derivados del maestro oficial verificable; título, descripción, canonical y metadataBase; imagen Open Graph y Twitter/X que cargue por HTTP; idioma; manifest cuando corresponda; y una política explícita de indexación. Un producto privado usa noindex y robots.txt cerrado; un sitio público añade sitemap e indexación solo después de revisar sus rutas. Datos estructurados se incluyen únicamente cuando describen contenido público real y validable.
+
+La comprobación ocurre sobre el artefacto publicado: HTML final, favicon, imagen social, robots/manifest, rutas, móvil, accesibilidad básica, rendimiento y ausencia de datos privados. La mera presencia del archivo o un build verde no acredita que navegador, buscador o vista previa lo reciban.
+
+El Portal actual conserva un favicon predeterminado de Vercel y no puede promoverlo como identidad TORO. Sustituirlo exige bytes o derivado aprobado del maestro toro_logo_master_v1, con trazabilidad al SHA-256 canónico. Mientras ese activo no esté disponible, usar tipografía TORO en la tarjeta social no autoriza redibujar, generar o sustituir el toro.

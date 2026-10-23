@@ -63,3 +63,50 @@ describe("routeDreamcatcherGmailLabels", () => {
     });
   });
 });
+
+
+describe("C50-02 current labels before legacy", () => {
+  it("keeps numbered archive authoritative and retains matched provenance", () => {
+    const labels = ["99 · ARCHIVO HISTÓRICO", "Dreamcatcher/Accounting"];
+    for (const input of [labels, [...labels].reverse()]) {
+      expect(routeDreamcatcherGmailLabels(input)).toMatchObject({
+        domain: "archive", agents: [], attention: "archive", needsSecondaryClassification: false,
+        matchedLabels: expect.arrayContaining(labels),
+      });
+    }
+    expect(routeDreamcatcherGmailLabels(["Dreamcatcher/Accounting"]).domain).toBe("finance");
+    expect(routeDreamcatcherGmailLabels(["20 · FINANZAS", "Dreamcatcher/Guest & Info"])).toMatchObject({
+      domain: "finance", agents: ["FIONA"],
+    });
+  });
+});
+
+describe("C50-03 conflicting current domain labels", () => {
+  it("requires classification independent of provider label order", () => {
+    const labels = ["20 · FINANZAS", "40 · SISTEMAS", "00 · URGENTE"];
+    const first = routeDreamcatcherGmailLabels(labels);
+    const reverse = routeDreamcatcherGmailLabels([...labels].reverse());
+    expect(first).toMatchObject({ domain: "unclassified", agents: ["TORO"], attention: "critical", needsSecondaryClassification: true });
+    expect(reverse).toEqual(first);
+    expect(first.matchedLabels).toEqual(expect.arrayContaining(labels));
+  });
+
+  it("lets a numbered child refine its broad parent without fabricating a conflict", () => {
+    expect(routeDreamcatcherGmailLabels(["20 · FINANZAS", "20.5 · PUBLICIDAD / ADS"])).toMatchObject({
+      domain: "growth", agents: ["SKY"], needsSecondaryClassification: false,
+    });
+  });
+
+  it("does not confuse same-domain parent and child labels with ambiguity", () => {
+    expect(routeDreamcatcherGmailLabels(["20 · FINANZAS", "20.1 · BANCOS / SINPE"])).toMatchObject({
+      domain: "finance", needsSecondaryClassification: false,
+    });
+  });
+});
+
+describe("C50-04 own label allowlist", () => {
+  it.each(["__proto__", "constructor", "toString"])("treats inherited %s as unknown", (label) => {
+    expect(routeDreamcatcherGmailLabels([label])).toMatchObject({ domain: "unclassified", matchedLabels: [] });
+    expect(routeDreamcatcherGmailLabels([label, "20 · FINANZAS"])).toMatchObject({ domain: "finance", matchedLabels: ["20 · FINANZAS"] });
+  });
+});

@@ -43,6 +43,13 @@
 .accessBox :global(.text-cyan-100) { color:#075d8b; }
 .accessBox :focus-visible { outline:3px solid #0969a2; outline-offset:3px; }
 .contextBox { margin-top:12px; padding:10px; border:1px solid #9cb8ca; border-radius:7px; background:#f5f3eb; font-size:13px; color:#203c50; }
+.contextChoices { display:grid; gap:10px; margin-top:16px; }
+.contextChoice { width:100%; min-height:56px; display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; border:1px solid #7f9fb4; border-radius:9px; background:#f8fbfd; color:#203c50; padding:12px 14px; text-align:left; cursor:pointer; }
+.contextChoice:hover { border-color:#0969a2; background:#eef7fb; }
+.contextChoice span { color:#40576a; font-size:12px; }
+.contextChoice strong { min-width:0; font-size:14px; overflow-wrap:anywhere; }
+.contextNote { margin-top:12px; font-size:12px; line-height:1.6; }
+.contextError { margin-top:12px; border:1px solid #b47d21; border-radius:7px; background:#fff7df; color:#704b0f !important; padding:10px; font-size:13px; }
 .links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: 14px; }
 .tool { min-width: 0; border: 1px solid #30435d; border-radius: 9px; background: #14243a; padding: 12px; display: grid; gap: 5px; }
 .tool:hover { background: #1b304b; border-color: #618bbd; }
@@ -69,7 +76,7 @@
 @media (max-width:420px) { .fields, .menu { grid-template-columns:minmax(0,1fr); } }
 @media (max-width:360px) { .guideGrid { grid-template-columns:minmax(0,1fr); } }
 @media (forced-colors:active) {
- .screen, .panel, .paperPanel, .project, .accessScreen, .accessBox, .contextBox, .guideNotice, .guideDisclosure, .menu a { background:Canvas; color:CanvasText; border-color:CanvasText; }
+ .screen, .panel, .paperPanel, .project, .accessScreen, .accessBox, .contextBox, .contextChoice, .contextError, .guideNotice, .guideDisclosure, .menu a { background:Canvas; color:CanvasText; border-color:CanvasText; }
  .content :is(a,button,input,select,summary):focus-visible, .content .project :is(a,button,input,select,summary):focus-visible, .paperPanel a[class*="toolCard"]:focus-visible { outline-color:Highlight; }
  .guideAction { background:Canvas; color:LinkText; border-color:CanvasText; }
  .paperPanel [role="status"], .paperPanel [role="status"] :is(div,a,span) { background:Canvas; color:CanvasText; border-color:CanvasText; }

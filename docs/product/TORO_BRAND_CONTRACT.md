@@ -35,6 +35,21 @@ The brain and microchip are not separate product identities.
 - SHA-256: `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
 - Status: **CURRENT MASTER**
 
+### Owner-approved interim web icon — 15/10/2026
+
+Mauricio authorized using an available logo or favicon when the current master file could not be recovered. This exception is limited to favicon and app-icon surfaces.
+
+- Source: Dropbox asset `blue-bull-premium-close-up-gallery.png`
+- Dropbox file ID: `id:RAP-nKYFY_UAAAAAAAIwNA`
+- Source dimensions: `768×768`, transparent PNG
+- Source SHA-256: `3767585343327970af6fb4a39790089d4a765e155208458f9fea1620b23fc384`
+- Derived `src/app/favicon.ico` SHA-256: `94d0fd098cc99dd7cbca162e83bf55721dca224ba3df1dcf0a2c42a6718b4e01`
+- Derived `src/app/icon.png` SHA-256: `df2038d1e82e7ba71e73cfff00ddf0dfed6da594f9a5e9053acd48b1b670e3c9`
+- Derived `src/app/apple-icon.png` SHA-256: `4946c4c00b37ee7a2e3cffa65b9db7eb71ae459e013a6e5f69b7b3638b2c9ab4`
+- Status: **INTERIM OWNER-APPROVED DERIVATIVE** — not a new brand master.
+
+Replace these derivatives when the exact current master bytes are recovered. Do not use this exception to replace the canonical master in general branding.
+
 ### Brand documents
 - `/TORO/Brand/01_Master/` = current master folder
 - Legacy TORO Brain manifests/documents remain historical references until superseded by TORO-named documents.
@@ -61,7 +76,7 @@ Official production surfaces must not:
 - present TORO OS as a second public product;
 - treat an unverified derivative as a new master.
 
-Derivatives must trace back to the current master asset key and hash.
+Production derivatives normally trace back to the current master asset key and hash. A documented owner-approved interim exception may be used for a bounded surface while the master bytes are unavailable; it must not be promoted to a new master.
 
 ## 6. Visual character
 

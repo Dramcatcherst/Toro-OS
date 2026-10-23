@@ -172,6 +172,23 @@ Never:
 - destroy originals after extraction;
 - claim accounting completeness without reconciliation.
 
+<!-- BEGIN:BANK_STATEMENT_COMPLETENESS_20261021 -->
+## Bank/card/wallet statement completeness — owner directive 2026-10-21
+
+Expense completeness must also be testable from the **financial-instrument side**, not only from invoices. For every active/authorized hotel bank account, card, wallet, processor or loan:
+
+- maintain a period-by-period statement/export coverage map;
+- distinguish original statement from alerts, individual vouchers, settlements, retained taxes and derived transaction tables;
+- link each material charge to the correct document type and Alegra representation without double counting;
+- keep hotel, personal and other-project scopes explicit;
+- use `CONFIGURAR_A_ADMIN` / 📩 for verified business instruments whose statements should be routed to `admin@dreamcatcherhotel.com`;
+- do not redirect personal-only statements;
+- close routing only after a new document proves delivery;
+- close the accounting period only after missing originals and unexplained differences are either resolved or explicitly carried as pending.
+
+For national suppliers, payment evidence does not replace the required electronic fiscal document where applicable. For foreign providers, retain the appropriate invoice/receipt/export plus payment evidence. For loans, transfers, taxes, payroll/CCSS and investments, use the correct non-invoice support rather than fabricating a supplier invoice.
+<!-- END:BANK_STATEMENT_COMPLETENESS_20261021 -->
+
 ## 12. Continuous ingestion
 
 New invoices and expense proofs from authorized email, WhatsApp, uploads, Dropbox, bank/card evidence or supplier portals should enter this same pipeline.
@@ -184,3 +201,19 @@ TORO should surface:
 - wrong cost-center/category candidates;
 - stale OPEN items;
 - month-close completeness percentage.
+
+<!-- BEGIN:SUPPLIER_INVOICE_ROUTING_20261021 -->
+## Supplier billing mailbox — owner directive 2026-10-21
+
+For Dreamcatcher suppliers whose invoices support hotel expenses, the preferred billing destination is `admin@dreamcatcherhotel.com`. Mark the supplier 📩 / `CONFIGURAR_A_ADMIN` when billing still arrives to a personal mailbox, another hotel alias, or is only recovered manually.
+
+Do not treat the routing action as complete until a subsequent invoice arrives directly at admin. Where a provider cannot use admin, record the actual delivery mechanism and approved fallback instead of pretending the rule is satisfied.
+
+The routing rule applies to:
+- Costa Rican electronic invoices and related fiscal files;
+- recurring utility/provider bills;
+- foreign invoices/receipts used as expense evidence;
+- credit/debit notes and supplier statements when material.
+
+It does not require redirecting personal-only invoices or unrelated personal financial data.
+<!-- END:SUPPLIER_INVOICE_ROUTING_20261021 -->
