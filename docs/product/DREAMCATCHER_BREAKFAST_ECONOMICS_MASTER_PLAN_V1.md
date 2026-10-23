@@ -8,8 +8,9 @@
 <!-- BEGIN:DREAMCATCHER_BREAKFAST_REVIEW_CLARIFICATION_20261022 -->
 ## Aclaración vigente: desayuno por tarifa y control de reseñas
 
-- El desayuno se incluye **según la tarifa y la reserva concreta**, no por habitación ni canal de forma universal. Kross y la confirmación aplicable deciden el derecho comercial; calidad, espera e inclusión/cobro se analizan por separado.
-- Comunicación general segura: «El desayuno está incluido en algunas tarifas; en otras se contrata por separado. La confirmación de tu reserva indica lo incluido».
+- El desayuno se incluye **según la tarifa y la reserva concreta**, no por habitación ni canal de forma universal. Kross vigente conserva la autoridad transaccional sobre la reserva y el plan tarifario; la confirmación es evidencia de lo comunicado al huésped. Calidad, espera e inclusión/cobro se analizan por separado.
+- Si Kross y la confirmación difieren, comparar ID de reserva, plan tarifario, fecha/versión de la confirmación, modificaciones posteriores y frescura de ambas fuentes. Conservar ambos valores como `CONFLICTO_DESAYUNO_PENDIENTE`: no negar el beneficio, añadir un cobro, publicar una corrección ni comunicar un desenlace por inferencia. Recepción concilia con el historial autorizado de la reserva y deja responsable, decisión y evidencia.
+- Comunicación general segura: «El desayuno está incluido en algunas tarifas; en otras se contrata por separado. Revisaremos tu reserva específica y, si la confirmación y el PMS difieren, verificaremos el cambio antes de confirmar inclusión o cobro».
 - Las respuestas ordinarias a reseñas verificadas están delegadas desde el 22/10/2026, pero requieren propiedad, ID/URL nativo, fecha, texto íntegro, idioma original y estado vigente de respuesta/moderación. Los casos sensibles conservan revisión humana especializada.
 - Una respuesta pública no cierra una incidencia física ni autoriza obra, compra, compensación, cambio tarifario o modificación de una reserva.
 - Este bloque es gobierno documental; no acredita cambio productivo en Kross, envío, reparación o resultado económico.
