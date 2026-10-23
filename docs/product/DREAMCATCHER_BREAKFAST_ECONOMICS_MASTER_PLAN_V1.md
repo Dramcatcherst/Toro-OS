@@ -5,6 +5,16 @@
 **Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations  
 **Objective:** determine whether breakfast increases contribution, conversion and guest value enough to justify its cost, and use real reservation data to decide when breakfast should be included, optional, upsold, repriced or removed.
 
+<!-- BEGIN:DREAMCATCHER_BREAKFAST_REVIEW_CLARIFICATION_20261022 -->
+## Aclaración vigente: desayuno por tarifa y control de reseñas
+
+- El desayuno se incluye **según la tarifa y la reserva concreta**, no por habitación ni canal de forma universal. Kross y la confirmación aplicable deciden el derecho comercial; calidad, espera e inclusión/cobro se analizan por separado.
+- Comunicación general segura: «El desayuno está incluido en algunas tarifas; en otras se contrata por separado. La confirmación de tu reserva indica lo incluido».
+- Las respuestas ordinarias a reseñas verificadas están delegadas desde el 22/10/2026, pero requieren propiedad, ID/URL nativo, fecha, texto íntegro, idioma original y estado vigente de respuesta/moderación. Los casos sensibles conservan revisión humana especializada.
+- Una respuesta pública no cierra una incidencia física ni autoriza obra, compra, compensación, cambio tarifario o modificación de una reserva.
+- Este bloque es gobierno documental; no acredita cambio productivo en Kross, envío, reparación o resultado económico.
+<!-- END:DREAMCATCHER_BREAKFAST_REVIEW_CLARIFICATION_20261022 -->
+
 ## 1. Decision questions
 
 This work must answer with real data:
