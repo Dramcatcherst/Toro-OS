@@ -1,9 +1,9 @@
 # Dreamcatcher — calidad, comentarios privados y prevención
 
 **Estado:** PROPUESTA DOCUMENTAL, sin implementación ni despliegue.  
-**Directivas:** propietario 17/10/2026; delegación rutinaria verificada 22/10/2026.  
+**Directivas:** propietario 17/10/2026; delegación general 22/10/2026 como antecedente; reiteración restrictiva específica 23/10/2026 para reseñas y fichas públicas.  
 **Autoridad:** [Plan General único](TORO_BRAIN_GENERAL_PLAN.md), Constitución y contratos de ejecución vigentes.  
-**Vinculación:** `dreamcatcher_hotel_reinvestment_2026` dentro de `dreamcatcher_hotel_master`; reseñas bajo `hotel_reviews_kross_google_routing_20260929`. Complementa el [documento de desayuno existente](DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md). No crea otro plan maestro, base, agente, backlog, calendario ni scheduler. La delegación del 22/10 cubre respuestas ordinarias verificadas y contenido factual sustentado; no activa encuestas ni elimina los gates de identidad, idioma, estado nativo, consentimiento y recibo.
+**Vinculación:** `dreamcatcher_hotel_reinvestment_2026` dentro de `dreamcatcher_hotel_master`; reseñas bajo `hotel_reviews_kross_google_routing_20260929`. Complementa el [documento de desayuno existente](DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md). No crea otro plan maestro, base, agente, backlog, calendario ni scheduler. La instrucción humana específica reiterada el 23/10 exige aprobación individual antes de publicar respuestas a reseñas, corregir fichas OTA/Tripadvisor o contactar terceros en reputación, pese a la delegación general documentada el 22/10. Lectura y preparación siguen autorizadas; no se activan encuestas y permanecen los gates de identidad, idioma original, respuesta vigente, consentimiento y recibo.
 
 ## 1. CURRENT / TARGET / NEXT / FUTURE
 
