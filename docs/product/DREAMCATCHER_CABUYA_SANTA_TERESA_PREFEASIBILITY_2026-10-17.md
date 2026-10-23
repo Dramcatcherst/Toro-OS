@@ -4,6 +4,8 @@
 
 **Decision date:** 2026-10-17
 
+**Registry alignment update:** 2026-10-23
+
 **Scope:** TORO Projects + TORO Assets, Dreamcatcher reference implementation
 
 **No authorization created for:** title claims, design/construction, permits, credit, tax incentives, token offering, fundraising, publication or production changes.
@@ -46,18 +48,25 @@ No Dropbox original was moved or changed. Indexed evidence carries an authority 
 
 ### Cabuya
 
-The connected evidence contains conflicting property references and an unclosed cadastral/registry identity. No current authenticated literal was available at this cutoff.
+The cadastral identity is now partially reconciled, but current legal status is not fully closed:
+
+- an authenticated free RNP query observed on 2026-10-17 identified folio `6-151446-000`, plan `P-0062989-2024`, 10,001 m2, Pomas y Poemas S.A. and visible encumbrances;
+- the public SNIT query on 2026-10-23 returned base parcel `0151446`, normalized plan `600629892024` and parcel identifier `60111015144600`;
+- `615446-000` remains a contradictory historical token, not a canonical alias; its literal interpretation as province 6 / parcel 15446 produced no SNIT result, which does not by itself prove that no registry right exists;
+- the free RNP query is not a current certified literal, while SNIT proves neither owner nor rights, encumbrances, annotations, access, land use or buildability.
+
+Official public references: [SNIT principal viewer](https://www.snitcr.go.cr/Visor/index), [RNP property-identifier format guide](https://rn2.rnpdigital.com/centroinforegistral/registros/inmobiliario/GuiasCalificacion/CA_Guia_Calificacion_Regisitral.pdf) and [RNP 2025 real-estate service guide](https://www.rnpdigital.com/centroinforegistral/registros/inmobiliario/GuiasCalificacion/Guia-de-Servicios-Inmobiliario-Registral-2025.pdf).
 
 Therefore do not claim:
 
-- current owner or encumbrance state;
+- current certified owner or encumbrance state after the dated RNP observation;
 - buildable area;
 - sea view from permitted structures;
 - water availability or concession;
 - electrical service capacity;
 - approved access, subdivision, use or environmental viability.
 
-Gate 0 ends only when authenticated registry evidence identifies the correct property, owner, encumbrances, area and correspondence with the cited cadastral plan.
+Gate 0A registry identity ends only when a current authenticated re-query or authorized certified literal confirms province 6, parcel `0151446`, right `000`, owner, plan, encumbrances and annotations. Gate 0 as a whole remains blocked until the territorial and technical checks also pass.
 
 ### Santa Teresa
 
@@ -129,6 +138,7 @@ Any project budget must separately price land/site risk, FF&E, kitchen, pool/dec
 
 - canonical Cabuya development project exists and is blocked;
 - one Cabuya Gate 0 task consumes existing registry work rather than duplicating it;
+- Gate 0A has a dated partial pass for parcel/plan identity; current registry revalidation and all territorial/technical gates remain open;
 - one Santa Teresa feasibility task covers the requested alternatives;
 - Airtable Central mirrors these records;
 - selected Dropbox evidence is indexed with scope limits;
@@ -142,7 +152,7 @@ Any project budget must separately price land/site risk, FF&E, kitchen, pool/dec
 
 ### NEXT
 
-Obtain authenticated registry evidence for both conflicting Cabuya references and reconcile it with the cited cadastral plan. Record one source/date/result note and decide continue, remain blocked or stop.
+After Mauricio signs in manually to RNP Digital, refresh the free query for province 6, parcel `0151446`, right `000`; compare owner, plan, encumbrances and annotations with the 2026-10-17 snapshot. Do not buy a certified literal without separate authorization. Record one source/date/result note and either close Gate 0A, document the change or keep it blocked.
 
 ### FUTURE
 
@@ -152,7 +162,7 @@ Obtain authenticated registry evidence for both conflicting Cabuya references an
 
 ## 9. Verification and rollback
 
-Verified readback at the cutoff showed one canonical Cabuya project key, one canonical Cabuya Gate 0 task key, one Santa Teresa task key and no active orphan or duplicate canonical module introduced by this change.
+Verified readback on 2026-10-23 showed one canonical Cabuya project key, one canonical Cabuya Gate 0 task key, the project still `BLOCKED`, `needs_revalidation=true`, no `property_id` cross-organization link and no duplicate introduced by this update.
 
 Rollback is selective:
 
