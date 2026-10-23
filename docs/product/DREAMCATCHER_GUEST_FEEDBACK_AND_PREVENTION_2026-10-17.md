@@ -41,6 +41,14 @@ Invitación propuesta: «Hola, ¿cómo va todo en Dreamcatcher? Queremos saber s
 
 Preferir la mañana después de la primera noche dentro de una franja con cobertura humana. Para estancias de una noche, adaptar al momento de llegada sin molestar de madrugada. La frecuencia exacta y el canal se prueban antes de activarlos. Mantener vía humana para urgencias; el formulario no promete vigilancia permanente.
 
+### Checkpoint de receptor privado — 2026-10-23
+
+- PR #331 está fusionada y el preparador `src/features/guest/service-recovery.ts` existe en `main`, pero conserva `externalSend=false` e `internalWriteExecuted=false`.
+- La única aparición de `PRIVATE_FEEDBACK_LINK` es un marcador de prueba negativa; el contrato lo rechaza, incluso codificado. No es un URL utilizable.
+- La búsqueda versionada no localizó formulario publicado, endpoint/receptor externo, configuración de destino, recibo de creación de caso ni matriz de roles que demuestre el circuito de encuesta.
+- Estado preciso: `BLOQUEADO_RECEPTOR_PRIVADO_NO_VERIFICADO`. Esto no invalida el preparador ni autoriza crear otro formulario. Impide invitar huéspedes o ejecutar el piloto.
+- Siguiente prueba segura: aportar un enlace HTTPS del receptor existente y usar datos sintéticos para comprobar recepción, una sola tarea canónica por asunto, replay sin duplicación, acuse, aislamiento por rol y cierre/reapertura. Solo después se evalúan consentimiento y canal de huéspedes reales.
+
 ## 4. Encuesta posterior y reseñas públicas
 
 Después de la salida, una invitación voluntaria y como máximo un recordatorio autorizado. Preguntar por descanso, limpieza, ducha, atención, qué conservar y qué cambiar primero; escalas con opción no usado/no aplica. Si hubo un problema, preguntar si se comunicó y si quedó resuelto. No inferir reparación a partir de una buena puntuación.
