@@ -7,6 +7,19 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+
+<!-- BEGIN:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
+## Delegación de publicación rutinaria — Dreamcatcher — 22/10/2026
+
+**Decisión humana vigente:** Mauricio indicó que no quiere ser cuello de botella y delegó la publicación sin una aprobación individual repetida cuando el ejecutor considere correcto hacerlo. Para Dreamcatcher, esta delegación sustituye únicamente el requisito del 19/10 de pedir autorización caso por caso para **respuestas ordinarias a reseñas verificadas**, correcciones factuales sustentadas del hotel y publicación del Portal existente una vez superados sus gates. No crea otro writer, agente, perfil, canal, plan o automatización.
+
+**La delegación no sustituye prueba ni control:** antes de responder una reseña siguen siendo obligatorios propiedad correcta, ID/URL nativo, fecha, texto íntegro, idioma original y estado vigente de respuesta/moderación; conservar original, deduplicación y recibo. Si falta acceso o evidencia, el bloqueo es técnico o probatorio, no aprobación del propietario. Casos graves de seguridad, discriminación, acusaciones, cuestiones jurídicas, compensaciones o promesas económicas mantienen revisión humana especializada.
+
+**Portal y contenido público:** publicar solo el candidato exacto después de CI, aceptación funcional y autenticada, privacidad/aislamiento, concurrencia y rollback verificados en el mismo proyecto y dominio. Un preview, borrador o `mergeable=true` no equivale a producción. La delegación no autoriza gastos, obras, préstamos, garantías, tokens, cambios de reservas/contabilidad, tarifas o promociones fuera de la limpieza ya delimitada, fusiones/reclamaciones de fichas, ampliación de accesos, encuestas masivas ni eliminación de datos.
+
+**Estado de este bloque:** gobierno documentado; no acredita respuesta enviada, merge, despliegue, reparación física, sincronización ni resultado económico. Los controles históricos incompatibles se conservan como antecedentes superados solo en su requisito de aprobación rutinaria.
+<!-- END:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
+
 <!-- BEGIN:TORO_OPERATING_CONFIGURATION_20261022 -->
 ## Configuración operativa y optimización conjunta — 22/10/2026
 
