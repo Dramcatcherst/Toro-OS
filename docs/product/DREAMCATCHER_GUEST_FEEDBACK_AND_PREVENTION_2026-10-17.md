@@ -1,9 +1,9 @@
 # Dreamcatcher — calidad, comentarios privados y prevención
 
 **Estado:** PROPUESTA DOCUMENTAL, sin implementación ni despliegue.  
-**Directivas:** propietario 17/10/2026; delegación general 22/10 como antecedente; instrucción específica 19/10 reiterada 23/10/2026 para reputación y fichas públicas.  
+**Directivas:** propietario 17/10/2026; delegación rutinaria verificada 22/10/2026; continuidad para resolver discrepancias 23/10/2026.  
 **Autoridad:** [Plan General único](TORO_BRAIN_GENERAL_PLAN.md), Constitución y contratos de ejecución vigentes.  
-**Vinculación:** `dreamcatcher_hotel_reinvestment_2026` dentro de `dreamcatcher_hotel_master`; reseñas bajo `hotel_reviews_kross_google_routing_20260929`. Complementa el [documento de desayuno existente](DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md). No crea otro plan maestro, base, agente, backlog, calendario ni scheduler. La instrucción específica del propietario del 19/10, reiterada el 23/10, prevalece en este carril sobre la delegación general del 22/10: únicamente lectura/verificación y borradores `PREPARADO_NO_ENVIADO`; **toda respuesta a reseña o edición de ficha pública requiere aprobación específica anterior al envío**. Resolver discrepancias no habilita publicar. Se conservan los gates de propiedad, identidad, idioma original, respuesta vigente, consentimiento, deduplicación y recibo. No se activa ni envía encuesta.
+**Vinculación:** `dreamcatcher_hotel_reinvestment_2026` dentro de `dreamcatcher_hotel_master`; reseñas bajo `hotel_reviews_kross_google_routing_20260929`. Complementa el [documento de desayuno existente](DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md). No crea otro plan maestro, base, agente, backlog, calendario ni scheduler. La delegación del 22/10 cubre respuestas ordinarias verificadas y correcciones factuales sustentadas una vez superados los gates de propiedad, identidad, idioma original, respuesta vigente, consentimiento, deduplicación y recibo. La instrucción del 23/10 de continuar y resolver discrepancias no revoca esa delegación ni habilita una publicación ciega. Casos graves conservan revisión humana especializada. No se activa ni envía encuesta.
 
 ## 1. CURRENT / TARGET / NEXT / FUTURE
 
