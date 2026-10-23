@@ -44,7 +44,7 @@ Preferir la mañana después de la primera noche dentro de una franja con cobert
 ### Checkpoint de receptor privado — 2026-10-23
 
 - PR #331 está fusionada y el preparador `src/features/guest/service-recovery.ts` existe en `main`, pero conserva `externalSend=false` e `internalWriteExecuted=false`.
-- La única aparición de `PRIVATE_FEEDBACK_LINK` es un marcador de prueba negativa; el contrato lo rechaza, incluso codificado. No es un URL utilizable.
+- Las apariciones versionadas de `PRIVATE_FEEDBACK_LINK` son marcadores de prueba negativa o su evidencia; el contrato los rechaza, incluso codificados. Ninguna aporta un URL utilizable.
 - La búsqueda versionada no localizó formulario publicado, endpoint/receptor externo, configuración de destino, recibo de creación de caso ni matriz de roles que demuestre el circuito de encuesta.
 - Estado preciso: `BLOQUEADO_RECEPTOR_PRIVADO_NO_VERIFICADO`. Esto no invalida el preparador ni autoriza crear otro formulario. Impide invitar huéspedes o ejecutar el piloto.
 - Siguiente prueba segura: aportar un enlace HTTPS del receptor existente y usar datos sintéticos para comprobar recepción, una sola tarea canónica por asunto, replay sin duplicación, acuse, aislamiento por rol y cierre/reapertura. Solo después se evalúan consentimiento y canal de huéspedes reales.
