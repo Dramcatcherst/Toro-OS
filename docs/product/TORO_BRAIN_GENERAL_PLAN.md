@@ -1890,9 +1890,11 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 #### CURRENT
 
-- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El último head observado para el plan fue `5e2d7eca75237ac770d80d964818919dc71e9d04`, abierto/draft/sin merge; revalidar antes de ejecutar. Un deployment READY o pruebas de otro SHA no certifican el candidato actual.
+- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El checkpoint canónico `HUE-REG-WEB-20261023-R25` registró el push verificado del SHA `761c290ddadb9fcb14ede900629f3325024d15d5`, abierto/draft/sin merge, con 14 acciones preservadas. El 23/10/2026, por autorización explícita, esa misma rama se reconcilió mediante merge normal —sin force push ni reescritura— con `ToroOS/phase-0b-foundation` (`c18632d6c529865b06b83a2606c29ee1311d7b71`) y quedó en el SHA remoto `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9`. El PR continúa abierto, mergeable y en borrador; el CI remoto del SHA reconciliado sigue siendo condición previa de revisión, y no existe autorización de merge final ni deploy.
 - El plan está registrado y aprobado para integración; su implementación nueva sigue NOT_STARTED. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por este documento.
 - `DC2-022` y Channel Truth conservan el bloqueo de publicación. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+
+**Evidencia de reconciliación DC2-022:** el merge conserva como padres `761c290ddadb9fcb14ede900629f3325024d15d5` y `c18632d6c529865b06b83a2606c29ee1311d7b71`. En el checkout reconciliado aprobaron instalación limpia, auditoría npm sin vulnerabilidades high/critical, `npm run verify`, build y 49 pruebas Playwright focalizadas del Home/booking/consentimiento/TORO Flow. `/es/inicio` y `/es/inicio/` conservaron query y resolvieron en un solo salto 308 a `/es`, con destino final 200. `vercel.json` deshabilita el despliegue Git para la rama ejecutora exacta; esto evita que la ejecución de CI autorice o produzca una promoción. Reversión: revertir el merge commit `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9` mediante un PR posterior si la revisión lo exige; no reescribir historia.
 
 #### TARGET
 
