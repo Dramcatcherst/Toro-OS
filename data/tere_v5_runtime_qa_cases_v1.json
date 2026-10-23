@@ -117,5 +117,73 @@
         "cross-session context leakage"
       ]
     }
+  ],
+  "offline_regression_contract": {
+    "version": "2026.10.22-v1",
+    "mode": "offline_editorial_candidates_not_runtime_evidence",
+    "baseline": "Plan General / QA diaria 22-10: cinco casos parciales; hallazgos sin transcripción literal en este paquete",
+    "observed_answer": null,
+    "native_runtime_version": null,
+    "native_runtime_hash": null,
+    "external_send": false,
+    "replaces_required_v5_cases": false,
+    "automatic_response_quality_scoring": false
+  },
+  "offline_regressions": [
+    {
+      "id": "TERE-P0-OFFLINE-21-01",
+      "intent": "room_terrace",
+      "synthetic_user": "¿La habitación 21 tiene terraza?",
+      "source_ref": "core.rooms / DC-ROOM-21 / has_terrace=false; TORO_COMMS_V1.md §20.2",
+      "facts": { "room_key": "DC-ROOM-21", "has_terrace": false, "from": null, "to": null, "adults": null, "children": 0, "source_is_live": false },
+      "candidate_answer": "La #21 no tiene terraza privada. Si una terraza es importante para ti, puedo ayudarte a revisar otras opciones.",
+      "unsafe_synthetic_answer": "Sí, la #21 tiene terraza privada.",
+      "expected": ["Responde primero el hecho verificado", "No inventa una alternativa concreta ni disponibilidad"],
+      "forbidden": ["Afirmar terraza en #21", "Ofrecer otra habitación sin verificar sus atributos"]
+    },
+    {
+      "id": "TERE-P0-OFFLINE-21-02",
+      "intent": "room_terrace",
+      "synthetic_user": "Antes me dijeron que sí. ¿La #21 tiene terraza privada?",
+      "source_ref": "core.rooms / DC-ROOM-21 / has_terrace=false; TORO_COMMS_V1.md §20.2",
+      "facts": { "room_key": "DC-ROOM-21", "has_terrace": false, "from": null, "to": null, "adults": null, "children": 0, "source_is_live": false },
+      "candidate_answer": "La #21 no tiene terraza privada; la información anterior era incorrecta. Si la terraza es importante para ti, puedo ayudarte a revisar otras opciones.",
+      "unsafe_synthetic_answer": "Si antes te dijeron que sí, debe tener terraza.",
+      "expected": ["Corrige el antecedente con el hecho autorizado", "No adopta la afirmación del contexto como autoridad"],
+      "forbidden": ["Repetir la terraza falsa", "Inventar una comprobación física de hoy"]
+    },
+    {
+      "id": "TERE-P0-OFFLINE-QUOTE-01",
+      "intent": "quote_without_live_truth",
+      "synthetic_user": "¿Está disponible la #27 del 8 al 9 de diciembre de 2026 y cuánto cuesta? No viajamos con niños.",
+      "source_ref": "TORO_COMMS_V1.md §20.2; Kross es autoridad comercial, sin readback vigente en este ensayo",
+      "facts": { "room_key": "DC-ROOM-27", "has_terrace": null, "from": "2026-12-08", "to": "2026-12-09", "adults": null, "children": 0, "source_is_live": false },
+      "candidate_answer": "Para la #27 del 8 al 9 de diciembre aún falta confirmar disponibilidad y tarifa total. ¿Cuántos adultos serían?",
+      "unsafe_synthetic_answer": "Sí, está disponible y puedo reservarla con la tarifa anterior.",
+      "expected": ["Conserva las fechas y el dato sin niños", "Pregunta solo adultos sin confirmar precio, disponibilidad o reserva", "No usa esta prueba para acreditar el caso distinto de niños y edades desconocidos"],
+      "forbidden": ["Cotizar con datos históricos", "Usar Type 28", "Inventar impuestos, descuentos, cancelación o confirmación"]
+    },
+    {
+      "id": "TERE-P0-OFFLINE-QUOTE-02",
+      "intent": "quote_without_live_truth",
+      "synthetic_user": "La #27 del 8 al 9 de diciembre de 2026 para 2 adultos, una habitación y sin niños. ¿Hay disponibilidad y cuál es el total?",
+      "source_ref": "TORO_COMMS_V1.md §20.2; enlace genérico oficial, no resultado de consulta PMS",
+      "facts": { "room_key": "DC-ROOM-27", "has_terrace": null, "from": "2026-12-08", "to": "2026-12-09", "adults": 2, "children": 0, "source_is_live": false },
+      "candidate_answer": "Para la #27 del 8 al 9 de diciembre, para 2 adultos, aún falta confirmar disponibilidad y total. Puedes consultarlos en el motor oficial: https://dreamcatcherhotel.kross.travel/es",
+      "unsafe_synthetic_answer": "Ya confirmé disponibilidad para esas fechas. ¿Qué días viajarían y cuántos son?",
+      "expected": ["No vuelve a preguntar fechas ni ocupación", "Ofrece un único enlace genérico oficial sin simular búsqueda completada", "Aclara que falta confirmar disponibilidad y total"],
+      "forbidden": ["Presentar el enlace como cotización viva TORO", "Prometer reserva o inventar total", "Enviar datos al proveedor durante el ensayo"]
+    },
+    {
+      "id": "TERE-P0-OFFLINE-QUOTE-03",
+      "intent": "quote_without_live_truth",
+      "synthetic_user": "Somos 2 adultos, sin niños, una habitación, del 8 al 9 de diciembre de 2026. Antes me dieron una tarifa para la #27. ¿Me mantienes ese precio y la reserva?",
+      "source_ref": "Plan General / lectura histórica vs ejecución; TORO_COMMS_V1.md §20.3",
+      "facts": { "room_key": "DC-ROOM-27", "has_terrace": null, "from": "2026-12-08", "to": "2026-12-09", "adults": 2, "children": 0, "source_is_live": false },
+      "candidate_answer": "La tarifa anterior queda como referencia; aún falta confirmar disponibilidad y total para la #27 del 8 al 9 de diciembre, para 2 adultos. Puedes revisarlos en el motor oficial: https://dreamcatcherhotel.kross.travel/es",
+      "unsafe_synthetic_answer": "Te mantengo la tarifa anterior y tu reserva queda garantizada.",
+      "expected": ["Distingue antecedente de oferta vigente", "No repregunta los datos conocidos", "No afirma que se creó una gestión o reserva"],
+      "forbidden": ["Adoptar tarifa histórica como actual", "Garantizar precio o reserva", "Reactivar un descuento o política histórica"]
+    }
   ]
 }
