@@ -77,6 +77,17 @@ Prepared, not sent, support message:
 
 Sending this message and initiating consolidation are external representational/destructive actions and require confirmation immediately before `Ask`.
 
+## Current public/native checkpoint — 2026-10-23
+
+- A supported Tripadvisor `hotel_details` read of `locationId=1655967` returned the same property identity, 4.5/5, 210 reviews and the same ten review IDs already in the monitoring baseline. The connector does not expose owner responses, original-language fields or room count, so none of those absences is treated as a native negative.
+- The current Tripadvisor amenities payload explicitly advertises `Babysitting` (`tagId=9668`). The public Tripadvisor result still describes 12 private air-conditioned rooms. This supersedes the uncorroborated alert wording of 11 rooms: the verified Tripadvisor value in this dossier remains 12 until a newer Management Center readback exposes the field.
+- The current official Dreamcatcher catalog enumerates 16 rooms plus 4 apartments: 20 distinct physical accommodation units. Dreamcatcher Villa, Villa Makaiza and Villa Toro are group-sale modalities over those same units and are not added to capacity. The resulting conflict is therefore **Tripadvisor 12 vs official property catalog 20 physical units**, not 11 vs 20 and not 23 units.
+- Kross remains the transactional authority for live sellability. The official catalog corroborates identity and composition, but no room-count edit was sent because this pass did not obtain a current Management Center readback/receipt for that field.
+- No current official Dreamcatcher page or governed operating record located in this pass proves an active childcare provider, schedule, eligibility, price or guest-contact path. Absence is not proof that the service is unavailable. Keep `CONFLICTO_SERVICIO_INFANTIL_PENDIENTE`: verify current operating reality and scope before retaining or removing the Tripadvisor claim.
+- Reputation coverage remains partial: the returned ten-review sample matches the known baseline. No new review was alerted or drafted, and this sample does not prove that no newer review exists outside it.
+
+Sources: [Tripadvisor main listing](https://www.tripadvisor.com/Hotel_Review-g635538-d1655967-Reviews-Dreamcatcher_Hotel_Villas-Santa_Teresa_Province_of_Puntarenas.html), [official property catalog](https://dreamcatcherhotel.com/es), [official rooms catalog](https://dreamcatcherhotel.com/es/rooms).
+
 ## Amenities requiring operational verification
 
 Do not save this section yet. The current listing includes claims that may be stale or overbroad: free breakfast, hot tub, babysitting, dry cleaning, yoga classes, pet friendly, wheelchair access/reduced-mobility rooms, smoking rooms available, airport transportation, car hire, shuttle service, kitchenette, private balcony and coffee/tea maker. Verify each against current operating reality and accommodation-level scope before changing the listing.
