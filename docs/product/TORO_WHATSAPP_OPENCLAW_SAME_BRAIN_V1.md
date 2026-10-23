@@ -67,6 +67,14 @@ OpenClaw may cache only bounded transport/session state. It may not maintain a c
 
 Use separate trust boundaries where privileges differ:
 
+### Boundary clarification — 2026-10-22
+
+The three roles below are product capability ceilings, not proof that three agents or sessions inside one Gateway provide isolation. Official [OpenClaw trust-model documentation](https://docs.openclaw.ai/gateway/security/trust-model) supports one operator/mutually trusting team per Gateway; mutually untrusted users cannot share an agent with delegated owner tools safely. Session partitioning, allowlists and prompts are defense in depth, not independent OS/filesystem/secret boundaries.
+
+Reuse `toro-openclaw-gateway-01` and its original `toro-openclaw-integration` bridge before proposing infrastructure. The owner Gateway must not admit team/guest ingress to owner tools or session history. Team/guest capabilities may consume the same TORO authorization/data contracts through an actually isolated, narrowly scoped ingress once verified; its existence is not established here. If the existing deployment cannot satisfy that boundary, keep the rollout blocked and present a reviewed isolation proposal. Do not create a second Gateway, expose shell, or grant founder credentials as an automatic workaround.
+
+On the installed version, verify account/peer session partition, cross-agent session visibility, agent-to-agent delegation and cross-provider/conversation messaging restrictions. Do not copy defaults or field names from current online docs into an older live version without validation. Disabling broad tools or selecting a messaging profile does not by itself certify a hostile-user boundary.
+
 ### Owner / personal
 High-trust owner runtime. May expose stronger Builder/Codex and personal capabilities when explicitly enabled.
 
@@ -193,6 +201,10 @@ This slice is a shared execution primitive. It is **not yet proof that the live 
 
 ## 10. Required next runtime slice
 
+The steps below are acceptance dependencies, not an instruction to recreate tables or a bridge. The 22/10 readback already finds `integrations.communication_channel_bindings`, `communication_channel_sessions` and `communication_channel_receipts`, all with RLS enabled. Reconcile existing schema/code first. One OpenClaw binding is active with `verification_status=verified` and `send_enabled=true`, but has no sync timestamp; these tables contain zero sessions/receipts. This is registry/runtime drift to investigate, not proof of sending, sender identity or current health. Do not flip flags merely to match the desired story.
+
+The [current official WhatsApp channel](https://docs.openclaw.ai/channels/whatsapp) uses a linked WhatsApp Web/Baileys session. That is not evidence that TORO has WhatsApp Business Cloud API or a Twilio channel. Discover the installed provider/plugin/version and account capabilities before choosing transport, backfill, webhook or retention behavior. Existing authorized account capture and ingestion policy in TORO Comms §19 remains separate from sender admission and send/business-write authority; this clarification does not reduce that capture scope or widen send permissions.
+
 1. Implement channel-runtime authentication.
 2. Implement verified channel identity bindings.
 3. Reuse canonical context/permission logic for channel actors.
@@ -218,5 +230,7 @@ It is done when a verified owner can, from WhatsApp:
 7. see the same task/project state immediately in Portal;
 8. prove no cross-user or personal/work leakage;
 9. pass OpenClaw security, replay, identity and recovery gates.
+
+For each proof, preserve account alias, actor/scope, capability, source freshness, idempotency/correlation, canonical object key, destination receipt and observed time without raw transcripts/phones/credentials in public evidence. Test duplicate/reconnect/timeout/revocation/cross-user/cross-organization cases with authorized synthetic/internal traffic before real guests. Acknowledgement of receipt, provider delivery, canonical write and business completion are distinct outcomes. Existing Control Plane/Comms owns retries, receipts, notifications and recovery; no independent WhatsApp queue/scheduler is added.
 
 Until those pass, status remains **PARTIAL / CHANNEL RUNTIME UNVERIFIED**.
