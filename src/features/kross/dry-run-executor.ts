@@ -93,10 +93,9 @@ function validExecutionEnvelope(value: unknown): value is KrossDryRunRequest {
     return false;
   }
   const fieldMap = adapter.fieldMap;
-  if (!requiredFieldMapKeys.every(key => nonEmptyText(fieldMap[key])) ||
-    !optionalFieldMapKeys.every(key =>
-      fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
-    )) {
+  if (![...requiredFieldMapKeys, ...optionalFieldMapKeys].every(key =>
+    fieldMap[key] === undefined || typeof fieldMap[key] === "string"
+  )) {
     return false;
   }
   return ["sourceAsOf", "observedAt", "sourceReference", "sourceHash"]
