@@ -52,10 +52,108 @@ export type KrossDryRunResult = {
   importRun: KrossDryRunImportRunEvidence;
   adapterIssues: KrossAdapterIssue[];
   normalizationIssues: KrossNormalizationIssue[];
-  executionIssues: Array<"rejected_source_replay" | "missing_replay_mirror" | "source_replay_conflict" | "stale_source" | "source_version_conflict" | "invalid_source_time">;
+  executionIssues: Array<"invalid_execution_envelope" | "rejected_source_replay" | "missing_replay_mirror" | "source_replay_conflict" | "stale_source" | "source_version_conflict" | "invalid_source_time">;
   canEnterSafeView: false;
   pmsWriteCount: 0;
 };
+
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function nonEmptyText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+const requiredFieldMapKeys = [
+  "externalReservationId",
+  "checkIn",
+  "checkOut",
+  "status",
+] as const;
+const optionalFieldMapKeys = [
+  "reservationKey",
+  "roomId",
+  "roomCodeRaw",
+  "guestsCount",
+  "adults",
+  "children",
+  "channel",
+  "breakfastIncluded",
+] as const;
+
+function validExecutionEnvelope(value: unknown): value is KrossDryRunRequest {
+  if (!record(value) || !record(value.adapterConfig) || !record(value.evidence)) {
+    return false;
+  }
+  const adapter = value.adapterConfig;
+  const evidence = value.evidence;
+  if (!nonEmptyText(adapter.orgId) || !nonEmptyText(adapter.propertyId) ||
+    !record(adapter.fieldMap) || !nonEmptyText(value.nowIso)) {
+    return false;
+  }
+  const fieldMap = adapter.fieldMap;
+  if (![...requiredFieldMapKeys, ...optionalFieldMapKeys].every(key =>
+    fieldMap[key] === undefined || typeof fieldMap[key] === "string"
+  )) {
+    return false;
+  }
+  return ["sourceAsOf", "observedAt", "sourceReference", "sourceHash"]
+    .every(key => nonEmptyText(evidence[key])) &&
+    ["authorizedTransport", "directFromKross", "readOnly"]
+      .every(key => typeof evidence[key] === "boolean");
+}
+
+function invalidEnvelopeText(value: unknown) {
+  return nonEmptyText(value) ? value.trim() : "";
+}
+
+function invalidEnvelopeReceipt(
+  request: unknown,
+  store: KrossDryRunMirrorStore,
+): KrossDryRunResult {
+  const envelope = record(request) ? request : {};
+  const adapter = record(envelope.adapterConfig) ? envelope.adapterConfig : {};
+  const evidence = record(envelope.evidence) ? envelope.evidence : {};
+  const sourceReference = invalidEnvelopeText(evidence.sourceReference);
+  const sourceHash = invalidEnvelopeText(evidence.sourceHash);
+  const orgId = invalidEnvelopeText(adapter.orgId);
+  const propertyId = invalidEnvelopeText(adapter.propertyId);
+  const invalidRunKey = orgId && propertyId && sourceReference && sourceHash
+    ? JSON.stringify([orgId, propertyId, sourceReference, sourceHash])
+    : JSON.stringify([
+        "invalid_execution_envelope",
+        orgId,
+        propertyId,
+        null,
+        sourceReference,
+        sourceHash,
+      ]);
+  const stored = store.getImportRun(invalidRunKey);
+  const importRun: KrossDryRunImportRunEvidence = stored ?? {
+    runKey: invalidRunKey,
+    mode: "dry_run",
+    status: "rejected",
+    operation: "reject",
+    identityKey: null,
+    sourceReference,
+    sourceHash,
+    readOnly: true,
+    pmsWriteCount: 0,
+  };
+  if (!stored) store.saveImportRun(invalidRunKey, importRun);
+  return {
+    status: "rejected",
+    operation: "reject",
+    reservation: null,
+    importRun,
+    adapterIssues: [],
+    normalizationIssues: [],
+    executionIssues: ["invalid_execution_envelope"],
+    canEnterSafeView: false,
+    pmsWriteCount: 0,
+  };
+}
 
 function artifactRunKey(request: KrossDryRunRequest) {
   return JSON.stringify([
@@ -123,6 +221,10 @@ export function executeKrossDryRun(
   request: KrossDryRunRequest,
   store: KrossDryRunMirrorStore,
 ): KrossDryRunResult {
+  if (!validExecutionEnvelope(request)) {
+    return invalidEnvelopeReceipt(request, store);
+  }
+
   const adapted = adaptKrossReservationPayload(
     request.payload,
     request.adapterConfig,
