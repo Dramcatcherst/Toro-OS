@@ -281,6 +281,17 @@ function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: Set<string>) {
   return Object.keys(value).every(key => allowedKeys.has(key));
 }
 
+function validFieldMapPath(value: unknown): value is string {
+  if (!nonEmptyText(value)) return false;
+  return value
+    .split(".")
+    .map(part => part.trim())
+    .every(part =>
+      part.length > 0 &&
+      !["__proto__", "constructor", "prototype"].includes(part)
+    );
+}
+
 function collectLeafPaths(value: unknown, prefix = ""): string[] {
   if (record(value)) {
     const entries = Object.entries(value);
@@ -376,9 +387,11 @@ export function executeKrossSanitizedExtractDryRun(
   if (!hasOnlyKeys(fieldMap, fieldMapKeys)) {
     issues.push("unexpected_manifest_fields");
   }
-  const validRequiredMap = requiredFieldMapKeys.every(key => nonEmptyText(fieldMap[key]));
+  const validRequiredMap = requiredFieldMapKeys.every(key =>
+    validFieldMapPath(fieldMap[key])
+  );
   const validOptionalMap = optionalFieldMapKeys.every(key =>
-    fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
+    fieldMap[key] === undefined || validFieldMapPath(fieldMap[key])
   );
   if (!validRequiredMap || !validOptionalMap) issues.push("invalid_field_map");
 
