@@ -62,6 +62,12 @@ function timestamp(value: unknown) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
     return Number.NaN;
   }
+  // Date.parse can roll impossible days into the next month; reject them.
+  const datePart = value.slice(0, 10);
+  const calendar = Date.parse(datePart + "T00:00:00Z");
+  if (!Number.isFinite(calendar) || new Date(calendar).toISOString().slice(0, 10) !== datePart) {
+    return Number.NaN;
+  }
   const ms = Date.parse(value);
   return Number.isFinite(ms) ? ms : Number.NaN;
 }
