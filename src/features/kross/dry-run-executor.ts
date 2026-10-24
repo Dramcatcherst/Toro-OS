@@ -228,6 +228,7 @@ export type KrossSanitizedExtractIssue =
   | "sanitization_unconfirmed"
   | "invalid_field_map"
   | "field_map_mismatch"
+  | "unmapped_fields_present"
   | "invalid_rows";
 
 export type KrossSanitizedExtractExpectedArtifact = {
@@ -253,6 +254,18 @@ export type KrossSanitizedExtractDryRunResult = {
 };
 
 const sha256Pattern = /^[a-f0-9]{64}$/i;
+
+function collectLeafPaths(value: unknown, prefix = ""): string[] {
+  if (record(value)) {
+    const entries = Object.entries(value);
+    if (!entries.length) return prefix ? [prefix] : [];
+    return entries.flatMap(([key, child]) =>
+      collectLeafPaths(child, prefix ? `${prefix}.${key}` : key)
+    );
+  }
+  if (Array.isArray(value)) return prefix ? [prefix] : [];
+  return prefix ? [prefix] : [];
+}
 
 export function executeKrossSanitizedExtractDryRun(
   rawManifest: unknown,
@@ -338,6 +351,17 @@ export function executeKrossSanitizedExtractDryRun(
     ...optionalFieldMapKeys,
   ].every(key => fieldMap[key] === expectedFieldMap[key]);
   if (!fieldMapMatchesExpected) issues.push("field_map_mismatch");
+
+  const governedSourcePaths = new Set(
+    [...requiredFieldMapKeys, ...optionalFieldMapKeys]
+      .map(key => expectedFieldMap[key])
+      .filter(nonEmptyText),
+  );
+  if (!rows.every(row =>
+    collectLeafPaths(row).every(path => governedSourcePaths.has(path))
+  )) {
+    issues.push("unmapped_fields_present");
+  }
 
   const uniqueIssues = [...new Set(issues)];
   if (uniqueIssues.length) {
