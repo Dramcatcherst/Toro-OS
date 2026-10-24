@@ -217,6 +217,209 @@ export function createInMemoryKrossDryRunStore(): KrossDryRunMirrorStore {
   };
 }
 
+export type KrossSanitizedExtractIssue =
+  | "invalid_manifest"
+  | "scope_missing"
+  | "scope_mismatch"
+  | "invalid_source_hash"
+  | "source_artifact_mismatch"
+  | "invalid_source_time"
+  | "row_count_mismatch"
+  | "sanitization_unconfirmed"
+  | "invalid_field_map"
+  | "field_map_mismatch"
+  | "unmapped_fields_present"
+  | "invalid_rows";
+
+export type KrossSanitizedExtractExpectedArtifact = {
+  sourceReference: string;
+  sourceHash: string;
+};
+
+export type KrossSanitizedExtractDryRunResult = {
+  mode: "dry_run";
+  status: "completed" | "rejected";
+  issues: KrossSanitizedExtractIssue[];
+  rows: KrossDryRunResult[];
+  summary: {
+    declaredRows: number;
+    executedRows: number;
+    acceptedRows: number;
+    rejectedRows: number;
+    mirrorCount: number;
+    importRunCount: number;
+    safeViewCount: number;
+    pmsWriteCount: 0;
+  };
+};
+
+const sha256Pattern = /^[a-f0-9]{64}$/i;
+
+function collectLeafPaths(value: unknown, prefix = ""): string[] {
+  if (record(value)) {
+    const entries = Object.entries(value);
+    if (!entries.length) return prefix ? [prefix] : [];
+    return entries.flatMap(([key, child]) =>
+      collectLeafPaths(child, prefix ? `${prefix}.${key}` : key)
+    );
+  }
+  if (Array.isArray(value)) return prefix ? [prefix] : [];
+  return prefix ? [prefix] : [];
+}
+
+export function executeKrossSanitizedExtractDryRun(
+  rawManifest: unknown,
+  nowIso: string,
+  expectedConfig: KrossReservationAdapterConfig,
+  expectedArtifact: KrossSanitizedExtractExpectedArtifact,
+): KrossSanitizedExtractDryRunResult {
+  const issues: KrossSanitizedExtractIssue[] = [];
+  const manifest = record(rawManifest) ? rawManifest : {};
+  if (!record(rawManifest)) issues.push("invalid_manifest");
+
+  const orgId = invalidEnvelopeText(manifest.orgId);
+  const propertyId = invalidEnvelopeText(manifest.propertyId);
+  if (!orgId || !propertyId) issues.push("scope_missing");
+
+  const expectedOrgId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.orgId)
+    : "";
+  const expectedPropertyId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.propertyId)
+    : "";
+  if (!expectedOrgId || !expectedPropertyId ||
+    orgId !== expectedOrgId || propertyId !== expectedPropertyId) {
+    issues.push("scope_mismatch");
+  }
+
+  const sourceReference = invalidEnvelopeText(manifest.sourceReference);
+  const sourceHash = invalidEnvelopeText(manifest.sourceHash);
+  if (!sourceReference || !sha256Pattern.test(sourceHash)) {
+    issues.push("invalid_source_hash");
+  }
+
+  const expectedSourceReference = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceReference)
+    : "";
+  const expectedSourceHash = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceHash)
+    : "";
+  if (!expectedSourceReference || !sha256Pattern.test(expectedSourceHash) ||
+    sourceReference !== expectedSourceReference ||
+    sourceHash.toLowerCase() !== expectedSourceHash.toLowerCase()) {
+    issues.push("source_artifact_mismatch");
+  }
+
+  const sourceAsOf = invalidEnvelopeText(manifest.sourceAsOf);
+  const observedAt = invalidEnvelopeText(manifest.observedAt);
+  const sourceMs = Date.parse(sourceAsOf);
+  const observedMs = Date.parse(observedAt);
+  const nowMs = Date.parse(nowIso);
+  if (!Number.isFinite(sourceMs) || !Number.isFinite(observedMs) ||
+    !Number.isFinite(nowMs) || sourceMs > observedMs || observedMs > nowMs) {
+    issues.push("invalid_source_time");
+  }
+
+  const rows = Array.isArray(manifest.rows) ? manifest.rows : [];
+  const rowCount = manifest.rowCount;
+  if (!Number.isSafeInteger(rowCount) || (rowCount as number) <= 0 ||
+    rowCount !== rows.length) {
+    issues.push("row_count_mismatch");
+  }
+  if (!rows.every(record)) issues.push("invalid_rows");
+
+  const sanitization = record(manifest.sanitization) ? manifest.sanitization : {};
+  if (sanitization.credentialsExcluded !== true ||
+    sanitization.paymentCardDataExcluded !== true ||
+    sanitization.guestContactExcluded !== true) {
+    issues.push("sanitization_unconfirmed");
+  }
+
+  const fieldMap = record(manifest.fieldMap) ? manifest.fieldMap : {};
+  const validRequiredMap = requiredFieldMapKeys.every(key => nonEmptyText(fieldMap[key]));
+  const validOptionalMap = optionalFieldMapKeys.every(key =>
+    fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
+  );
+  if (!validRequiredMap || !validOptionalMap) issues.push("invalid_field_map");
+
+  const expectedFieldMap: Record<string, unknown> =
+    record(expectedConfig) && record(expectedConfig.fieldMap)
+      ? expectedConfig.fieldMap
+      : {};
+  const fieldMapMatchesExpected = [
+    ...requiredFieldMapKeys,
+    ...optionalFieldMapKeys,
+  ].every(key => fieldMap[key] === expectedFieldMap[key]);
+  if (!fieldMapMatchesExpected) issues.push("field_map_mismatch");
+
+  const governedSourcePaths = new Set(
+    [...requiredFieldMapKeys, ...optionalFieldMapKeys]
+      .map(key => expectedFieldMap[key])
+      .filter(nonEmptyText),
+  );
+  if (!rows.every(row =>
+    collectLeafPaths(row).every(path => governedSourcePaths.has(path))
+  )) {
+    issues.push("unmapped_fields_present");
+  }
+
+  const uniqueIssues = [...new Set(issues)];
+  if (uniqueIssues.length) {
+    return {
+      mode: "dry_run",
+      status: "rejected",
+      issues: uniqueIssues,
+      rows: [],
+      summary: {
+        declaredRows: Number.isSafeInteger(rowCount) ? rowCount as number : 0,
+        executedRows: 0,
+        acceptedRows: 0,
+        rejectedRows: 0,
+        mirrorCount: 0,
+        importRunCount: 0,
+        safeViewCount: 0,
+        pmsWriteCount: 0,
+      },
+    };
+  }
+
+  const store = createInMemoryKrossDryRunStore();
+  const adapterConfig: KrossReservationAdapterConfig = {
+    orgId,
+    propertyId,
+    fieldMap: fieldMap as KrossReservationAdapterConfig["fieldMap"],
+  };
+  const evidence: KrossTransportEvidence = {
+    authorizedTransport: false,
+    directFromKross: false,
+    readOnly: true,
+    sourceAsOf,
+    observedAt,
+    sourceReference,
+    sourceHash,
+  };
+  const results = rows.map(payload =>
+    executeKrossDryRun({ payload, adapterConfig, evidence, nowIso }, store)
+  );
+
+  return {
+    mode: "dry_run",
+    status: "completed",
+    issues: [],
+    rows: results,
+    summary: {
+      declaredRows: rowCount as number,
+      executedRows: results.length,
+      acceptedRows: results.filter(result => result.status === "accepted").length,
+      rejectedRows: results.filter(result => result.status === "rejected").length,
+      mirrorCount: store.mirrorCount(),
+      importRunCount: store.importRunCount(),
+      safeViewCount: results.filter(result => result.canEnterSafeView).length,
+      pmsWriteCount: 0,
+    },
+  };
+}
+
 export function executeKrossDryRun(
   request: KrossDryRunRequest,
   store: KrossDryRunMirrorStore,
