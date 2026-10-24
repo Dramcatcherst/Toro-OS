@@ -229,6 +229,7 @@ export type KrossSanitizedExtractIssue =
   | "invalid_field_map"
   | "field_map_mismatch"
   | "unmapped_fields_present"
+  | "unexpected_manifest_fields"
   | "invalid_rows";
 
 export type KrossSanitizedExtractExpectedArtifact = {
@@ -254,6 +255,31 @@ export type KrossSanitizedExtractDryRunResult = {
 };
 
 const sha256Pattern = /^[a-f0-9]{64}$/i;
+const sanitizedManifestKeys = new Set([
+  "orgId",
+  "propertyId",
+  "sourceReference",
+  "sourceHash",
+  "sourceAsOf",
+  "observedAt",
+  "rowCount",
+  "fieldMap",
+  "sanitization",
+  "rows",
+]);
+const sanitizationKeys = new Set([
+  "credentialsExcluded",
+  "paymentCardDataExcluded",
+  "guestContactExcluded",
+]);
+const fieldMapKeys = new Set([
+  ...requiredFieldMapKeys,
+  ...optionalFieldMapKeys,
+]);
+
+function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: Set<string>) {
+  return Object.keys(value).every(key => allowedKeys.has(key));
+}
 
 function collectLeafPaths(value: unknown, prefix = ""): string[] {
   if (record(value)) {
@@ -276,6 +302,9 @@ export function executeKrossSanitizedExtractDryRun(
   const issues: KrossSanitizedExtractIssue[] = [];
   const manifest = record(rawManifest) ? rawManifest : {};
   if (!record(rawManifest)) issues.push("invalid_manifest");
+  if (record(rawManifest) && !hasOnlyKeys(rawManifest, sanitizedManifestKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
 
   const orgId = invalidEnvelopeText(manifest.orgId);
   const propertyId = invalidEnvelopeText(manifest.propertyId);
@@ -329,6 +358,9 @@ export function executeKrossSanitizedExtractDryRun(
   if (!rows.every(record)) issues.push("invalid_rows");
 
   const sanitization = record(manifest.sanitization) ? manifest.sanitization : {};
+  if (!hasOnlyKeys(sanitization, sanitizationKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
   if (sanitization.credentialsExcluded !== true ||
     sanitization.paymentCardDataExcluded !== true ||
     sanitization.guestContactExcluded !== true) {
@@ -336,6 +368,9 @@ export function executeKrossSanitizedExtractDryRun(
   }
 
   const fieldMap = record(manifest.fieldMap) ? manifest.fieldMap : {};
+  if (!hasOnlyKeys(fieldMap, fieldMapKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
   const validRequiredMap = requiredFieldMapKeys.every(key => nonEmptyText(fieldMap[key]));
   const validOptionalMap = optionalFieldMapKeys.every(key =>
     fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
