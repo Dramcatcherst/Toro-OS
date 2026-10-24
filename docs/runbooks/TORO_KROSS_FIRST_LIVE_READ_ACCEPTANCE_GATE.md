@@ -8,54 +8,37 @@
 
 ## Objective
 
-### Current checkpoint — optional-field quality, 2026-10-24 UTC
+### Current checkpoint — optional-field quality integrated, 2026-10-24 UTC
 
-**Scope:** existing Kross read-only mirror lane, TORO Data/Systems; three code
-corrections prepared from `main` at `6bcff6d4e16a5a6ab8aba27af59d6a1cfc94aed7`.
-This checkpoint supersedes historical row-count/provider-next-action statements
-below; the acceptance requirements remain in force.
+**Code state:** PR #373 was reviewed and squash-merged into protected `main`
+as commit `0130000975a900cf937b8e7e863cd118984fdb03`. The exact candidate
+`fa3a3457187a6312d7f8a1663ea2fca3e4294288` passed the required
+`validate` job (Tests, Lint and Build), Vercel preview and the repository's
+automated code review with no findings.
 
-- A supplied adult/child count greater than the supplied total now keeps the
-  reservation in `review`, even when the other component is unknown.
-- An unsafe adult-plus-child sum keeps the reservation in `review` even when
-  the total is absent. Missing values are never inferred or filled in.
-- A non-boolean direct breakfast entitlement records a validation issue and
-  cannot be promoted to live/verified. Valid `false` and unknown remain distinct.
+The active normalizer now fails closed when:
+- a supplied adult or child count exceeds a supplied guest total, even if the
+  other component is unknown;
+- the sum of supplied components is outside the safe-integer range, even when
+  the total is absent;
+- a directly supplied breakfast entitlement is neither boolean nor unknown.
 
-**Verification:** nine failures reproduced before the fix; all 192 Kross tests
-pass afterward, including 16 new regression/control cases. Full `npm test`,
-ESLint (zero errors; one existing unused-parameter warning outside this change),
-production build and `git diff --check` pass locally. Remote CI/readback belong
-to the candidate PR receipt; local success alone does not establish them.
+Missing values remain unknown; the code does not infer guest counts or breakfast.
+Rollback is the single merge commit above. PR #315 is closed unmerged as a
+historical, conflicted precursor; its branch and evidence remain available.
 
-**Read-only source reconciliation:** the canonical mirror still has 4,352 Kross
-rows, two conflicts, zero live rows and zero current-safe rows. The safe view
-uses `security_invoker=true` and `security_barrier=true`; the underlying table
-has RLS and no anonymous SELECT grant. These metadata checks do not prove an
-authenticated Reception session can read an eligible real reservation. The
-canonical task remains blocked; its two recorded runs are succeeded with no
-active leases. Live-required health is unknown or stale. The bounded hotel
-mailbox search found no new written transport/API evidence since 2026-10-23.
+**Operational state:** integration of code is verified, but no live Kross
+connection or production read has been executed. The canonical mirror remains
+historical at the last verified cut: 4,352 rows, two conflicts, zero live rows
+and zero current-safe rows. The paid API remains paused. No PMS, OTA, database,
+reservation, rate, accounting, permission or scheduler write occurred.
 
-**Boundaries:** PR #315 remains draft/conflicted and is not a merge candidate.
-Paid API paused; no credential/session collection, provider contact, PMS/OTA
-write, reservation/rate/accounting/publication change, database mutation,
-permission expansion or scheduler change. Reputation publication controls and
-the existing cleaning-charge exception remain outside this code change.
-
-**Rollback:** revert only this candidate's normalizer, tests and checkpoint;
-there is no database or production state to reverse.
-
-**Next exact unit:** reconcile the candidate PR's exact SHA, CI and review before
-any integration decision; then fill the existing provider-evidence packet only
-from written supported-method/scope/billing evidence and run one authorized
-read-only dry-run. Live acceptance remains blocked until the separate existing
-transport, first-read authorization, RLS, freshness and reconciliation gates pass.
-
-**Continuation:** read this checkpoint and the candidate PR receipt only; retain
-the same task/runbook/Plan General. Do not re-audit unrelated sources or create
-agents, connectors, queues or schedules. Completion requires evidence for the
-exact reviewed candidate; no merge or production activation is authorized here.
+**Next exact unit:** obtain written evidence for a supported Kross read method,
+scope, fields, limits and billing; then complete the existing provider-evidence
+packet and run one authorized read-only dry-run. Acceptance still requires
+freshness, stable external identity, idempotent replay, reconciliation, RLS
+proof for Reception, unauthorized-read denial, no PMS write and rollback
+evidence. Do not create a second connector or revive PR #315.
 
 Prove exactly one authorized Kross read cycle into TORO without writing back to the PMS.
 
