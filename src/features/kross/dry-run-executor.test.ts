@@ -450,7 +450,11 @@ describe("executeKrossDryRun", () => {
       ],
     };
 
-    const result = executeKrossSanitizedExtractDryRun(manifest, baseRequest.nowIso);
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      adapterConfig,
+    );
 
     expect(result.status).toBe("completed");
     expect(result.issues).toEqual([]);
@@ -475,6 +479,8 @@ describe("executeKrossDryRun", () => {
 
   it.each([
     ["row count mismatch", { rowCount: 2 }, "row_count_mismatch"],
+    ["wrong organization scope", { orgId: "org-b" }, "scope_mismatch"],
+    ["wrong property scope", { propertyId: "property-b" }, "scope_mismatch"],
     ["non-SHA256 source hash", { sourceHash: "not-a-sha256" }, "invalid_source_hash"],
     ["unconfirmed sanitization", {
       sanitization: {
@@ -506,7 +512,11 @@ describe("executeKrossDryRun", () => {
       ...override,
     };
 
-    const result = executeKrossSanitizedExtractDryRun(manifest, baseRequest.nowIso);
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      adapterConfig,
+    );
 
     expect(result.status).toBe("rejected");
     expect(result.issues).toContain(issue);
