@@ -7,6 +7,7 @@ import {
   TORO_ACTIVE_ORGANIZATION_COOKIE,
 } from "@/features/context/organization-selection";
 import { resolveToroContext } from "@/features/context/resolver";
+import { withAuthBudget } from "@/features/auth/request-budget";
 import { isPortalDeployment } from "@/lib/server/public-demo";
 
 const MAXIMUM_BODY_BYTES = 512;
@@ -44,7 +45,7 @@ function redirectWithPreference(
   return response;
 }
 
-async function limitedText(request: Request) {
+async function limitedText(request: Request, signal: AbortSignal) {
   const contentLength = request.headers.get("content-length");
   if (contentLength !== null) {
     const parsedLength = Number(contentLength);
@@ -58,7 +59,10 @@ async function limitedText(request: Request) {
   const decoder = new TextDecoder();
   let result = "";
   let size = 0;
+  const cancel = () => { void reader.cancel().catch(() => {}); };
+  signal.addEventListener("abort", cancel, { once: true });
   try {
+    signal.throwIfAborted();
     for (;;) {
       const chunk = await reader.read();
       if (chunk.done) break;
@@ -66,9 +70,11 @@ async function limitedText(request: Request) {
       if (size > MAXIMUM_BODY_BYTES) throw new Error("oversized_body");
       result += decoder.decode(chunk.value, { stream: true });
     }
+    signal.throwIfAborted();
     return result + decoder.decode();
   } finally {
-    await reader.cancel().catch(() => {});
+    signal.removeEventListener("abort", cancel);
+    cancel();
   }
 }
 
@@ -108,7 +114,7 @@ export async function POST(request: Request) {
 
   let body: string;
   try {
-    body = await limitedText(request);
+    body = await withAuthBudget(5_000, signal => limitedText(request, signal), request.signal);
   } catch {
     return boundaryFailure(413);
   }

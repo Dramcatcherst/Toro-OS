@@ -102,6 +102,8 @@ Record:
 
 Inspect sanitized config.
 
+**Trust-boundary gate first (22/10/2026):** per-peer/account sessions separate context; they do not isolate mutually untrusted users from a shared Gateway's tools, filesystem, secrets or unsandboxed session readers. Confirm the [official trust model](https://docs.openclaw.ai/gateway/security/trust-model) against the installed version. Keep employee/guest ingress away from the owner's privileged agent; if a real boundary cannot be demonstrated, mark rollout BLOCKED. Do not infer safety from agent names or create another Gateway during this audit. The same-brain product contract retains one TORO identity/governance model across appropriately isolated ingress.
+
 Required for TORO multi-user ingress:
 
 ```json5
@@ -175,6 +177,8 @@ Check:
 - gateway administration;
 - cross-agent session tools;
 - elevated execution.
+
+Also inspect effective cross-agent session visibility, agent-to-agent delegation and cross-provider/conversation sends. Current online defaults can expose more than the intended conversation. Validate supported keys with the installed CLI/schema before changing anything; do not run automatic fixes or record raw session/config contents.
 
 No employee/group channel should inherit founder/host-admin tool privileges.
 
@@ -370,3 +374,4 @@ Aplicar TORO Comms sección 19 y la misma lane #122/#170/#209. Mantener endpoint
 Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominador, conteos de capturados/procesados/archivados/excepciones, checksums, cobertura, última sync confirmada, resultados de replay/negativas/restore y referencias privadas. Sin cuerpos de chat, teléfonos completos, grupo IDs, auth directories, QR/tokens o datos de terceros en GitHub.
 
 Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.
+

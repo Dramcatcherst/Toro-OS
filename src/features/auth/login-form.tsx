@@ -1,12 +1,13 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
 import { safeNextPath } from "./safe-next";
+import { authFetch, withAuthBudget } from "./request-budget";
 
 export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boolean }) {
   const router = useRouter();
@@ -16,19 +17,25 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const inFlight = useRef(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (inFlight.current) return;
+    inFlight.current = true;
     setSubmitting(true);
     setError(null);
 
     try {
       if (dreamTeamAccess) {
-        const response = await fetch("/api/auth/login", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ identifier: email.trim(), password, nextPath: safeNextPath(searchParams.get("next")) }),
+        const { response, result } = await withAuthBudget(15_000, async signal => {
+          const response = await authFetch(signal)("/api/auth/login", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier: email.trim(), password, nextPath: safeNextPath(searchParams.get("next"), { portalOnly: true }) }),
+          });
+          const result = await response.json();
+          return { response, result };
         });
-        const result = await response.json();
         if (!response.ok || result.ok !== true) {
           setError(result.error || "No pudimos verificar tu acceso.");
           return;
@@ -36,7 +43,7 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
         setPassword("");
         // Cookies are issued by the server. Start a new document so an earlier
         // anonymous Router Cache entry cannot survive a successful sign-in.
-        window.location.replace(safeNextPath(result.nextPath));
+        window.location.replace(safeNextPath(result.nextPath, { portalOnly: true }));
         return;
       } else {
         const supabase = createBrowserSupabaseClient();
@@ -52,12 +59,13 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
     } catch {
       setError("No pudimos iniciar sesión. Revisa la configuración e inténtalo de nuevo.");
     } finally {
+      inFlight.current = false;
       setSubmitting(false);
     }
   }
 
   return (
-    <form className="space-y-3" onSubmit={handleSubmit}>
+    <form className="space-y-3" onSubmit={handleSubmit} aria-busy={submitting}>
       <label className="block space-y-1">
         <span className="text-sm font-medium">{dreamTeamAccess ? "Usuario o correo de DreamTeam" : "Correo"}</span>
         <input
@@ -69,6 +77,7 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
           onChange={(event) => setEmail(event.target.value)}
           required
           type={dreamTeamAccess ? "text" : "email"}
+          disabled={submitting}
           maxLength={254}
           value={email}
         />
@@ -82,10 +91,12 @@ export function LoginForm({ dreamTeamAccess = false }: { dreamTeamAccess?: boole
           onChange={(event) => setPassword(event.target.value)}
           required
           type={showPassword ? "text" : "password"}
+          disabled={submitting}
           value={password}
           maxLength={128}
         />
         <button type="button" className="absolute inset-y-0 right-0 flex min-h-11 w-11 items-center justify-center text-slate-600"
+          disabled={submitting}
           aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}
           onClick={() => setShowPassword(value => !value)}>
           {showPassword ? <EyeOff aria-hidden="true" size={18} /> : <Eye aria-hidden="true" size={18} />}

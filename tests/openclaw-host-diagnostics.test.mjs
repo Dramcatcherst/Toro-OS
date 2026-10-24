@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { collectHostDiagnostics, summarizeHostCommand } from "../scripts/openclaw-host-diagnostics.mjs";
+import { collectHostDiagnostics, summarizeHostCommand, runHostCommand } from "../scripts/openclaw-host-diagnostics.mjs";
 
-test("diagnostic packet never copies raw phone, token, chat or host path and scopes WhatsApp", () => {
+test("diagnostic packet never copies raw phone, token, chat or host path and scopes WhatsApp", async () => {
   const secret = "token=very-private-123";
   const calls = [];
-  const packet = collectHostDiagnostics((command, args) => {
+  const packet = await collectHostDiagnostics((command, args) => {
     calls.push([command, args]);
     return {
       status: 1,
@@ -349,3 +349,105 @@ test("negative Gateway wording cannot be promoted to running", () => {
   );
 });
 
+
+test("the exact allowlisted version token retains revisions and prereleases", () => {
+  for (const version of ["2026.10.21", "2026.10.21-2", "2026.10.21-beta.1"]) {
+    assert.equal(summarizeHostCommand("version", { status: 0, stdout: `OpenClaw ${version}\n` }).version, version);
+  }
+  assert.equal(summarizeHostCommand("version", {
+    status: 0, stdout: "OpenClaw 2026.10.21-2 token=private-fixture",
+  }).version, null);
+});
+
+test("a local CLI child ignoring SIGTERM is forcibly bounded without exposing its output", async () => {
+  assert.equal(typeof runHostCommand, "function");
+  // This is a synthetic local Node process, never an OpenClaw invocation or Gateway.
+  const started = Date.now();
+  const result = await runHostCommand(process.execPath, ["-e", `
+    process.on('SIGTERM', () => {});
+    process.stdout.write('private-fixture');
+    setInterval(() => {}, 1000);
+  `], { timeout: 100, killGraceMs: 50, maxBuffer: 1024 });
+  assert.equal(result.error?.code, "ETIMEDOUT");
+  assert.ok(Date.now() - started < 2000);
+  assert.deepEqual(summarizeHostCommand("gateway", result), { name: "gateway", result: "fail", category: "timeout" });
+});
+
+test("local CLI output is bounded and cannot leak through its failure summary", async () => {
+  assert.equal(typeof runHostCommand, "function");
+  const result = await runHostCommand(process.execPath, ["-e", "process.stdout.write('x'.repeat(5000));"], {
+    timeout: 1000, killGraceMs: 50, maxBuffer: 128,
+  });
+  assert.equal(result.error?.code, "OUTPUT_LIMIT");
+  assert.ok(Buffer.byteLength(result.stdout) + Buffer.byteLength(result.stderr) <= 128);
+  assert.equal(summarizeHostCommand("gateway", result).category, "output_limit");
+});
+
+test("the diagnostic packet stops dispatching after its overall budget", async () => {
+  let calls = 0;
+  const packet = await collectHostDiagnostics(async () => {
+    calls++;
+    await new Promise((resolve) => setTimeout(resolve, 40));
+    return { status: 0, stdout: "{}" };
+  }, { commandTimeoutMs: 50, totalTimeoutMs: 30, killGraceMs: 5 });
+  assert.equal(calls, 1);
+  assert.equal(packet.commandResults.length, 9);
+  assert.ok(packet.commandResults.slice(1).every((item) => item.category === "budget_exhausted"));
+});
+
+test("negative per-account evidence wins over positive evidence", () => {
+  const result = summarizeHostCommand("whatsapp_probe", {
+    status: 0,
+    stdout: JSON.stringify({ channelAccounts: { whatsapp: [{ probe: { ok: true }, audit: { ok: false } }] } }),
+  });
+  assert.equal(result.state, "disconnected");
+});
+
+test("fresh health never drops malformed account coverage", () => {
+  const now = 1_800_000_000_000;
+  const result = summarizeHostCommand("whatsapp_health", {
+    status: 0,
+    stdout: JSON.stringify({
+      ok: true, ts: now,
+      channels: { whatsapp: { accounts: {
+        valid: { configured: true, linked: true, running: true, connected: true, lifecycle: "ready" },
+        missing: null,
+      } } },
+    }),
+  }, now);
+  assert.equal(result.accountCount, 2);
+  assert.equal(result.state, "degraded");
+});
+
+test("fresh health gives explicit unhealthy state priority over ready flags", () => {
+  const now = 1_800_000_000_000;
+  for (const healthState of ["error", "failed", "degraded"]) {
+    const result = summarizeHostCommand("whatsapp_health", {
+      status: 0,
+      stdout: JSON.stringify({
+        ok: true, ts: now,
+        channels: { whatsapp: { accounts: { default: {
+          configured: true, linked: true, running: true, connected: true, lifecycle: "ready", healthState,
+        } } } },
+      }),
+    }, now);
+    assert.equal(result.state, "disconnected", healthState);
+  }
+});
+
+test("asynchronous collection keeps the fresh WhatsApp health evidence", async () => {
+  const packet = await collectHostDiagnostics(async (_command, args) => {
+    if (args[0] === "health") return {
+      status: 0,
+      stdout: JSON.stringify({
+        ok: true, ts: Date.now(),
+        channels: { whatsapp: { accounts: { default: {
+          configured: true, linked: true, running: true, connected: true, lifecycle: "ready",
+        } } } },
+      }),
+    };
+    return { status: 0, stdout: args[0] === "--version" ? "OpenClaw 2026.10.21-2" : "{}" };
+  });
+  assert.equal(packet.commandResults.length, 9);
+  assert.equal(packet.commandResults.find((item) => item.name === "whatsapp_health")?.state, "connected");
+});

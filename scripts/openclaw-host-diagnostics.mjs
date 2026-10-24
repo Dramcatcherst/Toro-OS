@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Read-only host probe. Deliberately emits no raw CLI output, identifiers,
 // configuration, message bodies, paths, credentials or provider payloads.
-import { spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -22,6 +22,9 @@ const HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS = 5_000;
 const UNHEALTHY_ACCOUNT_STATES = new Set([
   "blocked",
   "disconnected",
+  "error",
+  "failed",
+  "degraded",
   "ingress-unavailable",
   "logged-out",
   "not-running",
@@ -146,7 +149,7 @@ function summarizeWhatsAppHealth(value, observedAt) {
   const accountMap = value.channels?.whatsapp?.accounts;
   const accounts =
     accountMap && typeof accountMap === "object" && !Array.isArray(accountMap)
-      ? Object.values(accountMap).filter((account) => account && typeof account === "object")
+      ? Object.values(accountMap)
       : [];
   if (accounts.length === 0) {
     return { ...base, category: "whatsapp_health_accounts_missing" };
@@ -172,10 +175,11 @@ function summarizeWhatsAppHealth(value, observedAt) {
 export function summarizeHostCommand(name, result, observedAt = Date.now()) {
   const raw = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   if (result.error || result.status !== 0) {
-    return { name, result: "fail", category: result.error?.code === "ENOENT" ? "not_installed" : result.error?.code === "ETIMEDOUT" ? "timeout" : errorCategory(raw) };
+    return { name, result: "fail", category: result.error?.code === "ENOENT" ? "not_installed" : result.error?.code === "ETIMEDOUT" ? "timeout" : result.error?.code === "OUTPUT_LIMIT" ? "output_limit" : errorCategory(raw) };
   }
   if (name === "version") {
-    const version = String(result.stdout ?? "").match(/\b20\d{2}\.\d{1,2}\.\d{1,3}\b/)?.[0] ?? null;
+    const token = String(result.stdout ?? "").match(/^\s*(?:OpenClaw\s+)?(20\d{2}\.\d{1,2}\.\d{1,3}(?:-[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*)?(?:\+[A-Za-z0-9]+(?:\.[A-Za-z0-9]+)*)?)\s*$/i)?.[1];
+    const version = token && token.length <= 80 ? token : null;
     return { name, result: "executed", version };
   }
   if (name === "gateway") {
@@ -220,25 +224,93 @@ export function summarizeHostCommand(name, result, observedAt = Date.now()) {
   return { name, result: "executed" };
 }
 
-export function collectHostDiagnostics(run = spawnSync) {
+/** Owns only the CLI child created here. It never kills a Gateway or a process group. */
+export function runHostCommand(command, args, { timeout = 15000, killGraceMs = 250, maxBuffer = 1024 * 1024 } = {}) {
+  if (!Number.isSafeInteger(timeout) || timeout <= 0 || !Number.isSafeInteger(killGraceMs) || killGraceMs < 0 ||
+      !Number.isSafeInteger(maxBuffer) || maxBuffer <= 0) throw new TypeError("Invalid diagnostic process limits.");
+  return new Promise((resolveResult) => {
+    const child = spawn(command, args, { windowsHide: true, shell: false, stdio: ["ignore", "pipe", "pipe"] });
+    const chunks = { stdout: [], stderr: [] };
+    let bytes = 0;
+    let settled = false;
+    let failure = null;
+    let forceTimer;
+    const finish = (status, error = failure) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(deadline);
+      clearTimeout(forceTimer);
+      resolveResult({ status, error, stdout: Buffer.concat(chunks.stdout).toString("utf8"), stderr: Buffer.concat(chunks.stderr).toString("utf8") });
+    };
+    const stop = (code) => {
+      if (failure || settled) return;
+      failure = { code };
+      child.kill("SIGTERM");
+      forceTimer = setTimeout(() => {
+        child.kill("SIGKILL");
+        child.stdout.destroy();
+        child.stderr.destroy();
+        child.unref();
+        // Do not await a cooperative exit from an unresponsive CLI.
+        finish(null);
+      }, killGraceMs);
+    };
+    const deadline = setTimeout(() => stop("ETIMEDOUT"), timeout);
+    for (const stream of ["stdout", "stderr"]) {
+      child[stream].on("data", (chunk) => {
+        if (settled || failure) return;
+        const remaining = maxBuffer - bytes;
+        const accepted = chunk.subarray(0, remaining);
+        chunks[stream].push(accepted);
+        bytes += accepted.length;
+        if (chunk.length > remaining) stop("OUTPUT_LIMIT");
+      });
+    }
+    child.once("error", (error) => finish(null, { code: error.code }));
+    child.once("close", (status) => finish(status));
+  });
+}
+
+export async function collectHostDiagnostics(run = runHostCommand, {
+  commandTimeoutMs = 15000, totalTimeoutMs = 60000, killGraceMs = 250,
+} = {}) {
+  if (![commandTimeoutMs, totalTimeoutMs].every((limit) => Number.isSafeInteger(limit) && limit > 0) ||
+      !Number.isSafeInteger(killGraceMs) || killGraceMs < 0) throw new TypeError("Invalid diagnostic budget.");
+  const stopAt = performance.now() + totalTimeoutMs;
+  const commandResults = [];
+  for (const [name, args] of COMMANDS) {
+    const remaining = Math.floor(stopAt - performance.now());
+    if (remaining <= killGraceMs) {
+      commandResults.push({ name, result: "skipped", category: "budget_exhausted" });
+      continue;
+    }
+    const timeout = Math.min(commandTimeoutMs, remaining - killGraceMs);
+    let guard;
+    let result;
+    try {
+      result = await Promise.race([
+        Promise.resolve().then(() => run("openclaw", args, { timeout, killGraceMs, maxBuffer: 1024 * 1024 })),
+        new Promise((resolveTimeout) => {
+          guard = setTimeout(() => resolveTimeout({ status: null, error: { code: "ETIMEDOUT" } }), timeout + killGraceMs);
+        }),
+      ]);
+    } catch {
+      result = { status: null, error: { code: "RUNNER_FAILED" } };
+    } finally {
+      clearTimeout(guard);
+    }
+    commandResults.push(summarizeHostCommand(name, result));
+  }
   return {
     contract: "toro-openclaw-host-probe-v1",
     observedAt: new Date().toISOString(),
     privacy: "summary_only_no_raw_output",
-    commandResults: COMMANDS.map(([name, args]) => {
-      const result = run("openclaw", args, {
-        encoding: "utf8",
-        timeout: 15000,
-        maxBuffer: 1024 * 1024,
-        windowsHide: true,
-      });
-      return summarizeHostCommand(name, result);
-    }),
+    commandResults,
     capabilityUnavailableTrace: "bounded_log_count_only",
     integrationWorktree: "not_inspected",
   };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  process.stdout.write(`${JSON.stringify(collectHostDiagnostics(), null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify(await collectHostDiagnostics(), null, 2)}\n`);
 }

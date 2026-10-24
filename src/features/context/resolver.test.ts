@@ -17,7 +17,7 @@ vi.mock("./organization-selection", () => ({
   readSelectedToroOrganizationPreference: readSelectedToroOrganizationPreferenceMock,
 }));
 
-import { resolveToroContext } from "./resolver";
+import { resolveToroContext, resolveToroContextWithSupabase } from "./resolver";
 
 const USER_ID = "00000000-0000-4000-8000-000000000001";
 const ORG_A = "00000000-0000-4000-8000-0000000000aa";
@@ -367,5 +367,38 @@ describe("resolveToroContext", () => {
     await expect(
       resolveToroContext({ mode: "organization", orgId: ORG_A }),
     ).resolves.toBeNull();
+  });
+});
+
+// I50-06/07: synthetic transport shapes never become an arbitrary employee profile.
+describe("relationship integrity and personal dependency failures", () => {
+  const employee={id:"employee-one",position_id:"position-one",positions:{code:"RECEPTION",name:"Reception"}};
+  function client(data:unknown, rejectRoles=false) {
+    const base=buildClient({roleRows:[{org_id:ORG_A,roles:{code:"ADMIN"}}]});
+    const from=base.from;
+    const queryFrom=vi.fn((table:string)=> {
+      if(table==="user_roles" && rejectRoles) {const q={select:()=>q,eq:()=>q,is:()=>Promise.reject(Error("role transport"))};return q;}
+      if(table!=="employees")return from(table);
+      const q={select:()=>q,eq:()=>q,is:()=>q,limit:vi.fn(async(limit:number)=>({error:null,data:Array.isArray(data)?data.slice(0,limit):data}))};
+      return q;
+    });
+    return {...base,from:queryFrom};
+  }
+  it.each([null,{},[null],[{...employee,id:" "}],[{...employee,preferred_name:{}}],[{...employee,positions:{code:12}}],[employee,{...employee,id:"employee-two"}],
+    [{...employee,positions:[{code:"GENERAL_MANAGER"},{code:"RECEPTION"}]}]])("denies invalid or ambiguous employee projection %j",async data=> {
+    const db=client(data);
+    expect(await resolveToroContextWithSupabase(db as never)).toBeNull();
+  });
+  it("keeps zero and one valid employee relationships compatible",async()=> {
+    expect(await resolveToroContextWithSupabase(client([]) as never)).toMatchObject({membership:{employeeId:null}});
+    expect(await resolveToroContextWithSupabase(client([employee]) as never)).toMatchObject({membership:{employeeId:"employee-one",positionCode:"RECEPTION"}});
+  });
+  it("normalizes a rejected role query into personal-only context after verified Auth",async()=> {
+    expect(await resolveToroContextWithSupabase(client([],true) as never,{mode:"personal"})).toMatchObject({
+      mode:"personal",orgId:null,availableOrgIds:[],allowedDataScopes:["personal","shared","system"],canUseOrganizationData:false,allowedTools:[],
+    });
+    expect(await resolveToroContextWithSupabase(client([],true) as never,{mode:"organization"})).toBeNull();
+    const db=client([],true);db.auth.getUser.mockResolvedValue({data:{user:null},error:null} as never);
+    expect(await resolveToroContextWithSupabase(db as never,{mode:"personal"})).toBeNull();
   });
 });

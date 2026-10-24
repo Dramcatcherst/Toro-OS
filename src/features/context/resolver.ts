@@ -98,10 +98,12 @@ async function resolveEmployeeContext(
     .eq("user_id", userId)
     .eq("org_id", orgId)
     .is("deleted_at", null)
-    .limit(1);
+    .limit(2);
 
   if (error) return undefined;
-  if (!Array.isArray(data) || data.length === 0) return null;
+  if (!Array.isArray(data) || data.length > 1) return undefined;
+  if (data.length === 0) return null;
+  if (!data[0] || typeof data[0] !== "object" || Array.isArray(data[0])) return undefined;
 
   const row = data[0] as {
     id?: unknown;
@@ -111,13 +113,20 @@ async function resolveEmployeeContext(
     positions?: unknown;
   };
 
-  if (typeof row.id !== "string" || !row.id) return undefined;
+  if (typeof row.id !== "string" || !row.id.trim()) return undefined;
+  for (const value of [row.preferred_name, row.position_id, row.work_area]) {
+    if (value != null && typeof value !== "string") return undefined;
+  }
 
+  if (Array.isArray(row.positions) && row.positions.length > 1) return undefined;
   const relation = Array.isArray(row.positions) ? row.positions[0] : row.positions;
+  if (relation != null && (typeof relation !== "object" || Array.isArray(relation))) return undefined;
   const position =
     relation && typeof relation === "object"
       ? (relation as { code?: unknown; name?: unknown })
       : null;
+
+  if (position && [position.code, position.name].some(value => value != null && typeof value !== "string")) return undefined;
 
   const cleanText = (value: unknown) =>
     typeof value === "string" && value.trim() ? value.trim() : null;
@@ -162,12 +171,20 @@ export async function resolveToroContextWithSupabase(
 
   const mode = request.mode ?? "organization";
 
-  const { data: roleRows, error: roleError } = await supabase
-    .from("user_roles")
-    .select("org_id, roles(code)")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .is("revoked_at", null);
+  // Organization-store transport must not become authority or deny an already
+  // authenticated personal context. Auth/session failures above never fall back.
+  let roleRows: unknown;
+  let roleError: unknown;
+  try {
+    const response = await supabase
+      .from("user_roles")
+      .select("org_id, roles(code)")
+      .eq("user_id", user.id)
+      .eq("status", "active")
+      .is("revoked_at", null);
+    roleRows = response.data;
+    roleError = response.error;
+  } catch { roleError = true; }
 
   // Personal TORO depends on authenticated identity, not on organization
   // membership availability. A role-store outage may hide the org switcher,
