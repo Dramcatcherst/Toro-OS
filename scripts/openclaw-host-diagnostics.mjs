@@ -8,13 +8,31 @@ import { pathToFileURL } from "node:url";
 const COMMANDS = [
   ["version", ["--version"]],
   ["gateway", ["gateway", "status"]],
-  ["whatsapp_probe", ["channels", "status", "--probe", "--json"]],
+  ["whatsapp_probe", ["channels", "status", "--channel", "whatsapp", "--probe", "--json"]],
+  ["whatsapp_health", ["health", "--verbose", "--json", "--timeout", "10000"]],
   ["whatsapp_capabilities", ["channels", "capabilities", "--channel", "whatsapp", "--json"]],
   ["deep_status", ["status", "--deep"]],
   ["security_audit", ["security", "audit", "--json"]],
   ["backup_inventory", ["backup", "list", "--json"]],
   ["whatsapp_logs", ["channels", "logs", "--channel", "whatsapp", "--lines", "200", "--json"]],
 ];
+
+const HEALTH_SNAPSHOT_MAX_AGE_MS = 30_000;
+const HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS = 5_000;
+const UNHEALTHY_ACCOUNT_STATES = new Set([
+  "blocked",
+  "disconnected",
+  "error",
+  "failed",
+  "degraded",
+  "ingress-unavailable",
+  "logged-out",
+  "not-running",
+  "stale-socket",
+  "stopped",
+  "stuck",
+  "terminal-disconnect",
+]);
 
 function errorCategory(value) {
   if (/unknown (command|option)|unrecognized (command|option)/i.test(value)) return "unsupported_command";
@@ -25,28 +43,136 @@ function errorCategory(value) {
   return "command_failed";
 }
 
-function statusFromJson(value) {
-  if (!value || typeof value !== "object") return "unknown";
-  const candidates = [value.status, value.state, value.health, value.connected];
-  const states = [];
-  for (const item of candidates) {
-    if (item === true) states.push("connected");
-    if (item === false) states.push("disconnected");
-    if (typeof item === "string") {
-      const normalized = item.toLowerCase();
-      if (["ready", "connected", "healthy", "running", "degraded", "disconnected", "stopped", "error"].includes(normalized)) {
-        states.push(normalized);
-      }
-    }
-  }
-  // A running CLI/Gateway is not proof that its WhatsApp channel is connected.
-  for (const negative of ["error", "disconnected", "stopped", "degraded"]) {
-    if (states.includes(negative)) return negative;
-  }
-  return states[0] ?? "unknown";
+function accountProbeState(account) {
+  if (!account || typeof account !== "object") return "unknown";
+  const probe = account.probe && typeof account.probe === "object" ? account.probe : null;
+  const audit = account.audit && typeof account.audit === "object" ? account.audit : null;
+
+  // Transport/lifecycle fields are runtime snapshots and can be stale. Only an
+  // explicit per-account probe or audit result is fresh enough for this gate.
+  if (probe?.ok === false || audit?.ok === false) return "disconnected";
+  if (probe?.ok === true || audit?.ok === true) return "connected";
+  return "unknown";
 }
 
-export function summarizeHostCommand(name, result) {
+function summarizeWhatsAppProbe(value) {
+  const base = {
+    scope: "channelAccounts.whatsapp",
+    accountCount: 0,
+    liveProbe: false,
+    state: "unknown",
+  };
+  if (!value || typeof value !== "object") return base;
+  if (String(value.status ?? "").toLowerCase() === "starting") {
+    return { ...base, category: "gateway_starting" };
+  }
+  if (value.configOnly === true || value.gatewayReachable === false) {
+    return { ...base, category: "config_only" };
+  }
+
+  const accounts = value.channelAccounts?.whatsapp;
+  if (!Array.isArray(accounts) || accounts.length === 0) {
+    return { ...base, category: "whatsapp_accounts_missing" };
+  }
+
+  const states = accounts.map(accountProbeState);
+  const connected = states.filter((state) => state === "connected").length;
+  const disconnected = states.filter((state) => state === "disconnected").length;
+  const liveProbe = states.some((state) => state !== "unknown");
+  let state = "unknown";
+  if (connected === states.length) state = "connected";
+  else if (disconnected === states.length) state = "disconnected";
+  else if (connected > 0 || disconnected > 0) state = "degraded";
+
+  return {
+    scope: base.scope,
+    accountCount: accounts.length,
+    liveProbe,
+    state,
+    ...(liveProbe ? {} : { category: "whatsapp_probe_unverified" }),
+  };
+}
+
+
+function accountHealthState(account) {
+  if (!account || typeof account !== "object") return "unknown";
+  const healthState = String(account.healthState ?? "").toLowerCase();
+  if (
+    account.ingressUnavailable === true ||
+    account.terminalDisconnect === true ||
+    UNHEALTHY_ACCOUNT_STATES.has(healthState) ||
+    account.lifecycle === "blocked" ||
+    account.lifecycle === "stopped" ||
+    account.running === false ||
+    account.connected === false ||
+    account.linked === false
+  ) {
+    return "unhealthy";
+  }
+  if (
+    account.enabled !== false &&
+    account.configured === true &&
+    account.linked === true &&
+    account.running === true &&
+    account.connected === true &&
+    account.lifecycle === "ready"
+  ) {
+    return "healthy";
+  }
+  return "unknown";
+}
+
+function summarizeWhatsAppHealth(value, observedAt) {
+  const base = {
+    scope: "channels.whatsapp.accounts",
+    accountCount: 0,
+    liveHealth: false,
+    state: "unknown",
+    evidence: "gateway_health_verbose",
+  };
+  if (!value || typeof value !== "object") return base;
+  if (String(value.status ?? "").toLowerCase() === "starting") {
+    return { ...base, category: "gateway_starting" };
+  }
+
+  const snapshotAt = typeof value.ts === "number" && Number.isFinite(value.ts) ? value.ts : null;
+  const ageMs = snapshotAt === null ? null : observedAt - snapshotAt;
+  if (
+    value.ok !== true ||
+    ageMs === null ||
+    ageMs > HEALTH_SNAPSHOT_MAX_AGE_MS ||
+    ageMs < -HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS
+  ) {
+    return { ...base, category: snapshotAt === null ? "health_snapshot_unverified" : "health_snapshot_stale" };
+  }
+
+  const accountMap = value.channels?.whatsapp?.accounts;
+  const accounts =
+    accountMap && typeof accountMap === "object" && !Array.isArray(accountMap)
+      ? Object.values(accountMap)
+      : [];
+  if (accounts.length === 0) {
+    return { ...base, category: "whatsapp_health_accounts_missing" };
+  }
+
+  const states = accounts.map(accountHealthState);
+  const healthy = states.filter((state) => state === "healthy").length;
+  const unhealthy = states.filter((state) => state === "unhealthy").length;
+  let state = "unknown";
+  if (healthy === states.length) state = "connected";
+  else if (unhealthy === states.length) state = "disconnected";
+  else if (healthy > 0 || unhealthy > 0) state = "degraded";
+
+  return {
+    ...base,
+    accountCount: accounts.length,
+    liveHealth: true,
+    state,
+    ...(state === "unknown" ? { category: "whatsapp_health_unverified" } : {}),
+  };
+}
+
+export function summarizeHostCommand(name, result, observedAt = Date.now()) {
   const raw = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   if (result.error || result.status !== 0) {
     return { name, result: "fail", category: result.error?.code === "ENOENT" ? "not_installed" : result.error?.code === "ETIMEDOUT" ? "timeout" : result.error?.code === "OUTPUT_LIMIT" ? "output_limit" : errorCategory(raw) };
@@ -69,10 +195,28 @@ export function summarizeHostCommand(name, result) {
       privacy: "count_only",
     };
   }
-  if (["whatsapp_probe", "whatsapp_capabilities", "security_audit", "backup_inventory"].includes(name)) {
+  if (["whatsapp_probe", "whatsapp_health", "whatsapp_capabilities", "security_audit", "backup_inventory"].includes(name)) {
     try {
       const value = JSON.parse(String(result.stdout ?? ""));
-      return { name, result: "executed", json: "valid", state: name === "whatsapp_probe" ? statusFromJson(value) : "unclassified" };
+      if (name === "whatsapp_probe") {
+        const summary = summarizeWhatsAppProbe(value);
+        return {
+          name,
+          result: summary.liveProbe ? "executed" : "inconclusive",
+          json: "valid",
+          ...summary,
+        };
+      }
+      if (name === "whatsapp_health") {
+        const summary = summarizeWhatsAppHealth(value, observedAt);
+        return {
+          name,
+          result: summary.liveHealth ? "executed" : "inconclusive",
+          json: "valid",
+          ...summary,
+        };
+      }
+      return { name, result: "executed", json: "valid", state: "unclassified" };
     } catch {
       return { name, result: "inconclusive", category: "invalid_json" };
     }
