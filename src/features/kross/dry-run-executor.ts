@@ -292,20 +292,48 @@ function validFieldMapPath(value: unknown): value is string {
     );
 }
 
-function collectLeafPaths(value: unknown, prefix = ""): string[] {
-  if (record(value)) {
-    const entries = Object.entries(value);
-    if (!entries.length) return prefix ? [prefix] : [];
-    return entries.flatMap(([key, child]) =>
-      collectLeafPaths(child, prefix ? `${prefix}.${key}` : key)
-    );
+const maxSanitizedExtractDepth = 32;
+
+function collectLeafPaths(
+  value: unknown,
+  prefix = "",
+  depth = 0,
+  ancestors = new WeakSet<object>(),
+): string[] | null {
+  if (depth > maxSanitizedExtractDepth) return null;
+
+  if (record(value) || Array.isArray(value)) {
+    if (ancestors.has(value)) return null;
+    ancestors.add(value);
+    try {
+      const entries = Array.isArray(value)
+        ? value.map((child, index) => [String(index), child] as const)
+        : Object.entries(value);
+      if (!entries.length) {
+        if (!prefix) return [];
+        return [Array.isArray(value) ? `${prefix}[]` : prefix];
+      }
+
+      const paths: string[] = [];
+      for (const [key, child] of entries) {
+        const childPrefix = Array.isArray(value)
+          ? (prefix ? `${prefix}[${key}]` : `[${key}]`)
+          : (prefix ? `${prefix}.${key}` : key);
+        const childPaths = collectLeafPaths(
+          child,
+          childPrefix,
+          depth + 1,
+          ancestors,
+        );
+        if (childPaths === null) return null;
+        paths.push(...childPaths);
+      }
+      return paths;
+    } finally {
+      ancestors.delete(value);
+    }
   }
-  if (Array.isArray(value)) {
-    if (!value.length) return prefix ? [`${prefix}[]`] : [];
-    return value.flatMap((child, index) =>
-      collectLeafPaths(child, prefix ? `${prefix}[${index}]` : `[${index}]`)
-    );
-  }
+
   return prefix ? [prefix] : [];
 }
 
@@ -410,8 +438,12 @@ export function executeKrossSanitizedExtractDryRun(
       .map(key => expectedFieldMap[key])
       .filter(nonEmptyText),
   );
-  if (!rows.every(row =>
-    collectLeafPaths(row).every(path => governedSourcePaths.has(path))
+  const rowLeafPaths = rows.map(row => collectLeafPaths(row));
+  if (rowLeafPaths.some(paths => paths === null)) {
+    issues.push("invalid_rows");
+  }
+  if (rowLeafPaths.some(paths =>
+    paths !== null && paths.some(path => !governedSourcePaths.has(path))
   )) {
     issues.push("unmapped_fields_present");
   }
