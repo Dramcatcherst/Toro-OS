@@ -61,3 +61,42 @@
 **Criterio de terminado del primer piloto:** fuente y permisos nativos; 1 evento verdadero autorizado más pruebas negativas sintéticas, dedupe e idempotencia; reconciliación de Kross; recepción de TORO con identity/role/lease comprobados; misma tarea/caso visible en Portal y consulta WhatsApp autorizada con receipt; conservación de cortes, no pérdida de eventos y rollback. Si falla cualquiera, registrar bloqueador/cursor en expediente EXISTENTE, sin afirmar OPERATIVO ni migrar cron.
 
 **Estado de este archivo:** diseño aplicable y evidencia pública/lecturas fechadas, NO piloto instalado, NO Gateway controlado, NO sincronización live, NO Kross API reactivada, NO cambios comerciales ni mensajes externos.
+
+
+## 7. Corrección del propietario: la app ya se usa plenamente (24/10/2026)
+
+**HECHO POR CONFIRMACIÓN HUMANA:** todo el equipo pertinente de Dreamcatcher/Atrapasueños utiliza ya la app móvil de Kross con regularidad; aseo marca la habitación terminada allí y otras funciones de mantenimiento, cobros, reservas y operación también se trabajan desde Kross. No abrir tareas de incorporación, capacitación inicial, adopción o sustitución de esta app. **La brecha es del AGENTE TORO**, no del equipo humano. El propietario permite explorar acceso lector usando el perfil de Kross al que se refiere como "Rico", únicamente bajo su identidad, permisos reales y sesión nativa autorizada. No equiparar automáticamente ese usuario Kross con la persona/agente interno TORO RICO, ni asumir que existe una credencial delegada funcional para esta sesión. No extraer passwords/OTP/cookies ni pedir reautenticaciones rutinarias. El sistema debe respetar expiración/MFA y reautenticación humana cuando el proveedor la exija.
+
+**Eje CURRENT vs TARGET:**
+- **CURRENT, humano y confirmado por propietario:** app Kross en uso, marcas de limpieza realizadas por staff. Se respeta la operación real y las decisiones del equipo.
+- **CURRENT, TORO, lectura verificada:** solo espejo/historia fragmentarios; el último \`finance.pms_payments\` importado observado en el corte privado está atrasado y la evidencia de mantenimiento requiere conciliar con fuentes físicas posteriores. Una tabla TORO con cero cierres \`verified_closed_at\` no niega trabajos realmente resueltos fuera de ella.
+- **TARGET, TORO:** inspeccionar de forma autenticada el historial actual, notas y pestañas nativas de reserva, housekeeping, pagos/cargos, caja/primanota, cierre, inspecciones y mantenimiento; contrastar roles y alcance; usar la app como superficie *lectora* sin pedirle al equipo que capture otra vez.
+
+**Ruta de acceso propuesta, sin nuevo conector:** recuperar primero el Gateway/puente \`toro-openclaw-integration\` original. Según la documentación oficial del OpenClaw instalado, un *companion Android node* emparejado puede declarar \`mobile.ui.observe\` y, con permiso de Accesibilidad explícito, \`mobile.ui.act\`. Esto NO prueba que el dispositivo, la versión, el permiso, ni la sesión Kross de Dreamcatcher sean accesibles. Un móvil de trabajo dedicado y controlado es preferible a un teléfono personal; el nodo debe permitir OBSERVAR solo el paquete/actividad aprobados, con ocultación/redacción de huéspedes, pagos y secretos. \`mobile.ui.act\` queda DESHABILITADO en el piloto lector, sin intentos encubiertos de escritura o automatización contraria a las condiciones Kross. La notificación nativa de Android puede ser señal de que hay algo que releer; no la fuente que permite declarar \`CLEANED_BY_HK\`.
+
+**Mapa de lectura y aprendizaje en Kross (etiquetas exactas por verificar en sesión):**
+
+| Área y objeto nativo | Datos mínimos que TORO necesita aprender | Decisión válida | Acción de futuro separada |
+| --- | --- | --- | --- |
+| Aseo, asignación y registro de habitación | unidad física, estado, autor funcional, marca de limpieza, hora, cambios posterior a salida; mantenimiento asociado | aceptar marca fresca en Kross como hecho de limpieza; NO volver a pedir segunda confirmación | vincular limpieza/QA/bloqueo/ready sin afectar inventario |
+| Mantenimiento | unidad/activo, reporte/nota, foto o prueba, quién lo reporta, estados e historia | incidencia activa vs reparado reportado vs verificado/cerrado | mismo caso de TORO \`facilities.maintenance_events\`; no duplicar reparación |
+| Reserva y notas internas | ID nativo, propiedad, estancia actual, versión, nota interna visible, privacidad y efecto de notificar | proponer nota contextual mínima, revisar si ya existe antes de agregarla | edición de nota interna con capability y lectura posterior |
+| Pagos cobrados / folio | ID reserva y folio, cargos, importe y moneda originales, pagador, medio, ref del procesador y pago en Kross | pago reportado/recibido/registrado/liquidado/contabilizado separados | candidato de registro Kross solo con fuente bancaria/procesador/caja suficiente |
+| Caja / primanota / cierre | importe, moneda, medio/cuenta, lote/corte, registro, cierre y diferencias | precierre y conciliación con evidencia; no cuadrar por suposición | conciliar con banco y Alegra en carril contable; no finalizar jornada automáticamente |
+| Servicios/desayunos | derecho según tarifa, pedido, servicio prestado, cargo, pago y no consumo separados | cocina recibe solo los datos que necesita; un pedido no prueba consumo | integrarse a desayuno/Restaurante y facturación sin doble cargo |
+
+**Operación observada no significa integración:** aprender "dónde" y "cómo" mediante la cuenta permitida y una lectura no obliga a nadie a modificar sus rutinas; una futura orden para escribir notas/pagos requiere que el ejecutor pueda demostrar nombre de campo y resultado real, consentimiento/rol efectivo, versiones para evitar pisar cambios, recibo nativo, idempotencia y rollback cuando proceda.
+
+### 7.1 Reglas de siguiente acción (código listo para prueba, no desplegado)
+
+\`src/features/kross/native-operations-preflight.ts\` es un evaluador **puro y sin efectos externos**, con regresiones en \`native-operations-preflight.test.ts\`. Acepta solo evidencia autenticada de app/web, con procedencia, tiempo, identidad nativa y permisos. 
+- Marca limpia actual y atribuible al trabajador: \`cleaning_confirmed\`; eliminar pregunta humana redundante, pero \`canDeclareReady=false\` hasta resolver gates independientes (QA cuando aplique, mantenimiento, reserva y acceso).
+- Nota interna: \`pilot_prepared\` únicamente con versión nativa, revisión de privacidad y garantía de no notificación al huésped. Sin confirmación de audiencia/no-efectos, BLOQUEADO.
+- Pago: \`pilot_prepared\` únicamente con folio/importe/moneda nativos, fuente verificable según efectivo/tarjeta/transferencia/Wink, consulta de duplicados e identidad/permisos. Nunca \`bankReconciled\` o \`alegraPosted\` por estar en Kross.
+- Una evaluación favorable **no autoriza escribir**: \`pmsWriteAuthorizedByThisPreflight=false\` en todo caso; cualquier \`mobile.ui.act\`, registro de cobro, emisión fiscal, mensaje o modificación de notas requiere piloto distinto, autenticado, minimizado, aprobado con acción exacta, lectura posterior y recibo de Control Plane. No usar un usuario de caja/recepción como llave maestra del Portal.
+
+### 7.2 Primera prueba útil
+
+Sobre las tareas existentes, verificar **una habitación concreta ya marcada limpia en Kross**, obtener estado/fecha/identidad desde el PMS (no desde memoria ni correo) y mostrar que TORO no pide confirmación adicional a Aseo. Después **una reserva sintética o registro histórico de solo lectura** para aprender campo de nota interna y la sección de pagos/folio, sin pulsar Guardar o Cobrar. Documentar objetos nativos, versión de app, alcance de login, capturas redactadas/no PII y discrepancias de campo. Probar luego rechazo a rol ajeno, fuente caducada, duplicados, desconexión y cierre de sesión, y conservar contingencia manual.
+
+**Continuidad del programa:** los schedules actuales de auditoría, PayFlow, Kross/WeSpeak y 20:00 no se modifican; nuevas señales reducen relecturas solo tras prueba de cobertura real. Estado: corrección del propietario y preparación incorporadas en PR #381, **no main, no runtime, no sesión Kross ni escritor**.
