@@ -272,3 +272,19 @@ The following twenty refinements are **TARGET acceptance requirements**, not twe
 **Execution order:** prove authorized sender -> current read -> one canonical task -> receipt -> same Portal object; then staff/onboarding and breakfasts; then a separately enabled reservation pilot. Preserve approved roles, channel boundaries, existing Kross/Alegra gates and recovery. Functional owners remain Identity/People for onboarding, RICO for operations, TERE/Revenue for guest/services, FIONA for money evidence and SOBRESITO for integration proof; human assignments require their own acknowledgement.
 
 **Verification state:** adding these requirements proves design coverage only. Mark an individual refinement runtime-verified only after its named acceptance runs on the actual authorized channel, with source/cutoff, actor/scope, object ID and receipt. The improvement count must not be inferred from test counts.
+
+
+## 13. Informational PMS snapshots — owner decision 2026-10-24
+
+The owner accepts source data up to **60 minutes old** for informational hotel operations while the API is unavailable. This supersedes the earlier live-only wording for such reads; it does not label a snapshot live or redefine `operations.current_reservations_safe`.
+
+- Reuse `operations.reservations`, existing import/source evidence and the same identity/capability router. No second mirror, new scheduler or grant is created.
+- Age is measured from the actual source cutoff (`snapshot_as_of`), never the agent reply, import time or latest timestamp elsewhere in a table. The inclusive ceiling is 60 minutes; future/invalid dates do not pass. Refreshing an old copy does not renew its source age.
+- Authorized informational reads may use a verified export/browser artifact without `source_is_live=true`. Validate source/tenant/property, identifiers, dates and the fields actually used. A review flag is disclosed, not silently promoted to verified; conflict/invalid rows remain excluded. Unknown status/room/breakfast stays unknown.
+- Show “datos actualizados a…” and disclose partial coverage, excluded rows or truncation. Positive observed counts are not a certified full-property total; zero requires proved coverage before “no hay llegadas”. Scheduled reservation dates are not evidence of physical check-in or breakfast delivery.
+- Existing permissions still apply. The initial implementation may remain manager-only until staff permissions are verified. A phone binding/onboarding never grants that role.
+- Preserve purpose-specific revalidation for prices, availability, reservation creation/modification, payments and other effects. This informational policy never authorizes an external write.
+- Target acquisition cadence is hourly through the existing authorized source/worker. It is not installed by this decision, and the paid Kross API remains paused. A copy older than 60 minutes is labelled old; current totals are unknown until refreshed.
+- The shared read provider and channel operation belong to existing PR206/#209. Register the tool in the actual OpenClaw runtime only after configuration/version review. Portal session RPC has no reservation contract yet; do not silently downgrade it into privileged/direct access or expose another public route.
+
+Acceptance: non-live at59min and exactly60min admitted;60min+1ms rejected for current use; old source with recent sync stays old; future/malformed cutoff rejected; org/property and role denial preserved; duplicates/conflicts do not count twice; partial/missing/empty sources do not imply hotel-wide zero; source time/coverage preserved across WhatsApp and supported Portal consumption. Code tests and policy adoption do not prove acquisition, deployment or delivery.
