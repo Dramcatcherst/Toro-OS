@@ -574,4 +574,57 @@ describe("executeKrossDryRun", () => {
     expect(result.summary.pmsWriteCount).toBe(0);
   });
 
+
+  it("blocks an unsafe governed field-map path before executing rows", () => {
+    const sourceHash = "d".repeat(64);
+    const unsafeFieldMap = {
+      ...adapterConfig.fieldMap,
+      externalReservationId: "reservation.__proto__.id",
+    };
+    const manifest = {
+      orgId: adapterConfig.orgId,
+      propertyId: adapterConfig.propertyId,
+      sourceReference: "synthetic://kross/sanitized-export/unsafe-map",
+      sourceHash,
+      sourceAsOf: baseEvidence.sourceAsOf,
+      observedAt: baseEvidence.observedAt,
+      rowCount: 1,
+      fieldMap: unsafeFieldMap,
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+      },
+      rows: [{
+        reservation: {
+          ["__proto__"]: { id: "K-100" },
+          status: "confirmed",
+        },
+        stay: {
+          room: "26",
+          check_in: "2026-09-25",
+          check_out: "2026-09-27",
+        },
+      }],
+    };
+
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      { ...adapterConfig, fieldMap: unsafeFieldMap },
+      {
+        sourceReference: manifest.sourceReference,
+        sourceHash,
+      },
+    );
+
+    expect(result.status).toBe("rejected");
+    expect(result.issues).toContain("invalid_field_map");
+    expect(result.rows).toEqual([]);
+    expect(result.summary.executedRows).toBe(0);
+    expect(result.summary.mirrorCount).toBe(0);
+    expect(result.summary.importRunCount).toBe(0);
+    expect(result.summary.pmsWriteCount).toBe(0);
+  });
+
 });
