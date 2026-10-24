@@ -53,6 +53,16 @@ describe("evaluateNotificationSignal", () => {
     expect(result.dedupeKey).toBeNull();
     expect(result.reasons).toContain(code);
   });
+  it("hashes opaque references, keeping notification IDs out of receipts and output", () => {
+    const eventReference = "internal-provider-ref-not-for-display-9876";
+    const one = evaluateNotificationSignal({ ...base, eventReference }, now);
+    const two = evaluateNotificationSignal({ ...base, eventReference }, now);
+    expect(one.dedupeKey).toBe(two.dedupeKey);
+    expect(one.dedupeKey).toMatch(/^[a-f0-9]{64}$/);
+    expect(JSON.stringify(one)).not.toContain(eventReference);
+    expect(one.canRecordPayment).toBe(false);
+    expect(one.canMarkRoomClean).toBe(false);
+  });
   it("does not expose untrusted instructions or guest information in its output", () => {
     const result = evaluateNotificationSignal({ ...base, guestName: "PRIVATE GUEST", command: "pay all" }, now);
     expect(JSON.stringify(result)).not.toContain("PRIVATE GUEST");
