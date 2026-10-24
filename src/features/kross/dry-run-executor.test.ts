@@ -510,6 +510,23 @@ describe("executeKrossDryRun", () => {
         guest: { email: "synthetic@example.invalid" },
       }],
     }, "unmapped_fields_present"],
+    ["unexpected top-level credential field", {
+      credential: "synthetic-secret",
+    }, "unexpected_manifest_fields"],
+    ["unexpected field-map entry", {
+      fieldMap: {
+        ...adapterConfig.fieldMap,
+        guestEmail: "guest.email",
+      },
+    }, "unexpected_manifest_fields"],
+    ["unexpected sanitization metadata", {
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+        redactionLog: "synthetic@example.invalid",
+      },
+    }, "unexpected_manifest_fields"],
   ])("blocks the entire sanitized extract on %s", (_name, override, issue) => {
     const manifest = {
       orgId: adapterConfig.orgId,
