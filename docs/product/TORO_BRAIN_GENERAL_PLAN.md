@@ -6288,6 +6288,8 @@ Candidato de código y 50 controles con estados explícitos en [contrato de mant
 <!-- BEGIN:DC_HOUSEKEEPING_KROSS_PAYMENT_CONTINUITY_20261024 -->
 ## Dreamcatcher — housekeeping Kross, pagos y continuidad de ejecución — 24/10/2026
 
+**Contrato de activación de eventos:** [TORO_KROSS_OPENCLAW_EVENT_INGRESS_V1.md](TORO_KROSS_OPENCLAW_EVENT_INGRESS_V1.md), diseño TARGET, con lectura Kross nativa para limpieza, correo/Android como señales, gateway/roles/recibos verificados y cortes existentes como contingencia.
+
 **Decisión humana / objetivo TARGET:** las camareras marcan en Kross cuando concluyen limpieza; la marca nativa vigente debe consumirse como evidencia primaria de aseo terminado. Evitar preguntar de nuevo al equipo por el mismo hecho. Es distinto de inspección independiente, reparación de bloqueos, aceptación de acceso o listo comercial. Mauricio quiere también TORO capaz de consultar y, en fase posterior gobernada, registrar pagos y movimientos en Kross; esto NO activa writers ni concede cobrar, reembolsar, alterar reservas, precios, saldos o contabilidad por la auditoría.
 
 **Referencias existentes, sin nuevos proyectos/schedulers:** `operations.knowledge_items/kross_toro_housekeeping_integration_plan_2026_09_v1`; tareas existentes `breakfast_capture_wiring_2026_09`, `maintenance_closure_verification_20260918`, `openclaw_whatsapp_runtime_audit_2026_09_19`; ejecutor `Kross y WeSpeak · Continuidad`; auditoría `Dreamcatcher · Auditorías operativas` (06:00 /13:00 America/Costa_Rica); seguimiento `Implementación Alegra y TORO`; reporte ejecutivo 20:00 y precierre financiero separados. Una tarea programada habilitada no prueba operación ni que un worker reciba el encargo.
