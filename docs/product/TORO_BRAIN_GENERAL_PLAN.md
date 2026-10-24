@@ -1805,6 +1805,26 @@ El reporte financiero hotelero V2 queda incorporado al único Plan General como 
 
 ---
 
+## Dreamcatcher · LLC, cobros y liquidez fiscal — revisión 2026-10-23
+
+<!-- FIN-LLC-LIQUIDEZ-20261023 -->
+
+**Alcance y prioridad:** Accounting & Tax dentro de TORO Finance, con Legal y Riesgo para titularidad y contratos; FIONA conserva el carril financiero y SOBRESITO la integridad de las referencias. Reutilizar el proyecto `finance_controls`, el expediente fiscal y las tareas existentes. Priorizar la conciliación y utilización posible del crédito fiscal antes de activar un canal de cobro exterior; no crear otra LLC, expediente, base, libro o scheduler por defecto.
+
+**CURRENT — evidencia verificada:** la LLC existente está formada y cuenta con EIN acreditado por carta IRS en el expediente restringido. Esto no acredita aprobación bancaria, Stripe ni aptitud del buzón para KYC operativo. Conservar la unidad postal ya asignada y separar correspondencia, agente registrado, domicilio personal y domicilio operativo real. La verificación postal conserva su pendiente hasta aceptación comprobada.
+
+**CURRENT — Hacienda:** el corte privado vivo del **23-oct-2026** sustituye como referencia vigente los cortes documentales del 15-oct y 17-sep, que se conservan como históricos. El saldo listado, su origen de autoliquidación y su estado no equivalen a efectivo, devolución aprobada o crédito elegible sin conciliación. La nueva diferencia frente al 15-oct requiere causa y destino oficiales; las salidas anteriores siguen abiertas hasta enlazarlas con sus movimientos. Separar deuda, inconsistencia NT36 y retenciones del período para evitar dobles sumas o compensación automática. Un borrador de devolución iniciado en abril no demuestra solicitud presentada; el estado público «Al día» no sustituye la cuenta privada.
+
+**TARGET — PROPUESTO, sin cambio societario ni activación:** proteger primero los derechos económicos y controles de los socios del hotel, conservando el reparto verificado en el expediente privado. Resolver la discrepancia entre miembro único identificado por IRS y Member Info del proveedor antes de elegir o cambiar la titularidad de la LLC. Documentar quién vende la estancia en Costa Rica, quién recauda, factura, custodia fondos, autoriza reembolsos y responde frente al huésped. La elección de estructura requiere decisión expresa y revisión fiscal/contable de ambos países; no convertir una recomendación en acuerdo de socios.
+
+**NEXT — una unidad verificable:** obtener y conciliar en el caso fiscal existente los movimientos oficiales que explican las bajas entre los cortes, con fecha, causa, destino y remanente. Revisar también antigüedad, plazo legal aplicable y actos acreditados que afecten su cómputo; después determinar aplicación, compensación o devolución elegible con el contador. No repetir las consultas públicas ni rehacer el estudio ya conservado sin una necesidad nueva.
+
+**Criterio de terminado y gates:** cada baja queda enlazada a su movimiento y remanente, con antigüedad, plazo legal y actos acreditados revisados, sin doble reclamación ni conversión de monedas implícita. Evaluar el canal exterior por costo total y liquidez neta, incluyendo comisiones, reservas, transferencias y cumplimiento; cobrar fuera no libera por sí mismo el crédito histórico ni elimina los impuestos de las estancias en Costa Rica. Banco y Stripe siguen **NO APROBADOS / NO ACTIVADOS** hasta aceptación del negocio real, titularidad acordada, KYC y autorización concreta. Esta actualización documental no presenta solicitudes, paga, firma, envía documentos, modifica miembros ni habilita cobros; Alegra Writer conserva sus gates vigentes.
+
+**Fuentes y privacidad:** marcador `FIN-LLC-LIQUIDEZ-20261023`, enlazado al estudio, checkpoint y evidencia existentes del caso bajo custodia restringida. Los importes fiscales privados, porcentajes nominales, direcciones, identificaciones y documentos KYC permanecen fuera de este repositorio público. El Plan registra alcance, decisión, frescura, límites y siguiente acción; no sustituye esas fuentes ni publica sus originales ni enlaces privados.
+
+---
+
 ## DIEX / Villa Toro — intercompany legal-finance bridge — verified 2026-09-29
 
 DIEX remains inside the existing `Construcción / DIEX · Desarrollo y cierre documental` project. It is **not** a new master project or accounting brain.
