@@ -1,0 +1,112 @@
+name: Alegra L3 Writer SQL
+
+on:
+  pull_request:
+    paths:
+      - "supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1*.sql"
+      - "supabase/drafts/20260923_identity_organization_memberships*.sql"
+      - "supabase/drafts/20260930_toro_control_plane_runtime_v1.sql"
+      - "supabase/drafts/20261001_toro_targeted_worker_claim_v1.sql"
+      - "tests/sql/identity_memberships_fixture.sql"
+      - "tests/sql/alegra_l3_writer_*.sql"
+      - "tests/sql/alegra_l3_writer_*.sh"
+      - ".github/workflows/alegra-l3-writer-sql.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toro_alegra_l3_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d toro_alegra_l3_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/toro_alegra_l3_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure PostgreSQL client and server major 17
+        shell: bash
+        run: |
+          if ! command -v psql >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client
+          fi
+          psql --version
+          server_version_num="$(psql "$DATABASE_URL" -X -qAt -v ON_ERROR_STOP=1 -c 'show server_version_num')"
+          if [[ "${server_version_num}" != "170006" ]]; then
+            echo "Expected PostgreSQL 17.6 (170006), got server_version_num=${server_version_num}" >&2
+            exit 1
+          fi
+
+      - name: Build isolated synthetic fixture
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_fixture.sql
+
+      - name: Apply draft in disposable PostgreSQL
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1.sql
+
+      - name: Assert authority, ACL, heartbeat, and idempotent finalization
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_assertions.sql
+
+      - name: Assert admission versus revocation serialization
+        shell: bash
+        run: bash tests/sql/alegra_l3_writer_concurrency.sh
+
+      - name: Prepare finalization, recovery, and expiry race cases
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_finalization_recovery_setup.sql
+
+      - name: Assert finalization versus recovery and heartbeat expiry races
+        shell: bash
+        run: bash tests/sql/alegra_l3_writer_finalization_recovery_race.sh
+
+      - name: Wait only until the synthetic recovery lease expires
+        run: |
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -c "
+            select pg_sleep(
+              greatest(
+                0,
+                extract(epoch from run.lease_expires_at - clock_timestamp()) + 1
+              )
+            )
+            from public.toro_execution_runs run
+            join public.alegra_l3_test_context test_case
+              on test_case.run_id = run.id
+            where test_case.label = 'recovery';
+          "
+
+      - name: Assert expired-lease recovery and replay
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_recovery_assertions.sql
+
+      - name: Assert quiescence before rollback
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_pre_rollback_assertions.sql
+
+      - name: Roll back operational surface and verify retained evidence
+        run: |
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1_rollback.sql
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_rollback_assertions.sql
+
+      - name: Reapply over retained evidence and verify the same contract
+        run: |
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1.sql
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_reapply_assertions.sql
+
+      - name: Final rollback leaves only immutable historical evidence
+        run: |
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f supabase/drafts/20261016_toro_alegra_l3_dispatch_admission_v1_rollback.sql
+          psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f tests/sql/alegra_l3_writer_rollback_assertions.sql

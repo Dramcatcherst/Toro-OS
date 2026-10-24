@@ -1,8 +1,11 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { authorizeOpenClawService } from "./service-auth";
 
 describe("authorizeOpenClawService", () => {
+  beforeEach(() => {
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", "internal");
+  });
   afterEach(() => {
     vi.unstubAllEnvs();
   });
@@ -67,3 +70,4 @@ describe("authorizeOpenClawService", () => {
     expect(result).toEqual({ ok: true, principal: "openclaw-runtime" });
   });
 });
+

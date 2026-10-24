@@ -431,3 +431,4 @@ export async function consumeOpenClawPairing(
       return { state: "unavailable", error: "Pairing response was not recognized." };
   }
 }
+

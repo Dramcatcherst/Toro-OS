@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import { connectorEndpoints, connectors, modules, queuedActions } from "@/lib/toro-data";
 
 export function generateStaticParams() {
-  return modules.map((module) => ({ id: module.id }));
+  return modules
+    .filter((module) => module.id !== "event-ops")
+    .map((module) => ({ id: module.id }));
 }
 
 export default async function ModuleDetailPage({ params }: { params: Promise<{ id: string }> }) {

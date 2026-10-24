@@ -148,3 +148,19 @@ Security contract:
 Live activation remains blocked until direct OpenClaw Gateway evidence proves the intended
 WhatsApp account/session, sender mapping, session isolation, replay behavior, recovery and
 M01-M12 acceptance gates.
+
+## OpenClaw bridge reconciliation — 2026-10-24
+
+This is the existing machine-identity bridge (PR206), reconciled with current main. It is not a new gateway, a live deployment or permission to grant a role automatically.
+
+- Deploy the reviewed bridge only in an `internal` TORO environment. The public/Portal deployment intentionally rejects this route; possession of a machine bearer or a server key does not change that perimeter. No new environment flag was added.
+- The dedicated `TORO_OPENCLAW_SERVICE_TOKEN` authenticates the runtime. `TORO_CHANNEL_IDENTITY_HMAC_SECRET` hashes its verified channel subject. Supabase privileged credentials stay in TORO's server; never send them to WhatsApp, OpenClaw prompts or clients. Neither credential confers a human business role.
+- The host must derive channel/connection/subject from the authenticated transport event. Never populate actor identity, organization, role or capability from conversation text or model tool arguments. One authorized manager enrollment establishes the channel binding; subsequent messages use that binding and current canonical roles without repeated login. This employee bridge does not invent a guest/prospect membership.
+- Canonical phone recognition and onboarding completion never assign or upgrade a role. The owner/admin authorizes the role explicitly; the resolver only reads active identity, employee, organization membership and role records, and respects revocation.
+- Current main already exposes the canonical Brain and Owner Attention client-injected providers. Reuse them unchanged, including read enablement, scope checks, reporting timezone/coverage and source-availability behavior.
+- `TORO_PORTAL_READ_TRANSPORT=rpc_v1` is a user-session transport. It revalidates the actual Supabase session and cannot be treated as a machine bearer transport. Bridge reads return a configuration failure before privileged allocation under that setting; they never silently downgrade. The reviewed internal direct-read path remains separate from the Portal session adapter while using the same canonical projections.
+- Internal task creation keeps the existing `TORO_INTERNAL_WORK_WRITE_ENABLED` gate, manager role and same-organization scope. An exact retry replays one task; changed content under the same key produces HTTP409, including a concurrent unique-key collision. Recognition alone never enables task writes.
+- Reconciliation tests cover the deployment boundary and dedicated credentials, existing role denial, canonical task replay/conflict, and the Portal transport mismatch. Local deployment-boundary regression: 11/11; full dependency-backed CI is recorded on the exact PR head after it completes.
+
+No production environment variable, secret, enrollment, role, grant, database row, deployment or external message was changed by this reconciliation. Current AWS host/caller wiring, live source freshness, channel binding and end-to-end WhatsApp evidence remain required. Code passing CI does not establish those facts.
+

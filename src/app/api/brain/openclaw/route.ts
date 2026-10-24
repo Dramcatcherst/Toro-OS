@@ -66,6 +66,18 @@ export async function POST(request: Request) {
     return response({ state: "invalid", error: "Unsupported OpenClaw operation." }, 400);
   }
 
+  // Portal RPC revalidates a Supabase user session. A machine bearer is not
+  // that session; never silently fall back to a different database transport.
+  if (
+    process.env.TORO_PORTAL_READ_TRANSPORT === "rpc_v1" &&
+    ["brain.read", "owner_attention.read", "menu.read", "menu.resolve"].includes(operation)
+  ) {
+    return response({
+      state: "runtime_unavailable",
+      error: "Portal RPC requires a user session; the OpenClaw bridge requires the reviewed internal direct-read transport.",
+    }, 503);
+  }
+
   let supabase: ReturnType<typeof createPrivilegedSupabaseClient>;
   try {
     supabase = createPrivilegedSupabaseClient();
@@ -278,6 +290,8 @@ export async function POST(request: Request) {
         canonicalWrite: "operations.tasks",
         task: result.task,
       });
+    case "conflict":
+      return response(result, 409);
     case "invalid":
       return response(result, 400);
     case "forbidden":
@@ -289,3 +303,4 @@ export async function POST(request: Request) {
       return response(result, 503);
   }
 }
+

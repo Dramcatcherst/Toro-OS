@@ -137,3 +137,4 @@ describe("OpenClaw pairing primitives", () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 });
+

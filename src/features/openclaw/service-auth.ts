@@ -4,6 +4,7 @@ import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 
 const MIN_SECRET_LENGTH = 32;
+const NO_STORE = { "Cache-Control": "private, no-store, max-age=0" };
 
 export type OpenClawServiceAuthorization =
   | { ok: true; principal: "openclaw-runtime" }
@@ -20,6 +21,15 @@ function constantTimeMatch(actual: string, expected: string) {
 export function authorizeOpenClawService(
   request: Request,
 ): OpenClawServiceAuthorization {
+  if (process.env.TORO_DEPLOYMENT_MODE !== "internal") {
+    return {
+      ok: false,
+      response: NextResponse.json(
+        { error: "service_runtime_unavailable" },
+        { status: 503, headers: NO_STORE },
+      ),
+    };
+  }
   const expected = process.env.TORO_OPENCLAW_SERVICE_TOKEN?.trim();
 
   if (!expected || expected.length < MIN_SECRET_LENGTH) {
@@ -27,7 +37,7 @@ export function authorizeOpenClawService(
       ok: false,
       response: NextResponse.json(
         { error: "service_auth_unconfigured" },
-        { status: 503 },
+        { status: 503, headers: NO_STORE },
       ),
     };
   }
@@ -41,10 +51,11 @@ export function authorizeOpenClawService(
       ok: false,
       response: NextResponse.json(
         { error: "unauthorized" },
-        { status: 401 },
+        { status: 401, headers: NO_STORE },
       ),
     };
   }
 
   return { ok: true, principal: "openclaw-runtime" };
 }
+

@@ -1,8 +1,13 @@
 import "server-only";
+import { isPortalDeployment, isPublicDemo } from "@/lib/server/public-demo";
+import { portalSessionAllowed } from "@/features/auth/portal-session";
+
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import { deriveToroContextPolicy } from "./policy";
+import { readSelectedToroOrganizationPreference } from "./organization-selection";
 import type {
   ResolveToroContext,
   ToroCanonicalRole,
@@ -19,6 +24,9 @@ const CANONICAL_ROLES = new Set<ToroCanonicalRole>([
   "AUDITOR",
   "EMPLEADO",
 ]);
+
+export type ToroContextFailure = "auth_identity" | "password_change" | "session_transport" | "session_policy" |
+  "role_transport" | "role_shape" | "organization_membership" | "employee_context";
 
 function normalizeRoleCode(value: unknown): ToroCanonicalRole | null {
   if (typeof value !== "string") return null;
@@ -80,7 +88,7 @@ type ResolvedEmployeeContext = {
 };
 
 async function resolveEmployeeContext(
-  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  supabase: SupabaseClient,
   userId: string,
   orgId: string,
 ): Promise<ResolvedEmployeeContext | null | undefined> {
@@ -90,10 +98,12 @@ async function resolveEmployeeContext(
     .eq("user_id", userId)
     .eq("org_id", orgId)
     .is("deleted_at", null)
-    .limit(1);
+    .limit(2);
 
   if (error) return undefined;
-  if (!Array.isArray(data) || data.length === 0) return null;
+  if (!Array.isArray(data) || data.length > 1) return undefined;
+  if (data.length === 0) return null;
+  if (!data[0] || typeof data[0] !== "object" || Array.isArray(data[0])) return undefined;
 
   const row = data[0] as {
     id?: unknown;
@@ -103,13 +113,20 @@ async function resolveEmployeeContext(
     positions?: unknown;
   };
 
-  if (typeof row.id !== "string" || !row.id) return undefined;
+  if (typeof row.id !== "string" || !row.id.trim()) return undefined;
+  for (const value of [row.preferred_name, row.position_id, row.work_area]) {
+    if (value != null && typeof value !== "string") return undefined;
+  }
 
+  if (Array.isArray(row.positions) && row.positions.length > 1) return undefined;
   const relation = Array.isArray(row.positions) ? row.positions[0] : row.positions;
+  if (relation != null && (typeof relation !== "object" || Array.isArray(relation))) return undefined;
   const position =
     relation && typeof relation === "object"
       ? (relation as { code?: unknown; name?: unknown })
       : null;
+
+  if (position && [position.code, position.name].some(value => value != null && typeof value !== "string")) return undefined;
 
   const cleanText = (value: unknown) =>
     typeof value === "string" && value.trim() ? value.trim() : null;
@@ -132,25 +149,42 @@ async function resolveEmployeeContext(
  * Portal and agents can migrate to the final membership model without changing
  * their context contract.
  */
-export const resolveToroContext: ResolveToroContext = async (
+export async function resolveToroContextWithSupabase(
+  supabase: SupabaseClient,
   request: ToroContextRequest = {},
-) => {
-  const supabase = await createServerSupabaseClient();
+  accessToken?: string,
+  diagnose?: (code: ToroContextFailure) => void,
+) {
+  if (isPublicDemo()) return null;
   const {
     data: { user },
     error: userError,
-  } = await supabase.auth.getUser();
+  } = accessToken
+    ? await supabase.auth.getUser(accessToken)
+    : await supabase.auth.getUser();
 
-  if (userError || !user) return null;
+  if (userError || !user) { diagnose?.("auth_identity"); return null; }
+  if (isPortalDeployment()) {
+    if (user.app_metadata?.force_password_change) { diagnose?.("password_change"); return null; }
+    if (!await portalSessionAllowed(supabase, diagnose)) return null;
+  }
 
   const mode = request.mode ?? "organization";
 
-  const { data: roleRows, error: roleError } = await supabase
-    .from("user_roles")
-    .select("org_id, roles(code)")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .is("revoked_at", null);
+  // Organization-store transport must not become authority or deny an already
+  // authenticated personal context. Auth/session failures above never fall back.
+  let roleRows: unknown;
+  let roleError: unknown;
+  try {
+    const response = await supabase
+      .from("user_roles")
+      .select("org_id, roles(code)")
+      .eq("user_id", user.id)
+      .eq("status", "active")
+      .is("revoked_at", null);
+    roleRows = response.data;
+    roleError = response.error;
+  } catch { roleError = true; }
 
   // Personal TORO depends on authenticated identity, not on organization
   // membership availability. A role-store outage may hide the org switcher,
@@ -173,10 +207,10 @@ export const resolveToroContext: ResolveToroContext = async (
     };
   }
 
-  if (roleError) return null;
+  if (roleError) { diagnose?.("role_transport"); return null; }
 
   const rolesByOrg = parseRoleRows(roleRows);
-  if (!rolesByOrg) return null;
+  if (!rolesByOrg) { diagnose?.("role_shape"); return null; }
 
   const availableOrgIds = [...rolesByOrg.keys()].sort();
 
@@ -226,13 +260,13 @@ export const resolveToroContext: ResolveToroContext = async (
     };
   }
 
-  if (!orgId) return null;
+  if (!orgId) { diagnose?.("organization_membership"); return null; }
 
   const roles = rolesByOrg.get(orgId);
-  if (!roles?.length) return null;
+  if (!roles?.length) { diagnose?.("organization_membership"); return null; }
 
   const employee = await resolveEmployeeContext(supabase, user.id, orgId);
-  if (employee === undefined) return null;
+  if (employee === undefined) { diagnose?.("employee_context"); return null; }
 
   const membership: ToroResolvedMembership = {
     orgId,
@@ -269,4 +303,32 @@ export const resolveToroContext: ResolveToroContext = async (
     canUseOrganizationData: policy.canUseOrganizationData,
     requiresContextChoice: false,
   };
+}
+
+export const resolveToroContext: ResolveToroContext = async (
+  request: ToroContextRequest = {},
+) => {
+  if (isPublicDemo()) return null;
+  const supabase = await createServerSupabaseClient();
+  const mode = request.mode ?? "organization";
+  const cookiePreference =
+    isPortalDeployment() && mode === "organization" && request.orgId === undefined
+      ? await readSelectedToroOrganizationPreference()
+      : null;
+  const selectedRequest = cookiePreference
+    ? { ...request, mode: "organization" as const, orgId: cookiePreference.organizationId }
+    : request;
+  const resolved = await resolveToroContextWithSupabase(supabase, selectedRequest);
+
+  if (!cookiePreference || (resolved && resolved.userId === cookiePreference.userId)) {
+    return resolved;
+  }
+
+  // The cookie is only a Portal preference, never authority. A revoked
+  // organization or a different signed-in user returns to explicit choice.
+  return resolveToroContextWithSupabase(supabase, {
+    ...request,
+    mode: "organization",
+    orgId: null,
+  });
 };

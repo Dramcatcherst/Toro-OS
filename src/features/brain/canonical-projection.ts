@@ -16,6 +16,19 @@ import type {
   CanonicalSourceAuthoritySummary,
 } from "./canonical-read";
 
+export type CanonicalBrainProjectionOptions = {
+  purpose?: "visual" | "search";
+};
+
+// These are the existing canonical-read.ts query bounds, not business totals.
+export const CANONICAL_BRAIN_SEARCH_READ_LIMITS = [
+  { source: "public.organizations", limit: 1 },
+  { source: "operations.projects", limit: 25 },
+  { source: "integrations.source_authority_rules", limit: 25 },
+  { source: "integrations.domain_governance", limit: 25 },
+  { source: "integrations.kross_snapshot_health", limit: 25 },
+] as const;
+
 const PROJECT_LIMIT = 5;
 const KROSS_LIMIT = 5;
 const AUTHORITY_LIMIT = 4;
@@ -33,7 +46,7 @@ const observeOnly = {
 
 function projectStatus(status: string | null): OperationalStatus {
   const normalized = status?.trim().toLowerCase() ?? "";
-  if (["active", "in_progress", "in progress", "running"].includes(normalized)) {
+  if (["active", "in_progress", "in progress", "running", "now"].includes(normalized)) {
     return "Active";
   }
   if (["completed", "complete", "done", "ready"].includes(normalized)) {
@@ -54,7 +67,9 @@ function freshnessFromDate(
   const generated = Date.parse(generatedAt);
   if (!Number.isFinite(observed) || !Number.isFinite(generated)) return "unknown";
 
-  const age = Math.max(0, generated - observed);
+  // A future observation is not proof of current business state.
+  if (observed > generated) return "unknown";
+  const age = generated - observed;
   if (age <= 48 * 60 * 60 * 1000) return "current";
   if (age <= 7 * 24 * 60 * 60 * 1000) return "aging";
   return "stale";
@@ -106,19 +121,34 @@ function projectNode(
   };
 }
 
+// A reviewed, approved authority rule is governance metadata, not proof of a
+// live connector, booking, payment or permission to execute transactions.
+function authorityPolicyApproved(
+  rule: CanonicalSourceAuthoritySummary,
+  generatedAt: string,
+): boolean {
+  const status = rule.status.trim().toLowerCase();
+  return (
+    (status === "approved" || status === "active") &&
+    freshnessFromDate(rule.lastReviewed, generatedAt) !== "unknown"
+  );
+}
+
 function authorityNode(
   rule: CanonicalSourceAuthoritySummary,
   scopeRef: string,
   generatedAt: string,
 ): BrainNode {
+  const approved = authorityPolicyApproved(rule, generatedAt);
+  const active = rule.status.trim().toLowerCase() === "active";
   return {
     id: rule.ref,
     kind: "knowledge",
     label: `${rule.domain} authority`,
     scopeRef,
-    status: rule.status.trim().toLowerCase() === "active" ? "Active" : "Review",
+    status: approved ? (active ? "Active" : "Ready") : "Review",
     risk: rule.approvalRequired ? "Medium" : "Low",
-    verification: rule.lastReviewed ? "verified" : "unverified",
+    verification: approved ? "verified" : "unverified",
     freshness: freshnessFromDate(rule.lastReviewed, generatedAt),
     sourceSystem: "TORO Data",
     authoritySystem: rule.officialSource,
@@ -145,10 +175,14 @@ function governanceNode(
   generatedAt: string,
 ): BrainNode {
   const verification = governanceVerification(item);
+  const nextReview = item.nextReviewAt ? Date.parse(item.nextReviewAt) : NaN;
+  const projectionTime = Date.parse(generatedAt);
   const freshness = item.nextReviewAt
-    ? Date.parse(item.nextReviewAt) < Date.parse(generatedAt)
-      ? "stale"
-      : "current"
+    ? !Number.isFinite(nextReview) || !Number.isFinite(projectionTime)
+      ? "unknown"
+      : nextReview < projectionTime
+        ? "stale"
+        : "current"
     : freshnessFromDate(item.lastReviewedAt, generatedAt);
 
   return {
@@ -157,7 +191,7 @@ function governanceNode(
     label: `${item.domain} governance`,
     scopeRef,
     status:
-      verification === "verified" && freshness !== "stale" ? "Ready" : "Review",
+      verification === "verified" && freshness === "current" ? "Ready" : "Review",
     risk: criticalityRisk(item.criticality),
     verification,
     freshness,
@@ -173,11 +207,36 @@ function governanceNode(
   };
 }
 
+// Kross first-live-read gate: source and observation age must both be
+// <= six hours. The database view's safe flag is intentionally permissive for
+// non-live-required (archival/deferred) sources; it is not proof of current PMS truth.
+const KROSS_CURRENT_AGE_CEILING_MS = 6 * 60 * 60 * 1000;
+
 function krossNode(
   item: CanonicalKrossHealthSummary,
   scopeRef: string,
+  generatedAt: string,
 ): BrainNode {
-  const safe = item.safeForCurrentState;
+  const freshness = freshnessFromSource(item.freshness);
+  const sourceAsOf = item.sourceAsOf ? Date.parse(item.sourceAsOf) : NaN;
+  const observedAt = item.observedAt ? Date.parse(item.observedAt) : NaN;
+  const now = Date.parse(generatedAt);
+
+  const timestampsCurrent =
+    Number.isFinite(sourceAsOf) &&
+    Number.isFinite(observedAt) &&
+    Number.isFinite(now) &&
+    sourceAsOf <= observedAt &&
+    observedAt <= now &&
+    now - sourceAsOf <= KROSS_CURRENT_AGE_CEILING_MS &&
+    now - observedAt <= KROSS_CURRENT_AGE_CEILING_MS;
+
+  const safe =
+    item.liveRequired &&
+    item.safeForCurrentState &&
+    freshness === "current" &&
+    timestampsCurrent;
+
   return {
     id: item.ref,
     kind: "connector",
@@ -186,7 +245,7 @@ function krossNode(
     status: safe ? "Ready" : "Review",
     risk: safe ? "Low" : "High",
     verification: safe ? "verified" : "unverified",
-    freshness: freshnessFromSource(item.freshness),
+    freshness,
     sourceSystem: item.sourceName ?? "Kross",
     authoritySystem: "Kross",
     capabilities: observeOnly,
@@ -202,22 +261,26 @@ function sourceSummary(
   rule: CanonicalSourceAuthoritySummary,
   generatedAt: string,
 ): BrainSourceSummary {
+  const approved = authorityPolicyApproved(rule, generatedAt);
   return {
     sourceSystem: rule.officialSource,
     authoritySystem: rule.officialSource,
     freshness: freshnessFromDate(rule.lastReviewed, generatedAt),
-    verification: rule.lastReviewed ? "verified" : "unverified",
-    authoritative: true,
+    verification: approved ? "verified" : "unverified",
+    authoritative: approved,
   };
 }
 
 export function buildCanonicalBrainProjection(
   slice: CanonicalBrainReadSlice,
+  options: CanonicalBrainProjectionOptions = {},
 ): BrainProjection {
-  const projects = slice.projects.slice(0, PROJECT_LIMIT);
-  const kross = slice.krossHealth.slice(0, KROSS_LIMIT);
-  const authority = slice.sourceAuthority.slice(0, AUTHORITY_LIMIT);
-  const governance = slice.domainGovernance.slice(0, GOVERNANCE_LIMIT);
+  const search = options.purpose === "search";
+  // Search uses the bounded authorized read, before visual highlights are cut.
+  const projects = slice.projects.slice(0, search ? 25 : PROJECT_LIMIT);
+  const kross = slice.krossHealth.slice(0, search ? 25 : KROSS_LIMIT);
+  const authority = slice.sourceAuthority.slice(0, search ? 25 : AUTHORITY_LIMIT);
+  const governance = slice.domainGovernance.slice(0, search ? 25 : GOVERNANCE_LIMIT);
 
   const root: BrainNode = {
     id: slice.organization.ref,
@@ -239,7 +302,7 @@ export function buildCanonicalBrainProjection(
     ...projects.map((item) =>
       projectNode(item, slice.scopeRef, slice.generatedAt),
     ),
-    ...kross.map((item) => krossNode(item, slice.scopeRef)),
+    ...kross.map((item) => krossNode(item, slice.scopeRef, slice.generatedAt)),
     ...authority.map((item) =>
       authorityNode(item, slice.scopeRef, slice.generatedAt),
     ),
@@ -281,6 +344,7 @@ export function buildCanonicalBrainProjection(
   }
 
   const partial =
+    search ||
     slice.projects.length > PROJECT_LIMIT ||
     slice.krossHealth.length > KROSS_LIMIT ||
     slice.sourceAuthority.length > AUTHORITY_LIMIT ||
@@ -301,9 +365,11 @@ export function buildCanonicalBrainProjection(
     edges,
     sources: [...sourceMap.values()],
     partial,
-    degradedReason: partial
-      ? "Focused projection intentionally capped; expand through governed detail views."
-      : undefined,
+    degradedReason: search
+      ? "Search covers only the bounded authorized read; total authorized coverage is unknown."
+      : partial
+        ? "Focused projection intentionally capped; expand through governed detail views."
+        : undefined,
   };
 }
 

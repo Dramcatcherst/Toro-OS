@@ -5,6 +5,9 @@ import toolboxManifest from "../../../data/toro_role_toolbox_v1.json";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
+import { loadCanonicalBrainReadSliceWithClient, type CanonicalBrainReadSlice } from "@/features/brain/canonical-read";
+import { portalProjectFocus } from "./portal-projects";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
 import { resolveAvailableToroSubmenus } from "./submenu-resolver";
@@ -320,12 +323,14 @@ export type ToroCapabilityFocusItem = {
   title: string;
   meta?: string;
   detail?: string;
+  evidence?: { source: string; reportedSource: string; observedAt: string; readAt: string };
 };
 
 export type ToroCapabilityFocus = {
   capability: string;
   label: string;
   items: ToroCapabilityFocusItem[];
+  coverage?: string;
 };
 
 const FOCUSABLE_CAPABILITIES = new Set([
@@ -840,21 +845,32 @@ export async function resolveToroReadOnlyMenuForContext(
     blockedReads: ["Fuentes de esta vista"],
   };
 
-  if (supabase) {
-    try {
-      const [snapshot, summary] = await Promise.all([
-        loadMenuSourceSnapshot(context, supabase),
-        loadProfileSummary(context, discoveryMenu?.profileId, supabase),
-      ]);
-      const evaluated = evaluateSourceAwareCapabilityStates(baseline, snapshot);
-      capabilityStates = evaluated.states;
-      sourceReadiness = evaluated.readiness;
-      profileSummary = summary;
-    } catch {
-      // Fail closed: identity can still resolve, but no capability becomes
-      // readable when source probing itself is unavailable.
-      supabase = null;
+  let rpcMode = false;
+  let projectSlice: CanonicalBrainReadSlice | null = null;
+  try {
+    rpcMode = portalReadRpcSelected();
+    if (!supabase) throw new Error("Menu source client is unavailable.");
+    if (rpcMode) {
+      projectSlice = await loadCanonicalBrainReadSliceWithClient(context, supabase);
+      // The approved RPC contains projects, not tasks, cash or live reservations.
+      // Historical/partial rows are inspectable without claiming current readiness.
+      if ("projects.status" in baseline && projectSlice.projects.length > 0) {
+        capabilityStates = { ...baseline, "projects.status": "READ_ONLY" };
+        sourceReadiness = { readyReads: ["Proyectos · lectura parcial"], blockedReads: ["Otras fuentes de esta vista"] };
+      }
+    } else {
+    const [snapshot, summary] = await Promise.all([
+      loadMenuSourceSnapshot(context, supabase),
+      loadProfileSummary(context, discoveryMenu?.profileId, supabase),
+    ]);
+    const evaluated = evaluateSourceAwareCapabilityStates(baseline, snapshot);
+    capabilityStates = evaluated.states;
+    sourceReadiness = evaluated.readiness;
+    profileSummary = summary;
     }
+  } catch {
+    // Fail closed: identity can still resolve, but no capability becomes
+    // readable when source probing itself is unavailable.
   }
 
   const resolvedMenu = resolveToroMenu({
@@ -893,12 +909,17 @@ export async function resolveToroReadOnlyMenuForContext(
       (candidate) => candidate.capability === focusCapability,
     );
     if (item) {
+      if (rpcMode) {
+        focus = item.capability === "projects.status" && projectSlice
+          ? portalProjectFocus(projectSlice, item.label) : null;
+      } else {
       focus = await loadCapabilityFocus(
         context,
         focusCapability,
         item.label,
         supabase,
       );
+      }
     }
   }
 
@@ -908,6 +929,9 @@ export async function resolveToroReadOnlyMenuForContext(
       capabilityNote(item.capability, item.state),
     ]),
   );
+  if (rpcMode && capabilityStates["projects.status"] === "READ_ONLY") {
+    capabilityNotes["projects.status"] = "Proyectos del lote autorizado; cobertura parcial y vigencia por registro.";
+  }
   const capabilityAlternatives = buildSafeAlternatives(menu);
 
   return {
@@ -932,17 +956,14 @@ export async function resolveCurrentToroReadOnlyMenu(
 ): Promise<ToroRealMenuView | null> {
   const context = await resolveToroContext({ mode: "organization" });
   if (!context) return null;
-
+  if (context.requiresContextChoice || !context.orgId || !context.membership) {
+    return resolveToroReadOnlyMenuForContext(context, null, focusCapability);
+  }
   let supabase: SupabaseServerClient | null = null;
   try {
     supabase = await createServerSupabaseClient();
   } catch {
-    supabase = null;
+    // Preserve the conservative menu when its source client is unavailable.
   }
-
-  return resolveToroReadOnlyMenuForContext(
-    context,
-    supabase,
-    focusCapability,
-  );
+  return resolveToroReadOnlyMenuForContext(context, supabase, focusCapability);
 }

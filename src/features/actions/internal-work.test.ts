@@ -5,6 +5,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import {
   buildToroInternalTaskDraft,
   canCreateToroInternalWork,
+  isExactToroInternalTaskReplay,
   validateToroInternalWorkRequest,
 } from "./internal-work";
 
@@ -14,6 +15,7 @@ function context(
       ? R
       : never
     : never,
+  workArea = "Gerencia",
 ): ToroResolvedContext {
   return {
     userId: "user-1",
@@ -32,7 +34,7 @@ function context(
       positionId: null,
       positionCode: "OWNER",
       positionName: "Owner",
-      workArea: "Gerencia",
+      workArea,
       source: "legacy_user_roles",
     },
     availableOrgIds: ["org-1"],
@@ -81,6 +83,25 @@ describe("validateToroInternalWorkRequest", () => {
     });
 
     expect(result.ok).toBe(false);
+  });
+
+  it.each([
+    { projectKey: 42 }, { projectKey: "x".repeat(129) },
+    { dueDate: true }, { dueDate: "2026-02-31" }, { dueDate: "2026-02-29" }, { dueDate: "2026-04-31" },
+    { priority: ["critical"] }, { priority: "x".repeat(17) },
+  ])("rejects present invalid intake fields rather than losing intent: %j", (change) => {
+    expect(validateToroInternalWorkRequest({
+      action: "task.create", title: "Review fixture task", idempotencyKey: "fixture:request:0001", ...change,
+    }).ok).toBe(false);
+  });
+
+  it("allows optional omissions and a real leap day", () => {
+    const result = validateToroInternalWorkRequest({
+      action: "task.create", title: "Review fixture task", idempotencyKey: "fixture:request:0001",
+      dueDate: "2028-02-29", projectKey: null,
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value).toMatchObject({ priority: "medium", projectKey: null, dueDate: "2028-02-29" });
   });
 });
 
@@ -145,5 +166,146 @@ describe("buildToroInternalTaskDraft", () => {
       canonical_module_key: "toro_builder",
       module_lead: "SOBRESITO/CODEX",
     });
+  });
+});
+
+describe("isExactToroInternalTaskReplay", () => {
+  function draft(overrides: {
+    priority?: "medium" | "high" | "critical";
+    dueDate?: string | null;
+    description?: string;
+    nowIso?: string;
+  } = {}) {
+    const parsed = validateToroInternalWorkRequest({
+      action: "maintenance.task",
+      title: "Revisar incidencia de huésped",
+      description: overrides.description ?? "Contact consent: unknown",
+      priority: overrides.priority ?? "medium",
+      dueDate: overrides.dueDate ?? "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    });
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) throw new Error(parsed.error);
+    return buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["ADMIN"]),
+      nowIso: overrides.nowIso ?? "2026-10-18T06:00:00.000Z",
+    });
+  }
+
+  it("accepts an exact replay even when the new draft has a different creation time", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft(),
+        draft({ nowIso: "2026-10-18T07:00:00.000Z" }),
+      ),
+    ).toBe(true);
+  });
+
+  it("rejects a replay when the effective work area differs", () => {
+    const parsed = validateToroInternalWorkRequest({
+      action: "task.create",
+      title: "Revisar incidencia de huésped",
+      description: "Contact consent: unknown",
+      priority: "medium",
+      dueDate: "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    });
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) return;
+
+    const existing = buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["ADMIN"], "Gerencia"),
+      nowIso: "2026-10-18T06:00:00.000Z",
+    });
+    const retry = buildToroInternalTaskDraft({
+      request: parsed.value,
+      context: context(["GERENCIA"], "Guest Experience"),
+      nowIso: "2026-10-18T07:00:00.000Z",
+    });
+
+    expect(retry.area).not.toBe(existing.area);
+    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(false);
+  });
+
+  it("rejects a replay whose caller-independent route changed", () => {
+    const request = {
+      title: "Revisar incidencia de huésped",
+      description: "Contact consent: unknown",
+      priority: "medium" as const,
+      dueDate: "2026-10-20",
+      idempotencyKey: "guest:survey:case_0001",
+    };
+    const general = validateToroInternalWorkRequest({
+      ...request,
+      action: "task.create",
+    });
+    const maintenance = validateToroInternalWorkRequest({
+      ...request,
+      action: "maintenance.task",
+    });
+    expect(general.ok).toBe(true);
+    expect(maintenance.ok).toBe(true);
+    if (!general.ok || !maintenance.ok) return;
+
+    const existing = buildToroInternalTaskDraft({
+      request: general.value,
+      context: context(["ADMIN"], "Maintenance"),
+      nowIso: "2026-10-18T06:00:00.000Z",
+    });
+    const retry = buildToroInternalTaskDraft({
+      request: maintenance.value,
+      context: context(["ADMIN"], "Maintenance"),
+      nowIso: "2026-10-18T07:00:00.000Z",
+    });
+
+    expect(existing.category).toBe(retry.category);
+    expect(existing.area).toBe(retry.area);
+    expect(existing.canonical_module_key).toBe(retry.canonical_module_key);
+    expect(existing.module_lead).not.toBe(retry.module_lead);
+    expect(isExactToroInternalTaskReplay(existing, retry)).toBe(false);
+  });
+
+  it("rejects a replay whose priority became stricter", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ priority: "medium" }),
+        draft({ priority: "critical" }),
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a replay whose due date moved earlier", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ dueDate: "2026-10-20" }),
+        draft({ dueDate: "2026-10-18" }),
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a replay whose persisted consent description changed", () => {
+    expect(
+      isExactToroInternalTaskReplay(
+        draft({ description: "Contact consent: unknown" }),
+        draft({ description: "Contact consent: granted" }),
+      ),
+    ).toBe(false);
+  });
+});
+
+
+describe("C50-07 coherent internal-work membership", () => {
+  it.each(["invited", "suspended", "offboarded"] as const)("denies %s ADMIN even with stale broad permission", (status) => {
+    const actor = context(["ADMIN"]);
+    expect(canCreateToroInternalWork({ ...actor, membership: { ...actor.membership!, status } })).toBe(false);
+  });
+  it("requires actor, work scope and the same membership organization", () => {
+    const actor = context(["GERENCIA"]);
+    expect(canCreateToroInternalWork({ ...actor, userId: "" })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, userId: " user-1" })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, allowedDataScopes: [] })).toBe(false);
+    expect(canCreateToroInternalWork({ ...actor, membership: { ...actor.membership!, orgId: "other" } })).toBe(false);
   });
 });

@@ -448,3 +448,12 @@ Progressive Onboarding V1 is ready when:
 - unsupported requests become governed capability signals rather than fake capabilities;
 - onboarding metrics are observable;
 - mobile/WhatsApp/Portal experiences remain consistent.
+
+
+## Owner clarification: explanation does not assign roles — 2026-10-24
+
+Canonical identity, phone recognition and completing onboarding do not assign a role automatically. The existing authorized owner/admin process must explicitly establish the person's role, organization/property scope and permitted actions first. Onboarding may then explain and present that approved profile; it never creates membership, grants a role, infers employment from a name or upgrades capability access.
+
+Keep the existing non-blocking, role-aware introduction: briefly explain TORO, show at most three relevant supported actions and allow free text. A person awaiting authorization may receive public-safe explanation, without internal hotel access. Repeating, skipping or restarting the introduction preserves permissions and audit history. Source/connector failure is distinct from missing authorization; resolve the exact cause rather than ask the person to repeat all setup.
+
+Cross-channel progress reuses existing channel continuity work after its gates pass. Do not create a second onboarding identity, training store or permission engine. Current runtime parity remains unverified. Workflow refinements and acceptance live in the existing [WhatsApp/OpenClaw contract](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#12-explicit-roles-onboarding-and-twenty-hotel-workflow-refinements--2026-10-24).

@@ -3,6 +3,9 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 
 export function createPrivilegedSupabaseClient() {
+  if (process.env.TORO_DEPLOYMENT_MODE !== "internal") {
+    throw new Error("OpenClaw privileged transport requires an internal deployment.");
+  }
   const url =
     process.env.SUPABASE_URL ??
     process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -22,3 +25,4 @@ export function createPrivilegedSupabaseClient() {
     },
   });
 }
+

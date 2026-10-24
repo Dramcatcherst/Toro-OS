@@ -1,8 +1,11 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 
 import { createToroInternalWork } from "@/features/actions/internal-work-server";
 
 export async function POST(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const body = await request.json().catch(() => null);
   const result = await createToroInternalWork(body);
 
@@ -26,6 +29,8 @@ export async function POST(request: Request) {
       });
     case "invalid":
       return NextResponse.json(result, { status: 400 });
+    case "conflict":
+      return NextResponse.json(result, { status: 409 });
     case "unauthenticated":
       return NextResponse.json(result, { status: 401 });
     case "forbidden":

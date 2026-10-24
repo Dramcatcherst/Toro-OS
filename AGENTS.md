@@ -81,6 +81,16 @@ Do not onboard external businesses until the readiness gate in `docs/product/NEW
 
 Never silently resolve a source conflict. Record the conflict, authority, freshness and required correction.
 
+## Operating configuration and optimization
+
+Apply `toro-context.yaml -> operating_configuration` and the General Plan section `TORO_OPERATING_CONFIGURATION_20261022` when changing deployment, agent/tool configuration or channel integration. They are governance/target contracts, not proof that a runtime setting was installed.
+
+- Reuse the existing channel bridge, Control Plane queue, identity and source registry before adding infrastructure. One account/action has one active writer; local development is not a second production consumer.
+- OpenClaw session separation is not a security boundary between mutually untrusted users. Do not expose an owner Gateway's shell, browser, secrets or session history to team/guest ingress. Pause that rollout until a verified boundary exists; a prompt or agent name cannot establish it.
+- Distinguish configured, tested, integrated, deployed, runtime-verified and measured. Check exact SHA/environment and a destination receipt before claiming completion. Do not turn improvement quotas or passing synthetic tests into operational outcomes.
+- Load task-relevant context and source slices; keep volatile facts out of durable profiles. Use bounded tools/models/workers with declared cost/time/retry limits. Reuse existing supervision/alerts; do not add another scheduler to solve missing access.
+- Classify advisory warnings before acting. Do not broaden grants, add permissive RLS policies, drop indexes or rotate secrets merely to make a checker green. Preserve consumers, verification and rollback.
+
 ## Brand
 
 Official identity is **TORO** only.
@@ -89,11 +99,13 @@ Canonical visual metaphor:
 - blue bull = the business / living organization;
 - integrated brain + microchip/circuit = biological intelligence + AI/computation coordinating the whole.
 
-Current masters:
-- `/TORO/Brand/01_Master/TORO_BRAIN_LOGO_MASTER_v1.png`
-  - SHA-256 `8828b0d89b1fb2dc9aa2127c39c3322a7b6dc018f8c1baece7a7bf69f4457a98`
-- `/TORO/Brand/01_Master/TORO_BRAIN_ISOTYPE_MASTER_v1.png`
+Current master authority: `docs/product/TORO_BRAND_CONTRACT.md` (CURRENT, 2026-09-23).
+- `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`
   - SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
+- The `8828b0d...` TORO BRAIN wordmark and TORO Brain filenames/manifests are historical references, not current masters.
+- A declared path/hash does not establish file availability. Verify exact bytes before incorporating it.
+
+For Portal presentation work, apply `docs/product/TORO_PORTAL_DESIGN_RULES.md` under the General Plan and brand contract. Do not change data, destinations or access gates to improve appearance.
 
 Legacy blue-bull artwork remains provenance/reference only. Do not generate, redraw, recolor or substitute another bull for official product identity. Do not use bullfighting/violent imagery. Do not present TORO OS as a parallel public-facing product; preserve old TORO OS names only when technically required for compatibility.
 

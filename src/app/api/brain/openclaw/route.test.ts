@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const {
   authorizeOpenClawService,
@@ -85,6 +85,7 @@ function request(body: unknown) {
 
 describe("POST /api/brain/openclaw", () => {
   beforeEach(() => {
+    vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "direct");
     authorizeOpenClawService.mockReset();
     resolveOpenClawChannelContext.mockReset();
     createPrivilegedSupabaseClient.mockReset();
@@ -104,6 +105,22 @@ describe("POST /api/brain/openclaw", () => {
       context,
     });
     canViewOwnerAttention.mockReturnValue(true);
+  });
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("identifies the session-only Portal transport before allocating a machine client", async () => {
+    vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "rpc_v1");
+    const result = await POST(request({ identity: {}, operation: "brain.read" }));
+    expect(result.status).toBe(503);
+    expect(createPrivilegedSupabaseClient).not.toHaveBeenCalled();
+    await expect(result.json()).resolves.toMatchObject({ state: "runtime_unavailable" });
+  });
+
+  it("returns an actionable conflict when a retry changes the original task", async () => {
+    createToroInternalWorkWithContext.mockResolvedValue({ state: "conflict", error: "Key content changed." });
+    const result = await POST(request({ identity: {}, operation: "internal_work.create", input: {} }));
+    expect(result.status).toBe(409);
+    await expect(result.json()).resolves.toMatchObject({ state: "conflict" });
   });
 
   it("authenticates the runtime before reading channel identity", async () => {
@@ -429,3 +446,4 @@ describe("POST /api/brain/openclaw", () => {
     });
   });
 });
+

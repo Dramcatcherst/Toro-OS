@@ -2,8 +2,9 @@
 
 **Status:** CURRENT MIGRATION MAP  
 **Date:** 2026-09-22  
+**Last live identity readback:** 2026-10-20
 **Legacy application:** `Dramcatcherst/dream-team`  
-**Canonical destination:** `TORO People` inside TORO OS
+**Canonical destination:** `TORO People` inside TORO (`TORO OS` is the same project's legacy technical alias)
 
 ## 1. Decision
 
@@ -59,7 +60,7 @@ These capabilities should be absorbed, not recreated.
 | Slack alerts | TORO Comms/Tools | optional connector, not core |
 | employee portal | TORO People role experience | integrate into TORO portal |
 
-## 4. Current data gaps
+## 4. Historical data-gap snapshot — 2026-09-22
 
 Observed in canonical Supabase:
 - 12 active employees and 1 terminated employee record;
@@ -230,7 +231,7 @@ Training never grants authority automatically.
 DreamTeam/TORO People work today should preserve this future possibility without building robot-specific complexity now.
 
 
-## 11. Identity onboarding classification — 2026-09-23
+## 11. Historical identity onboarding classification — 2026-09-23
 
 Read-only reconciliation of the 8 active employee records without `user_id` found:
 
@@ -262,6 +263,26 @@ Do not invite or auto-link until the missing/discordant employment profile is re
 
 No account should be created solely because an employee is active or has a clock ID.
 
+## 11.1 Current identity rebaseline — 2026-10-20
+
+Read-only live evidence from canonical Supabase supersedes the counts in sections 4 and 11 for current decisions:
+
+- 13 employees: 12 active and 1 terminated;
+- 6 enabled Auth principals in the Dreamcatcher scope;
+- 5 active employees linked to Auth and 7 active employees without Auth;
+- only 4 active employees have the complete employee + Auth + membership + role chain;
+- 5 active Dreamcatcher organization memberships and 19 active role assignments; no inactive/revoked Dreamcatcher row in either set; Toro's separate Personal membership is outside the hotel workforce count;
+- 5 active Aseo employees have no Auth, membership or role;
+- one Maintenance identity has Auth + `EMPLEADO` but lacks membership;
+- 4 existing Auth addresses use the non-deliverable `@dreamteam.internal` legacy alias;
+- 0 channel enrollments and 0 employee-onboarding progress rows;
+- one terminated employee retains conflicting technical `status=active`;
+- the owner account labelled **Toro** and the employee-linked Mauricio Fernandez account represent the same human but remain separate Auth principals pending controlled reconciliation.
+
+Current canonical decision and full gates live in `TORO_BRAIN_GENERAL_PLAN.md`, section **CURRENT — identidad única, censo integral e invitación segura — 20/10/2026**. Do not copy a mutable person-by-person roster into this document.
+
+The old username/temporary-password path and `@dreamteam.internal` aliases are not the target onboarding flow. A real invite requires verified identity, an exact deliverable address or supervised in-person handoff, one-time expiry, user-created credentials, durable/idempotent state, atomic membership + least-privilege role activation after claim, receipt and rollback. No bulk invitation or name-based linking.
+
 
 ## 12. Code migration contract
 
@@ -271,3 +292,27 @@ Detailed implementation ownership, cutover waves and retirement rules are define
 - `data/toro_people_migration_map.json`
 
 This code migration contract is subordinate to the TORO Brain General Plan and supersedes any approach that would permanently embed DreamTeam as a second app inside TORO.
+
+## Contrato mínimo Portal/Personas — preparación 12/10/2026
+**Estado TARGET, migración NOT_STARTED, sin SQL ni acceso a empleados.** Subordinado al Plan; la dirección de simplificación está aprobada. Interfaz local puede empezar manteniendo las autorizaciones actuales y estados pendientes; sesión recíproca o lecturaPeople real requiere aceptación propia.
+
+CURRENT código inspeccionado: Portal SupabaseSSR/browser, auth.getUser(); roles activos/no revocados; organización explícita si varias; empleado por user_id+org_id no borrado. membership.source=legacy_user_roles y allowedTools=[] no conceden herramientas. No se demostró equivalencia con user_sessions/estado laboral del legado ni unicidad del vínculo seleccionado; no se observaron duplicados o explotación. Login actual avisa acceso separado. DreamTeam permanece en su origen hasta paridad; no copiar cookies/tokens entre aplicaciones.
+
+Contrato de contexto: userId, mode, orgId, membership.status/source, roles, employeeId, positionCode, requiresContextChoice, fecha de revalidación y estado de autorización. Campos de contrato, no nuevas columnas. Identidad/contexto/empleado concordantes; nombre/email/teléfono no crean vínculo. Datos laborales privados separados del User Vault personal.
+
+Primer alcance real: Mi horario publicado propio y período acotado. Proyección de inicio/fin/zona_horaria/estado_publicado/área permitida/fuente/corte/cobertura/advertencia. Mapear a consulta/RPC self-read actual antes de implementar; nada de directorio general/nómina/compañeros/marcaciones importadas/escrituras. Borrador/cancelado no cobertura; dato ausente no ausencia o cero. Rutas existentes /login,/portal,/my-toro y /my-toro/herramientas#equipo; Personas conserva ordinal6. Ruta del horario futura, sin anunciarla operativa. safeNextPath conserva rechazo a destinos externos/protocol-relative.
+
+| Prueba de aceptación | Resultado exigido |
+|---|---|
+| UsuarioA y usuarioB | Cada uno solo su horario; parámetros/petición directa no cruzan identidad |
+| Organización/contexto | Roles deA no autorizanB; ambigüedad no consultaPeople |
+| Vínculo empleado | Inexistente/duplicado/borrado/inelegible falla cerrado, sin elegir primero silenciosamente |
+| Publicación y corte | Solo turnos publicados; advertencia ante fuente vencida y cobertura parcial |
+| Sesión | Expiración/logout/reset/revocación/suspensión invalidan según contrato; refresh no revive sesión revocada |
+| Caché/cambio de usuario | Datos anteriores se eliminan antes de cargar nuevo contexto |
+| Ruta y cliente | RLS/cliente de sesión, sin service role interactivo ni secretos |
+| Paridad | Mismo usuario/período coincide con DreamTeam original; evidencia de corte, sin writes |
+| Retorno | safeNextPath mantiene destino interno solicitado; no redirección externa |
+| Recuperación | Retirar solo vista/adapter propio preserva legado y datos |
+
+Pendientes mínimos: consulta/RPC self-read y mapping; contrato de revocación efectivo; dos identidades elegibles de QA bajo autoridad existente. No crear cuentas/grants para completar documentación. Fuentes: TORO_IDENTITY_USER_VAULT_V1.md, TORO_PEOPLE_CODE_MIGRATION_V1.md, context/resolver.ts, lib/supabase/server.ts/browser.ts, auth/login-form.tsx/safe-next y portal/model.ts. No pruebas autenticadas ejecutadas ni retiradaDreamTeam. Sesión común no se presume por subdominio.

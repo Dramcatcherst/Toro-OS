@@ -1,19 +1,21 @@
 import "server-only";
+import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
-import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
+import { resolveToroContext } from "@/features/context/resolver";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 import {
   buildToroInternalTaskDraft,
   canCreateToroInternalWork,
+  isExactToroInternalTaskReplay,
   validateToroInternalWorkRequest,
   type ToroInternalWorkRequest,
+  type ToroInternalTaskDraft,
+  type ToroInternalTaskReplayComparable,
 } from "./internal-work";
 
-type ToroServerSupabaseClient = Awaited<
-  ReturnType<typeof createServerSupabaseClient>
->;
+type ToroServerSupabaseClient = Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
 export type ToroInternalWorkResult =
   | {
@@ -28,7 +30,7 @@ export type ToroInternalWorkResult =
         projectId: string | null;
       };
     }
-  | { state: "invalid"; error: string }
+  | { state: "invalid" | "conflict"; error: string }
   | { state: "unauthenticated" }
   | { state: "forbidden"; error: string }
   | { state: "unavailable"; error: string };
@@ -41,7 +43,15 @@ type SupabaseTaskRow = {
   priority?: unknown;
   area?: unknown;
   project_id?: unknown;
+  category?: unknown;
+  due_date?: unknown;
+  description?: unknown;
+  canonical_module_key?: unknown;
+  module_lead?: unknown;
 };
+
+const TASK_SELECT =
+  "id, task_key, task_name, status, priority, area, project_id, category, due_date, description, canonical_module_key, module_lead";
 
 function normalizeTask(row: SupabaseTaskRow) {
   if (
@@ -64,6 +74,66 @@ function normalizeTask(row: SupabaseTaskRow) {
     area: textOrNull(row.area),
     projectId: textOrNull(row.project_id),
   };
+}
+
+function normalizeReplayComparable(
+  row: SupabaseTaskRow,
+): ToroInternalTaskReplayComparable | null {
+  if (
+    typeof row.task_name !== "string" ||
+    typeof row.priority !== "string" ||
+    typeof row.category !== "string" ||
+    typeof row.area !== "string" ||
+    typeof row.canonical_module_key !== "string" ||
+    typeof row.module_lead !== "string"
+  ) {
+    return null;
+  }
+
+  const nullableString = (value: unknown) =>
+    value === null || typeof value === "string" ? value : null;
+
+  const projectId = nullableString(row.project_id);
+  const dueDate = nullableString(row.due_date);
+  const description = nullableString(row.description);
+  if (
+    projectId !== row.project_id ||
+    dueDate !== row.due_date ||
+    description !== row.description
+  ) {
+    return null;
+  }
+
+  return {
+    task_name: row.task_name,
+    project_id: projectId,
+    category: row.category,
+    priority: row.priority as ToroInternalTaskDraft["priority"],
+    area: row.area,
+    due_date: dueDate,
+    description,
+    canonical_module_key: row.canonical_module_key,
+    module_lead: row.module_lead,
+  };
+}
+
+function replayResult(row: SupabaseTaskRow, candidate: ToroInternalTaskDraft) {
+  const task = normalizeTask(row);
+  const comparable = normalizeReplayComparable(row);
+  if (!task || !comparable) {
+    return {
+      state: "unavailable" as const,
+      error: "Existing task could not be normalized safely.",
+    };
+  }
+  if (!isExactToroInternalTaskReplay(comparable, candidate)) {
+    return {
+      state: "conflict" as const,
+      error:
+        "Idempotency key already exists with different task content; manual reconciliation is required.",
+    };
+  }
+  return { state: "replayed" as const, task };
 }
 
 async function executeToroInternalWork(
@@ -103,10 +173,16 @@ async function executeToroInternalWork(
   }
 
   const taskKey = `toro_intake:${request.idempotencyKey}`;
+  const draft = buildToroInternalTaskDraft({
+    request,
+    context,
+    projectId,
+    nowIso: new Date().toISOString(),
+  });
   const existingResult = await supabase
     .schema("operations")
     .from("tasks")
-    .select("id, task_key, task_name, status, priority, area, project_id")
+    .select(TASK_SELECT)
     .eq("org_id", context.orgId!)
     .eq("task_key", taskKey)
     .limit(1);
@@ -119,40 +195,34 @@ async function executeToroInternalWork(
   }
 
   const existing = Array.isArray(existingResult.data)
-    ? normalizeTask((existingResult.data[0] ?? {}) as SupabaseTaskRow)
-    : null;
+    ? (existingResult.data[0] as SupabaseTaskRow | undefined)
+    : undefined;
 
-  if (existing) return { state: "replayed", task: existing };
-
-  const draft = buildToroInternalTaskDraft({
-    request,
-    context,
-    projectId,
-    nowIso: new Date().toISOString(),
-  });
+  if (existing) return replayResult(existing, draft);
 
   const inserted = await supabase
     .schema("operations")
     .from("tasks")
     .insert(draft)
-    .select("id, task_key, task_name, status, priority, area, project_id")
+    .select(TASK_SELECT)
     .single();
 
   if (inserted.error) {
+    // A concurrent retry may win the unique (org_id, task_key) race.
     if (inserted.error.code === "23505") {
       const replay = await supabase
         .schema("operations")
         .from("tasks")
-        .select("id, task_key, task_name, status, priority, area, project_id")
+        .select(TASK_SELECT)
         .eq("org_id", context.orgId!)
         .eq("task_key", taskKey)
         .limit(1);
 
       const row = Array.isArray(replay.data)
-        ? normalizeTask((replay.data[0] ?? {}) as SupabaseTaskRow)
-        : null;
+        ? (replay.data[0] as SupabaseTaskRow | undefined)
+        : undefined;
 
-      if (!replay.error && row) return { state: "replayed", task: row };
+      if (!replay.error && row) return replayResult(row, draft);
     }
 
     return {
@@ -172,9 +242,34 @@ async function executeToroInternalWork(
   return { state: "created", task };
 }
 
-function authorizeInternalWorkContext(
+export async function createToroInternalWorkWithContext(
+  input: unknown,
   context: ToroResolvedContext,
-): ToroInternalWorkResult | null {
+  supabase: ToroServerSupabaseClient,
+): Promise<ToroInternalWorkResult> {
+  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
+    return { state: "unavailable", error: "Internal work writes are disabled." };
+  }
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+  if (!canCreateToroInternalWork(context)) {
+    return { state: "forbidden", error: "ADMIN or GERENCIA organization context is required." };
+  }
+  return executeToroInternalWork(parsed.value, context, supabase);
+}
+
+export async function createToroInternalWork(
+  input: unknown,
+): Promise<ToroInternalWorkResult> {
+  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
+    return { state: "unavailable", error: "Internal work writes are disabled." };
+  }
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+
+  const context = await resolveToroContext({ mode: "organization" });
+  if (!context) return { state: "unauthenticated" };
+
   if (!canCreateToroInternalWork(context)) {
     return {
       state: "forbidden",
@@ -182,34 +277,6 @@ function authorizeInternalWorkContext(
         "This first controlled-write slice is limited to ADMIN or GERENCIA organization context.",
     };
   }
-  return null;
-}
-
-export async function createToroInternalWorkWithContext(
-  input: unknown,
-  context: ToroResolvedContext,
-  supabase: ToroServerSupabaseClient,
-): Promise<ToroInternalWorkResult> {
-  const parsed = validateToroInternalWorkRequest(input);
-  if (!parsed.ok) return { state: "invalid", error: parsed.error };
-
-  const denied = authorizeInternalWorkContext(context);
-  if (denied) return denied;
-
-  return executeToroInternalWork(parsed.value, context, supabase);
-}
-
-export async function createToroInternalWork(
-  input: unknown,
-): Promise<ToroInternalWorkResult> {
-  const parsed = validateToroInternalWorkRequest(input);
-  if (!parsed.ok) return { state: "invalid", error: parsed.error };
-
-  const context = await resolveToroContext({ mode: "organization" });
-  if (!context) return { state: "unauthenticated" };
-
-  const denied = authorizeInternalWorkContext(context);
-  if (denied) return denied;
 
   const supabase = await createServerSupabaseClient();
   return executeToroInternalWork(parsed.value, context, supabase);

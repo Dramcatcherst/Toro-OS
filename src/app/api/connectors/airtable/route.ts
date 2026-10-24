@@ -1,8 +1,11 @@
+import { internalCapabilityEnabled, publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 import { airtableBase, airtableTables } from "@/lib/toro-data";
 import { readAirtableRecords } from "@/lib/server/read-only-connectors";
 
 export async function GET(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const { searchParams } = new URL(request.url);
   const tableId = searchParams.get("tableId");
   const liveRead = tableId
@@ -17,11 +20,11 @@ export async function GET(request: Request) {
     connector: "airtable",
     mode: "read_only",
     externalWrite: false,
-    configured: Boolean(process.env.AIRTABLE_TOKEN && process.env.AIRTABLE_BASE_ID),
+    configured: liveRead?.configured ?? (internalCapabilityEnabled("TORO_LEGACY_OPERATIONS_ENABLED") && Boolean(process.env.AIRTABLE_TOKEN?.trim())),
     base: airtableBase,
     tableCount: airtableTables.length,
     tables: airtableTables,
     liveRead,
     nextAction: "Add read-only Airtable credentials, then replace mock table reads with scoped server reads.",
-  });
+  }, { headers: { "Cache-Control": "private, no-store, max-age=0" } });
 }

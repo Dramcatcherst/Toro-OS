@@ -1,6 +1,9 @@
+import { publicDemoResponse } from "@/lib/server/public-demo";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+  const demo = publicDemoResponse();
+  if (demo) return demo;
   const body = await request.json().catch(() => ({}));
 
   return NextResponse.json({

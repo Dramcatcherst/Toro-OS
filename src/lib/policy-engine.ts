@@ -1,8 +1,11 @@
+import type { ToroExecutionAuthorityLevel } from "./control-plane-contracts";
+import { resolveToroExecutionAuthorityLevel } from "./control-plane-contracts";
 import type { ActionLevel, ApprovalRequirement, RiskLevel } from "./toro-types";
 
 export type PolicyDecision = {
   allowed: boolean;
   approval: ApprovalRequirement;
+  executionAuthorityLevel: ToroExecutionAuthorityLevel;
   reason: string;
 };
 
@@ -25,10 +28,19 @@ export function evaluatePolicy(input: {
   risk: RiskLevel;
   externalImpact: boolean;
 }): PolicyDecision {
-  if (blockedActions.has(input.action)) {
+  const specificallyBlocked = blockedActions.has(input.action);
+  const executionAuthorityLevel = resolveToroExecutionAuthorityLevel({
+    actionLevel: input.actionLevel,
+    risk: input.risk,
+    externalImpact: input.externalImpact,
+    specificallyBlocked,
+  });
+
+  if (specificallyBlocked) {
     return {
       allowed: false,
       approval: "Blocked",
+      executionAuthorityLevel,
       reason: "This action is blocked in TORO because it can affect external systems or sensitive business state.",
     };
   }
@@ -37,6 +49,7 @@ export function evaluatePolicy(input: {
     return {
       allowed: true,
       approval: "Owner approval",
+      executionAuthorityLevel,
       reason: "Action may be prepared, but execution requires owner approval and audit logging.",
     };
   }
@@ -45,6 +58,7 @@ export function evaluatePolicy(input: {
     return {
       allowed: true,
       approval: "Human review",
+      executionAuthorityLevel,
       reason: "High-risk action may be queued for human review only.",
     };
   }
@@ -52,6 +66,7 @@ export function evaluatePolicy(input: {
   return {
     allowed: true,
     approval: "Human review",
+    executionAuthorityLevel,
     reason: "Action is safe to prepare and queue; no external write will be executed.",
   };
 }

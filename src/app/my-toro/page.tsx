@@ -1,21 +1,33 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import Link from "next/link";
+import { PortalSignOut } from "@/features/auth/portal-sign-out";
+import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
+import { Suspense } from "react";
+
+import { canViewOwnerAttention } from "@/features/attention/owner-attention";
+import { OwnerAttentionPanel } from "@/features/attention/owner-attention-panel";
+import { loadToroOrganizationChoices } from "@/features/context/organization-selection";
 import {
   ArrowRight,
-  Brain,
-  CheckCircle2,
   LockKeyhole,
   LogIn,
-  RotateCcw,
-  ShieldCheck,
-  Sparkles,
   UserRound,
 } from "lucide-react";
 
 import { MyToroCommandBar } from "@/features/menu/my-toro-command-bar";
+import { PortalHeader } from "@/features/portal/portal-header";
+import { hasPortalOrganizationContext } from "@/features/portal/model";
 import { resolveCurrentToroReadOnlyMenu } from "@/features/menu/server";
+import { canReadHotelDirectory } from "@/features/tools/directory";
+import { loadHotelDirectory } from "@/features/tools/server";
+import styles from "./my-toro.module.css";
+import { PortalToolLinks } from "@/features/tools/portal-tool-links";
+import { isPortalDeployment } from "@/lib/server/public-demo";
+
+const CONTEXT_SELECTION_ENDPOINT = "/api/brain/context/selection";
 
 const profileLabels: Record<string, string> = {
-  owner_executive: "Owner / Ejecutivo",
+  owner_executive: "Dirección",
   manager: "Gerencia",
   reception: "Recepción",
   housekeeping: "Aseo",
@@ -29,62 +41,101 @@ const profileLabels: Record<string, string> = {
   employee_general: "Empleado",
 };
 
-function statusLabel(state: string) {
-  if (state === "READ_ONLY") return "Solo lectura";
-  if (state === "BLOCKED") return "Por activar";
-  return state;
-}
-
-export default async function MyToroPage({
+async function MyToroContent({
   searchParams,
 }: {
-  searchParams: Promise<{ focus?: string | string[] }>;
+  searchParams: Promise<{
+    focus?: string | string[];
+    context?: string | string[];
+  }>;
 }) {
   const params = await searchParams;
   const requestedFocus =
     typeof params.focus === "string" ? params.focus : null;
-  const view = await resolveCurrentToroReadOnlyMenu(requestedFocus);
+  const contextError = params.context === "invalid";
+  let view;
+  try { view = await resolveCurrentToroReadOnlyMenu(requestedFocus); }
+  catch {
+    return <main className={styles.accessScreen}><div className={styles.accessBox}>
+      <PortalAccessRecovery retryPath="/my-toro" />
+    </div></main>;
+  }
 
   if (!view) {
     return (
-      <main className="min-h-screen bg-[#030712] px-5 py-10 text-slate-100">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-800 bg-slate-950/80 p-7">
+      <main className={styles.accessScreen}>
+        <div className={styles.accessBox}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-amber-100">
-            <LockKeyhole className="h-4 w-4" /> Contexto no resuelto
+            <LockKeyhole className="h-4 w-4" /> Acceso a tu cuenta
           </div>
           <h1 className="text-3xl font-black tracking-[-0.04em] text-white">
             Entra a TORO para ver tu experiencia.
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Esta vista usa tu identidad y permisos reales. No muestra un menú genérico si no puede resolver tu sesión.
+            {isPortalDeployment() ? "Usa tu usuario o correo de DreamTeam." : "Usa tu correo de trabajo."}
           </p>
           <Link
-            href="/login"
+            href="/login?next=/my-toro"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950"
           >
             <LogIn className="h-4 w-4" /> Iniciar sesión
           </Link>
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );
   }
 
   if (view.state === "context_choice_required") {
+    const portalDeployment = isPortalDeployment();
+    const organizations = portalDeployment
+      ? await loadToroOrganizationChoices(view.context)
+      : { state: "unavailable" as const, choices: [] };
     return (
-      <main className="min-h-screen bg-[#030712] px-5 py-10 text-slate-100">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-cyan-300/15 bg-slate-950/80 p-7">
+      <main className={styles.accessScreen}>
+        <div className={styles.accessBox}>
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-100">
             <UserRound className="h-4 w-4" /> Contexto
           </div>
           <h1 className="text-3xl font-black text-white">
-            {view.preferredDisplayName}, necesito saber en qué negocio quieres entrar.
+            {view.preferredDisplayName}, necesito saber en qué contexto quieres entrar.
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
             Tu cuenta tiene más de un contexto autorizado. TORO no elegirá uno automáticamente porque eso podría mezclar permisos o información.
           </p>
-          <div className="mt-5 rounded-2xl border border-slate-800 bg-black/25 p-4 text-sm text-slate-300">
-            Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
-          </div>
+          {portalDeployment && contextError ? (
+            <p role="alert" className={styles.contextError}>
+              No pude abrir ese contexto. Tu sesión sigue protegida; elige una opción autorizada.
+            </p>
+          ) : null}
+          {portalDeployment && organizations.state === "ready" ? (
+            <div className={styles.contextChoices} role="group" aria-label="Organizaciones disponibles">
+              {organizations.choices.map((organization) => (
+                <form key={organization.id} action={CONTEXT_SELECTION_ENDPOINT} method="post">
+                  <input type="hidden" name="intent" value="select" />
+                  <input type="hidden" name="organizationId" value={organization.id} />
+                  <button type="submit" className={styles.contextChoice}>
+                    <span>Entrar a</span>
+                    <strong>{organization.name}</strong>
+                    <ArrowRight aria-hidden="true" className="h-5 w-5" />
+                  </button>
+                </form>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.contextBox} role="status">
+              {portalDeployment ? <>
+                <strong>{view.context.availableOrgIds.length} organizaciones autorizadas.</strong>{" "}
+                No pude cargar sus nombres ahora y no seleccioné ninguna. Recarga la página para volver a intentar.
+              </> : <>
+                Organizaciones disponibles: <strong>{view.context.availableOrgIds.length}</strong>
+              </>}
+            </div>
+          )}
+          {portalDeployment ? <p className={styles.contextNote}>
+            TORO volverá a validar tu membresía antes de mostrar información del contexto elegido.
+          </p> : null}
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );
@@ -92,271 +143,157 @@ export default async function MyToroPage({
 
   const membership = view.context.membership;
   const menu = view.menu;
-  const roleLabel = menu ? profileLabels[menu.profileId] ?? menu.profileId : "Contexto general";
+  const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
+  const hotelAllowed = canReadHotelDirectory(view.context);
+  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true,expectedContext:view.context}) : null;
+  const hotelLinks = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true) ? directory.links : [];
+  const available = menu?.items.filter(item =>
+    item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
+  ) ?? [];
+  const alternatives = menu?.items.filter(item =>
+    !available.includes(item) && view.capabilityAlternatives[item.capability],
+  ) ?? [];
+  const submenuParents = menu?.items.filter(item => view.availableSubmenus[item.key]?.items.length) ?? [];
+  const pending = menu?.items.filter(item =>
+    !available.includes(item) && !alternatives.includes(item) && !submenuParents.includes(item),
+  ) ?? [];
+  const actionClass = "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-200";
 
   return (
-    <main className="min-h-screen bg-[#030712] text-slate-100">
-      <div className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-10">
-        <header className="rounded-[2rem] border border-cyan-300/15 bg-slate-950/80 p-5 shadow-2xl md:p-7">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-100">
-                  <Brain className="h-4 w-4" /> Mi TORO
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-emerald-100">
-                  <ShieldCheck className="h-4 w-4" /> contexto real · solo lectura
-                </span>
-              </div>
-              <h1 className="text-3xl font-black tracking-[-0.04em] text-white md:text-5xl">
-                {view.preferredDisplayName}, esto es lo más útil para tu contexto.
-              </h1>
-              <p className="mt-4 text-sm leading-6 text-slate-400 md:text-base">
-                TORO resolvió tu experiencia desde tu sesión, roles y puesto. Esta vista demuestra personalización real; las capacidades todavía no se consideran operativas hasta probar su fuente y permiso.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-slate-800 bg-black/25 px-4 py-3 text-sm">
-              <div className="text-xs uppercase tracking-[0.14em] text-slate-500">Experiencia</div>
-              <div className="mt-1 font-semibold text-white">{roleLabel}</div>
-              <div className="mt-1 text-xs text-slate-500">
-                {membership?.positionName ?? membership?.positionCode ?? "Puesto no vinculado"}
-              </div>
-              <Link
-                href="/onboarding"
-                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-200 hover:text-white"
-              >
-                <RotateCcw className="h-3.5 w-3.5" /> Rehacer onboarding
-              </Link>
-            </div>
+    <>
+    {hasPortalOrganizationContext(view.context) ? <PortalHeader current="my-toro" includeTools={hotelAllowed} scopeLabel={hotelAllowed ? "Dreamcatcher" : "Organización activa"} /> : null}
+    <main id="portal-content" tabIndex={-1} className={styles.screen}>
+      <div className={styles.content}>
+        <header className={styles.pageHeader}>
+          <div>
+            <p className={styles.eyebrow}>Portal TORO · Mi espacio</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Mi espacio</h1>
+            <p className={styles.pageLead}>Prioridades, consultas y accesos de tu cuenta.</p>
           </div>
+          <a href="#mi-cuenta" className={actionClass + " border border-slate-700 text-slate-200"}>Mi cuenta ↓</a>
         </header>
 
-        {menu?.items.length ? (
-          <MyToroCommandBar
-            menu={menu}
-            focusableCapabilities={view.focusableCapabilities}
-            currentFocus={view.focus?.capability ?? null}
-            availableSubmenus={view.availableSubmenus}
-            capabilityAlternatives={view.capabilityAlternatives}
-          />
-        ) : null}
-
-        {view.profileSummary.length ? (
-          <section className="mt-5 grid gap-3 md:grid-cols-3" aria-label="Resumen del contexto actual">
-            {view.profileSummary.map((item) => (
-              <article
-                key={item.label}
-                className="rounded-[1.5rem] border border-slate-800 bg-slate-950/70 p-4"
-              >
-                <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  {item.label}
-                </div>
-                <div className="mt-2 font-mono text-3xl font-bold text-white">{item.value}</div>
-                {item.detail ? (
-                  <div className="mt-1 text-xs text-slate-500">{item.detail}</div>
-                ) : null}
-              </article>
-            ))}
-          </section>
-        ) : null}
-
-        {view.focus ? (
-          <section className="mt-5 rounded-[2rem] border border-cyan-300/20 bg-slate-950/80 p-5 md:p-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-200">
-                  Focus · solo lectura
-                </div>
-                <h2 className="mt-1 text-2xl font-black text-white">{view.focus.label}</h2>
-              </div>
-              <Link
-                href="/my-toro"
-                className="inline-flex items-center gap-2 self-start rounded-full border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:border-cyan-300/30 hover:text-white"
-              >
-                Volver a Mi TORO
-              </Link>
-            </div>
-
-            {view.focus.items.length ? (
-              <div className="mt-5 grid gap-3">
-                {view.focus.items.map((item, index) => (
-                  <article
-                    key={`${item.title}-${index}`}
-                    className="rounded-2xl border border-slate-800 bg-black/25 p-4"
-                  >
-                    <div className="font-semibold text-white">{item.title}</div>
-                    {item.meta ? (
-                      <div className="mt-1 text-xs font-medium text-cyan-200/80">{item.meta}</div>
-                    ) : null}
-                    {item.detail ? (
-                      <p className="mt-2 text-sm leading-6 text-slate-400">{item.detail}</p>
-                    ) : null}
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-4 text-sm text-slate-400">
-                No hay elementos visibles en este contexto autorizado.
-              </p>
-            )}
-          </section>
-        ) : null}
-
-        <section className="mt-5 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5 md:p-6">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Tu menú</div>
-                <h2 className="mt-1 text-2xl font-black text-white">Lo que probablemente necesitas más</h2>
-              </div>
-              <Sparkles className="h-5 w-5 text-cyan-300" />
-            </div>
-
-            {menu?.items.length ? (
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {menu.items.map((item) => {
-                  const focusable =
-                    item.state === "READ_ONLY" &&
-                    view.focusableCapabilities.includes(item.capability);
-                  const card = (
-                    <div className="flex items-start gap-3">
-                      <div className="text-2xl">{item.emoji}</div>
-                      <div className="min-w-0 flex-1">
-                        <div className="font-semibold text-white">{item.label}</div>
-                        <div className="mt-1 text-xs leading-5 text-slate-500">
-                          {view.capabilityNotes[item.capability] ??
-                            (focusable
-                              ? "Toca para consultar"
-                              : "Todavía no disponible")}
-                        </div>
-                        {view.capabilityAlternatives[item.capability] ? (
-                          <div className="mt-3">
-                            <Link
-                              href={view.capabilityAlternatives[item.capability].href}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-1.5 text-xs font-semibold text-cyan-100 hover:border-cyan-300/40 hover:text-white"
-                            >
-                              {view.capabilityAlternatives[item.capability].label}
-                              <ArrowRight className="h-3.5 w-3.5" />
-                            </Link>
-                            <div className="mt-1.5 text-[11px] leading-4 text-slate-600">
-                              {view.capabilityAlternatives[item.capability].note}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                      <span
-                        className={[
-                          "rounded-full border px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em]",
-                          item.state === "READ_ONLY"
-                            ? "border-cyan-300/20 bg-cyan-300/10 text-cyan-100"
-                            : "border-slate-600 bg-slate-800/70 text-slate-300",
-                        ].join(" ")}
-                      >
-                        {statusLabel(item.state)}
-                      </span>
-                    </div>
-                  );
-
-                  return focusable ? (
-                    <Link
-                      key={item.key}
-                      href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
-                      className="rounded-2xl border border-slate-800 bg-black/25 p-4 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.05]"
-                    >
-                      {card}
-                    </Link>
-                  ) : (
-                    <article
-                      key={item.key}
-                      className="rounded-2xl border border-slate-800 bg-black/25 p-4"
-                    >
-                      {card}
-                    </article>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="mt-5 rounded-2xl border border-amber-300/15 bg-amber-300/[0.06] p-4 text-sm text-amber-100/80">
-                TORO resolvió tu contexto, pero todavía no hay un perfil de menú seguro para esta combinación de rol/puesto.
-              </div>
-            )}
-
-            <div className="mt-5 rounded-2xl border border-slate-800 bg-slate-900/40 p-4 text-sm leading-6 text-slate-300">
-              <strong className="text-white">Siguiente etapa:</strong> conectar estas opciones a sus lecturas reales una por una. Una opción no pasa a “lista” por estar visible; necesita fuente, permiso y evidencia runtime.
-            </div>
+        <nav aria-label="Accesos de Mi espacio" className={styles.jump}>
+          {available.length || alternatives.length || submenuParents.length ? <a href="#available-heading">Buscar y proyectos</a> : null}
+          {canViewOwnerAttention(view.context) ? <a href="#owner-attention-heading">Hoy y Finance</a> : null}
+          {hotelAllowed ? <a href="#hotel-heading">Equipo y herramientas</a> : null}
+        </nav>
+        <div className={styles.layout}>
+          <div className={styles.primary}>
+        {available.length || alternatives.length || submenuParents.length ? <section aria-labelledby="available-heading" className={styles.panel + " " + styles.paperPanel}>
+          <h2 id="available-heading" tabIndex={-1} className="text-lg font-bold">Buscar y consultas</h2>
+          <div className={styles.menu}>
+            {available.map(item => <Link key={item.key} href={`/my-toro?focus=${encodeURIComponent(item.capability)}`}
+              className="rounded-2xl border border-slate-700 p-4 hover:border-cyan-300/50 focus-visible:outline-2 focus-visible:outline-cyan-200">
+              <span className="font-semibold">{item.label} →</span>
+              <p className="mt-1 text-xs leading-5 text-slate-300">Consultar información disponible para tu cuenta.</p>
+            </Link>)}
+            {alternatives.map(item => {
+              const alternative = view.capabilityAlternatives[item.capability];
+              return <a key={item.key} href={alternative.href} target={alternative.external ? "_blank" : undefined} rel={alternative.external ? "noopener noreferrer" : undefined}
+                className="rounded-2xl border border-slate-700 p-4 hover:border-cyan-300/50 focus-visible:outline-2 focus-visible:outline-cyan-200">
+                <span className="font-semibold">{alternative.label} →</span>
+                <p className="mt-1 text-xs leading-5 text-slate-300">{alternative.note}</p>
+              </a>;
+            })}
           </div>
+          {menu ? <MyToroCommandBar menu={menu} focusableCapabilities={view.focusableCapabilities}
+            currentFocus={view.focus?.capability ?? null} availableSubmenus={view.availableSubmenus}
+            capabilityAlternatives={view.capabilityAlternatives} /> : null}
+        </section> : null}
 
-          <aside className="space-y-4">
-            <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5">
-              <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Contexto resuelto</div>
-              <div className="mt-4 space-y-3 text-sm">
-                <div className="flex justify-between gap-3 border-b border-slate-800 pb-3">
-                  <span className="text-slate-500">Puesto</span>
-                  <strong className="text-right text-white">{membership?.positionName ?? "No vinculado"}</strong>
-                </div>
-                <div className="flex justify-between gap-3 border-b border-slate-800 pb-3">
-                  <span className="text-slate-500">Código</span>
-                  <strong className="text-right font-mono text-cyan-200">{membership?.positionCode ?? "—"}</strong>
-                </div>
-                <div className="flex justify-between gap-3 border-b border-slate-800 pb-3">
-                  <span className="text-slate-500">Roles</span>
-                  <strong className="text-right text-white">{membership?.roles.join(", ") || "—"}</strong>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <span className="text-slate-500">Perfil menú</span>
-                  <strong className="text-right text-white">{roleLabel}</strong>
-                </div>
-              </div>
+        {view.focus ? <section aria-labelledby="focus-heading" className={styles.panel}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div><p className="text-xs text-cyan-200">Consulta</p><h2 id="focus-heading" tabIndex={-1} className="mt-1 text-xl font-bold">{view.focus.label}</h2></div>
+            <Link href="/my-toro#available-heading" prefetch={false} className={actionClass + " border border-slate-700"}>Volver al menú</Link>
+          </div>
+          {view.focus.coverage ? <p role="status" className="mt-3 text-sm text-slate-300">{view.focus.coverage}</p> : null}
+          {view.focus.items.length ? <div className={styles.projectGrid}>
+            {view.focus.items.map((item, index) => <article key={index} className={styles.project}>
+              <h3 className="font-semibold">{item.title}</h3>
+              {item.meta ? <p className="mt-1 text-xs text-cyan-200">{item.meta}</p> : null}
+              {item.detail ? <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p> : null}
+              {item.evidence ? <details className={styles.evidence}>
+                <summary className="min-h-11 cursor-pointer content-center font-semibold focus-visible:outline-2 focus-visible:outline-cyan-200">Evidencia permitida · {item.title}</summary>
+                <dl className={styles.fields}>
+                  <div><dt>Fuente autorizada</dt><dd>{item.evidence.source}</dd></div>
+                  <div><dt>Origen declarado por el registro</dt><dd>{item.evidence.reportedSource}</dd></div>
+                  <div><dt>Actualización del registro</dt><dd>{item.evidence.observedAt}</dd></div>
+                  <div><dt>Lectura del lote</dt><dd>{item.evidence.readAt}</dd></div>
+                </dl>
+                <p className="mt-3 text-xs leading-5 text-slate-400">Esta evidencia describe el registro autorizado. La fecha de lectura no certifica su vigencia ni abre documentos originales.</p>
+              </details> : null}
+            </article>)}
+          </div> : <p className="mt-4 text-sm text-slate-300">No hay elementos visibles para tu cuenta en esta consulta.</p>}
+        </section> : null}
+
+        {canViewOwnerAttention(view.context) ? (
+          <Suspense fallback={<p role="status" className="mt-5 text-sm text-slate-300">Cargando prioridades…</p>}>
+            <OwnerAttentionPanel context={view.context} />
+          </Suspense>
+        ) : null}
+          </div>
+          <aside className={styles.sidebar} aria-label="Accesos y cuenta">
+
+        {hotelAllowed ? <section aria-labelledby="hotel-heading" className={styles.panel + " " + styles.paperPanel}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="hotel-heading" className="text-xl font-semibold">Equipo y herramientas</h2>
+              <p className="mt-1 text-sm text-slate-300">Accesos revisados para tu contexto.</p>
             </div>
+            <Link href="/my-toro/herramientas#guide-catalogue-heading" className={actionClass + " border border-[#5d7fa9] bg-[#25486f] text-slate-100 hover:bg-[#305784]"}>Todos mis accesos <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+          {hotelLinks.length ? <>
+            <PortalToolLinks links={hotelLinks.slice(0, 6)} compact />
+            <p className={styles.note}>Accesos rápidos. Abre el directorio para ver todos; cada servicio conserva su sesión.</p>
+            {directory?.state !== "ready" ? <p role="status" className={styles.note}>Directorio parcial: solo accesos públicos revisados.</p> : null}
+          </> : <div role="status" className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-4">
+            <p className="font-semibold text-amber-100">{directory?.state === "denied" ? "Los accesos no están habilitados para esta sesión." : "La lista de accesos no está disponible ahora."}</p>
+            <p className="mt-1 text-sm text-slate-300">Puedes abrir la guía del turno y volver a intentar cargar los accesos.</p>
+          </div>}
+        </section> : null}
 
-            <div className="rounded-[2rem] border border-slate-800 bg-slate-950/70 p-5">
-              <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Qué puede leer TORO ahora</div>
-              {view.sourceReadiness?.readyReads.length ? (
-                <div className="mt-4 space-y-2">
-                  {view.sourceReadiness.readyReads.slice(0, 5).map((label) => (
-                    <div key={label} className="flex items-center gap-2 text-sm text-emerald-100">
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-300" />
-                      {label}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="mt-3 text-sm leading-6 text-slate-400">
-                  Todavía no hay una lectura de este menú promovida por evidencia de fuente.
-                </p>
-              )}
-
-              {view.sourceReadiness?.blockedReads.length ? (
-                <div className="mt-5 border-t border-slate-800 pt-4">
-                  <div className="text-xs font-semibold text-slate-500">Todavía falta una fuente actual</div>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {view.sourceReadiness.blockedReads.slice(0, 5).map((label) => (
-                      <span key={label} className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs text-slate-400">
-                        {label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="rounded-[2rem] border border-cyan-300/15 bg-cyan-300/[0.06] p-5">
-              <div className="flex items-center gap-2 text-sm font-semibold text-cyan-100">
-                <CheckCircle2 className="h-4 w-4" /> Probar conversación
-              </div>
-              <p className="mt-3 text-sm leading-6 text-slate-400">
-                El Experience Lab usa el mismo resolver para números, palabras y frases naturales, pero con respuestas sintéticas.
-              </p>
-              <Link
-                href="/experience-lab"
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-white"
-              >
-                Abrir Experience Lab <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </aside>
+        <section className="space-y-3" aria-label="Ayuda y opciones pendientes">
+          <details className={styles.panel}>
+            <summary className="min-h-11 cursor-pointer content-center font-semibold">Qué falta por conectar{pending.length ? ` · ${pending.length} opciones` : ""}</summary>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{hotelAllowed ? "Cobros y facturación siguen pendientes de validar. Para ocupación, pagos y habitaciones listas, consulta el sistema y confirma con el equipo." : "Aquí aparecerán las opciones cuando estén disponibles para tu cuenta."}</p>
+            {pending.length ? <ul className="mt-3 flex flex-wrap gap-2">{pending.map(item => <li key={item.key} className="rounded-xl border border-slate-700 px-3 py-2 text-sm text-slate-300">{item.label} · pendiente</li>)}</ul> : null}
+            {!menu ? <p className="mt-3 text-sm text-amber-100">Todavía no hay opciones asignadas a tu perfil de trabajo.</p> : null}
+          </details>
+          <details id="mi-cuenta" className="scroll-mt-4 rounded-2xl border border-slate-700 bg-slate-900/30 p-4">
+            <summary className="min-h-11 cursor-pointer content-center font-semibold">Mi cuenta y ayuda para entrar</summary>
+            <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
+              <div><dt className="text-slate-400">Entraste con</dt><dd className="mt-1 break-all text-white">{view.context.email ?? view.preferredDisplayName}</dd></div>
+              <div><dt className="text-slate-400">Tu perfil</dt><dd className="mt-1">{roleLabel}</dd></div>
+            </dl>
+            <p className="mt-4 text-sm leading-6 text-slate-300">Ya tienes sesión en TORO. Si otra herramienta pide acceso, usa tu cuenta de ese servicio. Entrar aquí no inicia sesión automáticamente en las demás.</p>
+            {isPortalDeployment() && view.context.availableOrgIds.length > 1 ? (
+              <form action={CONTEXT_SELECTION_ENDPOINT} method="post" className="mt-3">
+                <input type="hidden" name="intent" value="clear" />
+                <button type="submit" className={actionClass + " border border-slate-700 text-cyan-200"}>
+                  Cambiar de contexto
+                </button>
+              </form>
+            ) : null}
+            {!isPortalDeployment() ? <Link href="/onboarding" className={actionClass + " mt-3 border border-slate-700 text-cyan-200"}>Revisar mi perfil</Link> : null}
+            {view.profileSummary.length ? <details className="mt-4 border-t border-slate-700 pt-3">
+              <summary className="min-h-11 cursor-pointer content-center text-sm text-slate-300">Información de mi perfil</summary>
+              <dl className="mt-3 grid gap-3 sm:grid-cols-3">{view.profileSummary.map(item => <div key={item.label}><dt className="text-xs text-slate-400">{item.label}</dt><dd className="mt-1 font-semibold">{item.value}</dd>{item.detail ? <dd className="mt-1 text-xs text-slate-400">{item.detail}</dd> : null}</div>)}</dl>
+            </details> : null}
+            <details className="mt-4 border-t border-slate-700 pt-3"><summary className="min-h-11 cursor-pointer content-center text-sm text-slate-300">Detalles de acceso</summary>
+              <p className="mt-2 break-words text-sm text-slate-300">Puesto: {membership?.positionName ?? "Sin puesto vinculado"} · Roles: {membership?.roles.join(", ") || "Sin roles"}</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400">Las opciones dependen de tu cuenta y del negocio. Esta pantalla no cambia permisos ni registra tareas como terminadas.</p>
+            </details>
+          </details>
         </section>
+          </aside>
+        </div>
       </div>
     </main>
+    </>
   );
+}
+
+export default async function MyToroPage(props: Parameters<typeof MyToroContent>[0]) {
+  return <PrivateViewGuard>{await MyToroContent(props)}</PrivateViewGuard>;
 }

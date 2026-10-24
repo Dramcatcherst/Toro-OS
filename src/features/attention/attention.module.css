@@ -1,0 +1,20 @@
+.panel { border: 1px solid #2c3c53; border-radius: 12px; background: #101d30; padding: 16px; min-width: 0; }
+.panel h2 { color: #edf3fb; font-size: 17px; font-weight: 650; }
+.sources { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 14px; }
+.source { min-width: 0; border: 1px solid #30435d; border-radius: 8px; padding: 10px; background: #13243a; }
+.source strong { display: block; font-size: 19px; color: #edf3fb; font-variant-numeric: tabular-nums; }
+.source span { display: block; color: #b2c5dd; font-size: 11px; line-height: 1.5; }
+.list { margin-top: 14px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.item { min-width: 0; border: 1px solid #2c3c53; border-radius: 8px; padding: 6px 10px; }
+.item summary { min-height: 44px; cursor: pointer; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.item[open] { background: #17283e; }
+.item summary:focus-visible, .more summary:focus-visible { outline: 2px solid #a5d4ff; outline-offset: 3px; }
+.more { margin-top: 10px; border-top: 1px solid #30425a; }
+.more > summary { min-height: 44px; display: list-item; align-content: center; cursor: pointer; font-size: 12px; color: #b7d9ff; }
+.scope { margin-top: 14px; border-top: 1px solid #30425a; padding-top: 4px; }
+.sourceTable { width: 100%; font-size: 12px; line-height: 1.6; margin: 8px 0; border-collapse: collapse; }
+.sourceTable :is(th,td) { text-align: left; border-bottom: 1px solid #293b52; padding: 7px 6px; }
+.sourceTable th { color: #9bb6d8; font-weight: 500; }
+.sourceTable td { color: #c7d5e7; }
+@media (max-width: 760px) { .list { grid-template-columns: minmax(0,1fr); } }
+@media (max-width: 360px) { .source { padding: 7px; } .source span { font-size: 10px; } }
