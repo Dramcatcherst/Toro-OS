@@ -6394,3 +6394,18 @@ Objetivo: reconstruir los diez años cerrados y el ejercicio corriente del negoc
 - Evolución: cerrar el histórico, sostener cierre mensual y revisión semanal, evaluar financiación/estructura societaria con costos y cumplimiento, y mantener planes de capital y riesgo a varios años sin inventar cifras. Los ajustes se preparan sin contabilizar, presentar, pagar, ampliar accesos o contactar terceros sin autorización aplicable.
 - Reutilizar tareas, calendarios, automatización y checkpoint existentes. Reanudar una unidad verificable por pasada; actualizar evidencia y próximo paso, sin duplicar auditorías ni temporizadores. La publicación de esta regla es metodológica y excluye expedientes, identificaciones, saldos y datos privados.
 <!-- /FINANCE_RECONSTRUCTION_TEN_YEARS_20261024 -->
+
+
+<!-- BEGIN:PORTAL_UNIFIED_COMPACT_V1_20261024 -->
+### Expediente integrado y presentación compacta — 24/10/2026
+
+**Decisión de dirección:** integrar las vistas del expediente en el Portal TORO existente, dentro del ámbito y sesión autorizados. El dominio accesible públicamente no convierte datos personales, societarios, fiscales, bancarios o patrimoniales en contenido anónimo. Reutilizar identidad, contexto, menú, registros, custodia y lector acotado; no crear micrositio, dashboard, base, agenda o scheduler paralelo.
+
+**TARGET — diseño propuesto, no implementación ni despliegue:** [expediente privado y diseño compacto](../superpowers/specs/2026-10-24-private-casebook-portal-integration-design.md). Conservar la marca y dirección visual vigentes. Lista y detalle contextual en escritorio, filas desplegables en móvil, filtros por entidad/período/estado, columnas secundarias bajo detalle y estados de cobertura junto al dato. Reducir repetición y espacios vacíos conservando legibilidad, teclado, foco y controles accesibles. Personas físicas y jurídicas, bienes, bancos, fiscal, documentos y pendientes son vistas relacionadas de los mismos objetos; no cambian autoridad ni acceso por aparecer juntas.
+
+**Privacidad y fuente:** datos privados no se incluyen en assets estáticos, repositorio, HTML anónimo, metadata social ni respuestas compartidas. No devolver archivos o payloads de custodia completos al cliente ni inyectar HTML heredado dentro del origen de TORO. Permiso de una vista o rol del hotel no autoriza el patrimonio personal. Revisar el contrato de campos, ámbito y negativas antes de conectar datos reales; no ampliar grants/RLS/roles para conseguir una integración visual. No publicar identificaciones, saldos, documentos ni vínculos restringidos en este bloque.
+
+**Mejora continua:** el mismo seguimiento existente evalúa una mejora coherente de densidad, búsqueda, legibilidad o acceso a evidencia cuando haya autorización y progreso útil. Mantener corte, entidades, monedas, estados y fuentes concordantes en Portal/informe/Excel. No rediseñar todo en cada pasada ni inventar cuotas o mejoras cuantificadas. Conservar horario, destino, pausas y guardas de consumo; silencio sin cambio útil. Una configuración guardada no acredita ejecución remota o integración.
+
+**NEXT y aceptación:** aprobar el diseño y preparar el plan del primer lote sobre revisión vigente. Aceptación por registros/corte comparables, flujo lista→detalle→evidencia, anónimo/segunda identidad/otra organización/contexto, móvil y escritorio, CI y rollback del candidato exacto. La delegación de publicación rutinaria vigente se conserva con sus gates; no se pide de nuevo por documentar este diseño. El nuevo diseño no activa lectores privados, permisos, contabilización, pagos ni envíos.
+<!-- END:PORTAL_UNIFIED_COMPACT_V1_20261024 -->
