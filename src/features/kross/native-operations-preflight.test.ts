@@ -76,6 +76,14 @@ describe("Kross native operations preflight", () => {
     const result = preflightKrossNativeAction({ ...cleaning, context: { ...context, roomMappingVerified: false }, markedByAuthenticatedStaff: false }, NOW);
     expect(result.blockers).toEqual(expect.arrayContaining(["clean_mark_not_confirmed", "physical_room_mapping_not_verified"]));
   });
+  it("rejects invalid calendar days rather than normalizing them", () => {
+    const result = preflightKrossNativeAction({
+      ...cleaning,
+      context: { ...context, sourceAsOf: "2026-02-30T20:01:00Z" },
+    }, NOW);
+    expect(result.status).toBe("blocked");
+    expect(result.blockers).toContain("native_state_not_current");
+  });
   it("blocks native data older than the acceptance window", () => {
     const result = preflightKrossNativeAction({ ...cleaning, context: { ...context, sourceAsOf: "2026-10-23T20:01:00Z" } }, NOW);
     expect(result.blockers).toContain("native_state_not_current");
