@@ -412,3 +412,22 @@ Product Proof is successful when TORO can truthfully show:
 > A real business uses TORO to understand, coordinate and close meaningful work across multiple systems; TORO proves what happened, reduces owner intervention, and the same core can be instantiated for a second isolated business without rebuilding the product.
 
 At that point TORO may progress toward a controlled external pilot under the existing readiness gate.
+
+---
+
+## 16. Owner amendment — 2026-10-15: operating proof, access and cloud delivery
+
+The owner's renewed direction is captured in [TORO — Ampliación operativa, accesos y producto vendible](TORO_OPERATING_MODEL_AMENDMENT_2026-10-15.md). This is a subordinate requirement contract, not another master plan or runtime activation. Historical references to TORO Brain in this strategy denote the same TORO product; the current Constitution and brand contract remain authoritative.
+
+The amendment connects the existing operating proof to:
+- bounded, reversible email triage with human-action visibility and private evidence;
+- breakfast dispatch and maintenance follow-through before further interface expansion;
+- role-specific procedures, training and a simpler employee/guest portal;
+- PUMBA as coordinator and Work/Codex as verified, scoped executors, with at most three independent initial lanes;
+- cloud-first operation and an explicit PC-off continuity test;
+- an Access and Security surface backed by an approved secrets manager, never by plaintext passwords in TORO memory;
+- isolated business onboarding, customer cost metering, support, recovery, export and offboarding as commercialization evidence.
+
+Apply the detailed acceptance criteria to the existing workflow board and readiness gate. Do not create 100 new projects from candidate improvements. Do not market a capability as deployed because its specification exists. No secret, personal mailbox identifier, guest record or private operational receipt belongs in this public strategy.
+
+**Integration status:** the strategy-to-amendment link is part of this documentation change. A direct reference in the relevant General Plan section is a separate minimal-diff integration step; do not claim the master file, database, portal or Work runtime changed unless separately verified. External onboarding remains blocked until the existing gates pass and the required pilot approval is recorded.
