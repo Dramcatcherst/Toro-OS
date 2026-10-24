@@ -75,6 +75,14 @@ describe("evaluateNotificationSignal", () => {
     expect(first).not.toBe(property);
     expect(first).not.toBe(transport);
   });
+  it("quarantines impossible dates even if JavaScript Date.parse rolls them forward", () => {
+    const result = evaluateNotificationSignal({
+      ...base,
+      receivedAt: "2026-02-30T10:00:00Z",
+    }, now);
+    expect(result.state).toBe("quarantined");
+    expect(result.reasons).toContain("invalid_receipt_time");
+  });
   it("keeps a late event as historical signal, not a room update", () => {
     const result = evaluateNotificationSignal({ ...base, sourceEventAt: "2026-10-22T19:58:00Z" }, now);
     expect(result.state).toBe("signal_only");
