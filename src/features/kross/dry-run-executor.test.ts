@@ -454,6 +454,10 @@ describe("executeKrossDryRun", () => {
       manifest,
       baseRequest.nowIso,
       adapterConfig,
+      {
+        sourceReference: manifest.sourceReference,
+        sourceHash,
+      },
     );
 
     expect(result.status).toBe("completed");
@@ -482,6 +486,10 @@ describe("executeKrossDryRun", () => {
     ["wrong organization scope", { orgId: "org-b" }, "scope_mismatch"],
     ["wrong property scope", { propertyId: "property-b" }, "scope_mismatch"],
     ["non-SHA256 source hash", { sourceHash: "not-a-sha256" }, "invalid_source_hash"],
+    ["source reference drift", {
+      sourceReference: "synthetic://kross/sanitized-export/other",
+    }, "source_artifact_mismatch"],
+    ["source hash drift", { sourceHash: "c".repeat(64) }, "source_artifact_mismatch"],
     ["unconfirmed sanitization", {
       sanitization: {
         credentialsExcluded: true,
@@ -519,6 +527,10 @@ describe("executeKrossDryRun", () => {
       manifest,
       baseRequest.nowIso,
       adapterConfig,
+      {
+        sourceReference: "synthetic://kross/sanitized-export/2026-10-24",
+        sourceHash: "b".repeat(64),
+      },
     );
 
     expect(result.status).toBe("rejected");
