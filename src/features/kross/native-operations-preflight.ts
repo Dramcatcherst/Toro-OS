@@ -73,6 +73,10 @@ function validRef(x: unknown): x is string {
 function validTimestamp(x: unknown): number {
   if (typeof x !== "string" ||
     !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(x)) return NaN;
+  // Explicit date-only roundtrip prevents JS date rollover (e.g. Feb 30).
+  const datePart = x.slice(0, 10);
+  const calendar = Date.parse(datePart + "T00:00:00Z");
+  if (!Number.isFinite(calendar) || new Date(calendar).toISOString().slice(0, 10) !== datePart) return NaN;
   const n = Date.parse(x);
   return Number.isFinite(n) ? n : NaN;
 }
