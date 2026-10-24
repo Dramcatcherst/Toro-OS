@@ -67,6 +67,7 @@ export type KrossNormalizationIssue = {
     | "source_mapping_issue"
     | "invalid_guest_count"
     | "inconsistent_guest_count"
+    | "invalid_breakfast_entitlement"
     | "future_source_time"
     | "future_observed_time"
     | "missing_source_hash"
@@ -151,8 +152,16 @@ export function normalizeKrossReservationCandidate(
   const guestsCount = nonNegativeInteger(candidate.guestsCount);
   const adults = nonNegativeInteger(candidate.adults);
   const children = nonNegativeInteger(candidate.children);
-  if (guestsCount !== null && adults !== null && children !== null && (!Number.isSafeInteger(adults + children) || guestsCount !== adults + children)) {
+  // Supplied components establish a lower bound, even if another is unknown.
+  // This is a validation bound only; never fill in a missing count from it.
+  const knownGuestCount = (adults ?? 0) + (children ?? 0);
+  if (!Number.isSafeInteger(knownGuestCount) ||
+    (guestsCount !== null && (knownGuestCount > guestsCount ||
+      (adults !== null && children !== null && guestsCount !== knownGuestCount)))) {
     issues.push({ code: "inconsistent_guest_count", message: "Total guests conflicts with the supplied adult and child counts." });
+  }
+  if (candidate.breakfastIncluded !== null && candidate.breakfastIncluded !== undefined && typeof candidate.breakfastIncluded !== "boolean") {
+    issues.push({ code: "invalid_breakfast_entitlement", message: "Breakfast entitlement must be a boolean when supplied." });
   }
 
   if (!externalReservationId) {
