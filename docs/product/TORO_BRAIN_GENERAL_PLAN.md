@@ -6336,6 +6336,14 @@ Candidato de código y 50 controles con estados explícitos en [contrato de mant
 **Seguimiento único:** el heartbeat fiscal y patrimonial existente cierra una unidad por ejecución; usa consultas de correo dirigidas, deduplicación y cursores explícitos. Cobertura parcial no se comunica como auditoría de todos los buzones. Los extractores FIN-01 mantienen su propio alcance; no se activa otro scheduler ni se duplica la extracción de Registro. El calendario reutiliza agendas personales y empresariales separadas, con concepto, entidad, período, certeza del importe, fuente, responsable y acción; las revisiones internas no se presentan como vencimientos legales. No se envían invitaciones ni comunicaciones externas sin autorización.
 
 **Límite de publicación:** identidades, relaciones familiares, domicilios, identificadores, productos, importes financieros, enlaces privados y originales permanecen en el expediente restringido. Este bloque documenta únicamente el método operativo y no acredita elegibilidad para beneficios, derechos de retiro ni deuda personal. No presentar, pagar, retirar, contabilizar ni cambiar accesos.
+
+
+**Extensión del mismo expediente — FCL y jurídicas (24/10/2026):** las vistas de personas físicas y jurídicas comparten referencias y navegación, conservando identidades, titularidad y autoridad de cada dominio. Separar sociedades consultadas, ventas declaradas con cierre pendiente y bancos/acreedores de referencia; una entidad que aparece en una garantía o en el correo no se convierte en sociedad propia. Estado registral, cargo, participación y vínculo fiscal conservan fuente y corte independientes. Una ficha adicional derivada del expediente no equivale a una normalización ya aplicada a tablas canónicas ni a una consulta oficial nueva.
+
+**Beneficios personales y períodos:** para FCL y otras prestaciones, distinguir evidencia documental compatible, elegibilidad reconocida por la autoridad/operadora, saldo y monto disponible. La historia debe deduplicar períodos solapados y transacciones; contar transferencias no certifica meses cotizados ni continuidad contractual. El ahorro de ciclos cumplidos y de un nuevo ciclo no se fusiona como retiro aprobado. Calendario, reporte y siguiente acción deben reflejar la brecha de confirmación; ninguna mejora del sistema solicita retiros o mueve dinero.
+
+**Evolución operable:** reutilizar una ficha por país/tipo/identificador de entidad y relaciones fechadas persona–sociedad–activo/obligación–fuente–acción. Filtros por tipo, titular y estado, referencias a originales y exportación completa preservan detalle sin duplicar el Plan General. La interfaz de consulta no crea usuarios ni amplía permisos; cualquier consumidor futuro requiere el alcance existente y verificación de autorización por entidad. Mejorar una sección con evidencia y lectura posterior; no activar automatismos financieros ni nuevos extractores.
+
 <!-- END:PERSON_DOCUMENTARY_DOSSIERS_20261024 -->
 
 
