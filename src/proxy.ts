@@ -6,6 +6,7 @@ import { isPortalPagePath } from "@/features/auth/portal-paths";
 const portalReadApis = new Set(["/api/brain/context", "/api/brain/owner-attention"]);
 const portalContextSelectionApi = "/api/brain/context/selection";
 const portalAssets = new Set([
+  "/brand/toro/toro-logo-master-v1.jpg",
   "/brand/tools/whatsapp-official.svg", "/brand/tools/alegra-official.svg", "/brand/tools/google-calendar-official.svg",
   "/apple-icon.png", "/favicon.ico", "/icon.png", "/brand/tools/kross.png", "/brand/tools/wespeak.ico",
   "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg",

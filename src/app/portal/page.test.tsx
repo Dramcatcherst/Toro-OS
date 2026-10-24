@@ -97,6 +97,11 @@ it("presents the canonical structure without rendering fabricated links for pend
   expect(html).not.toContain("focus=finance");
   expect(html).toContain('role="tablist"');
   expect(html).not.toContain("Santa Toro");
+  expect(html).toContain('data-toro-master="verified"');
+  expect(html).toContain('src="/brand/toro/toro-logo-master-v1.jpg"');
+  expect(html).toContain("Abrir Mi espacio");
+  expect(html).not.toContain("Pide o busca");
+  expect(html).not.toContain("Sin señal");
 });
 
 it("does not read priorities when disabled or expose them to an auditor", async () => {
