@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 /**
  * Read-only Kross/WeSpeak notification guard. An alert is not PMS authority.
  * The calling trusted ingress must attest transport and resolve scope.
@@ -121,7 +123,7 @@ export function evaluateNotificationSignal(raw: unknown, nowIso: string): Notifi
     reasons,
     // Never guess that email and push describe the same reservation or guest.
     dedupeKey: reasons.length || !source || !kind || !orgId || !propertyId || !eventReference
-      ? null : JSON.stringify([orgId, propertyId, source, eventReference, kind]),
+      ? null : createHash("sha256").update(JSON.stringify([orgId, propertyId, source, eventReference, kind])).digest("hex"),
     freshness,
   };
 }
