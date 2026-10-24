@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeKrossReservationCandidate, type KrossTransportEvidence } from "./normalize-reservation";
+import { normalizeKrossReservationCandidate, type KrossReservationCandidate, type KrossTransportEvidence } from "./normalize-reservation";
 import { adaptKrossReservationPayload } from "./transport-adapter";
 
 const candidate = {
@@ -29,6 +29,60 @@ const evidence = {
 };
 
 describe("normalizeKrossReservationCandidate", () => {
+  it.each([
+    { guestsCount: 1, adults: 2, children: null },
+    { guestsCount: 1, adults: undefined, children: 2 },
+    { guestsCount: 0, adults: 1, children: undefined },
+  ])("keeps contradictory partial guest counts out of current truth: %j", counts => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, ...counts }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.reservation).toMatchObject({ source_is_live: false, data_quality_status: "review", guests_count: counts.guestsCount });
+    expect(result.issues.map(issue => issue.code)).toContain("inconsistent_guest_count");
+  });
+
+  it("keeps an unsafe component sum in review even when the total is absent", () => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, guestsCount: null, adults: Number.MAX_SAFE_INTEGER, children: 1 }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.reservation?.data_quality_status).toBe("review");
+    expect(result.reservation?.guests_count).toBeNull();
+    expect(result.issues.map(issue => issue.code)).toContain("inconsistent_guest_count");
+  });
+
+  it.each(["false", 0, {}, []])("does not verify an invalid direct breakfast entitlement: %j", breakfastIncluded => {
+    const malformed = { ...candidate, breakfastIncluded } as unknown as KrossReservationCandidate;
+    const result = normalizeKrossReservationCandidate(malformed, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.reservation).toMatchObject({ breakfast_included: null, source_is_live: false, data_quality_status: "review" });
+    expect(result.issues.map(issue => issue.code)).toContain("invalid_breakfast_entitlement");
+  });
+
+  it.each([
+    { guestsCount: 2, adults: 1, children: null },
+    { guestsCount: 2, adults: undefined, children: 0 },
+    { guestsCount: null, adults: Number.MAX_SAFE_INTEGER, children: 0 },
+  ])("preserves valid partial counts without inventing the missing value: %j", counts => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, ...counts }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(true);
+    expect(result.reservation).toMatchObject({ guests_count: counts.guestsCount, adults: counts.adults ?? null, children: counts.children ?? null });
+  });
+
+  it.each([true, false, null, undefined])("preserves a valid or unknown breakfast entitlement: %s", breakfastIncluded => {
+    const result = normalizeKrossReservationCandidate({ ...candidate, breakfastIncluded }, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(true);
+    expect(result.reservation?.breakfast_included).toBe(breakfastIncluded ?? null);
+  });
+
+  it("carries partial count contradictions through the configured transport adapter", () => {
+    const mapped = adaptKrossReservationPayload({ id: "R-partial", from: candidate.checkIn, to: candidate.checkOut, status: "confirmed", total: "1", adults: "2" }, {
+      orgId: candidate.orgId, propertyId: candidate.propertyId,
+      fieldMap: { externalReservationId: "id", checkIn: "from", checkOut: "to", status: "status", guestsCount: "total", adults: "adults" },
+    });
+    expect(mapped.issues).toEqual([]);
+    const result = normalizeKrossReservationCandidate(mapped.candidate!, evidence, "2026-09-23T18:02:00Z");
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.reservation).toMatchObject({ guests_count: 1, adults: 2, children: null, data_quality_status: "review" });
+  });
+
   it.each(["authorizedTransport", "directFromKross", "readOnly"])("does not promote malformed authority flag %s", key => {
     const malformed = { ...evidence, [key]: "false" } as unknown as KrossTransportEvidence;
     const result = normalizeKrossReservationCandidate(candidate, malformed, "2026-09-23T18:02:00Z");
