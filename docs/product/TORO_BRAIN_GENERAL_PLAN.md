@@ -86,6 +86,8 @@
 
 **Autoridades y ubicación:** Plan General único `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; contrato resumido y computable en `toro-context.yaml → owner_ai_wealth_strategy`. Portfolio `toro_os_portfolio_master`; ejecución `toro_executive_control`; hotel `dreamcatcher_hotel_master` con módulos ya existentes (`revenue_booking_stack`, operaciones, finanzas, web/canales, datos/integraciones). TORO Product Proof y TORO Governance conservan sus gates. No crea otro Plan General, agente, base, sistema de tareas, calendario ni programador.
 
+**Horizonte 2026–2036 — PROPUESTO:** consolidar a TORO como coordinador de gestión, control y continuidad mediante un catálogo privado de cien controles en diez dominios, subordinado a este Plan y a los proyectos existentes. Avanzar por capacidades y gates demostrados, sin calendarios anuales rígidos ni porcentajes de autonomía inventados. Las propuestas documentales no son implementaciones; decisiones, aprobaciones y responsabilidad legal permanecen en las personas competentes.
+
 ### Objetivo y filtro de decisión obligatorios
 
 - **Primero: P0 de seguridad, cumplimiento, datos comerciales, reservas y huéspedes.** El ROI nunca autoriza saltarse un deber legal, una sobreventa, la privacidad ni una incidencia física crítica.
