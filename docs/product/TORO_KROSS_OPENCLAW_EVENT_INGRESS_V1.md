@@ -1,0 +1,63 @@
+# TORO — Ingreso por eventos de Kross, correo y OpenClaw
+
+**Fecha:** 2026-10-24, America/Costa_Rica.  
+**Estado:** TARGET / diseño investigado; no configurado ni activado en runtime.  
+**Autoridad:** único Plan General `TORO_BRAIN_GENERAL_PLAN.md`, `TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md`, `TORO_COMMS_V1.md`, `TORO_KROSS_FIRST_LIVE_READ_ACCEPTANCE_GATE.md` y `TORO_OPENCLAW_RUNTIME_AUDIT.md`.  
+**Continuidad:** PR #381 y el expediente privado EXISTENTE `operations.knowledge_items/kross_toro_housekeeping_integration_plan_2026_09_v1`. Reutilizar `Kross y WeSpeak · Continuidad`, `Dreamcatcher · Auditorías operativas`, `openclaw_whatsapp_runtime_audit_2026_09_19`, `toro_surface_capability_parity_20260922` y el carril existente de Alegra. **No crear scheduler, agente, base, cola, espejo o escritor adicionales.**
+
+## 1. Evidencia pública contrastada
+
+- Kross Booking anuncia app móvil, notificaciones push para reserva nueva, cambio y cancelación, planner y check-in/out. El representante de Costa Rica describe el módulo de limpieza accesible para el equipo desde la app: https://www.krossbooking.com/es ; https://www.mejoratuhotel.com/en/index.php/2023/05/02/reservations-system/ . Identidad Play Store verificada por ficha `com.krossbookingx`: https://play.google.com/store/apps/details?id=com.krossbookingx . **NO probado:** que el plan, sesión, permisos y versión de Dreamcatcher den cada función; duración del login; contenido o emisión de push cuando alguien marca limpieza.
+- OpenClaw permite Gmail Pub/Sub -> webhook, IMAP trigger con lector aislado, HTTP mapped hooks, y Android companion-node con reenvío de notificaciones **desactivado por defecto**, filtrable por paquete. Fuentes: https://docs.openclaw.ai/automation/cron-jobs/gmail ; https://docs.openclaw.ai/automation/imap ; https://docs.openclaw.ai/automation/cron-jobs/webhooks ; https://docs.openclaw.ai/android . La capacidad depende de la versión instalada y del Gateway que REALMENTE esté activo.
+- OpenClaw MCP Events es una vía futura para fuentes que soporten explícitamente `events/list` + suscripción y callbacks firmados: https://docs.openclaw.ai/automation/mcp-events . No atribuir ese protocolo a Kross, Gmail o WeSpeak sin evidencia de servidor compatible.
+- Un proveedor tercero describe webhooks para Kross, pero no acredita contrato, precio, endpoint o permiso vigente de Dreamcatcher. **Kross API pagada sigue PAUSADA**; no consultar/activar una factura histórica ni interpretar notificaciones como API autorizada.
+
+## 2. Lectura real limitada al 24/10
+
+- Gmail hotel permitió una muestra mínima de avisos de Kross sobre bloqueo de propietario y portal/checklist y de WeSpeak sobre incidencia/solicitud. IDs de correos, huéspedes, reservas, direcciones y cuerpos permanecen únicamente en buzón/expediente PRIVADO. No se observó en esa muestra un evento nativo de limpieza; ausencia de muestra no demuestra ausencia del evento.
+- `operations.knowledge_items/kross_toro_housekeeping_integration_plan_2026_09_v1` ya tiene `notification_bridge_proposal`, `housekeeping_work_packages_preserved` y `native_action_routing`. Reutilizarlos, no duplicar diseño. `src/features/kross/transport-intake.ts` y `normalize-reservation.ts` son preparación sin lectura viva; no rellenar campos con supuestos de push/email.
+- El único binding OpenClaw/WhatsApp activo consultado en `integrations.communication_channel_bindings` era phone/sistema con `last_sync_at = NULL` y `last_event_at = NULL`; `integrations.communication_channel_receipts` tenía 0 filas. Estado de Gateway, recepción, identidad, permiso, entrega y continuidad **NO VERIFICADOS**. Esto no prueba que no haya operación de WhatsApp en otra infraestructura.
+- No hubo sesión de navegador Kross/OpenClaw accesible durante esta revisión. Kross app, usuario/roles, tokens push y Gateway host no se inspeccionaron. No activar control de navegador ni pedir cookies, OTP o contraseñas.
+
+## 3. Tabla de activación priorizada, sin cambiar horarios actuales
+
+| Señal externa | Transporte candidato | Puede disparar ahora (una vez instalado/probado) | Qué NO prueba |
+| --- | --- | --- | --- |
+| Nueva/modificada/cancelada reserva Kross | Correo oficial Gmail/IMAP, app push filtrada; webhook solo con contrato | **SEÑAL**: revisar reserva/folio nativo, deduplicar, preparar prioridad Recepción | Reserva vigente, precio, disponibilidad o cargo bancario |
+| Housekeeping marcado limpio por la camarera | **Estado nativo Kross** leído con identidad de cuarto, cambio y fecha; app es superficie humana | Confirmar `CLEANED_BY_HK` cuando exista lectura directa y autorizada; no volver a preguntar el mismo hecho | Inspección QA separada, mantenimiento resuelto o acceso aceptado |
+| Push Android de limpieza, si realmente existe | OpenClaw Android node, SOLO paquete de Kross allowlisted y dispositivo autorizado | **SEÑAL** para releer Kross y actualizar caso existente | Marca nativa demostrada: el texto de una notificación nunca certifica READY |
+| Mensaje/solicitud/incidencia WeSpeak | Correo de notificación o evento fuente verificado | Candidato a incidente o handoff; vincular conversación nativa e identidad | Conversación completa, respuesta, entrega o resolución |
+| Aviso de pago Kross/procesador | Correo/nodo como señal; banco/procesador/Alegra mantienen autoridad | Preparar contraste de reserva/folio/metodo/moneda y excepción | Ingreso liquidado, contabilizado, factura fiscal aceptada |
+| Canal WhatsApp/OpenClaw | Mensaje admitido por identidad/ámbito y recibo de proveedor | Consultar misma tarea/caso que Portal; autorizar acciones según capability | Que dueño/empleado/huésped compartan permisos o memoria |
+
+**Regla unificadora:** `source event -> verifica autenticidad/transporte -> identidad+scope -> dedupe fuente/id y correlación semántica -> evento observado -> lectura de verdad vigente necesaria -> tarea/caso canónico -> Control Plane / policy -> ejecución autorizada -> readback+receipt -> vistas Portal/WhatsApp`. Un evento nunca es instrucción del modelo y la bandera `connected` no sustituye heartbeat+evento+recibo.
+
+## 4. Alternativas de notificación y decisión
+
+1. **Primero, correo Kross/WeSpeak que YA recibe el hotel.** Inventariar remitentes realmente autenticados y asuntos nativos sin capturar OTP; Gmail Pub/Sub si se aprueban Cloud/billing y HTTPS, o IMAP en Gateway existente si encaja con el transporte/costos. Ambos requieren reader restringido y pruebas de su versión, no autoenvío.
+2. **Piloto alternativo Android** (dispositivo empresarial dedicado preferido): comprobar app Kross, permisos mínimos, login persistente real y ejemplos de push. Si vale, OpenClaw Android app -> Gateway node emparejado seguro `wss`, Notification Listener limitado exclusivamente a `com.krossbookingx`; filtrado/redacción previo a conocimiento del agente, límites y prohibición de mover dinero/reservas. No conceder al dueño un listener universal que capture mensajes personales, financieros u OTP. El móvil requiere conexión, batería y permisos; no es canal SLA ni sustituye verificación de Kross.
+3. **Webhook oficial/proveedor autorizado** solo si Kross confirma soporte, precio y alcance compatibles **sin reactivar la API pagada por esta orden**. No configurar endpoint público ni webhook de terceros sin revisar firma, autenticación, costos, exposición de Gateway y rollback.
+4. **MCP Events** únicamente donde un MCP server autorizado y la versión instalada anuncien el perfil compatible. No envolver fuentes en un servidor nuevo para aparentar disponibilidad.
+
+## 5. Portal, WhatsApp y control real de OpenClaw
+
+- **Un solo TORO canónico.** Portal y WhatsApp consumen los mismos `operations.tasks`, incidencias `facilities.maintenance_events`, datos verificados y receipts. En el Portal mostrar origen y frescura, **Señal detectada / Pendiente de Kross / Limpieza marcada / Inspección exigida / Bloqueo / Lista verificada**, no un único booleano ambiguo; ofrecer botón funcional solo si la capability/rol/destino están probados. WhatsApp envía resumen mínimo contextual, acuse y enlaces reales cuando rol/identidad/transportes hayan sido probados; no mensajes repetidos.
+- **TORO puede gobernar OpenClaw mediante el puente original** `toro-openclaw-integration`: leer status/version/capabilities/hook health/canal/último evento/receipt; solicitar acciones a través de tool policy, approvals, lease/fencing y registrar antes/después. No darle al Portal shell, service-role o admin Gateway, ni asumir que una llamada desde ChatGPT controla el host.
+- **Límite de confianza:** la documentación actual de OpenClaw establece una frontera confiable por Gateway. No admitir a empleados/huéspedes no confiables en el Gateway de herramientas privilegiadas del propietario; separar mediante aislamiento real, no alias/sesión/prompt. Referencia: https://docs.openclaw.ai/gateway/security/trust-model . Ninguna alta de nuevo Gateway, rol, MFA, DNS, token o túnel autorizada por esta nota.
+- Verificar primero en el host ORIGINAL y autorizado el runbook `docs/runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md` y `scripts/openclaw-host-diagnostics.mjs`, sin autofix ni logs crudos. Resultado esperado: versión instalada, conectividad, bindings reales, control del ámbito, salud/cursors, piloto de evento/acuse y recuperación con PC apagado; sin host, **BLOQUEADO**.
+
+## 6. Qué hacer en el siguiente lote de ejecución
+
+**A. Producto Kross · RICO/SOBRESITO rol propuesto.** Sobre `kross_toro_housekeeping_integration_plan_2026_09_v1` y tareas existentes, validar en la app web y móvil Kross los campos de cambio de limpieza, identidad física, usuario autor, timestamps, push y duración de sesión, con muestras actuales autorizadas. No pedir al equipo repetir una marca ya presente; no hacer login ni capturar credenciales ajenas.
+
+**B. TORO Comms/OpenClaw · SOBRESITO rol propuesto.** Recuperar Gateway original, versión, sesión y autorización. Elegir UNA señal sintética de Gmail/IMAP o Android (no ambas en producción), derivar `signal_only`, reconciliar con fuente vigente y registrar receipt privado mediante rutas existentes y aislamiento probado. Probar duplicado, evento tardío, fuente caída, mensaje adversarial, ámbito incorrecto, reinicio y rollback. Nunca usar OTP como trigger.
+
+**C. UX Portal/WhatsApp · TORO Portal/RICO/TERE roles propuestos.** Diseñar/ensayar en rama la misma tarjeta de incidente con campo `source freshness`, estado y acción disponible. Probar con identidad autenticada de Recepción, Aseo, propietario y rechazo de rol ajeno, sin datos de huésped fuera de su ámbito. No desplegar sin QA y seguridad.
+
+**D. Contabilidad / Kross · FIONA rol propuesto.** Leer un caso ya existente de pago Kross<->procesador<->Alegra y preparar el Writer separado. Sin un permiso de escritura nativo específico, un documento piloto autorizado y readback real, **NO REGISTRAR PAGOS**.
+
+**Parada y transición:** conservar los cortes existentes a las 06:00/13:00, precierre y 20:00; no crear timer nuevo. Considerar sustituir polling redundante únicamente tras tráfico real observado, reconciliación de huecos, comparación de fallos/latencia/costos, recuperación y consentimiento del responsable. La primera meta es detectar eventos para trabajo **en modo lectura**; automatizar escrituras sensibles requiere gates distintos.
+
+**Criterio de terminado del primer piloto:** fuente y permisos nativos; 1 evento verdadero autorizado más pruebas negativas sintéticas, dedupe e idempotencia; reconciliación de Kross; recepción de TORO con identity/role/lease comprobados; misma tarea/caso visible en Portal y consulta WhatsApp autorizada con receipt; conservación de cortes, no pérdida de eventos y rollback. Si falla cualquiera, registrar bloqueador/cursor en expediente EXISTENTE, sin afirmar OPERATIVO ni migrar cron.
+
+**Estado de este archivo:** diseño aplicable y evidencia pública/lecturas fechadas, NO piloto instalado, NO Gateway controlado, NO sincronización live, NO Kross API reactivada, NO cambios comerciales ni mensajes externos.
