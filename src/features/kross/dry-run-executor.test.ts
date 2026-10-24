@@ -510,6 +510,15 @@ describe("executeKrossDryRun", () => {
         guest: { email: "synthetic@example.invalid" },
       }],
     }, "unmapped_fields_present"],
+    ["array-hidden guest contact on a mapped scalar path", {
+      rows: [{
+        ...payload(),
+        reservation: {
+          ...payload().reservation,
+          id: ["K-100", { email: "synthetic@example.invalid" }],
+        },
+      }],
+    }, "unmapped_fields_present"],
     ["unexpected top-level credential field", {
       credential: "synthetic-secret",
     }, "unexpected_manifest_fields"],
