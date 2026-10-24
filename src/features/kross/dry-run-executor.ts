@@ -222,12 +222,18 @@ export type KrossSanitizedExtractIssue =
   | "scope_missing"
   | "scope_mismatch"
   | "invalid_source_hash"
+  | "source_artifact_mismatch"
   | "invalid_source_time"
   | "row_count_mismatch"
   | "sanitization_unconfirmed"
   | "invalid_field_map"
   | "field_map_mismatch"
   | "invalid_rows";
+
+export type KrossSanitizedExtractExpectedArtifact = {
+  sourceReference: string;
+  sourceHash: string;
+};
 
 export type KrossSanitizedExtractDryRunResult = {
   mode: "dry_run";
@@ -252,6 +258,7 @@ export function executeKrossSanitizedExtractDryRun(
   rawManifest: unknown,
   nowIso: string,
   expectedConfig: KrossReservationAdapterConfig,
+  expectedArtifact: KrossSanitizedExtractExpectedArtifact,
 ): KrossSanitizedExtractDryRunResult {
   const issues: KrossSanitizedExtractIssue[] = [];
   const manifest = record(rawManifest) ? rawManifest : {};
@@ -276,6 +283,18 @@ export function executeKrossSanitizedExtractDryRun(
   const sourceHash = invalidEnvelopeText(manifest.sourceHash);
   if (!sourceReference || !sha256Pattern.test(sourceHash)) {
     issues.push("invalid_source_hash");
+  }
+
+  const expectedSourceReference = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceReference)
+    : "";
+  const expectedSourceHash = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceHash)
+    : "";
+  if (!expectedSourceReference || !sha256Pattern.test(expectedSourceHash) ||
+    sourceReference !== expectedSourceReference ||
+    sourceHash.toLowerCase() !== expectedSourceHash.toLowerCase()) {
+    issues.push("source_artifact_mismatch");
   }
 
   const sourceAsOf = invalidEnvelopeText(manifest.sourceAsOf);
