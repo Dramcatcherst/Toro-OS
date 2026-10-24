@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { evaluateKrossTransportIntake } from "./transport-intake";
+import { evaluateKrossTransportIntake, type KrossTransportIntake } from "./transport-intake";
 
 const base = {
   providerName: "Kross Booking",
@@ -28,6 +28,44 @@ const base = {
 };
 
 describe("evaluateKrossTransportIntake", () => {
+  it.each(["readOnlyConfirmed", "authorizedByProvider", "sourceTimestampAvailable", "externalReservationIdentityAvailable", "fieldMapReady", "approvedForFirstRead"])("requires literal true for %s", key => {
+    const input = { ...base, [key]: "false" } as unknown as KrossTransportIntake;
+    const result = evaluateKrossTransportIntake(input);
+    expect(result.readyForFirstAuthorizedRead).toBe(false);
+    expect(typeof result.validForReservationReadPreparation).toBe("boolean");
+    expect(typeof result.readyForFirstAuthorizedRead).toBe("boolean");
+  });
+
+  it("does not claim support from malformed capability flags", () => {
+    const input = { ...base, reservationsSupported: "true", currentStaysSupported: false, arrivalsDeparturesSupported: false, liveRatesSupported: "true", liveAvailabilitySupported: false } as unknown as KrossTransportIntake;
+    const result = evaluateKrossTransportIntake(input);
+    expect(result.validForReservationReadPreparation).toBe(false);
+    expect(result.validForRateAvailabilityPreparation).toBe(false);
+    expect(result.readyForFirstAuthorizedRead).toBe(false);
+  });
+
+  it.each([undefined, "unknown", 0])("blocks unknown runtime billing %j", billing => {
+    const result = evaluateKrossTransportIntake({ ...base, billableActivationRequired: billing } as unknown as KrossTransportIntake);
+    expect(result.readyForFirstAuthorizedRead).toBe(false);
+    expect(result.issues.map(issue => issue.key)).toContain("billing_unknown");
+  });
+
+  it.each(["ftp", undefined])("blocks unknown transport kind %s", kind => {
+    const result = evaluateKrossTransportIntake({ ...base, transportKind: kind } as unknown as KrossTransportIntake);
+    expect(result.readyForFirstAuthorizedRead).toBe(false);
+    expect(result.issues.map(issue => issue.key)).toContain("transport_kind");
+  });
+
+  it.each([Infinity, NaN, 0, -1, "60"])("rejects malformed scheduled-export cadence %s", frequency => {
+    const result = evaluateKrossTransportIntake({ ...base, transportKind: "scheduled_export", exportFrequencyMinutes: frequency } as unknown as KrossTransportIntake);
+    expect(result.readyForFirstAuthorizedRead).toBe(false);
+    expect(result.issues.map(issue => issue.key)).toContain("export_frequency");
+  });
+
+  it.each([60, 0.5])("accepts a finite positive scheduled-export cadence %s", frequency => {
+    expect(evaluateKrossTransportIntake({ ...base, transportKind: "scheduled_export", exportFrequencyMinutes: frequency }).readyForFirstAuthorizedRead).toBe(true);
+  });
+
   it("accepts a fully documented read-only reservation transport for first-read preparation", () => {
     const result = evaluateKrossTransportIntake(base);
 

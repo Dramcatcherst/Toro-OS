@@ -1,4 +1,7 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import Link from "next/link";
+import { PortalSignOut } from "@/features/auth/portal-sign-out";
+import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 import { Suspense } from "react";
 
 import { canViewOwnerAttention } from "@/features/attention/owner-attention";
@@ -38,7 +41,7 @@ const profileLabels: Record<string, string> = {
   employee_general: "Empleado",
 };
 
-export default async function MyToroPage({
+async function MyToroContent({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -50,7 +53,13 @@ export default async function MyToroPage({
   const requestedFocus =
     typeof params.focus === "string" ? params.focus : null;
   const contextError = params.context === "invalid";
-  const view = await resolveCurrentToroReadOnlyMenu(requestedFocus);
+  let view;
+  try { view = await resolveCurrentToroReadOnlyMenu(requestedFocus); }
+  catch {
+    return <main className={styles.accessScreen}><div className={styles.accessBox}>
+      <PortalAccessRecovery retryPath="/my-toro" />
+    </div></main>;
+  }
 
   if (!view) {
     return (
@@ -71,6 +80,7 @@ export default async function MyToroPage({
           >
             <LogIn className="h-4 w-4" /> Iniciar sesión
           </Link>
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );
@@ -125,6 +135,7 @@ export default async function MyToroPage({
           {portalDeployment ? <p className={styles.contextNote}>
             TORO volverá a validar tu membresía antes de mostrar información del contexto elegido.
           </p> : null}
+          <PortalSignOut className={styles.personalLink} />
         </div>
       </main>
     );
@@ -134,7 +145,7 @@ export default async function MyToroPage({
   const menu = view.menu;
   const roleLabel = menu ? profileLabels[menu.profileId] ?? "Mi equipo" : "Mi cuenta";
   const hotelAllowed = canReadHotelDirectory(view.context);
-  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true}) : null;
+  const directory = hotelAllowed ? await loadHotelDirectory({includeApprovedNavigation:true,expectedContext:view.context}) : null;
   const hotelLinks = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true) ? directory.links : [];
   const available = menu?.items.filter(item =>
     item.state === "READ_ONLY" && view.focusableCapabilities.includes(item.capability),
@@ -281,4 +292,8 @@ export default async function MyToroPage({
     </main>
     </>
   );
+}
+
+export default async function MyToroPage(props: Parameters<typeof MyToroContent>[0]) {
+  return <PrivateViewGuard>{await MyToroContent(props)}</PrivateViewGuard>;
 }

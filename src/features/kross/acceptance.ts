@@ -32,15 +32,16 @@ export type KrossLiveReadAcceptanceResult = {
 export function evaluateKrossFirstLiveRead(
   input: KrossLiveReadAcceptanceInput,
 ): KrossLiveReadAcceptanceResult {
+  const validCount = (value: number) => Number.isSafeInteger(value) && value >= 0;
   const checks: KrossAcceptanceCheck[] = [
     {
       key: "authorized_real_run",
-      passed: input.authorizedRealRunEvidenced,
+      passed: input.authorizedRealRunEvidenced === true,
       detail: "A real authorized Kross import/read run is evidenced.",
     },
     {
       key: "read_only",
-      passed: input.runReadOnly,
+      passed: input.runReadOnly === true,
       detail: "The run is proven read-only.",
     },
     {
@@ -50,7 +51,7 @@ export function evaluateKrossFirstLiveRead(
     },
     {
       key: "idempotent_replay",
-      passed: input.idempotentReplayPassed,
+      passed: input.idempotentReplayPassed === true,
       detail: "Replaying the same source does not create a second reservation.",
     },
     {
@@ -66,26 +67,27 @@ export function evaluateKrossFirstLiveRead(
     {
       key: "live_evidence",
       passed:
-        input.sourceIsLiveEvidenceVerified &&
+        input.sourceIsLiveEvidenceVerified === true &&
+        validCount(input.safeCurrentHealthSources) &&
         input.safeCurrentHealthSources > 0,
       detail: "source_is_live is evidence-backed and Kross health is current-safe.",
     },
     {
       key: "current_state_truth",
-      passed: input.eligibleCurrentReservationExpected
-        ? input.currentReservationsSafeRows > 0
-        : input.zeroCurrentStateProvenFromKross,
+      passed: validCount(input.currentReservationsSafeRows) && (input.eligibleCurrentReservationExpected === true
+        ? input.currentReservationsSafeRows > 0 && input.zeroCurrentStateProvenFromKross === false
+        : input.eligibleCurrentReservationExpected === false && input.zeroCurrentStateProvenFromKross === true && input.currentReservationsSafeRows === 0),
       detail:
         "Current reservation presence/absence is proven from Kross authority.",
     },
     {
       key: "reception_rls",
-      passed: input.receptionRlsReadPassed,
+      passed: input.receptionRlsReadPassed === true,
       detail: "Authorized Reception can read the safe projection under RLS.",
     },
     {
       key: "private_data_isolation",
-      passed: input.unauthorizedReservationReadBlocked,
+      passed: input.unauthorizedReservationReadBlocked === true,
       detail: "Unauthorized roles cannot read private reservation state.",
     },
     {
@@ -95,7 +97,7 @@ export function evaluateKrossFirstLiveRead(
     },
     {
       key: "rollback",
-      passed: input.rollbackEvidencePresent,
+      passed: input.rollbackEvidencePresent === true,
       detail: "Recovery/rollback evidence exists.",
     },
   ];

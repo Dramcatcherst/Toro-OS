@@ -102,6 +102,8 @@ Record:
 
 Inspect sanitized config.
 
+**Trust-boundary gate first (22/10/2026):** per-peer/account sessions separate context; they do not isolate mutually untrusted users from a shared Gateway's tools, filesystem, secrets or unsandboxed session readers. Confirm the [official trust model](https://docs.openclaw.ai/gateway/security/trust-model) against the installed version. Keep employee/guest ingress away from the owner's privileged agent; if a real boundary cannot be demonstrated, mark rollout BLOCKED. Do not infer safety from agent names or create another Gateway during this audit. The same-brain product contract retains one TORO identity/governance model across appropriately isolated ingress.
+
 Required for TORO multi-user ingress:
 
 ```json5
@@ -175,6 +177,8 @@ Check:
 - gateway administration;
 - cross-agent session tools;
 - elevated execution.
+
+Also inspect effective cross-agent session visibility, agent-to-agent delegation and cross-provider/conversation sends. Current online defaults can expose more than the intended conversation. Validate supported keys with the installed CLI/schema before changing anything; do not run automatic fixes or record raw session/config contents.
 
 No employee/group channel should inherit founder/host-admin tool privileges.
 
@@ -345,11 +349,12 @@ Run on the existing authorized Gateway host, with its actual profile. These comm
 openclaw --version
 openclaw gateway status
 openclaw channels status --channel whatsapp --probe --json
+openclaw health --verbose --json --timeout 10000
 openclaw status --deep
 openclaw channels capabilities --channel whatsapp --json
 ```
 
-For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether the WhatsApp probe is **live** and successful, and any error category. A config-only fallback or `starting` is not a pass; wait for the Gateway to become ready and repeat the probe. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
+For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether an explicit provider probe/audit succeeded when supported, and the result of the forced live Gateway health snapshot. The current WhatsApp adapter does not expose `probeAccount` or `auditAccount`; therefore absence of those fields is not a pass or a failure by itself, and `channels status --probe` is supplemental. For the supported path, require a fresh `openclaw health --verbose --json` timestamp and every target WhatsApp account to be configured, linked, running, connected and lifecycle `ready`, with no unhealthy or ingress-failure state. A config-only fallback, stale/future health timestamp, `starting`, or ordinary runtime flags outside that forced live health snapshot is not a pass. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
 
 Only after M01 passes and the target account and owner allowlist are confirmed, Mauricio can send `/status` as a standalone message from his own phone to the verified TORO test chat. It asks for channel status and does not itself establish TORO identity. For M02, send a harmless read-only owner request and inspect the real inbound sender mapping: exact channel account + sender ID -> canonical Mauricio user + Dreamcatcher organization + active membership; refuse display-name or message-text authorization. Record provider message ID, correlation ID and masked identifiers; no employee, guest or production writes. If identity or personal/work isolation fails, stop before testing tasks.
 
@@ -369,3 +374,4 @@ Aplicar TORO Comms sección 19 y la misma lane #122/#170/#209. Mantener endpoint
 Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominador, conteos de capturados/procesados/archivados/excepciones, checksums, cobertura, última sync confirmada, resultados de replay/negativas/restore y referencias privadas. Sin cuerpos de chat, teléfonos completos, grupo IDs, auth directories, QR/tokens o datos de terceros en GitHub.
 
 Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.
+

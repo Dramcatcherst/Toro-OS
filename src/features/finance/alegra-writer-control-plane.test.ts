@@ -6,17 +6,19 @@ import { evaluateAlegraDuplicatePreflight } from "./alegra-writer-dedupe";
 import { createAlegraControlPlaneGate, recoverExpiredAlegraLease } from "./alegra-writer-control-plane";
 import { executeApprovedAlegraIntent, type AlegraWriterReceipt } from "./alegra-writer-executor";
 
-const intent = prepareAlegraWriteIntent({ scope: { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity" }, evidence: { sourceRefs: ["fixture:original"], evidenceHash: "fixture-byte-hash" }, payload: { targetType: "purchase_bill", documentNumber: "fixture-1", issuerTaxId: "fixture-emitter", receiverTaxId: "fixture-receiver", currency: "USD", total: "1.00", accountNativeId: "fixture-account", costCenterNativeId: "fixture-center" } });
+const intent = prepareAlegraWriteIntent({ scope: { tenantId: "fixture-tenant", orgId: "fixture-org", legalEntityKey: "fixture-entity" }, evidence: { sourceRefs: ["fixture:original"], evidenceHash: "fixture-byte-hash" }, payload: { targetType: "purchase_bill", documentNumber: "fixture-1", issuerTaxId: "fixture-emitter", receiverTaxId: "fixture-receiver", issueDate: "2026-10-11", dueDate: "2026-10-21", currency: "USD", total: "1.00", accountNativeId: "fixture-account", costCenterNativeId: "fixture-center" } });
 const approval = { approvalId: "fixture-approval", approvalReceiptId: "fixture-approval-receipt", actorId: "fixture-owner", approvedAt: "2026-10-11T00:30:00Z", expiresAt: "2026-10-11T00:45:00Z", decisionId: "fixture-decision", decisionRevision: "2026-10-11T00:30:00Z", state: "approved" as const, payloadHash: intent.payloadHash };
 const run = { id: "fixture-run", orgId: "fixture-org", taskId: "fixture-task", decisionId: "fixture-decision", runKey: "fixture-run-key", idempotencyKey: intent.idempotencyKey, correlationId: "fixture-correlation", traceId: null, actorKind: "human", actorRef: "fixture-owner", dotRef: null, agentRef: null, actionKey: intent.action, targetSystem: "alegra", executionAuthorityLevel: "L3", businessRisk: "High", status: "queued", verificationStatus: "pending", attemptCount: 0, maxAttempts: 1, leaseOwner: null, fencingToken: 0, leaseExpiresAt: null } satisfies ToroWorkerRun;
 const receipt: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "fixture-bill", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: "2026-10-11T00:30:00Z" };
 const clearDuplicates = evaluateAlegraDuplicatePreflight({
   intent,
   candidates: [],
+  now: "2026-10-11T00:30:00Z",
+  maxAgeMs: 60_000,
   sourceStates: [
-    { source: "toro", coverage: "complete" },
-    { source: "alegra", coverage: "complete" },
-    { source: "receipt", coverage: "complete" },
+    { source: "toro", coverage: "complete", checkedAt: "2026-10-11T00:30:00Z" },
+    { source: "alegra", coverage: "complete", checkedAt: "2026-10-11T00:30:00Z" },
+    { source: "receipt", coverage: "complete", checkedAt: "2026-10-11T00:30:00Z" },
   ],
 });
 

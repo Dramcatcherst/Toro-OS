@@ -255,3 +255,19 @@ test('experience resume does not disclose injected source data or mutate its inp
 test('experience resume returns repeatable read decisions without creating effects',()=>{
   assert.deepEqual(prepareResume(resumeInput()),prepareResume(resumeInput()));
 });
+
+test('session draft rejects timezone-free expiry', () => {
+  assert.equal(validateChannelSessionDraft({ ...draft(), expiresAt: '2026-10-21T12:00:00' }).ok, false);
+});
+test('session draft rejects normalized impossible calendar expiry', () => {
+  assert.equal(validateChannelSessionDraft({ ...draft(), expiresAt: '2026-02-30T12:00:00Z' }).ok, false);
+});
+test('session resume rejects timezone-free current clock', () => {
+  assert.equal(canResumeChannelSession(session(), actor, '2026-10-20T12:00:00'), false);
+});
+test('session resume rejects timezone-free expiry even if the database input is malformed', () => {
+  assert.equal(canResumeChannelSession({ ...session(), expiresAt: '2026-10-21T12:00:00' }, actor, now), false);
+});
+test('session resume compares explicit offsets as instants', () => {
+  assert.equal(canResumeChannelSession({ ...session(), expiresAt: '2026-10-20T07:00:00-06:00' }, actor, now), true);
+});

@@ -7,6 +7,81 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+
+<!-- BEGIN:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
+## Delegación de publicación rutinaria — Dreamcatcher — 22/10/2026
+
+**Decisión humana vigente:** Mauricio indicó el 22/10/2026 que no quiere ser cuello de botella y delegó la publicación sin una aprobación individual repetida cuando el ejecutor considere correcto hacerlo. Para Dreamcatcher, esta delegación sustituye únicamente el requisito del 19/10 de pedir autorización caso por caso para **respuestas ordinarias a reseñas verificadas**, correcciones factuales sustentadas del hotel y publicación del Portal existente una vez superados sus gates. La instrucción posterior de continuar avanzando y arreglar discrepancias no revoca esta delegación ni permite atribuirle una revocación inexistente. No crea otro writer, agente, perfil, canal, plan o automatización.
+
+**Continuidad operativa — 23/10/2026:** continuar significa resolver cada discrepancia con propiedad y fuente vigente, campo nativo exacto, texto/idioma original cuando corresponda, estado actual, deduplicación y evidencia antes/después. Las respuestas ordinarias verificadas y correcciones factuales sustentadas pueden publicarse dentro de la delegación del 22/10 solo después de superar esos gates y conservar recibo del canal; casos graves de seguridad, discriminación, acusaciones, asuntos jurídicos, compensaciones o promesas económicas mantienen revisión humana especializada. Esta regla no modifica la excepción de limpieza OTA ya aprobada, no altera programación ni amplía permisos.
+
+**La delegación no sustituye prueba ni control:** antes de responder una reseña siguen siendo obligatorios propiedad correcta, ID/URL nativo, fecha, texto íntegro, idioma original y estado vigente de respuesta/moderación; conservar original, deduplicación y recibo. Si falta acceso o evidencia, el bloqueo es técnico o probatorio, no aprobación del propietario. Casos graves de seguridad, discriminación, acusaciones, cuestiones jurídicas, compensaciones o promesas económicas mantienen revisión humana especializada.
+
+**Portal y contenido público:** publicar solo el candidato exacto después de CI, aceptación funcional y autenticada, privacidad/aislamiento, concurrencia y rollback verificados en el mismo proyecto y dominio. Un preview, borrador o `mergeable=true` no equivale a producción. La delegación no autoriza gastos, obras, préstamos, garantías, tokens, cambios de reservas/contabilidad, tarifas o promociones fuera de la limpieza ya delimitada, fusiones/reclamaciones de fichas, ampliación de accesos, encuestas masivas ni eliminación de datos.
+
+**Estado de este bloque:** gobierno documentado; no acredita respuesta enviada, merge, despliegue, reparación física, sincronización ni resultado económico. Los controles históricos incompatibles se conservan como antecedentes superados solo en su requisito de aprobación rutinaria.
+<!-- END:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
+
+<!-- BEGIN:TORO_OPERATING_CONFIGURATION_20261022 -->
+## Configuración operativa y optimización conjunta — 22/10/2026
+
+**Ámbito y autoridad:** TORO Systems, Identity, Tools, Agents, Comms, Data y Finance; referencia Dreamcatcher y separación del ámbito personal. Esta sección consolida reglas solicitadas por el propietario dentro del Plan General único. El bloque `operating_configuration` de `toro-context.yaml` las resume; los contratos existentes de [Vercel](TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md), [WhatsApp/OpenClaw](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md), Control Plane y agentes conservan el detalle. No crea otro proyecto, backlog, cerebro, Gateway o motor de permisos.
+
+**Continuidad operativa (TARGET, sin activación implícita):** la [ampliación de operación y accesos](TORO_OPERATING_MODEL_AMENDMENT_2026-10-15.md) y el [runbook de continuidad](../runbooks/TORO_CONTINUITY_AND_STORAGE_CHECKLIST_V1.md) subordinan los cortes existentes de apertura y preparación de llegadas a fuente vigente, despacho de desayunos con acuse, inspección de unidades y cierre de incidencias con evidencia. La programación, las Pages privadas y los ejecutores mantienen sus autorizaciones y comprobaciones independientes; documentos de una PR no equivalen a main, runtime ni servicio aceptado.
+
+**CURRENT observado:** [auditoría de configuración y fuentes](../evidence/TORO_OPERATING_CONFIGURATION_AUDIT_20261022.md). Código actual incluye PR #355 de mantenimiento prepare-only después de PR #364; no acredita tareas o mensajes emitidos. Vercel conserva producción en `349d15fb93061cba6a285fa3977f03e4d6b6b449`. Supabase tiene un binding WhatsApp/OpenClaw activo con flags de lectura/envío y estado verificado, pero `last_sync_at` nulo, cero sesiones y cero recibos en las tablas de canal consultadas: configuración declarada, no continuidad ni entrega demostradas. RLS habilitado en esas tres tablas no prueba por sí solo que sus políticas sean correctas. La ejecución de esta auditoría sigue cloud sin identidad AWS/SSH; Dropbox no es consultable en este turno por error de conexión del plugin, no por ausencia demostrada de archivos.
+
+**TARGET recomendado: híbrido con responsabilidades separadas.** GitHub mantiene código/contratos/PR/CI; Supabase identidad, contexto, objetos y auditoría; Vercel sirve el Portal autenticado con perímetro de lectura; el Gateway Lightsail existente gestiona transporte persistente dentro de su frontera de confianza; Codex local se usa para desarrollo, control del Chrome autorizado y recuperación, como respaldo frío. Kross, Alegra, bancos y Dropbox mantienen su autoridad de dominio; Airtable es proyección humana transitoria. WhatsApp y Portal consumen el mismo TORO mediante capacidades autorizadas, sin sincronización bidireccional indiscriminada ni memoria de negocio duplicada.
+
+**Reglas adoptadas de gobierno (no configuración remota aplicada):**
+
+1. **Una identidad y un objeto canónico:** toda acción resuelve actor, organización, ámbito, capability y roles actuales; la misma tarea/decisión/recibo es visible desde los canales autorizados. Un teléfono, QR vinculado o nombre de agente no concede permiso.
+2. **Una frontera de confianza por Gateway:** propietario, equipo y huéspedes tienen techos diferentes. Sesiones/allowlists son defensa adicional, no aislamiento hostil de tenants. No admitir usuarios no confiables al agente con herramientas del propietario; mantener bloqueada esa ampliación hasta verificar una frontera real. No crear otro Gateway automáticamente para ocultar el problema.
+3. **Herramientas mínimas por flujo:** lectura, captura, borrador, envío y escritura de negocio se autorizan por separado. Equipo/huésped no heredan shell, navegador del propietario, secretos, administración o historial de otros agentes. Restringir también mensajes entre proveedores/conversaciones.
+4. **Una cuenta, un escritor activo por acción:** desarrollo local/respaldo no consume simultáneamente producción. Reutilizar claim/lease/fencing del Control Plane y claves compatibles; un timeout o POST ambiguo requiere reconciliación antes de reintentar.
+5. **Tres perfiles de despliegue:** demo sin acceso operativo, Portal autenticado de lectura y runtime interno privilegiado con control propio. No poner claves worker/proveedor/escritura en el Portal; no habilitar runtime/MCP cambiando el perfil del hostname público.
+6. **Credenciales con dueño y recuperación:** referencias en registros; valores solo en el almacén autorizado del entorno. MFA y recuperación para cuentas administrativas; comprobar soporte/plan y probar protección de contraseñas filtradas. Rotación o cambio de identidad exige mapa de consumidores y readback, no copia de secretos a chats/Git/Dropbox.
+7. **Estados demostrables:** `configured → tested → integrated → deployed → runtime_verified → measured` describe evidencias distintas, no promoción automática. SHA, entorno, identidad, alcance y resultado en destino deben acompañar cada afirmación. La meta de mejoras no sustituye un resultado de negocio.
+8. **Contexto y modelos por trabajo:** cargar solo reglas, contrato y fuentes relevantes; no enviar el Plan completo, historiales o archivos privados a cada turno. Cálculo/dedupe determinista primero; modelo económico apto para clasificación/extracción; razonamiento fuerte para conflictos, diseño y código. Selección por acceso, evaluación y costo real, sin cambiar el modelo del usuario silenciosamente.
+9. **Presupuestos antes de activar:** cada nuevo worker/flujo declara límites finitos de llamadas, tokens/costo, tiempo, concurrencia y reintentos, con cancelación y escalamiento. No se inventa un presupuesto monetario del propietario ni se considera aplicado en runtimes existentes por escribir esta regla.
+10. **Memoria con procedencia:** hecho, fuente, fecha, ámbito, sensibilidad, verificación y retención; correcciones versionadas. Logs de transporte no sustituyen memoria canónica; historial personal y del hotel permanecen separados. Revisar residencia/retención del proveedor antes de enviar datos protegidos a nuevos servicios de agentes.
+11. **Frescura según dominio:** disponibilidad/precio en Kross; documentos en Alegra; liquidación en bancos; originales en Dropbox. Definir vigencia y fallback por capability; ausencia de sincronización es UNKNOWN, no “saludable” ni cero. Reducir polling con eventos solo después de verificar soporte del proveedor.
+12. **Alertas útiles:** reutilizar Owner Attention/Control Plane y las rutas existentes, deduplicar por incidente y respetar canal/grupo/horario y ámbito. P0 con escalamiento; resto agrupado en resúmenes y hasta tres decisiones materiales al propietario por corte. Sin otro cron/scheduler o envío implícito por esta política.
+13. **Advisors con criterio:** revisar funciones `SECURITY DEFINER` ejecutables, protección de contraseñas, planes de consulta y políticas; no tratar tablas server-only sin política como permiso faltante que deba abrirse. No borrar índices “unused” sin ventana de uso, dependencias y reversión.
+14. **Versiones y capacidad verificadas:** lockfile y versiones fijadas; plugins/CLI según versión instalada y documentación oficial, nunca instrucciones de un fork como autoridad. Medir memoria/CPU/colas y errores antes de redimensionar Lightsail; un trabajo pesado local a la vez según el gate del PC.
+15. **Entrega pequeña y verificable:** rama/PR/CI/preview del SHA exacto, aceptación autenticada y rollback; retirar duplicados solo tras mapa de consumidores. Handoff compacto con objetivo, estado, fuentes, cambios, pruebas, bloqueo y siguiente acción; chat/captura histórica no demuestra acceso local o salud del host.
+16. **Medir valor, no actividad:** costo por resultado aceptado, error/retrabajo, duplicados, intervención humana, latencia y antigüedad de cola, frescura y restauraciones verificadas. Baseline ausente = NO_MEDIDO. No inventar ahorro ni crear otro dashboard/scheduler para mostrarlo.
+
+**NEXT único dentro del carril existente:** (1) completar el traspaso real a local y recuperar fuente/binding del Lightsail original; (2) revisar avisos de seguridad y configuración Vercel con acceso autorizado, sin ampliar grants o eludir403; (3) prueba controlada WhatsApp → identidad/ámbito → lectura/tarea canónica única → recibo → misma tarea en Portal → continuidad y negativas de aislamiento; (4) comparar costo/errores/intervención antes de habilitar capacidades adicionales. Recepción y cuenta personal requieren verificación separada; no se impone una migración a WhatsApp Cloud API sin auditar transporte/consentimiento/continuidad. Conserva Writer OFF, API Kross pagada pausada y onboarding externo bloqueado. Cambios de infraestructura, permisos, proveedor y producción permanecen TARGET hasta revisión, ejecución autorizada y readback.
+
+**Clarificación del propietario — 24/10/2026, WhatsApp/onboarding:** se retira la propuesta de asignar un rol automáticamente por tener identidad canónica. El alta/rol/ámbito requieren autorización explícita por el proceso existente; el reconocimiento del remitente utiliza ese permiso y el onboarding explica las funciones ya autorizadas, sin conceder ni elevar acceso. Se conserva la experiencia progresiva y no bloqueante. Veinte refinamientos operativos y sus pruebas quedan como TARGET en el [contrato WhatsApp §12](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#12-explicit-roles-onboarding-and-twenty-hotel-workflow-refinements--2026-10-24), sin contarlos como funciones en producción. Reutilizar #209 y reconciliar PR206/210/348; no otro puente, memoria, backlog o scheduler. La marca vigente de limpieza terminada en Kross es evidencia operativa suficiente para esa dimensión, sin confirmación humana duplicada; inspección, mantenimiento y preparación integral permanecen separados. Cambios documentales/código probado no acreditan consumo del host, entrega WhatsApp ni operación sin PC.
+
+<!-- END:TORO_OPERATING_CONFIGURATION_20261022 -->
+
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+## Continuación de fiabilidad — cincuenta mejoras adicionales — 22/10/2026 UTC
+
+**CURRENT — integrado en código, sin promoción productiva:** PR [#359](https://github.com/Dramcatcherst/Toro-OS/pull/359) merged como `b7d97a59dba1c4ee233a6e8b267f90f9c15dbf63`, con CI estándar y preview exacto aprobados. Continúa PR #358 sobre los mismos flujos existentes: doce Finance/Alegra, ocho Kross, diez identidad/Portal, diez Comms y diez runtime/MCP. Los [cincuenta resultados trazables](../evidence/TORO_INTEGRATION_RELIABILITY_50_20261022.md) son evidencia subordinada; no vuelven a contar las cuarenta mejoras previas ni convierten pruebas/documentación en nuevas capacidades.
+
+**Prioridad y alineación:** primero integridad de recibos, custodia, identidad/ámbito, exposición de datos y recuperación; después disponibilidad, navegación y trabajo de lectura evitado. No cambia arquitectura, fuentes de autoridad, permisos ni alcance comercial. La mejora de fiabilidad se demuestra con regresiones; ahorro y rendimiento productivo permanecen NO MEDIDOS.
+
+**Aceptación adicional del 22/10:** [Next Portal real, anónimo y aislado](../evidence/TORO_PORTAL_ANONYMOUS_ACCEPTANCE_20261022.md) sobre `ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32`, después de reconciliar PR #360 y #357. Dependencias instaladas desde lockfile, Next 16.3.8, build estándar, 182 pruebas focales y 14 comprobaciones HTTP PASS; login a 320/390/1280 sin overflow ni errores de consola, payload privado ausente, rutas de runtime excluidas y cookies de salida eliminadas. Configuración sintética sin sesión ni credenciales reales; no acredita roles/RLS ni publicación. Readback Vercel mantiene producción en `349d15fb93061cba6a285fa3977f03e4d6b6b449`.
+
+**NEXT existente:** acceso/roles/salida con sesión autorizada en el Portal, transporte de membresías y recuperación de fuentes/binding del Lightsail original. Dependencias observadas: esta ejecución sigue cloud sin acceso AWS/SSH ni control del Chrome del usuario; la integración Vercel devuelve403 al listar metadata de variables del proyecto, incluso sin descifrar. No se repite la consulta sin cambios ni se modifica configuración para eludirla. Se preservan Writer OFF, Kross API pagada pausada, conciliaciones documentales pendientes y control de operaciones sensibles. No se confunden código integrado y despliegue operativo.
+<!-- END:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
+
+<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+## Fiabilidad conjunta de Alegra, Kross, Portal y OpenClaw — 21/10/2026
+
+**CURRENT — integrado en código, sin promoción productiva:** PR [#358](https://github.com/Dramcatcherst/Toro-OS/pull/358) merged como `2f0396d52f3d28c458972247392c92dd62bb4f13`, con CI estándar y preview exacto aprobados. La petición del propietario se concreta en cuarenta cambios de conducta sobre módulos existentes: nueve Writer/Alegra, once Kross, ocho acceso/Portal, ocho OpenClaw/WhatsApp y cuatro configuración segura. El [listado trazable y aceptación](../evidence/TORO_INTEGRATION_RELIABILITY_40_20261021.md) es subordinado a este Plan. Las pruebas/documentación acreditan cambios; no se suman como mejoras independientes ni como avance contable o beneficio económico.
+
+**Alineación:** una identidad y contexto TORO para Portal/WhatsApp; permisos por actor/organización, evidencia válida y fresca, idempotencia coherente, dependencias con deadline y recuperación humana segura. GitHub conserva código/contratos; Supabase identidad/runtime/auditoría; Kross reservas/estancias; Alegra documentos contables; bancos liquidación y Dropbox originales. Un contrato preparado no es una integración productiva ni un recibo de entrega.
+
+**NEXT del carril existente:** aceptación de acceso/rol/salida en el Portal con sesión autorizada, y recuperar fuentes/binding del Gateway Lightsail existente antes de cualquier activación Writer/OpenClaw. Las claves nuevas de idempotencia y las firmas reforzadas requieren reconciliación de compatibilidad en el caller existente; no crear otro adapter, Gateway, scheduler o ledger. El cutover a lectura de membresías canónicas sigue pendiente de verificar su transporte, sin ampliar Data API/RLS.
+
+**Conservado:** Writer OFF, Kross API pagada pausada, aprobación exacta de operaciones sensibles, original Starlink sin conciliación inequívoca, sesiones/contraseñas reales fuera de los artefactos, ningún cambio de precios/reservas/postings/permisos/secretos o producción por este lote.
+<!-- END:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
+
 <!-- BEGIN:OWNER_AI_WEALTH_STRATEGY_20261020 -->
 ## Política estratégica transversal — IA, patrimonio productivo y libertad operativa — 20/10/2026
 
@@ -249,6 +324,14 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 **REGLA MATERIAL / CANDIDATO EN PR #228, SIN ADJUNTOS SUBIDOS:** la deduplicación de evidencia se realiza sobre bytes reales y el ámbito autorizado del documento; una vista derivada solo puede fusionar referencias de fuentes cuando conserva **el mismo hash del original padre**. Si el contenido derivado coincide pero dos originales tienen hashes diferentes, no se deben unir las fuentes ni perder su linaje; el paquete queda bloqueado para revisión (`CUSTODY_DERIVATIVE_PARENT_CONFLICT`). Esto no reemplaza la identificación y relectura del documento nativo Alegra, ni equivale a aprobación de Hacienda o respaldo independiente restaurado.
 
 **EVIDENCIA EN RAMA:** [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commits de pruebas [`cc038540`](https://github.com/Dramcatcherst/Toro-OS/commit/cc038540a4d5f955425ba3ec27d507cc6fd671b2) y corrección [`98233954`](https://github.com/Dramcatcherst/Toro-OS/commit/98233954b9926b57e2f616f57dc4e05589c10556), con lectura de hashes de archivos verificada. Aceptación CI del nuevo candidato pendiente al redactar; cero cambios en adjuntos/contabilidad/roles/deploy. Los receipts rutinarios permanecen en la evidencia privada existente.
+
+### Custodia Alegra — revalidación de procedencia 21/10/2026
+
+**CANDIDATO VERIFICADO, SIN ACTIVACIÓN:** la materialización y restauración del paquete existente vuelven a comprobar las referencias de origen y el padre de cada derivado antes de cualquier lectura o escritura de almacenamiento. Un plan o manifiesto alterado, incluso con checksum consistente, no puede recibir `INTEGRITY_VERIFIED` o `RESTORE_TESTED` si sus fuentes están vacías, contienen posiciones sin valor o su padre no está en el paquete. Se reutiliza la validación del módulo de custodia; no se crea otro archivo maestro, conector o registro financiero.
+
+**EVIDENCIA:** regresiones RED/GREEN y 27 pruebas focales, con rechazo antes de I/O y conservación de bytes, referencias y linaje en una restauración aislada válida. Las pruebas usan almacenamiento local/simulado; no acreditan respaldo externo completo, adjuntos en Alegra, aceptación fiscal ni un piloto contable. La PR #228 ya se fusionó el 20/10/2026 a las 18:46 Costa Rica; el runtime productivo, principal mínimo, migración L3 y documento exacto conservan sus gates independientes. Este cambio de custodia no activa el Writer.
+
+**NEXT:** integrar esta corrección por el carril de PR existente del repositorio y continuar la recuperación/vinculación del host autorizado y la conciliación del comprobante piloto, sin sustituir esos bloqueos por pruebas sintéticas.
 
 ## Gmail personal y limpieza controlada — 15/10/2026
 
@@ -1784,6 +1867,24 @@ CURRENT es organización de metadatos y evidencia, con recibos de guardado propi
 NEXT: proyector estricto sobre filas ya autorizadas y pruebas de conservación/alias/ciclos; después reader server-only/RPC aditiva con autorización por objeto y ambos extremos, paginación y cobertura explícita; luego UI compacta con componentes actuales. La organización personal inactiva/sin membresía permanece cerrada hasta su gate vigente. visibility/audience no son ACL y un vínculo jamás concede acceso. Preservar los escritores existentes de Portal/Personal y consolidación bajo la línea técnica ya abierta.
 
 Esta dirección no ejecuta bajas, fusiones destructivas, cambios de permisos, migraciones, mensajes, operaciones comerciales o automatizaciones. Las fusiones conservan alias/ID/origen, recuperan información única y requieren paridad/recuperación antes de cualquier retiro.
+
+### Control del propietario y reporte Word del portafolio 24 de octubre de 2026
+
+<!-- BEGIN:PORTFOLIO_OWNER_CONTROL_20261024 -->
+**Dirección del propietario:** simplificar e integrar dentro de lo existente, preservar información útil y poder indicar crear, priorizar, pausar, reactivar, integrar, archivar o eliminar una iniciativa desde su ficha o por conversación. Ampliación del mismo contrato de portafolio, secciones 12 a 14; no crea módulo, registro de proyectos, motor de decisiones ni Plan paralelo.
+
+**CURRENT:** existen el registro de proyectos, el mapa privado, menús y seguimiento interno. `project.followup` crea una tarea; no modifica el proyecto. El lector actual conserva cobertura parcial. `/api/approvals` está retirado y no debe reutilizarse como escritor. Esta ampliación es gobierno documentado; no afirma controles publicados, canal operativo o borrado ejecutado.
+
+**TARGET:** una ficha autorizada por identidad canónica, con acciones comprensibles y cambios antes/después; lista completa con paginación, alias e históricos recuperables. Prioridad, situación del proyecto, decisión pendiente y estado técnico del build son campos distintos. Conservar hasta tres resultados prioritarios del corte, sin limitar el inventario a tres proyectos. Una app o producto independiente puede usar capacidades comunes de TORO sin fusionar clientes, contabilidad, repositorios o ámbitos.
+
+**NEXT en el carril existente:** lector/proyector completo autorizado; después preparar cambios concretos y conectar únicamente las operaciones respaldadas por política, revisión e idempotencia. Reutilizar `operations.projects`, `operations.tasks`, `operations.executive_decisions`, Owner Attention y los runs/receipts del Control Plane. Autorización específica vigente no se solicita otra vez por cambiar de interfaz; ambigüedad o alcance nuevo sí requiere resolución. Pausar trabajo no cancela obligaciones, reservas o cobros.
+
+**Reporte solicitado:** un Word privado y versionado derivado del mismo corte autorizado, con catálogo completo conocido, destino actual/propuesto, builds, decisiones, cambios y límites de evidencia. Actualizar el mismo archivo al cierre de un lote material o por solicitud; usar el reporte/supervisor existente para seguimiento autorizado. La exportación es una fotografía del registro, no otra fuente canónica. No crear timer ni reactivar uno pausado por este contrato.
+
+**Retiro:** una orden de eliminar se vincula a recursos exactos y su alcance. Excluir de trabajo/vista activa, autorización de eliminación y eliminación comprobada son estados distintos. El borrado de hosting no demuestra eliminación universal de repositorios, documentos, bases o copias; registrar pendientes del proveedor y recibos sin exponer el inventario privado en este repositorio.
+
+**Aceptación:** conservación de identidad/alias y datos únicos; aislamiento y rechazo de contexto ajeno; pausa recuperable; integración con receptor comprobado; replay sin doble efecto; conflicto de revisión sin sobreescritura; Word consistente con fuente/corte y funciones TARGET rotuladas como pendientes. Reversión selectiva con revisión vigente, preservando cambios concurrentes.
+<!-- END:PORTFOLIO_OWNER_CONTROL_20261024 -->
 
 
 # 13. Repository/project disposition
@@ -6148,3 +6249,40 @@ Mauricio no aprueba la portada actual como dirección definitiva y anticipa una 
 **Verificación:** build Next.js, TypeScript, lint, auditorías de rutas/robots/medios/rendimiento/terminología y suite unitaria aprobaron; seis pruebas de navegador aprobaron en 390 px y 1440 px. El alias exacto mostró las dos imágenes, los tres destinos oficiales, el texto del piloto y ancho sin desborde. No se abrió ni modificó contenido dentro de WhatsApp, Google Photos o Spotify y no se envió una inscripción durante QA.
 
 **Estado:** HECHO en preview y registrado en el Plan General; NO PUBLICADO en producción. **Siguiente acción única:** usar este preview con los participantes autorizados y registrar únicamente problemas o aprendizajes reales del flujo; cualquier traslado a producción, envío masivo, carga automática o ampliación de permisos requiere su gate separado.
+
+
+<!-- BEGIN:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
+### Control E29/E30/E32/E36 — cobertura bancaria, tarjetas, estados y correo financiero (21/10/2026)
+
+**DECISIÓN DEL PROPIETARIO:** consolidar en el mismo carril de TORO Finance el control de cuentas bancarias, tarjetas, PayPal/Wink, préstamos, estados de cuenta, facturas y comprobantes. El objetivo no es acumular archivos: cada movimiento material debe poder reconstruirse como **documento/soporte → pago → banco/tarjeta/pasarela → Alegra → entidad/propiedad/centro de costo → verificación**.
+
+**Regla de entrega:** el símbolo operativo **📩** significa `CONFIGURAR_A_ADMIN`: cuando el instrumento financiero o el proveedor/documento fiscal esté confirmado como empresarial o de uso hotelero autorizado, sus estados, facturas y documentos financieros deben configurarse para llegar automáticamente a `admin@dreamcatcherhotel.com`. Esta marca es una **acción pendiente**, no prueba de que el banco/proveedor ya haya cambiado el destinatario. Productos personales puros no se redirigen; productos mixtos requieren delimitar el alcance antes del cambio.
+
+**Cobertura 2026 conocida, sin datos completos en repositorio público:**
+- BAC banco CRC `••••3660` / USD `••••3588`: enero–agosto indexados; septiembre con original recuperado; completar validación de originales y octubre al cierre. 📩
+- BAC tarjetas: estado `••••4966`, instrumentos observados `••••4961 / ••••5042 / ••••7161` y Visa Carolina `••••4701`: completar ciclos 2026, vigencia y separación hotel/personal. 📩
+- Banco Nacional CRC `••••9468` / USD `••••8174`: originales empresariales 2026 no localizados en la auditoría actual; recuperar períodos faltantes. 📩
+- BCR CRC `••••7251` / USD `••••7849`: originales empresariales 2026 no localizados; recuperar períodos faltantes. 📩
+- LAFISE banco CRC `••••1998` / USD `••••7740`: archivos históricos clasificados a nivel documental; el índice y texto extraído de los dos ZIP no acreditan extractos bancarios empresariales 2026. Recuperar originales por cuenta y período, evitando duplicados. 📩
+- LAFISE tarjeta corporativa `••••7930`: completar estados 2026 y correspondencia con ledgers CRC/USD. 📩
+- WINK CRC `••••1547`: validar titularidad/alcance hotel antes de usar referencias personales; completar cobertura empresarial. 📩 si se confirma hotel.
+- PayPal USD asociado históricamente a `info@atrapasuenos.net`: evidencia parcial, no extractos mensuales completos; recuperar bruto, fees, devoluciones, conversiones y depósitos. 📩 tras validar la cuenta empresarial.
+- Préstamo BAC `••••2411`: recuperar cronograma contractual y separar capital, interés, seguro y otros cargos por cuota. 📩
+
+**Estados documentales obligatorios:** `COMPLETO`, `FALTA_DOCUMENTO`, `FALTA_PAGO`, `SIN_RESPALDO`, `RECLASIFICAR`, `OTRO_SOPORTE`, más `CONFIGURAR_A_ADMIN` cuando aplique. Un registro en Alegra/Supabase/Airtable, una alerta de tarjeta, un ZIP o un movimiento bancario **no equivalen** al estado de cuenta original ni a la factura fiscal.
+
+**LAFISE — clasificación documental del archivo histórico (21/10/2026):** el índice y texto extraído de los dos ZIP existentes separan documentos contables de extractos. El paquete empresarial lista dos estados de situación financiera exportados de Alegra, con cortes junio/agosto de 2026, y dos notas a estados financieros de 2021–2023 dirigidas al banco; el paquete de titular por verificar lista un estado de tarjeta con corte abril de 2025. Esta inspección no certifica los bytes o la restauración de los originales, no resuelve la titularidad de la tarjeta y no acredita cobertura bancaria 2026. **NEXT:** recuperar los extractos empresariales LAFISE 2026 por cuenta/período y validar el alcance de la tarjeta antes de incorporarla; la clasificación de estos archivos no cierra conciliaciones ni modifica saldos o el avance contable.
+
+**Orden de ejecución:** (1) no pedir duplicados: buscar originales ya custodiados; (2) recuperar BN/BCR y completar los extractos LAFISE 2026; (3) completar tarjetas BAC/LAFISE; (4) validar WINK/PayPal; (5) centralizar entrega en admin para instrumentos confirmados y proveedores hoteleros verificados; (6) verificar cada cambio con un documento nuevo recibido; (7) conciliar con Alegra y cerrar solo con evidencia. No modificar beneficiarios, MFA, PIN, límites, pagos o cuentas por esta directiva.
+
+**Contratos canónicos subordinados:** [TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md) y [TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md](TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md). El portal objetivo permanece **Finanzas › Cobertura documental** dentro del portal existente; no crear otra app, backlog ni scheduler. **ESTADO:** política y backlog documental autorizados; cambios reales de destinatario/proveedor siguen `NO_EJECUTADO` hasta acción autenticada + prueba de recepción.
+<!-- END:TORO_FINANCE_MAIL_BANK_COVERAGE_20261021 -->
+
+
+## Mantenimiento preventivo mensual — Calendar, OpenClaw y Kross — 21/10/2026
+
+CURRENT: calendario Dreamcatcher · Mantenimiento creado bajo la cuenta hotelera, no público y con lectura organizacional; serie de CONTROL para revisión humana mensual desde el 01/11. Acceso individual de empleados pendiente: alias Auth internos no acreditan buzón Google. OpenClaw tiene binding interno telefónico, pero no grupo de mantenimiento verificado ni receipts de entrega observados. Kross Maintenance transicional sin filas; no hay integración viva demostrada.
+
+TARGET/NEXT: reutilizar tareas y ronda existentes; integrar candidatos de entrega/calendar con el worker gobernado, verificar grupo/receipt y acceso individual, y conciliar una muestra real Kross antes de automatizar ventanas. Mantener el disparador mensual existente hasta un corte único probado; sin nuevo cron ni escritura PMS.
+
+Candidato de código y 50 controles con estados explícitos en [contrato de mantenimiento](DREAMCATCHER_MAINTENANCE_DELIVERY_V1.md). Las pruebas locales de preparación no equivalen a despliegue, envío o cierre físico. No marcar cincuenta mejoras productivas por tener cincuenta requisitos documentados.

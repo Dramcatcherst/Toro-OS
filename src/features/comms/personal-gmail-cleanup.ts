@@ -24,13 +24,30 @@ export type PersonalGmailRecommendation = {
 };
 
 const PROTECTED_TOPICS = [
-  /\b(invoic|receipt|statement|payment|refund|tax|salary|payroll|security|password|sign.?in|verify|verification|account|fraud|access|flight|booking|reservation|contract|legal|immigration|visa|passport)\b/i,
+  /\b(invoices?|receipts?|statements?|payments?|refunds?|tax(?:es)?|salar(?:y|ies)|payroll|security|passwords?|sign.?in|verify|verification|accounts?|fraud|access|flights?|bookings?|reservations?|contracts?|legal|immigration|visas?|passports?)\b/i,
   /factur|recibo|comprobante|transferenc|reembols|pago|dep[oó]sito|seguridad|contrase[ñn]a|acceso|alerta|banco|reserva|confirmaci[oó]n|vuel[oa]|pasaporte|visado|visa|impuesto|hacienda|asegur|contrato|n[oó]mina|suscripci[oó]n rechazada/i,
 ];
+
+// Parser ceilings bound untrusted metadata; they are not provider limits or a retention policy.
+const MAX_METADATA_TEXT = 10_000;
+const MAX_TRUSTED_DOMAINS = 1000;
+const CATEGORIES = new Set(["promotions", "social", "updates", "primary", "other"]);
+function validMetadata(mail: PersonalGmailClassification) {
+  const boundedText = (value: unknown) => typeof value === "string" && value.length <= MAX_METADATA_TEXT;
+  return mail && CATEGORIES.has(mail.category) && boundedText(mail.subject) && boundedText(mail.senderDomain) &&
+    typeof mail.ageDays === "number" && Number.isFinite(mail.ageDays) && mail.ageDays >= 0 &&
+    [mail.starred, mail.important, mail.hasAttachment, mail.authenticatedSender].every((value) => typeof value === "boolean") &&
+    Array.isArray(mail.trustedMarketingDomains) && mail.trustedMarketingDomains.length <= MAX_TRUSTED_DOMAINS &&
+    Array.from(mail.trustedMarketingDomains).every(boundedText);
+}
 
 export function recommendPersonalGmailCleanup(
   mail: PersonalGmailClassification,
 ): PersonalGmailRecommendation {
+  if (!validMetadata(mail)) return {
+    classification: "review", automaticArchive: false, allowAutomaticTrash: false,
+    reason: "invalid_metadata_for_automation",
+  };
   if (
     mail.starred ||
     mail.important ||

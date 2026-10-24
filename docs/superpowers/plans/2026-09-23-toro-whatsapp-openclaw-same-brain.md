@@ -194,3 +194,15 @@ Acceptance cases, to execute in the existing lane rather than create new tasks:
 ## Promotion rule
 
 Do not mark WhatsApp/OpenClaw “full TORO” until the real runtime executes the scenarios above with evidence. Code/spec/CI alone = implementation foundation, not live proof.
+
+## Reconciliation against current main — 2026-10-24
+
+PR210 remains a draft implementation under issue209, not a production activation. The branch is reconciled with current main, preserving all existing test commands and the owner clarification that canonical identity never assigns a role automatically. Onboarding only explains explicitly authorized functions.
+
+Read-only schema inspection confirms that communication_channel_sessions and communication_channel_receipts already exist. Their individual foreign keys and replay uniqueness are present; the proposed composite receipt-scope and experience-continuation constraints are not installed. The SQL file remains an unexecuted draft and must not be used to recreate tables or broaden grants. Compare consumers, exact definitions, permissions and a bounded validation plan before proposing any database change.
+
+The previous blanket table-drop rollback recipe is withdrawn. The rollback-named file now performs read-only constraint inventory only; it is explicitly not a reversal script. A future approved additive change requires a selective reversal with recorded prior state and exact ownership. No canonical table, receipt or consumer may be removed as a PR rollback.
+
+Local regression: the same 96 synthetic Node cases passed using Node24 type stripping for the local harness; the committed harness retains TypeScript transpilation and must pass unchanged in repository CI. Four newly reproduced failures rejected timezone-free or impossible session timestamps after the shared zoned-date validator was reused. No live database writes, identity enrollment, messages, bookings, payments or host operations were performed.
+
+Remaining gates: exact repository CI, compatible caller/adapter, explicit sender binding and role, authorized source read, durable state/receipt persistence, replay/restart and cross-user denial, reviewed database delta if needed, and authorized host acceptance. No new queue, gateway, permission engine or scheduler.

@@ -14,12 +14,12 @@ export async function GET() {
     connector: "vercel",
     mode: "read_only",
     externalWrite: false,
-    configured: Boolean(process.env.VERCEL_TOKEN && process.env.VERCEL_PROJECT_ID),
+    configured: liveRead.configured,
     projectId,
     teamId,
     previewUrl: runtime.branchAlias,
     productionAlias: runtime.productionAlias,
     liveRead,
     nextAction: "Use Vercel connector or REST token to read deployment status and runtime logs.",
-  });
+  }, { headers: { "Cache-Control": "private, no-store, max-age=0" } });
 }

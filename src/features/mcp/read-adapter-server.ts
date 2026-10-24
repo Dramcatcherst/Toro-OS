@@ -1,5 +1,5 @@
 import "server-only";
-import { isPublicDemo } from "@/lib/server/public-demo";
+import { internalCapabilityEnabled, isPublicDemo } from "@/lib/server/public-demo";
 
 import { randomUUID } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -11,10 +11,12 @@ import {
   loadOwnerAttentionProjection,
   loadOwnerAttentionProjectionWithClient,
 } from "@/features/attention/owner-attention-server";
+import { canonicalScopeRefForOrgId } from "@/features/brain/canonical-read";
 import { CANONICAL_BRAIN_SEARCH_READ_LIMITS } from "@/features/brain/canonical-projection";
 import { resolveToroContext } from "@/features/context/resolver";
 import type { ToroResolvedContext } from "@/features/context/types";
 import {
+  assertMcpReceiptTimeRange,
   boundedMcpReadLimit,
   businessStatusFromProjection,
   executionReceiptsFromProjection,
@@ -37,6 +39,8 @@ import {
 
 type ReadInput = Record<string, unknown> & {
   correlationId?: string;
+  since?: string;
+  until?: string;
 };
 
 export type ToroMcpReadRuntime = {
@@ -188,11 +192,93 @@ export async function runToroMcpReadTool(
   if (isPublicDemo()) {
     return errorResponse(tool, input, "capability_unavailable", "Operational reads are disabled in the public demo.", false);
   }
+  if (tool === "get_execution_receipts") {
+    try { assertMcpReceiptTimeRange(input); }
+    catch { return errorResponse(tool, input, "invalid_request", "Receipt time bounds must be valid timestamps in chronological order.", false); }
+  }
   const resolved = await resolveReadContext(tool, input, runtime);
   if (!resolved.ok) return resolved.response;
 
   const correlationId = input.correlationId ?? randomUUID();
   const asOf = new Date();
+
+  if (tool === "get_priorities") {
+    if (!internalCapabilityEnabled("TORO_BRAIN_CANONICAL_READ_ENABLED") ||
+      !internalCapabilityEnabled("TORO_OWNER_ATTENTION_READ_ENABLED")) {
+      return errorResponse(tool, { ...input, correlationId }, "capability_unavailable", "TORO Owner Attention reads are disabled.", false);
+    }
+    if (typeof input.horizon === "string" && input.horizon !== "now") {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "capability_unavailable",
+        "Only the current/now priority horizon is exposed in MCP v1.",
+        false,
+      );
+    }
+
+    if (!canViewOwnerAttention(resolved.context)) {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "capability_unavailable",
+        "Role-specific priorities are not yet available for this TORO role.",
+        false,
+      );
+    }
+
+    const priorityLimit = boundedMcpReadLimit(
+      typeof input.limit === "number" ? input.limit : undefined,
+    );
+    try {
+      const attention = runtime.supabase
+        ? await loadOwnerAttentionProjectionWithClient(
+            resolved.context,
+            runtime.supabase,
+            {
+              asOf,
+              limit: priorityLimit,
+            },
+          )
+        : await loadOwnerAttentionProjection(resolved.context, {
+            asOf,
+            limit: priorityLimit,
+          });
+
+      return {
+        contractVersion: TORO_MCP_CONTRACT_VERSION,
+        tool,
+        correlationId,
+        context: {
+          mode: "organization",
+          scopeRef: canonicalScopeRefForOrgId(resolved.context.orgId),
+        },
+        sources: (attention.coverage?.sources ?? []).map(source => ({
+          sourceSystem: source.source,
+          authoritySystem: "TORO structured runtime",
+          freshness: "unknown" as const,
+          verification: "unverified" as const,
+        })),
+        generatedAt: attention.generatedAt,
+        partial: true,
+        data: {
+          items: prioritiesFromOwnerAttention(attention, priorityLimit),
+          sourceContract: attention.contractVersion,
+          reportContext: attention.reportContext,
+          selection: attention.selection,
+          coverage: attention.coverage,
+        },
+      };
+    } catch {
+      return errorResponse(
+        tool,
+        { ...input, correlationId },
+        "degraded",
+        "TORO Owner Attention sources are unavailable.",
+        true,
+      );
+    }
+  }
 
   let view;
   try {
@@ -278,68 +364,6 @@ export async function runToroMcpReadTool(
       partial: projection.partial,
       data: businessStatusFromProjection(projection),
     };
-  }
-
-  if (tool === "get_priorities") {
-    if (typeof input.horizon === "string" && input.horizon !== "now") {
-      return errorResponse(
-        tool,
-        { ...input, correlationId },
-        "capability_unavailable",
-        "Only the current/now priority horizon is exposed in MCP v1.",
-        false,
-      );
-    }
-
-    if (!canViewOwnerAttention(resolved.context)) {
-      return errorResponse(
-        tool,
-        { ...input, correlationId },
-        "capability_unavailable",
-        "Role-specific priorities are not yet available for this TORO role.",
-        false,
-      );
-    }
-
-    const priorityLimit = boundedMcpReadLimit(
-      typeof input.limit === "number" ? input.limit : undefined,
-    );
-    try {
-      const attention = runtime.supabase
-        ? await loadOwnerAttentionProjectionWithClient(
-            resolved.context,
-            runtime.supabase,
-            {
-              asOf,
-              limit: priorityLimit,
-            },
-          )
-        : await loadOwnerAttentionProjection(resolved.context, {
-            asOf,
-            limit: priorityLimit,
-          });
-
-      return {
-        ...base,
-        generatedAt: attention.generatedAt,
-        partial: true,
-        data: {
-          items: prioritiesFromOwnerAttention(attention, priorityLimit),
-          sourceContract: attention.contractVersion,
-          reportContext: attention.reportContext,
-          selection: attention.selection,
-          coverage: attention.coverage,
-        },
-      };
-    } catch {
-      return errorResponse(
-        tool,
-        { ...input, correlationId },
-        "degraded",
-        "TORO Owner Attention sources are unavailable.",
-        true,
-      );
-    }
   }
 
   if (tool === "get_pending_decisions") {

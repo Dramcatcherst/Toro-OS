@@ -8,6 +8,38 @@
 
 ## Objective
 
+### Current checkpoint — optional-field quality integrated, 2026-10-24 UTC
+
+**Code state:** PR #373 was reviewed and squash-merged into protected `main`
+as commit `0130000975a900cf937b8e7e863cd118984fdb03`. The exact candidate
+`fa3a3457187a6312d7f8a1663ea2fca3e4294288` passed the required
+`validate` job (Tests, Lint and Build), Vercel preview and the repository's
+automated code review with no findings.
+
+The active normalizer now fails closed when:
+- a supplied adult or child count exceeds a supplied guest total, even if the
+  other component is unknown;
+- the sum of supplied components is outside the safe-integer range, even when
+  the total is absent;
+- a directly supplied breakfast entitlement is neither boolean nor unknown.
+
+Missing values remain unknown; the code does not infer guest counts or breakfast.
+Rollback is the single merge commit above. PR #315 is closed unmerged as a
+historical, conflicted precursor; its branch and evidence remain available.
+
+**Operational state:** integration of code is verified, but no live Kross
+connection or production read has been executed. The canonical mirror remains
+historical at the last verified cut: 4,352 rows, two conflicts, zero live rows
+and zero current-safe rows. The paid API remains paused. No PMS, OTA, database,
+reservation, rate, accounting, permission or scheduler write occurred.
+
+**Next exact unit:** obtain written evidence for a supported Kross read method,
+scope, fields, limits and billing; then complete the existing provider-evidence
+packet and run one authorized read-only dry-run. Acceptance still requires
+freshness, stable external identity, idempotent replay, reconciliation, RLS
+proof for Reception, unauthorized-read denial, no PMS write and rollback
+evidence. Do not create a second connector or revive PR #315.
+
 Prove exactly one authorized Kross read cycle into TORO without writing back to the PMS.
 
 This gate is intentionally smaller than "integrate all Kross."

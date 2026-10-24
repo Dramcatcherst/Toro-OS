@@ -1,4 +1,5 @@
 import { buildBookingAssistPath } from "./booking-assist-prefill";
+import { isKrossDateOnly, isKrossAdultCount, isKrossChildCount } from "./public-search-link";
 
 export type QuoteHandoffFacts = {
   from?: string | null;
@@ -17,19 +18,23 @@ export type QuoteHandoffPreparation =
   | {
       state: "needs_input";
       path: null;
-      missing: Array<"from" | "to" | "adults">;
+      missing: Array<"from" | "to" | "adults" | "children">;
     };
 
 export function prepareQuoteHandoff(
   facts: QuoteHandoffFacts,
 ): QuoteHandoffPreparation {
-  const missing: Array<"from" | "to" | "adults"> = [];
+  const missing: Array<"from" | "to" | "adults" | "children"> = [];
+  const from = isKrossDateOnly(facts.from) ? facts.from : null;
+  const to = isKrossDateOnly(facts.to) ? facts.to : null;
+  const children = facts.children ?? 0;
 
-  if (!facts.from) missing.push("from");
-  if (!facts.to) missing.push("to");
-  if (!Number.isInteger(facts.adults) || (facts.adults ?? 0) < 1) {
+  if (!from) missing.push("from");
+  if (!to || (from && to <= from)) missing.push("to");
+  if (!isKrossAdultCount(facts.adults)) {
     missing.push("adults");
   }
+  if (!isKrossChildCount(children)) missing.push("children");
 
   if (missing.length) {
     return {
@@ -42,13 +47,10 @@ export function prepareQuoteHandoff(
   return {
     state: "ready",
     path: buildBookingAssistPath({
-      from: facts.from ?? undefined,
-      to: facts.to ?? undefined,
+      from: from ?? undefined,
+      to: to ?? undefined,
       adults: facts.adults ?? undefined,
-      children:
-        Number.isInteger(facts.children) && (facts.children ?? 0) >= 0
-          ? facts.children ?? 0
-          : 0,
+      children,
       currency: facts.currency ?? "USD",
     }),
     missing: [],
@@ -71,6 +73,9 @@ export function nextQuoteHandoffQuestion(
   }
   if (preparation.missing.includes("adults")) {
     return "¿Cuántos adultos serían?";
+  }
+  if (preparation.missing.includes("children")) {
+    return "¿Cuántos niños serían?";
   }
 
   return null;

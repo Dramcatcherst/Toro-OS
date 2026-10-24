@@ -12,6 +12,45 @@ product:
 
 north_star: "Deep inside. Simple outside."
 
+operating_configuration:
+  decision_date: "2026-10-22"
+  status: adopted_governance_runtime_changes_not_applied
+  authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+  section_marker: TORO_OPERATING_CONFIGURATION_20261022
+  deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
+  channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
+  topology: existing_cloud_runtime_plus_local_development_and_recovery
+  one_canonical_brain_identity_and_control_plane: true
+  local_runtime_is_cold_standby_not_second_production_consumer: true
+  one_active_writer_per_provider_account_and_action: true
+  openclaw_gateway_is_single_trust_boundary: true
+  session_partition_is_not_host_or_tenant_isolation: true
+  untrusted_ingress_must_not_inherit_owner_tools_or_sessions: true
+  public_portal_must_not_hold_worker_or_provider_write_secrets: true
+  privileged_internal_surface_must_be_separately_verified: true
+  channel_capture_read_draft_send_and_business_write_are_separate: true
+  configured_binding_is_not_runtime_or_delivery_proof: true
+  bounded_model_tools_time_cost_and_retries_required_before_enablement: true
+  minimal_task_context_and_authoritative_retrieval: true
+  no_new_gateway_scheduler_database_or_ledger_by_default: true
+  no_advisor_fix_without_scope_consumers_and_rollback_review: true
+  production_promotion_requires_exact_sha_config_auth_scope_receipts_and_rollback: true
+  state_claims:
+    - configured
+    - tested
+    - integrated
+    - deployed
+    - runtime_verified
+    - measured
+  privacy:
+    raw_credentials_in_git_chats_logs_or_archives: forbidden
+    hosted_agent_retention_and_residency_require_review: true
+  activation_gates_preserved:
+    alegra_writer: off_pending_existing_pilot_gates
+    kross_paid_api: paused
+    whatsapp_parity: unverified_pending_end_to_end_receipts
+    external_business_onboarding: blocked
+
 owner_ai_wealth_strategy:
   decision_date: "2026-10-20"
   status: adopted_governance_only
@@ -46,6 +85,37 @@ owner_ai_wealth_strategy:
   no_new_backlog_or_scheduler: true
   kross_paid_api_remains_paused: true
 
+
+
+finance_document_control:
+  owner_directive_date: "2026-10-21"
+  status: policy_active_runtime_routing_unverified
+  authority:
+    - docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    - docs/product/TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md
+    - docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md
+  preferred_business_statement_mailbox: admin@dreamcatcherhotel.com
+  routing_symbol: "📩"
+  routing_symbol_meaning: CONFIGURAR_A_ADMIN
+  routing_requires_verified_business_scope: true
+  routing_includes_supplier_invoices_and_fiscal_documents: true
+  supplier_scope_must_be_verified_before_routing: true
+  routing_complete_requires_new_document_received_directly_at_admin: true
+  personal_only_statements_must_not_be_redirected: true
+  provider_change_requires_authenticated_action_and_test_receipt: true
+  original_statement_required_for_period_completion: true
+  index_or_alert_is_not_original_statement: true
+  recover_existing_originals_before_requesting_duplicates: true
+  lafise_historical_archives_classified: true
+  lafise_2026_business_statements_still_missing: true
+  accounting_chain:
+    - source_document_or_support
+    - payment_evidence
+    - bank_card_wallet_or_processor
+    - alegra
+    - entity_property_cost_center
+    - verification_receipt
+  no_new_scheduler: true
 
 target_navigation:
   decision_date: "2026-10-10"
@@ -167,6 +237,8 @@ canonical_product_specs:
   visual_brain: docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
   product_proof_and_commercialization: docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md
   product_proof_workflow_board: docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
+  finance_bank_mail_coverage: docs/product/TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md
+  finance_expense_evidence: docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md
   progressive_onboarding: docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
   conversational_menus: docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
   conversational_menu_profiles: data/toro_conversational_menu_profiles_v1.json

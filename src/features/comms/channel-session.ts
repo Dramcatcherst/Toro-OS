@@ -56,8 +56,7 @@ export type ToroChannelReceiptDraft = {
 };
 
 function validIsoTimestamp(value: unknown): value is string {
-  if (typeof value !== "string" || !value.includes("T")) return false;
-  return Number.isFinite(Date.parse(value));
+  return validZonedTimestamp(value);
 }
 
 function validActor(actor: ToroChannelActor) {

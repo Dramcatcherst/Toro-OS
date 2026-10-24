@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -11,6 +12,8 @@ const mocks = vi.hoisted(() => ({
   states: [] as unknown[],
   setters: [] as ReturnType<typeof vi.fn>[],
   stateIndex: 0,
+  refs: [] as { current: unknown }[],
+  refIndex: 0,
 }));
 
 // Node has no React renderer or browser navigation. Keep the real form handler
@@ -28,6 +31,10 @@ vi.mock("react", async () => ({
     mocks.setters[index] = setter;
     return [mocks.states[index], setter];
   },
+  useRef: (initialValue: unknown) => {
+    const index = mocks.refIndex++;
+    return mocks.refs[index] ?? (mocks.refs[index] = { current: initialValue });
+  },
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => mocks.router,
@@ -42,6 +49,8 @@ import { LoginForm } from "./login-form";
 beforeEach(() => {
   vi.resetAllMocks();
   mocks.stateIndex = 0;
+  mocks.refIndex = 0;
+  mocks.refs = [];
   mocks.states = [" qa.operator ", "synthetic-password", null, false, false];
   mocks.setters = [];
   mocks.search.mockReturnValue("/portal");
@@ -51,7 +60,7 @@ beforeEach(() => {
   vi.stubGlobal("window", { location: { replace: mocks.documentReplace } });
 });
 
-afterEach(() => { vi.unstubAllGlobals(); });
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 async function submit(dreamTeamAccess = true) {
   const form = LoginForm({ dreamTeamAccess });
@@ -74,6 +83,7 @@ describe("DreamTeam login navigation", () => {
 
     expect(mocks.fetch).toHaveBeenCalledWith("/api/auth/login", {
       method: "POST", headers: { "Content-Type": "application/json" },
+      signal: expect.any(AbortSignal),
       body: JSON.stringify({ identifier: "qa.operator", password: "synthetic-password", nextPath: "/portal" }),
     });
     expect(mocks.documentReplace).toHaveBeenCalledExactlyOnceWith("/portal");
@@ -147,6 +157,42 @@ describe("DreamTeam login navigation", () => {
     noNavigation();
     expect(mocks.states[2]).toEqual(expect.any(String));
     expect(mocks.states[3]).toBe(false);
+  });
+
+  it("releases a stalled login and cancels the browser request after its budget", async () => {
+    vi.useFakeTimers();
+    let signal: AbortSignal | undefined;
+    mocks.fetch.mockImplementation((_url, options) => {
+      signal = options.signal;
+      return new Promise((_resolve, reject) => options.signal?.addEventListener("abort", () => reject(new Error("synthetic timeout")), { once: true }));
+    });
+    let finished = false;
+    const pending = submit().then(() => { finished = true; });
+    await vi.advanceTimersByTimeAsync(15_001);
+    expect(finished).toBe(true);
+    expect(signal?.aborted).toBe(true);
+    expect(mocks.states[3]).toBe(false);
+    expect(mocks.states[2]).toEqual(expect.any(String));
+    noNavigation();
+    await pending;
+  });
+
+  it("admits one submission and locks the credential fields while that attempt is pending", async () => {
+    let complete!: (value: Response) => void;
+    mocks.fetch.mockImplementation(() => new Promise<Response>(resolve => { complete = resolve; }));
+    const form = LoginForm({ dreamTeamAccess: true });
+    const event = { preventDefault: vi.fn() } as unknown as FormEvent<HTMLFormElement>;
+    const first = form.props.onSubmit(event);
+    const second = form.props.onSubmit(event);
+    await Promise.resolve();
+    expect(mocks.fetch).toHaveBeenCalledOnce();
+    mocks.stateIndex = 0; mocks.refIndex = 0;
+    const html = renderToStaticMarkup(LoginForm({ dreamTeamAccess: true }));
+    expect(html).toMatch(/<input[^>]+type="text"[^>]+disabled=""/);
+    expect(html).toMatch(/<input[^>]+type="password"[^>]+disabled=""/);
+    complete(Response.json({ ok: true, nextPath: "/portal" }));
+    await Promise.all([first, second]);
+    expect(mocks.documentReplace).toHaveBeenCalledOnce();
   });
 });
 
