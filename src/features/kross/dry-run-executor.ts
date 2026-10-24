@@ -310,9 +310,10 @@ export function executeKrossSanitizedExtractDryRun(
   );
   if (!validRequiredMap || !validOptionalMap) issues.push("invalid_field_map");
 
-  const expectedFieldMap = record(expectedConfig) && record(expectedConfig.fieldMap)
-    ? expectedConfig.fieldMap
-    : {};
+  const expectedFieldMap: Record<string, unknown> =
+    record(expectedConfig) && record(expectedConfig.fieldMap)
+      ? expectedConfig.fieldMap
+      : {};
   const fieldMapMatchesExpected = [
     ...requiredFieldMapKeys,
     ...optionalFieldMapKeys,
