@@ -89,9 +89,17 @@ describe("executeKrossDryRun", () => {
 
     expect(malformed.status).toBe("rejected");
     expect(corrected.status).toBe("rejected");
+    const otherRow = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
     expect(corrected.executionIssues).toContain("rejected_source_replay");
-    expect(store.mirrorCount()).toBe(0);
-    expect(store.importRunCount()).toBe(1);
+    expect(otherRow.status).toBe("accepted");
+    expect(otherRow.operation).toBe("insert");
+    expect(otherRow.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
   });
 
   it.each([
