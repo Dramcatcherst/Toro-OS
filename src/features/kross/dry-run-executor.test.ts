@@ -69,6 +69,31 @@ describe("executeKrossDryRun", () => {
     expect(typeof result.importRun.sourceHash).toBe("string");
   });
 
+  it("keeps a malformed field-map rejection fenced after the map is corrected", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const malformed = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: payload(),
+        adapterConfig: {
+          ...adapterConfig,
+          fieldMap: { ...adapterConfig.fieldMap, checkIn: "" },
+        },
+      },
+      store,
+    );
+    const corrected = executeKrossDryRun(
+      { ...baseRequest, payload: payload() },
+      store,
+    );
+
+    expect(malformed.status).toBe("rejected");
+    expect(corrected.status).toBe("rejected");
+    expect(corrected.executionIssues).toContain("rejected_source_replay");
+    expect(store.mirrorCount()).toBe(0);
+    expect(store.importRunCount()).toBe(1);
+  });
+
   it.each([
     { sourceAsOf: "2026-09-23T17:00:00Z", observedAt: "2026-09-23T17:05:00Z" },
     { sourceAsOf: "2026-09-23T15:30:00Z", observedAt: "2026-09-23T15:05:00Z" },
