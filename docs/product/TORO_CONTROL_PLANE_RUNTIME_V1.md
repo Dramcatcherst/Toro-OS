@@ -1,8 +1,14 @@
 # TORO Control Plane Runtime v1
 
-**Status:** IMPLEMENTATION CONTRACT — BRANCH/PRE-PRODUCTION  
-**Date:** 2026-09-30  
+**Status:** IMPLEMENTATION CONTRACT — AVAILABILITY AND ACCEPTANCE TRACKED PER ENVIRONMENT  
+**Date:** 2026-10-22  
 **Authority:** subordinate to `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, `docs/product/TORO_BRAIN_CONSTITUTION.md` and the verified Supabase knowledge item `toro_master_execution_contract_v1`.
+
+## Evidence status — 2026-10-22
+
+The current main tree contains Control Plane contracts, worker/runtime code and a runtime-health route. The older branch/pre-production label is therefore insufficient as a global status. Code presence does not establish a persistent worker, correct production version, live connector health, message delivery or measured business benefit.
+
+Availability and acceptance must be recorded per capability and environment with the exact artifact and receipts. A successful read of execution tables is a narrow health check, not a full operating proof. The [dated audit](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) records the observed scope. This clarification changes documentation only.
 
 ## 1. Decision
 

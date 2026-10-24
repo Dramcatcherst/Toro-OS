@@ -13,6 +13,12 @@ The canonical TORO deployment must come from the canonical repository `Dramcatch
 
 Existing Vercel projects are not automatically canonical merely because their names contain TORO.
 
+## Current evidence — 2026-10-22
+
+The audit identified the existing Next.js project **toro-pr11-preview**, connected to `Dramcatcherst/Toro-OS`, and its canonical domain **toro.dreamcatcherhotel.com**. Despite the project's internal name, a deployment must be classified by its target and evidence. Reuse this target; do not provision a second project from the historical gap below.
+
+The audited production artifact, current main and design preview have different commit identities. A merge, READY preview or successful CI is not proof that production runs that version or that a business workflow has passed acceptance. See the [dated evidence](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) for the observed cut, and re-read current deployment metadata before any change.
+
 ## 2. Historical discovery — 2026-10-01
 
 This section records discovery of two legacy projects. It does not describe the current canonical project's absence or authorize creating another project. Use the newer readback below.

@@ -1,7 +1,7 @@
 # START HERE — TORO
 
 **Status:** CURRENT product orientation  
-**Date:** 2026-09-22  
+**Date:** 2026-10-22  
 **Master product / visible brand:** TORO
 **Legacy technical alias:** TORO OS
 
@@ -48,8 +48,9 @@ Dreamcatcher remains the reference implementation and test environment until the
 5. `docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md`
 6. `docs/product/TORO_SUBSYSTEMS_AND_USER_VAULT.md`
 7. `docs/product/NEW_BUSINESS_READINESS_GATE.md`
-8. The current execution plan relevant to the task
-9. Domain-specific technical contracts and tests
+8. For integral reviews or strategic alignment, the relevant sections of the [integrated evolution guide](docs/product/TORO_INTEGRATED_EVOLUTION_GUIDE_V1.md) and its [dated audit](docs/evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md); subordinate synthesis with new targets explicitly marked as proposals
+9. The current execution plan relevant to the task
+10. Domain-specific technical contracts and tests
 
 Historical TORO/TORO OS documents are evidence and context. They do not override the current TORO constitution.
 

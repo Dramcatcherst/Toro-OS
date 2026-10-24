@@ -1,12 +1,24 @@
 # TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-28
+**Date:** 2026-10-22
 **Master product:** TORO
 **Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_INTEGRATED_EVOLUTION_20261022 -->
+## Revisión integral y guía de evolución — 22/10/2026
+
+**CURRENT — documentación y diagnóstico fechados:** el inventario del repositorio, los contratos críticos y las superficies accesibles se compararon con este Plan. La [auditoría integral](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) distingue fuentes, versión implementada, despliegue, prueba de uso y beneficio medido; inventariar un archivo no equivale a revisar cada línea ni a verificar el servicio externo.
+
+**Guía subordinada:** la [Guía integrada de evolución](TORO_INTEGRATED_EVOLUTION_GUIDE_V1.md) reúne portafolio, autoridad de datos, conectores, procesos, métricas, autonomía y secuencia propuesta. Este archivo continúa siendo el Plan General único. Las ventanas y metas nuevas de la guía son **TARGET/NEXT propuestos**, no resultados operativos ni una activación de permisos.
+
+**Siguiente convergencia recomendada:** reutilizar los carriles y objetos existentes para cerrar reserva–cobro–documento–banco, incidencia–trabajo–inspección y mensaje–caso–respuesta–evidencia; reconciliar identidad y entrega del mismo artefacto como dependencias. La ambición 100× necesita baseline por resultado, calidad y costo; no existe un multiplicador global certificado.
+
+**Conservado:** decisiones del propietario, autorizaciones vigentes por alcance, fuentes especializadas, aislamiento, gates de Product Proof/readiness, coordinador y cadencias existentes. La auditoría no fusiona ramas, despliega, migra datos, activa Writer, reactiva API pagada, modifica operaciones ni entrega mensajes. Los registros históricos de aceptación conservan su fecha y catálogo; deben reconciliarse con la evidencia vigente sin borrar su mérito ni extrapolarlo.
+
+<!-- END:TORO_INTEGRATED_EVOLUTION_20261022 -->
 
 <!-- BEGIN:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
 ## Delegación de publicación rutinaria — Dreamcatcher — 22/10/2026
@@ -1927,9 +1939,11 @@ Technical project keys are retained for compatibility and do not redefine archit
 
 #### CURRENT
 
-- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El último head observado para el plan fue `5e2d7eca75237ac770d80d964818919dc71e9d04`, abierto/draft/sin merge; revalidar antes de ejecutar. Un deployment READY o pruebas de otro SHA no certifican el candidato actual.
+- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El checkpoint canónico `HUE-REG-WEB-20261023-R25` registró el push verificado del SHA `761c290ddadb9fcb14ede900629f3325024d15d5`, abierto/draft/sin merge, con 14 acciones preservadas. El 23/10/2026, por autorización explícita, esa misma rama se reconcilió mediante merge normal —sin force push ni reescritura— con `ToroOS/phase-0b-foundation` (`c18632d6c529865b06b83a2606c29ee1311d7b71`) en `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9`; después se alinearon únicamente los contratos Playwright obsoletos del Home actual, sin cambiar comportamiento comercial, y la rama quedó en el SHA remoto `4f626a1c165814fbd87b9eb2131eeb64d6526c26`. El PR continúa abierto y en borrador; el CI remoto del SHA exacto sigue siendo condición previa de revisión, y no existe autorización de merge final ni deploy.
 - El plan está registrado y aprobado para integración; su implementación nueva sigue NOT_STARTED. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por este documento.
 - `DC2-022` y Channel Truth conservan el bloqueo de publicación. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+
+**Evidencia de reconciliación DC2-022:** el merge conserva como padres `761c290ddadb9fcb14ede900629f3325024d15d5` y `c18632d6c529865b06b83a2606c29ee1311d7b71`. En el checkout reconciliado aprobaron instalación limpia, auditoría npm sin vulnerabilidades high/critical, `npm run verify`, build y pruebas Playwright focalizadas del Home/booking/consentimiento/TORO Flow; el seguimiento `4f626a1c165814fbd87b9eb2131eeb64d6526c26` volvió a aprobar los contratos afectados, ESLint y TypeScript. `/es/inicio` y `/es/inicio/` conservaron query y resolvieron en un solo salto 308 a `/es`, con destino final 200. `vercel.json` deshabilita el despliegue Git para la rama ejecutora exacta; esto evita que la ejecución de CI autorice o produzca una promoción. Reversión: revertir primero el commit de pruebas `4f626a1c165814fbd87b9eb2131eeb64d6526c26` y, si la revisión exige retirar toda la reconciliación, revertir después el merge `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9` mediante PR; no reescribir historia.
 
 #### TARGET
 
@@ -2044,19 +2058,17 @@ Batch non-urgent requests. Each request must state:
 
 Never re-ask for valid information already available in TORO.
 
-### Autonomy bands
+### Autonomy vocabulary — canonical reconciliation 2026-10-22
 
-**A0 — Observe:** read/search/analyze only.
+The former PUMBA-local A0–A4 labels in this section are historical and are superseded as nomenclature by [TORO Autonomy & Action Model V1](TORO_AUTONOMY_AND_ACTION_MODEL_V1.md). Their numbers must not be used as permissions or translated numerically.
 
-**A1 — Prepare:** draft plans, reconciliations, messages, code, reports and proposed changes without external effect.
+The qualified canonical vocabulary is **workflow_autonomy A0–A6**: A0 observe; A1 explain; A2 recommend; A3 prepare without unapproved external impact; A4 execute with the defined approval; A5 bounded autonomy; A6 closed-loop execution inside policy. A5/A6 are earned per workflow, never by agent identity.
 
-**A2 — Reversible internal action:** safe internal writes explicitly allowed by policy, with receipt/readback.
+Keep **execution_authority L0–L4** (current Control Plane), **legacy_tools_action L0–L5** (historical Tools) and skill-local labels distinct. Resolve their meanings against the applicable action policy; there is no 1:1 numeric translation.
 
-**A3 — Governed external action:** external message, production change, accounting write, reservation/rate change or other material effect only when the active TORO policy explicitly permits it and required approval is satisfied.
+This reconciliation grants no new action, revokes no valid authorization and changes no runtime configuration. PUMBA defaults to reading, analysis and preparation without external effect. Money movement, contract acceptance, tax/legal filing, credential/security changes, destructive deletion, broad access expansion and other high-impact irreversible actions remain prohibited by default unless a separate explicit authority contract exists.
 
-**A4 — Prohibited by default:** money movement, contract acceptance, tax/legal filing, credential/security changes, destructive deletion, broad access expansion or other high-impact irreversible actions unless a separate explicit authority contract exists.
-
-PUMBA defaults to A1. Specific capabilities may be promoted only after verified tests and rollback/evidence gates.
+PUMBA's effective authority remains the intersection of authenticated scope, role, workflow policy, connector capability, action risk, source authority and freshness, evidence and runtime health. The most restrictive applicable gate wins. Internal writes require the existing explicit policy, receipt and readback; external effects require the applicable policy and approval. Promote an individual workflow only after the required tests, receipt, recovery and policy evidence.
 
 ### Concurrency and collision control
 
