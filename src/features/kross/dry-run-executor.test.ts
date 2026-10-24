@@ -627,4 +627,57 @@ describe("executeKrossDryRun", () => {
     expect(result.summary.pmsWriteCount).toBe(0);
   });
 
+
+  it.each(["cyclic", "excessively deep"] as const)(
+    "rejects %s sanitized payloads before executing rows",
+    (shape) => {
+      const cyclicRow = payload() as ReturnType<typeof payload> & {
+        loop?: unknown;
+      };
+      cyclicRow.loop = cyclicRow;
+
+      let deepValue: unknown = "synthetic";
+      for (let depth = 0; depth < 40; depth += 1) {
+        deepValue = { nested: deepValue };
+      }
+      const row = shape === "cyclic"
+        ? cyclicRow
+        : { ...payload(), overflow: deepValue };
+      const sourceHash = "e".repeat(64);
+      const sourceReference =
+        `synthetic://kross/sanitized-export/${shape.replace(" ", "-")}`;
+      const manifest = {
+        orgId: adapterConfig.orgId,
+        propertyId: adapterConfig.propertyId,
+        sourceReference,
+        sourceHash,
+        sourceAsOf: baseEvidence.sourceAsOf,
+        observedAt: baseEvidence.observedAt,
+        rowCount: 1,
+        fieldMap: adapterConfig.fieldMap,
+        sanitization: {
+          credentialsExcluded: true,
+          paymentCardDataExcluded: true,
+          guestContactExcluded: true,
+        },
+        rows: [row],
+      };
+
+      const result = executeKrossSanitizedExtractDryRun(
+        manifest,
+        baseRequest.nowIso,
+        adapterConfig,
+        { sourceReference, sourceHash },
+      );
+
+      expect(result.status).toBe("rejected");
+      expect(result.issues).toContain("invalid_rows");
+      expect(result.rows).toEqual([]);
+      expect(result.summary.executedRows).toBe(0);
+      expect(result.summary.mirrorCount).toBe(0);
+      expect(result.summary.importRunCount).toBe(0);
+      expect(result.summary.pmsWriteCount).toBe(0);
+    },
+  );
+
 });
