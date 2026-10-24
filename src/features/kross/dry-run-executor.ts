@@ -220,6 +220,7 @@ export function createInMemoryKrossDryRunStore(): KrossDryRunMirrorStore {
 export type KrossSanitizedExtractIssue =
   | "invalid_manifest"
   | "scope_missing"
+  | "scope_mismatch"
   | "invalid_source_hash"
   | "invalid_source_time"
   | "row_count_mismatch"
@@ -249,6 +250,7 @@ const sha256Pattern = /^[a-f0-9]{64}$/i;
 export function executeKrossSanitizedExtractDryRun(
   rawManifest: unknown,
   nowIso: string,
+  expectedScope: Pick<KrossReservationAdapterConfig, "orgId" | "propertyId">,
 ): KrossSanitizedExtractDryRunResult {
   const issues: KrossSanitizedExtractIssue[] = [];
   const manifest = record(rawManifest) ? rawManifest : {};
@@ -257,6 +259,17 @@ export function executeKrossSanitizedExtractDryRun(
   const orgId = invalidEnvelopeText(manifest.orgId);
   const propertyId = invalidEnvelopeText(manifest.propertyId);
   if (!orgId || !propertyId) issues.push("scope_missing");
+
+  const expectedOrgId = record(expectedScope)
+    ? invalidEnvelopeText(expectedScope.orgId)
+    : "";
+  const expectedPropertyId = record(expectedScope)
+    ? invalidEnvelopeText(expectedScope.propertyId)
+    : "";
+  if (!expectedOrgId || !expectedPropertyId ||
+    orgId !== expectedOrgId || propertyId !== expectedPropertyId) {
+    issues.push("scope_mismatch");
+  }
 
   const sourceReference = invalidEnvelopeText(manifest.sourceReference);
   const sourceHash = invalidEnvelopeText(manifest.sourceHash);
