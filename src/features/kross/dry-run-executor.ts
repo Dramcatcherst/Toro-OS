@@ -226,6 +226,7 @@ export type KrossSanitizedExtractIssue =
   | "row_count_mismatch"
   | "sanitization_unconfirmed"
   | "invalid_field_map"
+  | "field_map_mismatch"
   | "invalid_rows";
 
 export type KrossSanitizedExtractDryRunResult = {
@@ -250,7 +251,7 @@ const sha256Pattern = /^[a-f0-9]{64}$/i;
 export function executeKrossSanitizedExtractDryRun(
   rawManifest: unknown,
   nowIso: string,
-  expectedScope: Pick<KrossReservationAdapterConfig, "orgId" | "propertyId">,
+  expectedConfig: KrossReservationAdapterConfig,
 ): KrossSanitizedExtractDryRunResult {
   const issues: KrossSanitizedExtractIssue[] = [];
   const manifest = record(rawManifest) ? rawManifest : {};
@@ -260,11 +261,11 @@ export function executeKrossSanitizedExtractDryRun(
   const propertyId = invalidEnvelopeText(manifest.propertyId);
   if (!orgId || !propertyId) issues.push("scope_missing");
 
-  const expectedOrgId = record(expectedScope)
-    ? invalidEnvelopeText(expectedScope.orgId)
+  const expectedOrgId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.orgId)
     : "";
-  const expectedPropertyId = record(expectedScope)
-    ? invalidEnvelopeText(expectedScope.propertyId)
+  const expectedPropertyId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.propertyId)
     : "";
   if (!expectedOrgId || !expectedPropertyId ||
     orgId !== expectedOrgId || propertyId !== expectedPropertyId) {
@@ -308,6 +309,15 @@ export function executeKrossSanitizedExtractDryRun(
     fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
   );
   if (!validRequiredMap || !validOptionalMap) issues.push("invalid_field_map");
+
+  const expectedFieldMap = record(expectedConfig) && record(expectedConfig.fieldMap)
+    ? expectedConfig.fieldMap
+    : {};
+  const fieldMapMatchesExpected = [
+    ...requiredFieldMapKeys,
+    ...optionalFieldMapKeys,
+  ].every(key => fieldMap[key] === expectedFieldMap[key]);
+  if (!fieldMapMatchesExpected) issues.push("field_map_mismatch");
 
   const uniqueIssues = [...new Set(issues)];
   if (uniqueIssues.length) {
