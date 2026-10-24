@@ -53,6 +53,9 @@
 16. **Medir valor, no actividad:** costo por resultado aceptado, error/retrabajo, duplicados, intervención humana, latencia y antigüedad de cola, frescura y restauraciones verificadas. Baseline ausente = NO_MEDIDO. No inventar ahorro ni crear otro dashboard/scheduler para mostrarlo.
 
 **NEXT único dentro del carril existente:** (1) completar el traspaso real a local y recuperar fuente/binding del Lightsail original; (2) revisar avisos de seguridad y configuración Vercel con acceso autorizado, sin ampliar grants o eludir403; (3) prueba controlada WhatsApp → identidad/ámbito → lectura/tarea canónica única → recibo → misma tarea en Portal → continuidad y negativas de aislamiento; (4) comparar costo/errores/intervención antes de habilitar capacidades adicionales. Recepción y cuenta personal requieren verificación separada; no se impone una migración a WhatsApp Cloud API sin auditar transporte/consentimiento/continuidad. Conserva Writer OFF, API Kross pagada pausada y onboarding externo bloqueado. Cambios de infraestructura, permisos, proveedor y producción permanecen TARGET hasta revisión, ejecución autorizada y readback.
+
+**Clarificación del propietario — 24/10/2026, WhatsApp/onboarding:** se retira la propuesta de asignar un rol automáticamente por tener identidad canónica. El alta/rol/ámbito requieren autorización explícita por el proceso existente; el reconocimiento del remitente utiliza ese permiso y el onboarding explica las funciones ya autorizadas, sin conceder ni elevar acceso. Se conserva la experiencia progresiva y no bloqueante. Veinte refinamientos operativos y sus pruebas quedan como TARGET en el [contrato WhatsApp §12](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#12-explicit-roles-onboarding-and-twenty-hotel-workflow-refinements--2026-10-24), sin contarlos como funciones en producción. Reutilizar #209 y reconciliar PR206/210/348; no otro puente, memoria, backlog o scheduler. La marca vigente de limpieza terminada en Kross es evidencia operativa suficiente para esa dimensión, sin confirmación humana duplicada; inspección, mantenimiento y preparación integral permanecen separados. Cambios documentales/código probado no acreditan consumo del host, entrega WhatsApp ni operación sin PC.
+
 <!-- END:TORO_OPERATING_CONFIGURATION_20261022 -->
 
 <!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
@@ -1876,6 +1879,24 @@ CURRENT es organización de metadatos y evidencia, con recibos de guardado propi
 NEXT: proyector estricto sobre filas ya autorizadas y pruebas de conservación/alias/ciclos; después reader server-only/RPC aditiva con autorización por objeto y ambos extremos, paginación y cobertura explícita; luego UI compacta con componentes actuales. La organización personal inactiva/sin membresía permanece cerrada hasta su gate vigente. visibility/audience no son ACL y un vínculo jamás concede acceso. Preservar los escritores existentes de Portal/Personal y consolidación bajo la línea técnica ya abierta.
 
 Esta dirección no ejecuta bajas, fusiones destructivas, cambios de permisos, migraciones, mensajes, operaciones comerciales o automatizaciones. Las fusiones conservan alias/ID/origen, recuperan información única y requieren paridad/recuperación antes de cualquier retiro.
+
+### Control del propietario y reporte Word del portafolio 24 de octubre de 2026
+
+<!-- BEGIN:PORTFOLIO_OWNER_CONTROL_20261024 -->
+**Dirección del propietario:** simplificar e integrar dentro de lo existente, preservar información útil y poder indicar crear, priorizar, pausar, reactivar, integrar, archivar o eliminar una iniciativa desde su ficha o por conversación. Ampliación del mismo contrato de portafolio, secciones 12 a 14; no crea módulo, registro de proyectos, motor de decisiones ni Plan paralelo.
+
+**CURRENT:** existen el registro de proyectos, el mapa privado, menús y seguimiento interno. `project.followup` crea una tarea; no modifica el proyecto. El lector actual conserva cobertura parcial. `/api/approvals` está retirado y no debe reutilizarse como escritor. Esta ampliación es gobierno documentado; no afirma controles publicados, canal operativo o borrado ejecutado.
+
+**TARGET:** una ficha autorizada por identidad canónica, con acciones comprensibles y cambios antes/después; lista completa con paginación, alias e históricos recuperables. Prioridad, situación del proyecto, decisión pendiente y estado técnico del build son campos distintos. Conservar hasta tres resultados prioritarios del corte, sin limitar el inventario a tres proyectos. Una app o producto independiente puede usar capacidades comunes de TORO sin fusionar clientes, contabilidad, repositorios o ámbitos.
+
+**NEXT en el carril existente:** lector/proyector completo autorizado; después preparar cambios concretos y conectar únicamente las operaciones respaldadas por política, revisión e idempotencia. Reutilizar `operations.projects`, `operations.tasks`, `operations.executive_decisions`, Owner Attention y los runs/receipts del Control Plane. Autorización específica vigente no se solicita otra vez por cambiar de interfaz; ambigüedad o alcance nuevo sí requiere resolución. Pausar trabajo no cancela obligaciones, reservas o cobros.
+
+**Reporte solicitado:** un Word privado y versionado derivado del mismo corte autorizado, con catálogo completo conocido, destino actual/propuesto, builds, decisiones, cambios y límites de evidencia. Actualizar el mismo archivo al cierre de un lote material o por solicitud; usar el reporte/supervisor existente para seguimiento autorizado. La exportación es una fotografía del registro, no otra fuente canónica. No crear timer ni reactivar uno pausado por este contrato.
+
+**Retiro:** una orden de eliminar se vincula a recursos exactos y su alcance. Excluir de trabajo/vista activa, autorización de eliminación y eliminación comprobada son estados distintos. El borrado de hosting no demuestra eliminación universal de repositorios, documentos, bases o copias; registrar pendientes del proveedor y recibos sin exponer el inventario privado en este repositorio.
+
+**Aceptación:** conservación de identidad/alias y datos únicos; aislamiento y rechazo de contexto ajeno; pausa recuperable; integración con receptor comprobado; replay sin doble efecto; conflicto de revisión sin sobreescritura; Word consistente con fuente/corte y funciones TARGET rotuladas como pendientes. Reversión selectiva con revisión vigente, preservando cambios concurrentes.
+<!-- END:PORTFOLIO_OWNER_CONTROL_20261024 -->
 
 
 # 13. Repository/project disposition

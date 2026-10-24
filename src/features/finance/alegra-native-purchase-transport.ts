@@ -219,7 +219,12 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
       try {
         // One POST only. HTTP errors/timeouts never trigger retries in this layer.
         const response = await http.request({ method: "POST", path: "/bills", body });
-        if (!validHttpStatus(response.status) || response.status >= 500 || response.status === 408 || response.status === 409) return { state: "ambiguous" };
+        if (!validHttpStatus(response.status) || response.status >= 500 || response.status === 408 || response.status === 409) {
+          // Retain only a syntactically valid ID as uncertain evidence. The
+          // independent identity lookup must still agree before verification.
+          try { return { state: "ambiguous", nativeId: String(id(object(response.data).id)) }; }
+          catch { return { state: "ambiguous" }; }
+        }
         if (response.status < 200 || response.status >= 300) return { state: "failed", code: "NATIVE_HTTP_" + response.status, retryable: false };
         try { return { state: "created", nativeId: String(id(object(response.data).id)) }; }
         catch { return { state: "ambiguous" }; }
@@ -242,9 +247,13 @@ export function createNativeAlegraPurchaseTransport(input: NativeTransportInput)
         const taxes = category.tax;
         if (!Array.isArray(taxes) || taxes.length !== (p.purchaseTax ? 1 : 0)) throw new Error();
         if (p.purchaseTax && (id(object(taxes[0]).id) !== id(p.purchaseTax.nativeId) || units(object(taxes[0]).percentage) !== units(p.purchaseTax.percentage))) throw new Error();
-        // Never certify the currency of a document from the company's default.
-        // Unknown/missing native currency remains an unverified readback.
-        const currency = text(object(bill.currency).code);
+        // This transport creates only a main-currency bill, with no currency
+        // field in the approved native body. company() above revalidates the
+        // exact account, country, precision and main currency. Only absence is
+        // compatible with that contract; explicit null/invalid/foreign rejects.
+        const currency = Object.hasOwn(bill, "currency")
+          ? text(object(bill.currency).code)
+          : binding.mainCurrency === "CRC" && binding.applicationVersion === "costaRica" ? "CRC" : "";
         if (String(id(bill.id)) !== nativeId || !sameDocument(bill, intent) || text(bill.observations) !== intent.idempotencyKey || text(bill.date) !== p.issueDate ||
             text(bill.dueDate) !== p.dueDate || bill.status !== "open" || units(bill.totalPaid) !== BigInt(0) ||
             units(bill.balance) !== units(bill.total) || currency !== p.currency || id(category.id) !== id(p.accountNativeId) ||

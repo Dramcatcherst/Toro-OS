@@ -114,6 +114,17 @@ function blockedReceipt(input: {
   };
 }
 
+function priorReconciliationReceipt(input: AlegraExecutionInput, prior: AlegraWriterReceipt, reason: string): AlegraWriterReceipt {
+  return {
+    ...blockedReceipt({ ...input, reason, verificationState: "PROVIDER_STATE_UNKNOWN" }),
+    // These are reconciliation pointers to the earlier effect, not verification
+    // of that effect or a new durable receipt. Do not lose them on a blocked replay.
+    nativeId: typeof prior.nativeId === "string" && prior.nativeId.trim() ? prior.nativeId : null,
+    ...(typeof prior.durableReceiptId === "string" && prior.durableReceiptId.trim()
+      ? { durableReceiptId: prior.durableReceiptId } : {}),
+  };
+}
+
 export async function executeApprovedAlegraIntent(input: AlegraExecutionInput): Promise<AlegraWriterExecutionResult> {
   input = { ...input, ...captureAlegraWriteAuthorization(input.intent, input.approval) };
   if (input.writerEnabled !== true || !input.gate) {
@@ -171,16 +182,16 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
 
   const prior = input.priorReceipt ?? input.priorVerifiedReceipt;
   if (prior && prior.idempotencyKey !== input.intent.idempotencyKey && isAlegraWriteBusinessKey(input.intent, prior.idempotencyKey)) {
-    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
-      reason: "PRIOR_IDENTITY_VERSION_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
+    return { ok: false, executedProviderMutation: false, receipt: priorReconciliationReceipt(input, prior,
+      "PRIOR_IDENTITY_VERSION_REQUIRES_RECONCILIATION") };
   }
   if (prior?.verified && prior.idempotencyKey === input.intent.idempotencyKey && !prior.durableReceiptId) {
     return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input, reason: "PRIOR_RECEIPT_NOT_DURABLE" }) };
   }
   if (prior?.idempotencyKey === input.intent.idempotencyKey &&
       (!prior.verified || prior.payloadHash !== input.intent.payloadHash)) {
-    return { ok: false, executedProviderMutation: false, receipt: blockedReceipt({ ...input,
-      reason: "PRIOR_EFFECT_REQUIRES_RECONCILIATION", verificationState: "PROVIDER_STATE_UNKNOWN" }) };
+    return { ok: false, executedProviderMutation: false, receipt: priorReconciliationReceipt(input, prior,
+      "PRIOR_EFFECT_REQUIRES_RECONCILIATION") };
   }
 
   if (prior?.idempotencyKey === input.intent.idempotencyKey && prior.verified && (
@@ -302,6 +313,8 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
   }
 
   if (createResult.state === "ambiguous") {
+    const returnedId = typeof createResult.nativeId === "string" && createResult.nativeId.trim()
+      ? createResult.nativeId : null;
     let lookup: AlegraProviderLookupResult;
     try {
       lookup = await input.transport.findByIdempotencyKey({ intent: input.intent, idempotencyKey: input.intent.idempotencyKey });
@@ -312,7 +325,8 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
     if (!lookup || typeof lookup !== "object" || Array.isArray(lookup) ||
         !["found", "not_found", "unavailable"].includes(lookup.state) ||
         (lookup.state === "found" && (typeof lookup.nativeId !== "string" || !lookup.nativeId.trim()))) lookup = { state: "unavailable" };
-    if (lookup.state !== "found") {
+    const conflictingId = lookup.state === "found" && returnedId !== null && lookup.nativeId !== returnedId;
+    if (lookup.state !== "found" || conflictingId) {
       return {
         ok: false,
         executedProviderMutation: true,
@@ -321,12 +335,13 @@ async function executeWithGate(input: AlegraExecutionInput): Promise<AlegraWrite
             intent: input.intent,
             approval: input.approval,
             reason:
-              lookup.state === "unavailable"
+              conflictingId ? "PROVIDER_NATIVE_ID_CONFLICT" : lookup.state === "unavailable"
                 ? "PROVIDER_AMBIGUOUS_LOOKUP_UNAVAILABLE"
                 : "PROVIDER_AMBIGUOUS_NOT_FOUND_NO_BLIND_RETRY",
             now: input.now,
             verificationState: "PROVIDER_STATE_UNKNOWN",
           }),
+          nativeId: returnedId,
           executionState: "blocked",
         },
       };
