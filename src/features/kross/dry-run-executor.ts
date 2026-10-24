@@ -92,9 +92,10 @@ function validExecutionEnvelope(value: unknown): value is KrossDryRunRequest {
     !record(adapter.fieldMap) || !nonEmptyText(value.nowIso)) {
     return false;
   }
-  if (!requiredFieldMapKeys.every(key => nonEmptyText(adapter.fieldMap[key])) ||
+  const fieldMap = adapter.fieldMap;
+  if (!requiredFieldMapKeys.every(key => nonEmptyText(fieldMap[key])) ||
     !optionalFieldMapKeys.every(key =>
-      adapter.fieldMap[key] === undefined || nonEmptyText(adapter.fieldMap[key])
+      fieldMap[key] === undefined || nonEmptyText(fieldMap[key])
     )) {
     return false;
   }
@@ -121,6 +122,7 @@ function invalidEnvelopeReceipt(
     "invalid_execution_envelope",
     invalidEnvelopeText(adapter.orgId),
     invalidEnvelopeText(adapter.propertyId),
+    null,
     sourceReference,
     sourceHash,
   ]);
