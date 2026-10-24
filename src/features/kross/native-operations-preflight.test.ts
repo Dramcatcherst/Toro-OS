@@ -5,6 +5,7 @@ const NOW = "2026-10-24T20:02:00Z";
 const context = {
   surface: "authenticated_app" as const,
   roleVerified: true,
+  authorizedForRead: true,
   authorizedForAction: true,
   scopeVerified: true,
   roomMappingVerified: true,
@@ -55,6 +56,14 @@ describe("Kross native operations preflight", () => {
     const r = preflightKrossNativeAction({ ...cleaning, lastKnownDirtyAt: "2026-10-24T20:01:00Z" }, NOW);
     expect(r.blockers).toContain("newer_dirty_or_unknown_reclean_required");
     expect(r.skipDuplicateCleaningConfirmation).toBe(false);
+  });
+  it("trusts a native read-only housekeeping mark without granting payment or note edits", () => {
+    const observed = preflightKrossNativeAction({ ...cleaning, context: { ...context, authorizedForAction: false } }, NOW);
+    const financial = preflightKrossNativeAction({ ...payment, context: { ...context, authorizedForAction: false } }, NOW);
+    expect(observed.status).toBe("cleaning_confirmed");
+    expect(observed.skipDuplicateCleaningConfirmation).toBe(true);
+    expect(financial.status).toBe("blocked");
+    expect(financial.blockers).toContain("native_action_capability_unverified");
   });
   it("never substitutes email, Android push, or historical mirrors for authenticated Kross", () => {
     for (const surface of ["email", "push", "historical_mirror"] as const) {
@@ -111,7 +120,7 @@ describe("Kross native operations preflight", () => {
   it("does not treat a user name or phone as sufficient capability", () => {
     const result = preflightKrossNativeAction({ ...payment, context: { ...context, roleVerified: false } }, NOW);
     expect(result.status).toBe("blocked");
-    expect(result.blockers).toContain("native_actor_or_capability_unverified");
+    expect(result.blockers).toContain("native_actor_or_read_capability_unverified");
   });
   it("never returns payment data or reservation identifiers in result or logs", () => {
     const result = preflightKrossNativeAction({ ...note, context: { ...context, nativeObjectReference: "synthetic-kross-sensitive" } }, NOW);
