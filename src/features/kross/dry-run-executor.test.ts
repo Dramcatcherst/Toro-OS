@@ -341,4 +341,82 @@ describe("executeKrossDryRun", () => {
     expect(store.mirrorCount()).toBe(0);
     expect(store.importRunCount()).toBe(1);
   });
+
+  it("executes the bounded synthetic acceptance batch with deterministic receipts and zero PMS writes", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const initialRequest = { ...baseRequest, payload: payload() };
+    const cancellationRequest = {
+      ...baseRequest,
+      payload: payload("cancelled"),
+      evidence: {
+        ...baseEvidence,
+        sourceAsOf: "2026-09-23T15:30:00Z",
+        observedAt: "2026-09-23T15:35:00Z",
+        sourceHash: "hash-k-100-v2",
+      },
+    };
+    const staleRequest = {
+      ...baseRequest,
+      payload: payload(),
+      evidence: {
+        ...baseEvidence,
+        sourceAsOf: "2026-09-23T14:00:00Z",
+        observedAt: "2026-09-23T14:05:00Z",
+        sourceHash: "hash-k-100-stale",
+      },
+    };
+    const sharedArtifactEvidence = {
+      ...baseEvidence,
+      sourceReference: "synthetic://kross/batch/2026-10-24",
+      sourceHash: "hash-batch-2026-10-24",
+    };
+
+    const results = [
+      executeKrossDryRun(initialRequest, store),
+      executeKrossDryRun(initialRequest, store),
+      executeKrossDryRun(cancellationRequest, store),
+      executeKrossDryRun(staleRequest, store),
+      executeKrossDryRun(
+        {
+          ...baseRequest,
+          evidence: sharedArtifactEvidence,
+          payload: {
+            ...payload("confirmed", "K-102"),
+            stay: {
+              ...payload("confirmed", "K-102").stay,
+              check_in: "2026-02-30",
+            },
+          },
+        },
+        store,
+      ),
+      executeKrossDryRun(
+        {
+          ...baseRequest,
+          evidence: sharedArtifactEvidence,
+          payload: payload("confirmed", "K-103"),
+        },
+        store,
+      ),
+    ];
+
+    expect(results.map(result => [result.status, result.operation])).toEqual([
+      ["accepted", "insert"],
+      ["accepted", "replay"],
+      ["accepted", "update"],
+      ["rejected", "reject"],
+      ["rejected", "reject"],
+      ["accepted", "insert"],
+    ]);
+    expect(results[2].reservation?.status).toBe("cancelled");
+    expect(results[3].executionIssues).toContain("stale_source");
+    expect(results[4].reservation).toBeNull();
+    expect(results[5].reservation?.external_reservation_id).toBe("K-103");
+    expect(results.every(result => result.pmsWriteCount === 0)).toBe(true);
+    expect(results.every(result => result.importRun.pmsWriteCount === 0)).toBe(true);
+    expect(results.every(result => result.canEnterSafeView === false)).toBe(true);
+    expect(store.mirrorCount()).toBe(2);
+    expect(store.importRunCount()).toBe(5);
+  });
+
 });
