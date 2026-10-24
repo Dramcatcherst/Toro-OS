@@ -7,6 +7,7 @@ export type KrossNativeSurface = "authenticated_app" | "authenticated_web" | "em
 export type KrossNativeContext = {
   surface: KrossNativeSurface;
   roleVerified: boolean;
+  authorizedForRead: boolean;
   authorizedForAction: boolean;
   scopeVerified: boolean;
   roomMappingVerified: boolean;
@@ -97,7 +98,8 @@ export function preflightKrossNativeAction(
     blockers.push("not_authenticated_native_kross");
   }
   if (!context.scopeVerified) blockers.push("property_scope_not_verified");
-  if (!context.roleVerified || !context.authorizedForAction) blockers.push("native_actor_or_capability_unverified");
+  if (!context.roleVerified || !context.authorizedForRead) blockers.push("native_actor_or_read_capability_unverified");
+  if (input.type !== "housekeeping_observation" && !context.authorizedForAction) blockers.push("native_action_capability_unverified");
   if (!validRef(context.nativeObjectReference)) blockers.push("missing_native_object_reference");
   if (!Number.isFinite(now) || !Number.isFinite(readTime) || !Number.isFinite(sourceTime) ||
       readTime < sourceTime || readTime > now || sourceTime > now ||
