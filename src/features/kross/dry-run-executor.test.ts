@@ -46,6 +46,30 @@ function payload(status = "confirmed", id = "K-100") {
 
 describe("executeKrossDryRun", () => {
   it.each([
+    ["missing adapter config", { ...baseRequest, adapterConfig: null }],
+    ["non-text organization scope", { ...baseRequest, adapterConfig: { ...adapterConfig, orgId: 123 } }],
+    ["malformed required field map", { ...baseRequest, adapterConfig: { ...adapterConfig, fieldMap: { ...adapterConfig.fieldMap, externalReservationId: 123 } } }],
+    ["missing evidence packet", { ...baseRequest, evidence: null }],
+    ["non-text source hash", { ...baseRequest, evidence: { ...baseEvidence, sourceHash: {} } }],
+    ["non-boolean authority claim", { ...baseRequest, evidence: { ...baseEvidence, authorizedTransport: "true" } }],
+    ["non-text evaluation clock", { ...baseRequest, nowIso: 123 }],
+  ])("rejects %s without throwing or creating a mirror", (_name, malformed) => {
+    const store = createInMemoryKrossDryRunStore();
+    const result = executeKrossDryRun(malformed as never, store);
+
+    expect(result.status).toBe("rejected");
+    expect(result.operation).toBe("reject");
+    expect(result.executionIssues).toEqual(["invalid_execution_envelope"]);
+    expect(result.reservation).toBeNull();
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.pmsWriteCount).toBe(0);
+    expect(store.mirrorCount()).toBe(0);
+    expect(store.importRunCount()).toBe(1);
+    expect(typeof result.importRun.sourceReference).toBe("string");
+    expect(typeof result.importRun.sourceHash).toBe("string");
+  });
+
+  it.each([
     { sourceAsOf: "2026-09-23T17:00:00Z", observedAt: "2026-09-23T17:05:00Z" },
     { sourceAsOf: "2026-09-23T15:30:00Z", observedAt: "2026-09-23T15:05:00Z" },
   ])("does not let stored incoherent provenance fence a valid correction: %j", invalidTimes => {
