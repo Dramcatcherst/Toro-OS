@@ -493,6 +493,9 @@ describe("executeKrossDryRun", () => {
     ["empty required mapping", {
       fieldMap: { ...adapterConfig.fieldMap, checkIn: "" },
     }, "invalid_field_map"],
+    ["non-empty mapping drift", {
+      fieldMap: { ...adapterConfig.fieldMap, checkIn: "stay.arrival" },
+    }, "field_map_mismatch"],
   ])("blocks the entire sanitized extract on %s", (_name, override, issue) => {
     const manifest = {
       orgId: adapterConfig.orgId,
