@@ -1865,6 +1865,24 @@ NEXT: proyector estricto sobre filas ya autorizadas y pruebas de conservación/a
 
 Esta dirección no ejecuta bajas, fusiones destructivas, cambios de permisos, migraciones, mensajes, operaciones comerciales o automatizaciones. Las fusiones conservan alias/ID/origen, recuperan información única y requieren paridad/recuperación antes de cualquier retiro.
 
+### Control del propietario y reporte Word del portafolio 24 de octubre de 2026
+
+<!-- BEGIN:PORTFOLIO_OWNER_CONTROL_20261024 -->
+**Dirección del propietario:** simplificar e integrar dentro de lo existente, preservar información útil y poder indicar crear, priorizar, pausar, reactivar, integrar, archivar o eliminar una iniciativa desde su ficha o por conversación. Ampliación del mismo contrato de portafolio, secciones 12 a 14; no crea módulo, registro de proyectos, motor de decisiones ni Plan paralelo.
+
+**CURRENT:** existen el registro de proyectos, el mapa privado, menús y seguimiento interno. `project.followup` crea una tarea; no modifica el proyecto. El lector actual conserva cobertura parcial. `/api/approvals` está retirado y no debe reutilizarse como escritor. Esta ampliación es gobierno documentado; no afirma controles publicados, canal operativo o borrado ejecutado.
+
+**TARGET:** una ficha autorizada por identidad canónica, con acciones comprensibles y cambios antes/después; lista completa con paginación, alias e históricos recuperables. Prioridad, situación del proyecto, decisión pendiente y estado técnico del build son campos distintos. Conservar hasta tres resultados prioritarios del corte, sin limitar el inventario a tres proyectos. Una app o producto independiente puede usar capacidades comunes de TORO sin fusionar clientes, contabilidad, repositorios o ámbitos.
+
+**NEXT en el carril existente:** lector/proyector completo autorizado; después preparar cambios concretos y conectar únicamente las operaciones respaldadas por política, revisión e idempotencia. Reutilizar `operations.projects`, `operations.tasks`, `operations.executive_decisions`, Owner Attention y los runs/receipts del Control Plane. Autorización específica vigente no se solicita otra vez por cambiar de interfaz; ambigüedad o alcance nuevo sí requiere resolución. Pausar trabajo no cancela obligaciones, reservas o cobros.
+
+**Reporte solicitado:** un Word privado y versionado derivado del mismo corte autorizado, con catálogo completo conocido, destino actual/propuesto, builds, decisiones, cambios y límites de evidencia. Actualizar el mismo archivo al cierre de un lote material o por solicitud; usar el reporte/supervisor existente para seguimiento autorizado. La exportación es una fotografía del registro, no otra fuente canónica. No crear timer ni reactivar uno pausado por este contrato.
+
+**Retiro:** una orden de eliminar se vincula a recursos exactos y su alcance. Excluir de trabajo/vista activa, autorización de eliminación y eliminación comprobada son estados distintos. El borrado de hosting no demuestra eliminación universal de repositorios, documentos, bases o copias; registrar pendientes del proveedor y recibos sin exponer el inventario privado en este repositorio.
+
+**Aceptación:** conservación de identidad/alias y datos únicos; aislamiento y rechazo de contexto ajeno; pausa recuperable; integración con receptor comprobado; replay sin doble efecto; conflicto de revisión sin sobreescritura; Word consistente con fuente/corte y funciones TARGET rotuladas como pendientes. Reversión selectiva con revisión vigente, preservando cambios concurrentes.
+<!-- END:PORTFOLIO_OWNER_CONTROL_20261024 -->
+
 
 # 13. Repository/project disposition
 
