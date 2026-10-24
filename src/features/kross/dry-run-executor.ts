@@ -118,14 +118,18 @@ function invalidEnvelopeReceipt(
   const evidence = record(envelope.evidence) ? envelope.evidence : {};
   const sourceReference = invalidEnvelopeText(evidence.sourceReference);
   const sourceHash = invalidEnvelopeText(evidence.sourceHash);
-  const invalidRunKey = JSON.stringify([
-    "invalid_execution_envelope",
-    invalidEnvelopeText(adapter.orgId),
-    invalidEnvelopeText(adapter.propertyId),
-    null,
-    sourceReference,
-    sourceHash,
-  ]);
+  const orgId = invalidEnvelopeText(adapter.orgId);
+  const propertyId = invalidEnvelopeText(adapter.propertyId);
+  const invalidRunKey = orgId && propertyId && sourceReference && sourceHash
+    ? JSON.stringify([orgId, propertyId, sourceReference, sourceHash])
+    : JSON.stringify([
+        "invalid_execution_envelope",
+        orgId,
+        propertyId,
+        null,
+        sourceReference,
+        sourceHash,
+      ]);
   const stored = store.getImportRun(invalidRunKey);
   const importRun: KrossDryRunImportRunEvidence = stored ?? {
     runKey: invalidRunKey,
