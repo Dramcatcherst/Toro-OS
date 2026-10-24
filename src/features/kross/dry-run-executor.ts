@@ -289,7 +289,12 @@ function collectLeafPaths(value: unknown, prefix = ""): string[] {
       collectLeafPaths(child, prefix ? `${prefix}.${key}` : key)
     );
   }
-  if (Array.isArray(value)) return prefix ? [prefix] : [];
+  if (Array.isArray(value)) {
+    if (!value.length) return prefix ? [`${prefix}[]`] : [];
+    return value.flatMap((child, index) =>
+      collectLeafPaths(child, prefix ? `${prefix}[${index}]` : `[${index}]`)
+    );
+  }
   return prefix ? [prefix] : [];
 }
 
