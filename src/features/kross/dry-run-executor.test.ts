@@ -504,6 +504,12 @@ describe("executeKrossDryRun", () => {
     ["non-empty mapping drift", {
       fieldMap: { ...adapterConfig.fieldMap, checkIn: "stay.arrival" },
     }, "field_map_mismatch"],
+    ["unmapped guest contact field", {
+      rows: [{
+        ...payload(),
+        guest: { email: "synthetic@example.invalid" },
+      }],
+    }, "unmapped_fields_present"],
   ])("blocks the entire sanitized extract on %s", (_name, override, issue) => {
     const manifest = {
       orgId: adapterConfig.orgId,
