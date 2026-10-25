@@ -5,6 +5,9 @@
 .brand { display:flex; flex-direction:column; justify-content:center; min-height:44px; text-decoration:none; flex-shrink:0; }
 .brand strong { color:#46b4ff; font-size:30px; letter-spacing:.03em; font-weight:800; line-height:1; }
 .brand span { color:#e1eaf3; font-size:12px; letter-spacing:.06em; line-height:1.7; }
+.brandWithLogo { display:grid; grid-template-columns:44px minmax(0,1fr); align-items:center; gap:8px; min-width:0; }
+.brandMark { display:block; width:44px; height:44px; object-fit:contain; }
+.brandCopy { display:flex; flex-direction:column; min-width:0; }
 .scope { display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:8px 12px; border:1px solid #3c566c; background:#172c3c; border-radius:7px; color:#d8edff; font-size:13px; text-decoration:none; }
 .scope:hover { border-color:var(--toro-cyan); background:#203b50; }
 .clock { display:inline-flex; align-items:center; gap:6px; color:#c7d5e4; font-size:12px; font-variant-numeric:tabular-nums; white-space:nowrap; }

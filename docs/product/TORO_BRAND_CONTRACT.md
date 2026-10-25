@@ -35,6 +35,15 @@ The brain and microchip are not separate product identities.
 - SHA-256: `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`
 - Status: **CURRENT MASTER**
 
+#### Exact-byte repository mirror — verified 25/10/2026
+
+The recovered current-master bytes are **JPEG, 1536×1536**, with the exact current SHA-256 above. The registered source path keeps its historical `.png` spelling; that name is not evidence of the encoded format. No conversion, redraw or new master was made.
+
+- Repository mirror: `public/brand/toro/toro-logo-master-v1.jpg`, 386285 bytes.
+- Verified source: PR347 commit `0d1934cc7018d52247ff0943475c3e7a1b1f57c8`, Git blob `fc0cea99e080c9d7785d37dde57e57aa15d3d86e`.
+- Portal header use: the intact square image with `object-fit: contain`, through the exact JPEG URL. The Portal perimeter admits only safe GET/HEAD reads of that asset; neighboring files, writing methods and image-optimizer routes remain closed.
+- This mirror is the same current master identified by hash, not the legacy `d9af9a...` artwork below. Favicon/app-icon derivatives remain governed by their separate approval and provenance pipeline.
+
 ### Owner-approved interim web icon — 15/10/2026
 
 Mauricio authorized using an available logo or favicon when the current master file could not be recovered. This exception is limited to favicon and app-icon surfaces.

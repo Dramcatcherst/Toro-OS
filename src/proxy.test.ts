@@ -69,6 +69,25 @@ describe("published Portal perimeter", () => {
     vi.stubEnv("TORO_INTERNAL_WORK_WRITE_ENABLED", "true");
   });
 
+  it("admits only safe reads of the exact current TORO master asset", () => {
+    const path = "/brand/toro/toro-logo-master-v1.jpg";
+    for (const method of ["GET", "HEAD"]) {
+      const response = proxy(new NextRequest(`https://toro.invalid${path}`, { method }));
+      expect(response.headers.get("x-middleware-next")).toBe("1");
+      expect(response.headers.get("cache-control")).toBe("private, no-store, max-age=0");
+      expect(response.headers.get("set-cookie")).toBeNull();
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method, headers: { "Next-Action": "synthetic-action" } })).status).toBe(404);
+    }
+    for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${path}`, { method })).status).toBe(404);
+    }
+    for (const unavailable of ["/brand/toro/private.jpg", `${path}/extra`, `${path}%2fextra`, "/brand/toro/%74oro-logo-master-v1.jpg", "/brand/toro/provenance.json", `/_next/image?url=${encodeURIComponent(path)}&w=64&q=75`]) {
+      expect(proxy(new NextRequest(`https://toro.invalid${unavailable}`)).status).toBe(404);
+    }
+    vi.stubEnv("TORO_DEPLOYMENT_MODE", undefined);
+    expect(proxy(new NextRequest(`https://toro.invalid${path}`)).status).toBe(503);
+  });
+
   it.each(["/login", "/portal", "/my-toro", "/my-toro/herramientas", "/brain", "/booking-assist", "/api/brain/context", "/api/brain/owner-attention", "/brand/tools/kross.png", "/brand/tools/wespeak.ico", "/brand/tools/dreamteam.svg", "/brand/tools/google.svg", "/brand/tools/dropbox.svg", "/apple-icon.png", "/favicon.ico", "/icon.png", "/manifest.webmanifest", "/opengraph-image", "/robots.txt", "/twitter-image", "/_next/static/chunks/app.js"])("delegates only safe reads to %s and leaves auth to its guarded reader", path => {
     for (const method of ["GET", "HEAD"]) {
       for (const cookie of ["", "session=synthetic-expired; TORO_DEPLOYMENT_MODE=internal"]) {
