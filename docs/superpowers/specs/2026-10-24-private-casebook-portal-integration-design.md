@@ -99,3 +99,36 @@ El mismo heartbeat lee el checkpoint y mejora una unidad coherente por ejecució
 Mantener el horario y el destino existentes, silencio sin cambio útil, guardas de consumo y pausas. La aprobación del diseño no activa mensajes, contabilización, pagos ni permisos nuevos. El método general puede ir al Plan público; identificaciones, importes, expedientes y vínculos restringidos permanecen privados.
 
 La evidencia de esta unidad y el siguiente paso vuelven al checkpoint existente. El informe/Excel vigentes mantienen su papel de respaldo y proyección hasta que exista una lectura del Portal realmente aceptada.
+
+## Ampliación aprobada: reportes por objeto y canal común — 24/10/2026
+
+Mauricio ratifica el diseño y solicita expedientes completos por persona, sociedad, inmueble y vehículo, organización de relaciones, posibilidad de compartir y continuidad con WhatsApp. Reutilizar el mismo Portal, Plan General, identidades, registros y canal; esta aprobación no es una orden de enviar a terceros ni concederles acceso.
+
+Dentro de Reportes, el contexto del expediente filtra Personas, Sociedades, Inmuebles y derechos, Vehículos y Otros conceptos. Son subsecciones del expediente, no nuevas pestañas principales. Cada objeto conserva su clave canónica y recibe una proyección de reporte versionada; el archivo exportado es un respaldo, nunca otra base maestra. No crear un usuario Auth para cada perfil civil ni confundir titular, poseedor, familiar, socio, administrador, representante o heredero.
+
+Cada reporte ofrece, en este orden: resumen con corte/estado; identidad y vínculos separados por autoridad; bienes y relaciones explícitas; banca/financiación y obligaciones cuando correspondan; cronología de hechos/correcciones; cargas, multas, traspasos y vencimientos; documentos y fuentes; incertidumbres; acciones con responsable/plazo/monto sustentado o pendiente. El detalle es desplegable y la vista impresa conserva los campos permitidos. Desconocido no se transforma en cero y las referencias de terceros permanecen distinguibles.
+
+El contrato mínimo del reporte identifica `report_id`, sujeto canónico, tipo, versión/corte de fuente, fecha de generación, ámbito, evidencia, límites y pendientes. Los datos de origen no cambian porque se genere el documento. Los identificadores de navegación son opacos; no poner nombres, placas, cuentas ni documentos en parámetros URL. Regenerar debe conservar las relaciones previas y agregar declaraciones como suplementos fechados con sujeto/objeto/origen explícitos, sin sobrescribir evidencia anterior.
+
+### Estado comprobado y límite del lector
+
+CURRENT: existen respaldos privados por objeto generados desde datasets y complementos ya custodiados, con índice y manifiesto de integridad. El Portal de este PR sigue siendo una demostración con datos ficticios; no genera todavía esos documentos reales desde una sesión alojada.
+
+La RPC patrimonial existente `toro_patrimony_owner_summary_v1` entrega únicamente agregados. Su contrato prohíbe nombres, identificaciones, folios, placas, montos y documentos; no sirve como lector de reportes individuales. No ampliarla, usar credenciales privilegiadas ni exponer `patrimony`/archivos para aparentar la integración. NEXT es definir y aceptar la lectura mínima por identidad/organización/ámbito/campos, con sus negativas, antes de conectar la proyección real.
+
+### Compartir y WhatsApp
+
+TARGET dentro del canal TORO existente: elegir objeto y versión, destinatario previamente autorizado, ámbito y campos; previsualizar exactamente lo que saldrá; confirmar esa entrega; registrar correlación/idempotencia y resultado del proveedor. Un borrador, un vínculo generado y un envío entregado son estados diferentes. Un destinatario no adquiere acceso por ser socio o familiar, ni una conversación grupal hereda el ámbito privado del propietario.
+
+Los originales permanecen con su custodio. No crear enlaces públicos ni URLs de WhatsApp que contengan información privada. Una descarga autorizada o una copia aprobada conserva su clasificación; el acceso alojado debe usar sesión y permiso por documento. Caducidad/revocación y revisión de destinatarios son requisitos del contrato futuro, no permisos ni controles ya instalados.
+
+Reutilizar `TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1`, TORO Comms y el puente actual. No otro bot, Gateway, agenda, memoria, extractor o timer. La paridad de objetos y permisos no prueba entrega E2E; sin binding/sesión/consumidor/recibo verificados, el estado sigue preparado o bloqueado. La unidad no envía correos ni mensajes.
+
+### Horizonte2036
+
+- 2026: reconstruir evidencia histórica y conciliar identidad, títulos, contabilidad y obligaciones sin perder diferencias.
+- 2027–2028: recepción documental incremental controlada y reportes reproducibles con pruebas de recepción y cobertura.
+- 2029–2031: escenarios y alertas comparables, con supuestos separados de hechos y acciones dentro de su autorización.
+- 2032–2036: continuidad, sucesión documentada, portabilidad y recuperación verificadas mediante ejercicios y revisiones de acceso.
+
+Son objetivos del mismo sistema, no una previsión de rentabilidad ni funciones productivas. El horizonte de reconstrucción no fija por sí solo plazos legales de recuperación o conservación; cada documento mantiene su política aplicable y revisión pendiente cuando corresponda.
