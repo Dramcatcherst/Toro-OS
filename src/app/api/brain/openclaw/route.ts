@@ -11,6 +11,7 @@ import { consumeOpenClawPairing } from "@/features/openclaw/pairing";
 import { resolveToroReadOnlyMenuForContext } from "@/features/menu/server";
 import { resolveToroMenuIntent } from "@/features/menu/resolver";
 import { createPrivilegedSupabaseClient } from "@/lib/supabase/privileged";
+import { loadKrossOperationalSnapshotWithClient } from "@/features/kross/operational-read";
 
 export const runtime = "nodejs";
 
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
     operation !== "internal_work.create" &&
     operation !== "channel_identity.consume_enrollment" &&
     operation !== "brain.read" &&
+    operation !== "hospitality.arrivals.read" &&
     operation !== "menu.read" &&
     operation !== "menu.resolve"
   ) {
@@ -70,7 +72,7 @@ export async function POST(request: Request) {
   // that session; never silently fall back to a different database transport.
   if (
     process.env.TORO_PORTAL_READ_TRANSPORT === "rpc_v1" &&
-    ["brain.read", "owner_attention.read", "menu.read", "menu.resolve"].includes(operation)
+    ["brain.read", "owner_attention.read", "menu.read", "menu.resolve", "hospitality.arrivals.read"].includes(operation)
   ) {
     return response({
       state: "runtime_unavailable",
@@ -145,6 +147,18 @@ export async function POST(request: Request) {
       principal: auth.principal,
       context: safeContextProjection(context),
     });
+  }
+
+  if (operation === "hospitality.arrivals.read") {
+    const propertyId = record.input && typeof record.input === "object" && !Array.isArray(record.input)
+      ? (record.input as { propertyId?: unknown }).propertyId : null;
+    if (typeof propertyId !== "string") {
+      return response({ state: "invalid", error: "A scoped propertyId is required." }, 400);
+    }
+    // Only the property selector crosses this boundary. Dates, roles, freshness
+    // and reporting time are resolved by the server, never by model arguments.
+    const snapshot = await loadKrossOperationalSnapshotWithClient(context, supabase, { propertyId });
+    return response(snapshot, snapshot.state === "forbidden" ? 403 : snapshot.state === "unavailable" ? 503 : 200);
   }
 
   if (operation === "menu.resolve") {
@@ -303,4 +317,5 @@ export async function POST(request: Request) {
       return response(result, 503);
   }
 }
+
 

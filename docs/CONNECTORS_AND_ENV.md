@@ -164,3 +164,14 @@ This is the existing machine-identity bridge (PR206), reconciled with current ma
 
 No production environment variable, secret, enrollment, role, grant, database row, deployment or external message was changed by this reconciliation. Current AWS host/caller wiring, live source freshness, channel binding and end-to-end WhatsApp evidence remain required. Code passing CI does not establish those facts.
 
+
+## Informational arrivals from an hourly snapshot — 2026-10-24
+
+The owner accepts source data up to 60 minutes old for informational hotel reads. The existing bridge now exposes `hospitality.arrivals.read`, with `input.propertyId`. The shared `loadKrossOperationalSnapshotWithClient` provider reads the existing `operations.reservations` mirror; it does not acquire data from Kross or install hourly synchronization.
+
+The initial slice requires current organization ADMIN/GERENCIA authorization and the existing canonical-read flag. It queries one explicit property, uses the server's Costa Rica reporting date, returns at most 200 observed rows (201 fetched for truncation detection), and aborts the read after 8 seconds. Model arguments cannot set actor, role, time, age ceiling or transport. Portal `rpc_v1` remains unsupported for this operation; its session/perimeter must not be bypassed.
+
+Source age comes from each row's actual cutoff, never its import or reply time. Non-live snapshots are allowed; invalid/future dates, conflicting quality, duplicate identities and wrong scope are rejected. Review rows pass only the validation of fields used and remain disclosed as review, with total coverage unverified. Counts are observed scheduled reservations, not a certified hotel total, physical check-in, availability, price or breakfast delivery. Unknown breakfast is not turned into zero. No write is authorized by this read.
+
+Register the reviewed operation in the actual OpenClaw tool adapter and obtain a fresh authorized snapshot before runtime acceptance. Existing live-safe views, ingestion jobs, provider secrets, grants and paid-API pause remain unchanged. Code readiness and policy adoption do not prove data acquisition or deployment.
+

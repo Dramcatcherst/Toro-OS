@@ -9,6 +9,7 @@ const {
   createToroInternalWorkWithContext,
   loadCanonicalBrainReadSliceWithClient,
   resolveToroReadOnlyMenuForContext,
+  loadKrossOperationalSnapshotWithClient,
 } = vi.hoisted(() => ({
   authorizeOpenClawService: vi.fn(),
   resolveOpenClawChannelContext: vi.fn(),
@@ -18,6 +19,7 @@ const {
   createToroInternalWorkWithContext: vi.fn(),
   loadCanonicalBrainReadSliceWithClient: vi.fn(),
   resolveToroReadOnlyMenuForContext: vi.fn(),
+  loadKrossOperationalSnapshotWithClient: vi.fn(),
 }));
 
 vi.mock("@/features/openclaw/service-auth", () => ({
@@ -44,6 +46,7 @@ vi.mock("@/features/brain/canonical-read", () => ({
 vi.mock("@/features/menu/server", () => ({
   resolveToroReadOnlyMenuForContext,
 }));
+vi.mock("@/features/kross/operational-read", () => ({ loadKrossOperationalSnapshotWithClient }));
 
 import { POST } from "./route";
 
@@ -94,6 +97,7 @@ describe("POST /api/brain/openclaw", () => {
     createToroInternalWorkWithContext.mockReset();
     loadCanonicalBrainReadSliceWithClient.mockReset();
     resolveToroReadOnlyMenuForContext.mockReset();
+    loadKrossOperationalSnapshotWithClient.mockReset();
 
     authorizeOpenClawService.mockReturnValue({
       ok: true,
@@ -107,6 +111,34 @@ describe("POST /api/brain/openclaw", () => {
     canViewOwnerAttention.mockReturnValue(true);
   });
   afterEach(() => vi.unstubAllEnvs());
+
+  it("exposes the one-hour informational read without accepting model-supplied authority/time", async () => {
+    loadKrossOperationalSnapshotWithClient.mockResolvedValue({
+      state: "snapshot", mode: "informational_snapshot", maxAgeMinutes: 60, externalWrite: false,
+      sourceAsOf: "2026-10-24T22:30:00Z", counts: { observedScheduledArrivals: 2 },
+    });
+    const result = await POST(request({ identity: {}, operation: "hospitality.arrivals.read", input: {
+      propertyId: "synthetic-property", asOf: "2026-10-20T00:00:00Z", role: "ADMIN", maxAgeMinutes: 9999,
+    } }));
+    expect(result.status).toBe(200);
+    expect(loadKrossOperationalSnapshotWithClient).toHaveBeenCalledWith(context, { client: "synthetic" }, { propertyId: "synthetic-property" });
+    await expect(result.json()).resolves.toMatchObject({ state: "snapshot", maxAgeMinutes: 60, externalWrite: false });
+  });
+  it("preserves a stale source result and a denied role from the shared reader", async () => {
+    loadKrossOperationalSnapshotWithClient.mockResolvedValueOnce({ state: "stale", counts: null });
+    const stale = await POST(request({ identity: {}, operation: "hospitality.arrivals.read", input: { propertyId: "synthetic" } }));
+    expect(stale.status).toBe(200);
+    await expect(stale.json()).resolves.toEqual({ state: "stale", counts: null });
+    loadKrossOperationalSnapshotWithClient.mockResolvedValueOnce({ state: "forbidden", counts: null });
+    expect((await POST(request({ identity: {}, operation: "hospitality.arrivals.read", input: { propertyId: "synthetic" } }))).status).toBe(403);
+  });
+  it("does not open the Portal session transport for the new arrivals read", async () => {
+    vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "rpc_v1");
+    const result = await POST(request({ identity: {}, operation: "hospitality.arrivals.read", input: { propertyId: "synthetic" } }));
+    expect(result.status).toBe(503);
+    expect(createPrivilegedSupabaseClient).not.toHaveBeenCalled();
+    expect(loadKrossOperationalSnapshotWithClient).not.toHaveBeenCalled();
+  });
 
   it("identifies the session-only Portal transport before allocating a machine client", async () => {
     vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "rpc_v1");
@@ -446,4 +478,5 @@ describe("POST /api/brain/openclaw", () => {
     });
   });
 });
+
 
