@@ -41,6 +41,8 @@
 .workspaceTabs button span { color:#c5e8ff; font-size:12px; }
 .tabPanel { min-width:0; }
 .tabPanel[hidden] { display:none; }
+.quickDestination:focus-visible { outline:3px solid var(--toro-focus); outline-offset:3px; }
+@media (forced-colors:active) { .quickDestination:focus-visible { outline-color:Highlight; } }
 .homeGrid { display:grid; grid-template-columns:minmax(0,1fr); gap:8px; align-items:start; }
 .homeColumn { display:grid; gap:8px; min-width:0; align-items:start; }
 .panel, .toolsPanel { --section-accent:#8bd7ff; background:#173347; border:1px solid #557086; border-top:2px solid var(--section-accent); border-radius:9px; padding:10px; min-width:0; align-self:start; box-shadow:0 3px 9px #07111d26; }
@@ -154,10 +156,10 @@
 .toolCopy small { color:#b8c9da; font-size:12px; line-height:1.5; }
 .toolArrow { color:var(--accent); }
 .toolMetadata { display:flex; flex-wrap:wrap; gap:4px; margin-top:2px; }
-.toolMetadata > span { max-width:100%; padding:2px 5px; border:1px solid #6f899c; border-radius:999px; color:#d9e8f2; font-size:10px; line-height:1.35; overflow-wrap:anywhere; }
+.toolMetadata > span { max-width:100%; padding:2px 5px; border:1px solid #6f899c; border-radius:999px; color:#d9e8f2; font-size:12px; line-height:1.35; overflow-wrap:anywhere; }
 .toolCardPending { grid-template-columns:52px minmax(0,1fr) auto; border-style:dashed; cursor:default; }
 .toolCardPending:hover { background:#1b3447; border-color:#58788e; }
-.toolPending { max-width:78px; color:#f1d69a; font-size:11px; line-height:1.35; text-align:right; }
+.toolPending { max-width:78px; color:#f1d69a; font-size:12px; line-height:1.35; text-align:right; }
 .favoriteCard { display:flex; position:relative; flex-direction:column; gap:3px; text-align:center; padding:6px; min-height:64px; }
 .favoriteCard .toolVisual { width:42px; height:28px; }
 .favoriteCard .toolVisual img { width:36px; height:24px; }
@@ -395,7 +397,7 @@
 .page :is(.toolBrand,.toolCopy small) { color:#4c657a; }
 .page .toolVisual { background:white; color:#1769aa; border-color:#bdd0df; }
 .page .toolArrow { color:#1769aa; }
-.page .toolMetadata > span { color:#3c5a72; border-color:#b5cadb; background:#eef5fb; font-size:11px; }
+.page .toolMetadata > span { color:#3c5a72; border-color:#b5cadb; background:#eef5fb; font-size:12px; }
 .page .toolPending { color:#815405; }
 .page .favoriteCard { background:#f8fbfe; }
 .page :is(.subtleDisclosure,.contextDisclosure) { border-color:#c4d6e3; }

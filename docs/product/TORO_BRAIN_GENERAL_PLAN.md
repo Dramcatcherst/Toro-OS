@@ -1,12 +1,24 @@
 # TORO — Plan General
 
 **Status:** CURRENT MASTER PLAN
-**Date:** 2026-09-28
+**Date:** 2026-10-24
 **Master product:** TORO
 **Visible brand/product:** TORO
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_INTEGRATED_EVOLUTION_20261022 -->
+## Revisión integral y guía de evolución — 22/10/2026
+
+**CURRENT — documentación y diagnóstico fechados:** el inventario del repositorio, los contratos críticos y las superficies accesibles se compararon con este Plan. La [auditoría integral](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) distingue fuentes, versión implementada, despliegue, prueba de uso y beneficio medido; inventariar un archivo no equivale a revisar cada línea ni a verificar el servicio externo.
+
+**Guía subordinada:** la [Guía integrada de evolución](TORO_INTEGRATED_EVOLUTION_GUIDE_V1.md) reúne portafolio, autoridad de datos, conectores, procesos, métricas, autonomía y secuencia propuesta. Este archivo continúa siendo el Plan General único. Las ventanas y metas nuevas de la guía son **TARGET/NEXT propuestos**, no resultados operativos ni una activación de permisos.
+
+**Siguiente convergencia recomendada:** reutilizar los carriles y objetos existentes para cerrar reserva–cobro–documento–banco, incidencia–trabajo–inspección y mensaje–caso–respuesta–evidencia; reconciliar identidad y entrega del mismo artefacto como dependencias. La ambición 100× necesita baseline por resultado, calidad y costo; no existe un multiplicador global certificado.
+
+**Conservado:** decisiones del propietario, autorizaciones vigentes por alcance, fuentes especializadas, aislamiento, gates de Product Proof/readiness, coordinador y cadencias existentes. La auditoría no fusiona ramas, despliega, migra datos, activa Writer, reactiva API pagada, modifica operaciones ni entrega mensajes. Los registros históricos de aceptación conservan su fecha y catálogo; deben reconciliarse con la evidencia vigente sin borrar su mérito ni extrapolarlo.
+
+<!-- END:TORO_INTEGRATED_EVOLUTION_20261022 -->
 
 
 <!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
@@ -42,7 +54,7 @@
 
 **Continuidad operativa (TARGET, sin activación implícita):** la [ampliación de operación y accesos](TORO_OPERATING_MODEL_AMENDMENT_2026-10-15.md) y el [runbook de continuidad](../runbooks/TORO_CONTINUITY_AND_STORAGE_CHECKLIST_V1.md) subordinan los cortes existentes de apertura y preparación de llegadas a fuente vigente, despacho de desayunos con acuse, inspección de unidades y cierre de incidencias con evidencia. La programación, las Pages privadas y los ejecutores mantienen sus autorizaciones y comprobaciones independientes; documentos de una PR no equivalen a main, runtime ni servicio aceptado.
 
-**CURRENT observado:** [auditoría de configuración y fuentes](../evidence/TORO_OPERATING_CONFIGURATION_AUDIT_20261022.md). Código actual incluye PR #355 de mantenimiento prepare-only después de PR #364; no acredita tareas o mensajes emitidos. Vercel conserva producción en `349d15fb93061cba6a285fa3977f03e4d6b6b449`. Supabase tiene un binding WhatsApp/OpenClaw activo con flags de lectura/envío y estado verificado, pero `last_sync_at` nulo, cero sesiones y cero recibos en las tablas de canal consultadas: configuración declarada, no continuidad ni entrega demostradas. RLS habilitado en esas tres tablas no prueba por sí solo que sus políticas sean correctas. La ejecución de esta auditoría sigue cloud sin identidad AWS/SSH; Dropbox no es consultable en este turno por error de conexión del plugin, no por ausencia demostrada de archivos.
+**Observado al corte del 22/10/2026:** [auditoría de configuración y fuentes](../evidence/TORO_OPERATING_CONFIGURATION_AUDIT_20261022.md). El código de ese corte incluía PR #355 de mantenimiento prepare-only después de PR #364; no acreditaba tareas o mensajes emitidos. Vercel conservaba producción en `349d15fb93061cba6a285fa3977f03e4d6b6b449`. Supabase tenía un binding WhatsApp/OpenClaw activo con flags de lectura/envío y estado verificado, pero `last_sync_at` nulo, cero sesiones y cero recibos en las tablas de canal consultadas: configuración declarada, no continuidad ni entrega demostradas. RLS habilitado en esas tres tablas no probaba por sí solo que sus políticas fueran correctas. Aquella auditoría se ejecutó en cloud sin identidad AWS/SSH; Dropbox no fue consultable por error de conexión del plugin, no por ausencia demostrada de archivos. Los límites de acceso de ese turno no describen por sí solos la disponibilidad posterior de otros carriles.
 
 **TARGET recomendado: híbrido con responsabilidades separadas.** GitHub mantiene código/contratos/PR/CI; Supabase identidad, contexto, objetos y auditoría; Vercel sirve el Portal autenticado con perímetro de lectura; el Gateway Lightsail existente gestiona transporte persistente dentro de su frontera de confianza; Codex local se usa para desarrollo, control del Chrome autorizado y recuperación, como respaldo frío. Kross, Alegra, bancos y Dropbox mantienen su autoridad de dominio; Airtable es proyección humana transitoria. WhatsApp y Portal consumen el mismo TORO mediante capacidades autorizadas, sin sincronización bidireccional indiscriminada ni memoria de negocio duplicada.
 
@@ -65,12 +77,18 @@
 15. **Entrega pequeña y verificable:** rama/PR/CI/preview del SHA exacto, aceptación autenticada y rollback; retirar duplicados solo tras mapa de consumidores. Handoff compacto con objetivo, estado, fuentes, cambios, pruebas, bloqueo y siguiente acción; chat/captura histórica no demuestra acceso local o salud del host.
 16. **Medir valor, no actividad:** costo por resultado aceptado, error/retrabajo, duplicados, intervención humana, latencia y antigüedad de cola, frescura y restauraciones verificadas. Baseline ausente = NO_MEDIDO. No inventar ahorro ni crear otro dashboard/scheduler para mostrarlo.
 
-**NEXT único dentro del carril existente:** (1) completar el traspaso real a local y recuperar fuente/binding del Lightsail original; (2) revisar avisos de seguridad y configuración Vercel con acceso autorizado, sin ampliar grants o eludir403; (3) prueba controlada WhatsApp → identidad/ámbito → lectura/tarea canónica única → recibo → misma tarea en Portal → continuidad y negativas de aislamiento; (4) comparar costo/errores/intervención antes de habilitar capacidades adicionales. Recepción y cuenta personal requieren verificación separada; no se impone una migración a WhatsApp Cloud API sin auditar transporte/consentimiento/continuidad. Conserva Writer OFF, API Kross pagada pausada y onboarding externo bloqueado. Cambios de infraestructura, permisos, proveedor y producción permanecen TARGET hasta revisión, ejecución autorizada y readback.
+**Siguiente unidad registrada el 22/10/2026 dentro del carril existente:** (1) completar el traspaso real a local y recuperar fuente/binding del Lightsail original; (2) revisar avisos de seguridad y configuración Vercel con acceso autorizado, sin ampliar grants o eludir403; (3) prueba controlada WhatsApp → identidad/ámbito → lectura/tarea canónica única → recibo → misma tarea en Portal → continuidad y negativas de aislamiento; (4) comparar costo/errores/intervención antes de habilitar capacidades adicionales. Recepción y cuenta personal requieren verificación separada; no se impone una migración a WhatsApp Cloud API sin auditar transporte/consentimiento/continuidad. Conserva Writer OFF, API Kross pagada pausada y onboarding externo bloqueado. Cambios de infraestructura, permisos, proveedor y producción permanecen TARGET hasta revisión, ejecución autorizada y readback. Reconciliar la evidencia posterior antes de repetir esta unidad.
 
 **Clarificación del propietario — 24/10/2026, WhatsApp/onboarding:** se retira la propuesta de asignar un rol automáticamente por tener identidad canónica. El alta/rol/ámbito requieren autorización explícita por el proceso existente; el reconocimiento del remitente utiliza ese permiso y el onboarding explica las funciones ya autorizadas, sin conceder ni elevar acceso. Se conserva la experiencia progresiva y no bloqueante. Veinte refinamientos operativos y sus pruebas quedan como TARGET en el [contrato WhatsApp §12](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#12-explicit-roles-onboarding-and-twenty-hotel-workflow-refinements--2026-10-24), sin contarlos como funciones en producción. Reutilizar #209 y reconciliar PR206/210/348; no otro puente, memoria, backlog o scheduler. La marca vigente de limpieza terminada en Kross es evidencia operativa suficiente para esa dimensión, sin confirmación humana duplicada; inspección, mantenimiento y preparación integral permanecen separados. Cambios documentales/código probado no acreditan consumo del host, entrega WhatsApp ni operación sin PC.
 
 
 **Lecturas informativas del PMS — decisión del propietario24/10/2026:** para consultas operativas se admite una copia autorizada de Kross con antigüedad de la fuente de **hasta60minutos**, aunque no sea una conexión live/API. Mostrar corte y edad reales; separar hora del intento/importación del momento de los datos. Cobertura parcial puede consultarse como observación parcial, sin convertirla en totales completos ni desconocidos en cero. Esta decisión sustituye el requisito de live para esas lecturas informativas; no cambia la vista live existente ni la revalidación de cotización/disponibilidad y acciones comerciales. Contrato [WhatsApp §13](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#13-informational-pms-snapshots--owner-decision-2026-10-24). Reutilizar espejo/importación/worker y #209; adquisición horaria es TARGET, no un timer ni sincronización acreditados. API Kross pagada continúa pausada.
+
+**Auditoría del Portal y coordinación — corte 24/10/2026:** la [continuación de la auditoría existente](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md#9-auditoría-del-portal-y-reconciliación--2026-10-24) registra dominio canónico `toro.dreamcatcherhotel.com`, proyecto existente `toro-pr11-preview`, producción observada `349d15fb93061cba6a285fa3977f03e4d6b6b449` y main `3fe9fd1ceae14be7fba49e72a71ac84f280e18e3`. La relación del dominio solicitado `toro.jpghotel.co` queda sin verificar dentro del inventario autorizado. La inspección llegó al acceso del Portal sin sesión autenticada; no acredita sus pantallas interiores, experiencia móvil ni aislamiento de roles. Los estados de los candidatos son evidencia fechada, no promoción a producción.
+
+**Frentes existentes, sin duplicación:** [PR363](https://github.com/Dramcatcherst/Toro-OS/pull/363) concentra esta alineación documental; [PR206](https://github.com/Dramcatcherst/Toro-OS/pull/206) conserva el lector informativo Kross de hasta 60 minutos como candidato y [PR210](https://github.com/Dramcatcherst/Toro-OS/pull/210) la continuidad de sesiones/recibos. [PR384](https://github.com/Dramcatcherst/Toro-OS/pull/384) concentra el candidato del Portal, con aceptación autenticada y widget pendientes; reconciliar los deltas únicos de [PR347](https://github.com/Dramcatcherst/Toro-OS/pull/347) antes de integrar diseño solapado. [PR361](https://github.com/Dramcatcherst/Toro-OS/pull/361) conserva la lectura histórica de comunicaciones, [PR379](https://github.com/Dramcatcherst/Toro-OS/pull/379) el preflight de extracción y [PR387](https://github.com/Dramcatcherst/Toro-OS/pull/387) la evidencia posterior del host. Ninguno demuestra por sí solo adquisición horaria, continuidad extremo a extremo o entrega WhatsApp. Releer sus heads, checkpoints y gates antes de actuar; no importar en bloque ramas antiguas.
+
+**NEXT de este lote de alineación:** conservar el Plan único y la evidencia anterior, corregir orientación y vigencia en la misma PR363, y reconciliar el lector de PR206 con main en su rama existente. La aceptación y promoción del Portal siguen su propio carril, sobre un SHA exacto y con los gates vigentes; no se declara cerrado Owner Attention por leer su corrección en main. DreamTeam conserva servicio hasta probar paridad, identidad y recuperación en TORO People. Las superficies públicas, privadas y los proyectos independientes mantienen sus ámbitos; no se crea otra app, portal, backlog o fuente de verdad. Este lote no activa sincronización, Writer, permisos, scheduler ni despliegue automático.
 
 <!-- END:TORO_OPERATING_CONFIGURATION_20261022 -->
 
@@ -1974,11 +1992,13 @@ Technical project keys are retained for compatibility and do not redefine archit
 **Scope:** `dreamcatcher_website` → `dreamcatcher_hotel_master`; TORO Channels/Growth coordina, con SKY como responsable operativo registrado y Systems/Builder para implementación autorizada. Se conserva la prioridad high/P1 del módulo sin desplazar los P0 transversales de identidad, seguridad y verdad comercial.
 **Single operational dossier:** `operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2` → `structured_content.build_action_plan_20261007_r1`. Los paquetes siguientes son entregables del expediente existente, no siete proyectos ni una segunda cola.
 
-#### CURRENT
+#### Registro del programa y checkpoint técnico histórico
 
-- Existe el candidato TORO Flow en `Dramcatcherst/dreamcatcher-website-vnext`, PR #80. El último head observado para el plan fue `5e2d7eca75237ac770d80d964818919dc71e9d04`, abierto/draft/sin merge; revalidar antes de ejecutar. Un deployment READY o pruebas de otro SHA no certifican el candidato actual.
-- El plan está registrado y aprobado para integración; su implementación nueva sigue NOT_STARTED. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por este documento.
-- `DC2-022` y Channel Truth conservan el bloqueo de publicación. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+- **Checkpoint histórico del 23/10/2026:** el candidato TORO Flow estaba en `Dramcatcherst/dreamcatcher-website-vnext`, [PR80](https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/80). El checkpoint canónico `HUE-REG-WEB-20261023-R25` registró el push verificado del SHA `761c290ddadb9fcb14ede900629f3325024d15d5`, abierto/draft/sin merge, con 14 acciones preservadas. Por autorización explícita, esa misma rama se reconcilió mediante merge normal —sin force push ni reescritura— con `ToroOS/phase-0b-foundation` (`c18632d6c529865b06b83a2606c29ee1311d7b71`) en `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9`; después se alinearon únicamente los contratos Playwright obsoletos del Home de aquel corte, sin cambiar comportamiento comercial, y la rama quedó en el SHA remoto `4f626a1c165814fbd87b9eb2131eeb64d6526c26`. Aquel checkpoint registró el PR abierto/en borrador, CI remoto pendiente como condición previa de revisión y ausencia de autorización de merge final o deploy para ese corte. No describe el head actual ni revoca autorizaciones posteriores: releer PR80, aceptación y autorización aplicables antes de continuar en su carril.
+- El registro inicial aprobó integrar el plan y dejó su implementación nueva como NOT_STARTED. Ese estado histórico no sustituye la evidencia posterior del carril web. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por esta incorporación documental.
+- `DC2-022` y Channel Truth conservan sus gates de publicación; su cumplimiento se verifica sobre el candidato vigente. La incorporación documental no cambia código de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
+
+**Evidencia histórica de reconciliación DC2-022 — 23/10/2026:** el merge conserva como padres `761c290ddadb9fcb14ede900629f3325024d15d5` y `c18632d6c529865b06b83a2606c29ee1311d7b71`. En el checkout reconciliado aprobaron instalación limpia, auditoría npm sin vulnerabilidades high/critical, `npm run verify`, build y pruebas Playwright focalizadas del Home/booking/consentimiento/TORO Flow; el seguimiento `4f626a1c165814fbd87b9eb2131eeb64d6526c26` volvió a aprobar los contratos afectados, ESLint y TypeScript. `/es/inicio` y `/es/inicio/` conservaron query y resolvieron en un solo salto 308 a `/es`, con destino final 200. En ese corte, `vercel.json` deshabilitaba el despliegue Git para la rama ejecutora exacta; CI no acreditaba ni autorizaba una promoción. La reversión documentada para aquel delta era revertir primero el commit de pruebas `4f626a1c165814fbd87b9eb2131eeb64d6526c26` y, si la revisión exigía retirar toda la reconciliación, revertir después el merge `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9` mediante PR, sin reescribir historia. No ejecutar esa reversión histórica sobre un candidato posterior sin reconciliar sus dependencias y recuperación.
 
 #### TARGET
 
@@ -2093,19 +2113,19 @@ Batch non-urgent requests. Each request must state:
 
 Never re-ask for valid information already available in TORO.
 
-### Autonomy bands
+### Autonomy vocabulary — canonical reconciliation 2026-10-22
 
-**A0 — Observe:** read/search/analyze only.
+The former PUMBA-local A0–A4 labels in this section are historical and are superseded as nomenclature by [TORO Autonomy & Action Model V1](TORO_AUTONOMY_AND_ACTION_MODEL_V1.md). Their numbers must not be used as permissions or translated numerically.
 
-**A1 — Prepare:** draft plans, reconciliations, messages, code, reports and proposed changes without external effect.
+This vocabulary takes precedence when interpreting older labels such as `A1 — Prepare` in the [PUMBA operating brief](PUMBA_CHATGPT_DOT_OPERATING_BRIEF_V1.md). Preserve the brief's substantive reading/analysis/preparation limits and valid action-specific authorizations; its historical label does not grant canonical A1 or A3 permissions. This is a semantic reconciliation, not a migration of runtime fields or policies.
 
-**A2 — Reversible internal action:** safe internal writes explicitly allowed by policy, with receipt/readback.
+The qualified canonical vocabulary is **workflow_autonomy A0–A6**: A0 observe; A1 explain; A2 recommend; A3 prepare without unapproved external impact; A4 execute with the defined approval; A5 bounded autonomy; A6 closed-loop execution inside policy. A5/A6 are earned per workflow, never by agent identity.
 
-**A3 — Governed external action:** external message, production change, accounting write, reservation/rate change or other material effect only when the active TORO policy explicitly permits it and required approval is satisfied.
+Keep **execution_authority L0–L4** (current Control Plane), **legacy_tools_action L0–L5** (historical Tools) and skill-local labels distinct. Resolve their meanings against the applicable action policy; there is no 1:1 numeric translation.
 
-**A4 — Prohibited by default:** money movement, contract acceptance, tax/legal filing, credential/security changes, destructive deletion, broad access expansion or other high-impact irreversible actions unless a separate explicit authority contract exists.
+This reconciliation grants no new action, revokes no valid authorization and changes no runtime configuration. PUMBA defaults to reading, analysis and preparation without external effect. Money movement, contract acceptance, tax/legal filing, credential/security changes, destructive deletion, broad access expansion and other high-impact irreversible actions remain prohibited by default unless a separate explicit authority contract exists.
 
-PUMBA defaults to A1. Specific capabilities may be promoted only after verified tests and rollback/evidence gates.
+PUMBA's effective authority remains the intersection of authenticated scope, role, workflow policy, connector capability, action risk, source authority and freshness, evidence and runtime health. The most restrictive applicable gate wins. Internal writes require the existing explicit policy, receipt and readback; external effects require the applicable policy and approval. Promote an individual workflow only after the required tests, receipt, recovery and policy evidence.
 
 ### Concurrency and collision control
 
