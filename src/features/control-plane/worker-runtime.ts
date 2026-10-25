@@ -2,6 +2,7 @@ import "server-only";
 import { assertInternalRuntime } from "@/lib/server/public-demo";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { AlegraWriterRpcClient } from "@/lib/supabase/alegra-writer-rpc";
 
 import type {
   ToroExecutionAuthorityLevel,
@@ -234,7 +235,7 @@ export type ToroAlegraExpiredLeaseRecovery = {
  * the Writer role for this boundary.
  */
 export async function admitApprovedAlegraExecutionRun(
-  supabase: SupabaseClient,
+  supabase: AlegraWriterRpcClient,
   input: {
     orgId: string;
     runId: string;
@@ -306,7 +307,7 @@ export async function admitApprovedAlegraExecutionRun(
  * receipt remains part of the authority/evidence chain.
  */
 export async function finalizeAlegraExecutionRun(
-  supabase: SupabaseClient,
+  supabase: AlegraWriterRpcClient,
   input: {
     orgId: string;
     runId: string;
@@ -383,7 +384,7 @@ export async function finalizeAlegraExecutionRun(
  * and the total admission horizon; this is not the generic worker renewal RPC.
  */
 export async function heartbeatAlegraExecutionRun(
-  supabase: SupabaseClient,
+  supabase: AlegraWriterRpcClient,
   input: {
     orgId: string;
     runId: string;
@@ -449,7 +450,7 @@ export async function heartbeatAlegraExecutionRun(
  * receipt with unknown provider state, and blocks the run atomically.
  */
 export async function recoverExpiredAlegraExecutionRun(
-  supabase: SupabaseClient,
+  supabase: AlegraWriterRpcClient,
   input: {
     orgId: string;
     runId: string;
