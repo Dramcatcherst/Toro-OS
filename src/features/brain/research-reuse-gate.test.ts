@@ -15,6 +15,7 @@ const base: ResearchCheckpoint = {
   validUntil: "2026-10-25T00:00:00Z",
   evidenceRefs: ["https://github.com/Dramcatcherst/Toro-OS/pull/387"],
   evidenceState: "verified",
+  verificationTier: "source_observed",
 };
 
 function request(overrides: Partial<ResearchReuseRequest> = {}): ResearchReuseRequest {
@@ -83,6 +84,26 @@ describe("TORO Research reuse-first preflight", () => {
       maxSourceAgeMinutes: 90,
       checkpoint: { ...base, evidenceState: "partial" },
     }))).toMatchObject({ action: "REVALIDATE", reason: "source_not_fresh" });
+  });
+
+  it("does not promote a fresh document into live E2E evidence", () => {
+    expect(decideResearchReuse(request({
+      requiresLiveSource: true,
+      maxSourceAgeMinutes: 90,
+      checkpoint: { ...base, verificationTier: "document" },
+    }))).toMatchObject({ action: "REVALIDATE", reason: "source_not_fresh" });
+
+    expect(decideResearchReuse(request({
+      requiresLiveSource: true,
+      maxSourceAgeMinutes: 90,
+      checkpoint: { ...base, verificationTier: "runtime_verified" },
+    }))).toMatchObject({ action: "REUSE", reason: "reuse_verified" });
+  });
+
+  it("rejects checkpoints with a checked-at date in the future", () => {
+    expect(decideResearchReuse(request({
+      checkpoint: { ...base, checkedAt: "2026-10-25T23:00:00Z" },
+    }))).toMatchObject({ action: "REVALIDATE", reason: "missing_evidence" });
   });
 
   it("refuses missing provenance even if a note says verified", () => {
