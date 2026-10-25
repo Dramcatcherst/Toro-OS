@@ -377,7 +377,7 @@
  /* Approved blue V2, first implementation lot: working surfaces and navigation. */
 .page { --toro-text:#12344b; --toro-muted:#4c657a; --toro-edge:#b5cadb; --toro-cyan:#1769aa; --toro-focus:#a76306; color-scheme:light; background:#eff4f9; color:#12344b; }
 .page .panel, .page .toolsPanel { --section-accent:#1769aa; --toro-text:#12344b; --toro-muted:#4c657a; --toro-cyan:#1769aa; --toro-focus:#a76306; color-scheme:light; color:#12344b; background:#fff; border:1px solid #b5cadb; box-shadow:0 2px 7px #12344b0c; }
-.page .panel :is(.panelBody,.panelNote,.emptyNote,.note,.sectionNote,.subtleDisclosure,.utilityNote,.utilityField,.overviewRow small), .page :is(.contextDisclosure,.connectionNote,.agentRail,.sectionNote,.panelNote,.note,.emptyNote) { color:#4c657a; }
+.page .panel :is(.panelBody,.panelNote,.emptyNote,.note,.sectionNote,.subtleDisclosure,.utilityNote,.utilityField,.overviewRow small), .page :is(.contextDisclosure,.connectionNote,.agentRail,.sectionNote,.panelNote,.note,.emptyNote,.utilityNote,.utilityField) { color:#4c657a; }
 .page :is(.panelHeading h2,.sectionHeading h2) { color:#12344b; }
 .page .sectionHeading > span, .page :is(.agentCaption,.agentSignal) { color:#4c657a; }
 .page .contextNote { color:#4c657a; background:#fff; border-color:#b5cadb; }
