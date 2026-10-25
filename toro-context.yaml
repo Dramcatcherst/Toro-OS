@@ -45,6 +45,17 @@ operating_configuration:
   privacy:
     raw_credentials_in_git_chats_logs_or_archives: forbidden
     hosted_agent_retention_and_residency_require_review: true
+  informational_pms_reads:
+    decision_date: "2026-10-24"
+    status: owner_approved_policy_runtime_verification_pending
+    max_source_age_minutes: 60
+    live_provider_required: false
+    source_authority: Kross
+    source_cutoff_and_observation_time_are_separate: true
+    partial_coverage_must_be_labelled: true
+    unknown_values_must_not_become_zero: true
+    transactional_revalidation_rules_unchanged: true
+    hourly_acquisition: target_not_proven
   activation_gates_preserved:
     alegra_writer: off_pending_existing_pilot_gates
     kross_paid_api: paused
