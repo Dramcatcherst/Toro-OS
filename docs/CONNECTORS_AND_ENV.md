@@ -103,3 +103,90 @@ Any action with external impact, critical risk or execution intent must route th
 3. Audit log
 4. Connector-specific adapter
 5. Human approval before execution
+
+
+## OpenClaw / WhatsApp Same-Brain machine bridge
+
+Prepared in PR #206. This is **not production activation** and does not prove the live
+OpenClaw runtime or WhatsApp account.
+
+Routes:
+- machine: `POST /api/brain/openclaw`
+- authorized manager pairing/revocation: `POST /api/brain/openclaw/pairing`
+
+Machine operations:
+- `context.resolve`
+- `menu.read`
+- `menu.resolve`
+- `brain.read`
+- `owner_attention.read`
+- `hospitality.arrivals.read`
+- `internal_work.create`
+- `channel_identity.consume_enrollment`
+
+Required server-only configuration:
+- `TORO_OPENCLAW_SERVICE_TOKEN` — dedicated OpenClaw -> TORO Bearer credential, minimum 32 characters.
+- `TORO_CHANNEL_IDENTITY_HMAC_SECRET` — independent key used only by TORO to HMAC provider sender identity before database lookup/storage; minimum 32 characters.
+- `SUPABASE_SECRET_KEY` — preferred server-side Supabase secret for the privileged identity bridge.
+- `SUPABASE_SERVICE_ROLE_KEY` — compatibility fallback only while legacy service-role credentials remain in use.
+- `SUPABASE_URL` — optional server-only URL alias; `NEXT_PUBLIC_SUPABASE_URL` is accepted as the non-secret URL fallback.
+
+Security contract:
+- never expose any of these secrets through `NEXT_PUBLIC_*`, browser bundles, chat, logs, Airtable or business tables;
+- OpenClaw never receives the Supabase secret key;
+- TORO receives the provider sender subject only over the authenticated machine request and stores/looks up only a scoped HMAC hash;
+- display name, phone-like text, message body or contact name never authorize a user;
+- unknown/unpaired/inactive/wrong-membership/role-less senders fail closed;
+- personal User Vault remains unavailable in organization channel context;
+- pairing requires an authenticated ADMIN/GERENCIA context plus explicit action confirmation;
+- pairing token is random, short-lived, returned once, and only its SHA-256 hash is persisted;
+- consuming a pairing challenge uses the existing service-only `consume_employee_channel_enrollment_v1` RPC;
+- revocation is organization-scoped and explicit;
+- canonical reads reuse TORO menu, Brain and Owner Attention projections;
+- canonical writes reuse the idempotent `operations.tasks` internal-work contract;
+- no WhatsApp outbound send, reservation/rate/payment mutation, raw shell or filesystem capability is added by this bridge.
+
+Live activation remains blocked until direct OpenClaw Gateway evidence proves the intended
+WhatsApp account/session, sender mapping, session isolation, replay behavior, recovery and
+M01-M12 acceptance gates.
+
+## OpenClaw bridge reconciliation — 2026-10-24
+
+This is the existing machine-identity bridge (PR206), reconciled with current main. It is not a new gateway, a live deployment or permission to grant a role automatically.
+
+- Deploy the reviewed bridge only in an `internal` TORO environment. The public/Portal deployment intentionally rejects this route; possession of a machine bearer or a server key does not change that perimeter. No new environment flag was added.
+- The dedicated `TORO_OPENCLAW_SERVICE_TOKEN` authenticates the runtime. `TORO_CHANNEL_IDENTITY_HMAC_SECRET` hashes its verified channel subject. Supabase privileged credentials stay in TORO's server; never send them to WhatsApp, OpenClaw prompts or clients. Neither credential confers a human business role.
+- The host must derive channel/connection/subject from the authenticated transport event. Never populate actor identity, organization, role or capability from conversation text or model tool arguments. One authorized manager enrollment establishes the channel binding; subsequent messages use that binding and current canonical roles without repeated login. This employee bridge does not invent a guest/prospect membership.
+- Canonical phone recognition and onboarding completion never assign or upgrade a role. The owner/admin authorizes the role explicitly; the resolver only reads active identity, employee, organization membership and role records, and respects revocation.
+- Current main already exposes the canonical Brain and Owner Attention client-injected providers. Reuse them unchanged, including read enablement, scope checks, reporting timezone/coverage and source-availability behavior.
+- `TORO_PORTAL_READ_TRANSPORT=rpc_v1` is a user-session transport. It revalidates the actual Supabase session and cannot be treated as a machine bearer transport. Bridge reads return a configuration failure before privileged allocation under that setting; they never silently downgrade. The reviewed internal direct-read path remains separate from the Portal session adapter while using the same canonical projections.
+- Internal task creation keeps the existing `TORO_INTERNAL_WORK_WRITE_ENABLED` gate, manager role and same-organization scope. An exact retry replays one task; changed content under the same key produces HTTP409, including a concurrent unique-key collision. Recognition alone never enables task writes.
+- Reconciliation tests cover the deployment boundary and dedicated credentials, existing role denial, canonical task replay/conflict, and the Portal transport mismatch. Local deployment-boundary regression: 11/11; full dependency-backed CI is recorded on the exact PR head after it completes.
+
+No production environment variable, secret, enrollment, role, grant, database row, deployment or external message was changed by this reconciliation. Current AWS host/caller wiring, live source freshness, channel binding and end-to-end WhatsApp evidence remain required. Code passing CI does not establish those facts.
+
+
+## Informational arrivals from an hourly snapshot — 2026-10-24
+
+The owner accepts source data up to 60 minutes old for informational hotel reads. The existing bridge now exposes `hospitality.arrivals.read`, with `input.propertyId`. The shared `loadKrossOperationalSnapshotWithClient` provider reads the existing `operations.reservations` mirror; it does not acquire data from Kross or install hourly synchronization.
+
+The initial slice requires current organization ADMIN/GERENCIA authorization and the existing canonical-read flag. It queries one explicit property, uses the server's Costa Rica reporting date, returns at most 200 observed rows (201 fetched for truncation detection), and aborts the read after 8 seconds. Model arguments cannot set actor, role, time, age ceiling or transport. Portal `rpc_v1` remains unsupported for this operation; its session/perimeter must not be bypassed.
+
+Source age comes from each row's actual cutoff, never its import or reply time. Non-live snapshots are allowed; invalid/future dates, conflicting quality, duplicate identities and wrong scope are rejected. Review rows pass only the validation of fields used and remain disclosed as review, with total coverage unverified. Counts are observed scheduled reservations, not a certified hotel total, physical check-in, availability, price or breakfast delivery. Unknown breakfast is not turned into zero. No write is authorized by this read.
+
+Register the reviewed operation in the actual OpenClaw tool adapter and obtain a fresh authorized snapshot before runtime acceptance. Existing live-safe views, ingestion jobs, provider secrets, grants and paid-API pause remain unchanged. Code readiness and policy adoption do not prove data acquisition or deployment.
+
+### Internal menu consumption — candidate, 2026-10-25
+
+The existing `POST /api/brain/openclaw` operations `menu.read` and `menu.resolve` accept optional `input.propertyId`, an explicit UUID. It has the same meaning in both operations; the host must pass the selected property again when resolving a menu choice. No property is inferred from an organization, a first row or conversation text. `menu.read` retains `input.focusCapability`; `menu.resolve` retains its bounded `input.text`. Organization, role, reporting date, source-age ceiling and transport remain server-controlled.
+
+In the reviewed internal/direct path, a supplied property lets an existing visible menu item consume `loadKrossOperationalSnapshotWithClient` once: `guest.arrivals_departures` when that profile already displays it, otherwise the manager's existing `operations.hotel_today` item. The manager toolbox lists arrivals, but its primary menu currently exposes Hotel hoy; this change does not add menu items or alter manifests. Only a usable informational snapshot makes the selected capability readable/focusable in this property-scoped request. Its focus shows observed scheduled arrivals/departures/stays, source cutoff and read time, selected property, unverified partial coverage, exclusions, stale/review/cancelled/unknown-status rows and truncation. It does not make the global source live, certify a property-wide total or enable quoting. Stale/unavailable/forbidden results keep this informational focus closed; counts remain unknown and do not fall back to another source.
+
+For the current manager profile, `menu.resolve` recognizes `Hotel hoy`, `operación` or the displayed item's number and returns `operations.hotel_today`. A follow-up `menu.read` uses that capability as `input.focusCapability` and the same explicit property. `llegadas` is not an alias of that manager item and remains unresolved by its menu; `hospitality.arrivals.read` remains the separate existing direct operation. The property-scoped Hotel hoy focus/notes explicitly describe observed scheduled Kross movements with partial coverage, not a complete operational summary or evidence of housekeeping, maintenance or physical occupancy. Other menu capabilities and their readiness checks retain their existing results.
+
+Without `propertyId`, the menu preserves its previous live-source gate and does not invoke the informational reader. The current UI wrapper has no property selector and does not gain this consumption path. Portal `rpc_v1` remains unsupported for these bridge operations before privileged allocation. Profiles and ADMIN/GERENCIA reader permissions are unchanged; a role/profile that does not already expose this capability gains no menu item.
+
+After awaiting `menu.read`, `menu.resolve` or `hospitality.arrivals.read`, the bridge re-reads the same canonical channel binding, active membership and roles before returning data or intent. It compares actor, organization, membership/employee, role, profile and scopes with values captured before the read. Revocation or a changed context discards the result; a failed recheck returns a sanitized unavailable response. A separate comparison detects mutation of the original in-memory context; it is not a substitute for the canonical re-read. This is a post-read check, not an atomic guarantee across multiple database queries. Brain/Owner Attention and task-write contracts are outside this consumer change.
+
+This is candidate code and an adapter contract. It does not prove that the installed host supplies the property selector, that current source data exists, or that a WhatsApp message was delivered. Existing host configuration, source freshness, authenticated acceptance and exact-SHA CI/preview gates still apply.
+
