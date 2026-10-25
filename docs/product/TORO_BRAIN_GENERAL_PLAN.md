@@ -9,6 +9,18 @@
 
 
 
+<!-- BEGIN:TORO_INFORMATION_EXTRACTOR_20261024 -->
+## Extracción integral con control de cobertura — 24/10/2026
+
+**Owner intent:** inventories and extraction must cover authorized email, attachments, documents, databases, contacts and supplied links; work must resume from durable checkpoints and show verified progress and remaining scope. This belongs to TORO Data/Knowledge + Comms, with Systems integration, not a parallel bot memory or master plan.
+
+**CURRENT observed:** existing mail census/checkpoints, document/media manifests, source archives, migration lineage, domain stores and Control Plane provide the starting controls. A bounded audit recovered schemas for 14 Airtable bases/795 tables and inspected 235 application tables in the main Supabase project. This is structural coverage, not full row or document extraction. Current census and historical checkpoint counters disagree; documentary mail exists outside that census. No historical cursor was reset or advanced. Existing Admin/Accounting extraction evidence and its missing multimedia remain separate, potentially overlapping populations.
+
+**TARGET / design only:** [TORO Extractor contract V1](TORO_INFORMATION_EXTRACTOR_V1.md). Source/account/scope/version identity, separate enumeration/body/attachment coverage, original-to-fact anchors, parser versions, dedupe with provenance, safe resumption, reconciliation and destination readback. Reuse existing task `info_gov_07_new_document_intake`, historical extraction tasks and `toro_document_intelligence_audit_20260923`. Do not treat INFORMATION_ONLY as proof of exclusion or claim global percentages with an unknown denominator. Current snapshots and historical revisions have separate coverage.
+
+**NEXT:** reconcile census/checkpoint definitions and omitted message IDs; verify private destinations before protected content; bind the existing runtime/service identity/lease owner; prove one historical and one incremental window with restart/replay and readback. Recurrence is not activated by this document; scheduling capacity and runtime acceptance remain independent gates. Daily reporting consumes the same receipts, not another extraction job. No permission expansion, business-system writes, paid provider, restored excluded history, new Gateway, migration or production deployment is authorized by the design.
+<!-- END:TORO_INFORMATION_EXTRACTOR_20261024 -->
+
 <!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
 ## Historial administrativo: extracción con ámbitos y procedencia — 24/10/2026
 
