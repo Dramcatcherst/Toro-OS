@@ -7,6 +7,7 @@
  * A "reuse" result can reuse a known BLOCKED state; it is not a success receipt.
  */
 export type ResearchEvidenceState = "verified" | "partial" | "blocked" | "unknown";
+export type ResearchVerificationTier = "document" | "tested_code" | "source_observed" | "runtime_verified";
 export type ResearchReuseAction =
   | "BLOCK"
   | "DISCOVER"
@@ -24,6 +25,7 @@ export type ResearchCheckpoint = {
   validUntil: string | null;
   evidenceRefs: string[];
   evidenceState: ResearchEvidenceState;
+  verificationTier: ResearchVerificationTier;
   unresolvedDependency?: string | null;
 };
 
@@ -102,7 +104,8 @@ export function decideResearchReuse(
   }
 
   // A historical note with no source reference cannot be promoted to knowledge.
-  if (checkpoint.evidenceRefs.length === 0 || time(checkpoint.checkedAt) === null) {
+  const checkedAt = time(checkpoint.checkedAt);
+  if (checkpoint.evidenceRefs.length === 0 || checkedAt === null || checkedAt > now) {
     return answer("REVALIDATE", "missing_evidence");
   }
 
@@ -129,7 +132,7 @@ export function decideResearchReuse(
 
   if (request.requiresLiveSource) {
     // A documented/checkpointed state is never a live E2E proof.
-    if (checkpoint.evidenceState !== "verified") {
+    if (checkpoint.evidenceState !== "verified" || checkpoint.verificationTier !== "runtime_verified") {
       return answer("REVALIDATE", "source_not_fresh");
     }
     const observedAt = time(checkpoint.sourceAsOf);
