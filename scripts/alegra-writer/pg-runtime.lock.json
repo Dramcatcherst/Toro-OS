@@ -1,0 +1,318 @@
+{
+  "kind": "PUBLIC_NPM_DRIVER_PACKAGE_NOT_INSTALLED_OR_CONNECTED",
+  "generatedAt": "2026-10-24T06:00:30.470Z",
+  "root": {
+    "name": "pg",
+    "version": "8.23.1"
+  },
+  "registry": "https://registry.npmjs.org",
+  "packageCount": 14,
+  "totalTarballBytes": 124390,
+  "packages": [
+    {
+      "name": "pg",
+      "version": "8.23.1",
+      "requestedRange": "8.23.1",
+      "publishedAt": "2026-09-30T15:39:58.489Z",
+      "tarball": "https://registry.npmjs.org/pg/-/pg-8.23.1.tgz",
+      "integrity": "sha512-aL96AHANtWjPLDOLqnhx+ngp9+UK7ETEU8VJrDCGvsSSi/mGLcWYsS6Herg7lmaBJe4uwrfqsa7gTEFaSizDoQ==",
+      "sha256": "0d7999c755c25f7c02fbd96196291148eda737bb91e78e4031b9ebe5ef7d7de7",
+      "bytes": 28809,
+      "dependencies": {
+        "pgpass": "1.0.5",
+        "pg-pool": "^3.14.0",
+        "pg-types": "2.2.0",
+        "pg-protocol": "^1.16.1",
+        "pg-cloudflare": "^1.4.1",
+        "pg-connection-string": "^2.14.1"
+      },
+      "optionalDependencies": {
+        "pg-cloudflare": "^1.4.1"
+      },
+      "peerDependencies": {
+        "pg-native": ">=3.0.1"
+      },
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "pgpass",
+      "version": "1.0.5",
+      "requestedRange": "1.0.5",
+      "publishedAt": "2021-12-19T11:51:52.599Z",
+      "tarball": "https://registry.npmjs.org/pgpass/-/pgpass-1.0.5.tgz",
+      "integrity": "sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==",
+      "sha256": "ff794c956186430afd600b5bc4500f3f0faf34b62be6ff98494f4c7f4a6d8597",
+      "bytes": 4280,
+      "dependencies": {
+        "split2": "^4.1.0"
+      },
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test",
+        "_hint",
+        "_test",
+        "pretest",
+        "_covered_test"
+      ]
+    },
+    {
+      "name": "pg-pool",
+      "version": "3.14.0",
+      "requestedRange": "^3.14.0",
+      "publishedAt": "2026-05-18T12:00:18.362Z",
+      "tarball": "https://registry.npmjs.org/pg-pool/-/pg-pool-3.14.0.tgz",
+      "integrity": "sha512-gKtPkFdQPU3DksooVLi9LsjZxrsBUZIpa+7aVx+LV5pNh0KzP4Zleud2po+ConrxbuXGBJ6Hfer6hdgpIBpBaw==",
+      "sha256": "0b0b8729c09d5eaa059313c9c3d11efc8907441386bbf86ccc57e1298c6ce71a",
+      "bytes": 9579,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {
+        "pg": ">=8.0"
+      },
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "pg-types",
+      "version": "2.2.0",
+      "requestedRange": "2.2.0",
+      "publishedAt": "2019-08-07T01:15:33.099Z",
+      "tarball": "https://registry.npmjs.org/pg-types/-/pg-types-2.2.0.tgz",
+      "integrity": "sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==",
+      "sha256": "c4804fd058140c32f8fda78883ad45dee3eaa4fd9e9127b6eb659fefe51981bd",
+      "bytes": 10344,
+      "dependencies": {
+        "pg-int8": "1.0.1",
+        "postgres-date": "~1.0.4",
+        "postgres-array": "~2.0.0",
+        "postgres-bytea": "~1.0.0",
+        "postgres-interval": "^1.1.0"
+      },
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test",
+        "test-ts"
+      ]
+    },
+    {
+      "name": "pg-protocol",
+      "version": "1.16.1",
+      "requestedRange": "^1.16.1",
+      "publishedAt": "2026-09-30T15:41:58.793Z",
+      "tarball": "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.16.1.tgz",
+      "integrity": "sha512-p9VOFMiHB/ZbJATetbg+99PxssTVSQRnyuPSQ67mN1+1KBOjZaZ83ZQzltnxPhJwSsC3nwVjJ10DVJlerbFzLg==",
+      "sha256": "e1315b9dc839a029109e3a521c1dd1d9c7265722fdbc50d27ff5f7274f70732f",
+      "bytes": 39903,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test",
+        "build",
+        "pretest",
+        "prepublish",
+        "build:watch"
+      ]
+    },
+    {
+      "name": "pg-cloudflare",
+      "version": "1.4.1",
+      "requestedRange": "^1.4.1",
+      "publishedAt": "2026-09-30T15:38:46.171Z",
+      "tarball": "https://registry.npmjs.org/pg-cloudflare/-/pg-cloudflare-1.4.1.tgz",
+      "integrity": "sha512-6PQbsFWZcp9EmJEwy5cGQ2La+AMWpP46lgbb8X+U/XsHIUweYDNCpeuKck5RxL2MdVFi7krbbEi5nX4Zh7JhrQ==",
+      "sha256": "7a3b140775e885d245bcd0c08f60cc5d726449a4dfabda6a31537b7411ef38cc",
+      "bytes": 7245,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test",
+        "build",
+        "prepublish",
+        "build:watch"
+      ]
+    },
+    {
+      "name": "pg-connection-string",
+      "version": "2.14.1",
+      "requestedRange": "^2.14.1",
+      "publishedAt": "2026-09-30T15:39:05.233Z",
+      "tarball": "https://registry.npmjs.org/pg-connection-string/-/pg-connection-string-2.14.1.tgz",
+      "integrity": "sha512-qR3kGNPBLpCNtz0evbKA0Y/MRFXwSSdT+pTJvYp/bXTcReZbvX1kzF0IyTc1QnxqF7AZbOeBhNL8R5mYQZV/MA==",
+      "sha256": "22f69d9711c971d8b66eb78474073ba7f47f27bb69a4347c13cb8ab7c75dfaff",
+      "bytes": 5826,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test",
+        "check-coverage"
+      ]
+    },
+    {
+      "name": "split2",
+      "version": "4.2.0",
+      "requestedRange": "^4.1.0",
+      "publishedAt": "2023-03-26T08:33:02.359Z",
+      "tarball": "https://registry.npmjs.org/split2/-/split2-4.2.0.tgz",
+      "integrity": "sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==",
+      "sha256": "e0061e7f042fc5ff6dcda8afb66619757d92ab1ff514a28a5904f2ebde27bf54",
+      "bytes": 4668,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "lint",
+        "unit",
+        "coverage",
+        "test:report",
+        "test",
+        "legacy"
+      ]
+    },
+    {
+      "name": "pg-int8",
+      "version": "1.0.1",
+      "requestedRange": "1.0.1",
+      "publishedAt": "2017-11-14T22:39:49.993Z",
+      "tarball": "https://registry.npmjs.org/pg-int8/-/pg-int8-1.0.1.tgz",
+      "integrity": "sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==",
+      "sha256": "f010d48974a96814e841edbb6fc6096385574610714d2a50e99811170c365e92",
+      "bytes": 1508,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "postgres-date",
+      "version": "1.0.7",
+      "requestedRange": "~1.0.4",
+      "publishedAt": "2020-08-28T21:29:03.410Z",
+      "tarball": "https://registry.npmjs.org/postgres-date/-/postgres-date-1.0.7.tgz",
+      "integrity": "sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==",
+      "sha256": "a67a8d90e7b8f64041a6f425b102b27a3e86d5854ace7e9414a890912f3adb59",
+      "bytes": 2836,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "postgres-array",
+      "version": "2.0.0",
+      "requestedRange": "~2.0.0",
+      "publishedAt": "2018-10-22T18:12:08.067Z",
+      "tarball": "https://registry.npmjs.org/postgres-array/-/postgres-array-2.0.0.tgz",
+      "integrity": "sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==",
+      "sha256": "dbf1035c777631d4b0a4b5c035b1f6247dd923db6b2ea115b93b1eabb172b3a0",
+      "bytes": 2213,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "postgres-bytea",
+      "version": "1.0.1",
+      "requestedRange": "~1.0.0",
+      "publishedAt": "2025-12-17T04:53:23.864Z",
+      "tarball": "https://registry.npmjs.org/postgres-bytea/-/postgres-bytea-1.0.1.tgz",
+      "integrity": "sha512-5+5HqXnsZPE65IJZSMkZtURARZelel2oXUEO8rH83VS/hxH5vv1uHquPg5wZs8yMAfdv971IU+kcPUczi7NVBQ==",
+      "sha256": "0395e34ecb9945b0003132af6e11463ec7ec8f17fb5cbdbccc5a822bd6807d96",
+      "bytes": 1724,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "postgres-interval",
+      "version": "1.2.0",
+      "requestedRange": "^1.1.0",
+      "publishedAt": "2019-02-23T00:06:51.959Z",
+      "tarball": "https://registry.npmjs.org/postgres-interval/-/postgres-interval-1.2.0.tgz",
+      "integrity": "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==",
+      "sha256": "e67563626b30aa7d22caf930e38529bb137476146a11eaaa0bb1e07c0a2413b1",
+      "bytes": 2926,
+      "dependencies": {
+        "xtend": "^4.0.0"
+      },
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    },
+    {
+      "name": "xtend",
+      "version": "4.0.2",
+      "requestedRange": "^4.0.0",
+      "publishedAt": "2019-07-08T13:35:45.491Z",
+      "tarball": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
+      "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==",
+      "sha256": "bd22a01d43c799be7bb53dfa9e775b132045e39525e51efb977528a00041ba48",
+      "bytes": 2529,
+      "dependencies": {},
+      "optionalDependencies": {},
+      "peerDependencies": {},
+      "scriptsNotExecuted": [
+        "test"
+      ]
+    }
+  ],
+  "clientEntry": "runtime/node_modules/pg/lib/client.js",
+  "poolUsed": false,
+  "nativeDriverIncluded": false,
+  "lifecycleScriptsExecuted": false,
+  "sharedNodeModulesModified": false,
+  "sdkModified": false,
+  "installedOnHost": false,
+  "connectionAttempted": false,
+  "sqlExecuted": false,
+  "hostCompositionCertified": false,
+  "offlineSmoke": {
+    "passed": 8,
+    "nodeVersion": "24.19.0",
+    "clientImported": true,
+    "clientConstructedWithoutConnect": true,
+    "caParsed": true,
+    "hostnameMismatchRejected": true,
+    "connectionAttempts": 0,
+    "sqlExecuted": false
+  },
+  "compositionContract": {
+    "client": "one dedicated pure-JS Client, exclusively held across identity check and RPC; no Pool",
+    "query": "client.query(sql, values), same instance; no query retry wrapper",
+    "ssl": "explicit CA + rejectUnauthorized:true + DNS host/servername + native tls.checkServerIdentity; no connectionString",
+    "failure": "retire/close failed client; never reconnect/replay a query automatically; ambiguous effects require reconciliation",
+    "notImplemented": [
+      "exclusive host lease",
+      "secure password delivery",
+      "live TLS authorization and identity readback",
+      "connection error lifecycle binding",
+      "canonical context/auth composition"
+    ]
+  },
+  "sources": [
+    "https://registry.npmjs.org/pg/8.23.1",
+    "https://node-postgres.com/features/ssl",
+    "https://node-postgres.com/apis/client",
+    "https://node-postgres.com/features/queries",
+    "https://nodejs.org/docs/latest-v24.x/api/tls.html#tlscheckserveridentityhostname-cert"
+  ]
+}

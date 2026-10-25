@@ -8,6 +8,9 @@ import {
   type AlegraWriterReceipt,
 } from "./alegra-writer-executor";
 
+// An uncertain result still carries evidence for read-only reconciliation.
+// Preserving that ID never grants permission to dispatch or certify it.
+
 const intent = prepareAlegraWriteIntent({
   scope: {
     tenantId: "tenant-dreamcatcher",
@@ -463,4 +466,45 @@ it.each([{ actorId: "" }, { approvalId: " " }])("requires historical authority i
   const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey, payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1", executionState: "provider_created", verificationState: "VERIFIED", verified: true, reasons: [], createdAt: validNow, durableReceiptId: "durable", ...patch };
   const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, priorReceipt: prior, transport, now: validNow });
   expect(result.ok).toBe(false); expect(result.receipt.verificationState).toBe("PROVIDER_STATE_UNKNOWN"); expect(transport.create).not.toHaveBeenCalled();
+});
+
+it("preserves the returned native ID when ambiguous lookup is unavailable", async () => {
+  const create = vi.fn(async () => ({ state: "ambiguous" as const, nativeId: "bill-1" }));
+  const persist = vi.fn<(receipt: AlegraWriterReceipt) => Promise<string>>(async () => "durable-unknown");
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, now: validNow,
+    gate: { ...gate, persistReceipt: persist },
+    transport: { create, findByIdempotencyKey: async () => ({ state: "unavailable" }), readback: vi.fn() } });
+  expect(result.ok).toBe(false);
+  expect(result.receipt).toMatchObject({ nativeId: "bill-1", verificationState: "PROVIDER_STATE_UNKNOWN", durableReceiptId: "durable-unknown" });
+  expect(create).toHaveBeenCalledTimes(1);
+  expect(persist.mock.calls[0]?.[0]).toMatchObject({ nativeId: "bill-1", verificationState: "PROVIDER_STATE_UNKNOWN" });
+});
+
+it("does not replace a returned native ID with a conflicting lookup ID", async () => {
+  const readback = vi.fn(async () => verifiedReadback("bill-2"));
+  const create = vi.fn(async () => ({ state: "ambiguous" as const, nativeId: "bill-1" }));
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, now: validNow,
+    transport: { create, findByIdempotencyKey: async () => ({ state: "found", nativeId: "bill-2" }), readback } });
+  expect(result.ok).toBe(false);
+  expect(result.receipt).toMatchObject({ nativeId: "bill-1", verificationState: "PROVIDER_STATE_UNKNOWN" });
+  expect(result.receipt.reasons).toContain("PROVIDER_NATIVE_ID_CONFLICT");
+  expect(readback).not.toHaveBeenCalled();
+  expect(create).toHaveBeenCalledTimes(1);
+});
+
+it("preserves the uncertain receipt identity without admitting or posting again", async () => {
+  const prior: AlegraWriterReceipt = { version: "TORO-ALEGRA-WRITER-RECEIPT-v1", idempotencyKey: intent.idempotencyKey,
+    payloadHash: intent.payloadHash, approvalId: approval.approvalId, actorId: approval.actorId, nativeId: "bill-1",
+    executionState: "provider_created", verificationState: "PROVIDER_STATE_UNKNOWN", verified: false,
+    reasons: ["READBACK_UNAVAILABLE"], createdAt: validNow, durableReceiptId: "durable-unknown" };
+  const transport = { create: vi.fn(), findByIdempotencyKey: vi.fn(), readback: vi.fn() };
+  const beforeDispatch = vi.fn(async () => true), persistReceipt = vi.fn();
+  const result = await executeCandidate({ intent, approval, duplicateDecision: clearDuplicates, priorReceipt: prior,
+    transport, gate: { ...gate, beforeDispatch, persistReceipt }, now: validNow });
+  expect(result.receipt).toMatchObject({ nativeId: "bill-1", verificationState: "PROVIDER_STATE_UNKNOWN", durableReceiptId: "durable-unknown" });
+  expect(result.receipt.reasons).toContain("PRIOR_EFFECT_REQUIRES_RECONCILIATION");
+  expect(beforeDispatch).not.toHaveBeenCalled();
+  expect(transport.create).not.toHaveBeenCalled();
+  expect(persistReceipt).not.toHaveBeenCalled();
+  expect(prior.reasons).toEqual(["READBACK_UNAVAILABLE"]);
 });

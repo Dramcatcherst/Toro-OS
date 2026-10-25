@@ -1,5 +1,6 @@
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { isDeepStrictEqual } from "node:util";
+import type { AlegraWriterRpcClient } from "@/lib/supabase/alegra-writer-rpc";
 import {
   admitApprovedAlegraExecutionRun,
   finalizeAlegraExecutionRun,
@@ -20,6 +21,7 @@ import {
   type AlegraNativeHttp,
   type AlegraNativeBinding,
   type NativePurchaseBody,
+  prepareNativeAlegraPurchaseBody,
 } from "./alegra-native-purchase-transport";
 import {
   captureAlegraWriteAuthorization,
@@ -27,7 +29,7 @@ import {
   type AlegraWriteApproval,
   type AlegraWriteIntent,
 } from "./alegra-writer-contract";
-export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; run: ToroWorkerRun; workerId: string; now: () => string; authorize: AlegraExecutionGate["beforeDispatch"] }): AlegraExecutionGate {
+export function createAlegraControlPlaneGate(input: { supabase: AlegraWriterRpcClient; run: ToroWorkerRun; workerId: string; now: () => string; authorize: AlegraExecutionGate["beforeDispatch"] }): AlegraExecutionGate {
   // Capture host bindings once; callers must not redirect an admitted run.
   const { supabase, workerId, now: currentTime, authorize } = input;
   const run = { ...input.run };
@@ -134,7 +136,7 @@ export function createAlegraControlPlaneGate(input: { supabase: SupabaseClient; 
  * deployment gates. In particular, do not supply a broad service_role client.
  */
 export async function recoverExpiredAlegraLease(input: {
-  supabase: SupabaseClient;
+  supabase: AlegraWriterRpcClient;
   run: ToroWorkerRun;
   preparedReceiptId: string;
   recoveryWorkerId: string;
@@ -211,7 +213,7 @@ export async function recoverExpiredAlegraLease(input: {
  * an independently approved document pilot.
  */
 export async function executeGovernedAlegraPurchase(input: {
-  supabase: SupabaseClient;
+  supabase: AlegraWriterRpcClient;
   run: ToroWorkerRun;
   workerId: string;
   now: () => string;
@@ -226,6 +228,10 @@ export async function executeGovernedAlegraPurchase(input: {
     body: NativePurchaseBody;
     company: Record<string, unknown>;
   }) => Promise<boolean>;
+  // Host canonical check AFTER a successful heartbeat, including the last
+  // awaited lease operation before native POST. Legacy composers may omit it;
+  // the manual caller below always supplies it.
+  authorizeFinalDispatch?: () => Promise<boolean>;
   writerEnabled?: boolean;
   nativeMutationEnabled?: boolean;
   priorReceipt?: AlegraWriterReceipt | null;
@@ -245,11 +251,19 @@ export async function executeGovernedAlegraPurchase(input: {
     mutationEnabled: enabled,
     authorizeNativeCreate: enabled ? authorizeNativeCreate : undefined,
   });
-  const gate = enabled
+  const baseGate = enabled
     ? createAlegraControlPlaneGate({
         supabase, run, workerId, now, authorize: authorizeAdmission,
       })
     : undefined;
+  const authorizeFinalDispatch = input.authorizeFinalDispatch;
+  const gate = baseGate && authorizeFinalDispatch !== undefined
+    ? { ...baseGate, async renewLease() {
+        if (!await baseGate.renewLease()) return false;
+        try { return typeof authorizeFinalDispatch === "function" && await authorizeFinalDispatch() === true; }
+        catch { return false; }
+      } }
+    : baseGate;
 
   // The executor captures/freeze-binds the owner's intent + approval before
   // admission, requires both fenced heartbeats, then verifies native readback
@@ -259,5 +273,127 @@ export async function executeGovernedAlegraPurchase(input: {
     writerEnabled: enabled,
     priorReceipt: input.priorReceipt,
     now: now(),
+  });
+}
+
+export type AlegraCallerContext = {
+  flags?: { writerEnabled?: boolean; nativeMutationEnabled?: boolean; recoveryEnabled?: boolean };
+  run: ToroWorkerRun;
+  intent: AlegraWriteIntent;
+  approval: AlegraWriteApproval;
+  duplicateDecision: AlegraDuplicateDecision;
+  binding: AlegraNativeBinding;
+  priorReceipt?: AlegraWriterReceipt | null;
+  preparedReceipt: { id: string; orgId: string; runId: string; payloadHash: string } | null;
+};
+type AlegraCallerTarget = { orgId: string; runId: string; payloadHash: string };
+type CallerBlocked = { state: "blocked"; reason: string };
+
+/**
+ * Manual invocation adapter in the existing server-only Writer lane. No route,
+ * timer, credentials, grants or run creation. Commands accept no caller payload,
+ * flags or identity. The host must supply authorized canonical reads and a
+ * separately authenticated least-privilege RPC client before production use.
+ */
+export function createManualAlegraPurchaseCaller(input: {
+  target: AlegraCallerTarget;
+  workerId: string;
+  recoveryWorkerId: string;
+  supabase: AlegraWriterRpcClient;
+  http: AlegraNativeHttp;
+  now: () => string;
+  readCanonicalContext: (target: Readonly<AlegraCallerTarget>) => Promise<AlegraCallerContext | null>;
+  authorizeAdmission: AlegraExecutionGate["beforeDispatch"];
+  authorizeNativeCreate: (request: { intent: AlegraWriteIntent; body: NativePurchaseBody; company: Record<string, unknown> }) => Promise<boolean>;
+}) {
+  if (process.env.TORO_DEPLOYMENT_MODE !== "internal") throw new Error("ALEGRA_CALLER_INTERNAL_REQUIRED");
+  const target = Object.freeze({ ...input.target });
+  const { supabase, workerId, recoveryWorkerId, now, readCanonicalContext, authorizeAdmission, authorizeNativeCreate } = input;
+  if (!target.orgId?.trim() || !target.runId?.trim() || !/^[a-f0-9]{64}$/.test(target.payloadHash) || !workerId?.trim() || !recoveryWorkerId?.trim() ||
+      [now, readCanonicalContext, authorizeAdmission, authorizeNativeCreate].some(fn => typeof fn !== "function")) throw new Error("ALEGRA_CALLER_BINDING_REQUIRED");
+  const http = { request: input.http.request.bind(input.http) };
+  let busy = false, dispatched = false, recovered = false;
+  const blocked = (reason: string): CallerBlocked => ({ state: "blocked", reason });
+  async function load() {
+    try {
+      const raw = await readCanonicalContext(target);
+      return raw ? structuredClone(raw) : null;
+    } catch { return null; }
+  }
+  function valid(context: AlegraCallerContext) {
+    try {
+      const { run, intent, approval, binding } = context;
+      if (run.id !== target.runId || run.orgId !== target.orgId || intent.scope.orgId !== target.orgId || binding.scope.orgId !== target.orgId ||
+          intent.payloadHash !== target.payloadHash || approval.payloadHash !== target.payloadHash || run.idempotencyKey !== intent.idempotencyKey ||
+          run.decisionId !== approval.decisionId || run.actorRef !== approval.actorId || run.actorKind !== "human" ||
+          run.targetSystem !== "alegra" || run.actionKey !== "alegra_create_purchase_bill" || run.executionAuthorityLevel !== "L3") return false;
+      prepareNativeAlegraPurchaseBody(intent, binding);
+      return true;
+    } catch { return false; }
+  }
+  function enabled(context: AlegraCallerContext) {
+    return context.flags?.writerEnabled === true && context.flags?.nativeMutationEnabled === true;
+  }
+  function sameAuthority(initial: AlegraCallerContext, fresh: AlegraCallerContext) {
+    return valid(fresh) && fresh.duplicateDecision.clear === true && fresh.duplicateDecision.state === "CLEAR" &&
+      validateAlegraWriteApproval(fresh.intent, fresh.approval, now()).ok &&
+      isDeepStrictEqual(initial.approval, fresh.approval) && isDeepStrictEqual(initial.binding, fresh.binding);
+  }
+  return Object.freeze({
+    async dispatch() {
+      if (busy || dispatched) return blocked("CALLER_ALREADY_USED");
+      busy = true; dispatched = true;
+      try {
+        const context = await load();
+        if (!context) return blocked("CONTEXT_UNAVAILABLE");
+        if (!enabled(context)) return blocked("WRITER_DISABLED");
+        if (!valid(context)) return blocked("CANONICAL_TARGET_MISMATCH");
+        try {
+          const result = await executeGovernedAlegraPurchase({
+            supabase, run: context.run, workerId, now, http, binding: context.binding,
+            intent: context.intent, approval: context.approval, duplicateDecision: context.duplicateDecision,
+            priorReceipt: context.priorReceipt, writerEnabled: true, nativeMutationEnabled: true,
+            authorizeAdmission: async request => {
+              if (await authorizeAdmission(request) !== true) return false;
+              const fresh = await load();
+              return !!fresh && enabled(fresh) && sameAuthority(context, fresh);
+            },
+            authorizeNativeCreate: async request => {
+              if (await authorizeNativeCreate(request) !== true) return false;
+              const fresh = await load();
+              return !!fresh && enabled(fresh) && sameAuthority(context, fresh) &&
+                isDeepStrictEqual(request.body, prepareNativeAlegraPurchaseBody(fresh.intent, fresh.binding));
+            },
+            authorizeFinalDispatch: async () => {
+              const fresh = await load();
+              return !!fresh && enabled(fresh) && sameAuthority(context, fresh);
+            },
+          });
+          return { state: "dispatch_result" as const, result };
+        } catch {
+          // An unexpected failure can follow an effect; never claim no effect,
+          // expose the raw failure, or re-enter dispatch on this instance.
+          return { state: "provider_state_unknown" as const, providerState: "PROVIDER_STATE_UNKNOWN" as const };
+        }
+      } finally { busy = false; }
+    },
+    async recover() {
+      if (busy || recovered) return blocked("CALLER_ALREADY_USED");
+      busy = true; recovered = true;
+      try {
+        const context = await load();
+        if (!context) return blocked("CONTEXT_UNAVAILABLE");
+        if (context.flags?.recoveryEnabled !== true) return blocked("RECOVERY_DISABLED");
+        const marker = context.preparedReceipt;
+        if (!valid(context) || !marker?.id?.trim() || marker.orgId !== target.orgId || marker.runId !== target.runId || marker.payloadHash !== target.payloadHash ||
+            context.run.leaseOwner !== workerId || !Number.isFinite(Date.parse(context.run.leaseExpiresAt ?? "")) ||
+            !(Date.parse(now()) >= Date.parse(context.run.leaseExpiresAt!))) return blocked("RECOVERY_TARGET_MISMATCH");
+        try {
+          const result = await recoverExpiredAlegraLease({ supabase, run: context.run, recoveryWorkerId, preparedReceiptId: marker.id, now });
+          return result ? { state: "recovery_result" as const, result } : blocked("RECOVERY_NOT_CONFIRMED");
+        } catch { return { state: "provider_state_unknown" as const, providerState: "PROVIDER_STATE_UNKNOWN" as const }; }
+      } catch { return blocked("RECOVERY_CONTEXT_INVALID"); }
+      finally { busy = false; }
+    },
   });
 }

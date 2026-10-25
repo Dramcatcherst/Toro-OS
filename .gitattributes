@@ -1,0 +1,2 @@
+# Preserve the pinned public CA bytes on Windows and Linux checkouts.
+src/lib/supabase/fixtures/supabase-prod-ca-2021.crt -text

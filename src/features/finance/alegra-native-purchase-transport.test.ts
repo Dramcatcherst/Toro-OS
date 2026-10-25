@@ -3,7 +3,7 @@ import { prepareAlegraWriteIntent } from "./alegra-writer-contract";
 import { createNativeAlegraPurchaseTransport, prepareNativeAlegraPurchaseBody, type AlegraNativeHttp } from "./alegra-native-purchase-transport";
 import { createAlegraNativeHttp } from "./alegra-native-http";
 import { executeApprovedAlegraIntent } from "./alegra-writer-executor";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { AlegraWriterRpcClient } from "@/lib/supabase/alegra-writer-rpc";
 import type { ToroWorkerRun } from "../control-plane/worker-runtime";
 import { executeGovernedAlegraPurchase } from "./alegra-writer-control-plane";
 
@@ -212,14 +212,73 @@ describe("Native Alegra purchase transport candidate", () => {
     await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
   });
 
-  it.each(["omitted", "null", "empty"] as const)("does not infer a missing bill currency: %s", async variant => {
+  it.each(["null", "empty"] as const)("does not infer an invalid bill currency: %s", async variant => {
     const observed: Record<string, unknown> = { ...nativeBill() };
-    if (variant === "omitted") delete observed.currency;
-    else if (variant === "null") observed.currency = null;
+    if (variant === "null") observed.currency = null;
     else observed.currency = { code: "" };
     const store = fixture(async request => request.path === "/bills/99" ? { status: 200, data: observed } : undefined);
     await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
     expect(store.requests.some(request => request.method === "POST")).toBe(false);
+  });
+
+  it("accepts an omitted primary currency only after the exact company binding is verified", async () => {
+    const bill: Record<string, unknown> = nativeBill();
+    delete bill.currency;
+    const store = fixture(request => request.path === "/bills/99" ? { status: 200, data: bill } : undefined);
+    await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).resolves.toMatchObject({ currency: "CRC", nativeId: "99" });
+    expect(store.requests.map(request => request.path)).toEqual(["/company", "/bills/99"]);
+  });
+
+  it.each([{ mainCurrency: "USD", applicationVersion: "costaRica" }, { mainCurrency: "CRC", applicationVersion: "colombia" }])("does not extend omitted-currency compatibility to %j", async alternativeBinding => {
+    const prepared = intent({ currency: alternativeBinding.mainCurrency });
+    const bill: Record<string, unknown> = nativeBill(prepared); delete bill.currency;
+    const store = fixture(request => request.path === "/company" ? { status: 200, data: {
+      identification: "fixture-receiver", currency: { code: alternativeBinding.mainCurrency }, applicationVersion: alternativeBinding.applicationVersion, decimalPrecision: "2",
+    } } : request.path === "/bills/99" ? { status: 200, data: bill } : undefined);
+    const transport = createNativeAlegraPurchaseTransport({ http: store.http, binding: { ...binding, ...alternativeBinding }, now: () => now });
+    await expect(transport.readback({ intent: prepared, nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
+  });
+
+  it("preserves a 503 native ID, rejects a conflicting identity lookup and never reposts", async () => {
+    const prepared = intent(); let posted = false;
+    const differentBill = { ...nativeBill(prepared), id: "100" };
+    const store = fixture(request => {
+      if (request.path === "/bills" && request.method === "POST") { posted = true; return { status: 503, data: { id: "99" } }; }
+      if (request.path === "/bills" && posted) return { status: 200, data: { metadata: { total: 1 }, data: [differentBill] } };
+      if (request.path === "/bills/100") return { status: 200, data: differentBill };
+      return undefined;
+    });
+    const approved = { approvalId: "fixture-approval", approvalReceiptId: "fixture-receipt", actorId: "fixture-owner", approvedAt: now,
+      expiresAt: "2026-10-11T09:15:00Z", decisionId: "fixture-decision", decisionRevision: now, payloadHash: prepared.payloadHash, state: "approved" as const };
+    const duplicateDecision = { clear: true, state: "CLEAR" as const, exactMatches: [], probableMatches: [], sourceStates: [], reasons: [] };
+    const gate = { beforeDispatch: async () => true, renewLease: async () => true, persistReceipt: vi.fn(async () => "durable-unknown") };
+    const result = await executeApprovedAlegraIntent({ intent: prepared, approval: approved, duplicateDecision, transport: store.transport, writerEnabled: true, gate, now });
+    expect(result.receipt).toMatchObject({ nativeId: "99", verified: false, verificationState: "PROVIDER_STATE_UNKNOWN", durableReceiptId: "durable-unknown" });
+    expect(result.receipt.reasons).toContain("PROVIDER_NATIVE_ID_CONFLICT");
+    const count = store.requests.length;
+    const replay = await executeApprovedAlegraIntent({ intent: prepared, approval: approved, duplicateDecision, transport: store.transport, writerEnabled: true, gate, now, priorReceipt: result.receipt });
+    expect(replay.executedProviderMutation).toBe(false); expect(replay.receipt.nativeId).toBe("99");
+    expect(store.requests).toHaveLength(count); expect(store.requests.filter(request => request.method === "POST")).toHaveLength(1);
+  });
+
+  it("does not infer an omitted currency from a mismatched company", async () => {
+    const bill: Record<string, unknown> = nativeBill();
+    delete bill.currency;
+    const store = fixture(request => request.path === "/company" ? { status: 200, data: {
+      identification: "other-receiver", currency: { code: "CRC" }, applicationVersion: "costaRica", decimalPrecision: "2",
+    } } : request.path === "/bills/99" ? { status: 200, data: bill } : undefined);
+    await expect(store.transport.readback({ intent: intent(), nativeId: "99" })).rejects.toThrow("NATIVE_COMPANY_MISMATCH");
+    expect(store.requests).toHaveLength(1);
+  });
+
+  it.each([true, false])("keeps tax:null unverified even when the approved bill is taxed=%s", async taxed => {
+    const prepared = taxed ? intent() : intent({ subtotal: "100.00", tax: "0", total: "100.00", purchaseTax: undefined });
+    const bill = nativeBill(prepared);
+    bill.total = bill.balance = taxed ? 113 : 100;
+    (bill.purchases.categories[0] as unknown as Record<string, unknown>).tax = null;
+    const store = fixture(request => request.path === "/bills/99" ? { status: 200, data: bill } : undefined);
+    await expect(store.transport.readback({ intent: prepared, nativeId: "99" })).rejects.toThrow("NATIVE_READBACK_MISMATCH");
+    expect(store.requests.every(request => request.method === "GET")).toBe(true);
   });
 
   it("verifies an explicitly observed native document currency", async () => {
@@ -373,7 +432,7 @@ describe("Existing server-only Alegra purchase composition", () => {
     const authorizeAdmission = vi.fn(async () => true);
     const authorizeNativeCreate = vi.fn(async () => true);
     const args = {
-      supabase: { rpc } as unknown as SupabaseClient,
+      supabase: { rpc } as unknown as AlegraWriterRpcClient,
       run: queuedRun, workerId: "fixture-worker", now: () => now,
       intent: prepared, approval: ownerApproval, duplicateDecision,
       http: native.http, binding,
@@ -422,7 +481,7 @@ describe("Finance native boundary regressions", () => {
   it.each([NaN, undefined, Infinity, "201", 201.5, 99, 600])("treats invalid POST HTTP status %j as ambiguous", async status => {
     const store = fixture(r => r.method === "POST" ? { status: status as number, data: { id: "99" } } : undefined);
     const prepared = intent();
-    expect(await store.transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true })).toEqual({ state: "ambiguous" });
+    expect(await store.transport.create({ intent: prepared, idempotencyKey: prepared.idempotencyKey, beforeNativePost: async () => true })).toEqual({ state: "ambiguous", nativeId: "99" });
   });
   it("blocks invalid GET status before POST", async () => {
     const store = fixture(r => r.path === "/company" ? { status: NaN, data: { identification: "fixture-receiver", currency: { code: "CRC" }, applicationVersion: "costaRica", decimalPrecision: "2" } } : undefined);
