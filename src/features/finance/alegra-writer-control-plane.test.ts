@@ -1,4 +1,4 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { AlegraWriterRpcClient } from "@/lib/supabase/alegra-writer-rpc";
 import { describe, expect, it, vi } from "vitest";
 import type { ToroWorkerRun } from "../control-plane/worker-runtime";
 import { prepareAlegraWriteIntent } from "./alegra-writer-contract";
@@ -88,7 +88,7 @@ function fixture(input: { onBoundary?: (name: string) => void; admit?: boolean; 
       }
       throw new Error("unexpected fixture RPC");
     },
-  } as unknown as SupabaseClient;
+  } as unknown as AlegraWriterRpcClient;
   return { client, calls, records, status: () => status };
 }
 
@@ -292,7 +292,7 @@ describe("Alegra server-only expired lease recovery caller", () => {
         providerState: "PROVIDER_STATE_UNKNOWN", replayed: false },
       error: null,
     }));
-    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as AlegraWriterRpcClient });
     expect(result).toMatchObject({
       runId: expiredRun.id, fencingToken: 5, finalReceiptId: "fixture-recovery-receipt",
       providerState: "PROVIDER_STATE_UNKNOWN", runStatus: "blocked",
@@ -309,7 +309,7 @@ describe("Alegra server-only expired lease recovery caller", () => {
 
   it("rejects a live lease, invalid clock, or unadmitted run without calling any RPC", async () => {
     const rpc = vi.fn();
-    const supabase = { rpc } as unknown as SupabaseClient;
+    const supabase = { rpc } as unknown as AlegraWriterRpcClient;
     for (const candidate of [
       { ...parameters, now: () => "2026-10-11T00:10:00Z" },
       { ...parameters, now: () => "not-a-date" },
@@ -332,7 +332,7 @@ describe("Alegra server-only expired lease recovery caller", () => {
         providerState: "PROVIDER_STATE_UNKNOWN", replayed: false },
       error: null,
     }));
-    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as AlegraWriterRpcClient });
     expect(result).toBeNull();
     expect(rpc).toHaveBeenCalledTimes(1);
   });
@@ -344,7 +344,7 @@ describe("Alegra server-only expired lease recovery caller", () => {
         providerState: "PROVIDER_STATE_UNKNOWN", replayed: true },
       error: null,
     }));
-    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as SupabaseClient });
+    const result = await recoverExpiredAlegraLease({ ...parameters, supabase: { rpc } as unknown as AlegraWriterRpcClient });
     expect(result?.replayed).toBe(true);
     expect(rpc).toHaveBeenCalledTimes(1);
   });
