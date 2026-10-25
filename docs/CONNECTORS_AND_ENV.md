@@ -120,6 +120,7 @@ Machine operations:
 - `menu.resolve`
 - `brain.read`
 - `owner_attention.read`
+- `hospitality.arrivals.read`
 - `internal_work.create`
 - `channel_identity.consume_enrollment`
 
