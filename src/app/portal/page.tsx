@@ -56,6 +56,7 @@ async function PortalContent() {
     <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
+        navigationScope={directoryAuthorized ? `${view.context.userId}:${view.context.orgId}` : undefined}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>

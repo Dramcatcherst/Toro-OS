@@ -27,7 +27,7 @@ it("uses the complete strict RPC only for GERENCIA and keeps its rows out of ope
   expect(view.state).toBe("ready");
   expect(view.catalogueMode).toBe("complete");
   expect(view.catalogueItems.filter(item => item.kind === "directory")).toHaveLength(244);
-  expect(view.links).toHaveLength(REVIEWED_HOTEL_LINKS.length + 6);
+  expect(view.links).toHaveLength(REVIEWED_HOTEL_LINKS.length + 7);
   expect(view.links.every(link => !link.id.match(/^LINK-(?:1\d\d|2[0-3]\d)$/) || REVIEWED_HOTEL_LINKS.some(([id]) => id === link.id))).toBe(true);
   expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_catalog_v1");
 });
@@ -121,7 +121,7 @@ it("includes approved navigation in restricted catalogue only when requested", a
   const view=await loadHotelDirectory({includeApprovedNavigation:true});
   expect(view.state).toBe("ready");
   expect(view.links.map(link => link.id)).toEqual([
-    "LINK-002","PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
+    "LINK-002","PORTAL-KROSS-DASHBOARD","PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
   ]);
   expect(view.catalogueItems.map(item => item.id)).toEqual(view.links.map(link => link.id));
   expect(view.navigationAuthorized).toBe(true);
@@ -133,7 +133,7 @@ it("retains only reviewed public access during an outage", async () => {
   const view=await loadHotelDirectory({includeApprovedNavigation:true});
   expect(view).toMatchObject({state:"unavailable",reason:"connection_pending",catalogueMode:"fallback",navigationAuthorized:true});
   expect(view.links.map(link => link.id)).toEqual([
-    "PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
+    "PORTAL-KROSS-DASHBOARD","PORTAL-POS","PORTAL-WHATSAPP","PORTAL-ALEGRA","PORTAL-GMAIL","PORTAL-DRIVE","PORTAL-HOME",
   ]);
   expect(view.catalogueItems.map(item => item.id)).toEqual(view.links.map(link => link.id));
 });
@@ -154,8 +154,8 @@ it("keeps navigation authorization separate from optional email", async () => {
   const view=await loadHotelDirectory({includeApprovedNavigation:true});
   expect(view.navigationAuthorized).toBe(true);
   expect(view.account).toBeUndefined();
-  expect(view.links).toHaveLength(6);
-  expect(view.catalogueItems).toHaveLength(6);
+  expect(view.links).toHaveLength(7);
+  expect(view.catalogueItems).toHaveLength(7);
 });
 
 // I50-02: approved manual actions must remain discoverable in complete mode.
@@ -164,8 +164,8 @@ it("keeps each approved manual destination searchable alongside all directory re
   mocks.client.mockResolvedValue({rpc:vi.fn().mockResolvedValue({error:null,data:completeCatalogueRows()})});
   const view = await loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true});
   const manual = view.catalogueItems.filter(item => item.id.startsWith("PORTAL-"));
-  expect(manual).toHaveLength(6);
-  expect(new Set(view.catalogueItems.map(item => item.id)).size).toBe(250);
+  expect(manual).toHaveLength(7);
+  expect(new Set(view.catalogueItems.map(item => item.id)).size).toBe(251);
 });
 it("attempts reviewed fallback when full transport rejects and preserves only approved navigation on total source outage", async () => {
   mocks.context.mockResolvedValue(manager);
@@ -174,7 +174,7 @@ it("attempts reviewed fallback when full transport rejects and preserves only ap
   const view=await loadHotelDirectory({includeCompleteCatalogue:true,includeApprovedNavigation:true});
   expect(rpc.mock.calls.map(call=>call[0])).toEqual(["dreamcatcher_tool_catalog_v1","dreamcatcher_tool_links_v1"]);
   expect(view).toMatchObject({state:"unavailable",catalogueMode:"fallback",navigationAuthorized:true});
-  expect(view.links).toHaveLength(6);
+  expect(view.links).toHaveLength(7);
   expect(view.links.every(link=>link.id.startsWith("PORTAL-"))).toBe(true);
   expect(JSON.stringify(view)).not.toContain("private transport");
 });

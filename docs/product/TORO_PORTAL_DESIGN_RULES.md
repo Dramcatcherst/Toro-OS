@@ -1,5 +1,9 @@
 # Reglas de diseño del Portal TORO
 
+## Diseño integral azul V2 · 24/10/2026 · aprobado, primer lote local
+
+Mauricio aprobó azul TORO, mayor densidad útil, bordes/sombras discretos, acciones reconocibles, scroll completo y detalles desplegables para todo el Portal. Estado yalcance del primer lote en [TORO_PORTAL_BLUE_V2_CONCEPT.md](TORO_PORTAL_BLUE_V2_CONCEPT.md). Renders PC/móvil con datos ficticios; no acreditan conexiones o permisos. Kross mantiene reservas/disponibilidad/tarifas yAlegra contabilidad. El directorio reutiliza la proyección autorizada; accesos personales son preferencias locales, nunca grants ni ejecución externa.
+
 Vigentes desde 11/10/2026 por solicitud de Mauricio. Alcance: presentación del Portal y sus componentes compartidos. Documento subordinado al Plan General, sección 23 (Human Experience), la Constitución y `TORO_BRAND_CONTRACT.md`. No crea otro plan ni autoriza cambios de capacidades.
 
 1. **Un Portal.** Mi espacio es la vista personal de TORO; conservar rutas compatibles, orden 00–11 del Plan y fuentes autorizadas. DreamTeam pertenece a TORO People y conserva su sesión actual.

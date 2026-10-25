@@ -11,6 +11,7 @@ export type PortalToolPresentation = {
 
 // Display metadata only. Destinations and access still come from the governed reader.
 export const portalToolBrands: Record<string, PortalToolPresentation> = {
+  "PORTAL-KROSS-DASHBOARD": { name: "Kross", title: "Abrir dashboard Kross", detail: "Reservas y operación · sesión propia", Icon: BedDouble, logo: "/brand/tools/kross.png", category: "Operación", keywords: ["dashboard", "reservas", "ocupación", "operación"] },
   "LINK-048": { name: "Kross", title: "Ver reservas", detail: "Llegadas, salidas y reservas", Icon: BedDouble, logo: "/brand/tools/kross.png", category: "Operación", keywords: ["reservas", "entradas", "salidas", "habitaciones"] },
   "LINK-002": { name: "Motor Kross", title: "Cotizar estancia", detail: "Fechas, precios y condiciones", Icon: BedDouble, logo: "/brand/tools/kross.png", category: "Operación", keywords: ["cotización", "fechas", "huéspedes", "estancia"] },
   "LINK-178": { name: "WeSpeak", title: "Atender huéspedes", detail: "Conversaciones y solicitudes", Icon: MessagesSquare, logo: "/brand/tools/wespeak.ico", category: "Comunicación", keywords: ["huéspedes", "mensajes", "atención", "solicitudes"] },

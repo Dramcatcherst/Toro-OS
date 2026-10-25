@@ -133,7 +133,7 @@ it("names favorite and catalog references separately", async () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
   expect(html).toContain('aria-labelledby="favorite-LINK-086"');
-  expect(html).toMatch(/aria-labelledby="catalog-[^"]*LINK-086"/);
+  expect(html).toMatch(/aria-labelledby="[^"]*-catalogue-[^"]*LINK-086"/);
 });
 
 it("keeps the complete catalogue out of favorites and operational panels", async () => {

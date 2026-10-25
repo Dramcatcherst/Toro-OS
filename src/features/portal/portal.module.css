@@ -372,3 +372,55 @@
  .viewPanel .card, .card .subtleDisclosure summary, .calcGrid { --toro-focus:Highlight; }
  .viewPanel :is(input,select):focus-visible, .calcGrid :is(input,select,button):focus-visible, .loginBox :focus-visible { outline-color:Highlight; }
 }
+ /* Approved blue V2, first implementation lot: working surfaces and navigation. */
+.page { --toro-text:#12344b; --toro-muted:#4c657a; --toro-edge:#b5cadb; --toro-cyan:#1769aa; --toro-focus:#a76306; color-scheme:light; background:#eff4f9; color:#12344b; }
+.page .panel, .page .toolsPanel { --section-accent:#1769aa; --toro-text:#12344b; --toro-muted:#4c657a; --toro-cyan:#1769aa; --toro-focus:#a76306; color-scheme:light; color:#12344b; background:#fff; border:1px solid #b5cadb; box-shadow:0 2px 7px #12344b0c; }
+.page .panel :is(.panelBody,.panelNote,.emptyNote,.note,.sectionNote,.subtleDisclosure,.utilityNote,.utilityField,.overviewRow small), .page :is(.contextDisclosure,.connectionNote,.agentRail,.sectionNote,.panelNote,.note,.emptyNote) { color:#4c657a; }
+.page :is(.panelHeading h2,.sectionHeading h2) { color:#12344b; }
+.page .sectionHeading > span, .page :is(.agentCaption,.agentSignal) { color:#4c657a; }
+.page .contextNote { color:#4c657a; background:#fff; border-color:#b5cadb; }
+.page .eyebrow { color:#1769aa; }
+.page .workspaceToolbar { flex-wrap:wrap; }
+.page .workspaceToolbar .searchEntry { flex:1 1 280px; width:auto; background:white; border-color:#adc4d7; color:#12344b; }
+.directoryAction { display:inline-flex; justify-content:center; align-items:center; gap:7px; min-height:44px; padding:8px 12px; border:1px solid #1769aa; border-radius:7px; background:#1769aa; color:white; cursor:pointer; font-size:13px; font-weight:650; }
+.directoryAction:hover { background:#105587; }
+.page .workspaceTabs { border-color:#b5cadb; }
+.page .workspaceTabs button { color:#264d6a; border-color:#b5cadb; background:white; }
+.page .workspaceTabs button:hover { background:#e1effb; border-color:#4d8bb8; }
+.page .workspaceTabs button[aria-selected="true"] { background:#1769aa; border-color:#1769aa; color:white; }
+.page .textLink { color:#0863a2; }
+.page .toolCard { --accent:#1769aa; --toro-text:#12344b; --toro-focus:#a76306; color-scheme:light; background:#f8fbfe; color:#12344b; border-color:#b5cadb; box-shadow:0 1px 3px #12344b08; }
+.page .toolCard:hover { background:#e5f0fa; border-color:#4d8bb8; }
+.page .toolCopy strong { color:#12344b; }
+.page :is(.toolBrand,.toolCopy small) { color:#4c657a; }
+.page .toolVisual { background:white; color:#1769aa; border-color:#bdd0df; }
+.page .toolArrow { color:#1769aa; }
+.page .toolMetadata > span { color:#3c5a72; border-color:#b5cadb; background:#eef5fb; font-size:11px; }
+.page .toolPending { color:#815405; }
+.page .favoriteCard { background:#f8fbfe; }
+.page :is(.subtleDisclosure,.contextDisclosure) { border-color:#c4d6e3; }
+.page .peoplePanel { background:#f7fbff; }
+.page .pendingPanel { background:#fffaf0; border-color:#d1bf99; }
+.page .viewPanel { background:white; }
+.page .card { background:#f8fbfe; border:1px solid #b5cadb; border-top:2px solid var(--accent); box-shadow:0 1px 4px #12344b08; }
+.page .cardPending { background:#eff3f6; border-style:dashed; }
+.page .krossPanel { margin-bottom:10px; display:flex; flex-wrap:wrap; align-items:center; column-gap:12px; row-gap:4px; }
+.page .krossPanel .panelHeading { margin:0; min-height:44px; }
+.page .krossPanel .panelBody { flex:1 1 200px; }
+.page .krossPanel .widgetDisclosure { flex:1 1 280px; margin-top:0; background:#f5faff; border-color:#adc4d7; }
+.page .widgetDisclosure summary { color:#12344b; }
+.page .widgetDisclosure small { color:#4c657a; }
+.page .krossPanel .primaryAction { margin:0; min-height:44px; background:#1769aa; color:white; border-color:#1769aa; }
+.page .krossPanel .panelNote { flex-basis:100%; margin-top:0; }
+.page .utilityButton { background:#f8fbfe; color:#145b91; border-color:#9ab8ce; }
+.page .utilityButton:hover { background:#dfedfa; }
+.page .cashCurrency { background:#f5faff; border-color:#abc4d7; border-top-color:#2787cf; }
+.page .cashCurrency :is(h3,.cashTotal) { color:#145b91; }
+.page :is(.utilityField,.calcGrid,.cashCurrency) :is(input,select,textarea) { color-scheme:light; background:white; color:#12344b; border-color:#97b4ca; }
+.page .catalogSearch { color:#4c657a; background:white; border-color:#97b4ca; }
+.page .catalogSearch input { color:#12344b; }
+.page .categorySelect { color:#4c657a; }
+.page .categorySelect select { background:white; color:#12344b; color-scheme:light; }
+@media(min-width:1080px) { .homeGrid[data-hotel="true"] { grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); } }
+@media(max-width:619px) { .directoryAction { flex:1; } .page .krossPanel .widgetDisclosure { flex-basis:100%; } .page .krossPanel .primaryAction { flex:1; } }
+@media(forced-colors:active) { .page,.page .panel,.page .toolCard,.page .card,.page .widgetDisclosure,.directoryAction { background:Canvas; color:CanvasText; border-color:CanvasText; box-shadow:none; } .page .workspaceTabs button[aria-selected="true"],.directoryAction { background:Highlight; color:HighlightText; border-color:Highlight; } }
