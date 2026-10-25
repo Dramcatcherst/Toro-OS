@@ -8,7 +8,7 @@
 
 The current main tree contains Control Plane contracts, worker/runtime code and a runtime-health route. The older branch/pre-production label is therefore insufficient as a global status. Code presence does not establish a persistent worker, correct production version, live connector health, message delivery or measured business benefit.
 
-Availability and acceptance must be recorded per capability and environment with the exact artifact and receipts. A successful read of execution tables is a narrow health check, not a full operating proof. The [dated audit](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) records the observed scope. This clarification changes documentation only.
+Availability and acceptance must be recorded per capability and environment with the exact artifact and receipts. A successful read of execution tables is a narrow health check, not a full operating proof. The [dated audit](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) records the observed scope; its [24 October continuation](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md#9-auditoría-del-portal-y-reconciliación--2026-10-24) separates Portal, reader, session and host evidence across the existing work lanes. This clarification changes documentation only.
 
 ## 1. Decision
 

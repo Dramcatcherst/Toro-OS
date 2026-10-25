@@ -1,7 +1,7 @@
 # TORO — Canonical Vercel Deployment Contract v1
 
 **Status:** CURRENT deployment target contract  
-**Updated:** 2026-10-22, Costa Rica
+**Updated:** 2026-10-24, Costa Rica
 **Owner:** TORO Systems / SOBRESITO  
 **Canonical repository:** `Dramcatcherst/Toro-OS`
 
@@ -13,11 +13,11 @@ The canonical TORO deployment must come from the canonical repository `Dramcatch
 
 Existing Vercel projects are not automatically canonical merely because their names contain TORO.
 
-## Current evidence — 2026-10-22
+## Evidence and current readback
 
 The audit identified the existing Next.js project **toro-pr11-preview**, connected to `Dramcatcherst/Toro-OS`, and its canonical domain **toro.dreamcatcherhotel.com**. Despite the project's internal name, a deployment must be classified by its target and evidence. Reuse this target; do not provision a second project from the historical gap below.
 
-The audited production artifact, current main and design preview have different commit identities. A merge, READY preview or successful CI is not proof that production runs that version or that a business workflow has passed acceptance. See the [dated evidence](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) for the observed cut, and re-read current deployment metadata before any change.
+The audited production artifact, main and candidate previews have different commit identities. A merge, READY preview or successful CI is not proof that production runs that version or that a business workflow has passed acceptance. The [24 October continuation](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md#9-auditoría-del-portal-y-reconciliación--2026-10-24) records the newer cut, including the unresolved requested address `toro.jpghotel.co` and the limits of anonymous inspection. Re-read current deployment metadata and the release gates before any change; dated observations do not authorize a new project or domain cutover.
 
 ## 2. Historical discovery — 2026-10-01
 
@@ -47,7 +47,7 @@ Canonical GitHub `Dramcatcherst/Toro-OS` currently declares Next.js 16 and has G
 
 Therefore neither existing Vercel project may be treated as the current TORO production authority.
 
-### Current readback — 2026-10-22
+### Dated readback — 2026-10-22
 
 - Canonical repository-connected project: `toro-pr11-preview`, id `prj_nxerFw9ciNews6tUMAah3GAlAJzs`, team `team_zUbLBlOtoQBHDfGMYpDlg0XO`.
 - `toro.dreamcatcherhotel.com` resolves to deployment `dpl_55PLSKChYZARB1Vd3A6QiNz9nvxv`, READY/production, source `Dramcatcherst/Toro-OS`, SHA `349d15fb93061cba6a285fa3977f03e4d6b6b449`.

@@ -46,6 +46,63 @@ function payload(status = "confirmed", id = "K-100") {
 
 describe("executeKrossDryRun", () => {
   it.each([
+    ["missing adapter config", { ...baseRequest, adapterConfig: null }],
+    ["non-text organization scope", { ...baseRequest, adapterConfig: { ...adapterConfig, orgId: 123 } }],
+    ["malformed required field map", { ...baseRequest, adapterConfig: { ...adapterConfig, fieldMap: { ...adapterConfig.fieldMap, externalReservationId: 123 } } }],
+    ["missing evidence packet", { ...baseRequest, evidence: null }],
+    ["non-text source hash", { ...baseRequest, evidence: { ...baseEvidence, sourceHash: {} } }],
+    ["non-boolean authority claim", { ...baseRequest, evidence: { ...baseEvidence, authorizedTransport: "true" } }],
+    ["non-text evaluation clock", { ...baseRequest, nowIso: 123 }],
+  ])("rejects %s without throwing or creating a mirror", (_name, malformed) => {
+    const store = createInMemoryKrossDryRunStore();
+    const result = executeKrossDryRun(malformed as never, store);
+
+    expect(result.status).toBe("rejected");
+    expect(result.operation).toBe("reject");
+    expect(result.executionIssues).toEqual(["invalid_execution_envelope"]);
+    expect(result.reservation).toBeNull();
+    expect(result.canEnterSafeView).toBe(false);
+    expect(result.pmsWriteCount).toBe(0);
+    expect(store.mirrorCount()).toBe(0);
+    expect(store.importRunCount()).toBe(1);
+    expect(typeof result.importRun.sourceReference).toBe("string");
+    expect(typeof result.importRun.sourceHash).toBe("string");
+  });
+
+  it("keeps a malformed field-map rejection fenced after the map is corrected", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const malformed = executeKrossDryRun(
+      {
+        ...baseRequest,
+        payload: payload(),
+        adapterConfig: {
+          ...adapterConfig,
+          fieldMap: { ...adapterConfig.fieldMap, checkIn: "" },
+        },
+      },
+      store,
+    );
+    const corrected = executeKrossDryRun(
+      { ...baseRequest, payload: payload() },
+      store,
+    );
+
+    expect(malformed.status).toBe("rejected");
+    expect(corrected.status).toBe("rejected");
+    const otherRow = executeKrossDryRun(
+      { ...baseRequest, payload: payload("confirmed", "K-101") },
+      store,
+    );
+
+    expect(corrected.executionIssues).toContain("rejected_source_replay");
+    expect(otherRow.status).toBe("accepted");
+    expect(otherRow.operation).toBe("insert");
+    expect(otherRow.reservation?.external_reservation_id).toBe("K-101");
+    expect(store.mirrorCount()).toBe(1);
+    expect(store.importRunCount()).toBe(2);
+  });
+
+  it.each([
     { sourceAsOf: "2026-09-23T17:00:00Z", observedAt: "2026-09-23T17:05:00Z" },
     { sourceAsOf: "2026-09-23T15:30:00Z", observedAt: "2026-09-23T15:05:00Z" },
   ])("does not let stored incoherent provenance fence a valid correction: %j", invalidTimes => {
@@ -284,4 +341,82 @@ describe("executeKrossDryRun", () => {
     expect(store.mirrorCount()).toBe(0);
     expect(store.importRunCount()).toBe(1);
   });
+
+  it("executes the bounded synthetic acceptance batch with deterministic receipts and zero PMS writes", () => {
+    const store = createInMemoryKrossDryRunStore();
+    const initialRequest = { ...baseRequest, payload: payload() };
+    const cancellationRequest = {
+      ...baseRequest,
+      payload: payload("cancelled"),
+      evidence: {
+        ...baseEvidence,
+        sourceAsOf: "2026-09-23T15:30:00Z",
+        observedAt: "2026-09-23T15:35:00Z",
+        sourceHash: "hash-k-100-v2",
+      },
+    };
+    const staleRequest = {
+      ...baseRequest,
+      payload: payload(),
+      evidence: {
+        ...baseEvidence,
+        sourceAsOf: "2026-09-23T14:00:00Z",
+        observedAt: "2026-09-23T14:05:00Z",
+        sourceHash: "hash-k-100-stale",
+      },
+    };
+    const sharedArtifactEvidence = {
+      ...baseEvidence,
+      sourceReference: "synthetic://kross/batch/2026-10-24",
+      sourceHash: "hash-batch-2026-10-24",
+    };
+
+    const results = [
+      executeKrossDryRun(initialRequest, store),
+      executeKrossDryRun(initialRequest, store),
+      executeKrossDryRun(cancellationRequest, store),
+      executeKrossDryRun(staleRequest, store),
+      executeKrossDryRun(
+        {
+          ...baseRequest,
+          evidence: sharedArtifactEvidence,
+          payload: {
+            ...payload("confirmed", "K-102"),
+            stay: {
+              ...payload("confirmed", "K-102").stay,
+              check_in: "2026-02-30",
+            },
+          },
+        },
+        store,
+      ),
+      executeKrossDryRun(
+        {
+          ...baseRequest,
+          evidence: sharedArtifactEvidence,
+          payload: payload("confirmed", "K-103"),
+        },
+        store,
+      ),
+    ];
+
+    expect(results.map(result => [result.status, result.operation])).toEqual([
+      ["accepted", "insert"],
+      ["accepted", "replay"],
+      ["accepted", "update"],
+      ["rejected", "reject"],
+      ["rejected", "reject"],
+      ["accepted", "insert"],
+    ]);
+    expect(results[2].reservation?.status).toBe("cancelled");
+    expect(results[3].executionIssues).toContain("stale_source");
+    expect(results[4].reservation).toBeNull();
+    expect(results[5].reservation?.external_reservation_id).toBe("K-103");
+    expect(results.every(result => result.pmsWriteCount === 0)).toBe(true);
+    expect(results.every(result => result.importRun.pmsWriteCount === 0)).toBe(true);
+    expect(results.every(result => result.canEnterSafeView === false)).toBe(true);
+    expect(store.mirrorCount()).toBe(2);
+    expect(store.importRunCount()).toBe(5);
+  });
+
 });

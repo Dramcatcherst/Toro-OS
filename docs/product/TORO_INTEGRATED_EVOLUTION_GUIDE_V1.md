@@ -6,6 +6,8 @@
 **Ámbito:** TORO como producto; Dreamcatcher como primera prueba; portafolio, productos y espacio personal con separación explícita.  
 **Evidencia del corte:** [Auditoría integral](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md). Los valores privados permanecen en sus fuentes autorizadas.
 
+**Alineación del 24/10/2026:** la [continuación del mismo anexo](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md#9-auditoría-del-portal-y-reconciliación--2026-10-24) actualiza la evidencia del Portal y sus frentes. Las decisiones vigentes del Plan sobre lectura informativa Kross y limpieza se aplican a esta guía; sus propuestas nuevas y los estados históricos conservan su alcance y fecha.
+
 ## 1 Decisión recomendada
 
 Conservar el núcleo de TORO y concentrar su desarrollo en procesos completos, verificables, recuperables y medidos. Unificar identidad, contexto, estado de trabajo y evidencia alrededor de las autoridades existentes. Concluir y conectar capacidades preparadas antes de ampliar el número de proyectos, agentes o aplicaciones.
@@ -75,6 +77,8 @@ Una foto de una factura acredita un soporte; no acredita pago. Un voucher acredi
 ### Frescura proporcional al uso
 
 El histórico conserva valor para análisis, conciliación y aprendizaje. Los cortes con fecha pueden servir para preparar trabajo, siempre que se muestre su alcance. Una acción que comprometa tarifa, disponibilidad, cobro, acceso o seguridad exige la verificación correspondiente a ese uso. Un bloqueo de una fuente afecta sus acciones dependientes; el trabajo independiente continúa.
+
+La decisión del propietario del 24/10 admite lecturas informativas de una copia autorizada de Kross con edad de fuente **menor o igual a 60 minutos**. Mostrar corte y edad reales; importar de nuevo un corte viejo no lo refresca. Una fecha ausente, inválida o futura no acredita frescura. La cobertura parcial se presenta como parcial y los valores desconocidos conservan ese estado. La revalidación de cotizaciones, disponibilidad y acciones comerciales permanece vigente. [PR206](https://github.com/Dramcatcherst/Toro-OS/pull/206) contiene el candidato del lector en su carril existente; código probado no demuestra adquisición horaria, consumo del host ni despliegue. Reconciliarlo con main y probar esos eslabones sin reactivar la API pagada ni crear otro puente.
 
 ## 5 Registro único de conectores
 
@@ -159,6 +163,8 @@ RICO coordina el caso desde recepción o mantenimiento. La incidencia se vincula
 
 La persona de campo realiza el trabajo y aporta evidencia. Quien acepta comprueba que la solución satisface el criterio. Aseo, mantenimiento y recepción mantienen estados distintos: pendiente, en ejecución, terminado, inspeccionado, listo y entregado según el proceso real. TORO no deduce seguridad o disponibilidad física de una casilla.
 
+Para la dimensión **limpieza terminada**, la marca vigente registrada en Kross es evidencia operativa suficiente conforme a la decisión del propietario del 24/10; no exigir una segunda confirmación humana del mismo hecho. La inspección de calidad, el mantenimiento y la preparación integral de la habitación conservan sus criterios y responsables separados. La aceptación del piloto no debe reintroducir esa captura duplicada.
+
 Primer piloto: una incidencia real y una inspección de habitación con retorno al reporte del área. El cierre debe sobrevivir a cambio de turno y repetición del mensaje.
 
 ### Mensaje conocimiento tarea y respuesta
@@ -218,6 +224,8 @@ La conciliación de ramas clasifica conservar, integrar, sustituida y archivar. 
 ## 10 Autonomía y aprobaciones claras
 
 El contrato vigente de autonomía de workflow es [A0–A6](TORO_AUTONOMY_AND_ACTION_MODEL_V1.md). La autoridad del Control Plane, los metadatos históricos y las escalas de skills tienen nombres calificados. No hay conversión numérica automática.
+
+La reconciliación de vocabulario PUMBA del [Plan General](TORO_BRAIN_GENERAL_PLAN.md#autonomy-vocabulary--canonical-reconciliation-2026-10-22) prevalece al interpretar etiquetas antiguas del brief. Conserva los límites semánticos de lectura, análisis y preparación; no migra campos del runtime ni amplía o revoca autorizaciones válidas por acción.
 
 Los nombres de la tabla son calificadores semánticos para evitar ambigüedad; no declaran que los campos, tablas o configuraciones del runtime ya se hayan migrado a ese esquema.
 

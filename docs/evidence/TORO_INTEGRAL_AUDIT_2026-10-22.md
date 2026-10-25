@@ -139,3 +139,73 @@ Los conteos y estados pueden variar por trabajo concurrente. No se ejecutó la s
 [package]: https://github.com/Dramcatcherst/Toro-OS/blob/ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32/package.json
 [readiness]: https://github.com/Dramcatcherst/Toro-OS/blob/ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32/docs/product/NEW_BUSINESS_READINESS_GATE.md
 [proof-board]: https://github.com/Dramcatcherst/Toro-OS/blob/ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32/docs/product/TORO_PRODUCT_PROOF_WORKFLOW_BOARD_V1.md
+
+## 9. Auditoría del Portal y reconciliación — 2026-10-24
+
+**Corte:** 24/10/2026, America/Costa_Rica; las relecturas de coordinación realizadas el 25/10 UTC siguen fechadas dentro de este corte local. **Main observado:** [`3fe9fd1ceae14be7fba49e72a71ac84f280e18e3`][main-20261024], commit del 24/10 a las 20:07:51 de Costa Rica. Las secciones 1–8 conservan sus conteos, pruebas y límites del 22/10; este añadido no los convierte en resultados nuevos ni establece otro Plan General.
+
+### Alcance y límites de la comparación
+
+Se compararon el Plan, contratos, código productivo y main, metadatos GitHub/Vercel, inventario autorizado de Sites y accesos públicos relacionados. «Todos los demás» significa las superficies localizadas en esas cuentas y en los enlaces del Plan; no un censo de todas las cuentas o proveedores posibles. La inspección del Portal canónico llegó al inicio de sesión y no dispuso de una sesión autenticada. No se verificaron sus recorridos internos, móvil real, roles/RLS, reservas, cobros o envíos. Las pruebas de otros cortes o fixtures conservan su entorno y SHA.
+
+La propuesta del Portal, el Centro de Reportes y el informe de desempeño localizado exigían acceso ChatGPT. La propuesta recuperada no incluyó su HTML real: no se calificó su diseño interior. DreamTeam mostró ingreso y recuperación propios; compartir identidad con TORO no acredita SSO. La ficha de Rumbo era pública, pero su aplicación de viajes privados exigía acceso OpenAI. Los 50 de Caro, BETORO, RicoSky y la web hotelera tienen audiencias o propósitos específicos; sus vistas públicas o de demostración no autorizan fusionar datos privados ni retirar productos. Los proyectos Vercel y repositorios legacy siguen como referencias hasta comprobar consumidores, paridad y recuperación.
+
+### Evidencia observada y su consecuencia
+
+| Área | Evidencia de este corte | Límite y acción dentro del carril existente |
+| --- | --- | --- |
+| Dirección solicitada | `https://toro.jpghotel.co/` falló en los intentos de navegador y su consulta como alias devolvió 404 en el equipo Vercel autorizado | Relación sin resolver; no prueba inexistencia global ni autoriza cambiar DNS o crear otro proyecto |
+| Entrada canónica | `https://toro.dreamcatcherhotel.com/` redirigió al Portal y exigió cuenta de trabajo; proyecto `toro-pr11-preview` | Corregir la orientación del README; aceptación interior pendiente |
+| Versión publicada | Deployment `dpl_55PLSKChYZARB1Vd3A6QiNz9nvxv`, READY/production, fuente `Dramcatcherst/Toro-OS`, SHA `349d15fb93061cba6a285fa3977f03e4d6b6b449` | Comparar el candidato exacto con esta versión y preservar recuperación; un preview no la sustituye |
+| Integración y entrega | Main `3fe9fd1` con [CI exitosa][main-ci-20261024]; [`vercel.json`][vercel-config-20261024] mantiene `deploymentEnabled.main=false` | La diferencia main/producción no demuestra fallo de automatización; promoción y aceptación conservan gates propios |
+| Lectura informativa Kross | La [política del 24/10][context-20261024] admite fuente de hasta 60 minutos; [menú de main][menu-20261024] aún usa seis horas y `live_required` en los consumidores revisados | Reconciliar por propósito con el candidato PR206. No alterar revalidación comercial ni confundir lector probado con adquisición horaria |
+| Owner Attention | La [implementación productiva][attention-production] clasifica por vencimiento con menos estados resueltos que [main][attention-main-20261024] | Riesgo condicionado a lector habilitado y filas afectadas. No se observó una deuda falsa; la UI ya suprime prioridad para el estado exacto `unknown`. Probar saldo/estado antes de aceptar la vista |
+| Catálogo | El Plan conserva el cierre documental de 244 fichas, con cinco destinos pendientes y veinte referencias de archivo | Son fichas documentadas, no 244 integraciones activas ni cobertura funcional autenticada |
+
+La marca vigente de **limpieza terminada en Kross** es suficiente para esa dimensión según la decisión del propietario del 24/10; no añadir una confirmación humana duplicada. Inspección, mantenimiento y preparación integral siguen separados. La tolerancia informativa de 60 minutos tampoco convierte una copia parcial en totales completos, un dato desconocido en cero ni una fecha de importación en un nuevo corte de fuente.
+
+### Coordinación de candidatos y evidencia posterior
+
+Las referencias siguientes identifican responsables y unidades ya existentes. Sus estados son lecturas fechadas, sujetos a relectura antes de integrar o publicar; esta tabla no crea una segunda cola.
+
+| Frente existente | Disposición y gate pendiente al corte |
+| --- | --- |
+| [PR363][pr363-20261024] — auditoría y evolución | Reutilizar esta PR para README, vigencia y referencias; mantener el Plan único, guía subordinada y evidencia histórica |
+| [PR206][pr206] — lector/puente OpenClaw | Candidato con política informativa de 60 minutos y pruebas; reconciliar en su rama con main. No acredita adquisición horaria, consumo del host ni publicación |
+| [PR210][pr210] — sesiones y recibos | Conservar su contrato de continuidad y replay; esquema, persistencia y aceptación mantienen sus gates específicos |
+| [PR384][pr384-20261024] — Portal | Head leído `f178c45274890b3abac0e0b0e21600170840f5f3`, abierto y fuera de borrador; [CI1499][pr384-ci-20261024] completed/success y [preview del mismo SHA][pr384-preview-20261024] READY. La aceptación autenticada y del widget oficial seguían pendientes. La QA sintética anterior pertenece a su SHA original; accesos personales en navegador no son persistencia de servidor ni SSO |
+| [PR347][pr347] — diseño previo | Reconciliar decisiones y deltas únicos con PR384; no fusionar en bloque navegación y estilos solapados |
+| [PR361][pr361-20261024] — comunicaciones históricas | Conservar fuente y antigüedad del histórico; su política no reemplaza el contrato informativo PMS |
+| [PR379][pr379-20261024] — extracción | Preflight de extracción dentro del ejecutor existente; no demuestra ingestión o publicación de datos privados |
+| [PR387][pr387-20261024] — host existente | Registra evidencia posterior por SSH en otro carril. Supera el antiguo límite de acceso de aquel turno, pero no prueba por sí sola mensajes entregados, reinicio sin duplicados u operación sin PC |
+| [PR80 de la web][web-pr80-20261024] — DC2-022 | El SHA `4f626a1` del checkpoint del 23/10 es histórico. Releer head, CI, aceptación y autorización vigentes en el carril web; esta alineación del Portal no lo absorbe |
+
+La consulta de rulesets devolvió una lista vacía; la de protección de rama devolvió 403 para la integración. Son resultados distintos: no permiten afirmar ausencia de protección. La [CI configurada][ci-config-20261024] ejecuta instalación, pruebas, lint y build sin excluir cambios solo documentales. La validación de una revisión anterior no reemplaza la del head final.
+
+### Prioridad y secuencia de cierre
+
+**No se comprobó un incidente P0** de privacidad, acceso indebido o verdad comercial en funcionamiento. Si aparece evidencia de uno, interrumpe la secuencia. Las brechas comprobadas de dirección/versión y de política/consumidor, junto con el riesgo financiero condicionado, justifican prioridad P1 sin presentar hipótesis como daño observado.
+
+1. Alinear orientación y evidencia en PR363; conservar baselines, historia, decisiones del propietario y permisos vigentes. El YAML no se promueve a un estado runtime nuevo.
+2. Reconciliar el lector en PR206, con edad inclusiva de 60 minutos, fecha futura/ausente/invalidada, cobertura parcial y valores desconocidos. El transporte y la adquisición mantienen prueba independiente.
+3. Releer el candidato del Portal y su CI/preview exactos; aceptar ingreso, contexto/rol, datos, Owner Attention y widget en el entorno autorizado, con aislamiento y recuperación. Publicar solo cuando los gates del contrato vigente estén cumplidos.
+4. Probar una unidad operativa de extremo a extremo sobre los objetos existentes antes de ampliar capacidades. Mantener DreamTeam hasta paridad y recuperación verificadas; preservar las fronteras público/privado y las de productos independientes.
+
+Este añadido registra diagnóstico y coordinación. No cambia datos de operación, grants, Writer, API Kross pagada, scheduler, dominio ni configuración de despliegue; tampoco acredita servicio continuo o beneficio medido.
+
+[main-20261024]: https://github.com/Dramcatcherst/Toro-OS/commit/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3
+[main-ci-20261024]: https://github.com/Dramcatcherst/Toro-OS/actions/runs/40153275599
+[vercel-config-20261024]: https://github.com/Dramcatcherst/Toro-OS/blob/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3/vercel.json
+[context-20261024]: https://github.com/Dramcatcherst/Toro-OS/blob/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3/toro-context.yaml
+[menu-20261024]: https://github.com/Dramcatcherst/Toro-OS/blob/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3/src/features/menu/server.ts
+[attention-production]: https://github.com/Dramcatcherst/Toro-OS/blob/349d15fb93061cba6a285fa3977f03e4d6b6b449/src/features/attention/owner-attention.ts
+[attention-main-20261024]: https://github.com/Dramcatcherst/Toro-OS/blob/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3/src/features/attention/owner-attention.ts
+[pr363-20261024]: https://github.com/Dramcatcherst/Toro-OS/pull/363
+[pr384-20261024]: https://github.com/Dramcatcherst/Toro-OS/pull/384
+[pr384-ci-20261024]: https://github.com/Dramcatcherst/Toro-OS/actions/runs/40165508020
+[pr384-preview-20261024]: https://toro-pr11-preview-lkrty2a9x-dreamcatcher-s-projects.vercel.app
+[pr361-20261024]: https://github.com/Dramcatcherst/Toro-OS/pull/361
+[pr379-20261024]: https://github.com/Dramcatcherst/Toro-OS/pull/379
+[pr387-20261024]: https://github.com/Dramcatcherst/Toro-OS/pull/387
+[web-pr80-20261024]: https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/80
+[ci-config-20261024]: https://github.com/Dramcatcherst/Toro-OS/blob/3fe9fd1ceae14be7fba49e72a71ac84f280e18e3/.github/workflows/ci.yml
