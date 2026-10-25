@@ -158,6 +158,19 @@ general_plan_governance:
   all_subsystems_must_be_children_of_general_plan: true
   all_execution_plans_are_subordinate: true
   every_material_request_requires_generalization_scan: true
+  research_reuse_first:
+    authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    contract: docs/product/TORO_RESEARCH_REUSE_FIRST_V1.md
+    canonical_knowledge_key: toro_master_knowledge_acquisition_matrix_2026_09_v1
+    structured_checkpoint_path: research_reuse_control_v1
+    existing_operating_project: toro_executive_control
+    always_lookup_scoped_evidence_before_external_search: true
+    update_only_changed_or_uncovered_sources: true
+    known_blockers_do_not_trigger_repeated_identical_audits: true
+    source_as_of_is_not_last_checked_at: true
+    deny_cross_scope_cache_access: true
+    actual_runtime_hook_status: NOT_WIRED
+    new_database_or_scheduler: false
   every_material_request_requires_scope_assignment: true
   every_material_request_requires_subsystem_assignment: true
   every_material_request_requires_current_target_next_future_classification: true
