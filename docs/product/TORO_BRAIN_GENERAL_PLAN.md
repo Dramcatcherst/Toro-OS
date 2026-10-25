@@ -6469,3 +6469,40 @@ Trabajar continuamente mediante acciones útiles, exportaciones por lote e inter
 El objetivo del 100% se calcula sobre comprobaciones aplicables con sujeto, fuente, período y documentos definidos. Separar cobertura preparada, índice localizado, original descargado, extraído, conciliado y cierre aceptado. Las exclusiones y cambios de universo conservan fecha y motivo, sin inflar porcentajes al retirar pendientes difíciles. Desconocido no equivale a cero ni a no aplicable.
 
 Prioridad de la siguiente unidad: ejecutar el primer lote de extracción con acceso legítimo, una plataforma a la vez, empezando por identidad/vínculo y los documentos faltantes de mayor riesgo. Los hallazgos Kross, aceptación privada del nuevo directorio y las entradas incompatibles de su fuente siguen como pendientes técnicos del mismo Portal; esta preparación no los cierra ni promueve producción.
+
+
+<!-- TORO_CONNECTOR_ALIGNMENT_20261025 -->
+## Simplificación de conectores y sistemas · 25/10/2026
+
+La dirección de simplificación aprobada continúa: un Portal, un Plan General y servicios compartidos. Integrar significa coordinar responsabilidades y referencias; no convertir todas las plataformas en una sola base ni trasladar sus facultades a un agente. MCP sigue siendo un adaptador opcional fuera del camino obligatorio del Portal. Este lote reconcilia el contrato y prepara la reparación; no activa conexiones ni modifica fuentes transaccionales.
+
+### Papeles del mismo ecosistema
+
+| Función | Autoridad y ubicación | Uso desde TORO | Qué conservar hasta cerrar su relevo |
+|---|---|---|---|
+| Producto y código | Plan General y versiones GitHub | Decisiones, contratos y cambios revisables | Historial, SHA, pruebas y reversión; Vercel entrega el candidato verificado, no define la verdad del negocio. |
+| Datos estructurados y trabajo | Supabase por dominio migrado/curado y reglas de autoridad vigentes | Mismos IDs, tareas, relaciones y proyecciones autorizadas | Fuente y excepciones cuando no hay paridad; no atribuir migración completa por existir tablas. |
+| Registro de fuentes y contratos en transición | Source Registry y contratos Airtable donde el cutover no está acreditado | Interfaz humana o registro complementario con función explícita | No retirar bases, tablas ni contratos por un conteo o respaldo parcial. |
+| Conocimiento narrativo | Notion como espejo del Plan y decisiones vigentes | Resumen y enlaces a registros/originales | No otra cola maestra, política ejecutable o copia completa de bases. |
+| Operación especializada | Kross: reservas/precios/disponibilidad; Alegra: estado de sus objetos contables; bancos: movimientos y saldos propios | Lecturas con corte y acciones por el ejecutor autorizado | Un pago anotado no acredita liquidación bancaria; un snapshot no es disponibilidad viva. |
+| Originales | Dropbox y documentos colaborativos en su custodio original ya establecido | Manifiestos, IDs, revisión/hash y vistas por referencia | No mover, duplicar ni restaurar masivamente para cambiar etiquetas o carpetas. |
+| Personas y canales | Servicios TORO existentes, identidad/ámbito autorizados; Comms/Control Plane y OpenClaw como ejecutor | Portal, DreamTeam, WhatsApp y Google como superficies según capacidad probada | No otro cerebro, sesión global, cola o scheduler; presencia de correo/teléfono no concede acceso. |
+
+### Un acceso, un conector y un perfil de plataforma son objetos distintos
+
+La revisión acotada del directorio confirma que las veinte filas incompatibles son perfiles de plataformas con identidad estable propia, no enlaces LINK incompletos del mismo tipo. Diecinueve declaran ciclo candidato y una declara ciclo activo; esto no prueba conexión operativa actual. Las veinte contienen una descripción de función en `recommended_role`, mientras falta un proyecto compatible acreditado. El prefijo histórico no determina ciclo, acceso o facultades. No renumerar, borrar ni rebautizar todos los perfiles como candidatos sin uso.
+
+La reparación debe conservar IDs, procedencia, datos de perfil y consumidores. Preparar una proyección explícita por tipo, manteniendo fuente original y alias cuando corresponda; resolver proyecto/ámbito con evidencia y propósito desde el campo existente, sin inventarlos. La elección de contrato y su eventual aplicación quedan separadas. No convertir silenciosamente el identificador de perfil en LINK, aceptar IDs arbitrarios, copiar campos privados al Portal ni salvar solo las filas válidas para aparentar completitud. Mantener el rechazo conjunto y fallback del lector vigente hasta validar un candidato íntegro.
+
+### Flujo único y simplificación de información
+
+1. Elegir fuente por campo/dominio y resolver empresa, entidad/propiedad y principal antes de llamar al conector. La herramienta instalada no prueba cuenta conectada, permiso efectivo o transporte operativo.
+2. Usar el adaptador existente con acción y campos mínimos, filtros/rango, paginación/cursor, presupuesto y timeout. Preferir delta desde el último recibo válido a releer el catálogo o todos los correos. El procedimiento de intake no acredita por sí mismo una implementación nueva.
+3. Correlacionar sistema/cuenta/contenedor/objeto/versión con IDs existentes antes de crear tarea o copiar documento. Conservar fuente original, valor normalizado, corte y conflicto. Etiquetas y carpetas virtuales son vistas, nunca permisos ni otros originales.
+4. Mostrar una ficha compacta que permita abrir original, fuente y pendiente: responsable, próximo paso, cobertura aplicable y estado de evidencia separados del estado de trabajo. No publicar identificaciones, cuentas, secretos o payloads internos como etiquetas o parámetros.
+5. Calendar/PayFlow proyectan la misma obligación con sujeto, concepto, período, importe/moneda, vencimiento sustentado, estado y evidencia. Un importe desconocido se muestra pendiente, no cero; un calendario no confirma pago.
+6. Toda escritura requiere acción autorizada, ámbito, idempotencia/concurrencia, reversión y recibo con lectura posterior. Un cambio documental no acredita adopción por todos los runtimes. Capacidad declarada, lectura verificada, autorización de escritura, ejecución y aceptación externa son pruebas distintas.
+
+### Cierre verificable de esta unidad
+
+Se clasifica el lote incompatible por procedencia/tipo y se prepara el diff o contrato mínimo que conserve las identidades; sin SQL de mutación, DDL, grants, nuevos adaptadores, gastos publicitarios ni publicación. Pruebas: veinte IDs únicos preservados, función trazable al campo existente, proyecto desconocido sin fabricar, contrato conjunto de trece campos, escenarios inválidos/fallback, aislamiento y reversión condicionada a huella de fuente. Un perfil activo declarado no se excluye por su prefijo. Las reglas y superficies documentales se alinean por referencia a este bloque; no se habilita otro sistema.
