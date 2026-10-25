@@ -9,6 +9,19 @@
 
 
 
+<!-- BEGIN:TORO_CLOUD_BROWSER_READINESS_20261024 -->
+## Opera/GX y continuidad cloud — corte 24/10/2026 21:35 CR
+
+**Ámbito:** TORO Systems/Tools/Comms, dentro de `TORO_OPERATING_CONFIGURATION_20261022`. Mauricio elige Opera/GX como acceso humano y exige conservar apagado el Gateway local; la ejecución independiente de la PC pertenece al host cloud existente, no al navegador de Windows. No cambia la autoridad de las fuentes ni concede acceso de propietario al equipo o huéspedes.
+
+**CURRENT verificado:** consola SSH institucional de `toro-openclaw-gateway-01`: servicio active/running, enabled y Restart=always/5s. `channels status --json` sin probe acredita exactamente `toro-interno` enabled/configured/linked/running/connected, healthy/ready, sin error ni advertencias, a las 21:35:13 CR. Windows mantiene KeepAlive/Watchdog Disabled y cero listeners18789/18799 en el corte; no se activó local. El conector específico de Opera sigue desconectado; Chrome institucional permitió la lectura alternativa.
+
+**TARGET pendiente:** navegador cloud. El perfil OpenClaw está enabled/headless y conserva sandbox, pero running/cdpReady=false, sin navegador detectado ni paquetes Chrome/Chromium instalados. Hay unos776MiB de RAM disponibles, swap0 y consumo del cgroup del Gateway cercano a2,80GiB; no se instala ni inicia un navegador antes de resolver su presupuesto. Chrome headless es candidato, no capacidad operativa declarada.
+
+**Límites y NEXT único:** resolver el presupuesto de memoria y preparar una opción acotada con impacto/reversión en el mismo carril, sin ampliar capacidad pagada, debilitar aislamiento, reiniciar ni activar local por inferencia. El detalle, fuentes y criterio de aceptación están en el [recibo subordinado](../evidence/TORO_CLOUD_BROWSER_READINESS_20261024.md). No hubo mensajes ni cambios de runtime. Arranque/recovery configurados y canal conectado no certifican entrega/lectura, sesiones ChatGPT/Codex, memoria canónica o PC apagada; esas aceptaciones permanecen pendientes.
+
+<!-- END:TORO_CLOUD_BROWSER_READINESS_20261024 -->
+
 <!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
 ## Historial administrativo: extracción con ámbitos y procedencia — 24/10/2026
 
