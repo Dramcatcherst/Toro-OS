@@ -1,0 +1,63 @@
+.casebook{--ink:#203c50;--muted:#405b6e;--line:#a5b8c3;--accent:#096695;color:var(--ink);background:#f5f3eb;border:1px solid #9aafbd;border-top:3px solid var(--accent);border-radius:9px;margin:12px 0;overflow-wrap:anywhere;min-width:0;font-size:13px}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 12px 6px;flex-wrap:wrap}
+.heading h3{display:flex;align-items:center;gap:7px;font-size:17px;line-height:1.35;font-weight:700;margin:0}
+.heading p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.closed{display:inline-flex;align-items:center;gap:5px;background:#e4edf3;border:1px solid #8ba4b6;border-radius:5px;padding:5px 7px;font-size:12px;font-weight:700}
+.notice{margin:2px 12px 10px;padding:7px 9px;border-left:3px solid #9b6810;background:#fff2d1;color:#67450d;font-size:13px}
+.filters{display:grid;grid-template-columns:minmax(180px,1.6fr) minmax(150px,1fr) minmax(125px,.75fr) minmax(130px,.8fr) auto;align-items:end;gap:7px;padding:0 12px}
+.filters label{display:grid;gap:3px;min-width:0;font-size:12px;font-weight:600}
+.advancedFilters{display:contents}
+.filterToggle{display:none;padding:8px 10px;border:1px solid #718b9f;background:#e3edf4;color:var(--ink);border-radius:5px}
+.filters input,.filters select{width:100%;min-width:0;min-height:44px;padding:8px;background:#fff;color:var(--ink);border:1px solid #718b9f;border-radius:5px;font:inherit;font-size:13px}
+.filters input::placeholder{color:#53697a;opacity:1}
+.searchField{display:flex;align-items:center;background:#fff;border:1px solid #718b9f;border-radius:5px;padding-left:8px;min-width:0}
+.searchField input{border:0;background:transparent}
+.searchField svg{flex-shrink:0}
+.casebook button{cursor:pointer;font:inherit;font-size:13px;min-height:44px}
+.reset,.empty button,.back{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border:1px solid #718b9f;background:#e3edf4;color:var(--ink);border-radius:5px;font-weight:600}
+.categories{display:flex;gap:4px;flex-wrap:wrap;padding:8px 12px 0}
+.categories button{padding:6px 9px;border:1px solid #9aafbd;border-radius:5px;background:#eaf0f3;color:var(--ink)}
+.categories button[aria-pressed=true]{background:#135b79;color:#fff;border-color:#135b79;font-weight:700}
+.resultLine{display:flex;gap:5px 12px;justify-content:space-between;flex-wrap:wrap;padding:6px 12px;color:var(--muted);font-size:12px}
+.resultLine p{margin:0;font-weight:700}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--line);min-width:0}
+.list{min-width:0;border-right:1px solid var(--line)}
+.list ul{list-style:none;margin:0;padding:0}
+.list li+li{border-top:1px solid #b7c7cf}
+.row{display:grid;gap:3px;position:relative;text-align:left;width:100%;border:0;border-left:3px solid transparent;border-radius:0;background:transparent;color:var(--ink);padding:9px 10px}
+.row:hover{background:#e5edf1}
+.row[aria-pressed=true]{border-left-color:#096695;background:#dcebf5}
+.rowTitle{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.rowTitle svg{flex-shrink:0}
+.rowMeta,.rowAction{font-size:12px;line-height:1.4;color:var(--muted)}
+.rowBottom{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px}
+.status{display:inline-block;max-width:100%;padding:2px 6px;border-radius:4px;border:1px solid #879eae;background:#e8eff4;color:#28465c;font-size:12px;font-weight:700}
+.status[data-state=pending],.status[data-state=partial]{background:#fff0ca;color:#684607;border-color:#b79752}
+.status[data-state=blocked]{background:#f9e1da;color:#7d3222;border-color:#bb8a7e}
+.status[data-state=verified]{background:#e2efdf;color:#29522b;border-color:#84a888}
+.detail{min-width:0;padding:12px;background:#edf4f7;align-self:start}
+.detailTop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.detail h4{font-size:18px;line-height:1.35;margin:7px 0}
+.summary{line-height:1.5;margin:7px 0 10px}
+.facts{margin:0;display:grid;gap:7px}
+.facts>div{display:grid;grid-template-columns:minmax(95px,.75fr) minmax(0,1.5fr);gap:8px}
+.facts dt{font-size:12px;color:var(--muted)}
+.facts dd{margin:0;font-size:13px}
+.next{margin-top:12px;padding:8px 9px;background:#fff7e5;border:1px solid #c3ac7e;border-radius:5px}
+.next strong{font-size:12px;color:#67450d}
+.next p{line-height:1.45;margin:3px 0 0}
+.disclosure{border-top:1px solid var(--line);margin-top:10px;font-size:12px}
+.disclosure summary{cursor:pointer;min-height:44px;display:list-item;align-content:center;padding:8px 0;font-size:13px;font-weight:600}
+.disclosure p{line-height:1.45;margin:5px 0 8px}
+.disclosure ul,.disclosure ol{padding-left:20px;margin:0 0 7px;line-height:1.6}
+.footer{padding:0 12px 4px;border-top:1px solid var(--line);color:var(--muted)}
+.footer>p{display:flex;align-items:center;gap:6px;font-size:12px;margin:9px 0 0}
+.footer>p svg{flex-shrink:0}
+.footer .disclosure{margin-top:4px;border:0}
+.empty{padding:16px 12px;line-height:1.5}
+.empty p{margin:4px 0 12px}
+.back{display:none;margin-bottom:10px}
+.casebook :is(button,input,select,summary,h4):focus-visible{outline:3px solid #075b92;outline-offset:2px;position:relative;z-index:1}
+@media(max-width:1000px){.filters{grid-template-columns:repeat(3,minmax(0,1fr))}.search{grid-column:span 2}.reset{align-self:end}}
+@media(max-width:650px){.heading{padding:10px 9px 6px}.heading h3{font-size:16px}.notice{margin-left:9px;margin-right:9px}.filters{padding:0 9px;grid-template-columns:repeat(2,minmax(0,1fr))}.search{grid-column:1/-1}.filterToggle{display:block}.advancedFilters{display:none}.filters[data-expanded=true] .advancedFilters{display:grid;grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.reset{width:100%}.categories{padding-left:9px;padding-right:9px;gap:4px}.categories button{flex-grow:1}.resultLine{padding:6px 9px}.workspace{display:block}.list{border-right:0}.detail{display:none}.workspace[data-detail-open=true] .list{display:none}.workspace[data-detail-open=true] .detail{display:block}.back{display:inline-flex}.facts>div{grid-template-columns:minmax(85px,.75fr) minmax(0,1.5fr)}.footer{padding-left:9px;padding-right:9px}}
+@media(forced-colors:active){.casebook{border:1px solid CanvasText}.categories button[aria-pressed=true],.row[aria-pressed=true]{border:2px solid Highlight;background:Canvas;color:CanvasText}.status,.closed,.notice,.next{border:1px solid CanvasText}.casebook :is(button,input,select,summary,h4):focus-visible{outline-color:Highlight}}

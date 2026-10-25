@@ -6286,3 +6286,13 @@ CURRENT: calendario Dreamcatcher · Mantenimiento creado bajo la cuenta hotelera
 TARGET/NEXT: reutilizar tareas y ronda existentes; integrar candidatos de entrega/calendar con el worker gobernado, verificar grupo/receipt y acceso individual, y conciliar una muestra real Kross antes de automatizar ventanas. Mantener el disparador mensual existente hasta un corte único probado; sin nuevo cron ni escritura PMS.
 
 Candidato de código y 50 controles con estados explícitos en [contrato de mantenimiento](DREAMCATCHER_MAINTENANCE_DELIVERY_V1.md). Las pruebas locales de preparación no equivalen a despliegue, envío o cierre físico. No marcar cincuenta mejoras productivas por tener cincuenta requisitos documentados.
+
+## Expediente: primer lote compacto aprobado — 24/10/2026
+
+Sección23 Human Experience, People/Identity y evidencia financiera/patrimonial. Mauricio aprueba el diseño y el primer lote dentro del Portal existente. CURRENT candidato local: «Expediente · demostración» en Reportes, acceso desde Dinero, búsqueda y filtros por entidad/período/estado/sección, lista y detalle contextual; filtros plegables en móvil. Conserva ocho pestañas y módulos00–11, identidad y contexto existentes. Las personas físicas y jurídicas se representan sin inferir que cargo, propiedad y representación sean equivalentes.
+
+El componente acepta cero datos de expediente y contiene únicamente ejemplos inventados. Lectura real cerrada, sin nuevas consultas, API, permisos, persistencia, originales ni exportación. Una pestaña oculta también se entrega al navegador: ocultar contenido no constituye control de acceso. No incorporar reportes, payloads ni documentos privados al código o a activos públicos.
+
+TARGET/NEXT: comprobar el contrato mínimo de lectura existente por identidad, organización, ámbito y campo antes de conectar un solo registro real. La prueba local sintética no acredita aceptación autenticada ni despliegue. Mantener informe, Excel y registro privado con el mismo estado de implementación; conservar las fuentes de autoridad y pendientes financieros. Sin nuevo sistema, base, agenda o scheduler.
+
+Diseño y plan: [especificación aprobada](../superpowers/specs/2026-10-24-private-casebook-portal-integration-design.md) y [primer lote](../superpowers/plans/2026-10-24-portal-expediente-first-lot.md). Publicación únicamente tras CI, preview/aislamiento y rollback del SHA exacto, bajo la delegación vigente; no requiere otra aprobación del mismo diseño.

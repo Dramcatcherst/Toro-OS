@@ -33,10 +33,10 @@
 
 **Interfaces:** `CasebookRecord`, `CasebookState`, `createCasebookState()`, `casebookReducer(state, action)`, `filterCasebookRecords(records, state)`, `selectedCasebookRecord(records, state)`. Fixtures use `demo-*` keys and generic invented labels only.
 
-- [ ] Write tests for combined category/entity/period/status filters, accent-insensitive search, empty/cleared search, hidden selection fallback, reset, immutable state, and null versus zero amount labels.
-- [ ] Run the targeted test and record RED before implementing.
-- [ ] Implement the minimal pure model and fictional fixtures; no real-data extension switch.
-- [ ] Run the model test GREEN and commit the coherent model.
+- [x] Write tests for combined category/entity/period/status filters, accent-insensitive search, empty/cleared search, hidden selection fallback, reset, immutable state, and null versus zero amount labels.
+- [x] Run the targeted test and record RED before implementing.
+- [x] Implement the minimal pure model and fictional fixtures; no real-data extension switch.
+- [x] Run the model test GREEN and commit the coherent model.
 
 ## Task 2: Compact view inside existing Portal
 
@@ -44,17 +44,17 @@
 
 **Interfaces:** `PortalCasebook()` accepts no props. Existing `openTab("reports")` handles the Dinero shortcut. Component stays mounted between tabs, while the existing per-user/org workspace key resets context.
 
-- [ ] Add failing SSR tests for the explicit fictional/closed-read labels, physical and legal entity coverage, unique control IDs, safe text escaping and no export/original links. Extend anonymous/inactive-context tests to exclude the view.
-- [ ] Implement a compact heading/filter row, category buttons, result list plus contextual detail, mobile selection/return, source/next-action disclosures and explicit unavailable originals/export text.
-- [ ] Run focused model, component and Portal guard tests; then existing hotel-tools and portal-auth checks.
-- [ ] Verify keyboard selection, filter reset, tab-state preservation, no empty-result stale detail, desktop/mobile overflow and 44px controls through a synthetic component harness outside production routes.
-- [ ] Run TypeScript, lint and build. Commit the coherent UI.
+- [x] Add failing SSR tests for the explicit fictional/closed-read labels, physical and legal entity coverage, unique control IDs, safe text escaping and no export/original links. Extend anonymous/inactive-context tests to exclude the view.
+- [x] Implement a compact heading/filter row, category buttons, result list plus contextual detail, mobile selection/return, source/next-action disclosures and explicit unavailable originals/export text.
+- [x] Run focused model, component and Portal guard tests; then existing hotel-tools and portal-auth checks.
+- [x] Verify keyboard selection, filter reset, tab-state preservation, no empty-result stale detail, desktop/mobile overflow and 44px controls through a synthetic component harness outside production routes.
+- [x] Run TypeScript, lint and build. Commit the coherent UI.
 
 ## Task 3: Review and canonical closeout
 
 **Files:** This plan, existing `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, private canonical checkpoint and synchronized report/workbook metadata.
 
-- [ ] Obtain a fresh code/privacy review; repair findings and repeat affected checks only.
+- [x] Obtain a fresh code/privacy review; repair findings and repeat affected checks only.
 - [ ] Record exact SHA, synthetic QA scope, closed real-reader gate and rollback. Open one feature PR; attach it to this chat. Do not claim hosted/private acceptance from local tests.
 - [ ] Update the existing checkpoint, report/workbook status, native TORO record, Dropbox version and same heartbeat prompt with verified receipts. Preserve financial evidence and pending bank-document search.
 - [ ] Promote only if the existing exact-SHA CI, preview/auth isolation and rollback gates pass; otherwise leave the reviewable candidate and one precise next action.
