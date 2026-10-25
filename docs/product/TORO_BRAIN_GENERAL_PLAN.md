@@ -6413,3 +6413,39 @@ TARGET por familia, sin afirmar acceso o licencia comprobados en este lote:
 Estas tareas son PROPUESTAS/PENDIENTES según evidencia; no nuevas activaciones ni cientos de mejoras acreditadas. Siguiente unidad única desde checkpoint: preparar reparación del contrato de las filas incompatibles sin publicar datos privados ni cambiar permisos.
 
 Validación del delta: 269/269 pruebas Tools/Portal, suite de acceso, TypeScript, lint y build completo con un trabajador; QA sintética Chrome en 1280×575 y 390×844, foco de retorno/Escape, filtros combinados, sin desborde ni errores de consola. No acredita aceptación de este delta en una sesión alojada ni nuevas consultas patrimoniales. El intento de build con 21 trabajadores se interrumpió; no se cambió configuración persistente de compilación.
+
+<!-- TORO_PLATFORM_EXTRACTION_PREPARATION_V17 -->
+## Preparar los accesos de investigación por portal
+
+Mauricio prioriza recopilar la información faltante antes de ampliar el Portal. Se amplía la cobertura de la investigación sin un tope artificial de sujetos o plataformas. Esto no elimina permisos, requisitos de legitimación, controles de privacidad ni la prohibición vigente de presentar, pagar, solicitar retiros o enviar comunicaciones. Una nueva pista se incorpora al mismo expediente y a su matriz de aplicabilidad; no crea otro sistema o inventario maestro.
+
+**CURRENT:** guías, índices por objeto y fuentes anteriores reutilizados para preparar un lote por plataforma. El expediente privado y el mismo Excel contienen sujetos, variantes de identificación aportadas, productos financieros históricos/actuales, documentos asociados, brechas y pasos por acceso. Los resultados nominales nuevos están pendientes de acceso: preparación no equivale a investigación ejecutada. Los datos personales y números de referencia se conservan fuera de GitHub y de activos públicos.
+
+### Secuencia por objeto
+
+1. Resolver identidad, identificación literal, tipo y jurisdicción. Buscar por nombre y por documentos actuales/históricos ya aportados cuando el portal lo admita. Dos resultados idénticos no crean dos personas. DIMEX y residencia pueden ser categorías de consulta de un mismo identificador; no crear perfiles por etiqueta ni fusionar personas por nombre. Un prefijo documental extranjero es una pista hasta corroborarlo.
+2. Confirmar vínculo y alcance antes de profundizar. Separar propietario, poseedor, socio, beneficiario, representante, heredero, garante y simple contraparte. Un cargo ausente no prueba salida del capital, y una participación antigua no prueba participación actual.
+3. Si la desvinculación está acreditada, retirar solo el seguimiento activo que ya no aplique. Conservar historial y prueba de salida; comprobar obligaciones, garantías personales, traspasos y contingencias residuales. Nunca borrar evidencia para excluir un objeto del panel actual.
+4. Identificar documentos existentes por referencia nativa y documentos que aún faltan: índice, original, versiones, acuse, vigencia y actos posteriores. Un documento enlazado no se considera releído o vigente por esta preparación.
+5. Cerrar únicamente la unidad objeto/fuente/período/campos que tenga evidencia suficiente o una exclusión razonada. Mantener abiertos identidad, aplicabilidad, acceso, rango histórico, páginas y documentos pendientes. No afirmar investigación universal completa ni usar un resultado negativo como ausencia absoluta.
+
+### Lote de acceso por plataforma
+
+Cada guía del registro existente debe indicar pregunta de negocio, principal autorizado, sujetos/objetos, variantes de consulta, lo ya extraído, lo faltante, documentos a exportar, rango máximo real, filtros, total, cursor, restricciones, cruces y criterio de cierre. Ordenar por riesgo de perder evidencia o plazo y por acceso disponible, sin reauditar fuentes agotadas sin una pista nueva.
+
+- **Registro:** personería, historia, poderes, participación sustentada, fincas/derechos/planos/cargas y estudios completos de muebles. Abrir el detalle de cada resultado, no cerrar con la lista nominal. Coordinar la sesión exclusiva con su operador vigente.
+- **Hacienda:** RUT, sujetos representados, obligaciones, declaraciones y rectificativas, acuses, pagos, notificaciones y cuenta tributaria. Incluir créditos consistentes, inconsistentes y trazabilidad histórica/migración; ausencia de pantalla no acredita pérdida ni prescripción. Preparar la evidencia de revisión sin presentar trámites. La [guía oficial de TRIBU](https://www.hacienda.go.cr/docs/dPreguntasYRespuestasDeTRIBU-CR.pdf) distingue estas consultas.
+- **CCSS y operadoras:** historia laboral, órdenes, salarios, aportes, patronos, IVM, FCL/ROP por producto y ciclo, diferencias de identificación y expedientes autorizados. Usuario histórico, documento actual y afiliación no se corrigen creando otra identidad. Afiliación no acredita disponibilidad de fondos.
+- **INS, otras aseguradoras, COSEVI e inspección:** póliza y vigencia frente a solicitud; marchamo por año, recibos, multas y resoluciones; TIVE/ITV individual, defectos y reinspecciones. No duplicar el mismo componente entre fuentes.
+- **Municipalidad, MEIC, ICT y permisos sectoriales:** patente/licencia/resolución, inmueble/canon/ZMT, pagos, usos y requisitos aplicables; constancias PYME y beneficios por período. Actividad y resolución particular antes de atribuir una exención general.
+- **Bancos/adquirentes:** cada producto actual y cerrado con titular, moneda, apertura/cierre, estados completos, movimientos, retenciones, cuotas, tasa, garantías y comprobantes. Los avisos no prueban productos distintos ni saldos. El [CIC de SUGEF](https://www.sugef.fi.cr/informacion_relevante/manuales/manual_inf_cic/index.aspx) complementa el historial crediticio autorizado, no un inventario universal de cuentas.
+- **Correo/Dropbox/contabilidad:** continuar los cursores y archivos objetivo ya localizados; conservar originales y revisiones. Kross prueba operación, Alegra registro contable y bancos movimiento de dinero. Primero localizar el documento existente y después decidir si es necesario pedir otro. No restaurar sobre originales, contabilizar ni reenviar por una clasificación.
+- **Colombia:** confirmar identificación y vínculo antes de consultas restringidas. Preparar Registraduría, DIAN, RUES/Supersociedades, SNR, RUNT/SIMIT, ADRES/RUAF, pensiones, procesos y reportes de crédito propios según aplicabilidad. Hay consultas públicas, zonas autenticadas, operadores privados y certificados con costo; ninguno se considera habilitado por figurar en la guía. Un registro de afiliación no sustituye historia laboral ni certifica un beneficio.
+
+Trabajar continuamente mediante acciones útiles, exportaciones por lote e intervalos máximos que realmente admita cada sistema. No usar recargas artificiales para impedir el vencimiento de sesión. Guardar avance al cerrar cada módulo: principal/sujeto, tipo de identificación, corte, filtros, rango, páginas/total/cursor, originales con ID/hash, resultados negativos acotados, errores y próxima acción exacta. No conservar contraseñas, códigos o cookies.
+
+### Cobertura y continuidad
+
+El objetivo del 100% se calcula sobre comprobaciones aplicables con sujeto, fuente, período y documentos definidos. Separar cobertura preparada, índice localizado, original descargado, extraído, conciliado y cierre aceptado. Las exclusiones y cambios de universo conservan fecha y motivo, sin inflar porcentajes al retirar pendientes difíciles. Desconocido no equivale a cero ni a no aplicable.
+
+Prioridad de la siguiente unidad: ejecutar el primer lote de extracción con acceso legítimo, una plataforma a la vez, empezando por identidad/vínculo y los documentos faltantes de mayor riesgo. Los hallazgos Kross, aceptación privada del nuevo directorio y las entradas incompatibles de su fuente siguen como pendientes técnicos del mismo Portal; esta preparación no los cierra ni promueve producción.
