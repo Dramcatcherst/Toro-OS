@@ -7,6 +7,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { portalReadRpcSelected } from "@/lib/server/portal-read-rpc";
 import { loadCanonicalBrainReadSliceWithClient, type CanonicalBrainReadSlice } from "@/features/brain/canonical-read";
+import { loadKrossOperationalSnapshotWithClient } from "@/features/kross/operational-read";
 import { portalProjectFocus } from "./portal-projects";
 
 import { prioritizeToroMenuByAvailability, resolveToroMenu } from "./resolver";
@@ -332,6 +333,49 @@ export type ToroCapabilityFocus = {
   items: ToroCapabilityFocusItem[];
   coverage?: string;
 };
+
+type KrossOperationalRead = Awaited<ReturnType<typeof loadKrossOperationalSnapshotWithClient>>;
+type KrossInformationalSnapshot = Extract<KrossOperationalRead, { state: "snapshot" }>;
+type KrossMenuCapability = "guest.arrivals_departures" | "operations.hotel_today";
+
+function informationalArrivalsNote(snapshot: KrossOperationalRead | null): string {
+  if (snapshot?.state === "snapshot") {
+    const ageMinutes = Math.round((Date.parse(snapshot.asOf) - Date.parse(snapshot.sourceAsOf)) / 6_000) / 10;
+    return `Movimientos programados observados de Kross. Datos actualizados a ${snapshot.sourceAsOf} (${ageMinutes} min al leer). Copia informativa; cobertura parcial no acreditada. No resume toda la operación ni acredita aseo, mantenimiento u ocupación física.`;
+  }
+  if (snapshot?.state === "stale") {
+    return `Copia de Kross antigua: corte ${snapshot.sourceAsOf}. Los conteos actuales son desconocidos hasta actualizar la fuente.`;
+  }
+  if (snapshot?.state === "forbidden") {
+    return "El contexto actual no autoriza esta lectura informativa.";
+  }
+  return "No hay una copia informativa verificable para esta propiedad; los conteos son desconocidos.";
+}
+
+function informationalArrivalsFocus(
+  snapshot: KrossInformationalSnapshot,
+  capability: KrossMenuCapability,
+  propertyId: string,
+  label: string,
+): ToroCapabilityFocus {
+  const coverage = snapshot.coverage;
+  const counts: Array<[string, number]> = [
+    ["Llegadas previstas observadas", snapshot.counts.observedScheduledArrivals],
+    ["Salidas previstas observadas", snapshot.counts.observedScheduledDepartures],
+    ["Estancias programadas observadas", snapshot.counts.observedScheduledStays],
+  ];
+  return {
+    capability,
+    label: `${label} · movimientos programados observados de Kross`,
+    items: counts.map(([title, count]) => ({
+      title: `${title}: ${count}`,
+      meta: `Kross · fecha operativa ${snapshot.reportingDate} · corte ${snapshot.sourceAsOf}`,
+      detail: snapshot.notice,
+      evidence: { source: "Kross", reportedSource: snapshot.source, observedAt: snapshot.sourceAsOf, readAt: snapshot.asOf },
+    })),
+    coverage: `Propiedad ${propertyId}. Cobertura total no acreditada: ${coverage.rowsRead} registros leídos, ${coverage.excludedRows} excluidos, ${coverage.staleRows} antiguos, ${coverage.reviewRows} en revisión, ${coverage.cancelledRows} cancelados y ${coverage.unknownStatusRows} de estado desconocido.${coverage.truncated ? " Lectura truncada." : ""}`,
+  };
+}
 
 const FOCUSABLE_CAPABILITIES = new Set([
   "executive.brief",
@@ -807,6 +851,7 @@ export async function resolveToroReadOnlyMenuForContext(
   context: ToroResolvedContext,
   supabase: SupabaseServerClient | null,
   focusCapability?: string | null,
+  informationalRead?: { propertyId: string },
 ): Promise<ToroRealMenuView> {
 
   if (context.requiresContextChoice || !context.orgId || !context.membership) {
@@ -837,6 +882,9 @@ export async function resolveToroReadOnlyMenuForContext(
   });
 
   const baseline = buildConservativeCapabilityStates(discoveryMenu?.profileId);
+  const informationalCapability: KrossMenuCapability | null =
+    discoveryMenu?.items.some(item => item.capability === "guest.arrivals_departures") ? "guest.arrivals_departures"
+    : discoveryMenu?.items.some(item => item.capability === "operations.hotel_today") ? "operations.hotel_today" : null;
 
   let capabilityStates = baseline;
   let profileSummary: ToroProfileSummaryItem[] = [];
@@ -847,6 +895,8 @@ export async function resolveToroReadOnlyMenuForContext(
 
   let rpcMode = false;
   let projectSlice: CanonicalBrainReadSlice | null = null;
+  let arrivalsSnapshot: KrossOperationalRead | null = null;
+  let informationalArrivalsRequested = false;
   try {
     rpcMode = portalReadRpcSelected();
     if (!supabase) throw new Error("Menu source client is unavailable.");
@@ -873,6 +923,34 @@ export async function resolveToroReadOnlyMenuForContext(
     // readable when source probing itself is unavailable.
   }
 
+  // Opt in only from a supported internal caller with an explicit property.
+  // This changes one menu capability, not the global live-source readiness.
+  // The channel boundary revalidates its canonical binding after this read.
+  if (informationalRead && supabase && !rpcMode &&
+    process.env.TORO_DEPLOYMENT_MODE === "internal" &&
+    informationalCapability) {
+    informationalArrivalsRequested = true;
+    try {
+      arrivalsSnapshot = await loadKrossOperationalSnapshotWithClient(context, supabase, {
+        propertyId: informationalRead.propertyId,
+      });
+    } catch {
+      // No fallback to a different source or a property-wide zero.
+    }
+    const usable = arrivalsSnapshot?.state === "snapshot";
+    capabilityStates = { ...capabilityStates, [informationalCapability]: usable ? "READ_ONLY" : "BLOCKED" };
+    const previousLabel = informationalCapability === "guest.arrivals_departures" ? "Llegadas y salidas live" : "Hotel hoy";
+    const currentLabel = informationalCapability === "guest.arrivals_departures" ? "Llegadas y salidas" : "Hotel hoy";
+    const label = usable ? `${currentLabel} · copia informativa parcial`
+      : arrivalsSnapshot?.state === "stale" ? `${currentLabel} · copia antigua`
+      : `${currentLabel} · copia no disponible`;
+    sourceReadiness = {
+      readyReads: sourceReadiness.readyReads.filter(item => item !== previousLabel),
+      blockedReads: sourceReadiness.blockedReads.filter(item => item !== previousLabel),
+    };
+    sourceReadiness[usable ? "readyReads" : "blockedReads"].push(label);
+  }
+
   const resolvedMenu = resolveToroMenu({
     mode: "organization",
     roles: membership.roles,
@@ -890,7 +968,8 @@ export async function resolveToroReadOnlyMenuForContext(
       .filter(
         (item) =>
           item.state === "READ_ONLY" &&
-          FOCUSABLE_CAPABILITIES.has(item.capability),
+          (FOCUSABLE_CAPABILITIES.has(item.capability) ||
+            (item.capability === informationalCapability && arrivalsSnapshot?.state === "snapshot")),
       )
       .map((item) => item.capability) ?? [];
 
@@ -909,7 +988,9 @@ export async function resolveToroReadOnlyMenuForContext(
       (candidate) => candidate.capability === focusCapability,
     );
     if (item) {
-      if (rpcMode) {
+      if (item.capability === informationalCapability && arrivalsSnapshot?.state === "snapshot" && informationalRead) {
+        focus = informationalArrivalsFocus(arrivalsSnapshot, informationalCapability, informationalRead.propertyId, item.label);
+      } else if (rpcMode) {
         focus = item.capability === "projects.status" && projectSlice
           ? portalProjectFocus(projectSlice, item.label) : null;
       } else {
@@ -931,6 +1012,9 @@ export async function resolveToroReadOnlyMenuForContext(
   );
   if (rpcMode && capabilityStates["projects.status"] === "READ_ONLY") {
     capabilityNotes["projects.status"] = "Proyectos del lote autorizado; cobertura parcial y vigencia por registro.";
+  }
+  if (informationalArrivalsRequested && informationalCapability) {
+    capabilityNotes[informationalCapability] = informationalArrivalsNote(arrivalsSnapshot);
   }
   const capabilityAlternatives = buildSafeAlternatives(menu);
 

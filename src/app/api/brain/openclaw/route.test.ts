@@ -336,6 +336,7 @@ describe("POST /api/brain/openclaw", () => {
       context,
       { client: "synthetic" },
       "executive.brief",
+      undefined,
     );
     await expect(response.json()).resolves.toMatchObject({
       state: "ready",
@@ -476,6 +477,140 @@ describe("POST /api/brain/openclaw", () => {
       externalWrite: false,
       canonicalWrite: "operations.tasks",
     });
+  });
+});
+
+describe("informational menu selector and post-read channel authority", () => {
+  const propertyId = "00000000-0000-4000-8000-000000000002";
+  const identity = { channel: "whatsapp", connectionKey: "synthetic-hotel", subject: "synthetic-sender" };
+  const client = { client: "synthetic" };
+  let current: typeof context;
+  function menu() {
+    return {
+      context: current,
+      menu: { profileId: "manager", hiddenCapabilityCount: 0, items: [{
+        index: 1, key: "hotel_today", emoji: "", label: "Hotel hoy", aliases: ["hotel hoy", "operación"],
+        capability: "operations.hotel_today", state: "READ_ONLY",
+      }] },
+      focus: { items: [{ title: "SYNTHETIC_RESERVATION_RESULT" }] },
+    };
+  }
+  const input = { propertyId, focusCapability: "operations.hotel_today", text: "hotel hoy" };
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "direct");
+    current = structuredClone(context);
+    authorizeOpenClawService.mockReturnValue({ ok: true, principal: "openclaw-runtime" });
+    createPrivilegedSupabaseClient.mockReturnValue(client);
+    resolveOpenClawChannelContext.mockResolvedValue({ state: "resolved", context: current });
+    resolveToroReadOnlyMenuForContext.mockImplementation(async () => menu());
+    loadKrossOperationalSnapshotWithClient.mockResolvedValue({ state: "snapshot", notice: "SYNTHETIC_RESERVATION_RESULT" });
+  });
+  afterEach(() => vi.unstubAllEnvs());
+
+  for (const operation of ["menu.read", "menu.resolve"]) {
+    it(`${operation} forwards only the explicit property and rechecks the same canonical binding`, async () => {
+      const result = await POST(request({ identity, operation, input: {
+        ...input, orgId: "other", role: "ADMIN", asOf: "2099-01-01", maxAgeMinutes: 99999,
+      } }));
+      expect(result.status).toBe(200);
+      expect(resolveToroReadOnlyMenuForContext).toHaveBeenCalledExactlyOnceWith(
+        current, client, operation === "menu.read" ? input.focusCapability : null, { propertyId },
+      );
+      expect(resolveOpenClawChannelContext).toHaveBeenCalledTimes(2);
+      expect(resolveOpenClawChannelContext).toHaveBeenNthCalledWith(1, identity, client);
+      expect(resolveOpenClawChannelContext).toHaveBeenNthCalledWith(2, identity, client);
+      expect(resolveOpenClawChannelContext.mock.invocationCallOrder[1]).toBeGreaterThan(resolveToroReadOnlyMenuForContext.mock.invocationCallOrder[0]);
+      expect(loadKrossOperationalSnapshotWithClient).not.toHaveBeenCalled();
+      expect(result.headers.get("cache-control")).toContain("no-store");
+    });
+
+    it(`${operation} does not invent a property when the selector is absent`, async () => {
+      const result = await POST(request({ identity, operation, input: { text: input.text, focusCapability: input.focusCapability } }));
+      expect(result.status).toBe(200);
+      expect(resolveToroReadOnlyMenuForContext.mock.calls[0][3]).toBeUndefined();
+    });
+
+    for (const propertyId of [null, "invalid", 123, "00000000-0000-4000-8000-000000000002/.eq"]) {
+      it(`${operation} rejects malformed property ${String(propertyId)} before any privileged lookup`, async () => {
+        const result = await POST(request({ identity, operation, input: { ...input, propertyId } }));
+        expect(result.status).toBe(400);
+        expect(createPrivilegedSupabaseClient).not.toHaveBeenCalled();
+        expect(resolveOpenClawChannelContext).not.toHaveBeenCalled();
+        expect(resolveToroReadOnlyMenuForContext).not.toHaveBeenCalled();
+      });
+    }
+
+    it(`${operation} keeps Portal rpc_v1 closed before allocating a machine client`, async () => {
+      vi.stubEnv("TORO_PORTAL_READ_TRANSPORT", "rpc_v1");
+      const result = await POST(request({ identity, operation, input }));
+      expect(result.status).toBe(503);
+      expect(createPrivilegedSupabaseClient).not.toHaveBeenCalled();
+      expect(resolveToroReadOnlyMenuForContext).not.toHaveBeenCalled();
+    });
+  }
+
+  for (const operation of ["menu.read", "menu.resolve", "hospitality.arrivals.read"]) {
+    for (const change of ["revoked", "unlinked", "actor", "organization", "membership", "employee", "role", "profile", "scope"]) {
+      it(`${operation} discards its result after canonical ${change} changes`, async () => {
+        const fresh = structuredClone(current);
+        if (change === "actor") fresh.userId = "other-user";
+        if (change === "organization") { fresh.orgId = "other-org"; fresh.membership.orgId = "other-org"; }
+        if (change === "membership") fresh.membership.membershipId = "other-membership";
+        if (change === "employee") fresh.membership.employeeId = "other-employee";
+        if (change === "role") fresh.membership.roles = ["EMPLEADO"];
+        if (change === "profile") fresh.membership.positionCode = "RECEPTION" as never;
+        if (change === "scope") fresh.allowedDataScopes = ["system"];
+        const rechecked = change === "revoked" ? { state: "forbidden", error: "SYNTHETIC_PRIVATE_LOOKUP_DETAIL" }
+          : change === "unlinked" ? { state: "unlinked" } : { state: "resolved", context: fresh };
+        resolveOpenClawChannelContext.mockReset()
+          .mockResolvedValueOnce({ state: "resolved", context: current })
+          .mockResolvedValueOnce(rechecked);
+        const result = await POST(request({ identity, operation, input }));
+        expect(result.status).toBe(403);
+        expect(resolveOpenClawChannelContext).toHaveBeenCalledTimes(2);
+        const body = await result.text();
+        expect(body).not.toContain("SYNTHETIC_RESERVATION_RESULT");
+        expect(body).not.toContain("SYNTHETIC_PRIVATE_LOOKUP_DETAIL");
+        expect(body).not.toContain('"intent"');
+        expect(body).not.toContain('"menu"');
+      });
+    }
+
+    it(`${operation} fails closed when the fresh binding lookup cannot complete`, async () => {
+      resolveOpenClawChannelContext.mockReset()
+        .mockResolvedValueOnce({ state: "resolved", context: current })
+        .mockRejectedValueOnce(new Error("SYNTHETIC_PRIVATE_LOOKUP_DETAIL"));
+      const result = await POST(request({ identity, operation, input }));
+      expect(result.status).toBe(503);
+      const body = await result.text();
+      expect(body).not.toContain("SYNTHETIC_PRIVATE_LOOKUP_DETAIL");
+      expect(body).not.toContain("SYNTHETIC_RESERVATION_RESULT");
+    });
+  }
+
+  it("also rejects in-memory context mutation without mistaking it for canonical revalidation", async () => {
+    const unchangedCanonicalContext = structuredClone(current);
+    resolveOpenClawChannelContext.mockReset()
+      .mockResolvedValueOnce({ state: "resolved", context: current })
+      .mockResolvedValueOnce({ state: "resolved", context: unchangedCanonicalContext });
+    resolveToroReadOnlyMenuForContext.mockImplementation(async () => {
+      current.membership.roles = ["EMPLEADO"];
+      return menu();
+    });
+    const result = await POST(request({ identity, operation: "menu.read", input }));
+    expect(result.status).toBe(403);
+    expect(resolveOpenClawChannelContext).toHaveBeenCalledTimes(2);
+    expect(await result.text()).not.toContain("SYNTHETIC_RESERVATION_RESULT");
+  });
+
+  it("treats unchanged canonical scope sets independently of their order", async () => {
+    const fresh = structuredClone(current);
+    fresh.allowedDataScopes.reverse();
+    resolveOpenClawChannelContext.mockReset()
+      .mockResolvedValueOnce({ state: "resolved", context: current })
+      .mockResolvedValueOnce({ state: "resolved", context: fresh });
+    expect((await POST(request({ identity, operation: "menu.read", input }))).status).toBe(200);
   });
 });
 

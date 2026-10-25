@@ -38,6 +38,32 @@ function safeContextProjection(context: ToroResolvedContext) {
   };
 }
 
+function readContextFingerprint(context: ToroResolvedContext) {
+  const membership = context.membership;
+  return JSON.stringify({
+    userId: context.userId,
+    mode: context.mode,
+    orgId: context.orgId,
+    canUseOrganizationData: context.canUseOrganizationData,
+    canUsePersonalVault: context.canUsePersonalVault,
+    requiresContextChoice: context.requiresContextChoice,
+    allowedDataScopes: [...context.allowedDataScopes].sort(),
+    membership: membership ? {
+      orgId: membership.orgId,
+      membershipId: membership.membershipId,
+      membershipType: membership.membershipType,
+      status: membership.status,
+      source: membership.source,
+      employeeId: membership.employeeId,
+      positionId: membership.positionId ?? null,
+      positionCode: membership.positionCode ?? null,
+      positionName: membership.positionName ?? null,
+      workArea: membership.workArea ?? null,
+      roles: [...membership.roles].sort(),
+    } : null,
+  });
+}
+
 export async function POST(request: Request) {
   const auth = authorizeOpenClawService(request);
   if (!auth.ok) return auth.response;
@@ -79,6 +105,16 @@ export async function POST(request: Request) {
       error: "Portal RPC requires a user session; the OpenClaw bridge requires the reviewed internal direct-read transport.",
     }, 503);
   }
+
+  const menuPropertyId =
+    (operation === "menu.read" || operation === "menu.resolve") &&
+    record.input && typeof record.input === "object" && !Array.isArray(record.input)
+      ? (record.input as { propertyId?: unknown }).propertyId : undefined;
+  if (menuPropertyId !== undefined &&
+    (typeof menuPropertyId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(menuPropertyId))) {
+    return response({ state: "invalid", error: "propertyId must be an explicit property UUID." }, 400);
+  }
+  const informationalRead = typeof menuPropertyId === "string" ? { propertyId: menuPropertyId } : undefined;
 
   let supabase: ReturnType<typeof createPrivilegedSupabaseClient>;
   try {
@@ -140,6 +176,26 @@ export async function POST(request: Request) {
   }
 
   const { context } = resolved;
+  const requestedContext = readContextFingerprint(context);
+
+  async function respondAfterContextRecheck(body: unknown, status = 200) {
+    try {
+      // A privileged client has no human session. Re-read the existing channel
+      // binding, active membership and roles instead of using auth.getUser().
+      const current = await resolveOpenClawChannelContext(record.identity, supabase);
+      if (current.state === "unavailable") {
+        return response({ state: "runtime_unavailable", error: "Channel context could not be verified after the read." }, 503);
+      }
+      if (current.state !== "resolved" ||
+        readContextFingerprint(current.context) !== requestedContext ||
+        readContextFingerprint(context) !== requestedContext) {
+        return response({ state: "forbidden", error: "Channel context changed during the read. Retry with the current context." }, 403);
+      }
+      return response(body, status);
+    } catch {
+      return response({ state: "runtime_unavailable", error: "Channel context could not be verified after the read." }, 503);
+    }
+  }
 
   if (operation === "context.resolve") {
     return response({
@@ -158,7 +214,7 @@ export async function POST(request: Request) {
     // Only the property selector crosses this boundary. Dates, roles, freshness
     // and reporting time are resolved by the server, never by model arguments.
     const snapshot = await loadKrossOperationalSnapshotWithClient(context, supabase, { propertyId });
-    return response(snapshot, snapshot.state === "forbidden" ? 403 : snapshot.state === "unavailable" ? 503 : 200);
+    return respondAfterContextRecheck(snapshot, snapshot.state === "forbidden" ? 403 : snapshot.state === "unavailable" ? 503 : 200);
   }
 
   if (operation === "menu.resolve") {
@@ -182,6 +238,7 @@ export async function POST(request: Request) {
         context,
         supabase,
         null,
+        informationalRead,
       );
       if (!view.menu) {
         return response(
@@ -190,7 +247,7 @@ export async function POST(request: Request) {
         );
       }
 
-      return response({
+      return respondAfterContextRecheck({
         state: "ready",
         principal: auth.principal,
         intent: resolveToroMenuIntent(view.menu, rawText),
@@ -218,9 +275,10 @@ export async function POST(request: Request) {
         context,
         supabase,
         focusCapability,
+        informationalRead,
       );
 
-      return response({
+      return respondAfterContextRecheck({
         state: "ready",
         principal: auth.principal,
         menu: view,
