@@ -7,6 +7,22 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_RESEARCH_REUSE_FIRST_20261024 -->
+## Investigación incremental, reutilización y memoria de análisis — 24/10/2026
+
+**DECISIÓN DEL PROPIETARIO, alcance de TORO como producto:** antes de iniciar cualquier búsqueda o auditoría, TORO revisa hallazgos, fuentes, versiones, checkpoints, bloqueos y tareas previas del **mismo ámbito autorizado**. Si la fuente y su antigüedad siguen siendo válidas, reutiliza; si cambió la fuente o surgió un hueco material, investiga **solo el delta**. Nunca considera LIVE una evidencia histórica ni transforma registros de configuración en ejecución real.
+
+**Registro canónico ya guardado:** en la Matriz Maestra existente de Supabase, `operations.knowledge_items/toro_master_knowledge_acquisition_matrix_2026_09_v1`, campo `structured_content.research_reuse_control_v1`; no se creó otra tabla, base, backlog, cerebro ni agenda. Sus tres primeros checkpoints acotados enlazan la preparación de navegador/OpenClaw cloud, los runs vencidos del Control Plane y las incidencias de TERE. Se preservan fuentes previas, y no se mezclan el ámbito personal con el hotel u otras organizaciones.
+
+**Contratos subordinados:** [reutilización de investigación](TORO_RESEARCH_REUSE_FIRST_V1.md), [modelo cognitivo](TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md) y `toro-context.yaml → general_plan_governance.research_reuse_first`. La rama de implementación contiene una función determinista de preflight y pruebas para `REUSE/REFRESH_DELTA/REVALIDATE/DISCOVER/BLOCK`.
+
+**Estados independientes:** política y registros de tres checkpoints **guardados/verificados**; función y pruebas **propuestas en rama**; preflight obligatorio en todos los buscadores, servicios cloud y WhatsApp **AÚN NO CABLEADO NI DESPLEGADO**. El siguiente gate es CI, revisión, conexión al broker de lectura con identidad/RLS, prueba de concurrencia y relectura en nube. No declarar ahorro, menos búsquedas ni horas liberadas hasta medirlos.
+
+**Prioridades sin crear otro frente:** (1) navegador cloud con memoria controlada y prueba WhatsApp + recibo; (2) reconciliar por lease/fencing los dos runs expirados sin repeticiones; (3) TERE: ticket nativo de enlaces/handoff y privacidad, con aceptación real. Responsables funcionales TORO Systems/SOBRESITO, Control Plane y TERE/Recepción; las tareas y issues existentes siguen siendo únicos.
+
+<!-- END:TORO_RESEARCH_REUSE_FIRST_20261024 -->
+
+
 
 
 <!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
