@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   createInMemoryKrossDryRunStore,
   executeKrossDryRun,
+  executeKrossSanitizedExtractDryRun,
 } from "./dry-run-executor";
 
 const adapterConfig = {
@@ -418,5 +419,265 @@ describe("executeKrossDryRun", () => {
     expect(store.mirrorCount()).toBe(2);
     expect(store.importRunCount()).toBe(5);
   });
+
+
+  it("runs a sanitized extract through row-scoped dry-run receipts without live promotion", () => {
+    const sourceHash = "a".repeat(64);
+    const manifest = {
+      orgId: adapterConfig.orgId,
+      propertyId: adapterConfig.propertyId,
+      sourceReference: "synthetic://kross/sanitized-export/2026-10-24",
+      sourceHash,
+      sourceAsOf: baseEvidence.sourceAsOf,
+      observedAt: baseEvidence.observedAt,
+      rowCount: 3,
+      fieldMap: adapterConfig.fieldMap,
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+      },
+      rows: [
+        payload("confirmed", "K-100"),
+        payload("confirmed", "K-100"),
+        {
+          ...payload("confirmed", "K-101"),
+          stay: {
+            ...payload("confirmed", "K-101").stay,
+            check_in: "2026-02-30",
+          },
+        },
+      ],
+    };
+
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      adapterConfig,
+      {
+        sourceReference: manifest.sourceReference,
+        sourceHash,
+      },
+    );
+
+    expect(result.status).toBe("completed");
+    expect(result.issues).toEqual([]);
+    expect(result.rows.map(row => [row.status, row.operation])).toEqual([
+      ["accepted", "insert"],
+      ["accepted", "replay"],
+      ["rejected", "reject"],
+    ]);
+    expect(result.summary).toEqual({
+      declaredRows: 3,
+      executedRows: 3,
+      acceptedRows: 2,
+      rejectedRows: 1,
+      mirrorCount: 1,
+      importRunCount: 2,
+      safeViewCount: 0,
+      pmsWriteCount: 0,
+    });
+    expect(result.rows.every(row => row.pmsWriteCount === 0)).toBe(true);
+    expect(result.rows.every(row => row.reservation?.source_is_live !== true)).toBe(true);
+  });
+
+  it.each([
+    ["row count mismatch", { rowCount: 2 }, "row_count_mismatch"],
+    ["wrong organization scope", { orgId: "org-b" }, "scope_mismatch"],
+    ["wrong property scope", { propertyId: "property-b" }, "scope_mismatch"],
+    ["non-SHA256 source hash", { sourceHash: "not-a-sha256" }, "invalid_source_hash"],
+    ["source reference drift", {
+      sourceReference: "synthetic://kross/sanitized-export/other",
+    }, "source_artifact_mismatch"],
+    ["source hash drift", { sourceHash: "c".repeat(64) }, "source_artifact_mismatch"],
+    ["unconfirmed sanitization", {
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: false,
+        guestContactExcluded: true,
+      },
+    }, "sanitization_unconfirmed"],
+    ["future observation", { observedAt: "2026-09-23T17:00:00Z" }, "invalid_source_time"],
+    ["empty required mapping", {
+      fieldMap: { ...adapterConfig.fieldMap, checkIn: "" },
+    }, "invalid_field_map"],
+    ["non-empty mapping drift", {
+      fieldMap: { ...adapterConfig.fieldMap, checkIn: "stay.arrival" },
+    }, "field_map_mismatch"],
+    ["unmapped guest contact field", {
+      rows: [{
+        ...payload(),
+        guest: { email: "synthetic@example.invalid" },
+      }],
+    }, "unmapped_fields_present"],
+    ["array-hidden guest contact on a mapped scalar path", {
+      rows: [{
+        ...payload(),
+        reservation: {
+          ...payload().reservation,
+          id: ["K-100", { email: "synthetic@example.invalid" }],
+        },
+      }],
+    }, "unmapped_fields_present"],
+    ["unexpected top-level credential field", {
+      credential: "synthetic-secret",
+    }, "unexpected_manifest_fields"],
+    ["unexpected field-map entry", {
+      fieldMap: {
+        ...adapterConfig.fieldMap,
+        guestEmail: "guest.email",
+      },
+    }, "unexpected_manifest_fields"],
+    ["unexpected sanitization metadata", {
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+        redactionLog: "synthetic@example.invalid",
+      },
+    }, "unexpected_manifest_fields"],
+  ])("blocks the entire sanitized extract on %s", (_name, override, issue) => {
+    const manifest = {
+      orgId: adapterConfig.orgId,
+      propertyId: adapterConfig.propertyId,
+      sourceReference: "synthetic://kross/sanitized-export/2026-10-24",
+      sourceHash: "b".repeat(64),
+      sourceAsOf: baseEvidence.sourceAsOf,
+      observedAt: baseEvidence.observedAt,
+      rowCount: 1,
+      fieldMap: adapterConfig.fieldMap,
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+      },
+      rows: [payload()],
+      ...override,
+    };
+
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      adapterConfig,
+      {
+        sourceReference: "synthetic://kross/sanitized-export/2026-10-24",
+        sourceHash: "b".repeat(64),
+      },
+    );
+
+    expect(result.status).toBe("rejected");
+    expect(result.issues).toContain(issue);
+    expect(result.rows).toEqual([]);
+    expect(result.summary.executedRows).toBe(0);
+    expect(result.summary.mirrorCount).toBe(0);
+    expect(result.summary.importRunCount).toBe(0);
+    expect(result.summary.pmsWriteCount).toBe(0);
+  });
+
+
+  it("blocks an unsafe governed field-map path before executing rows", () => {
+    const sourceHash = "d".repeat(64);
+    const unsafeFieldMap = {
+      ...adapterConfig.fieldMap,
+      externalReservationId: "reservation.__proto__.id",
+    };
+    const manifest = {
+      orgId: adapterConfig.orgId,
+      propertyId: adapterConfig.propertyId,
+      sourceReference: "synthetic://kross/sanitized-export/unsafe-map",
+      sourceHash,
+      sourceAsOf: baseEvidence.sourceAsOf,
+      observedAt: baseEvidence.observedAt,
+      rowCount: 1,
+      fieldMap: unsafeFieldMap,
+      sanitization: {
+        credentialsExcluded: true,
+        paymentCardDataExcluded: true,
+        guestContactExcluded: true,
+      },
+      rows: [{
+        reservation: {
+          ["__proto__"]: { id: "K-100" },
+          status: "confirmed",
+        },
+        stay: {
+          room: "26",
+          check_in: "2026-09-25",
+          check_out: "2026-09-27",
+        },
+      }],
+    };
+
+    const result = executeKrossSanitizedExtractDryRun(
+      manifest,
+      baseRequest.nowIso,
+      { ...adapterConfig, fieldMap: unsafeFieldMap },
+      {
+        sourceReference: manifest.sourceReference,
+        sourceHash,
+      },
+    );
+
+    expect(result.status).toBe("rejected");
+    expect(result.issues).toContain("invalid_field_map");
+    expect(result.rows).toEqual([]);
+    expect(result.summary.executedRows).toBe(0);
+    expect(result.summary.mirrorCount).toBe(0);
+    expect(result.summary.importRunCount).toBe(0);
+    expect(result.summary.pmsWriteCount).toBe(0);
+  });
+
+
+  it.each(["cyclic", "excessively deep"] as const)(
+    "rejects %s sanitized payloads before executing rows",
+    (shape) => {
+      const cyclicRow = payload() as ReturnType<typeof payload> & {
+        loop?: unknown;
+      };
+      cyclicRow.loop = cyclicRow;
+
+      let deepValue: unknown = "synthetic";
+      for (let depth = 0; depth < 40; depth += 1) {
+        deepValue = { nested: deepValue };
+      }
+      const row = shape === "cyclic"
+        ? cyclicRow
+        : { ...payload(), overflow: deepValue };
+      const sourceHash = "e".repeat(64);
+      const sourceReference =
+        `synthetic://kross/sanitized-export/${shape.replace(" ", "-")}`;
+      const manifest = {
+        orgId: adapterConfig.orgId,
+        propertyId: adapterConfig.propertyId,
+        sourceReference,
+        sourceHash,
+        sourceAsOf: baseEvidence.sourceAsOf,
+        observedAt: baseEvidence.observedAt,
+        rowCount: 1,
+        fieldMap: adapterConfig.fieldMap,
+        sanitization: {
+          credentialsExcluded: true,
+          paymentCardDataExcluded: true,
+          guestContactExcluded: true,
+        },
+        rows: [row],
+      };
+
+      const result = executeKrossSanitizedExtractDryRun(
+        manifest,
+        baseRequest.nowIso,
+        adapterConfig,
+        { sourceReference, sourceHash },
+      );
+
+      expect(result.status).toBe("rejected");
+      expect(result.issues).toContain("invalid_rows");
+      expect(result.rows).toEqual([]);
+      expect(result.summary.executedRows).toBe(0);
+      expect(result.summary.mirrorCount).toBe(0);
+      expect(result.summary.importRunCount).toBe(0);
+      expect(result.summary.pmsWriteCount).toBe(0);
+    },
+  );
 
 });
