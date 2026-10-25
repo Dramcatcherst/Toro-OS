@@ -38,6 +38,7 @@ test("static steward audit passes current canonical architecture", () => {
   assert.equal(result.summary.capabilities, 54);
   assert.equal(result.summary.playbooks, 17);
   assert.equal(result.summary.canonicalAgents, 6);
+  assert.equal(result.summary.activeSkillAliases, 0);
   assert.equal(result.summary.orphanCapabilities, 0);
   assert.equal(result.summary.duplicatePlaybookAssignments, 0);
   assert.equal(result.summary.newAgentsRequired, 0);
@@ -83,9 +84,9 @@ test("duplicate capability across playbooks fails", () => {
   assert.ok(result.recommendations.includes("MERGE_OR_SELECT_SINGLE_PRIMARY_PLAYBOOK"));
 });
 
-test("alias collision fails", () => {
+test("an active alias fails the one-skill-per-agent policy", () => {
   const brokenPlaybooks = structuredClone(playbooks);
-  brokenPlaybooks.agents.SKY.aliases.push("tere-revenue");
+  brokenPlaybooks.agents.SKY.aliases.push("sky-growth");
 
   const result = auditAgentSkillArchitecture({
     catalog,
@@ -96,8 +97,16 @@ test("alias collision fails", () => {
   });
 
   assert.equal(result.status, "FAIL");
-  assert.ok(result.errors.some((e) => e.includes("skill/alias collision: tere-revenue")));
-  assert.ok(result.recommendations.includes("RESOLVE_ALIAS_COLLISION_PRESERVE_CANONICAL_IDENTITY"));
+  assert.ok(
+    result.errors.some((e) =>
+      e.includes("active skill aliases are not allowed for SKY: sky-growth"),
+    ),
+  );
+  assert.ok(
+    result.recommendations.includes(
+      "REMOVE_ACTIVE_SKILL_ALIAS_USE_MIGRATION_EVIDENCE_ONLY",
+    ),
+  );
 });
 
 test("importing platform skills into canonical registry fails policy", () => {

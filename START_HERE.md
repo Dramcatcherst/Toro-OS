@@ -68,7 +68,7 @@ No tool becomes authoritative merely because TORO can connect to it.
 ## Subsystem and user-data rule
 
 - Every internal TORO subsystem uses the naming pattern `TORO <Subsystem>`.
-- Specialist personas use TORO-prefixed identities (for example TORO TERE or TORO RICO) but do not create separate truth, identity or permission universes.
+- Specialist personas use their standalone canonical identities: **TERE, RICO, FIONA, SKY and SOBRESITO**. The `TORO` prefix is reserved for the master product and internal subsystems; specialists do not create separate truth, identity or permission universes.
 - DreamTeam is a legacy standalone implementation whose canonical destination is `TORO People`.
 - Each human has one canonical TORO identity and a logically isolated `TORO User Vault`, not a separate physical database by default.
 - Personal, work-private, organization, shared and system scopes must remain explicit; personal content is not employer-visible by default.

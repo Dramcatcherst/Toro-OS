@@ -12,13 +12,13 @@ Allowed pattern:
 
 `TORO <Subsystem>`
 
-Specialist personas may retain distinctive names, but are represented as TORO specialists:
+Specialist personas use standalone canonical identities and remain governed by TORO:
 
-- TORO TERE
-- TORO RICO
-- TORO FIONA
-- TORO SKY
-- TORO SOBRESITO
+- TERE
+- RICO
+- FIONA
+- SKY
+- SOBRESITO
 
 A specialist persona is not a separate source of truth, product, database or permission universe. It is a role/personality routed through the same TORO identity, policy, data and execution engine.
 
@@ -71,7 +71,8 @@ This registry is conceptual. It does not require one application, repository or 
 
 **TERE / RICO / FIONA / SKY / SOBRESITO**
 - Product disposition: specialist personas/capability routers, not independent subsystems.
-- Canonical names: **TORO TERE**, **TORO RICO**, **TORO FIONA**, **TORO SKY**, **TORO SOBRESITO**.
+- Canonical names: **TERE**, **RICO**, **FIONA**, **SKY**, **SOBRESITO**.
+- The `TORO` prefix is reserved for the master product and internal subsystems.
 - All use shared TORO identity, permissions, evidence, memory policy and tools.
 
 **Mau**
@@ -233,7 +234,7 @@ No project may create its own identity, permissions, message store, approval sys
 4. Move team messaging/notifications under TORO Comms and bind channels through TORO Tools/OpenClaw.
 5. Create a subsystem registry in code/config so new modules cannot introduce unprefixed TORO subsystem names.
 6. Classify RicoSky as TORO Exchange experiment and AI for Dreamers as separate product powered by TORO unless explicitly changed.
-7. Update old TERE/RICO/FIONA/SKY/SOBRESITO wording to TORO-prefixed specialist naming over time without breaking existing routes.
+7. Remove TORO-prefixed specialist display names over time without breaking existing routes; retain historical names only as migration evidence.
 
 ## 10. Non-negotiable invariants
 
