@@ -45,3 +45,24 @@ Preparar en el mismo carril una reparación soportada del modo Browser para insp
 Terminado solo cuando una página pública autorizada se abra y su contenido se lea con sandbox, política efectiva comprobada y margen de memoria, preservando Gateway/WhatsApp. La prueba posterior del propietario con PC apagada será una aceptación distinta.
 
 Registro revisable: [PR387](https://github.com/Dramcatcherst/Toro-OS/pull/387), borrador no fusionado. No se actualizó main.
+
+## Apéndice — candidato de navegación headless, 25/10/2026
+
+### Hechos comprobados en fuentes oficiales
+
+- Esta revisión compara dos versiones concretas; no declara cuál es la última versión global ni reaudita el host. Los tags anotados oficiales resuelven a `v2026.10.1` → `e178c39e9aae3fa440735217f9aef9574f286677` y `v2026.10.7` → `157d8c2bc3ea2fa183afdc11088e69690bf8e64e`. La [release 2026.10.7](https://github.com/openclaw/openclaw/releases/tag/v2026.10.7), publicada el 24/10/2026, identifica ese commit y el paquete oficial.
+- En [tab-ops de 2026.10.1](https://github.com/openclaw/openclaw/blob/e178c39e9aae3fa440735217f9aef9574f286677/extensions/browser/src/browser/server-context.tab-ops.ts), la creación con Playwright exige `capabilities.usesPersistentPlaywright`. En [2026.10.7](https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/extensions/browser/src/browser/server-context.tab-ops.ts), admite `capabilities.usesPersistentPlaywright || headless` antes de la guardia de redirecciones. Chromium headless observado usa `createPageViaPlaywright`, conservando la política de navegación.
+- El cambio está descrito en la [PR oficial170857](https://github.com/openclaw/openclaw/pull/170857), integrada como `9650b2c4bb5f6c557de4ba4633bb746e783fa5b9`, para evitar bloqueos de interacción por solicitudes de passkey. El [test de selección headless](https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/extensions/browser/src/browser/server-context.headless-passkey-guard.test.ts) usa mocks; acredita una intención de diseño, no navegación real del hotel. También se revisaron las [guardias de navegación de esa versión](https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/extensions/browser/src/browser/navigation-guard.ts). No se ejecutaron pruebas ni se verificaron los bytes del paquete publicado en esta revisión.
+- La [issue67966](https://github.com/openclaw/openclaw/issues/67966) cerró por inactividad; su cierre no demuestra una reparación. El recibo del host arriba conserva su propio corte y sigue registrando navegación bloqueada.
+
+### Inferencia — NO_VALIDADA_EN_HOST
+
+2026.10.7 es un candidato para superar la selección de ruta que bloqueó el Chromium headless gestionado por loopback. La comparación de código no demuestra compatibilidad del paquete instalado, carga de Playwright, navegación completa, autenticación ni frescura Kross. No se modificó el Gateway y no se atribuye al host este cambio de versión.
+
+### NEXT — ensayo aislado antes de cualquier adopción
+
+1. Verificar el paquete oficial fijado a 2026.10.7 contra la integridad publicada y contrastar sus bytes con el código revisado, fuera del Gateway activo y sin copiar perfiles, cookies o secretos.
+2. Ejecutar las regresiones existentes de selección headless y guardias de navegación. En un entorno aislado, comprobar una página pública autorizada y su lectura, junto con negativas de redirección a destinos prohibidos mediante fixtures que fallen antes de contactar esos destinos. Mantener `dangerouslyAllowPrivateNetwork=false`, sandbox, CDP en loopback y la política de hosts; no ampliar excepciones ni disfrazar un endpoint local como remoto.
+3. Registrar versión/artefacto, política efectiva, resultados, consumo de memoria y cierre limpio. Si pasa, preparar impacto, respaldo y reversión de una eventual adopción en el carril existente; cualquier reinicio del Gateway mantiene el requisito previo de ventana autorizada definido arriba.
+
+**Criterio de terminado de este candidato:** evidencia aislada de navegación y lectura permitidas, redirecciones prohibidas bloqueadas y sandbox/política intactos. No equivale a aceptación de WhatsApp, sesión del Portal, lectura Kross o trabajo con el PC apagado. Este apéndice conserva las autoridades del Plan General y del recibo; no amplía permisos, autoriza una actualización ni crea otro runtime, adaptador o scheduler.
