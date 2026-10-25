@@ -45,9 +45,9 @@ export type CompleteCatalogueRowFixture = {
   home_eligible: boolean;
 };
 
-export function completeCatalogueRows(): CompleteCatalogueRowFixture[] {
+export function completeCatalogueRows(count = 244): CompleteCatalogueRowFixture[] {
   const reviewed = new Map<string, string>(REVIEWED_HOTEL_LINKS.map(([id, , url]) => [id, url]));
-  return Array.from({ length: 244 }, (_, index) => {
+  return Array.from({ length: count }, (_, index) => {
     const id = `LINK-${String(index + 1).padStart(3, "0")}`;
     return {
       id,

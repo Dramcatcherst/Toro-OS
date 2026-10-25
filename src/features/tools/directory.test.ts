@@ -78,10 +78,26 @@ describe("complete catalogue boundary", () => {
     ["sensitive fragment", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"https://example.test/#/open?token=private"}; }],
     ["sensitive mail query", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[0] = {...rows[0],url:"mailto:hotel@example.test?token=private"}; }],
     ["duplicate IDs", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[1] = {...rows[1],id:rows[0].id}; }],
-    ["noncanonical ID set", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[243] = {...rows[243],id:"LINK-999"}; }],
-    ["wrong count", (rows: ReturnType<typeof completeCatalogueRows>) => { rows.pop(); }],
+    ["noncanonical ID", (rows: ReturnType<typeof completeCatalogueRows>) => { rows[243] = {...rows[243],id:"OTHER-999"}; }],
   ])("fails the whole complete catalogue on %s", (_label, mutate) => {
     const rows = completeCatalogueRows(); mutate(rows);
+    expect(projectCompleteCatalogueRows(context, rows)).toEqual([]);
+  });
+});
+
+describe("catalogue query cardinality", () => {
+  it.each([1, 243, 264, 1000])("preserves a safe RPC result of %i rows without a historical census", count => {
+    expect(projectCompleteCatalogueRows(context, completeCatalogueRows(count))).toHaveLength(count);
+  });
+  it("accepts stable nonsequential IDs rather than renumbering retired entries", () => {
+    const rows = completeCatalogueRows(2); rows[1].id = "LINK-1800";
+    expect(projectCompleteCatalogueRows(context, rows).map(item => item.id)).toEqual(["LINK-001", "LINK-1800"]);
+  });
+  it.each([0, 1001])("rejects a result outside the RPC contract bound: %i", count => {
+    expect(projectCompleteCatalogueRows(context, completeCatalogueRows(count))).toEqual([]);
+  });
+  it("never salvages a malformed entry into a partial catalogue", () => {
+    const rows = completeCatalogueRows(264); rows[263].id = "UNREVIEWED";
     expect(projectCompleteCatalogueRows(context, rows)).toEqual([]);
   });
 });

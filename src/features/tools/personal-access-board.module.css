@@ -48,3 +48,9 @@
 @media (min-width:1000px) { .projects { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:400px) { .board { padding:8px; } .heading h2 { font-size:17px; } .board summary > span { float:none; display:inline-block; } }
 @media (forced-colors:active) { .board,.personal,.project,.category,.personalList li,.error { background:Canvas; color:CanvasText; border-color:CanvasText; } .board :is(button,input) { border-color:ButtonText; } .note,.tag,.heading span,.board summary > span { color:CanvasText; } .board :is(input,button,a,summary):focus-visible { outline-color:Highlight; } }
+
+.facets { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin-top:7px; }
+.facets label { display:grid; gap:3px; min-width:0; font-size:12px; color:#405c72; }
+.facets select { width:100%; min-width:0; min-height:44px; padding:6px; border:1px solid #8caac3; border-radius:7px; background:white; color:#173d5b; font-size:13px; }
+.facets select:focus-visible { outline:3px solid #145da8; outline-offset:2px; }
+@media(forced-colors:active) { .facets select { color:CanvasText; background:Canvas; border-color:CanvasText; } }

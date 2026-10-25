@@ -144,3 +144,11 @@ describe("complete access board", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 });
+
+it("combines source facets without widening the supplied catalogue", () => {
+  const base: DirectoryCatalogueItem = { kind:"directory",id:"LINK-901",label:"Fuente",name:"Fuente",url:null,purpose:"Revision",project:"Proyecto",category:"Documentos",provider:"ProveedorA",scope:"EmpresaA",state:"pendiente",lifecycle:"revision",priority:"P1",linkType:"referencia",homeEligible:false };
+  const items = [base, { ...base,id:"LINK-902",provider:"ProveedorB" }, { ...base,id:"LINK-903",scope:"EmpresaB" }];
+  expect(groupPersonalAccessCatalogue(items,"",{provider:"ProveedorA",scope:"EmpresaA"}).count).toBe(1);
+  expect(groupPersonalAccessCatalogue(items,"EmpresaB",{provider:"ProveedorA",scope:""}).count).toBe(1);
+  expect(groupPersonalAccessCatalogue(items,"",{provider:"No autorizado",scope:""}).count).toBe(0);
+});

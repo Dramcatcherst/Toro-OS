@@ -11,6 +11,16 @@ const manager = {...authorizedContext(),email:"admin@example.test"};
 const auditor = {...manager,membership:{...manager.membership!,roles:["AUDITOR"] as const}};
 const reviewedRows = REVIEWED_HOTEL_LINKS.map(([id, , url]) => ({id,url}));
 
+it("accepts a changed safe RPC cardinality without downgrading to reviewed fallback", async () => {
+  mocks.context.mockResolvedValue(manager);
+  const rpc = vi.fn().mockResolvedValue({ error: null, data: completeCatalogueRows(264) });
+  mocks.client.mockResolvedValue({ rpc });
+  const view = await loadHotelDirectory({ includeCompleteCatalogue: true });
+  expect(view.catalogueItems).toHaveLength(264);
+  expect(view.catalogueMode).toBe("complete");
+  expect(rpc).toHaveBeenCalledExactlyOnceWith("dreamcatcher_tool_catalog_v1");
+});
+
 it("never queries the registry without authorized context", async () => {
   mocks.context.mockResolvedValue(null);
   expect(await loadHotelDirectory()).toEqual({state:"denied",links:[],catalogueItems:[],catalogueMode:"reviewed"});

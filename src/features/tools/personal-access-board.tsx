@@ -3,7 +3,7 @@
 import { useId, useMemo, useState, useSyncExternalStore, type FormEvent } from "react";
 import { ArrowDown, ArrowUp, Pencil, Plus, Search, Star, Trash2 } from "lucide-react";
 import type { ToolCatalogueItem } from "./directory";
-import { getToolPresentation, PortalToolLinks } from "./portal-tool-links";
+import { getToolPresentation, getToolFacetValue, PortalToolLinks } from "./portal-tool-links";
 import styles from "./personal-access-board.module.css";
 
 export type PersonalAccess = { id: string; label: string; url: string; favorite: boolean };
@@ -88,7 +88,7 @@ const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036
 const subscribeHydration = () => () => undefined;
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
-export function groupPersonalAccessCatalogue(items: ToolCatalogueItem[], query: string) {
+export function groupPersonalAccessCatalogue(items: ToolCatalogueItem[], query: string, facets: { provider: string; scope: string } = { provider: "", scope: "" }) {
   const search = normalize(query.trim());
   const projects = new Map<string, Map<string, ToolCatalogueItem[]>>();
   let count = 0;
@@ -96,7 +96,9 @@ export function groupPersonalAccessCatalogue(items: ToolCatalogueItem[], query: 
     const display = getToolPresentation(item);
     const project = item.kind === "directory" ? item.project : "Accesos revisados";
     const category = item.kind === "directory" ? item.category : display.category;
-    const content = [project, category, display.name, display.detail, ...display.keywords, item.kind === "directory" ? `${item.provider} ${item.state} ${item.lifecycle}` : ""].join(" ");
+    if (facets.provider && getToolFacetValue(item, "provider") !== facets.provider) continue;
+    if (facets.scope && getToolFacetValue(item, "scope") !== facets.scope) continue;
+    const content = [project, category, display.name, display.detail, ...display.keywords, item.kind === "directory" ? `${item.provider} ${item.state} ${item.lifecycle} ${item.scope} ${item.linkType}` : ""].join(" ");
     if (search && !normalize(content).includes(search)) continue;
     if (!projects.has(project)) projects.set(project, new Map());
     const categories = projects.get(project)!;
@@ -116,6 +118,9 @@ export function PersonalAccessBoard({ items, scopeKey }: { items: ToolCatalogueI
 function ScopedPersonalAccessBoard({ items, scopeKey }: { items: ToolCatalogueItem[]; scopeKey: string }) {
   const id = useId();
   const [query, setQuery] = useState("");
+  const [provider, setProvider] = useState("");
+  const [scope, setScope] = useState("");
+  const hasFilters = Boolean(query || provider || scope);
   const ready = useSyncExternalStore(subscribeHydration, clientSnapshot, serverSnapshot);
   const [restored] = useState(() => {
     if (typeof window === "undefined") return { links: [] as PersonalAccess[], warning: false };
@@ -131,7 +136,9 @@ function ScopedPersonalAccessBoard({ items, scopeKey }: { items: ToolCatalogueIt
   const [error, setError] = useState("");
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [deleted, setDeleted] = useState<{ link: PersonalAccess; index: number } | null>(null);
-  const selection = useMemo(() => groupPersonalAccessCatalogue(items, query), [items, query]);
+  const selection = useMemo(() => groupPersonalAccessCatalogue(items, query, { provider, scope }), [items, query, provider, scope]);
+  const providers = [...new Set(items.map(item => getToolFacetValue(item, "provider")))].sort((a, b) => a.localeCompare(b, "es"));
+  const scopes = [...new Set(items.map(item => getToolFacetValue(item, "scope")))].sort((a, b) => a.localeCompare(b, "es"));
   const personal = links.filter(link => (!onlyFavorites || link.favorite) && normalize(`${link.label} ${link.url}`).includes(normalize(query.trim())));
 
   function update(next: PersonalAccess[], message: string) {
@@ -159,7 +166,11 @@ function ScopedPersonalAccessBoard({ items, scopeKey }: { items: ToolCatalogueIt
     <header className={styles.heading}><h2 id={id + "-title"}>Todos los accesos</h2><span>{items.length} del catálogo · {links.length} personales</span></header>
     <p className={styles.note}>Abre proyectos y categorías para ver todos los destinos autorizados. Un enlace abre su herramienta; no demuestra conexión ni comparte sesión.</p>
     <label className={styles.search} htmlFor={id + "-search"}><Search size={18} aria-hidden="true" /><span>Buscar accesos</span><input id={id + "-search"} type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Herramienta, proyecto o tarea" /></label>
-    <div className={styles.feedback}><span>{selection.count} de {items.length} destinos del catálogo</span>{query ? <button type="button" onClick={() => setQuery("")}>Limpiar búsqueda</button> : null}</div>
+    <div className={styles.facets}>
+      <label>Proveedor<select value={provider} onChange={event => setProvider(event.target.value)}><option value="">Todos</option>{providers.map(value => <option key={value}>{value}</option>)}</select></label>
+      <label>Ámbito<select value={scope} onChange={event => setScope(event.target.value)}><option value="">Todos</option>{scopes.map(value => <option key={value}>{value}</option>)}</select></label>
+    </div>
+    <div className={styles.feedback}><span>{selection.count} de {items.length} destinos disponibles</span>{hasFilters ? <button type="button" onClick={() => { setQuery(""); setProvider(""); setScope(""); }}>Limpiar filtros</button> : null}</div>
 
     <details className={styles.personal} open>
       <summary>Mis accesos <span>{links.length}/{PERSONAL_ACCESS_LIMIT}</span></summary>
@@ -189,9 +200,9 @@ function ScopedPersonalAccessBoard({ items, scopeKey }: { items: ToolCatalogueIt
       </div>
     </details>
 
-    <div className={styles.projects} key={query ? "search" : "browse"}>{selection.groups.map((group, projectIndex) => <details className={styles.project} key={group.project} open={query ? true : undefined}>
+    <div className={styles.projects} key={hasFilters ? "search" : "browse"}>{selection.groups.map((group, projectIndex) => <details className={styles.project} key={group.project} open={hasFilters ? true : undefined}>
       <summary>{group.project}<span>{group.count} accesos · {group.categories.length} categorías</span></summary>
-      <div className={styles.categories}>{group.categories.map((category, categoryIndex) => <details className={styles.category} key={category.category} open={query ? true : undefined}>
+      <div className={styles.categories}>{group.categories.map((category, categoryIndex) => <details className={styles.category} key={category.category} open={hasFilters ? true : undefined}>
         <summary>{category.category}<span>{category.links.length}</span></summary>
         <div className={styles.destinations}><PortalToolLinks links={category.links} compact idPrefix={`${id}-catalogue-${projectIndex}-${categoryIndex}`} ariaLabel={`${group.project} · ${category.category}`} /></div>
       </details>)}</div>

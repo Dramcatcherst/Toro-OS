@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowUpRight, CalendarDays, FolderOpen, MessagesSquare, Users, BedDouble, CreditCard, Wallet, Mail, House, Link as LinkIcon } from "lucide-react";
 import type { ToolCatalogueItem, ToolLink } from "./directory";
+import { PortalToolDetails } from "./portal-tool-details";
 import styles from "@/features/portal/portal.module.css";
 
 export type PortalToolCategory = "Operación" | "Comunicación" | "Equipo" | "Dinero" | "Mercadeo" | "Google" | "Documentos" | "Otros";
@@ -28,6 +29,17 @@ export const portalToolBrands: Record<string, PortalToolPresentation> = {
 } as const;
 
 type PresentableTool = ToolLink | ToolCatalogueItem;
+export type ToolFacetKey = "project" | "category" | "state" | "provider" | "scope";
+
+/** Facets reuse permitted fields; they do not import raw source tags or create permissions. */
+export function getToolFacetValue(link: PresentableTool, key: ToolFacetKey): string {
+  if ("kind" in link && link.kind === "directory") return link[key];
+  if (key === "project") return "Accesos revisados";
+  if (key === "category") return getToolPresentation(link).category;
+  if (key === "state") return "Revisado";
+  if (key === "scope") return "Sin ámbito informado";
+  return "Proveedor sin informar";
+}
 
 export function getToolPresentation(link: PresentableTool): PortalToolPresentation {
   const known = Object.hasOwn(portalToolBrands, link.id) ? portalToolBrands[link.id] : null;
@@ -54,7 +66,7 @@ export function PortalToolLinks({ links, compact = false, wide = false, favorite
           {brand.logo ? <Image src={brand.logo} alt="" width={72} height={64} unoptimized /> : <Icon size={38} strokeWidth={1.6} />}
         </span>
         <span className={styles.toolCopy}><strong id={idPrefix + "-" + link.id}>{favorites ? (Object.hasOwn(portalToolBrands, link.id) ? brand.name.split(" ·")[0] : brand.name) : brand.title}</strong>
-          {!favorites ? <span className={styles.toolBrand}>{brand.name}</span> : null}
+          {!favorites && brand.title !== brand.name ? <span className={styles.toolBrand}>{brand.name}</span> : null}
           <small id={idPrefix + "-note-" + link.id}>{favorites ? brand.title : brand.detail}
             {link.url?.startsWith("https://") ? <span className={styles.srOnly}> · abre otra pestaña</span> : null}</small>
           {wide && directory ? <span className={styles.toolMetadata}>
@@ -65,11 +77,21 @@ export function PortalToolLinks({ links, compact = false, wide = false, favorite
           : <span className={styles.toolPending}>Destino pendiente</span>}
       </>;
       const className = styles.toolCard + (favorites ? " " + styles.favoriteCard : "") + (!link.url ? " " + styles.toolCardPending : "");
-      if (!link.url) return <article key={link.id} className={className} data-tool={link.id}
-        aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</article>;
-      const external = link.url.startsWith("https://");
-      return <a key={link.id} href={link.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
-        className={className} data-tool={link.id} aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</a>;
+      const external = link.url?.startsWith("https://");
+      const card = link.url ? <a href={link.url} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}
+        className={className} data-tool={link.id} aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</a>
+        : <article className={className} data-tool={link.id} aria-labelledby={idPrefix + "-" + link.id} aria-describedby={idPrefix + "-note-" + link.id}>{content}</article>;
+      if (favorites) return <span key={link.id} className={styles.favoriteEntry}>{card}</span>;
+      const fields: [string, string][] = [
+        ["Proyecto", getToolFacetValue(link, "project")], ["Categoría", getToolFacetValue(link, "category")],
+        ["Proveedor", getToolFacetValue(link, "provider")], ["Ámbito", getToolFacetValue(link, "scope")],
+        ["Estado del directorio", getToolFacetValue(link, "state")],
+      ];
+      if (directory) fields.push(["Ciclo", directory.lifecycle], ["Prioridad", directory.priority], ["Tipo de acceso", directory.linkType]);
+      return <div key={link.id} className={styles.toolEntry} data-category={brand.category}>{card}
+        <PortalToolDetails name={brand.name} purpose={brand.detail} url={link.url} fields={fields}
+          source={directory ? "directorio autorizado" : link.id.startsWith("personal-") ? "preferencia de este navegador" : "acceso revisado"} />
+      </div>;
     })}
   </nav>;
 }

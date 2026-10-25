@@ -62,3 +62,34 @@
 ## Execution and rollback
 
 Mauricio explicitly approved this design and first lot, so execute in this session without repeating the approval. One implementation writer, bounded independent review. The task clone supplies isolation because existing local directories lacked usable Git metadata. No parallel application or database is created. Rollback is a revert of the feature commit; no data migration is involved.
+
+
+## Ampliación solicitada: fichas y facetas del directorio · 24/10/2026
+
+Usando writing-plans para ejecutar el mismo diseño compacto aprobado y la petición de fichas informativas. Sin otro plan de producto.
+
+- GOAL: cada acceso estándar explica destino y uso en una ficha accesible; el lector deja de depender del censo histórico244.
+- DoD: contrato cliente1–1000/IDsLINK únicos/13campos, fallback intacto, filtros por proveedor/ámbito, fichaPC/móvil conEscape/foco, pruebas y build; sin afirmar catálogo global completo.
+- REPO: Dramcatcherst/Toro-OS.
+- BASE_SHA:3c748b77ac5bf17d5f083da7bfc17255d6ee0758;origin/main3fe9fd1;dirtydocs previos preservados.
+- BRANCH:codex/portal-expediente-first-lot-20261024;PR384.
+- SKILL:toro-brain R3-2026-09-19 B06/B09/B11/B12/B14/B24/B28;toro-company-integration;writing-plans.
+- SoT:RPCdreamcatcher_tool_catalog_v1 y13campos existentes;SourceRegistry yPlanGeneral;fuentes especializadas conservan autoridad.
+- ALLOWED:directorio/server/tests,componenteToolLinks ysu ficha,facetas ybúsqueda,documentación de tags/carpetas virtuales/estudios,QA sintético ypreview.
+- FORBIDDEN:exponer tags/evidencia/cortes fuera delRPC;reparar/promover registros incompletos sin revisión;grants,RLS,tablas,asientos,mensajes,instalación/pareo móvil,otroGateway/plan yproducción con hallazgos abiertos.
+- BLOCKERS:fuente contiene entradas incompatibles que cierran elgate;no total/cursor/versión de origen enRPC;Kross mantiene hallazgos previos;no lector patrimonial individual.
+- TESTS:negativas de seguridadexistentes,cardinalidad/IDs válidos cambiantes,invalidación conjunta,facetas combinadas,dialog no anidado,Escape/foco,390px/PC,lint/tsc/build.
+- REPORT:STATE/SHA/TESTS/PR/PREVIEW/BLOCKERS/NEXT.
+
+- [x] Añadir pruebas de cardinalidad dinámica y facetas; comprobar fallo esperado (8 fallos antes de implementar).
+- [x] Reutilizar los 13 campos y componentes para fichas, facetas y contraste; sin nuevas dependencias.
+- [x] Validar interacción y negativas, registrar la fuente incompatible y alinear el Plan General; revisión independiente sin hallazgos estáticos pendientes. Checkpoint y custodia se cierran con el recibo privado de este lote.
+
+Reversión:revertir solo elcommit de esta ampliación;no hay migración de datos ni cambios de permisos. Aprobación de diseño y ejecución ya dada en la conversación;no pedir otra del mismo estilo.
+
+
+### Resultado verificado de fichas y facetas
+
+269/269 pruebas Tools/Portal y 164/164 de acceso; TypeScript y lint PASS. Build completo PASS con un trabajador (`CIRCLE_NODE_TOTAL=2` solo en el proceso local). El intento con 21 trabajadores se interrumpió durante la recolección de páginas; no se cambió configuración persistente. QA sintética Chrome: 1280×575 y 390×844, sin desborde, imágenes rotas, IDs duplicados o errores de consola; botones ⓘ de 44×44 px, Escape y foco de retorno correctos, filtros proveedor/ámbito combinados y ficha pendiente sin enlace ficticio. El navegador integrado se desconectó y su recuperación no permitió capturas; se completó la prueba en Chrome. Fixture y servidor temporales cerrados.
+
+Hallazgo nativo: 264 entradas únicas en la fuente, 244 compatibles y 20 incompatibles con ID/proyecto/propósito del RPC. Su validación conjunta impide afirmar carga completa del origen. Se preservó el fallback revisado y no se repararon filas sin procedencia. No nuevas consultas financieras, datos reales por objeto, grants o cambios de producción. La aceptación alojada del delta y los hallazgos previos de Kross continúan pendientes.
