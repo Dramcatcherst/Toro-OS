@@ -8,6 +8,17 @@
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
 
+
+<!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
+## Historial administrativo: extracción con ámbitos y procedencia — 24/10/2026
+
+**CURRENT:** analizado el export aportado de administración: 20.117 registros, conversación humana observable 27/05/2024–24/10/2026, 5.924 multimedia omitidos y 82 archivos vCard (90 tarjetas, 82 grupos candidatos de identidad). Hay huecos de cobertura; no son archivos multimedia leídos ni personas verificadas. Las 2.211 menciones monetarias son candidatos, no movimientos conciliados. Detalle de disposición y límites: [evidencia de extracción](../evidence/TORO_ADMIN_HISTORY_EXTRACTION_20261024.md). Originales, contactos, importes privados y anexos personales quedan fuera del repositorio público.
+
+**TARGET ya existente, reforzado:** TORO Data/Knowledge conserva fuente/fecha/ámbito/confianza/correcciones; Finance, Operations, People, Assets y Projects consumen solo lo autorizado. Reutilizar operations.knowledge_items para antecedentes hoteleros no sensibles, inactivos y needs_verification hasta contrastarlos. No promover datos familiares/personales por una etiqueta private ni convertir instrucciones antiguas en acciones actuales. Kross/Alegra/bancos conservan autoridad. La extracción de Admin y la de Contabilidad son fuentes distintas con posible solape, nunca sumandos automáticos.
+
+**NEXT:** conciliar los hallazgos con tasks/projects/obligations existentes y evidencias nativas; separar ámbito financiero y verificar aislamiento privado antes de cargar contenido sensible. Mantener correcciones, no duplicar tareas ni revivir incidencias antiguas por fecha. El lote no activa captura continua, Writer Alegra, API Kross paga, cambios de permisos o un scheduler nuevo; cada integración mantiene sus gates y recibo independiente.
+<!-- END:WHATSAPP_ADMIN_HISTORY_20261024 -->
+
 <!-- BEGIN:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
 ## Delegación de publicación rutinaria — Dreamcatcher — 22/10/2026
 
