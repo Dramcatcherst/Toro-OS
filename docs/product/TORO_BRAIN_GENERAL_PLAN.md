@@ -10,15 +10,17 @@
 
 
 <!-- BEGIN:TORO_CLOUD_BROWSER_READINESS_20261024 -->
-## Opera/GX y continuidad cloud — corte 24/10/2026 21:35 CR
+## Opera/GX y continuidad cloud — corte 25/10/2026 00:14 CR
 
-**Ámbito:** TORO Systems/Tools/Comms, dentro de `TORO_OPERATING_CONFIGURATION_20261022`. Mauricio elige Opera/GX como acceso humano y exige conservar apagado el Gateway local; la ejecución independiente de la PC pertenece al host cloud existente, no al navegador de Windows. No cambia la autoridad de las fuentes ni concede acceso de propietario al equipo o huéspedes.
+**Ámbito:** TORO Systems/Tools/Comms, dentro de `TORO_OPERATING_CONFIGURATION_20261022`. Opera/GX sigue como preferencia de acceso humano del propietario. La ejecución independiente de Windows permanece en el Lightsail existente; el Gateway local no se activó y no se crea otro runtime.
 
-**CURRENT verificado:** consola SSH institucional de `toro-openclaw-gateway-01`: servicio active/running, enabled y Restart=always/5s. `channels status --json` sin probe acredita exactamente `toro-interno` enabled/configured/linked/running/connected, healthy/ready, sin error ni advertencias, a las 21:35:13 CR. Windows mantiene KeepAlive/Watchdog Disabled y cero listeners18789/18799 en el corte; no se activó local. El conector específico de Opera sigue desconectado; Chrome institucional permitió la lectura alternativa.
+**CURRENT verificado:** Chrome oficial `156.0.8078.47` instalado y arranque headless del perfil `openclaw` comprobado, con CDP en loopback y `noSandbox=false`. Se agregaron 76 paquetes sin upgrades/removals. Durante instalación y pruebas, el Gateway mantuvo MainPID 240503/NRestarts 3. En el corte final WhatsApp `toro-interno` seguía connected/running, healthy/ready y sin error. El cambio frente al PID/reinicios del corte anterior ocurrió antes de esta unidad; no se reinició el Gateway.
 
-**TARGET pendiente:** navegador cloud. El perfil OpenClaw está enabled/headless y conserva sandbox, pero running/cdpReady=false, sin navegador detectado ni paquetes Chrome/Chromium instalados. Hay unos776MiB de RAM disponibles, swap0 y consumo del cgroup del Gateway cercano a2,80GiB; no se instala ni inicia un navegador antes de resolver su presupuesto. Chrome headless es candidato, no capacidad operativa declarada.
+**Memoria:** unos 1039 MiB del cgroup eran caché de archivos; el PSS principal era 1540 MiB, no 3 GiB de heap demostrado. Hubo margen para el arranque de prueba, sin acreditar carga web. Tras detener Chrome quedaron 1247 MiB disponibles, PSI promedio 0 y cero procesos Chrome bajo openclaw. No se amplió instancia, agregó swap, vació caché ni mataron tareas. Las guardas del ensayo no constituyen un control automático persistente.
 
-**Límites y NEXT único:** resolver el presupuesto de memoria y preparar una opción acotada con impacto/reversión en el mismo carril, sin ampliar capacidad pagada, debilitar aislamiento, reiniciar ni activar local por inferencia. El detalle, fuentes y criterio de aceptación están en el [recibo subordinado](../evidence/TORO_CLOUD_BROWSER_READINESS_20261024.md). No hubo mensajes ni cambios de runtime. Arranque/recovery configurados y canal conectado no certifican entrega/lectura, sesiones ChatGPT/Codex, memoria canónica o PC apagada; esas aceptaciones permanecen pendientes.
+**TARGET bloqueado:** la lectura web aún no está aceptada. El modo gestionado por loopback no usa la inspección persistente de Playwright que exige SSRF estricto; el código instalado y los errores en dominios ya permitidos lo confirman. Arranque y lectura de about:blank no prueban navegación. Se conserva la política; añadir allowlists o instalar Playwright por suposición no es una reparación acreditada.
+
+**NEXT único:** preparar una reparación soportada del modo Browser, validada fuera del Gateway activo, que conserve la inspección estricta. Si requiere reinicio cloud, presentar candidato/impacto/reversión y obtener una ventana autorizada antes de interrumpir WhatsApp. El [recibo subordinado](../evidence/TORO_CLOUD_BROWSER_READINESS_20261024.md) contiene evidencia y criterio de terminado. No se copiaron cookies/credenciales, ampliaron permisos ni enviaron mensajes. Opera connector, sesiones ChatGPT/Codex, entrega/lectura y PC apagada siguen sin aceptación.
 
 <!-- END:TORO_CLOUD_BROWSER_READINESS_20261024 -->
 
