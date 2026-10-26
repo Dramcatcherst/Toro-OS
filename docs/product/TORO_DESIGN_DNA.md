@@ -214,6 +214,89 @@ Any generated UI, image, PDF, report, slide, website or app must receive:
 
 Generated assets that omit this context are drafts, not production-safe derivatives.
 
+
+## 11A. Brand-resolution gate for every visual artifact
+
+Before TORO creates an infographic, report, dashboard, PDF, slide deck, flyer, social graphic, portal screen or other designed artifact, it must resolve the active scope first.
+
+Required resolution sequence:
+
+1. business / project / workspace;
+2. audience and privacy class;
+3. visible brand;
+4. current governed logo/master asset;
+5. current palette/tokens;
+6. mode: TORO Core / TORO Work / TORO Embedded;
+7. typography status;
+8. imagery/photography language;
+9. status semantics;
+10. co-branding rule;
+11. factual source authority and freshness.
+
+If a required brand master or business context is unresolved, the artifact is **DRAFT**, not production-safe.
+
+Rules:
+- never substitute a legacy logo, convenient draft, generic bull or unrelated business styling;
+- TORO-owned executive material uses TORO Core or TORO Work;
+- Dreamcatcher guest/public material uses the Dreamcatcher Sunset Jungle Boutique skin;
+- TORO Embedded keeps TORO interaction grammar while the tenant/business owns its visual skin;
+- an AI-generated color, font, logo or layout does not become canonical merely because it looks better.
+
+## 11B. Executive infographic / quick-reference standard
+
+Purpose: compress a governed business view into one mobile-readable image without turning the graphic itself into a source of truth.
+
+Preferred structure:
+1. official brand header, scope and updated date;
+2. 3–5 compact summary indicators;
+3. 6–10 high-value information modules;
+4. identifiers useful for the intended audience, such as legal-entity IDs for internal property/corporate views;
+5. a visually separate **Financial & Protection** block for loans, insurance and material obligations;
+6. critical next actions / unresolved verifications;
+7. footer with governance/source note.
+
+Information hierarchy:
+- identity / ownership / right;
+- physical or operational facts;
+- financing / debt;
+- insurance / protection;
+- recurring obligations;
+- status / next action.
+
+Never merge those categories merely because they relate to the same property.
+
+Financial display rules:
+- every balance or financial snapshot carries an explicit as-of date;
+- a historical balance is labeled **HISTORICAL**;
+- an inferred/reconstructed balance is labeled **TO VERIFY**;
+- when a current balance is unavailable, show the obligation type and latest dated evidence rather than implying a live number;
+- external variants suppress confidential balances, internal financing and private ownership details unless explicitly approved.
+
+Visual rules:
+- one-image readability on a phone;
+- short labels and structured density rather than long prose;
+- semantic status colors remain consistent with section 9;
+- strong whitespace and hierarchy;
+- official logo/master asset must appear when the brand owns the artifact;
+- data source freshness is visible through date/status rather than decorative footnotes;
+- no decorative charts that do not improve a decision.
+
+## 11C. Visual learning loop
+
+After a materially reviewed artifact, TORO records:
+- brand mismatch;
+- logo/palette misuse;
+- density/readability defect;
+- hierarchy problem;
+- factual or freshness ambiguity;
+- privacy/audience issue;
+- approved layout or component improvement.
+
+Approved learning updates the governed visual standard/template so the next artifact improves instead of starting from zero.
+
+The loop may improve layout, hierarchy, prompts and reusable components. It may **not** promote a new brand master, color, typography or logo without the normal brand-governance approval path.
+
+
 ## 12. Governance
 
 Source hierarchy:
