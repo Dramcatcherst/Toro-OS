@@ -1,6 +1,6 @@
 # TORO Portal: completeness, simple navigation and document-based close
 
-Status: PROPOSED WRITTEN SPECIFICATION — architecture review required before new product implementation.
+Status: OWNER-APPROVED WRITTEN SPECIFICATION — explicitly approved in the 2026-10-12 conversation; implementation and native acceptance remain pending.
 Date: 2026-10-12. Parent: `docs/product/TORO_BRAIN_GENERAL_PLAN.md`, section 23 Human Experience; TORO Finance / Comms / Tools contracts remain authoritative.
 
 ## Outcome and scope
@@ -117,4 +117,4 @@ Done means the operator can repeat the workflow with the intended identity, obse
 
 ## Approval boundary
 
-This written specification is ready for review. Architectural implementation and its detailed execution plan require the user's review under the invoked Superpowers workflow. The audit and reversible metadata corrections do not activate chat ingestion, posting, new permissions or new automation. Existing approvals remain valid within their original scope.
+The owner explicitly approved this written specification on 2026-10-12, including a complete tools section and correction of the identified gaps. The approved specification was merged through PR272. The detailed implementation plan is `../plans/2026-10-12-portal-catalogue-navigation.md`; its execution handoff follows the invoked Superpowers workflow. Specification approval is not evidence of runtime activation or native financial acceptance. Existing approvals remain valid within their original scope.
