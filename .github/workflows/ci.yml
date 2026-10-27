@@ -33,6 +33,9 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: CR CE4.4 offline reference checks
+        run: python3 -m unittest discover -s tests -p test_costa_rica_ce44_preflight.py -v
+
       - name: Lint
         run: npm run lint
 
