@@ -7,6 +7,13 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+
+<!-- BEGIN:CR_CE44_PREPARATION_20261028 -->
+## TORO Finance — referencias de comprobantes CR4.4,1nov2026
+**CURRENT candidato:** validador local de referencias XML y pruebas sintéticas, [control y aceptación](../evidence/CR_CE44_PREPARATION_20261028.md). Inspección del Writer: registra compras; no emite ventas/notas/REP. Alegra conserva autoridad fiscal. No se activan writers ni se genera una segunda contabilidad.
+**NEXT P1 con fecha externa1nov2026:** confirmar cuenta/emisor y probar casos aplicables12–17/TipoDocIR19–20 enSTAG, contrastando XML, respuesta y período con Contabilidad. Soporte declarado por proveedor no equivale a cuenta validada. Producción, aceptaciónHacienda y contabilización del hotel **NO VERIFICADAS**; el paquete no las acredita ni autoriza emisión. Responsable funcional propuesto: Contabilidad+Sistemas, bajo el mismo carril Finance/Alegra.
+<!-- END:CR_CE44_PREPARATION_20261028 -->
+
 <!-- BEGIN:TORO_INTEGRATED_EVOLUTION_20261022 -->
 ## Revisión integral y guía de evolución — 22/10/2026
 
