@@ -215,6 +215,7 @@ function assertFencedAdmission(
   admission: ToroAdmittedRunSnapshot,
   input: ToroBoundedWorkerInput,
   run: ToroWorkerRun,
+  now: number,
 ): asserts proof is ToroFencedAdmissionProof {
   const proofValidUntil = Date.parse(proof?.validUntil ?? "");
   const leaseExpiresAt = Date.parse(run.leaseExpiresAt ?? "");
@@ -230,6 +231,8 @@ function assertFencedAdmission(
     proof.admissionRef !== admission.admissionRef ||
     !Number.isFinite(proofValidUntil) ||
     !Number.isFinite(leaseExpiresAt) ||
+    leaseExpiresAt <= now ||
+    proofValidUntil <= now ||
     proofValidUntil < leaseExpiresAt
   ) {
     fail("fenced_admission_mismatch");
@@ -349,7 +352,13 @@ export async function executeBoundedToroRun(
       fencingToken: run.fencingToken,
       admissionRef: admission.admissionRef,
     });
-    assertFencedAdmission(fencedAdmission, admission, input, run);
+    assertFencedAdmission(
+      fencedAdmission,
+      admission,
+      input,
+      run,
+      (dependencies.now ?? Date.now)(),
+    );
 
     const started = await dependencies.transition({
       runId: run.id,
