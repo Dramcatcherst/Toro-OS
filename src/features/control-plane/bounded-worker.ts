@@ -265,6 +265,20 @@ function assertClaim(
   }
 }
 
+function assertRemainingLeaseBudget(
+  run: ToroWorkerRun,
+  timeoutMs: number,
+  now: number,
+) {
+  const leaseExpiresAt = Date.parse(run.leaseExpiresAt ?? "");
+  if (
+    !Number.isFinite(leaseExpiresAt) ||
+    leaseExpiresAt - now <= timeoutMs
+  ) {
+    fail("insufficient_lease_budget");
+  }
+}
+
 function assertVerifiedResult(
   value: ToroBoundedVerifiedResult | null,
 ): asserts value is ToroBoundedVerifiedResult {
@@ -357,6 +371,11 @@ export async function executeBoundedToroRun(
       admission,
       input,
       run,
+      (dependencies.now ?? Date.now)(),
+    );
+    assertRemainingLeaseBudget(
+      run,
+      timeoutMs,
       (dependencies.now ?? Date.now)(),
     );
 
