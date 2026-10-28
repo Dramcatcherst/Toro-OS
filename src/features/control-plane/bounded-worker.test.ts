@@ -110,7 +110,7 @@ function dependencies(options?: {
 }
 
 async function expectCode(promise: Promise<unknown>, code: string) {
-  await expect(promise).rejects.toMatchObject<ToroBoundedWorkerError>({ code });
+  await expect(promise).rejects.toMatchObject({ code });
 }
 
 describe("executeBoundedToroRun", () => {
