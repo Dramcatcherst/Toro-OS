@@ -38,17 +38,31 @@ export type ToroBoundedVerifiedResult = {
 
 export type ToroBoundedRunContext = {
   run: ToroWorkerRun;
+  admission: ToroFencedAdmissionProof;
   signal: AbortSignal;
 };
 
 export type ToroBoundedRunHandler = {
   authority: ToroBoundedAuthority;
+  effectMode: "read_only";
   externalActions: 0;
   execute(context: ToroBoundedRunContext): Promise<unknown>;
   verify(
     result: unknown,
     context: ToroBoundedRunContext,
   ): Promise<ToroBoundedVerifiedResult | null>;
+};
+
+export type ToroFencedAdmissionProof = {
+  orgId: string;
+  taskId: string;
+  runId: string;
+  actionKey: string;
+  workerId: string;
+  fencingToken: number;
+  executionAuthorityLevel: ToroBoundedAuthority;
+  admissionRef: string;
+  validUntil: string;
 };
 
 type TransitionInput = {
@@ -92,6 +106,15 @@ export type ToroBoundedWorkerDependencies = {
     workerId: string;
     leaseSeconds: number;
   }): Promise<ToroWorkerRun | null>;
+  confirmFencedAdmission(input: {
+    orgId: string;
+    taskId: string;
+    runId: string;
+    actionKey: string;
+    workerId: string;
+    fencingToken: number;
+    admissionRef: string;
+  }): Promise<ToroFencedAdmissionProof | null>;
   transition(input: TransitionInput): Promise<boolean>;
   complete(input: CompletionInput): Promise<string | null>;
   readReceipt(input: {
@@ -113,12 +136,14 @@ export type ToroBoundedWorkerDependencies = {
 export function createToroBoundedWorkerDependencies(input: {
   supabase: SupabaseClient;
   inspectAdmittedRun: ToroBoundedWorkerDependencies["inspectAdmittedRun"];
+  confirmFencedAdmission: ToroBoundedWorkerDependencies["confirmFencedAdmission"];
   readReceipt: ToroBoundedWorkerDependencies["readReceipt"];
   handlers: ToroBoundedWorkerDependencies["handlers"];
   now?: () => number;
 }): ToroBoundedWorkerDependencies {
   return {
     inspectAdmittedRun: input.inspectAdmittedRun,
+    confirmFencedAdmission: input.confirmFencedAdmission,
     readReceipt: input.readReceipt,
     handlers: input.handlers,
     now: input.now,
@@ -178,9 +203,36 @@ function assertAdmission(
     (admission.executionAuthorityLevel !== "L0" &&
       admission.executionAuthorityLevel !== "L1") ||
     handler.authority !== admission.executionAuthorityLevel ||
+    handler.effectMode !== "read_only" ||
     handler.externalActions !== 0
   ) {
     fail("admission_mismatch");
+  }
+}
+
+function assertFencedAdmission(
+  proof: ToroFencedAdmissionProof | null,
+  admission: ToroAdmittedRunSnapshot,
+  input: ToroBoundedWorkerInput,
+  run: ToroWorkerRun,
+): asserts proof is ToroFencedAdmissionProof {
+  const proofValidUntil = Date.parse(proof?.validUntil ?? "");
+  const leaseExpiresAt = Date.parse(run.leaseExpiresAt ?? "");
+  if (
+    !proof ||
+    proof.orgId !== input.orgId ||
+    proof.taskId !== input.taskId ||
+    proof.runId !== input.runId ||
+    proof.actionKey !== input.actionKey ||
+    proof.workerId !== input.workerId ||
+    proof.fencingToken !== run.fencingToken ||
+    proof.executionAuthorityLevel !== admission.executionAuthorityLevel ||
+    proof.admissionRef !== admission.admissionRef ||
+    !Number.isFinite(proofValidUntil) ||
+    !Number.isFinite(leaseExpiresAt) ||
+    proofValidUntil < leaseExpiresAt
+  ) {
+    fail("fenced_admission_mismatch");
   }
 }
 
@@ -288,6 +340,17 @@ export async function executeBoundedToroRun(
   try {
     assertClaim(run, input, admission, (dependencies.now ?? Date.now)());
 
+    const fencedAdmission = await dependencies.confirmFencedAdmission({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      workerId: input.workerId,
+      fencingToken: run.fencingToken,
+      admissionRef: admission.admissionRef,
+    });
+    assertFencedAdmission(fencedAdmission, admission, input, run);
+
     const started = await dependencies.transition({
       runId: run.id,
       workerId: input.workerId,
@@ -300,9 +363,16 @@ export async function executeBoundedToroRun(
     ownedStatus = "running";
 
     const verified = await runWithTimeout(timeoutMs, async (signal) => {
-      const context = { run, signal } satisfies ToroBoundedRunContext;
+      const context = {
+        run,
+        admission: fencedAdmission,
+        signal,
+      } satisfies ToroBoundedRunContext;
       const result = await handler.execute(context);
-      return handler.verify(result, context);
+      if (signal.aborted) fail("execution_timeout");
+      const verification = await handler.verify(result, context);
+      if (signal.aborted) fail("execution_timeout");
+      return verification;
     });
     assertVerifiedResult(verified);
 
