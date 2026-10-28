@@ -94,6 +94,18 @@ export type ToroBoundedWorkerDependencies = {
   }): Promise<ToroWorkerRun | null>;
   transition(input: TransitionInput): Promise<boolean>;
   complete(input: CompletionInput): Promise<string | null>;
+  readReceipt(input: {
+    orgId: string;
+    taskId: string;
+    runId: string;
+    receiptId: string;
+  }): Promise<{
+    id: string;
+    taskId: string;
+    runId: string;
+    status: "verified";
+    verificationStatus: "passed";
+  } | null>;
   handlers: Readonly<Record<string, ToroBoundedRunHandler | undefined>>;
   now?: () => number;
 };
@@ -101,11 +113,13 @@ export type ToroBoundedWorkerDependencies = {
 export function createToroBoundedWorkerDependencies(input: {
   supabase: SupabaseClient;
   inspectAdmittedRun: ToroBoundedWorkerDependencies["inspectAdmittedRun"];
+  readReceipt: ToroBoundedWorkerDependencies["readReceipt"];
   handlers: ToroBoundedWorkerDependencies["handlers"];
   now?: () => number;
 }): ToroBoundedWorkerDependencies {
   return {
     inspectAdmittedRun: input.inspectAdmittedRun,
+    readReceipt: input.readReceipt,
     handlers: input.handlers,
     now: input.now,
     claimById: (claim) =>
@@ -323,6 +337,23 @@ export async function executeBoundedToroRun(
       },
     });
     if (!receiptId) fail("completion_unknown");
+
+    const receipt = await dependencies.readReceipt({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      receiptId,
+    });
+    if (
+      !receipt ||
+      receipt.id !== receiptId ||
+      receipt.runId !== input.runId ||
+      receipt.taskId !== input.taskId ||
+      receipt.status !== "verified" ||
+      receipt.verificationStatus !== "passed"
+    ) {
+      fail("completion_unknown");
+    }
 
     return {
       runId: run.id,
