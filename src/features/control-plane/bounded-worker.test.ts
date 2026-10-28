@@ -68,6 +68,7 @@ function allowedHandler(
 ): ToroBoundedRunHandler {
   return {
     authority: "L1",
+    effectMode: "read_only",
     externalActions: 0,
     execute: vi.fn().mockResolvedValue({ refreshed: true }),
     verify: vi.fn().mockResolvedValue({
@@ -93,6 +94,17 @@ function dependencies(options?: {
     claimById: vi
       .fn()
       .mockResolvedValue(options?.run === undefined ? claimed() : options.run),
+    confirmFencedAdmission: vi.fn().mockResolvedValue({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      workerId: input.workerId,
+      fencingToken: 7,
+      executionAuthorityLevel: "L1",
+      admissionRef: "receipt-admission-1",
+      validUntil: "2026-10-28T01:01:00.000Z",
+    }),
     transition: vi.fn().mockResolvedValue(true),
     complete: vi.fn().mockResolvedValue("receipt-final-1"),
     readReceipt: vi.fn().mockResolvedValue({
@@ -123,6 +135,15 @@ describe("executeBoundedToroRun", () => {
     });
 
     expect(handler.execute).toHaveBeenCalledTimes(1);
+    expect(deps.confirmFencedAdmission).toHaveBeenCalledWith({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      workerId: input.workerId,
+      fencingToken: 7,
+      admissionRef: "receipt-admission-1",
+    });
     expect(deps.transition).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ expectedStatus: "claimed", nextStatus: "running" }),
@@ -190,6 +211,42 @@ describe("executeBoundedToroRun", () => {
     );
   });
 
+  it("rejects an admission proof that is not bound to the claimed fence", async () => {
+    const { deps, handler } = dependencies();
+    deps.confirmFencedAdmission = vi.fn().mockResolvedValue({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      workerId: input.workerId,
+      fencingToken: 6,
+      executionAuthorityLevel: "L1",
+      admissionRef: "receipt-admission-1",
+      validUntil: "2026-10-28T01:01:00.000Z",
+    });
+
+    await expectCode(
+      executeBoundedToroRun(input, deps),
+      "fenced_admission_mismatch",
+    );
+    expect(handler.execute).not.toHaveBeenCalled();
+    expect(deps.transition).toHaveBeenCalledWith(
+      expect.objectContaining({ expectedStatus: "claimed", nextStatus: "failed" }),
+    );
+  });
+
+  it("rejects a handler that is not explicitly read-only", async () => {
+    const handler = {
+      ...allowedHandler(),
+      effectMode: "internal_write",
+    } as unknown as ToroBoundedRunHandler;
+    const { deps } = dependencies({ handler });
+
+    await expectCode(executeBoundedToroRun(input, deps), "admission_mismatch");
+    expect(deps.claimById).not.toHaveBeenCalled();
+    expect(handler.execute).not.toHaveBeenCalled();
+  });
+
   it("aborts on timeout and records only a redacted failure", async () => {
     const handler = allowedHandler({
       execute: vi.fn(({ signal }) => {
@@ -212,6 +269,26 @@ describe("executeBoundedToroRun", () => {
         errorRedacted: "Bounded worker stopped safely.",
       }),
     );
+  });
+
+  it("does not finalize when a read-only handler ignores cancellation", async () => {
+    const handler = allowedHandler({
+      execute: vi.fn(
+        () => new Promise((resolve) => setTimeout(() => resolve("late"), 20)),
+      ),
+    });
+    const { deps } = dependencies({ handler });
+
+    await expectCode(
+      executeBoundedToroRun({ ...input, timeoutMs: 5 }, deps),
+      "execution_timeout",
+    );
+    await new Promise((resolve) => setTimeout(resolve, 25));
+
+    expect(handler.execute).toHaveBeenCalledTimes(1);
+    expect(handler.verify).not.toHaveBeenCalled();
+    expect(deps.complete).not.toHaveBeenCalled();
+    expect(deps.readReceipt).not.toHaveBeenCalled();
   });
 
   it("does not complete a run whose readback is unverified", async () => {
