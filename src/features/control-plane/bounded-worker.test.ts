@@ -316,6 +316,28 @@ describe("executeBoundedToroRun", () => {
     expect(deps.complete).not.toHaveBeenCalled();
   });
 
+  it("rejects execution when admission confirmation consumes the lease budget", async () => {
+    const { deps, handler } = dependencies();
+    const now = vi
+      .fn()
+      .mockReturnValueOnce(Date.parse("2026-10-28T01:00:00.000Z"))
+      .mockReturnValueOnce(Date.parse("2026-10-28T01:00:59.950Z"))
+      .mockReturnValue(Date.parse("2026-10-28T01:00:59.950Z"));
+    deps.now = now;
+
+    await expectCode(
+      executeBoundedToroRun({ ...input, timeoutMs: 100 }, deps),
+      "insufficient_lease_budget",
+    );
+
+    expect(handler.execute).not.toHaveBeenCalled();
+    expect(deps.complete).not.toHaveBeenCalled();
+    expect(deps.transition).toHaveBeenCalledTimes(1);
+    expect(deps.transition).toHaveBeenCalledWith(
+      expect.objectContaining({ expectedStatus: "claimed", nextStatus: "failed" }),
+    );
+  });
+
   it("rejects a handler that is not explicitly read-only", async () => {
     const handler = {
       ...allowedHandler(),
