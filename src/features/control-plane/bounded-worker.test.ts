@@ -168,6 +168,48 @@ describe("executeBoundedToroRun", () => {
     });
   });
 
+  it("reconfirms admission after claim and before any running transition", async () => {
+    const order: string[] = [];
+    const handler = allowedHandler({
+      execute: vi.fn(async () => {
+        order.push("execute");
+        return { refreshed: true };
+      }),
+    });
+    const { deps } = dependencies({ handler });
+    deps.claimById = vi.fn(async () => {
+      order.push("claim");
+      return claimed();
+    });
+    deps.confirmFencedAdmission = vi.fn(async () => {
+      order.push("confirm");
+      return {
+        orgId: input.orgId,
+        taskId: input.taskId,
+        runId: input.runId,
+        actionKey: input.actionKey,
+        workerId: input.workerId,
+        fencingToken: 7,
+        executionAuthorityLevel: "L1",
+        admissionRef: "receipt-admission-1",
+        validUntil: "2026-10-28T01:01:00.000Z",
+      };
+    });
+    deps.transition = vi.fn(async () => {
+      order.push("transition");
+      return true;
+    });
+
+    await executeBoundedToroRun(input, deps);
+
+    expect(order.slice(0, 4)).toEqual([
+      "claim",
+      "confirm",
+      "transition",
+      "execute",
+    ]);
+  });
+
   it.each([
     ["organization", { orgId: "other-org" }],
     ["task", { taskId: "other-task" }],
@@ -233,6 +275,45 @@ describe("executeBoundedToroRun", () => {
     expect(deps.transition).toHaveBeenCalledWith(
       expect.objectContaining({ expectedStatus: "claimed", nextStatus: "failed" }),
     );
+  });
+
+  it("fails closed when the backend cannot confirm admission", async () => {
+    const { deps, handler } = dependencies();
+    deps.confirmFencedAdmission = vi.fn().mockResolvedValue(null);
+
+    await expectCode(
+      executeBoundedToroRun(input, deps),
+      "fenced_admission_mismatch",
+    );
+
+    expect(handler.execute).not.toHaveBeenCalled();
+    expect(deps.complete).not.toHaveBeenCalled();
+    expect(deps.transition).toHaveBeenCalledWith(
+      expect.objectContaining({ expectedStatus: "claimed", nextStatus: "failed" }),
+    );
+  });
+
+  it("rejects a fenced admission proof that expires before the live lease", async () => {
+    const { deps, handler } = dependencies();
+    deps.confirmFencedAdmission = vi.fn().mockResolvedValue({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      workerId: input.workerId,
+      fencingToken: 7,
+      executionAuthorityLevel: "L1",
+      admissionRef: "receipt-admission-1",
+      validUntil: "2026-10-28T01:00:30.000Z",
+    });
+
+    await expectCode(
+      executeBoundedToroRun(input, deps),
+      "fenced_admission_mismatch",
+    );
+
+    expect(handler.execute).not.toHaveBeenCalled();
+    expect(deps.complete).not.toHaveBeenCalled();
   });
 
   it("rejects a handler that is not explicitly read-only", async () => {
