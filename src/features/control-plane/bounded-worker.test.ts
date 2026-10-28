@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 import type { ToroWorkerRun } from "./worker-runtime";
 import {
   executeBoundedToroRun,
-  ToroBoundedWorkerError,
   type ToroAdmittedRunSnapshot,
   type ToroBoundedRunHandler,
   type ToroBoundedWorkerDependencies,
