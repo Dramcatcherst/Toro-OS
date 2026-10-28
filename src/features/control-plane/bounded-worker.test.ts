@@ -190,7 +190,7 @@ describe("executeBoundedToroRun", () => {
         actionKey: input.actionKey,
         workerId: input.workerId,
         fencingToken: 7,
-        executionAuthorityLevel: "L1",
+        executionAuthorityLevel: "L1" as const,
         admissionRef: "receipt-admission-1",
         validUntil: "2026-10-28T01:01:00.000Z",
       };
