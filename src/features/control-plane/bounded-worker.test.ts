@@ -96,6 +96,13 @@ function dependencies(options?: {
       .mockResolvedValue(options?.run === undefined ? claimed() : options.run),
     transition: vi.fn().mockResolvedValue(true),
     complete: vi.fn().mockResolvedValue("receipt-final-1"),
+    readReceipt: vi.fn().mockResolvedValue({
+      id: "receipt-final-1",
+      taskId: input.taskId,
+      runId: input.runId,
+      status: "verified",
+      verificationStatus: "passed",
+    }),
     handlers: { [input.actionKey]: handler },
     now: () => Date.parse("2026-10-28T01:00:00.000Z"),
   };
@@ -133,6 +140,12 @@ describe("executeBoundedToroRun", () => {
         }),
       }),
     );
+    expect(deps.readReceipt).toHaveBeenCalledWith({
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      receiptId: "receipt-final-1",
+    });
   });
 
   it.each([
@@ -221,6 +234,17 @@ describe("executeBoundedToroRun", () => {
     await expectCode(executeBoundedToroRun(input, deps), "completion_unknown");
     expect(handler.execute).toHaveBeenCalledTimes(1);
     expect(deps.complete).toHaveBeenCalledTimes(1);
+    expect(deps.transition).toHaveBeenCalledTimes(2);
+  });
+
+  it("requires readback of the exact verified receipt", async () => {
+    const { deps, handler } = dependencies();
+    deps.readReceipt = vi.fn().mockResolvedValue(null);
+
+    await expectCode(executeBoundedToroRun(input, deps), "completion_unknown");
+    expect(handler.execute).toHaveBeenCalledTimes(1);
+    expect(deps.complete).toHaveBeenCalledTimes(1);
+    expect(deps.readReceipt).toHaveBeenCalledTimes(1);
     expect(deps.transition).toHaveBeenCalledTimes(2);
   });
 });
