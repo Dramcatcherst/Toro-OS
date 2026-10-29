@@ -6,6 +6,7 @@ import {
   completeToroExecutionRun,
   finalizeAlegraExecutionRun,
   heartbeatAlegraExecutionRun,
+  normalizeToroExecutionReceiptReadback,
   normalizeToroWorkerRun,
   recoverExpiredAlegraExecutionRun,
   revokeAlegraExecutionApproval,
@@ -55,6 +56,57 @@ describe("TORO worker runtime normalization", () => {
       normalizeToroWorkerRun({
         id: "run-1",
         org_id: "org-1",
+      }),
+    ).toBeNull();
+  });
+
+  it("normalizes a verified bounded-worker receipt readback", () => {
+    expect(
+      normalizeToroExecutionReceiptReadback({
+        id: "receipt-1",
+        org_id: "org-1",
+        task_id: "task-1",
+        run_id: "run-1",
+        action_key: "google_tasks.connector_preflight",
+        target_system: "google_tasks",
+        execution_authority_level: "L0",
+        source_receipt_ref: "admission-1",
+        status: "verified",
+        verification_status: "passed",
+      }),
+    ).toEqual({
+      id: "receipt-1",
+      orgId: "org-1",
+      taskId: "task-1",
+      runId: "run-1",
+      actionKey: "google_tasks.connector_preflight",
+      targetSystem: "google_tasks",
+      executionAuthorityLevel: "L0",
+      sourceReceiptRef: "admission-1",
+      status: "verified",
+      verificationStatus: "passed",
+    });
+  });
+
+  it.each([
+    ["wrong authority", { execution_authority_level: "L2" }],
+    ["non-terminal status", { status: "executed" }],
+    ["unverified result", { verification_status: "pending" }],
+    ["missing admission reference", { source_receipt_ref: "" }],
+  ])("rejects receipt readback with %s", (_case, patch) => {
+    expect(
+      normalizeToroExecutionReceiptReadback({
+        id: "receipt-1",
+        org_id: "org-1",
+        task_id: "task-1",
+        run_id: "run-1",
+        action_key: "google_tasks.connector_preflight",
+        target_system: "google_tasks",
+        execution_authority_level: "L0",
+        source_receipt_ref: "admission-1",
+        status: "verified",
+        verification_status: "passed",
+        ...patch,
       }),
     ).toBeNull();
   });
