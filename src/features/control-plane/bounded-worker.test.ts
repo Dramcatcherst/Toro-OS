@@ -109,8 +109,13 @@ function dependencies(options?: {
     complete: vi.fn().mockResolvedValue("receipt-final-1"),
     readReceipt: vi.fn().mockResolvedValue({
       id: "receipt-final-1",
+      orgId: input.orgId,
       taskId: input.taskId,
       runId: input.runId,
+      actionKey: input.actionKey,
+      targetSystem: "toro_knowledge",
+      executionAuthorityLevel: "L1",
+      sourceReceiptRef: "receipt-admission-1",
       status: "verified",
       verificationStatus: "passed",
     }),
@@ -425,5 +430,33 @@ describe("executeBoundedToroRun", () => {
     expect(deps.complete).toHaveBeenCalledTimes(1);
     expect(deps.readReceipt).toHaveBeenCalledTimes(1);
     expect(deps.transition).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([
+    ["organization", { orgId: "other-org" }],
+    ["action", { actionKey: "other-action" }],
+    ["target system", { targetSystem: "other-system" }],
+    ["authority", { executionAuthorityLevel: "L0" as const }],
+    ["admission reference", { sourceReceiptRef: "other-admission" }],
+  ])("rejects a receipt readback with mismatched %s", async (_label, override) => {
+    const { deps, handler } = dependencies();
+    deps.readReceipt = vi.fn().mockResolvedValue({
+      id: "receipt-final-1",
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      actionKey: input.actionKey,
+      targetSystem: "toro_knowledge",
+      executionAuthorityLevel: "L1",
+      sourceReceiptRef: "receipt-admission-1",
+      status: "verified",
+      verificationStatus: "passed",
+      ...override,
+    });
+
+    await expectCode(executeBoundedToroRun(input, deps), "completion_unknown");
+    expect(handler.execute).toHaveBeenCalledTimes(1);
+    expect(deps.complete).toHaveBeenCalledTimes(1);
+    expect(deps.readReceipt).toHaveBeenCalledTimes(1);
   });
 });
