@@ -124,8 +124,13 @@ export type ToroBoundedWorkerDependencies = {
     receiptId: string;
   }): Promise<{
     id: string;
+    orgId: string;
     taskId: string;
     runId: string;
+    actionKey: string;
+    targetSystem: string | null;
+    executionAuthorityLevel: ToroBoundedAuthority;
+    sourceReceiptRef: string;
     status: "verified";
     verificationStatus: "passed";
   } | null>;
@@ -445,8 +450,13 @@ export async function executeBoundedToroRun(
     if (
       !receipt ||
       receipt.id !== receiptId ||
+      receipt.orgId !== input.orgId ||
       receipt.runId !== input.runId ||
       receipt.taskId !== input.taskId ||
+      receipt.actionKey !== input.actionKey ||
+      receipt.targetSystem !== run.targetSystem ||
+      receipt.executionAuthorityLevel !== admission.executionAuthorityLevel ||
+      receipt.sourceReceiptRef !== admission.admissionRef ||
       receipt.status !== "verified" ||
       receipt.verificationStatus !== "passed"
     ) {
