@@ -676,6 +676,104 @@ export async function completeToroExecutionRun(
   return typeof data === "string" ? data : null;
 }
 
+export type ToroExecutionReceiptReadback = {
+  id: string;
+  orgId: string;
+  taskId: string;
+  runId: string;
+  actionKey: string;
+  targetSystem: string | null;
+  executionAuthorityLevel: "L0" | "L1";
+  sourceReceiptRef: string;
+  status: "verified";
+  verificationStatus: "passed";
+};
+
+type ToroExecutionReceiptReadbackRow = {
+  id?: unknown;
+  org_id?: unknown;
+  task_id?: unknown;
+  run_id?: unknown;
+  action_key?: unknown;
+  target_system?: unknown;
+  execution_authority_level?: unknown;
+  source_receipt_ref?: unknown;
+  status?: unknown;
+  verification_status?: unknown;
+};
+
+export function normalizeToroExecutionReceiptReadback(
+  row: ToroExecutionReceiptReadbackRow,
+): ToroExecutionReceiptReadback | null {
+  const id = stringOrNull(row.id);
+  const orgId = stringOrNull(row.org_id);
+  const taskId = stringOrNull(row.task_id);
+  const runId = stringOrNull(row.run_id);
+  const actionKey = stringOrNull(row.action_key);
+  const authority = stringOrNull(row.execution_authority_level);
+  const sourceReceiptRef = stringOrNull(row.source_receipt_ref);
+  const status = stringOrNull(row.status);
+  const verificationStatus = stringOrNull(row.verification_status);
+
+  if (
+    !id ||
+    !orgId ||
+    !taskId ||
+    !runId ||
+    !actionKey ||
+    (authority !== "L0" && authority !== "L1") ||
+    !sourceReceiptRef ||
+    status !== "verified" ||
+    verificationStatus !== "passed"
+  ) {
+    return null;
+  }
+
+  return {
+    id,
+    orgId,
+    taskId,
+    runId,
+    actionKey,
+    targetSystem: stringOrNull(row.target_system),
+    executionAuthorityLevel: authority,
+    sourceReceiptRef,
+    status,
+    verificationStatus,
+  };
+}
+
+export async function readToroExecutionReceiptById(
+  supabase: SupabaseClient,
+  input: {
+    orgId: string;
+    taskId: string;
+    runId: string;
+    receiptId: string;
+  },
+): Promise<ToroExecutionReceiptReadback | null> {
+  assertInternalRuntime();
+  const { data, error } = await supabase
+    .from("toro_execution_receipts")
+    .select(
+      "id,org_id,task_id,run_id,action_key,target_system,execution_authority_level,source_receipt_ref,status,verification_status",
+    )
+    .eq("id", input.receiptId)
+    .eq("org_id", input.orgId)
+    .eq("task_id", input.taskId)
+    .eq("run_id", input.runId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error("TORO receipt readback failed safely.");
+  }
+  if (!data || typeof data !== "object") return null;
+
+  return normalizeToroExecutionReceiptReadback(
+    data as ToroExecutionReceiptReadbackRow,
+  );
+}
+
 export async function appendToroExecutionReceipt(
   supabase: SupabaseClient,
   input: {
