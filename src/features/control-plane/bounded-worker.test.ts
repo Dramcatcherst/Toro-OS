@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { ToroWorkerRun } from "./worker-runtime";
 import {
+  createToroBoundedWorkerDependencies,
   executeBoundedToroRun,
   type ToroAdmittedRunSnapshot,
   type ToroBoundedRunHandler,
@@ -128,6 +129,65 @@ function dependencies(options?: {
 async function expectCode(promise: Promise<unknown>, code: string) {
   await expect(promise).rejects.toMatchObject({ code });
 }
+
+describe("createToroBoundedWorkerDependencies", () => {
+  it("uses the canonical exact receipt readback when none is injected", async () => {
+    const maybeSingle = vi.fn().mockResolvedValue({
+      data: {
+        id: "receipt-final-1",
+        org_id: input.orgId,
+        task_id: input.taskId,
+        run_id: input.runId,
+        action_key: input.actionKey,
+        target_system: "toro_knowledge",
+        execution_authority_level: "L1",
+        source_receipt_ref: "receipt-admission-1",
+        status: "verified",
+        verification_status: "passed",
+      },
+      error: null,
+    });
+    const query = {
+      select: vi.fn(),
+      eq: vi.fn(),
+      maybeSingle,
+    };
+    query.select.mockReturnValue(query);
+    query.eq.mockReturnValue(query);
+    const from = vi.fn().mockReturnValue(query);
+
+    const deps = createToroBoundedWorkerDependencies({
+      supabase: { from } as never,
+      inspectAdmittedRun: vi.fn(),
+      confirmFencedAdmission: vi.fn(),
+      handlers: {},
+    });
+
+    await expect(
+      deps.readReceipt({
+        orgId: input.orgId,
+        taskId: input.taskId,
+        runId: input.runId,
+        receiptId: "receipt-final-1",
+      }),
+    ).resolves.toMatchObject({
+      id: "receipt-final-1",
+      orgId: input.orgId,
+      taskId: input.taskId,
+      runId: input.runId,
+      status: "verified",
+      verificationStatus: "passed",
+    });
+    expect(from).toHaveBeenCalledWith("toro_execution_receipts");
+    expect(query.eq.mock.calls).toEqual([
+      ["id", "receipt-final-1"],
+      ["org_id", input.orgId],
+      ["task_id", input.taskId],
+      ["run_id", input.runId],
+    ]);
+    expect(maybeSingle).toHaveBeenCalledTimes(1);
+  });
+});
 
 describe("executeBoundedToroRun", () => {
   it("executes one admitted exact run and requires a durable receipt", async () => {
