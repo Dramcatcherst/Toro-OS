@@ -7,6 +7,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   claimToroExecutionRunById,
   completeToroExecutionRun,
+  readToroExecutionReceiptById,
   transitionToroExecutionRun,
   type ToroWorkerRun,
 } from "./worker-runtime";
@@ -142,14 +143,16 @@ export function createToroBoundedWorkerDependencies(input: {
   supabase: SupabaseClient;
   inspectAdmittedRun: ToroBoundedWorkerDependencies["inspectAdmittedRun"];
   confirmFencedAdmission: ToroBoundedWorkerDependencies["confirmFencedAdmission"];
-  readReceipt: ToroBoundedWorkerDependencies["readReceipt"];
+  readReceipt?: ToroBoundedWorkerDependencies["readReceipt"];
   handlers: ToroBoundedWorkerDependencies["handlers"];
   now?: () => number;
 }): ToroBoundedWorkerDependencies {
   return {
     inspectAdmittedRun: input.inspectAdmittedRun,
     confirmFencedAdmission: input.confirmFencedAdmission,
-    readReceipt: input.readReceipt,
+    readReceipt:
+      input.readReceipt ??
+      ((receipt) => readToroExecutionReceiptById(input.supabase, receipt)),
     handlers: input.handlers,
     now: input.now,
     claimById: (claim) =>
