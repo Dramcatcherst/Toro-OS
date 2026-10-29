@@ -7,6 +7,19 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:KROSS_CLOUD_READ_BOUNDARY_20261029 -->
+## Kross: lectura asistida comprobada y transporte pendiente — 29/10/2026
+
+**CURRENT, observación acotada de Dreamcatcher:** el propietario completó el inicio de sesión seguro en el navegador cloud; se leyeron reservas, ocupación, cobros y housekeeping, y la misma sesión respondió al retomar. Una exportación XLSX de cobros se abrió y contrastó con la pantalla: ocho filas y su total coinciden para el período explícito seleccionado. No se verificaron cobertura histórica completa, sesión permanente, API, adquisición programada ni actualización del espejo. Los recibos detallados permanecen en los registros privados existentes; no publicar huéspedes, importes, operadores, rutas de acceso, credenciales ni archivos fuente.
+
+**Límite de autoridad:** lectura asistida comprobada no equivale a transporte integrado ni habilita escrituras PMS. Se conserva Kross como autoridad transaccional, API pagada pausada, Writer OFF y la tolerancia informativa ya aprobada de hasta 60 minutos; un intento reciente de lectura no rejuvenece el corte de los datos. Esta observación no habilita consumidores ni tareas programadas.
+
+**NEXT del carril Kross existente:** reutilizar transporte/importación y sus recibos, sin segundo espejo, backlog o scheduler. Antes de cargar: fijar período explícito y `America/Costa_Rica`; reconciliar la fecha de gestión con la fecha del dashboard; validar moneda por campo ante símbolos distintos; separar unidades físicas, villas y bloqueos virtuales. El XLSX de muestra no expone un ID nativo de movimiento: el código de reserva no es una clave única de pago. Resolver identidad/idempotencia y permisos con el dueño del dominio antes de publicar datos como conciliados. La fecha de última limpieza y el estado actual son señales distintas; limpieza terminada no sustituye inspección, mantenimiento o preparación total.
+
+**Criterio de cierre:** extracción autorizada con corte y cobertura, correspondencia por claves aprobadas, filas/estados/totales conciliados y un recibo del consumidor TORO dentro de la antigüedad permitida, conservando manejo de caducidad, errores y continuación manual en Kross. El acceso manual reduce el bloqueo de lectura; la integración permanece pendiente. Esta actualización documental no cambia permisos, configuración, reservas, cobros, limpiezas ni producción.
+
+<!-- END:KROSS_CLOUD_READ_BOUNDARY_20261029 -->
+
 <!-- BEGIN:TORO_INTEGRATED_EVOLUTION_20261022 -->
 ## Revisión integral y guía de evolución — 22/10/2026
 
