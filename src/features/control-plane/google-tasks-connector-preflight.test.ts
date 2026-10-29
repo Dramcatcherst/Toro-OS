@@ -4,6 +4,7 @@ import type { ToroBoundedRunContext } from "./bounded-worker";
 import {
   createGoogleTasksConnectorPreflightHandler,
   GOOGLE_TASKS_CONNECTOR_PREFLIGHT_ACTION,
+  GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
   type GoogleTasksConnectorPreflightSnapshot,
 } from "./google-tasks-connector-preflight";
 
@@ -25,7 +26,7 @@ function context(): ToroBoundedRunContext {
       dotRef: null,
       agentRef: null,
       actionKey: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_ACTION,
-      targetSystem: "Google Tasks / TORO",
+      targetSystem: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
       executionAuthorityLevel: "L0",
       businessRisk: "Low",
       status: "claimed",
@@ -59,6 +60,7 @@ function snapshot(
     taskId: "task-1",
     runId: "run-1",
     actionKey: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_ACTION,
+    targetSystem: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
     accountRef: "dreamcatcher-admin",
     status: "READ_ONLY",
     readMode: "read_only",
@@ -90,8 +92,12 @@ describe("Google Tasks connector preflight handler", () => {
     const result = await handler.execute(ctx);
     await expect(handler.verify(result, ctx)).resolves.toMatchObject({
       verified: true,
+      desiredState: {
+        targetSystem: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
+      },
       executedState: { externalActions: 0, externalWrites: 0 },
       observedAfter: {
+        targetSystem: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
         status: "READ_ONLY",
         tenantIsolationVerified: true,
       },
@@ -102,6 +108,7 @@ describe("Google Tasks connector preflight handler", () => {
       taskId: "task-1",
       runId: "run-1",
       actionKey: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_ACTION,
+      targetSystem: GOOGLE_TASKS_CONNECTOR_PREFLIGHT_TARGET,
       signal: ctx.signal,
     });
   });
@@ -111,6 +118,7 @@ describe("Google Tasks connector preflight handler", () => {
     ["wrong run", { runId: "other-run" }],
     ["wrong account", { accountRef: "other-account" }],
     ["stale source", { observedAt: "2026-10-28T17:50:00.000Z" }],
+    ["blank permission", { permissions: [" "] }],
   ])("rejects %s", async (_label, override) => {
     const handler = createGoogleTasksConnectorPreflightHandler({
       expectedAccountRef: "dreamcatcher-admin",
@@ -119,6 +127,31 @@ describe("Google Tasks connector preflight handler", () => {
     });
 
     await expect(handler.verify(snapshot(override), context())).resolves.toBeNull();
+  });
+
+  it("rejects a run for another target system", async () => {
+    const handler = createGoogleTasksConnectorPreflightHandler({
+      expectedAccountRef: "dreamcatcher-admin",
+      readSnapshot: vi.fn(),
+      now: () => NOW,
+    });
+    const ctx = context();
+    ctx.run.targetSystem = "Not Google Tasks";
+
+    await expect(handler.verify(snapshot(), ctx)).resolves.toBeNull();
+  });
+
+  it.each([
+    ["blank account reference", { expectedAccountRef: " ", maxAgeMs: 60_000 }],
+    ["zero freshness window", { expectedAccountRef: "account", maxAgeMs: 0 }],
+    ["fractional freshness window", { expectedAccountRef: "account", maxAgeMs: 1.5 }],
+  ])("fails closed for %s", (_label, config) => {
+    expect(() =>
+      createGoogleTasksConnectorPreflightHandler({
+        ...config,
+        readSnapshot: vi.fn(),
+      }),
+    ).toThrow("invalid_google_tasks_preflight_configuration");
   });
 
   it("records AUTH_REQUIRED as a verified connector observation, not a connection", async () => {
