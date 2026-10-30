@@ -67,7 +67,7 @@ it("keeps complete catalogue items out of the shift shortcuts", async () => {
   load.mockResolvedValue({state:"ready",links,catalogueItems,catalogueMode:"complete"});
   const markup=renderToStaticMarkup(await ToolsPage());
   const shift=markup.match(/<nav aria-label="Tareas del turno"[\s\S]*?<\/nav>/)?.[0] ?? "";
-  expect(markup).toContain("244 en el catálogo");
+  expect(markup).toContain("244 en esta consulta");
   expect(markup.match(/data-tool="LINK-001"/g)).toHaveLength(1);
   expect(shift).not.toContain("LINK-001");
   expect(shift).toContain('href="https://dream-team-public.vercel.app/dreamteam/ingresar"');
