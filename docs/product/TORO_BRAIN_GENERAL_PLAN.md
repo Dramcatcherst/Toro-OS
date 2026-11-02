@@ -7,6 +7,21 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
+## Sanduchería Santa Teresa — nuevo proyecto de Dreamcatcher — 02/11/2026
+
+**Alcance:** iniciativa de alimentos y bebidas de Dreamcatcher, con atención por ventanilla, desayunos y propuesta de tarde. Se gestiona como proyecto propio bajo `dreamcatcher_hotel_master`, dentro del portafolio existente.
+
+**CURRENT — registro verificado:** proyecto activo `dreamcatcher_sanducheria_santa_teresa`, en definición y preparación del piloto. El registro operativo contiene siete tareas vinculadas y la decisión del propietario que autoriza el alta y corrige el supuesto sobre la infraestructura habilitante existente. El negocio todavía no tiene resultados de un piloto comercial registrados.
+
+**TARGET:** validar una primera unidad rentable y repetible; evaluar crecimiento a partir de ventas pagadas, costos completos, capacidad operativa y calidad consistente.
+
+**NEXT:** definir acuerdo y responsabilidades; seleccionar pan y proveedores; cerrar carta, recetas y costos; preparar cocina y punto de recogida; completar el expediente de documentación existente; organizar degustación y piloto pagado con fecha por confirmar; evaluar rentabilidad y condiciones de expansión. La información documental comunicada por el propietario está atribuida como tal en el expediente privado.
+
+**Seguimiento y autoridad:** `operations.projects` conserva el proyecto; `operations.tasks`, sus siete hitos; `operations.executive_decisions`, la instrucción y corrección del propietario. Coordinación SKY con apoyo de Operación y Finanzas. La ficha privada concentra responsables personales, aportes, cifras, documentación y evidencia. Este apartado incorpora el proyecto al Plan General único y reutiliza el portafolio y seguimiento existentes.
+
+<!-- END:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
+
 <!-- BEGIN:KROSS_CLOUD_READ_BOUNDARY_20261029 -->
 ## Kross: lectura asistida comprobada y transporte pendiente — 29/10/2026
 
