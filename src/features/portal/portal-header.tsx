@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Building2, ChevronDown, Home, Network, UserRound, Wrench, CloudSun } from "lucide-react";
 import { PortalSignOut } from "@/features/auth/portal-sign-out";
@@ -19,7 +20,10 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
     <a className={styles.skipLink} href="#portal-content">Saltar al contenido</a>
     <div className={styles.headerInner}>
       <Link href="/portal" prefetch={false} className={styles.brand} aria-label="TORO · Portal empresarial">
-        <strong>TORO</strong><span>OPERATION SYSTEM</span>
+        <span className={styles.brandMark} data-toro-master="verified">
+          <Image src="/brand/toro/toro-logo-master-v1.jpg" alt="" width={64} height={64} unoptimized preload />
+        </span>
+        <span className={styles.brandName}><strong>TORO</strong><span>BUSINESS INTELLIGENCE</span></span>
       </Link>
       <Link href="/my-toro#mi-cuenta" prefetch={false} className={styles.scope} aria-label={`Mi contexto: ${scopeLabel}`}>
         <Building2 size={16} aria-hidden="true" />{scopeLabel}
@@ -36,16 +40,7 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
         </nav>
       </details>
     </div>
-    {current !== "overview" ? <PortalAgents /> : null}
   </header>;
-}
-
-export function PortalAgents() {
-  return <div className={styles.agentRail} aria-label="Especialistas TORO: sin señal de actividad">
-      <span className={styles.agentCaption}>Agentes</span>
-      {["TORO", "TERE", "RICO", "FIONA", "SKY", "SOBRESITO"].map(name => <span key={name} className={styles.agent}><i aria-hidden="true" /><span className={styles.agentFull}>{name}</span><abbr className={styles.agentShort} title={name}>{name.slice(0, 2)}</abbr></span>)}
-      <span className={styles.agentSignal}>Sin señal</span>
-    </div>;
 }
 
 export function PortalConnectionNote() {

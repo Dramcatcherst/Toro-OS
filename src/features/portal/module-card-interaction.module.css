@@ -1,0 +1,19 @@
+/* Scoped to existing available cards. Extra specificity survives either CSS chunk order. */
+.interactive[data-module]:hover {
+  background:linear-gradient(145deg,#183c5b,#162744);
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .interactive[data-module], .interactive[data-module]:hover {
+    transition:none;
+    transform:none;
+  }
+}
+
+@media (forced-colors:active) {
+  .interactive[data-module]:hover {
+    background:Canvas;
+    border-color:LinkText;
+    box-shadow:none;
+  }
+}
