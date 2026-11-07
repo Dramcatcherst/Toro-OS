@@ -1,6 +1,7 @@
 import "server-only";
 import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
+import type { ToroResolvedContext } from "@/features/context/types";
 import { resolveToroContext } from "@/features/context/resolver";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -9,9 +10,12 @@ import {
   canCreateToroInternalWork,
   isExactToroInternalTaskReplay,
   validateToroInternalWorkRequest,
+  type ToroInternalWorkRequest,
   type ToroInternalTaskDraft,
   type ToroInternalTaskReplayComparable,
 } from "./internal-work";
+
+type ToroServerSupabaseClient = Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
 export type ToroInternalWorkResult =
   | {
@@ -132,36 +136,20 @@ function replayResult(row: SupabaseTaskRow, candidate: ToroInternalTaskDraft) {
   return { state: "replayed" as const, task };
 }
 
-export async function createToroInternalWork(
-  input: unknown,
+async function executeToroInternalWork(
+  request: ToroInternalWorkRequest,
+  context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
 ): Promise<ToroInternalWorkResult> {
-  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
-    return { state: "unavailable", error: "Internal work writes are disabled." };
-  }
-  const parsed = validateToroInternalWorkRequest(input);
-  if (!parsed.ok) return { state: "invalid", error: parsed.error };
-
-  const context = await resolveToroContext({ mode: "organization" });
-  if (!context) return { state: "unauthenticated" };
-
-  if (!canCreateToroInternalWork(context)) {
-    return {
-      state: "forbidden",
-      error:
-        "This first controlled-write slice is limited to ADMIN or GERENCIA organization context.",
-    };
-  }
-
-  const supabase = await createServerSupabaseClient();
   let projectId: string | null = null;
 
-  if (parsed.value.projectKey) {
+  if (request.projectKey) {
     const { data, error } = await supabase
       .schema("operations")
       .from("projects")
       .select("id")
       .eq("org_id", context.orgId!)
-      .eq("project_key", parsed.value.projectKey)
+      .eq("project_key", request.projectKey)
       .eq("active", true)
       .limit(1);
 
@@ -184,9 +172,9 @@ export async function createToroInternalWork(
     projectId = id;
   }
 
-  const taskKey = `toro_intake:${parsed.value.idempotencyKey}`;
+  const taskKey = `toro_intake:${request.idempotencyKey}`;
   const draft = buildToroInternalTaskDraft({
-    request: parsed.value,
+    request,
     context,
     projectId,
     nowIso: new Date().toISOString(),
@@ -252,4 +240,44 @@ export async function createToroInternalWork(
   }
 
   return { state: "created", task };
+}
+
+export async function createToroInternalWorkWithContext(
+  input: unknown,
+  context: ToroResolvedContext,
+  supabase: ToroServerSupabaseClient,
+): Promise<ToroInternalWorkResult> {
+  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
+    return { state: "unavailable", error: "Internal work writes are disabled." };
+  }
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+  if (!canCreateToroInternalWork(context)) {
+    return { state: "forbidden", error: "ADMIN or GERENCIA organization context is required." };
+  }
+  return executeToroInternalWork(parsed.value, context, supabase);
+}
+
+export async function createToroInternalWork(
+  input: unknown,
+): Promise<ToroInternalWorkResult> {
+  if (!internalCapabilityEnabled("TORO_INTERNAL_WORK_WRITE_ENABLED")) {
+    return { state: "unavailable", error: "Internal work writes are disabled." };
+  }
+  const parsed = validateToroInternalWorkRequest(input);
+  if (!parsed.ok) return { state: "invalid", error: parsed.error };
+
+  const context = await resolveToroContext({ mode: "organization" });
+  if (!context) return { state: "unauthenticated" };
+
+  if (!canCreateToroInternalWork(context)) {
+    return {
+      state: "forbidden",
+      error:
+        "This first controlled-write slice is limited to ADMIN or GERENCIA organization context.",
+    };
+  }
+
+  const supabase = await createServerSupabaseClient();
+  return executeToroInternalWork(parsed.value, context, supabase);
 }
