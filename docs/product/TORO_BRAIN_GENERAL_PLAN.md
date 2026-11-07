@@ -7,6 +7,17 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
+## Tarifas y distribución de Dreamcatcher · 7 de noviembre de 2026
+
+`revenue_booking_stack` conserva la política y las evidencias privadas de precios. Booking es el primer canal. El hotel principal ofrece su inventario de habitaciones y villas. Toro by Dreamcatcher ofrece las habitaciones 21–28 y Villa Toro. Las unidades compartidas deben descontar la misma disponibilidad en Kross, incluida la relación entre una villa y las habitaciones que la componen.
+
+Para cada inventario vendible se requieren dos planes comparables, alojamiento y alojamiento con desayuno. El diferencial comercial se calcula por persona y noche sobre la misma ocupación, una vez aplicados los descuentos de alojamiento. Los beneficios de fidelidad que regalan desayuno se identifican por separado. Las reservas directas tienen limpieza adicional cero. El importe OTA por estancia depende de la categoría y se registra una sola vez. Los importes, IDs del proveedor, márgenes y mensajes de soporte quedan en el expediente privado.
+
+La prueba exige comparar moneda, fechas, ocupación ofertada, plan, cancelación, prepago, impuestos, cargos y descuentos efectivos. Cubrir fechas con promociones distintas, una y varias noches, ocupación individual, base, adicional y villas. Registrar una discrepancia cuando falta una de las dos ofertas. Verificar mapeo y cotización pública antes de marcar cada canal coordinado. Las conexiones posteriores reutilizan las unidades físicas y las mismas pruebas. El alcance aprobado y las limitaciones actuales se conservan en Supabase bajo `booking_kross_tarifas_20261107`.
+
+<!-- END:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
+
 <!-- BEGIN:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
 ## Sanduchería Santa Teresa — nuevo proyecto de Dreamcatcher — 02/11/2026
 
