@@ -16,6 +16,8 @@ Para cada inventario vendible se requieren dos planes comparables, alojamiento y
 
 La prueba exige comparar moneda, fechas, ocupación ofertada, plan, cancelación, prepago, impuestos, cargos y descuentos efectivos. Cubrir fechas con promociones distintas, una y varias noches, ocupación individual, base, adicional y villas. Registrar una discrepancia cuando falta una de las dos ofertas. Verificar mapeo y cotización pública antes de marcar cada canal coordinado. Las conexiones posteriores reutilizan las unidades físicas y las mismas pruebas. El alcance aprobado y las limitaciones actuales se conservan en Supabase bajo `booking_kross_tarifas_20261107`.
 
+**Origen de promociones.** El hotel crea y mantiene en Kross las promociones de calendario, última hora y reserva anticipada que publica en Booking. Las tarifas por dispositivo y por país se gestionan en la extranet de cada cuenta de Booking. Genius se verifica por separado como programa de fidelidad. Para aceptar una publicación, cruzar el ID de la campaña enviado por Kross con el ID activo en la cuenta de Booking y comparar descuento, períodos, restricciones, habitaciones y planes. Si ya existe una oferta en la extranet, verificar su reemplazo en esa cuenta antes de retirarla. El historial se conserva para comparar producción y precios públicos antes y después.
+
 <!-- END:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
 
 <!-- BEGIN:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
