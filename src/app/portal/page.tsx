@@ -15,10 +15,13 @@ import { isPublicDemo } from "@/lib/server/public-demo";
 import { redirect } from "next/navigation";
 import { PortalSignOut } from "@/features/auth/portal-sign-out";
 import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
+import { canReadHotelOperations, initialPortalTab } from "@/features/portal/hotel-operations";
+import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
+import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
 
 export const dynamic = "force-dynamic";
 
-async function PortalContent() {
+async function PortalContent(requestedTab?: string | string[]) {
   if (isPublicDemo()) redirect("/brain");
   let view;
   try { view = await resolveCurrentToroReadOnlyMenu(); }
@@ -39,6 +42,7 @@ async function PortalContent() {
   }
   const modules = resolvePortalModules(view);
   const hotelAllowed = canReadHotelDirectory(view.context);
+  const operationsAllowed = canReadHotelOperations(view.context);
   const scopeLabel = hotelAllowed ? "Dreamcatcher Hotel" : "Organización activa";
   const attentionAllowed = canViewOwnerAttention(view.context);
   async function readAttention(): Promise<{ state: PortalAttentionState; projection: OwnerAttentionProjection | null }> {
@@ -46,7 +50,10 @@ async function PortalContent() {
     try { return { state: "ready", projection: await loadOwnerAttentionProjection(view!.context) }; }
     catch { return { state: "unavailable", projection: null }; }
   }
-  const [directory, attention] = await Promise.all([hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true,expectedContext:view.context}) : Promise.resolve(null), readAttention()]);
+  const [directory, attention, operations] = await Promise.all([
+    hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true,expectedContext:view.context}) : Promise.resolve(null),
+    readAttention(), operationsAllowed ? loadHotelOperations(view.context) : Promise.resolve(null),
+  ]);
   const directoryAuthorized = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true);
   const operationalLinks = directoryAuthorized ? directory.links : [];
   const catalogueItems = directoryAuthorized ? directory.catalogueItems : [];
@@ -56,6 +63,8 @@ async function PortalContent() {
     <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
+        initialTab={initialPortalTab(requestedTab, hotelAllowed)}
+        hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
@@ -66,6 +75,9 @@ async function PortalContent() {
   </>;
 }
 
-export default async function PortalPage() {
-  return <PrivateViewGuard>{await PortalContent()}</PrivateViewGuard>;
+export default async function PortalPage({ searchParams }: {
+  searchParams?: Promise<{ tab?: string | string[] }>;
+} = {}) {
+  const query = await searchParams;
+  return <PrivateViewGuard>{await PortalContent(query?.tab)}</PrivateViewGuard>;
 }
