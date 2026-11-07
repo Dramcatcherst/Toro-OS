@@ -33,6 +33,9 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: Revenue rate comparison (synthetic)
+        run: node --test tests/revenue-rate-comparison.test.mjs
+
       - name: Lint
         run: npm run lint
 
