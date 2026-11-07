@@ -1,6 +1,18 @@
 # TORO Portal — native hotel operations — 2026-11-07
 
-Status: candidate code and bounded source validation. Deployment and authenticated browser acceptance are separate gates.
+Status: native read module published; database role/scope acceptance passed. Authenticated browser acceptance and current Kross acquisition remain pending.
+
+## Release checkpoint — 2026-11-07
+
+- Canonical implementation/Plan alignment: PR395 merged as `849c7b297891306d8e432fb1965d0fe3265b6735`; CI1545 passed. The current Plan remains the sole authority.
+- Exact production backport: `c2d2c6827bfed0991fdb6945c9a118d2e47e78d2`, tree `85b0750f27b9fae3946c0a76fb68fab77240107c`, parent equal to the previously active `349d15fb93061cba6a285fa3977f03e4d6b6b449`. No unrelated main or PR384 changes were released.
+- Existing Vercel project `prj_nxerFw9ciNews6tUMAah3GAlAJzs`, production deployment `dpl_93ChZgZVMwQ7j3ufMmoqH6Rfjima` READY; a fresh domain lookup confirms that exact source SHA at `https://toro.dreamcatcherhotel.com`. Entry: `/portal?tab=operations`.
+- Backport validation:214 hotel-tools and45 RPC tests, build/types and directed lint passed; independent review ran98 targeted tests successfully. Actual source payload passed projection in memory (141 tasks/21 source-health records); source rows were not saved in Git.
+- SQL role acceptance first ran with the candidate inside a reverted transaction; the original function definition and ACL were independently confirmed restored. After the compatible production reader was READY, migration `portal_hotel_operations_read_v1_20261107` applied the guarded optional extension to the same RPC. A subsequent role test passed exact property/field/count checks and rejected anonymous, mismatched actor and organization. Current definition MD5:`e5a91926c06e7712281a0a8a55403045`; SECURITY INVOKER/STABLE and original authenticated-only EXECUTE ACL preserved.
+- Browser sign-in through the secure form was rejected by TORO with “Usuario o contraseña incorrectos, o acceso no habilitado.” No credential/identity/permission change was made. SQL role tests do not replace browser/session acceptance; it remains pending.
+- Kross current occupancy remains unknown: the4352-row mirror is dated20/10/2026, `source_is_live=false`, with no usable current reservation rows. The new view never derives current occupancy from it.
+- Auxiliary Site v6/`7666e08249f209ec77b40b37ebc60efe2f18ec82` keeps manual capture/history and reciprocal native Portal links; its owner-only audience is unchanged. Its observation status is derived from receipts/source cutoffs, with explicit partial coverage.
+
 
 The owner's instruction places hotel control in the existing TORO Portal's Operation view. The auxiliary Sites capture remains a private manual contingency. It does not become a second task authority or authenticate users on behalf of TORO.
 
