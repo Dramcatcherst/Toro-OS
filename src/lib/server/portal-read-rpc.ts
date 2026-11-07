@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ToroResolvedContext } from "@/features/context/types";
 import { resolveToroContextWithSupabase } from "@/features/context/resolver";
 import { isPublicDemo } from "./public-demo";
+import { canReadHotelOperations, hotelOperationsRpcSchema } from "@/features/portal/hotel-operations";
 
 const uuid = z.string().uuid();
 const text = z.string().max(4096);
@@ -33,7 +34,7 @@ const brainSchema = z.object({ ...envelope, sources: z.object({
   krossHealth: rows(z.object({ ...scope, id: uuid.nullable(), source_name: nullableText, snapshot_kind: nullableText,
     source_as_of: timestamp.nullable(), observed_at: timestamp.nullable(), live_required: z.boolean().nullable(),
     freshness_status: nullableText, safe_for_current_state: z.boolean().nullable() }).strict(), 25),
-}).strict() }).strict();
+}).strict(), hotelOperations: hotelOperationsRpcSchema.optional() }).strict();
 
 const attentionSchema = z.object({ ...envelope, sources: z.object({
   followups: rows(z.object({ ...scope, followup_key: text, subject: text, followup_state: text,
@@ -85,6 +86,10 @@ async function read<T extends typeof brainSchema | typeof attentionSchema>(
   const parsed = schema.safeParse(data);
   if (!parsed.success) throw new Error("Portal read response could not be verified.");
   const value = parsed.data;
+  const hotelOperationsIncluded = "hotelOperations" in value && value.hotelOperations !== undefined;
+  if (hotelOperationsIncluded && !canReadHotelOperations(context)) {
+    throw new Error("Portal hotel operations scope could not be verified.");
+  }
   if (value.actorId !== requested.userId || value.orgId !== requested.orgId ||
     Object.values(value.sources).some(source => source.rows.some((row: { org_id?: string; id?: string | null }) =>
       "org_id" in row ? row.org_id !== requested.orgId : "id" in row && row.id !== requested.orgId))) {
@@ -96,6 +101,9 @@ async function read<T extends typeof brainSchema | typeof attentionSchema>(
   catch { throw new Error("Portal read session could not be verified."); }
   assertContext(current, finance);
   assertContext(context, finance);
+  if (hotelOperationsIncluded && (!canReadHotelOperations(current) || !canReadHotelOperations(context))) {
+    throw new Error("Portal hotel operations session changed.");
+  }
   if (current!.userId !== requested.userId || current!.orgId !== requested.orgId ||
     context.userId !== requested.userId || context.orgId !== requested.orgId) {
     throw new Error("Portal read session changed.");

@@ -7,6 +7,7 @@ import { readPortalAttentionRpc, readPortalBrainRpc, portalReadRpcSelected } fro
 import { loadCanonicalBrainReadSliceWithClient } from "@/features/brain/canonical-read";
 import { loadOwnerAttentionProjectionWithClient } from "@/features/attention/owner-attention-server";
 import sqlPayloads from "../../../tests/fixtures/portal-narrow-read-payloads.json";
+import { HOTEL_OPERATIONS_SCOPE } from "@/features/portal/hotel-operations";
 const otherId = "22222222-2222-4222-8222-222222222222", cut = "2026-10-12T01:30:00.000Z";
 type Payload = {contract:string;actorId:string;orgId:string|null;generatedAt:string;sources:Record<string,{rows:Record<string,unknown>[];limit:number}>};
 function payload(finance = false): Payload {
@@ -122,4 +123,39 @@ it("rejects an impossible financial date without interpreting it as no attention
     document_number: null, due_date: "2026-02-30", currency: "CRC", total: 10, payment_status: "pending",
     obligation_key: null, mailbox: null, source_url: null }];
   await expect(readPortalAttentionRpc(authorizedContext(), asClient(client(p)))).rejects.toThrow("could not be verified");
+});
+
+function hotelPayload() {
+  return { ...payload(), hotelOperations: {
+    propertyId: String(HOTEL_OPERATIONS_SCOPE.propertyId),
+    tasks: { limit: 201, rows: [{ id: otherId, org_id: String(HOTEL_OPERATIONS_SCOPE.orgId), property_id: String(HOTEL_OPERATIONS_SCOPE.propertyId),
+      task_name: "Synthetic operational case", status: "blocked", priority: "critical", area: "Recepción",
+      owner_name: null, assignee_name: null, due_date: null, source_system: "TORO", updated_at: cut, needs_revalidation: true }] },
+    krossHealth: { limit: 26, rows: [] },
+  } };
+}
+it("accepts the optional hotel read without altering the original Brain projection", async () => {
+  const old = await loadCanonicalBrainReadSliceWithClient(authorizedContext(), asClient(client(payload())));
+  const extended = await loadCanonicalBrainReadSliceWithClient(authorizedContext(), asClient(client(hotelPayload())));
+  expect(extended).toEqual(old); expect(JSON.stringify(extended)).not.toContain("Synthetic operational case");
+  const bundle = await readPortalBrainRpc(authorizedContext(), asClient(client(hotelPayload())));
+  expect(bundle.hotelOperations?.tasks.rows[0].id).toBe(otherId);
+});
+it.each(["property", "row_property", "row_org", "private_field", "cap"])("rejects a malformed optional hotel %s", async reason => {
+  const data = hotelPayload();
+  if (reason === "property") data.hotelOperations.propertyId = otherId;
+  if (reason === "row_property") data.hotelOperations.tasks.rows[0].property_id = otherId;
+  if (reason === "row_org") data.hotelOperations.tasks.rows[0].org_id = otherId;
+  if (reason === "private_field") Object.assign(data.hotelOperations.tasks.rows[0], { notes: "private_sentinel" });
+  if (reason === "cap") data.hotelOperations.tasks.limit = 202;
+  await expect(readPortalBrainRpc(authorizedContext(), asClient(client(data)))).rejects.toThrow("could not be verified");
+});
+it.each(["AUDITOR", "JEFE_DEPARTAMENTO"] as const)("keeps the original Brain read but rejects hotel tasks for %s", async role => {
+  const context = authorizedContext(); context.membership!.roles = [role]; mocks.revalidate.mockResolvedValue(context);
+  await expect(readPortalBrainRpc(context, asClient(client(payload())))).resolves.toMatchObject({ contract: "portal-read-rpc-v1" });
+  await expect(readPortalBrainRpc(context, asClient(client(hotelPayload())))).rejects.toThrow("hotel operations scope");
+});
+it("rejects hotel fields after a management role is demoted during the RPC", async () => {
+  const current = authorizedContext(); current.membership!.roles = ["AUDITOR"]; mocks.revalidate.mockResolvedValue(current);
+  await expect(readPortalBrainRpc(authorizedContext(), asClient(client(hotelPayload())))).rejects.toThrow("hotel operations session changed");
 });
