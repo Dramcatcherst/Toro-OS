@@ -338,6 +338,13 @@ function summarizePacket(commandResults) {
   else if (states.length && states.every((value) => value === "disconnected")) state = "disconnected";
   else if (states.some((value) => value === "degraded" || value === "disconnected")) state = "degraded";
   if (states.includes("connected") && states.includes("disconnected")) category = "live_evidence_conflict";
+  // An adapter may lack probe support while still exposing inventory drift.
+  // That explicit coverage failure remains relevant even without live fields.
+  if (commandResults.some((row) => row.category === "no_enabled_accounts" ||
+      row.coverage?.missing > 0 || row.coverage?.disabled > 0 || row.coverage?.duplicates > 0)) {
+    if (state === "connected") state = "degraded";
+    category = "account_coverage_incomplete";
+  }
   if (commandResults.some((row) => row.category === "gateway_health_failed")) {
     if (state === "connected") state = "degraded";
     category = "gateway_health_failed";
@@ -368,6 +375,7 @@ export async function collectHostDiagnostics(run = runHostCommand, {
   const env = nodePath ? { ...process.env, PATH: `${dirname(nodePath)}${delimiter}${process.env.PATH ?? ""}` } : undefined;
   const stopAt = performance.now() + totalTimeoutMs;
   const commandResults = [];
+  const sampleTimes = new Map();
   let launcherUnavailable = false;
   for (const [name, args] of COMMANDS) {
     if (launcherUnavailable) {
@@ -395,11 +403,29 @@ export async function collectHostDiagnostics(run = runHostCommand, {
       clearTimeout(guard);
     }
     launcherUnavailable = ["ENOENT", "EACCES"].includes(result?.error?.code);
-    commandResults.push(summarizeHostCommand(name, result, Date.now(), { expectedAccounts }));
+    const collectedAt = Date.now();
+    const summary = summarizeHostCommand(name, result, collectedAt, { expectedAccounts });
+    if (summary.liveHealth || summary.liveProbe) {
+      // The validated source timestamp stays private and is retained only until
+      // emission. A later slow audit must not turn an old sample into "now".
+      const source = JSON.parse(String(result.stdout));
+      sampleTimes.set(summary, source.ts ?? collectedAt);
+    }
+    commandResults.push(summary);
+  }
+  const observedAt = Date.now();
+  for (const [summary, sampleAt] of sampleTimes) {
+    const ageMs = observedAt - sampleAt;
+    if (ageMs <= HEALTH_SNAPSHOT_MAX_AGE_MS && ageMs >= -HEALTH_SNAPSHOT_FUTURE_TOLERANCE_MS) continue;
+    summary.result = "inconclusive";
+    summary.state = "unknown";
+    if (summary.liveHealth !== undefined) summary.liveHealth = false;
+    if (summary.liveProbe !== undefined) summary.liveProbe = false;
+    summary.category = "snapshot_expired_during_collection";
   }
   return {
     contract: "toro-openclaw-host-probe-v1",
-    observedAt: new Date().toISOString(),
+    observedAt: new Date(observedAt).toISOString(),
     privacy: "summary_only_no_raw_output",
     commandResults,
     ...summarizePacket(commandResults),

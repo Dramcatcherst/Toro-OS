@@ -91,8 +91,11 @@ prove effective permissions: inspect the actual allow/deny/sender policy and
 run negative tests before changing it. Backup inventory is not a restore drill.
 Unsupported commands are reported without inventing fallback commands or fixes.
 
-Validation: `npm run test:openclaw-host` (47 tests locally at this cut, including
+Validation: `npm run test:openclaw-host` (49 tests locally at this cut, including
 real synthetic CLI subprocesses with spaces/metacharacters and child PATH).
+Positive evidence must still meet its freshness bound at final packet emission;
+a slow later audit cannot renew an old sample. Explicit account coverage drift
+still blocks a connected verdict when the adapter has no supported probe.
 This is code-level validation. No production OpenClaw process, configuration,
 account, permission or message is changed by this repository patch.
 

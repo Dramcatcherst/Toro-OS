@@ -1398,7 +1398,7 @@ all subsequent host changes. The local environment cannot administer the host.
 in `scripts/openclaw-host-diagnostics.mjs`, mapped in the existing runtime audit
 runbook. They cover explicit CLI/Node launch, two expected accounts, disabled
 aliases, freshness, conservative live evidence, private security counts and proof
-coverage. The 47-case host suite passed locally; this does not install or activate
+coverage. The 49-case host suite passed locally; this does not install or activate
 the script on the Gateway. Canonical status is not promoted by this code change.
 
 **NEXT:** exact-SHA review/CI and existing merge gates; execute the reviewed probe

@@ -698,3 +698,37 @@ test("malformed enabled flags cannot prove an active account", () => {
   }
 });
 
+test("coverage drift from a non-probing account inventory cannot be masked by live evidence", async () => {
+  for (const scenario of ["disabled-health", "missing-probe-account", "duplicate-probe-account"]) {
+    const packet = await collectHostDiagnostics((_command, args) => {
+      if (args[0] === "health") return healthResult(scenario === "disabled-health"
+        ? { hotel: { enabled: false }, personal: { enabled: false } }
+        : { hotel: readyAccount, personal: readyAccount }, Date.now());
+      if (args[0] === "channels" && args[1] === "status") return probeResult(scenario === "disabled-health"
+        ? [{ accountId: "hotel", probe: { ok: true } }, { accountId: "personal", probe: { ok: true } }]
+        : scenario === "missing-probe-account" ? [{ accountId: "hotel" }]
+        : [{ accountId: "hotel" }, { accountId: "hotel" }, { accountId: "personal" }]);
+      return { status: 0, stdout: "{}" };
+    }, { expectedAccounts: ["hotel", "personal"] });
+    assert.equal(packet.whatsapp.state, "degraded", scenario);
+    assert.equal(packet.whatsapp.category, "account_coverage_incomplete", scenario);
+  }
+});
+
+test("health evidence must still be fresh at packet emission after later commands", async () => {
+  const originalNow = Date.now;
+  let clock = originalNow();
+  Date.now = () => clock;
+  try {
+    const packet = await collectHostDiagnostics((_command, args) => {
+      if (args[0] === "health") return healthResult({ hotel: readyAccount }, clock - 29_000);
+      if (args[0] === "channels" && args[1] === "capabilities") clock += 2_000;
+      return { status: 0, stdout: "{}" };
+    });
+    assert.equal(packet.whatsapp.state, "unknown");
+    const health = packet.commandResults.find((row) => row.name === "whatsapp_health");
+    assert.equal(health.liveHealth, false);
+    assert.equal(health.category, "snapshot_expired_during_collection");
+  } finally { Date.now = originalNow; }
+});
+
