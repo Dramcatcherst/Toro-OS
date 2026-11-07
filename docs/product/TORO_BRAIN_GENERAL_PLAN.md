@@ -1379,6 +1379,40 @@ Maturity:
 
 # 9. OpenClaw current state
 
+## Two-account diagnostic improvement — 7 November 2026
+
+**Scope/owners:** TORO Systems + Comms, with Identity/Governance for private/work
+boundaries; existing #170/#209 repair and continuity lane. This is an integration
+reliability change in the existing host probe, not a new Brain, service, scheduler
+or message writer. Generalizable controls use caller-provided account aliases;
+private phone numbers and authentication material stay outside this repository.
+
+**CURRENT:** owner-supplied screenshots in the 7 November connection session show
+the personal line replied and the hotel line replied afterward. This is dated
+point-in-time channel evidence, not independent live host access or proof of
+history, recovery, role isolation, canonical identity or current PMS data. The
+previous audit baseline below remains dated evidence rather than a claim about
+all subsequent host changes. The local environment cannot administer the host.
+
+**TARGET / implemented in candidate code:** twenty read-only diagnostic controls
+in `scripts/openclaw-host-diagnostics.mjs`, mapped in the existing runtime audit
+runbook. They cover explicit CLI/Node launch, two expected accounts, disabled
+aliases, freshness, conservative live evidence, private security counts and proof
+coverage. The 47-case host suite passed locally; this does not install or activate
+the script on the Gateway. Canonical status is not promoted by this code change.
+
+**NEXT:** exact-SHA review/CI and existing merge gates; execute the reviewed probe
+under the existing service identity on the authorized host, preserving both
+accounts. Then collect negative access, reconnect/replay, backup/restore and
+canonical source receipts through the existing contracts. Do not change broad
+tool permissions merely to remove static audit warnings.
+
+**FUTURE:** measure availability, recovery time and owner effort after runtime
+adoption; reuse the controls through existing coordinators only. No second
+consumer, capture/backfill, paid Kross API, financial writer or new rollout is
+activated here. Revert the diagnostic patch for code rollback; no host config or
+credential was changed by this work.
+
 ## CURRENT
 
 Canonical registry:
