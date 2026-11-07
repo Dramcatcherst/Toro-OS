@@ -33,6 +33,7 @@ it("shows login without private navigation to anonymous visitors", async () => {
   expect(html).toContain("/login?next=/portal");
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).not.toContain("Dreamcatcher");
+  expect(html).not.toContain("Expediente · demostración");
   expect(mocks.directory).not.toHaveBeenCalled();
 });
 
@@ -86,6 +87,7 @@ it.each(["choice", "inactive"])("hides modules for %s context", async reason => 
   expect(html).not.toContain("MÓDULO 00");
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).toContain('action="/api/auth/logout"');
+  expect(html).not.toContain("Expediente · demostración");
 });
 it("presents the canonical structure without rendering fabricated links for pending modules", async () => {
   mocks.menu.mockResolvedValue(view());
@@ -96,6 +98,8 @@ it("presents the canonical structure without rendering fabricated links for pend
   expect(html).toContain("MÓDULO 11");
   expect(html).not.toContain("focus=finance");
   expect(html).toContain('role="tablist"');
+  expect(html).toContain("Expediente · demostración");
+  expect(html).toContain("Lectura real cerrada");
   expect(html).not.toContain("Santa Toro");
 });
 
@@ -129,7 +133,7 @@ it("names favorite and catalog references separately", async () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   expect(new Set(ids).size).toBe(ids.length);
   expect(html).toContain('aria-labelledby="favorite-LINK-086"');
-  expect(html).toMatch(/aria-labelledby="catalog-[^"]*LINK-086"/);
+  expect(html).toMatch(/aria-labelledby="[^"]*-catalogue-[^"]*LINK-086"/);
 });
 
 it("keeps the complete catalogue out of favorites and operational panels", async () => {

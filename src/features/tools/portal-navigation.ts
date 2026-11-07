@@ -5,6 +5,7 @@ import type { ToroResolvedContext } from "@/features/context/types";
 export function portalNavigation(context: ToroResolvedContext | null): ToolLink[] {
   if (!canReadHotelDirectory(context)) return [];
   return [
+    { id: "PORTAL-KROSS-DASHBOARD", label: "Kross · Dashboard", url: "https://dreamcatcherhotel.krossbooking.com/rct/v3/dashboard" },
     { id: "PORTAL-POS", label: "Kross POS", url: "https://dreamcatcherhotel.krossbooking.com/admin/pos" },
     { id: "PORTAL-WHATSAPP", label: "WhatsApp", url: "https://web.whatsapp.com/" },
     { id: "PORTAL-ALEGRA", label: "Alegra", url: "https://app.alegra.com/" },

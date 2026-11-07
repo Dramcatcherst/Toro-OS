@@ -8,7 +8,7 @@ import {
   type ToolLink,
 } from "./directory";
 import { authorizedContext, completeCatalogueRows } from "./fixtures.test-utils";
-import { getToolPresentation } from "./portal-tool-links";
+import { getToolPresentation, getToolFacetValue, PortalToolLinks } from "./portal-tool-links";
 import {
   initialToolCatalogueFilters,
   PortalToolCatalogue,
@@ -32,6 +32,26 @@ const filters = (patch: Partial<ToolCatalogueFilters> = {}): ToolCatalogueFilter
   ...patch,
 });
 const ids = (items: ToolCatalogueItem[]) => items.map(item => item.id);
+
+it("combines provider and scope facets from permitted fields", () => {
+  const selection = selectToolCatalogue(completeCatalogue(), filters({ provider: "Google Analytics", scope: "Hotel" }));
+  expect(ids(selection.filteredLinks)).toEqual(["LINK-001"]);
+});
+
+it("offers a separate information control without nesting it in the destination link", () => {
+  const html = renderToStaticMarkup(<PortalToolLinks links={[reviewed[0]]} />);
+  expect(html).toContain('aria-label="Información de Kross"');
+  expect(html).toContain("<dialog");
+  expect(html).toContain("Dirección");
+  expect(html).toContain("Conexión sin comprobar");
+  for (const anchor of html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)) expect(anchor[0]).not.toContain("<button");
+});
+
+it("does not turn a personal link title into provider or scope evidence", () => {
+  const link = { id: "personal-demo", label: "Mi cierre", url: "https://example.test" };
+  expect(getToolFacetValue(link, "provider")).toBe("Proveedor sin informar");
+  expect(getToolFacetValue(link, "scope")).toBe("Sin ámbito informado");
+});
 const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 function completeCatalogue() {
@@ -194,21 +214,22 @@ describe("tool catalogue markup", () => {
     const renderedIds = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
     expect(new Set(renderedIds).size).toBe(renderedIds.length);
     const webAnchors = [...html.matchAll(/<a\b[^>]*href="https:\/\/example\.com\/"[^>]*>/g)].map(match => match[0]);
-    expect(webAnchors).toHaveLength(2);
+    expect(webAnchors).toHaveLength(4);
+    expect(webAnchors.filter(anchor => anchor.includes("data-tool="))).toHaveLength(2);
     for (const anchor of webAnchors) {
       expect(anchor).toContain('target="_blank"');
       expect(anchor).toContain('rel="noopener noreferrer"');
     }
     for (const destination of ["mailto:hotel@example.test", "tel:+50626401234"]) {
       const anchors = [...html.matchAll(new RegExp(`<a\\b[^>]*href="${destination.replace("+", "\\+")}"[^>]*>`, "g"))];
-      expect(anchors).toHaveLength(2);
+      expect(anchors).toHaveLength(4);
       expect(anchors.every(match => !match[0].includes("target="))).toBe(true);
     }
     expect(html.match(/data-tool="LINK-904"/g)).toHaveLength(2);
   });
 
   it.each([
-    ["complete", "Catálogo interno completo para tu rol."],
+    ["complete", "Catálogo autorizado de esta consulta."],
     ["reviewed", "Accesos revisados para tu rol."],
     ["fallback", "Cobertura parcial"],
   ] as const)("describes %s coverage without claiming an integration", (mode, message) => {

@@ -1,0 +1,19 @@
+# TORO Portal · propuesta visual integral azul V2
+
+Estado: DISEÑO APROBADO por Mauricio24/10/2026; primer lote implementado y probado localmente, sin publicación productiva. Este documento pertenece al Portal y al Plan General existentes; no crea producto ni base paralela.
+
+La propuesta conserva azul TORO y rehace la distribución: fondo claro, paneles compactos con bordes y sombras suaves, acciones azules distinguibles, listas completas con scroll y recuento, detalle desplegable y gráficos con tabla equivalente. PC usa navegación lateral y panel contextual; móvil usa listas, filtros en panel y navegación inferior. La densidad es un objetivo a comprobar y no autoriza reducir lectura ni objetivos táctiles.
+
+Cobertura:13rutas patrón existentes y8vistas del Portal,agrupadas en19láminasPC/móvil. / puede redirigir; /modules/[id] usa plantilla compartida. Se mantienen distintos los12dominios y los19módulos legados. Fichas de persona,sociedad,inmueble yvehículo son variantes propuestas; no acreditan un lector individual activo.
+
+Organización de información: objeto canónico/organización/ámbito/dominio/tipo/periodo/corte/moneda/fuente/estado de evidencia/privacidad/responsable/próxima acción. Etiquetas son una proyección revisable,no conceden acceso ni crean nuevos registros por sí mismas. La información de chats se consolida con referencias a sus fuentes, sin promover resúmenes a evidencia primaria ni fusionar identidades por nombre. No se da por auditado todo el corpus.
+
+Los porcentajes llevan numerador,denominador,universo,periodo yfuente. Se separan cobertura documental,conciliación aceptada,preparación técnica,ejecución yreconstrucción contable. No porcentaje global inventado ni suma de monedas. El contenido de renders es ficticio y las funciones pendientes se rotulan como propuestas.
+
+Google Calendar:recordatorio con entidad,concepto,importe/moneda,fecha,estado yfuente; calendariohotel separado delpersonal. Drive conserva referencias a originales permitidos. Correo reutiliza ingesta canónica,deduplicación,etiquetas yprocedencia. WhatsApp/compartir exige revisión de campos,destinatario,ámbito yautorización aplicable,con recibo. Un render no activa conexiones ni permisos.
+
+Las40funciones,40mejorasdeuso y100criteriosvisuales constituyen un backlog propuesto, no mejoras implementadas. Lector individual,compartición ysincronización real conservan los gates actuales. La aprobación visual no sustituye validar navegación,acciones,cobertura de rutas,móvil,PC,teclado,contraste yfuentes en cada lote del Portal existente.
+
+Primer lote CURRENT local: superficies azules claras con bordes/sombras discretos; Todos los accesos por proyecto ycategoría reutilizando el catálogo autorizado; preferencias personales de enlaces en almacenamiento local por usuario yorganización, con validación,orden,favoritos,edición ydeshacer. No sincronización de esas preferencias con servidor ni nueva base/grant. El widget oficial Kross existente se mantiene disponible al cambiar pestañas y conserva sus scripts/aislamiento; nueva navegación fija al dashboardKrossV3 leído en la sesión nativa. Kross conserva tarifas/disponibilidad/reservas yAlegra conserva libros fiscales. No nuevas tarifas,asientos,pagos oacciones de proveedor.
+
+Verificación del lote:257tests relevantes PASS,TypeScript/build PASS,lint deproducto0errores/1warning previo,prueba CUA con datos sintéticos enPC ymóvil390px. Crear/favorito/editar/recargar/cambiar perfil/eliminar/deshacer/buscar/abrir grupos comprobados; consola sin errores,IDs únicos ysin desbordamiento horizontal móvil. El widget externo se deshabilitó enla fixture; su backend no fue probado mediante una reserva ni cotización real. Se leyó enKross la URL delmotor ysu configuración,sin guardar cambios. Sin merge/despliegue ni aceptación de datos privados hospedados.

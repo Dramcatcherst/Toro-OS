@@ -1,0 +1,30 @@
+# Execution ledger
+
+- Objective: approved compact synthetic casebook within the existing private Portal.
+- Authority: Mauricio's explicit design approval and first-lot instruction, 24 October 2026.
+- Base: `2da8a7217dcd263758f22230f647f10e19c35213`, clean isolated clone; branch `codex/portal-expediente-first-lot-20261024`.
+- Boundary: no real casebook reader, permissions, persistence, exports, accounting or outbound messages.
+- Execution: root uses executing-plans task by task; fresh independent final reviewer. Plan review approval is already supplied by the human for this bounded first lot.
+- In progress: dependency bootstrap and RED model tests.
+- Check results and commit evidence will be appended after execution.
+
+- Task1: RED missing model/fixtures; GREEN7 tests; commit385e122.
+- Task2: RED missing component and integration; GREEN371 directed tests in27files. Full lint0errors/1pre-existing warning, changed-file lint clean. Next build and TypeScript pass.
+- Visual: actual workspace/components in localhost-only synthetic harness at320/390/1280px, no document overflow, visible targets>=44px. Search accents, combined filters, empty/reset, tab preservation, mobile detail/back, keyboard and context reset verified. No real session/data claims.
+- Fresh reviewer: one test-fixture privacy finding corrected to generic checks; no findings remain.24focused tests independently passed.
+- Local QA harness remains ignored under .toro-data; never a production route.
+
+## Cloud release verification — 2026-10-25 UTC
+
+- Human publication request is a separate release task from the documentary automation. This verification stays in PR384 and does not authorize that automation to publish.
+- Revalidated remote main `4b8fd86a957bafdc99dbbee42b844446fe91a349` and candidate `b32ca4c4dc6b10e07e98cfdf171ea10cdcf19c3f`; main is an ancestor and the working copies were clean before the isolated QA correction. The latter advances `6923a908` only with General Plan documentation. No second editor was started.
+- Candidate CI `40170475749` completed successfully, including install/tests/lint/build. Exact candidate preview `dpl_CMgYcAr1XRp2PmM2uEdTHdgq2Q7i` is READY at `https://toro-pr11-preview-78tu4hpul-dreamcatcher-s-projects.vercel.app/portal`; it is a preview, not production.
+- In an isolated checkout, `npm ci` from the unchanged lockfile installed Next16.3.8. Repeated local suites passed:274 Portal/tools tests and164 access tests. Earlier checks using shared Next16.3.6 were superseded by this run.
+- Cloud Chromium154 with Playwright1.60 rendered the actual workspace/components, CSS and Next Link/Image in a disposable synthetic Vite harness. No application session or production data was injected. At320/390/1280px, actual Caja/Mensajes clicks moved focus to their named sections and retained drafts across tab changes; no document overflow, page errors or relevant console errors were observed. Search narrowed the catalogue; information-dialog Escape restored focus. Synthetic personal preferences remained absent in a second organization key and returned in the original key. Restricted synthetic context omitted the hotel message editor and operation tab. Hoy/Buscar hrefs were checked; their deployed route navigation was not exercised.
+- Visual QA found a new light-background regression in Caja: auxiliary notes and the expanded manual-summary label retained the old pale foreground outside `.panel`. Reproduced computed text/background colors had contrast1.53:1 for the notes. The minimal correction adds `.utilityNote` and `.utilityField` to the existing page text selector; no JS, route, permission, data or dependency change. Browser readback after correction:37 note/label samples, minimum5.123:1; affected notes5.50:1. The contrast check failed before the correction and passed after it; the interaction checks also passed again. Independent read-only review accepted the narrow correction and evidence.
+- Kross iframe code is unchanged by PR384. In the fresh cloud browser, three public provider assets failed with `ERR_TUNNEL_CONNECTION_FAILED`; the official external fallback remained present. This does not validate dates/results, provider cookies, dataLayer or submit handling, and does not establish a new widget regression.
+- Remote preview `/portal` returned only the anonymous entry screen with private/no-store, frame denial and no authenticated workspace. The Vercel shared-link fetch of `/api/brain/context` was rejected by automatic approval review because it could disclose private session/organization context; known not executed and not retried through another route.
+- Release remains pending: the deployment contract requires exact profile/configuration inventory, absence of worker/provider-write credentials, and authenticated login/role/scope/context/refresh/logout acceptance. No supported application session was available in this cloud environment. The earlier environment-metadata403 was not retried unchanged. Synthetic tests do not prove deployed identity isolation or configuration.
+- Production readback still identified `dpl_55PLSKChYZARB1Vd3A6QiNz9nvxv`, targetproduction/READY, SHA `349d15fb93061cba6a285fa3977f03e4d6b6b449`, domain `https://toro.dreamcatcherhotel.com`. No merge, production deployment or promotion was attempted. No secrets, permissions, operational data, accounting, reservations, automations or other products were changed.
+- Recovery: revert only this presentation/evidence commit if needed; do not rewrite concurrent history or roll back business data. Keep the existing production deployment until release gates pass. Local synthetic harness and screenshots stay outside Git and are not a release artifact.
+- Validation of the isolated correction: standard `npm run build` completed with Next16.3.8, TypeScript and route generation; `npm run lint` exited0 with the pre-existing unused-parameter warning in the OAuth resource route. These local checks use no application session or production configuration and do not establish authenticated deployment acceptance.

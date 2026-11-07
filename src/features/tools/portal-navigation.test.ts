@@ -13,6 +13,7 @@ describe("owner-approved navigation", () => {
     const context = authorizedContext();
     const before = JSON.stringify(context);
     const links = portalNavigation(context);
+    expect(links.find(link => link.id === "PORTAL-KROSS-DASHBOARD")?.url).toBe("https://dreamcatcherhotel.krossbooking.com/rct/v3/dashboard");
     expect(links.find(link => link.id === "PORTAL-POS")?.url).toBe("https://dreamcatcherhotel.krossbooking.com/admin/pos");
     expect(links.every(link => Object.keys(link).sort().join() === "id,label,url" && new URL(link.url).protocol === "https:")).toBe(true);
     expect(JSON.stringify(context)).toBe(before);

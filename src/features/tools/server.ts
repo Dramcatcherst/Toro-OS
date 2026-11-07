@@ -59,7 +59,7 @@ export async function loadHotelDirectory({ includeApprovedNavigation = false, in
       const full = await read("dreamcatcher_tool_catalog_v1");
       const catalogueItems = full.error ? [] : projectCompleteCatalogueRows(context, full.data);
       const operational = full.error ? [] : projectToolRows(context, full.data);
-      if (catalogueItems.length === 244) {
+      if (catalogueItems.length > 0) {
         return await finish({ state: "ready", links: [...operational, ...navigation],
           catalogueItems: [...catalogueItems, ...catalogueItemsFromLinks(navigation)],
           catalogueMode: "complete", account, ...navigationState }, true);

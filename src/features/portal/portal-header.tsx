@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Building2, ChevronDown, Home, Network, UserRound, Wrench, CloudSun } from "lucide-react";
 import { PortalSignOut } from "@/features/auth/portal-sign-out";
@@ -18,8 +19,9 @@ export function PortalHeader({ current, scopeLabel = "Organización activa", inc
   return <header className={styles.header}>
     <a className={styles.skipLink} href="#portal-content">Saltar al contenido</a>
     <div className={styles.headerInner}>
-      <Link href="/portal" prefetch={false} className={styles.brand} aria-label="TORO · Portal empresarial">
-        <strong>TORO</strong><span>OPERATION SYSTEM</span>
+      <Link href="/portal" prefetch={false} className={`${styles.brand} ${styles.brandWithLogo}`} aria-label="TORO · Portal empresarial">
+        <Image className={styles.brandMark} src="/brand/toro/toro-logo-master-v1.jpg" alt="" width={44} height={44} unoptimized loading="eager" />
+        <span className={styles.brandCopy}><strong>TORO</strong><span>OPERATION SYSTEM</span></span>
       </Link>
       <Link href="/my-toro#mi-cuenta" prefetch={false} className={styles.scope} aria-label={`Mi contexto: ${scopeLabel}`}>
         <Building2 size={16} aria-hidden="true" />{scopeLabel}

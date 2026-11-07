@@ -3,19 +3,19 @@
 import { useId, useReducer } from "react";
 import { RotateCcw, Search } from "lucide-react";
 import type { ToolCatalogueItem, ToolCatalogueMode } from "./directory";
-import { getToolPresentation, PortalToolLinks } from "./portal-tool-links";
+import { getToolPresentation, getToolFacetValue, PortalToolLinks, type ToolFacetKey } from "./portal-tool-links";
 import portalStyles from "@/features/portal/portal.module.css";
 import styles from "./portal-tool-catalogue.module.css";
 
 export const TOOL_CATALOGUE_BATCH_SIZE = 48;
-export type ToolCatalogueFilters = { query: string; project: string; category: string; state: string; visibleCount: number };
+export type ToolCatalogueFilters = { query: string; project: string; category: string; state: string; provider: string; scope: string; visibleCount: number };
 export type ToolCatalogueAction =
-  | { type: "query" | "project" | "category" | "state"; value: string }
+  | { type: "query" | ToolFacetKey; value: string }
   | { type: "reset" }
   | { type: "more" };
 
 export const initialToolCatalogueFilters: ToolCatalogueFilters = {
-  query: "", project: "Todos", category: "Todas", state: "Todos", visibleCount: TOOL_CATALOGUE_BATCH_SIZE,
+  query: "", project: "Todos", category: "Todas", state: "Todos", provider: "Todos", scope: "Todos", visibleCount: TOOL_CATALOGUE_BATCH_SIZE,
 };
 
 export function toolCatalogueReducer(state: ToolCatalogueFilters, action: ToolCatalogueAction): ToolCatalogueFilters {
@@ -25,14 +25,13 @@ export function toolCatalogueReducer(state: ToolCatalogueFilters, action: ToolCa
 }
 
 const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-const valueFor = (item: ToolCatalogueItem, key: "project" | "category" | "state") =>
-  item.kind === "directory" ? item[key] : key === "project" ? "Accesos revisados" : key === "category" ? getToolPresentation(item).category : "Revisado";
+const valueFor = getToolFacetValue;
 const priorityRank = (item: ToolCatalogueItem) => {
   if (item.kind !== "directory") return 4;
   const rank = /^P([0-3])(?:$|[\s:._-])/i.exec(item.priority.trim());
   return rank ? Number(rank[1]) : 5;
 };
-const optionList = (items: ToolCatalogueItem[], key: "project" | "category" | "state", all: string, current: string) => {
+const optionList = (items: ToolCatalogueItem[], key: ToolFacetKey, all: string, current: string) => {
   const options = [all, ...new Set(items.map(item => valueFor(item, key)))].sort((a, b) =>
     a === all ? -1 : b === all ? 1 : a.localeCompare(b, "es"));
   if (!options.includes(current)) options.push(current);
@@ -50,7 +49,9 @@ export function selectToolCatalogue(items: ToolCatalogueItem[], filters: ToolCat
       presentation.category, ...presentation.keywords, ...directoryText].join(" ");
     return (filters.project === "Todos" || valueFor(item, "project") === filters.project) &&
       (filters.category === "Todas" || valueFor(item, "category") === filters.category) &&
-      (filters.state === "Todos" || valueFor(item, "state") === filters.state) && normalize(text).includes(query);
+      (filters.state === "Todos" || valueFor(item, "state") === filters.state) &&
+      (filters.provider === "Todos" || valueFor(item, "provider") === filters.provider) &&
+      (filters.scope === "Todos" || valueFor(item, "scope") === filters.scope) && normalize(text).includes(query);
   }).sort((a, b) => priorityRank(a) - priorityRank(b) ||
     valueFor(a, "project").localeCompare(valueFor(b, "project"), "es") ||
     Number(b.kind === "directory" && b.homeEligible) - Number(a.kind === "directory" && a.homeEligible) ||
@@ -59,6 +60,8 @@ export function selectToolCatalogue(items: ToolCatalogueItem[], filters: ToolCat
   const projects = optionList(items, "project", "Todos", filters.project);
   const categories = optionList(items, "category", "Todas", filters.category);
   const states = optionList(items, "state", "Todos", filters.state);
+  const providers = optionList(items, "provider", "Todos", filters.provider);
+  const scopes = optionList(items, "scope", "Todos", filters.scope);
   // Group only adjacent items: collecting a project across priority bands would
   // move its routine items ahead of another project's critical work.
   const groups: { project: string; links: ToolCatalogueItem[] }[] = [];
@@ -68,7 +71,7 @@ export function selectToolCatalogue(items: ToolCatalogueItem[], filters: ToolCat
     if (previous?.project === project) previous.links.push(item);
     else groups.push({ project, links: [item] });
   }
-  return { filteredLinks, visibleLinks, groups, projects, categories, states, total: items.length,
+  return { filteredLinks, visibleLinks, groups, projects, categories, states, providers, scopes, total: items.length,
     filteredTotal: filteredLinks.length, hasMore: visibleLinks.length < filteredLinks.length };
 }
 
@@ -80,15 +83,15 @@ export function PortalToolCatalogue({ items, idPrefix, mode = "reviewed" }: {
   const instance = useId();
   const catalogueId = idPrefix + "-" + instance;
   const selection = selectToolCatalogue(items, filters);
-  const filtered = Boolean(filters.query.trim() || filters.project !== "Todos" || filters.category !== "Todas" || filters.state !== "Todos");
+  const filtered = Boolean(filters.query.trim() || filters.project !== "Todos" || filters.category !== "Todas" || filters.state !== "Todos" || filters.provider !== "Todos" || filters.scope !== "Todos");
   return <section className={portalStyles.viewPanel + " " + styles.catalogue} aria-label="Catálogo de herramientas">
     <div className={styles.catalogueIntro}>
-      <p>{mode === "complete" ? "Catálogo interno completo para tu rol." : mode === "reviewed"
+      <p>{mode === "complete" ? "Catálogo autorizado de esta consulta." : mode === "reviewed"
         ? "Accesos revisados para tu rol." : "Cobertura parcial: mostramos únicamente los accesos revisados disponibles."}</p>
       {mode === "complete" && items.some(item => item.kind === "reviewed") ? <p>{items.filter(item => item.kind === "directory").length} fichas del directorio y {items.filter(item => item.kind === "reviewed").length} accesos manuales revisados.</p> : null}
-      <p>El estado y el ámbito indican el uso previsto; un enlace no confirma sesión, integración ni datos vigentes.</p>
+      <p>Filtra por las etiquetas del directorio. La ficha ⓘ explica el destino; un enlace no confirma conexión activa ni cobertura total.</p>
     </div>
-    <div className={portalStyles.catalogFilters}>
+    <div className={portalStyles.catalogFilters + " " + styles.filters}>
       <label className={portalStyles.catalogSearch}><Search size={18} aria-hidden="true" />
         <span className={portalStyles.srOnly}>Buscar por nombre, uso, proveedor, proyecto o sección</span>
         <input type="search" value={filters.query} onChange={event => dispatch({ type: "query", value: event.target.value })} placeholder="Buscar herramienta, tarea o proveedor…" />
@@ -103,10 +106,16 @@ export function PortalToolCatalogue({ items, idPrefix, mode = "reviewed" }: {
         <label className={portalStyles.categorySelect}><span>Estado</span><select value={filters.state} onChange={event => dispatch({ type: "state", value: event.target.value })}>
           {selection.states.map(state => <option key={state} value={state}>{state}</option>)}
         </select></label>
+        <label className={portalStyles.categorySelect}><span>Proveedor</span><select value={filters.provider} onChange={event => dispatch({ type: "provider", value: event.target.value })}>
+          {selection.providers.map(provider => <option key={provider} value={provider}>{provider}</option>)}
+        </select></label>
+        <label className={portalStyles.categorySelect}><span>Ámbito</span><select value={filters.scope} onChange={event => dispatch({ type: "scope", value: event.target.value })}>
+          {selection.scopes.map(scope => <option key={scope} value={scope}>{scope}</option>)}
+        </select></label>
       </div>
     </div>
     <div className={styles.feedbackRow}>
-      <p role="status" aria-live="polite" className={portalStyles.panelNote}>{selection.visibleLinks.length} mostrados · {selection.filteredTotal} coincidencias · {selection.total} en el catálogo</p>
+      <p role="status" aria-live="polite" className={portalStyles.panelNote}>{selection.visibleLinks.length} mostrados · {selection.filteredTotal} coincidencias · {selection.total} en esta consulta</p>
       <button type="button" className={portalStyles.utilityButton} disabled={!filtered} onClick={() => dispatch({ type: "reset" })}><RotateCcw size={15} aria-hidden="true" />Limpiar filtros</button>
     </div>
     {selection.groups.length ? <div className={styles.groups}>{selection.groups.map((group, index) =>

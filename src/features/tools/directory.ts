@@ -131,9 +131,9 @@ function safeDestination(value: unknown): string | null | undefined {
   return value;
 }
 
-/** Strict, sanitized projection of the complete 244-row catalogue. */
+/** Strict projection of this RPC response, not proof of a global source census. */
 export function projectCompleteCatalogueRows(context: ToroResolvedContext | null, input: unknown): DirectoryCatalogueItem[] {
-  if (!canReadCompleteHotelDirectory(context) || !Array.isArray(input) || input.length !== 244) return [];
+  if (!canReadCompleteHotelDirectory(context) || !Array.isArray(input) || input.length < 1 || input.length > 1000) return [];
   const items: DirectoryCatalogueItem[] = [];
   const ids = new Set<string>();
   for (const value of input) {
@@ -151,14 +151,12 @@ export function projectCompleteCatalogueRows(context: ToroResolvedContext | null
     const linkType = safeText(row, "link_type", 80);
     const scope = safeText(row, "scope", 160);
     const url = safeDestination(row.url);
-    if (!id || !/^LINK-\d{3}$/.test(id) || ids.has(id) || !name || !purpose || !project || !category ||
+    if (!id || !/^LINK-\d{3,}$/.test(id) || ids.has(id) || !name || !purpose || !project || !category ||
       !provider || !state || !lifecycle || !priority || !linkType || !scope || url === undefined || typeof row.home_eligible !== "boolean") return [];
     ids.add(id);
     items.push({ kind: "directory", id, label: name, url, name, purpose, project, category, provider,
       state, lifecycle, priority, linkType, scope, homeEligible: row.home_eligible });
   }
-  if (Array.from({ length: 244 }, (_, index) => `LINK-${String(index + 1).padStart(3, "0")}`)
-    .some(id => !ids.has(id))) return [];
   return items;
 }
 
