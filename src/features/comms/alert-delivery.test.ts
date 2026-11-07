@@ -310,7 +310,7 @@ it("keeps Owner Attention restricted to management", () => {
 });
 it("excludes invalid non-JSON identities from dedupe serialization", () => {
   const cycle: Record<string, unknown> = {}; cycle.self = cycle;
-  for (const value of [1n, cycle]) {
+  for (const value of [BigInt(1), cycle]) {
     for (const field of ["sourceKind", "sourceKey", "version"]) {
       const r = prepareRuntime({...signal, [field]: value}, [binding], context);
       assert.equal(r.status, "blocked"); assert.equal(r.destinationBindingId, null);
