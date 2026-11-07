@@ -3,11 +3,13 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { catalogueItemsFromLinks, projectCompleteCatalogueRows, type ToolLink } from "@/features/tools/directory";
 import { authorizedContext, completeCatalogueRows } from "@/features/tools/fixtures.test-utils";
 import type { ToroRealMenuView } from "@/features/menu/server";
+import { emptyHotelOperations } from "@/features/portal/hotel-operations";
 
-const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn() }));
+const mocks = vi.hoisted(() => ({ menu: vi.fn(), directory: vi.fn(), publicDemo: vi.fn(), redirect: vi.fn(), attentionEnabled: vi.fn(), attention: vi.fn(), operations: vi.fn() }));
 vi.mock("@/features/menu/server", () => ({ resolveCurrentToroReadOnlyMenu: mocks.menu }));
 vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory }));
 vi.mock("@/features/attention/owner-attention-server", () => ({ ownerAttentionReadEnabled: mocks.attentionEnabled, loadOwnerAttentionProjection: mocks.attention }));
+vi.mock("@/features/portal/hotel-operations-server", () => ({ loadHotelOperations: mocks.operations }));
 vi.mock("@/lib/server/public-demo", () => ({ isPublicDemo: mocks.publicDemo }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
 import PortalPage from "./page";
@@ -20,12 +22,13 @@ function view(): ToroRealMenuView {
 function reviewedDirectory(links: ToolLink[]) {
   return { state: "ready", links, catalogueItems: catalogueItemsFromLinks(links), catalogueMode: "reviewed" } as const;
 }
-beforeEach(() => { vi.resetAllMocks(); mocks.attentionEnabled.mockReturnValue(false); });
+beforeEach(() => { vi.resetAllMocks(); mocks.attentionEnabled.mockReturnValue(false); mocks.operations.mockResolvedValue(emptyHotelOperations("disabled")); });
 it("keeps the public demo from resolving any private navigation", async () => {
   mocks.publicDemo.mockReturnValue(true);
   mocks.redirect.mockImplementation(() => { throw new Error("redirect:/brain"); });
   await expect(PortalPage()).rejects.toThrow("redirect:/brain");
   expect(mocks.menu).not.toHaveBeenCalled();
+  expect(mocks.operations).not.toHaveBeenCalled();
 });
 it("shows login without private navigation to anonymous visitors", async () => {
   mocks.menu.mockResolvedValue(null);
@@ -34,6 +37,7 @@ it("shows login without private navigation to anonymous visitors", async () => {
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).not.toContain("Dreamcatcher");
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.operations).not.toHaveBeenCalled();
 });
 
 it.each(["denied", "unavailable"])("does not expose supplied directory rows when %s", async state => {
@@ -51,6 +55,7 @@ it("keeps the hotel tools out of another authorized organization", async () => {
   mocks.menu.mockResolvedValue(data);
   const html = renderToStaticMarkup(await PortalPage());
   expect(mocks.directory).not.toHaveBeenCalled();
+  expect(mocks.operations).not.toHaveBeenCalled();
   expect(html).not.toContain('aria-label="Herramientas del hotel"');
   expect(html).not.toContain("/my-toro/herramientas#equipo");
 });
@@ -133,4 +138,14 @@ it("keeps the complete catalogue out of favorites and operational panels", async
   expect(html.match(/data-tool="LINK-001"/g)).toHaveLength(1);
   expect(favorites).toContain('data-tool="LINK-086"');
   expect(favorites).not.toContain("LINK-001");
+});
+
+it("opens the native operation view through the scoped deep link without changing the existing directory call", async () => {
+  const context = view(); mocks.menu.mockResolvedValue(context);
+  const html = renderToStaticMarkup(await PortalPage({ searchParams: Promise.resolve({ tab: "operations" }) }));
+  expect(mocks.operations).toHaveBeenCalledExactlyOnceWith(context.context);
+  expect(html).toContain("Operación · Dreamcatcher"); expect(html).toContain("Sin dato actual verificado");
+  const panel = html.match(/<div role="tabpanel"[^>]*id="[^"]*-panel-operations"[^>]*>/)?.[0];
+  expect(panel).toBeDefined(); expect(panel).not.toContain("hidden");
+  expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({ includeApprovedNavigation: true, includeCompleteCatalogue: true });
 });
