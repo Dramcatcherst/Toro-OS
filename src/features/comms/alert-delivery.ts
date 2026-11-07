@@ -203,12 +203,39 @@ export function moduleAlertSignal(input: {
   };
 }
 
-function validMessageBudget(budget: AlertMessageBudget) {
+function validMessageBudget(budget: AlertMessageBudget | null | undefined) {
   return budget && Number.isSafeInteger(budget.maxFieldBytes) && budget.maxFieldBytes > 0 &&
     Number.isSafeInteger(budget.maxMessageBytes) && budget.maxMessageBytes >= budget.maxFieldBytes;
 }
 
+const SIGNAL_FIELDS = [
+  "orgId", "sourceKind", "sourceKey", "version", "room", "privacy", "priority",
+  "title", "summary", "impact", "requiredAction", "owner", "dueAt",
+  "sourceSystem", "sourceCutoff", "sourceRef",
+] as const;
+
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function validRoom(value: unknown): value is ToroInternalRoom {
+  return TORO_INTERNAL_ROOMS.some((room) => room === value);
+}
+
+function validSignal(signal: AlertDeliverySignal) {
+  return record(signal) && SIGNAL_FIELDS.every((field) =>
+    typeof signal[field] === "string" && signal[field].trim().length > 0,
+  ) &&
+    (signal.sourceKind === "owner_attention" || signal.sourceKind === "module_alert") &&
+    validRoom(signal.room) &&
+    (signal.privacy === "internal" || signal.privacy === "restricted") &&
+    (signal.priority === "critical" || signal.priority === "high" || signal.priority === "normal") &&
+    (signal.sourceKind !== "owner_attention" ||
+      (signal.room === "management" && signal.privacy === "restricted"));
+}
+
 export function formatAlertDelivery(signal: AlertDeliverySignal, budget: AlertMessageBudget) {
+  if (!validSignal(signal)) throw new Error("Alert signal is invalid or incomplete.");
   if (!validMessageBudget(budget)) throw new Error("Alert message budget is invalid.");
   for (const value of Object.values(signal)) {
     if (typeof value !== "string" || Buffer.byteLength(value, "utf8") > budget.maxFieldBytes) {
@@ -241,12 +268,15 @@ function healthTimestamp(value: string | null) {
 }
 
 function eligibleBinding(binding: WhatsAppGroupBinding, signal: AlertDeliverySignal, context: AlertDeliveryContext) {
+  if (!record(binding) || typeof binding.id !== "string" || !binding.id.trim() ||
+    binding.id !== binding.id.trim() ||
+    (binding.privacy !== "internal" && binding.privacy !== "restricted")) return false;
   const checkedAt = healthTimestamp(binding.healthCheckedAt);
   return (
     binding.orgId === context.orgId &&
     binding.scope === "organization" &&
     (signal.privacy !== "restricted" || binding.privacy === "restricted") &&
-    binding.active &&
+    binding.active === true &&
     binding.channel === "whatsapp" &&
     binding.provider === "openclaw" &&
     binding.endpointKind === "group" &&
@@ -254,7 +284,7 @@ function eligibleBinding(binding: WhatsAppGroupBinding, signal: AlertDeliverySig
     binding.authStatus === "connected" &&
     binding.ingestionStatus === "healthy" &&
     binding.verificationStatus === "verified" &&
-    binding.sendEnabled &&
+    binding.sendEnabled === true &&
     Number.isFinite(checkedAt) &&
     checkedAt <= context.nowMs &&
     context.nowMs - checkedAt <= context.maxHealthAgeMs
@@ -268,39 +298,47 @@ export function prepareAlertDelivery(
 ): AlertDeliveryCandidate {
   const blockers: string[] = [];
   let message = "";
-  if (!validMessageBudget(context.messageBudget)) {
+  const signalValid = validSignal(signal);
+  if (!signalValid) blockers.push("alert_signal_invalid");
+  if (!validMessageBudget(context?.messageBudget)) {
     blockers.push("alert_message_policy_invalid");
-  } else {
+  } else if (signalValid) {
     try {
       message = formatAlertDelivery(signal, context.messageBudget);
     } catch {
       blockers.push("alert_message_budget_exceeded");
     }
   }
-  const contextValid = typeof context.orgId === "string" && context.orgId.trim().length > 0 &&
+  const contextValid = record(context) && typeof context.orgId === "string" && context.orgId.trim().length > 0 &&
     context.orgId === context.orgId.trim() && Number.isFinite(context.nowMs) &&
     Number.isSafeInteger(context.maxHealthAgeMs) && context.maxHealthAgeMs > 0;
   if (!contextValid) blockers.push("delivery_context_invalid");
-  if (!signal.orgId || signal.orgId !== context.orgId) blockers.push("alert_scope_mismatch");
+  if (!signal?.orgId || signal.orgId !== context?.orgId) blockers.push("alert_scope_mismatch");
+  if (!Array.isArray(bindings) || !bindings.every(record)) blockers.push("delivery_bindings_invalid");
   const matches = blockers.length ? [] : bindings.filter((binding) => eligibleBinding(binding, signal, context));
   if (matches.length === 0) blockers.push("verified_group_binding_missing");
   if (matches.length > 1) blockers.push("ambiguous_group_binding");
   const destination = matches.length === 1 ? matches[0] : null;
+  // An invalid signal receives only conservative metadata, never a destination or message.
+  const room = validRoom(signal?.room) ? signal.room : "management";
+  const privacy = signal?.privacy === "internal" ? "internal" : "restricted";
+  const identityPart = (value: unknown) => typeof value === "string" ? value : null;
   return {
     status: blockers.length === 0 ? "ready" : "blocked",
-    room: signal.room,
-    privacy: signal.privacy,
+    room,
+    privacy,
     destinationBindingId: destination?.id ?? null,
     dedupeKey: "alert-delivery-v2:" + createHash("sha256").update(JSON.stringify([
-      context.orgId,
-      destination?.id ?? roomBindingRole(signal.room),
-      signal.room,
-      signal.privacy,
-      signal.sourceKind,
-      signal.sourceKey,
-      signal.version,
+      identityPart(context?.orgId),
+      destination?.id ?? roomBindingRole(room),
+      room,
+      privacy,
+      identityPart(signal?.sourceKind),
+      identityPart(signal?.sourceKey),
+      identityPart(signal?.version),
     ])).digest("hex"),
-    message,
+    message: signalValid ? message : "",
     blockers,
   };
 }
+

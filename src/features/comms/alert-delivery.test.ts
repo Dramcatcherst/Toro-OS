@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { describe, expect, it } from "vitest";
 
 import type { OwnerAttentionItem } from "@/features/attention/owner-attention";
@@ -192,3 +193,131 @@ describe("C50-01 protected alert byte budget", () => {
     }).status).toBe("blocked");
   });
 });
+
+
+describe("runtime JSON alert validation", () => {
+const signal: Parameters<typeof prepareAlertDelivery>[0] = {
+  orgId: "fixture-hotel", sourceKind: "module_alert", sourceKey: "fixture-water-1", version: "1",
+  room: "operations", privacy: "internal", priority: "high", title: "Revisar suministro de agua",
+  summary: "Caso sintético sin datos de huéspedes.", impact: "Preparación de una unidad de prueba.",
+  requiredAction: "Comprobar y registrar resultado.", owner: "Responsable propuesto",
+  dueAt: "Plazo propuesto por confirmar", sourceSystem: "Prueba TORO", sourceCutoff: "7 nov 2026 · 02:00 CR",
+  sourceRef: "fixture:water:001",
+};
+const binding = {
+  id: "fixture-group-operations", orgId: "fixture-hotel", scope: "organization", privacy: "internal",
+  channel: "whatsapp", provider: "openclaw", endpointKind: "group", businessRole: roomBindingRole("operations"),
+  authStatus: "connected", ingestionStatus: "healthy", verificationStatus: "verified",
+  sendEnabled: true, active: true, lastEventAt: null, healthCheckedAt: "2026-11-07T08:00:00Z",
+};
+const context = {
+  orgId: "fixture-hotel", nowMs: Date.parse("2026-11-07T08:01:00Z"), maxHealthAgeMs: 120000,
+  messageBudget: {maxFieldBytes: 1024, maxMessageBytes: 4096},
+};
+const clone = <T,>(x: T): T => structuredClone(x);
+const prepareRuntime = (s: unknown, b: unknown, c: unknown) => prepareAlertDelivery(s as Parameters<typeof prepareAlertDelivery>[0], b as Parameters<typeof prepareAlertDelivery>[1], c as Parameters<typeof prepareAlertDelivery>[2]);
+const negativeCases: Array<[string, () => [unknown, unknown]]> = [
+  ["AD20-01 null signal", () => [null, [binding]]],
+  ["AD20-02 array signal", () => [[], [binding]]],
+  ["AD20-03 unsupported origin", () => [{...signal, sourceKind:"external_freeform"}, [binding]]],
+  ["AD20-04 unsupported room", () => [{...signal, room:"guests"}, [{...binding, businessRole:"room:guests"}]]],
+  ["AD20-05 unsupported privacy", () => [{...signal, privacy:"public"}, [binding]]],
+  ["AD20-06 unsupported priority", () => [{...signal, priority:"urgent"}, [binding]]],
+  ["AD20-07 missing case identity", () => [{...signal, sourceKey:"  "}, [binding]]],
+  ["AD20-08 missing version", () => [{...signal, version:"\t"}, [binding]]],
+  ["AD20-09 missing subject", () => [{...signal, title:" "}, [binding]]],
+  ["AD20-10 missing summary", () => [{...signal, summary:" "}, [binding]]],
+  ["AD20-11 missing impact", () => [{...signal, impact:" "}, [binding]]],
+  ["AD20-12 missing next action", () => [{...signal, requiredAction:" "}, [binding]]],
+  ["AD20-13 missing responsible role", () => [{...signal, owner:" "}, [binding]]],
+  ["AD20-14 missing due statement", () => [{...signal, dueAt:" "}, [binding]]],
+  ["AD20-15 missing source system", () => [{...signal, sourceSystem:" "}, [binding]]],
+  ["AD20-16 missing source cutoff", () => [{...signal, sourceCutoff:" "}, [binding]]],
+  ["AD20-17 missing source reference", () => [{...signal, sourceRef:" "}, [binding]]],
+  ["AD20-18 blank destination identity", () => [signal, [{...binding, id:" "}]]],
+  ["AD20-19 string active flag", () => [signal, [{...binding, active:"false"}]]],
+  ["AD20-20 string send flag", () => [signal, [{...binding, sendEnabled:"false"}]]],
+];
+for (const [name, scenario] of negativeCases) {
+  it(name, () => {
+    const [s,b] = scenario();
+    const result = prepareRuntime(clone(s), clone(b), clone(context));
+    assert.equal(result.status, "blocked");
+    assert.equal(result.destinationBindingId, null);
+  });
+}
+it("compatibility: valid alert remains ready, localized dates and opaque refs preserved", () => {
+  const r = prepareRuntime(clone(signal), [clone(binding)], clone(context));
+  assert.equal(r.status, "ready");
+  assert.equal(r.destinationBindingId, binding.id);
+  assert.ok(r.message.includes(signal.dueAt));
+  assert.ok(r.message.includes(signal.sourceCutoff));
+  assert.ok(r.message.includes(signal.sourceRef));
+  assert.match(r.dedupeKey,/^alert-delivery-v2:[a-f0-9]{64}$/);
+  assert.equal(r.dedupeKey,prepareRuntime(clone(signal),[clone(binding)],clone(context)).dedupeKey);
+  assert.notEqual(r.dedupeKey,prepareRuntime({...signal,version:"2"},[clone(binding)],clone(context)).dedupeKey);
+});
+it("isolation: other organization, private scope and phone cannot become the group", () => {
+  for (const change of [{orgId:"fixture-other"},{scope:"private"},{endpointKind:"phone"},{privacy:"invalid"}]) {
+    assert.equal(prepareRuntime(signal,[{...binding,...change}],context).status,"blocked");
+  }
+});
+it("health: stale, future, impossible and traffic-only checks fail closed", () => {
+  for (const healthCheckedAt of [null,"2026-11-07T07:00:00Z","2026-11-07T08:02:00Z","2026-02-31T00:00:00Z","not-a-date"]) {
+    assert.equal(prepareRuntime(signal,[{...binding,healthCheckedAt}],context).status,"blocked");
+  }
+});
+it("ambiguity: two eligible groups never select one arbitrarily", () => {
+  const r=prepareRuntime(signal,[binding,{...binding,id:"fixture-second"}],context);
+  assert.equal(r.status,"blocked"); assert.equal(r.destinationBindingId,null);
+});
+it("budgets: UTF-8 field and total limits retained", () => {
+  assert.throws(()=>formatAlertDelivery({...signal,title:"🐂".repeat(257)},context.messageBudget));
+  const message=formatAlertDelivery(signal,context.messageBudget);
+  const bytes=Buffer.byteLength(message,"utf8");
+  assert.throws(()=>formatAlertDelivery(signal,{maxFieldBytes:100,maxMessageBytes:bytes-1}));
+});
+it("malformed collection and members block without an unexpected exception", () => {
+  for(const bindings of [null,{},[null],[false],[[]]]) {
+    const r=prepareRuntime(signal,bindings,context);
+    assert.equal(r.status,"blocked");assert.equal(r.destinationBindingId,null);
+  }
+});
+it("invalid context cannot select a destination", () => {
+  for(const c of [null,{}, {...context,nowMs:NaN},{...context,maxHealthAgeMs:0},{...context,orgId:"fixture-other"}]) {
+    const r=prepareRuntime(signal,[binding],c);
+    assert.equal(r.status,"blocked");assert.equal(r.destinationBindingId,null);
+  }
+});
+it("required fields cannot be removed or replaced by JSON nonstrings", () => {
+  for(const field of Object.keys(signal)) {
+    for(const bad of [undefined,null,0,false,{},[]]) {
+      const r=prepareRuntime({...signal,[field]:bad},[binding],context);
+      assert.equal(r.status,"blocked",field);assert.equal(r.destinationBindingId,null);
+    }
+  }
+});
+it("rejected signal never leaves a renderable message", () => {
+  for(const change of [{owner:" "},{priority:"invalid"},{room:"invalid"}]) {
+    const r=prepareRuntime({...signal,...change},[binding],context);
+    assert.equal(r.message,"");
+  }
+});
+
+it("keeps Owner Attention restricted to management", () => {
+ const r = prepareRuntime({...signal,sourceKind:"owner_attention"},[binding],context);
+ assert.equal(r.status,"blocked"); assert.equal(r.destinationBindingId,null); assert.equal(r.message,"");
+});
+it("excludes invalid non-JSON identities from dedupe serialization", () => {
+  const cycle: Record<string, unknown> = {}; cycle.self = cycle;
+  for (const value of [1n, cycle]) {
+    for (const field of ["sourceKind", "sourceKey", "version"]) {
+      const r = prepareRuntime({...signal, [field]: value}, [binding], context);
+      assert.equal(r.status, "blocked"); assert.equal(r.destinationBindingId, null);
+    }
+    assert.equal(prepareRuntime(signal, [binding], {...context, orgId: value}).status, "blocked");
+  }
+});
+
+});
+
