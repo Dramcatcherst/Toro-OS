@@ -43,12 +43,15 @@ describe("channel ledger boundaries", () => {
 describe("versioned channel draft contract", () => {
   const action = {
     schemaVersion: "channel-draft-action-v1" as const,
+    operationKey: "draft-op-fixture-001",
     accountId: "account-hotel",
     purposeKey: "hotel-operations",
     chatRef: "chat-fixture-001",
     caseRef: "case-fixture-001",
+    shiftRef: "shift-2026-11-07-night",
     destinationBindingId: "binding-reception",
     expectedVersion: 7,
+    draftBody: "Borrador operativo sin enviar.",
     sourceKind: "live_transport" as const,
     attachments: [{ evidenceRef: "dropbox/media/fixture-001", state: "ready" as const }],
   };
@@ -59,6 +62,7 @@ describe("versioned channel draft contract", () => {
     purposeKey: action.purposeKey,
     chatRef: action.chatRef,
     caseRef: action.caseRef,
+    shiftRef: action.shiftRef,
     destinationBindingId: action.destinationBindingId,
     currentVersion: 7,
     humanTakeover: false,
@@ -74,6 +78,9 @@ describe("versioned channel draft contract", () => {
       ...action.attachments,
       action.attachments[0],
     ] }).ok).toBe(false);
+    expect(validateChannelDraftAction({ ...action, operationKey: "" }).ok).toBe(false);
+    expect(validateChannelDraftAction({ ...action, draftBody: " " }).ok).toBe(false);
+    expect(validateChannelDraftAction({ ...action, draftBody: "x".repeat(10001) }).ok).toBe(false);
   });
 
   it("maps reads to the existing ledger and fails closed without a verified draft writer", () => {
@@ -97,10 +104,25 @@ describe("versioned channel draft contract", () => {
     ["purposeKey", "owner-private"],
     ["chatRef", "chat-other"],
     ["caseRef", "case-other"],
+    ["shiftRef", "shift-other"],
     ["destinationBindingId", "binding-other"],
   ] as const)("denies a context switch in %s", (field, value) => {
     expect(authorizeChannelDraftAction(actor, context, { ...action, [field]: value }, "draft.save"))
       .toEqual({ ok: false, error: "channel_context_mismatch" });
+  });
+
+  it("keeps the assigned shift across local midnight and never derives it from the calendar date", () => {
+    expect(authorizeChannelDraftAction(actor, context, action, "draft.read").ok).toBe(true);
+    expect(authorizeChannelDraftAction(
+      actor,
+      { ...context, shiftRef: "shift-2026-11-08-day" },
+      action,
+      "draft.read",
+    )).toEqual({ ok: false, error: "channel_context_mismatch" });
+    expect(validateChannelDraftAction({ ...action, localDate: "2026-11-08" })).toEqual({
+      ok: false,
+      error: "Channel draft scope must be resolved by the server.",
+    });
   });
 
   it("denies other identities and scopes before choosing a writer", () => {
