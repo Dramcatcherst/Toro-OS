@@ -283,17 +283,29 @@ function canonicalDraftAttachments(attachments: ChannelDraftAction["attachments"
     .sort((left, right) => left.evidenceRef.localeCompare(right.evidenceRef));
 }
 
+function channelDraftRecordFingerprint(record: ChannelDraftStoredRecord) {
+  return JSON.stringify({
+    orgId: record.orgId,
+    userId: record.userId,
+    accountId: record.accountId,
+    purposeKey: record.purposeKey,
+    chatRef: record.chatRef,
+    caseRef: record.caseRef,
+    shiftRef: record.shiftRef,
+    destinationBindingId: record.destinationBindingId,
+    operationKey: record.operationKey,
+    version: record.version,
+    draftBody: record.draftBody,
+    sourceKind: record.sourceKind,
+    attachments: canonicalDraftAttachments(record.attachments),
+  });
+}
+
 function channelDraftRecordsEqual(
   left: ChannelDraftStoredRecord,
   right: ChannelDraftStoredRecord,
 ) {
-  return JSON.stringify({
-    ...left,
-    attachments: canonicalDraftAttachments(left.attachments),
-  }) === JSON.stringify({
-    ...right,
-    attachments: canonicalDraftAttachments(right.attachments),
-  });
+  return channelDraftRecordFingerprint(left) === channelDraftRecordFingerprint(right);
 }
 
 function channelDraftRecordForAction(
