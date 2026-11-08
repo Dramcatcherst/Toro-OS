@@ -1,5556 +1,388 @@
-# TORO ‚Äî Plan General
-
-**Status:** CURRENT MASTER PLAN
-**Date:** 2026-10-24
-**Master product:** TORO
-**Visible brand/product:** TORO
-**Reference implementation:** Dreamcatcher Hotel
-**Current readiness:** INTERNAL PROOF ‚Äî external onboarding blocked by readiness gate
-
-<!-- BEGIN:TORO_PORTAL_INTEGRATED_WORKSPACE_20261108 -->
-## Portal integrado: direcci√≥n aceptada, comunicaci√≥n, finanzas y accesos - 08/11/2026
-
-**DECISI√ìN DEL PROPIETARIO:** acepta la experiencia diaria por rol y solicita ampliar WhatsApp/OpenClaw, operaci√≥n, finanzas/contabilidad y accesos a todos los sistemas del hotel. Hoy por rol pasa a ser la entrada diaria objetivo; Cerebro conserva su funci√≥n transversal, acceso directo de gesti√≥n y los dominios/IDs 00-11. Esta direcci√≥n sustituye la obligaci√≥n TARGET anterior de abrir siempre en Cerebro; no elimina relaciones, fuentes ni privacidad.
-
-**CURRENT:** primer lote de navegaci√≥n/lectura en PR #398; CI y preview comprobados para su head consultado, aceptaci√≥n visual/autenticada a√∫n pendiente. En la fuente privada del directorio se corrigi√≥ de forma reversible la mezcla entre fichas LINK contractuales y propuestas: entries conserva cat√°logo y candidate_entries propuestas, con respaldo y recibo en el mismo registro. Igualdad de contenido y contrato verificados; consumo autenticado pendiente. No cambian RPC, roles ni RLS.
-
-**TARGET:** un Portal para abrir sistemas, consultar fuentes o solicitar acciones seg√∫n capacidad real; mensaje-caso-trabajo-respuesta-resultado y servicio-cobro-documento-liquidaci√≥n-banco comparten identidad, √°mbito y evidencia. Directorio completo por proveedor/cuenta/funci√≥n, b√∫squeda y continuaci√≥n sin perder cobertura; no confundir enlace con integraci√≥n ni preparado con enviado. Finanzas conserva empresa, moneda, corte, originales y conciliaci√≥n. Recuperar extracciones existentes antes de repetir ingesta hist√≥rica.
-
-**NEXT:** reutilizar el carril y los writers existentes para accesos/jornada, Comms y Finance. Probar usuario real, evento/caso real y fallo/recuperaci√≥n pertinentes. La petici√≥n de eliminar trabas autoriza corregir causas dentro del alcance concedido, no convertir desconocidos en datos actuales ni conceder privilegios por apariencia. No se activaron env√≠os, publicaciones sociales, facturaci√≥n, pagos, API pagada PMS, nuevas identidades, gateways ni schedulers.
-
-[Especificaci√≥n de ampliaci√≥n](../superpowers/specs/2026-11-08-portal-integrations-and-links-design.md) y [plan t√©cnico](../superpowers/plans/2026-11-08-portal-integrations-and-links.md) son anexos subordinados de este √∫nico Plan. Diagn√≥stico detallado, cuentas y recibos sensibles permanecen privados.
-
-<!-- END:TORO_PORTAL_INTEGRATED_WORKSPACE_20261108 -->
-
-<!-- BEGIN:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
-## Tarifas y distribuci√≥n de Dreamcatcher ¬∑ 7 de noviembre de 2026
-
-`revenue_booking_stack` conserva la pol√≠tica y las evidencias privadas de precios. Booking es el primer canal. El inventario objetivo del hotel principal comprende sus habitaciones y villas. El objetivo de Toro by Dreamcatcher comprende las habitaciones 21‚Äì28 y Villa Toro. Las unidades compartidas deben descontar la misma disponibilidad en Kross, incluida la relaci√≥n entre una villa y las habitaciones que la componen.
-
-Para cada inventario vendible se requieren dos planes comparables, alojamiento y alojamiento con desayuno. El diferencial comercial se calcula por persona y noche sobre la misma ocupaci√≥n, una vez aplicados los descuentos de alojamiento. Los beneficios de fidelidad que regalan desayuno se identifican por separado. Las reservas directas tienen limpieza adicional cero. El importe OTA por estancia depende de la categor√≠a y se registra una sola vez. Los importes, IDs del proveedor, m√°rgenes y mensajes de soporte quedan en el expediente privado.
-
-La prueba exige comparar moneda, fechas, ocupaci√≥n ofertada, plan, cancelaci√≥n, prepago, impuestos, cargos y descuentos efectivos. Cubrir fechas con promociones distintas, una y varias noches, ocupaci√≥n individual, base, adicional y villas. Registrar una discrepancia cuando falta una de las dos ofertas. Verificar mapeo y cotizaci√≥n p√∫blica antes de marcar cada canal coordinado. Las conexiones posteriores reutilizan las unidades f√≠sicas y las mismas pruebas. El alcance aprobado y las limitaciones actuales se conservan en Supabase bajo `booking_kross_tarifas_20261107`.
-
-**Origen de promociones.** El hotel crea y mantiene en Kross las promociones de calendario, √∫ltima hora y reserva anticipada que publica en Booking. Las tarifas por dispositivo y por pa√≠s se gestionan en la extranet de cada cuenta de Booking. Genius se verifica por separado como programa de fidelidad. Para aceptar una publicaci√≥n, cruzar el ID de la campa√±a enviado por Kross con el ID activo en la cuenta de Booking y comparar descuento, per√≠odos, restricciones, habitaciones y planes. Si ya existe una oferta en la extranet, verificar su reemplazo en esa cuenta antes de retirarla. El historial se conserva para comparar producci√≥n y precios p√∫blicos antes y despu√©s.
-
-**Gesti√≥n de precios y utilidad, verificada el 7 de noviembre de 2026.** El cat√°logo objetivo del hotel principal abarca todas las unidades vendibles. La presencia de cada villa y el bloqueo de las habitaciones que la componen requieren pruebas por cuenta. En Toro se conserva el alcance de habitaciones 21‚Äì28 y Villa Toro. La revisi√≥n del √∫ltimo d√≠a de una estancia exclusiva incluye una b√∫squeda independiente por esa noche en cada canal.
-
-El reenv√≠o de una campa√±a de √∫ltima hora desde Kross obtuvo confirmaci√≥n por cuenta y el mismo ID al releer Booking. La prueba p√∫blica de la habitaci√≥n compartida mostr√≥ un aumento en Toro y el mismo precio en Dreamcatcher. La diferencia sigue abierta en el hotel principal. El plan de desayuno de Toro est√° creado en Booking y su mapeo y publicaci√≥n siguen pendientes. La limpieza por cuenta contin√∫a en el expediente privado con sus IDs y antecedentes.
-
-Para decidir descuentos, el responsable comercial compara el ingreso de alojamiento sin IVA tras comisi√≥n y cobro con los costos variables de habitaci√≥n, estancia y comensales. El [Control Financiero de Dreamcatcher](DREAMCATCHER_FINANCIAL_CONTROL_CENTER_V1.md) contiene el modelo de costos con vigencia. Mientras falten costos verificados, trabajar con escenarios y dejar el piso pendiente. Separar grupos exclusivos, bloqueos, fechas de alta demanda y canales al leer el ritmo de reservas. Medir noches nuevas y canceladas, ADR, ingreso adicional, contribuci√≥n por habitaci√≥n disponible y total final directo frente a Booking. Las comisiones realizadas en un corte sirven como referencia hist√≥rica para su canal.
-
-El coordinador comercial existente revisa la evoluci√≥n del piloto. Evaluar siete d√≠as comparables, demanda retenida y contribuci√≥n luego de cancelaciones antes de extenderlo. Ante ausencia de ventas o de un grupo comparable, mantener el resultado como inconcluso. Hacer un cambio por campa√±a y conservar el antes, el acuse, la lectura posterior y la cotizaci√≥n p√∫blica; el detalle por propiedad queda en el registro privado.
-
-<!-- END:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
-
-<!-- BEGIN:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
-## Sanducher√≠a Santa Teresa ‚Äî nuevo proyecto de Dreamcatcher ‚Äî 02/11/2026
-
-**Alcance:** iniciativa de alimentos y bebidas de Dreamcatcher, con atenci√≥n por ventanilla, desayunos y propuesta de tarde. Se gestiona como proyecto propio bajo `dreamcatcher_hotel_master`, dentro del portafolio existente.
-
-**CURRENT ‚Äî registro verificado:** proyecto activo `dreamcatcher_sanducheria_santa_teresa`, en definici√≥n y preparaci√≥n del piloto. El registro operativo contiene siete tareas vinculadas y la decisi√≥n del propietario que autoriza el alta y corrige el supuesto sobre la infraestructura habilitante existente. El negocio todav√≠a no tiene resultados de un piloto comercial registrados.
-
-**TARGET:** validar una primera unidad rentable y repetible; evaluar crecimiento a partir de ventas pagadas, costos completos, capacidad operativa y calidad consistente.
-
-**NEXT:** definir acuerdo y responsabilidades; seleccionar pan y proveedores; cerrar carta, recetas y costos; preparar cocina y punto de recogida; completar el expediente de documentaci√≥n existente; organizar degustaci√≥n y piloto pagado con fecha por confirmar; evaluar rentabilidad y condiciones de expansi√≥n. La informaci√≥n documental comunicada por el propietario est√° atribuida como tal en el expediente privado.
-
-**Seguimiento y autoridad:** `operations.projects` conserva el proyecto; `operations.tasks`, sus siete hitos; `operations.executive_decisions`, la instrucci√≥n y correcci√≥n del propietario. Coordinaci√≥n SKY con apoyo de Operaci√≥n y Finanzas. La ficha privada concentra responsables personales, aportes, cifras, documentaci√≥n y evidencia. Este apartado incorpora el proyecto al Plan General √∫nico y reutiliza el portafolio y seguimiento existentes.
-
-<!-- END:DREAMCATCHER_SANDUCHERIA_PROJECT_20261102 -->
-
-<!-- BEGIN:KROSS_CLOUD_READ_BOUNDARY_20261029 -->
-## Kross: lectura asistida comprobada y transporte pendiente ‚Äî 29/10/2026
-
-**CURRENT, observaci√≥n acotada de Dreamcatcher:** el propietario complet√≥ el inicio de sesi√≥n seguro en el navegador cloud; se leyeron reservas, ocupaci√≥n, cobros y housekeeping, y la misma sesi√≥n respondi√≥ al retomar. Una exportaci√≥n XLSX de cobros se abri√≥ y contrast√≥ con la pantalla: ocho filas y su total coinciden para el per√≠odo expl√≠cito seleccionado. No se verificaron cobertura hist√≥rica completa, sesi√≥n permanente, API, adquisici√≥n programada ni actualizaci√≥n del espejo. Los recibos detallados permanecen en los registros privados existentes; no publicar hu√©spedes, importes, operadores, rutas de acceso, credenciales ni archivos fuente.
-
-**L√≠mite de autoridad:** lectura asistida comprobada no equivale a transporte integrado ni habilita escrituras PMS. Se conserva Kross como autoridad transaccional, API pagada pausada, Writer OFF y la tolerancia informativa ya aprobada de hasta 60 minutos; un intento reciente de lectura no rejuvenece el corte de los datos. Esta observaci√≥n no habilita consumidores ni tareas programadas.
-
-**NEXT del carril Kross existente:** reutilizar transporte/importaci√≥n y sus recibos, sin segundo espejo, backlog o scheduler. Antes de cargar: fijar per√≠odo expl√≠cito y `America/Costa_Rica`; reconciliar la fecha de gesti√≥n con la fecha del dashboard; validar moneda por campo ante s√≠mbolos distintos; separar unidades f√≠sicas, villas y bloqueos virtuales. El XLSX de muestra no expone un ID nativo de movimiento: el c√≥digo de reserva no es una clave √∫nica de pago. Resolver identidad/idempotencia y permisos con el due√±o del dominio antes de publicar datos como conciliados. La fecha de √∫ltima limpieza y el estado actual son se√±ales distintas; limpieza terminada no sustituye inspecci√≥n, mantenimiento o preparaci√≥n total.
-
-**Criterio de cierre:** extracci√≥n autorizada con corte y cobertura, correspondencia por claves aprobadas, filas/estados/totales conciliados y un recibo del consumidor TORO dentro de la antig√ºedad permitida, conservando manejo de caducidad, errores y continuaci√≥n manual en Kross. El acceso manual reduce el bloqueo de lectura; la integraci√≥n permanece pendiente. Esta actualizaci√≥n documental no cambia permisos, configuraci√≥n, reservas, cobros, limpiezas ni producci√≥n.
-
-<!-- END:KROSS_CLOUD_READ_BOUNDARY_20261029 -->
-
-<!-- BEGIN:TORO_INTEGRATED_EVOLUTION_20261022 -->
-## Revisi√≥n integral y gu√≠a de evoluci√≥n ‚Äî 22/10/2026
-
-**CURRENT ‚Äî documentaci√≥n y diagn√≥stico fechados:** el inventario del repositorio, los contratos cr√≠ticos y las superficies accesibles se compararon con este Plan. La [auditor√≠a integral](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md) distingue fuentes, versi√≥n implementada, despliegue, prueba de uso y beneficio medido; inventariar un archivo no equivale a revisar cada l√≠nea ni a verificar el servicio externo.
-
-**Gu√≠a subordinada:** la [Gu√≠a integrada de evoluci√≥n](TORO_INTEGRATED_EVOLUTION_GUIDE_V1.md) re√∫ne portafolio, autoridad de datos, conectores, procesos, m√©tricas, autonom√≠a y secuencia propuesta. Este archivo contin√∫a siendo el Plan General √∫nico. Las ventanas y metas nuevas de la gu√≠a son **TARGET/NEXT propuestos**, no resultados operativos ni una activaci√≥n de permisos.
-
-**Siguiente convergencia recomendada:** reutilizar los carriles y objetos existentes para cerrar reserva‚Äìcobro‚Äìdocumento‚Äìbanco, incidencia‚Äìtrabajo‚Äìinspecci√≥n y mensaje‚Äìcaso‚Äìrespuesta‚Äìevidencia; reconciliar identidad y entrega del mismo artefacto como dependencias. La ambici√≥n 100√ó necesita baseline por resultado, calidad y costo; no existe un multiplicador global certificado.
-
-**Conservado:** decisiones del propietario, autorizaciones vigentes por alcance, fuentes especializadas, aislamiento, gates de Product Proof/readiness, coordinador y cadencias existentes. La auditor√≠a no fusiona ramas, despliega, migra datos, activa Writer, reactiva API pagada, modifica operaciones ni entrega mensajes. Los registros hist√≥ricos de aceptaci√≥n conservan su fecha y cat√°logo; deben reconciliarse con la evidencia vigente sin borrar su m√©rito ni extrapolarlo.
-
-<!-- END:TORO_INTEGRATED_EVOLUTION_20261022 -->
-
-
-<!-- BEGIN:WHATSAPP_ADMIN_HISTORY_20261024 -->
-## Historial administrativo: extracci√≥n con √°mbitos y procedencia ‚Äî 24/10/2026
-
-**CURRENT:** analizado el export aportado de administraci√≥n: 20.117 registros, conversaci√≥n humana observable 27/05/2024‚Äì24/10/2026, 5.924 multimedia omitidos y 82 archivos vCard (90 tarjetas, 82 grupos candidatos de identidad). Hay huecos de cobertura; no son archivos multimedia le√≠dos ni personas verificadas. Las 2.211 menciones monetarias son candidatos, no movimientos conciliados. Detalle de disposici√≥n y l√≠mites: [evidencia de extracci√≥n](../evidence/TORO_ADMIN_HISTORY_EXTRACTION_20261024.md). Originales, contactos, importes privados y anexos personales quedan fuera del repositorio p√∫blico.
-
-**TARGET ya existente, reforzado:** TORO Data/Knowledge conserva fuente/fecha/√°mbito/confianza/correcciones; Finance, Operations, People, Assets y Projects consumen solo lo autorizado. Reutilizar operations.knowledge_items para antecedentes hoteleros no sensibles, inactivos y needs_verification hasta contrastarlos. No promover datos familiares/personales por una etiqueta private ni convertir instrucciones antiguas en acciones actuales. Kross/Alegra/bancos conservan autoridad. La extracci√≥n de Admin y la de Contabilidad son fuentes distintas con posible solape, nunca sumandos autom√°ticos.
-
-**NEXT:** conciliar los hallazgos con tasks/projects/obligations existentes y evidencias nativas; separar √°mbito financiero y verificar aislamiento privado antes de cargar contenido sensible. Mantener correcciones, no duplicar tareas ni revivir incidencias antiguas por fecha. El lote no activa captura continua, Writer Alegra, API Kross paga, cambios de permisos o un scheduler nuevo; cada integraci√≥n mantiene sus gates y recibo independiente.
-
-**Continuaci√≥n de manuales y procedimientos (24/10):** seis borradores ligados a puestos existentes, once ampliaciones de SOP y tres anexos funcionales; 53 referencias comprobadas y 66 pasos propuestos. Se guardaron 21 fichas inactivas needs_verification en el mismo conocimiento can√≥nico (20 borradores+√≠ndice), sin cambiar los 13 candidatos anteriores, puestos, capacidades, permisos o SOPs activos. Detalle en la misma [evidencia de extracci√≥n](../evidence/TORO_ADMIN_HISTORY_EXTRACTION_20261024.md). NEXT: revisar l√≠mites y probar un relevo operativo y un lote de lavander√≠a; marca fresca Kross acredita limpieza terminada sin confirmaci√≥n duplicada, conservando QA/mantenimiento/preparaci√≥n separados. Multimedia ausente se prioriza por valor probatorio, sin exigir reenviar todo ni inferir contenido.
-<!-- END:WHATSAPP_ADMIN_HISTORY_20261024 -->
-
-<!-- BEGIN:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
-## Delegaci√≥n de publicaci√≥n rutinaria ‚Äî Dreamcatcher ‚Äî 22/10/2026
-
-**Decisi√≥n humana vigente:** Mauricio indic√≥ el 22/10/2026 que no quiere ser cuello de botella y deleg√≥ la publicaci√≥n sin una aprobaci√≥n individual repetida cuando el ejecutor considere correcto hacerlo. Para Dreamcatcher, esta delegaci√≥n sustituye √∫nicamente el requisito del 19/10 de pedir autorizaci√≥n caso por caso para **respuestas ordinarias a rese√±as verificadas**, correcciones factuales sustentadas del hotel y publicaci√≥n del Portal existente una vez superados sus gates. La instrucci√≥n posterior de continuar avanzando y arreglar discrepancias no revoca esta delegaci√≥n ni permite atribuirle una revocaci√≥n inexistente. No crea otro writer, agente, perfil, canal, plan o automatizaci√≥n.
-
-**Continuidad operativa ‚Äî 23/10/2026:** continuar significa resolver cada discrepancia con propiedad y fuente vigente, campo nativo exacto, texto/idioma original cuando corresponda, estado actual, deduplicaci√≥n y evidencia antes/despu√©s. Las respuestas ordinarias verificadas y correcciones factuales sustentadas pueden publicarse dentro de la delegaci√≥n del 22/10 solo despu√©s de superar esos gates y conservar recibo del canal; casos graves de seguridad, discriminaci√≥n, acusaciones, asuntos jur√≠dicos, compensaciones o promesas econ√≥micas mantienen revisi√≥n humana especializada. Esta regla no modifica la excepci√≥n de limpieza OTA ya aprobada, no altera programaci√≥n ni ampl√≠a permisos.
-
-**La delegaci√≥n no sustituye prueba ni control:** antes de responder una rese√±a siguen siendo obligatorios propiedad correcta, ID/URL nativo, fecha, texto √≠ntegro, idioma original y estado vigente de respuesta/moderaci√≥n; conservar original, deduplicaci√≥n y recibo. Si falta acceso o evidencia, el bloqueo es t√©cnico o probatorio, no aprobaci√≥n del propietario. Casos graves de seguridad, discriminaci√≥n, acusaciones, cuestiones jur√≠dicas, compensaciones o promesas econ√≥micas mantienen revisi√≥n humana especializada.
-
-**Portal y contenido p√∫blico:** publicar solo el candidato exacto despu√©s de CI, aceptaci√≥n funcional y autenticada, privacidad/aislamiento, concurrencia y rollback verificados en el mismo proyecto y dominio. Un preview, borrador o `mergeable=true` no equivale a producci√≥n. La delegaci√≥n no autoriza gastos, obras, pr√©stamos, garant√≠as, tokens, cambios de reservas/contabilidad, tarifas o promociones fuera de la limpieza ya delimitada, fusiones/reclamaciones de fichas, ampliaci√≥n de accesos, encuestas masivas ni eliminaci√≥n de datos.
-
-**Estado de este bloque:** gobierno documentado; no acredita respuesta enviada, merge, despliegue, reparaci√≥n f√≠sica, sincronizaci√≥n ni resultado econ√≥mico. Los controles hist√≥ricos incompatibles se conservan como antecedentes superados solo en su requisito de aprobaci√≥n rutinaria.
-<!-- END:DREAMCATCHER_PUBLICATION_DELEGATION_20261022 -->
-
-<!-- BEGIN:TORO_OPERATING_CONFIGURATION_20261022 -->
-## Configuraci√≥n operativa y optimizaci√≥n conjunta ‚Äî 22/10/2026
-
-**√Åmbito y autoridad:** TORO Systems, Identity, Tools, Agents, Comms, Data y Finance; referencia Dreamcatcher y separaci√≥n del √°mbito personal. Esta secci√≥n consolida reglas solicitadas por el propietario dentro del Plan General √∫nico. El bloque `operating_configuration` de `toro-context.yaml` las resume; los contratos existentes de [Vercel](TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md), [WhatsApp/OpenClaw](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md), Control Plane y agentes conservan el detalle. No crea otro proyecto, backlog, cerebro, Gateway o motor de permisos.
-
-**Continuidad operativa (TARGET, sin activaci√≥n impl√≠cita):** la [ampliaci√≥n de operaci√≥n y accesos](TORO_OPERATING_MODEL_AMENDMENT_2026-10-15.md) y el [runbook de continuidad](../runbooks/TORO_CONTINUITY_AND_STORAGE_CHECKLIST_V1.md) subordinan los cortes existentes de apertura y preparaci√≥n de llegadas a fuente vigente, despacho de desayunos con acuse, inspecci√≥n de unidades y cierre de incidencias con evidencia. La programaci√≥n, las Pages privadas y los ejecutores mantienen sus autorizaciones y comprobaciones independientes; documentos de una PR no equivalen a main, runtime ni servicio aceptado.
-
-**Observado al corte del 22/10/2026:** [auditor√≠a de configuraci√≥n y fuentes](../evidence/TORO_OPERATING_CONFIGURATION_AUDIT_20261022.md). El c√≥digo de ese corte inclu√≠a PR #355 de mantenimiento prepare-only despu√©s de PR #364; no acreditaba tareas o mensajes emitidos. Vercel conservaba producci√≥n en `349d15fb93061cba6a285fa3977f03e4d6b6b449`. Supabase ten√≠a un binding WhatsApp/OpenClaw activo con flags de lectura/env√≠o y estado verificado, pero `last_sync_at` nulo, cero sesiones y cero recibos en las tablas de canal consultadas: configuraci√≥n declarada, no continuidad ni entrega demostradas. RLS habilitado en esas tres tablas no probaba por s√≠ solo que sus pol√≠ticas fueran correctas. Aquella auditor√≠a se ejecut√≥ en cloud sin identidad AWS/SSH; Dropbox no fue consultable por error de conexi√≥n del plugin, no por ausencia demostrada de archivos. Los l√≠mites de acceso de ese turno no describen por s√≠ solos la disponibilidad posterior de otros carriles.
-
-**TARGET recomendado: h√≠brido con responsabilidades separadas.** GitHub mantiene c√≥digo/contratos/PR/CI; Supabase identidad, contexto, objetos y auditor√≠a; Vercel sirve el Portal autenticado con per√≠metro de lectura; el Gateway Lightsail existente gestiona transporte persistente dentro de su frontera de confianza; Codex local se usa para desarrollo, control del Chrome autorizado y recuperaci√≥n, como respaldo fr√≠o. Kross, Alegra, bancos y Dropbox mantienen su autoridad de dominio; Airtable es proyecci√≥n humana transitoria. WhatsApp y Portal consumen el mismo TORO mediante capacidades autorizadas, sin sincronizaci√≥n bidireccional indiscriminada ni memoria de negocio duplicada.
-
-**Reglas adoptadas de gobierno (no configuraci√≥n remota aplicada):**
-
-1. **Una identidad y un objeto can√≥nico:** toda acci√≥n resuelve actor, organizaci√≥n, √°mbito, capability y roles actuales; la misma tarea/decisi√≥n/recibo es visible desde los canales autorizados. Un tel√©fono, QR vinculado o nombre de agente no concede permiso.
-2. **Una frontera de confianza por Gateway:** propietario, equipo y hu√©spedes tienen techos diferentes. Sesiones/allowlists son defensa adicional, no aislamiento hostil de tenants. No admitir usuarios no confiables al agente con herramientas del propietario; mantener bloqueada esa ampliaci√≥n hasta verificar una frontera real. No crear otro Gateway autom√°ticamente para ocultar el problema.
-3. **Herramientas m√≠nimas por flujo:** lectura, captura, borrador, env√≠o y escritura de negocio se autorizan por separado. Equipo/hu√©sped no heredan shell, navegador del propietario, secretos, administraci√≥n o historial de otros agentes. Restringir tambi√©n mensajes entre proveedores/conversaciones.
-4. **Una cuenta, un escritor activo por acci√≥n:** desarrollo local/respaldo no consume simult√°neamente producci√≥n. Reutilizar claim/lease/fencing del Control Plane y claves compatibles; un timeout o POST ambiguo requiere reconciliaci√≥n antes de reintentar.
-5. **Tres perfiles de despliegue:** demo sin acceso operativo, Portal autenticado de lectura y runtime interno privilegiado con control propio. No poner claves worker/proveedor/escritura en el Portal; no habilitar runtime/MCP cambiando el perfil del hostname p√∫blico.
-6. **Credenciales con due√±o y recuperaci√≥n:** referencias en registros; valores solo en el almac√©n autorizado del entorno. MFA y recuperaci√≥n para cuentas administrativas; comprobar soporte/plan y probar protecci√≥n de contrase√±as filtradas. Rotaci√≥n o cambio de identidad exige mapa de consumidores y readback, no copia de secretos a chats/Git/Dropbox.
-7. **Estados demostrables:** `configured ‚Üí tested ‚Üí integrated ‚Üí deployed ‚Üí runtime_verified ‚Üí measured` describe evidencias distintas, no promoci√≥n autom√°tica. SHA, entorno, identidad, alcance y resultado en destino deben acompa√±ar cada afirmaci√≥n. La meta de mejoras no sustituye un resultado de negocio.
-8. **Contexto y modelos por trabajo:** cargar solo reglas, contrato y fuentes relevantes; no enviar el Plan completo, historiales o archivos privados a cada turno. C√°lculo/dedupe determinista primero; modelo econ√≥mico apto para clasificaci√≥n/extracci√≥n; razonamiento fuerte para conflictos, dise√±o y c√≥digo. Selecci√≥n por acceso, evaluaci√≥n y costo real, sin cambiar el modelo del usuario silenciosamente.
-9. **Presupuestos antes de activar:** cada nuevo worker/flujo declara l√≠mites finitos de llamadas, tokens/costo, tiempo, concurrencia y reintentos, con cancelaci√≥n y escalamiento. No se inventa un presupuesto monetario del propietario ni se considera aplicado en runtimes existentes por escribir esta regla.
-10. **Memoria con procedencia:** hecho, fuente, fecha, √°mbito, sensibilidad, verificaci√≥n y retenci√≥n; correcciones versionadas. Logs de transporte no sustituyen memoria can√≥nica; historial personal y del hotel permanecen separados. Revisar residencia/retenci√≥n del proveedor antes de enviar datos protegidos a nuevos servicios de agentes.
-11. **Frescura seg√∫n dominio:** disponibilidad/precio en Kross; documentos en Alegra; liquidaci√≥n en bancos; originales en Dropbox. Definir vigencia y fallback por capability; ausencia de sincronizaci√≥n es UNKNOWN, no ‚Äúsaludable‚Äù ni cero. Reducir polling con eventos solo despu√©s de verificar soporte del proveedor.
-12. **Alertas √∫tiles:** reutilizar Owner Attention/Control Plane y las rutas existentes, deduplicar por incidente y respetar canal/grupo/horario y √°mbito. P0 con escalamiento; resto agrupado en res√∫menes y hasta tres decisiones materiales al propietario por corte. Sin otro cron/scheduler o env√≠o impl√≠cito por esta pol√≠tica.
-13. **Advisors con criterio:** revisar funciones `SECURITY DEFINER` ejecutables, protecci√≥n de contrase√±as, planes de consulta y pol√≠ticas; no tratar tablas server-only sin pol√≠tica como permiso faltante que deba abrirse. No borrar √≠ndices ‚Äúunused‚Äù sin ventana de uso, dependencias y reversi√≥n.
-14. **Versiones y capacidad verificadas:** lockfile y versiones fijadas; plugins/CLI seg√∫n versi√≥n instalada y documentaci√≥n oficial, nunca instrucciones de un fork como autoridad. Medir memoria/CPU/colas y errores antes de redimensionar Lightsail; un trabajo pesado local a la vez seg√∫n el gate del PC.
-15. **Entrega peque√±a y verificable:** rama/PR/CI/preview del SHA exacto, aceptaci√≥n autenticada y rollback; retirar duplicados solo tras mapa de consumidores. Handoff compacto con objetivo, estado, fuentes, cambios, pruebas, bloqueo y siguiente acci√≥n; chat/captura hist√≥rica no demuestra acceso local o salud del host.
-16. **Medir valor, no actividad:** costo por resultado aceptado, error/retrabajo, duplicados, intervenci√≥n humana, latencia y antig√ºedad de cola, frescura y restauraciones verificadas. Baseline ausente = NO_MEDIDO. No inventar ahorro ni crear otro dashboard/scheduler para mostrarlo.
-
-**Siguiente unidad registrada el 22/10/2026 dentro del carril existente:** (1) completar el traspaso real a local y recuperar fuente/binding del Lightsail original; (2) revisar avisos de seguridad y configuraci√≥n Vercel con acceso autorizado, sin ampliar grants o eludir403; (3) prueba controlada WhatsApp ‚Üí identidad/√°mbito ‚Üí lectura/tarea can√≥nica √∫nica ‚Üí recibo ‚Üí misma tarea en Portal ‚Üí continuidad y negativas de aislamiento; (4) comparar costo/errores/intervenci√≥n antes de habilitar capacidades adicionales. Recepci√≥n y cuenta personal requieren verificaci√≥n separada; no se impone una migraci√≥n a WhatsApp Cloud API sin auditar transporte/consentimiento/continuidad. Conserva Writer OFF, API Kross pagada pausada y onboarding externo bloqueado. Cambios de infraestructura, permisos, proveedor y producci√≥n permanecen TARGET hasta revisi√≥n, ejecuci√≥n autorizada y readback. Reconciliar la evidencia posterior antes de repetir esta unidad.
-
-**Clarificaci√≥n del propietario ‚Äî 24/10/2026, WhatsApp/onboarding:** se retira la propuesta de asignar un rol autom√°ticamente por tener identidad can√≥nica. El alta/rol/√°mbito requieren autorizaci√≥n expl√≠cita por el proceso existente; el reconocimiento del remitente utiliza ese permiso y el onboarding explica las funciones ya autorizadas, sin conceder ni elevar acceso. Se conserva la experiencia progresiva y no bloqueante. Veinte refinamientos operativos y sus pruebas quedan como TARGET en el [contrato WhatsApp ¬ß12](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#12-explicit-roles-onboarding-and-twenty-hotel-workflow-refinements--2026-10-24), sin contarlos como funciones en producci√≥n. Reutilizar #209 y reconciliar PR206/210/348; no otro puente, memoria, backlog o scheduler. La marca vigente de limpieza terminada en Kross es evidencia operativa suficiente para esa dimensi√≥n, sin confirmaci√≥n humana duplicada; inspecci√≥n, mantenimiento y preparaci√≥n integral permanecen separados. Cambios documentales/c√≥digo probado no acreditan consumo del host, entrega WhatsApp ni operaci√≥n sin PC.
-
-
-**Lecturas informativas del PMS ‚Äî decisi√≥n del propietario24/10/2026:** para consultas operativas se admite una copia autorizada de Kross con antig√ºedad de la fuente de **hasta60minutos**, aunque no sea una conexi√≥n live/API. Mostrar corte y edad reales; separar hora del intento/importaci√≥n del momento de los datos. Cobertura parcial puede consultarse como observaci√≥n parcial, sin convertirla en totales completos ni desconocidos en cero. Esta decisi√≥n sustituye el requisito de live para esas lecturas informativas; no cambia la vista live existente ni la revalidaci√≥n de cotizaci√≥n/disponibilidad y acciones comerciales. Contrato [WhatsApp ¬ß13](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md#13-informational-pms-snapshots--owner-decision-2026-10-24). Reutilizar espejo/importaci√≥n/worker y #209; adquisici√≥n horaria es TARGET, no un timer ni sincronizaci√≥n acreditados. API Kross pagada contin√∫a pausada.
-
-**Auditor√≠a del Portal y coordinaci√≥n ‚Äî corte 24/10/2026:** la [continuaci√≥n de la auditor√≠a existente](../evidence/TORO_INTEGRAL_AUDIT_2026-10-22.md#9-auditor√≠a-del-portal-y-reconciliaci√≥n--2026-10-24) registra dominio can√≥nico `toro.dreamcatcherhotel.com`, proyecto existente `toro-pr11-preview`, producci√≥n observada `349d15fb93061cba6a285fa3977f03e4d6b6b449` y main `3fe9fd1ceae14be7fba49e72a71ac84f280e18e3`. La relaci√≥n del dominio solicitado `toro.jpghotel.co` queda sin verificar dentro del inventario autorizado. La inspecci√≥n lleg√≥ al acceso del Portal sin sesi√≥n autenticada; no acredita sus pantallas interiores, experiencia m√≥vil ni aislamiento de roles. Los estados de los candidatos son evidencia fechada, no promoci√≥n a producci√≥n.
-
-**Frentes existentes, sin duplicaci√≥n:** [PR363](https://github.com/Dramcatcherst/Toro-OS/pull/363) concentra esta alineaci√≥n documental; [PR206](https://github.com/Dramcatcherst/Toro-OS/pull/206) conserva el lector informativo Kross de hasta 60 minutos como candidato y [PR210](https://github.com/Dramcatcherst/Toro-OS/pull/210) la continuidad de sesiones/recibos. [PR384](https://github.com/Dramcatcherst/Toro-OS/pull/384) concentra el candidato del Portal, con aceptaci√≥n autenticada y widget pendientes; reconciliar los deltas √∫nicos de [PR347](https://github.com/Dramcatcherst/Toro-OS/pull/347) antes de integrar dise√±o solapado. [PR361](https://github.com/Dramcatcherst/Toro-OS/pull/361) conserva la lectura hist√≥rica de comunicaciones, [PR379](https://github.com/Dramcatcherst/Toro-OS/pull/379) el preflight de extracci√≥n y [PR387](https://github.com/Dramcatcherst/Toro-OS/pull/387) la evidencia posterior del host. Ninguno demuestra por s√≠ solo adquisici√≥n horaria, continuidad extremo a extremo o entrega WhatsApp. Releer sus heads, checkpoints y gates antes de actuar; no importar en bloque ramas antiguas.
-
-**NEXT de este lote de alineaci√≥n:** conservar el Plan √∫nico y la evidencia anterior, corregir orientaci√≥n y vigencia en la misma PR363, y reconciliar el lector de PR206 con main en su rama existente. La aceptaci√≥n y promoci√≥n del Portal siguen su propio carril, sobre un SHA exacto y con los gates vigentes; no se declara cerrado Owner Attention por leer su correcci√≥n en main. DreamTeam conserva servicio hasta probar paridad, identidad y recuperaci√≥n en TORO People. Las superficies p√∫blicas, privadas y los proyectos independientes mantienen sus √°mbitos; no se crea otra app, portal, backlog o fuente de verdad. Este lote no activa sincronizaci√≥n, Writer, permisos, scheduler ni despliegue autom√°tico.
-
-**Alineaci√≥n solicitada por el propietario ‚Äî 07/11/2026:** el control del hotel pertenece a la vista **Operaci√≥n** del Portal TORO existente (`/portal?tab=operations`); Sites conserva captura manual, historial y referencias can√≥nicas como continuidad. **CURRENT de c√≥digo y lector:** PR395 integrada; m√≥dulo de consulta publicado mediante backport acotado sobre el artefacto activo, con sesi√≥n/RLS, ADMIN/GERENCIA y organizaci√≥n/propiedad Dreamcatcher. La extensi√≥n opcional del mismo RPC fue aplicada despu√©s del lector compatible, con pruebas reales de roles, alcance, campos y reversi√≥n; sin nueva API p√∫blica, tablas, permisos, fuente transaccional ni programador. Conserva estado registrado, responsable, revalidaci√≥n, fecha original de modificaci√≥n y hora de consulta; muestra hasta12 prioridades de un lote acotado, con cobertura visible. **ACEPTACI√ìN PENDIENTE:** navegaci√≥n con la cuenta del propietario (TORO rechaz√≥ el inicio de sesi√≥n seguro) y adquisici√≥n vigente de Kross; las pruebas SQL no acreditan esa sesi√≥n ni una operaci√≥n f√≠sica. El espejo hist√≥rico del20/10 no calcula ocupaci√≥n actual ni convierte desconocido en cero. La recepci√≥n programada de observaciones en el Site, la lectura nativa del Portal y la entrega/acuse WhatsApp conservan recibos y aceptaci√≥n separados. [Evidencia del mismo m√≥dulo](../evidence/TORO_NATIVE_HOTEL_OPERATIONS_20261107.md).
-<!-- END:TORO_OPERATING_CONFIGURATION_20261022 -->
-
-<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
-## Continuaci√≥n de fiabilidad ‚Äî cincuenta mejoras adicionales ‚Äî 22/10/2026 UTC
-
-**CURRENT ‚Äî integrado en c√≥digo, sin promoci√≥n productiva:** PR [#359](https://github.com/Dramcatcherst/Toro-OS/pull/359) merged como `b7d97a59dba1c4ee233a6e8b267f90f9c15dbf63`, con CI est√°ndar y preview exacto aprobados. Contin√∫a PR #358 sobre los mismos flujos existentes: doce Finance/Alegra, ocho Kross, diez identidad/Portal, diez Comms y diez runtime/MCP. Los [cincuenta resultados trazables](../evidence/TORO_INTEGRATION_RELIABILITY_50_20261022.md) son evidencia subordinada; no vuelven a contar las cuarenta mejoras previas ni convierten pruebas/documentaci√≥n en nuevas capacidades.
-
-**Prioridad y alineaci√≥n:** primero integridad de recibos, custodia, identidad/√°mbito, exposici√≥n de datos y recuperaci√≥n; despu√©s disponibilidad, navegaci√≥n y trabajo de lectura evitado. No cambia arquitectura, fuentes de autoridad, permisos ni alcance comercial. La mejora de fiabilidad se demuestra con regresiones; ahorro y rendimiento productivo permanecen NO MEDIDOS.
-
-**Aceptaci√≥n adicional del 22/10:** [Next Portal real, an√≥nimo y aislado](../evidence/TORO_PORTAL_ANONYMOUS_ACCEPTANCE_20261022.md) sobre `ad9ed7656e0ad8c0ec36de7f5a3e5e462cc23e32`, despu√©s de reconciliar PR #360 y #357. Dependencias instaladas desde lockfile, Next 16.3.8, build est√°ndar, 182 pruebas focales y 14 comprobaciones HTTP PASS; login a 320/390/1280 sin overflow ni errores de consola, payload privado ausente, rutas de runtime excluidas y cookies de salida eliminadas. Configuraci√≥n sint√©tica sin sesi√≥n ni credenciales reales; no acredita roles/RLS ni publicaci√≥n. Readback Vercel mantiene producci√≥n en `349d15fb93061cba6a285fa3977f03e4d6b6b449`.
-
-**NEXT existente:** acceso/roles/salida con sesi√≥n autorizada en el Portal, transporte de membres√≠as y recuperaci√≥n de fuentes/binding del Lightsail original. Dependencias observadas: esta ejecuci√≥n sigue cloud sin acceso AWS/SSH ni control del Chrome del usuario; la integraci√≥n Vercel devuelve403 al listar metadata de variables del proyecto, incluso sin descifrar. No se repite la consulta sin cambios ni se modifica configuraci√≥n para eludirla. Se preservan Writer OFF, Kross API pagada pausada, conciliaciones documentales pendientes y control de operaciones sensibles. No se confunden c√≥digo integrado y despliegue operativo.
-<!-- END:TORO_INTEGRATION_RELIABILITY_50_20261022 -->
-
-<!-- BEGIN:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
-## Fiabilidad conjunta de Alegra, Kross, Portal y OpenClaw ‚Äî 21/10/2026
-
-**CURRENT ‚Äî integrado en c√≥digo, sin promoci√≥n productiva:** PR [#358](https://github.com/Dramcatcherst/Toro-OS/pull/358) merged como `2f0396d52f3d28c458972247392c92dd62bb4f13`, con CI est√°ndar y preview exacto aprobados. La petici√≥n del propietario se concreta en cuarenta cambios de conducta sobre m√≥dulos existentes: nueve Writer/Alegra, once Kross, ocho acceso/Portal, ocho OpenClaw/WhatsApp y cuatro configuraci√≥n segura. El [listado trazable y aceptaci√≥n](../evidence/TORO_INTEGRATION_RELIABILITY_40_20261021.md) es subordinado a este Plan. Las pruebas/documentaci√≥n acreditan cambios; no se suman como mejoras independientes ni como avance contable o beneficio econ√≥mico.
-
-**Alineaci√≥n:** una identidad y contexto TORO para Portal/WhatsApp; permisos por actor/organizaci√≥n, evidencia v√°lida y fresca, idempotencia coherente, dependencias con deadline y recuperaci√≥n humana segura. GitHub conserva c√≥digo/contratos; Supabase identidad/runtime/auditor√≠a; Kross reservas/estancias; Alegra documentos contables; bancos liquidaci√≥n y Dropbox originales. Un contrato preparado no es una integraci√≥n productiva ni un recibo de entrega.
-
-**NEXT del carril existente:** aceptaci√≥n de acceso/rol/salida en el Portal con sesi√≥n autorizada, y recuperar fuentes/binding del Gateway Lightsail existente antes de cualquier activaci√≥n Writer/OpenClaw. Las claves nuevas de idempotencia y las firmas reforzadas requieren reconciliaci√≥n de compatibilidad en el caller existente; no crear otro adapter, Gateway, scheduler o ledger. El cutover a lectura de membres√≠as can√≥nicas sigue pendiente de verificar su transporte, sin ampliar Data API/RLS.
-
-**Conservado:** Writer OFF, Kross API pagada pausada, aprobaci√≥n exacta de operaciones sensibles, original Starlink sin conciliaci√≥n inequ√≠voca, sesiones/contrase√±as reales fuera de los artefactos, ning√∫n cambio de precios/reservas/postings/permisos/secretos o producci√≥n por este lote.
-<!-- END:TORO_INTEGRATION_RELIABILITY_40_20261021 -->
-
-<!-- BEGIN:OWNER_AI_WEALTH_STRATEGY_20261020 -->
-## Pol√≠tica estrat√©gica transversal ‚Äî IA, patrimonio productivo y libertad operativa ‚Äî 20/10/2026
-
-**DECISI√ìN ADOPTADA POR EL PROPIETARIO (gobierno, no despliegue):** optimizar el portafolio para **beneficio neto recurrente, activos productivos duraderos, resiliencia y menos horas de intervenci√≥n del propietario**. Dreamcatcher es primero el negocio generador de caja; TORO es segundo como multiplicador de capacidad/eficiencia y producto futuro sujeto a demostraci√≥n; diversificaci√≥n y liquidez son el tercer eje de protecci√≥n. La experiencia humana del hu√©sped, las relaciones y la calidad no se degradan para reducir n√≥mina. El criterio no presupone desempleo masivo ni rentas futuras de IA.
-
-**Autoridades y ubicaci√≥n:** Plan General √∫nico `docs/product/TORO_BRAIN_GENERAL_PLAN.md`; contrato resumido y computable en `toro-context.yaml ‚Üí owner_ai_wealth_strategy`. Portfolio `toro_os_portfolio_master`; ejecuci√≥n `toro_executive_control`; hotel `dreamcatcher_hotel_master` con m√≥dulos ya existentes (`revenue_booking_stack`, operaciones, finanzas, web/canales, datos/integraciones). TORO Product Proof y TORO Governance conservan sus gates. No crea otro Plan General, agente, base, sistema de tareas, calendario ni programador.
-
-### Objetivo y filtro de decisi√≥n obligatorios
-
-- **Primero: P0 de seguridad, cumplimiento, datos comerciales, reservas y hu√©spedes.** El ROI nunca autoriza saltarse un deber legal, una sobreventa, la privacidad ni una incidencia f√≠sica cr√≠tica.
-- **Despu√©s: impacto econ√≥mico marginal y tiempo liberado.** Para cada iniciativa expresar `Œî contribuci√≥n neta recurrente`, inversi√≥n inicial y mensual, plazo/certidumbre, carga humana, riesgo evitado, dependencia, alternativas y evidencia. Si no hay fuente fresca, marcar `NO_MEDIDO`; no poner d√≥lares/porcentajes ficticios.
-- **Definiciones comparables:** ingreso por estancia no es cobro bancario; reserva no es venta conciliada; rentabilidad contable no es flujo de caja; ahorro proyectado no es ahorro realizado; villas son modalidad del mismo inventario f√≠sico, no habitaciones adicionales. Contribuci√≥n por canal/servicio requiere ingresos atribuidos menos comisiones, descuentos financiados, reembolsos y costos incrementales verificables. Impuestos recaudados por remitir se separan, no se tratan como ganancia.
-- **Priorizaci√≥n sin falsa precisi√≥n:** P0 obligatorio; luego primero iniciativas con prueba verificable, retorno favorable, beneficio sostenido y poca dependencia/costo; finalmente crecimiento patrimonial con an√°lisis de liquidez, concentraci√≥n y reversibilidad. Documentar `DO / DELEGATE / DELAY / STOP` y el motivo. Costos hundidos no justifican continuar.
-- **Puertas de inversi√≥n y autonom√≠a:** propuesta ‚Üí baseline ‚Üí piloto limitado ‚Üí verificaci√≥n econ√≥mico-operativa ‚Üí decisi√≥n de escalar/retirar. Cualquier gasto, pago, permiso, cambio tarifario, publicaci√≥n, mensaje a terceros, reserva, contrato, obra, financiaci√≥n o despliegue conserva su aprobaci√≥n espec√≠fica y control actual. No reactivar API Kross pagada pausada ni el Writer Alegra por esta pol√≠tica.
-- **Direcci√≥n ejecutiva:** el propietario recibe hasta tres decisiones materiales por corte; el trabajo rutinario se asigna por rol existente (no persona inventada), con estado, siguiente paso y criterio de terminado. El personal conserva supervisi√≥n, formaci√≥n y v√≠a de escalamiento. No sustituir empleos por promesas de automatizaci√≥n no validada.
-
-### 40 mejoras nuevas incorporadas como controles y oportunidades (NO como 40 implementaciones terminadas)
-
-Las siguientes reglas refinan m√≥dulos y tareas existentes, no crean cuarenta proyectos. **Aplicada documentalmente** significa que el criterio queda adoptado; el KPI de negocio contin√∫a `NO_MEDIDO` hasta disponer de baseline, acci√≥n autorizada y medici√≥n posterior.
-
-| ID | Frente | Mejora / siguiente aplicaci√≥n | Evidencia de resultado | Responsable funcional propuesto | Prioridad |
-| --- | --- | --- | --- | --- | --- |
-| E01 | Gobierno | Evaluar cada iniciativa por beneficio recurrente neto, horas del propietario y riesgo, no por volumen de tareas. | Ficha de decisi√≥n con tres resultados y fuente | TORO Control | P1 |
-| E02 | Gobierno | Medir contribuci√≥n incremental despu√©s de comisiones, cargos, servicio, impuestos por remitir y costos tecnol√≥gicos. | Puente ingreso a contribuci√≥n conciliable | TORO Finance | P1 |
-| E03 | Gobierno | Separar OPEX, CAPEX, costos hundidos, deuda, caja y activos; nunca sumar rentas y valor patrimonial. | Clasificaci√≥n consistente por entidad y moneda | TORO Finance | P1 |
-| E04 | Gobierno | Financiar proyectos por etapas con hip√≥tesis, l√≠mite de gasto, prueba, retorno y autorizaci√≥n correspondiente. | Cada fase con decisi√≥n continuar/ajustar/detener | TORO Control | P1 |
-| E05 | Gobierno | Congelar expansiones sin prueba y retirar herramientas duplicadas solo tras mapa de consumidores y reversi√≥n. | Costo evitado verificado, sin p√©rdida de servicio | TORO Tools | P1 |
-| E06 | Gobierno | Revisar mensualmente el portafolio por impacto, urgencia, esfuerzo, dependencia, liquidez y libertad de tiempo. | Hasta tres prioridades activas por corte, respaldadas | TORO Portfolio | P1 |
-| E07 | Revenue | Mantener inventario econ√≥mico por unidad f√≠sica; villa y habitaciones son modalidades mutuamente excluyentes. | Cero capacidad o ingreso contabilizado doble | Revenue / Kross | P0 |
-| E08 | Revenue | Establecer ocupaci√≥n, ADR y RevPAR con denominadores, fechas y capacidad comparables. | Cobertura por per√≠odo y fuente declarada | Revenue / Kross | P1 |
-| E09 | Revenue | Clasificar canales por contribuci√≥n neta de adquisici√≥n, descuentos, cancelaciones y costo de atenci√≥n. | Ranking por margen neto demostrado, no bruto | Revenue + Finance | P1 |
-| E10 | Revenue | Demostrar ventaja del canal directo por cotizaci√≥n total equivalente, sin prometer ahorro fijo no probado. | Comparaci√≥n misma fecha/unidad/personas/reglas | Channels + Kross | P1 |
-| E11 | Revenue | Medir consultas perdidas, respuestas, cotizaciones, anticipos y reservas confirmadas sin atribuci√≥n doble. | Embudo por ID √∫nico y conversi√≥n validada | TERE + Revenue | P1 |
-| E12 | Revenue | Priorizar ventanas 7/30/90 d√≠as con pickup y demanda observada antes de proponer tarifas. | Reporte de oportunidades con recomendaci√≥n no aplicada | Revenue | P1 |
-| E13 | Revenue | Estandarizar propuestas de bodas, retiros y grupos con costos y opciones aprobadas. | Tiempo a cotizaci√≥n y margen previsto trazable | Events + Revenue | P1 |
-| E14 | Revenue | Calcular ingreso desplazado de habitaciones y uso de espacios antes de cotizar un buyout o evento. | Margen del evento neto del alojamiento desplazado | Events + Finance | P1 |
-| E15 | Ingresos extra | Medir margen de desayuno, yoga, surf, traslados y otros servicios por venta real. | Contribuci√≥n neta por servicio y fuente | Restaurant + Revenue | P1 |
-| E16 | Ingresos extra | Distinguir desayuno incluido por reserva/tarifa del desayuno adicional vendido o consumido. | Derecho, cobro y consumo conciliados sin doble cargo | Restaurant + Kross | P0 |
-| E17 | Ingresos extra | Ofrecer mejoras y experiencias adecuadas sin prometer inventario o servicios no verificados. | Tasa oferta‚Üíventa y reclamaciones atribuibles | TERE + Reception | P1 |
-| E18 | Ingresos extra | Auditar cancelaciones, descuentos y reembolsos por recuperaci√≥n permitida y costo real. | Fugas corregidas con evidencia por reserva | Revenue + Finance | P1 |
-| E19 | Hu√©sped | Recoger feedback durante la estad√≠a con consentimiento, respuesta y cierre; no filtrar rese√±as p√∫blicas por nota. | Casos resueltos antes de salida y satisfacci√≥n | Reception + TERE | P1 |
-| E20 | Hu√©sped | Vincular quejas recurrentes a causa ra√≠z, mantenimiento, costo y prueba f√≠sica de cierre. | Reincidencias y tiempo de resoluci√≥n por causa | Operations | P1 |
-| E21 | Hu√©sped | Monitorizar reputaci√≥n en idioma original, deduplicar y preparar respuestas sin publicar sin aprobaci√≥n. | Casos nuevos verificados, tiempo de reacci√≥n | Channels + Reputation | P1 |
-| E22 | Hu√©sped | Elegir fotos por habitaci√≥n, derechos y exactitud comercial antes de subirlas a web/OTA. | Cobertura de cat√°logo y conversi√≥n antes/despu√©s | Studio + Channels | P1 |
-| E23 | Operaciones | Medir habitaciones listas tras inspecci√≥n, nunca equiparar limpieza con disponibilidad. | % verificadas antes de llegadas y errores | Housekeeping | P0 |
-| E24 | Operaciones | Ordenar reparaciones por seguridad, noches indisponibles, urgencia y costo evitado. | Noches recuperadas realmente y tiempos | Maintenance | P0 |
-| E25 | Operaciones | Gestionar consumibles por m√≠nimo, m√°ximo, consumo y plazos de compra comprobados. | Rupturas de stock y costo de inventario | Operations + Purchases | P1 |
-| E26 | Operaciones | Preservar identidad t√©cnica Type/ID Kross y validar #27, WeSpeak y canales antes de publicar. | Una unidad f√≠sica vendible, sin dobles ventas | Data + Revenue | P0 |
-| E27 | Operaciones | Medir cobertura hist√≥rica, frescura y errores de Kross‚ÜíSupabase sin reactivar API pagada pausada. | Reservas reconciliadas, lag y huecos visibles | Data & Integrations | P0 |
-| E28 | Operaciones | Probar TORO/OpenClaw sin PC con identidad, respaldo, recibo y sin duplicar mensajes. | Prueba E2E, fallos/replay, PC apagado | TORO Systems + Comms | P0 |
-| E29 | Finanzas | Conciliar Kross, voucher, banco y Alegra por concepto, moneda, m√©todo y corte. | Diferencias investigadas y pagos realmente cotejados | Finance | P0 |
-| E30 | Finanzas | Mantener caja y obligaciones rolling 90 d√≠as con confirmado, estimado y desconocido separados. | Cobertura 90 d√≠as, riesgo liquidez por moneda | Finance + PayFlow | P1 |
-| E31 | Finanzas | Obtener contribuci√≥n del hotel por centro de costo y l√≠nea de negocio con per√≠odos comparables. | P&L reproducible, no cifra inventada | Finance | P1 |
-| E32 | Finanzas | Revisar suscripciones, proveedores, compras y comisiones buscando ahorro sin degradar calidad. | Ahorro anualizado solo tras pago/contrato comprobado | Finance + Purchases | P1 |
-| E33 | Finanzas | Evaluar remodelaciones por incremento de contribuci√≥n, CAPEX, ocupaci√≥n y recuperaci√≥n real. | VAN/payback por escenarios y evidencia | Portfolio + Finance | P2 |
-| E34 | Finanzas | Estresar deuda, liquidez, cambios de moneda y ca√≠da de ingresos antes de adquirir activos. | Escenarios y umbrales aprobados, sin balances p√∫blicos | Portfolio + Finance | P1 |
-| E35 | TORO | Concentrar Product Proof en los 12 flujos existentes y medir valor, no n√∫mero de prompts. | Flujos E2E verificados y subset con baseline | TORO Product | P1 |
-| E36 | TORO | Exigir m√≠nimos de autorizaci√≥n, separaci√≥n personal/empresa, reintentos idempotentes y receipts. | Pruebas negativas, rollback y cero fuga entre scopes | TORO Governance | P0 |
-| E37 | TORO | Medir costo completo por caso automatizado, retrabajo y ahorro humano real. | Costo marginal y minutos ahorrados comparables | TORO Systems | P1 |
-| E38 | TORO | Aplazar clientes externos hasta pasar readiness gate y probar portabilidad segura. | Gate superado y ROI repetible antes de vender | TORO Product | FUTURE |
-| E39 | Propietario | Registrar interrupciones, decisiones y horas del propietario; delegar por SOP con escalamiento. | Horas recuperadas medidas sin reducir seguridad/calidad | TORO People + Control | P1 |
-| E40 | Patrimonio | Proteger reserva de liquidez y diversificar gradualmente fuera de una sola empresa/ubicaci√≥n. | Exposici√≥n y colch√≥n privado evaluados por escenarios | Portfolio + Finance | P2 |
-
-### Primeros seis resultados ejecutables, sin duplicar responsables ni cola
-
-| Orden | Frente existente | NEXT y aceptaci√≥n objetiva | Estado al 20/10 | Dependencia y protecci√≥n |
-| --- | --- | --- | --- | --- |
-| 1 | `revenue_booking_stack` + Kross/WeSpeak | Resolver #27 (43 vigente/28 hist√≥rico) sin doble venta, probar enlaces, canales y bloqueo rec√≠proco; conservar Type t√©cnico. | **BLOQUEADO** a prueba E2E completa; mapeos internos previamente corregidos. | Sesi√≥n/fuente Kross/WeSpeak del ejecutor propietario; no editar reservas ni tarifas sin gate. |
-| 2 | Hotel Finance + Kross + Alegra | L√≠nea base mensual comparable de ocupaci√≥n, ADR, RevPAR, contribuci√≥n por canal, caja y gastos; indicar cobertura, fecha y moneda. | **NO_MEDIDO** en esta actualizaci√≥n; no interpretar snapshot como vivo. | Lectura vigente Kross sin API pagada, centros de costo/contabilidad conciliados. |
-| 3 | Channels/Booking | Probar USD 10 por habitaci√≥n OTA y USD 100 por villa completa por estad√≠a, Mini=0, directa=0; 8‚Äì9/12 con condiciones id√©nticas, cargo una sola vez. | **PARCIAL / PENDIENTE** por canal; no declarar ventaja econ√≥mica fija. | Cotejo OTA‚ÜíKross, taxes/policies/promos; no alterar reservas existentes. |
-| 4 | Revenue/Events y Guest | Elegir solicitudes de bodas/grupos ya abiertas, medir cotizaci√≥n‚Üíanticipo‚Üíconfirmaci√≥n y margen del evento neto del alojamiento desplazado. | **PROPUESTO** como m√©trica integral; propuestas hist√≥ricas no son ventas. | Inventario f√≠sico, costos de proveedores y autorizaci√≥n antes de enviar ofertas. |
-| 5 | Hotel Operations/TORO Systems | Demostrar operaciones reproducibles con Kross‚ÜíSupabase frescura visible, OpenClaw/WhatsApp y prueba sin PC para capacidades autorizadas. | **CONFIGURADO_NO_VERIFICADO** como flujo extremo a extremo. | Acceso/identidad/runtime reales, reintentos y recibos; no crear otro gateway. |
-| 6 | TORO Product Proof/Portfolio | Medir horas de propietario liberadas, costo por flujo y ROI de 12 flujos existentes antes de pilotos externos. | **PROPUESTO**; gate externo sigue bloqueado. | Baselines y pruebas E2E/aislamiento, revisi√≥n comercial; sin marketing de resultados no comprobados. |
-
-### Cadencia y horizonte propuesto (no fechas contractuales)
-
-- **20/10‚Äì03/11:** identificar fuentes vigentes y cobertura, empezar baseline del hotel y control simple de horas/interruptores del propietario; resolver primero riesgos P0 activos.
-- **04/11‚Äì19/11:** cerrar el primer lote de paridad comercial y conciliaci√≥n; publicar √∫nicamente mejoras autorizadas con pruebas. Medir diferencias entre antes y despu√©s.
-- **20/11‚Äì19/12:** experimentar con una mejora de reserva directa, una oferta de eventos y un upsell con denominador y costo verificables; no inventar conversiones o ingresos.
-- **20/12‚Äì18/01:** comparar contribuci√≥n incremental, tiempo realmente ahorrado y costo total de TORO; continuar, simplificar, retirar o invertir solo con evidencia y aprobaci√≥n de fondos.
-
-**REVISI√ìN EXISTENTE:** consumir `Dreamcatcher ¬∑ Ejecuci√≥n del Plan` (coordinador transversal con programaci√≥n horaria verificada en el gestor de tareas el 20/10/2026) y los cierres/reportes semanales y mensuales ya programados; coordinar con los responsables de #27, OTA/Tripadvisor, Alegra, OpenClaw y auditor√≠as, sin reclamar leases ni repetir tareas. Cada ciclo elige una unidad desbloqueada, deja evidencia y `next_action`; la programaci√≥n no acredita autonom√≠a permanente. Los recibos rutinarios se guardan en estado privado TORO, no se concatenan como reportes al Plan General.
-
-**Protecci√≥n de datos:** este repositorio es p√∫blico; no agregar saldos, cuentas, documentos personales, listados de hu√©spedes, salarios, deudas, secretos ni datos patrimoniales privados. Los valores de inversi√≥n y buffer se eval√∫an en TORO Personal/Finance con acceso por √°mbito. El aprendizaje reusable de TORO se abstrae sin informaci√≥n privada de Dreamcatcher.
-
-**ESTADO DE ESTA SECCI√ìN:** HECHO = directiva estrat√©gica y cuarenta criterios incorporados a la documentaci√≥n del candidato versionado tras PR/CI/merge; PROPUESTO = seis unidades ejecutables y horizonte; BLOQUEADO/DESCONOCIDO = cobertura de datos/efecto econ√≥mico por medir. Ning√∫n criterio de la tabla acredita una correcci√≥n del PMS, una automatizaci√≥n desplegada, un ingreso extra ni una decisi√≥n de inversi√≥n ejecutada.
-
-### Checkpoint t√©cnico E06 / E27 / E36 ‚Äî 20/10/2026, Costa Rica
-
-**HECHO verificado en c√≥digo:** [PR #340](https://github.com/Dramcatcherst/Toro-OS/pull/340) fusionada a `main`, commit `a992783d8238537a78ebb166b0c59ff8500934fd`: el Cerebro ya no debe mostrar como `Ready/healthy/verified` una fuente diferida (`live_required=false`), caducada, con fecha ausente/futura o que supere seis horas, aunque un indicador aislado diga `safe_for_current_state=true`. Pruebas TDD: regresiones RED en SHA de pruebas anterior y pipeline completo GREEN en SHA del parche; lectura posterior confirm√≥ los archivos en main. Esto no demuestra despliegue ni aceptaci√≥n de sesi√≥n real.
-
-**OBSERVADO en Supabase, solo consulta agregada 20/10:** `operations.reservations` contiene **4.352 filas fuente Kross**, de las cuales **4.350** est√°n en `review` y **2** en `conflict`, todas con `source_is_live=false`; `operations.current_reservations_safe` devuelve **0**. El registro fuente m√°s reciente indica `snapshot_as_of=2026-10-20 22:03:34.982+00`, pero una fecha de importaci√≥n reciente no equivale a prueba comercial viva. `integrations.kross_snapshot_health` muestra fuentes hist√≥ricas/deferred con `freshness_status=stale`, `live_required=false` y `safe_for_current_state=true`: la presentaci√≥n debe interpretar conjuntamente todos los indicadores. Estas son filas, no reservas √∫nicas ni cobertura hist√≥rica completa. El diagn√≥stico de 33 filas de septiembre es corte hist√≥rico, no inventario actual.
-
-**HECHO en c√≥digo (no en sesi√≥n productiva):** siete registros `operations.projects` est√°n en estado `NOW` y `active=true`. [PR #341](https://github.com/Dramcatcherst/Toro-OS/pull/341) qued√≥ fusionada en `main` (commit `0c2e67bfa191613a128f7ed79a5a5effcd1e63dc`, CI y readback aprobados): reconoce `NOW` como `Active` y rechaza timestamps futuros/inv√°lidos como vigencia comprobada. Pendiente QA del Portal desplegado con sesi√≥n autorizada.
-
-**CALIDAD DE LOTE CONCRETO:** se observaron 4.352 identidades compuestas distintas (`org_id,property_id,external_reservation_id`), sin valores nulos de identidad externa. Existen 44 filas sin `room_id` ni `room_code_raw`, 26 sin canal; una de las 44 tiene estancia futura, requiere revisi√≥n en Kross por el responsable del carril sin copiarla al repositorio. `integrations.import_runs` registra un lote `reservation_list_complete_20261020` con estado `loaded`, 4.352 filas declaradas y 0 errores declarados; es evidencia de carga, no certificaci√≥n de paridad con Kross ni sincronizaci√≥n live. No reclasificar la base como 100 % v√°lida a partir de estos conteos.
-
-**PR√ìXIMA UNIDAD, SIN DUPLICAR TRABAJO:** el due√±o del carril de importaci√≥n Kross/PR #315 revalida fuentes, 4.352 filas, conflictos, deduplicaci√≥n por `org_id+property_id+external_reservation_id`, run/receipt de importaci√≥n y un ciclo incremental autorizado. Mantener apagada la API paga. Probar la presentaci√≥n del Cerebro autenticada solo tras CI y publicaci√≥n verificada. Ning√∫n dashboard debe calcular ocupaci√≥n, ventas ni reservas actuales a partir de esas 4.352 filas hasta superar autoridad, completitud, reconciliaci√≥n y vigencia. Los registros financieros y de hu√©spedes permanecen privados; este checkpoint contiene solo agregados.
-
-### Prioridad de precisi√≥n y rentabilidad ‚Äî correcciones verificadas 20/10/2026
-
-**HECHO ‚Äî financiero:** [PR #342](https://github.com/Dramcatcherst/Toro-OS/pull/342) fusionada en `main` (commit `4e8faf34e338ced34cbc934fbd7f465f1f75943b`; CI + readback): Owner Attention distingue por c√≥digo `due/unpaid/overdue` vencido de `unknown`, pago reportado o disputa. La alerta de pago no nace √∫nicamente de una fecha antigua; el total documental de factura se rotula como distinto de saldo exigible en Hoy y Portal. Lectura agregada de octubre: 13 `unknown` con fecha pasada + 10 `payment_reported` + 2 disputados + 2 marcados `no_payment_due_extranet_verified` = **27 candidatos a alerta enga√±osa**, no 27 deudas ni un ahorro cuantificado. El plan financiero existente conserva la explicaci√≥n y reconciliaci√≥n; ning√∫n asiento, pago o deuda fue alterado.
-
-**HECHO ‚Äî Cerebro:** [PR #343](https://github.com/Dramcatcherst/Toro-OS/pull/343) fusionada en `main` (commit `0bad8b659ca2613084e1dd58c34c9ea8ffa18137`; CI + readback). Las 50 reglas de autoridad `approved` que devuelve Supabase se reconocen correctamente como pol√≠tica revisada cuando hay fecha v√°lida; reglas retiradas/sin revisi√≥n permanecen no verificadas y `sources[].authoritative` deja de marcarse por defecto. Gobernanza con frescura `unknown` no queda `Ready` aunque alcance calidad objetivo. **Regla aprobada ‚â† proveedor conectado; c√≥digo probado ‚â† versi√≥n desplegada; corrida programada ‚â† ahorro real.**
-
-**INDICADOR 100√ó ‚Äî aspiraci√≥n, NO resultado:** no declarar multiplicadores por n√∫mero de reglas, documentos, tareas, tokens, PR, agentes ni automatizaciones. Solo medir contra un per√≠odo base comparable, por frente y sin p√©rdida de calidad: (a) incremento de contribuci√≥n neta comprobado; (b) horas reales del propietario liberadas; (c) reducci√≥n de reproceso/tiempo por caso, descontando costo completo de IA y supervisi√≥n. Sin datos comparables el indicador permanece `NO_MEDIDO`. Pilotos por lotes reversibles con responsable funcional, prueba, costo y fecha de corte.
-
-**NEXT sin duplicaci√≥n:** reutilizar los carriles Kross/WeSpeak, Alegra/PayFlow y `Dreamcatcher ¬∑ Ejecuci√≥n del Plan` ya horarios. Primero QA del mismo SHA desplegado con sesi√≥n autorizada, sin publicaciones por inferencia; luego conciliar `finance.invoices` con saldo/estado real, y fuente Kross con frescura/paridad antes de computar ocupaci√≥n/ADR/contribuci√≥n. No crear un nuevo dashboard o scheduler. Los ahorros/cierres no se declaran hasta tener recibo operacional, comparaci√≥n y, donde aplique, evidencia bancaria o fuente PMS.
-
-### FINANCE_BASELINE_RECONCILE ‚Äî 20/10/2026 (E02/E29/E31; sin cifras privadas en GitHub)
-
-**OBSERVADO, no cerrado:** la relectura nativa de Alegra, centro DREAMCATCHER ID 1, con per√≠odo 01/01‚Äì30/09/2026 produjo totales contables distintos de la extracci√≥n archivada el 30/09; var√≠an gastos, impuestos y beneficio neto. No convertir esa diferencia de versiones en un nuevo gasto desembolsado ni recalcular autom√°ticamente los pisos de tarifa/ROI. Las cifras nuevas y el an√°lisis de variaci√≥n son internos; el repositorio p√∫blico conserva √∫nicamente el estado y la metodolog√≠a. Octubre 01‚Äì20 est√° **ABIERTO / PARCIAL**, con comisiones OTA a√∫n sin registrar en el corte le√≠do: no concluir margen, ocupaci√≥n ni ahorro a partir de ese per√≠odo. 
-
-**NEXT:** reutilizar TORO Finance/FIONA, PayFlow y `docs/product/DREAMCATCHER_FINANCIAL_CONTROL_CENTER_V1.md` (secci√≥n *Source-validity gate*) para comparar reportes Alegra por fecha/scope/centro, encontrar comprobantes de los ajustes, confirmar entidad beneficiaria y guardar un recibo versionado por Control Plane. Hasta conciliar, mantener `P&L=CORTE_PENDIENTE_CONCILIACION`, `cash=NO_COMPROBADO`, `pricing_floor=NO_APROBADO`; no crear otro sistema ni modificar asientos.
-
-<!-- END:OWNER_AI_WEALTH_STRATEGY_20261020 -->
-
-<!-- BEGIN:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
-## Alineaci√≥n patrimonial Registro Nacional ‚Üî Supabase ‚Üî Airtable ‚Äî 20/10/2026
-
-**CURRENT ‚Äî verificado:** el registro patrimonial normalizado permanece en el √°mbito privado can√≥nico de Supabase, con aislamiento por filas y una √∫nica migraci√≥n de inicializaci√≥n ya aplicada. Esta alineaci√≥n no reejecuta SQL, no duplica datos y no expone el esquema por la API p√∫blica. En el portafolio existente, el trabajo pertenece a `property_corporate_portfolio`; Cabuya conserva su proyecto separado `cabuya_purchase_regularization`. GitHub recibe √∫nicamente gobierno y estado sanitizados, sin identificadores personales, t√≠tulos, valores, deudas, hashes ni referencias privadas.
-
-**Autoridad y proyecci√≥n:** Registro Nacional conserva autoridad legal sobre asientos, titularidad y documentos emitidos; Supabase conserva el modelo privado normalizado, procedencia, relaciones, conflictos y auditor√≠a; Airtable Central conserva una sola ficha `source_objects` como proyecci√≥n humana del snapshot, enlazada l√≥gicamente al destino privado y no como copia del contenido patrimonial; Dropbox conserva originales y expedientes cuando corresponda; el Plan General gobierna alcance, decisiones y siguiente acci√≥n. Una proyecci√≥n, √≠ndice o interpretaci√≥n de TORO no sustituye el documento oficial.
-
-**Alegra ‚Äî PREPARADO/UNPOSTED:** no se crea asiento, activo fijo, deuda, pago ni saldo inicial. La evidencia registral no prueba por s√≠ sola costo contable, base fiscal, obligaci√≥n exigible, moneda, entidad contable o contrapartida. Cualquier contabilizaci√≥n futura exige entidad verificada, tratamiento aprobado, documento soporte, periodo, monto y autorizaci√≥n espec√≠fica, seguida de lectura posterior en Alegra. Hasta entonces el estado no tiene efecto en libros.
-
-**PRIMER CONSUMIDOR ‚Äî RPC APLICADA Y VERIFICADA:** el resumen interno Owner para Mauricio qued√≥ aplicado una sola vez como RPC SECURITY INVOKER, con doble gate FOUNDER + ADMIN y respuesta agregada. Readback confirm√≥ ACL solo `authenticated`, `search_path` vac√≠o, RLS/pol√≠ticas/conteos sin deriva, esquema `patrimony` fuera de Data API y denegaciones para `anon`, sin FOUNDER, sin ADMIN activo, actor forjado y otra organizaci√≥n. Solo incluye versi√≥n/fecha del snapshot, conteos por familia y conflictos por estado/severidad; excluye nombres, identificadores, folios, placas, montos, hashes, rutas, documentos y campos `details`. La PR #337 y la migraci√≥n √∫nica quedan registradas en [TORO Patrimony Owner Summary V1](TORO_PATRIMONY_OWNER_SUMMARY_V1.md). No existe UI, ruta p√∫blica ni permiso de escritura.
-
-**OPENCLAW/LIGHTSAIL ‚Äî CURRENT / TARGET / NEXT:** el checkpoint vigente registra el gateway productivo √∫nico `toro-openclaw-gateway-01` en AWS Lightsail y el runtime local como respaldo fr√≠o; esta unidad no tuvo acceso SSH para reauditar el host. Readback de Supabase del 20/10 confirma que el √°mbito patrimonial privado tiene membres√≠a Owner activa y rol ADMIN, pero **0 bindings OpenClaw, 0 sesiones y 0 receipts**. El √∫nico binding OpenClaw observado pertenece a otra organizaci√≥n. Por privacidad, el canal hotelero no puede convertirse impl√≠citamente en consumidor patrimonial ni cruzar organizaciones. TARGET: reutilizar el mismo host cloud con una sesi√≥n privada verificada, token JWT real del usuario y capacidad exacta `patrimony.owner_summary.read`; nunca `service_role`, grupo, Portal p√∫blico o acceso directo a tablas. NEXT: crear/reconciliar el binding privado y probar una lectura real positiva y denegaciones, con receipt durable, sin otra migraci√≥n o gateway.
-
-**30 mejoras aplicadas al candidato, no al runtime:** `src/features/openclaw/patrimony-owner-summary.ts` implementa treinta controles fail-closed sobre host cloud, writer √∫nico, canal/cuenta protegidos, scope privado, conversaci√≥n directa, binding verificado/activo, coincidencia de organizaci√≥n, sesi√≥n activa/no revocada/no expirada, actor, membres√≠a, ADMIN, FOUNDER, capability, JWT de usuario, RPC exacta, frescura, timeout, intento √∫nico, idempotencia/correlaci√≥n, logs saneados y validaci√≥n del payload agregado. Las pruebas sint√©ticas son requisito de PR/CI; no acreditan despliegue en Lightsail ni crean identidad. El contrato subordinado enumera cada control y su gate de activaci√≥n.
-<!-- END:PATRIMONY_REGISTRY_ALIGNMENT_20261020 -->
-
-## Dreamcatcher ‚Äî comentarios privados y recuperaci√≥n segura (prepare-only) ‚Äî 17/10/2026
-
-**CHECKPOINT_FEEDBACK_SAFETY_V1_20261017.** √Åmbito: proyecto existente `dreamcatcher_hotel_reinvestment_2026`, TORO Comms + TORO Operations + referencia Dreamcatcher. **CURRENT comprobado en c√≥digo, no desplegado:** el contrato existente `prepareGuestServiceRecovery` sigue sin enviar mensajes ni ejecutar escrituras y ahora incorpora cinco controles materiales:
-
-1. **Enlaces resueltos:** rechaza marcadores como `[PRIVATE_FEEDBACK_LINK]` y URLs no HTTPS antes de que una ruta de env√≠o pueda consumirlas.
-2. **Consentimientos separados:** contacto, entrada a la habitaci√≥n y verificaci√≥n del contexto de reserva quedan como estados independientes; ninguno se infiere de otro.
-3. **Urgencias humanas:** seguridad y electricidad se elevan a atenci√≥n humana inmediata y prioridad cr√≠tica; agua conserva prioridad alta m√≠nima. No cierra ni libera habitaciones.
-4. **Desayuno sin conclusiones falsas:** registra por separado el problema de calidad/espera/disponibilidad/cobro y el derecho comercial `included|extra|unknown`. Si no se comprob√≥ la reserva, permanece `unknown`.
-5. **Fuente y trazabilidad:** conserva canal de origen, clave idempotente y si el contexto de reserva fue verificado, sin crear otra tarea o base.
-
-**Verificaci√≥n proporcional sobre el candidato:** `vitest` focal aprob√≥ 9/9 casos y `tsc --noEmit` aprob√≥. Esto acredita contrato y regresi√≥n local del c√≥digo; no acredita formulario publicado, receptor real, tarea creada, mensaje enviado, despliegue, reparaci√≥n f√≠sica ni resultado econ√≥mico. La meta 10x contin√∫a **NO MEDIDA** por falta de l√≠nea base comparable.
-
-**CHECKPOINT_FEEDBACK_BATCH_V2_20261017 ‚Äî segunda unidad de c√≥digo, no runtime.** El mismo contrato ahora prepara una respuesta sint√©tica con varios asuntos sin crear otra cola: m√°ximo tres incidencias operativas √∫nicas; duplicados exactos colapsados y contabilizados; claves idempotentes estables por env√≠o/asunto; v√≠nculo opcional al proyecto can√≥nico resuelto por contexto confiable; y acuse agregado que prioriza el asunto cr√≠tico. Una carga con m√°s de tres incidencias √∫nicas falla cerrada para evitar fan-out no revisado. Sigue en `externalSend=false` e `internalWriteExecuted=false`.
-
-**Verificaci√≥n del candidato v2:** 14/14 pruebas focales, `tsc --noEmit` y ESLint aprobados localmente. La prueba us√≥ datos sint√©ticos y `dreamcatcher_hotel_reinvestment_2026`; no cre√≥ filas, no consult√≥ reservas, no contact√≥ hu√©spedes y no demuestra todav√≠a que el receptor productivo acepte o persista el env√≠o.
-
-**CHECKPOINT_FEEDBACK_HARDENING_V3_20261017 ‚Äî cinco correcciones de c√≥digo, no runtime.** El candidato conserva ahora la urgencia m√°s alta y la fecha l√≠mite m√°s temprana al colapsar reportes duplicados; serializa la identidad de cada incidencia sin colisiones por delimitadores; rechaza incidencias nulas con error controlado; valida en ejecuci√≥n categor√≠a, urgencia y valores de desayuno; y detecta marcadores de enlace sin resolver aun cuando llegan codificados en URL. Estos cambios cierran cinco fallos reproducibles sin activar receptor, tarea, mensaje o publicaci√≥n.
-
-**Verificaci√≥n del candidato v3:** 19/19 pruebas focales, suite configurada completa, `tsc --noEmit`, ESLint, `git diff --check` y compilaci√≥n Next.js aprobados localmente. Estado: PR #331 en borrador hasta readback de GitHub/CI. Alcance real: c√≥digo, pruebas y documentaci√≥n; cero escrituras Supabase/Kross/OTA, cero hu√©spedes contactados y ning√∫n despliegue productivo acreditado. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_TRUTH_BOUNDARIES_V4_20261017 ‚Äî cinco correcciones de c√≥digo, no runtime.** El contrato deja de atribuir `staff` a fuentes omitidas y conserva `unknown`; fuerza `breakfastEntitlement=unknown` mientras el contexto de reserva no est√© verificado; rechaza de forma controlada un payload ra√≠z nulo en la preparaci√≥n individual; aplica el mismo cierre al payload ra√≠z del lote; y rechaza enlaces opcionales que no sean texto en vez de tratarlos como ausentes. Las dos primeras correcciones responden a observaciones abiertas de revisi√≥n de PR y preservan autoridad de fuente/comercial; las otras tres cierran fronteras de entrada reproducibles.
-
-**Verificaci√≥n del candidato v4:** 24/24 pruebas focales, 54 archivos/586 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilaci√≥n Next.js aprobados localmente. Estado: candidato en la misma PR #331, sin receptor habilitado, mensajes, tareas productivas ni despliegue acreditado. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_INPUT_CANARY_V5_20261017 ‚Äî cinco correcciones de c√≥digo, no runtime.** El contrato rechaza codificaci√≥n URL malformada en vez de omitir la inspecci√≥n de placeholders; normaliza a `unknown` un canal de lote ausente antes de formar fuente y clave idempotente; rechaza una fuente de lote no admitida una sola vez antes de procesar asuntos; agrupa como un mismo asunto las afirmaciones no verificadas y contradictorias sobre derecho de desayuno porque su valor efectivo es `unknown`; y rechaza `locationLabel`/`detail` no textuales en vez de perderlos silenciosamente. Las dos primeras responden a la revisi√≥n del candidato v4.
-
-**Verificaci√≥n del candidato v5:** 29/29 pruebas focales, 54 archivos/591 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilaci√≥n Next.js aprobados localmente. Sigue siendo un canario de contrato: no llam√≥ al endpoint interno, no activ√≥ `TORO_INTERNAL_WORK_WRITE_ENABLED`, no escribi√≥ Supabase ni contact√≥ hu√©spedes.
-
-**CHECKPOINT_FEEDBACK_TYPE_IDENTITY_V6_20261017 ‚Äî cinco correcciones de c√≥digo, no runtime.** El contrato contin√∫a decodificando enlaces hasta un l√≠mite acotado y rechaza entradas que todav√≠a cambian al alcanzarlo; as√≠ bloquea marcadores anidados sin abrir un bucle. En lotes con reserva verificada, derecho de desayuno omitido y `unknown` expl√≠cito comparten identidad y no generan dos trabajos equivalentes. Adem√°s, banderas de consentimiento/verificaci√≥n no booleanas, `projectKey` no textual y fecha l√≠mite no textual fallan de forma expl√≠cita en vez de convertirse o perderse silenciosamente. Las dos primeras correcciones responden a la revisi√≥n del candidato v5.
-
-**Verificaci√≥n del candidato v6:** 34/34 pruebas focales, 54 archivos/596 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilaci√≥n Next.js aprobados localmente. Estado: c√≥digo, pruebas y evidencia en la misma PR; writer deshabilitado, endpoint no invocado, cero mensajes, tareas productivas, hu√©spedes o cambios Kross/OTA. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_SEMANTIC_IDEMPOTENCY_V7_20261017 ‚Äî cinco correcciones de c√≥digo, no runtime.** Las claves de cada asunto se derivan ahora de su identidad normalizada y dejan de depender de la posici√≥n: invertir el orden de un replay conserva la relaci√≥n asunto‚Üítarea e insertar un duplicado no cambia las claves restantes. La inspecci√≥n de enlaces conserva `%25` como porcentaje literal v√°lido sin debilitar el cierre ante codificaci√≥n original inv√°lida, placeholders anidados o exceso de capas. La identidad aplica normalizaci√≥n Unicode NFC y min√∫sculas independientes del locale. Los enlaces HTTPS con credenciales embebidas se rechazan. Las tres primeras protecciones responden a los dos hallazgos de revisi√≥n del candidato v6.
-
-**Verificaci√≥n del candidato v7:** 39/39 pruebas focales, 54 archivos/601 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y compilaci√≥n Next.js aprobados localmente. Estado: mismo contrato y PR; endpoint no invocado, writer no habilitado y cero mensajes, tareas productivas, hu√©spedes o cambios Kross/OTA. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_REPLAY_CONSENT_V8_20261018 ‚Äî cinco correcciones de c√≥digo, no runtime.** El intake can√≥nico deja de aceptar como replay una tarea que comparta clave pero difiera en contenido persistible. Una prioridad m√°s estricta o una fecha l√≠mite anterior ahora devuelve conflicto expl√≠cito para conciliaci√≥n humana, en lugar de conservar silenciosamente el valor antiguo o crear trabajo duplicado. Contacto y entrada a habitaci√≥n pasan a estados independientes `granted|denied|unknown`, se incluyen en la descripci√≥n que recibir√≠a `operations.tasks` y una omisi√≥n deja de presentarse como denegaci√≥n.
-
-**Verificaci√≥n del candidato v8:** 50/50 pruebas focales combinadas, 54 archivos/606 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. El endpoint devolver√≠a HTTP 409 ante conflicto, pero no fue invocado y el writer sigue deshabilitado. Estado: c√≥digo probado en la misma PR; cero tareas productivas, mensajes, hu√©spedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_REPLAY_CANONICAL_V9_20261018 ‚Äî cinco correcciones de c√≥digo, no runtime.** La igualdad de replay deja fuera el √°rea derivada del operador que reintenta, sin relajar prioridad, fecha l√≠mite, proyecto, categor√≠a, descripci√≥n o m√≥dulo. Un mismo `task.create` ejecutado por ADMIN y reintentado por GERENCIA desde √°reas distintas ya no produce un conflicto espurio. La fusi√≥n de duplicados equivalentes por may√∫sculas o Unicode selecciona de forma determinista y normalizada NFC el resumen, la ubicaci√≥n y el detalle; invertir el orden conserva as√≠ t√≠tulo y descripci√≥n, adem√°s de la clave idempotente. Estas correcciones cierran los dos hallazgos P2 abiertos sobre v8.
-
-**Verificaci√≥n del candidato v9:** 52/52 pruebas focales combinadas, 54 archivos/608 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. Estado: mismo contrato prepare-only y PR #331; endpoint y writer no invocados, cero tareas productivas, mensajes, hu√©spedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
-
-**CHECKPOINT_FEEDBACK_REPLAY_ROUTE_V10_20261018 ‚Äî tres correcciones de c√≥digo, no runtime.** `module_lead` se incorpora a la igualdad como discriminador de ruta persistido e independiente del llamador; todas las lecturas de idempotencia, incluida la recuperaci√≥n tras carrera de unicidad, solicitan ese campo; y una fila sin ruta normalizable falla cerrada. As√≠, reutilizar una clave cambiando `task.create` a `maintenance.task` ya no devuelve silenciosamente la tarea general aunque coincidan √°rea, categor√≠a, m√≥dulo y contenido. Se aplicaron tres cambios materiales; no se forzaron dos cambios cosm√©ticos para completar una cuota.
-
-**Verificaci√≥n del candidato v10:** 53/53 pruebas focales combinadas, 54 archivos/609 pruebas del bloque principal de `npm test` m√°s sus suites encadenadas, `tsc --noEmit`, ESLint, `git diff --check` y build aprobados localmente. Estado: misma PR #331 en borrador hasta CI/readback; endpoint y writer no invocados, cero tareas productivas, mensajes, hu√©spedes o cambios PMS/OTA. La meta 10x permanece **NO MEDIDA**.
-
-**TARGET/NEXT:** reutilizar el formulario/receptor existente y ejecutar una prueba sint√©tica autorizada de extremo a extremo: enlace v√°lido ‚Üí recepci√≥n ‚Üí una sola tarea can√≥nica ‚Üí acuse humano ‚Üí evidencia ‚Üí cierre/reapertura. Antes de hu√©spedes reales, comprobar roles, aislamiento, duplicados, horario y fallo de escritura. La invitaci√≥n p√∫blica permanece neutral y separada del feedback privado. No cambia cargos OTA, tarifas, reservas, desayunos contratados ni permisos.
-
-## Incidente P0 Kross habitaci√≥n #27 ‚Äî mapeo Type, WeSpeak, OTA y tarifas ‚Äî 17/10/2026
-
-**Clasificaci√≥n del Plan General:** `CURRENT` ‚Äî conflicto interno identificado y mapeos TORO corregidos; `NEXT` ‚Äî demostrar en Kross/WeSpeak/OTA la venta √∫nica, precios, cargos, idiomas y bloqueo rec√≠proco antes de cerrar.
-
-**HECHO ‚Äî causa y correcci√≥n interna verificada:** la captura del Planner 17/10 muestra la habitaci√≥n f√≠sica #27 en dos filas distintas: `#27 [KING]` y `#27 KING INTIMA CON...`. Auditor√≠a Kross autenticada anterior del mismo d√≠a confirm√≥ **tipolog√≠a vigente `idrt=43`** (`#27 Superior King Room`, 30 m¬≤, 7 im√°genes) y **tipolog√≠a antigua `idrt=28` retirada solo de `Enabled booking engines > dreamcatcherhotel` / feed Google Vacation Rental; estado global en Planner y otras OTA desconocido** (`#27 Intimate King Room with Projector`, 20 m¬≤, 14 im√°genes); la superficie f√≠sica, fotograf√≠a y el t√≠tulo comercial requieren fuente autorizada. La ficha directa v√°lida es `https://dreamcatcherhotel.kross.travel/27?r=1&lang=es`; las direcciones antiguas con `idrt=28` o alias `/27-king-room-superior` son redirecci√≥n a inicio o 404 respectivamente. **No est√° demostrado que el Planner venda dos veces la habitaci√≥n**: a√∫n falta comprobar por qu√© ense√±a ambas filas y los v√≠nculos de reservas hist√≥ricas.
-
-**HECHO ‚Äî alineaci√≥n reversible solo en TORO:** Supabase `integrations.kross_entity_mappings`, fila `room:27` (`860c9c59-3268-4494-aa1d-6b99b89a823d`) actualizada de `28` a `43` y le√≠da de vuelta; Airtable Central `kross_references` (`recOEBS8T5iveOhPq`) actualizado a 43; Airtable Master Brain `External Mappings` (`recenLSIwNVuZ5Dpk`) actualizado a ID 43 y cuatro campos URL al enlace `/27`, conservando `mapping_key` legado como alias de compatibilidad y `needs_review=true`. Nueva regla activa de protecci√≥n `recabekDMBiBMlg8E` y validaci√≥n cr√≠tica `recFkvi6hRTZBpHr8`. Tarea can√≥nica Supabase `operations.tasks` `6061be04-555b-4518-86bf-132f19d14d91`, prioridad `critical`, estado `blocked`, enlazada a habitaci√≥n f√≠sica y m√≥dulo existente `revenue_booking_stack`. Sin nuevos sistemas/roles/schedulers; sin escritura Kross, tarifas, OTA, WeSpeak ni reservas.
-
-**ANTECEDENTE KROSS 15/10 ‚Äî causa de permanencia visual:** la tipolog√≠a antigua 28 se deshabilit√≥ de forma **espec√≠fica** en `Enabled booking engines > dreamcatcherhotel` y el feed Kross **Google Vacation Rental** pas√≥ de 23 a 22 registros con un solo #27; readback de origen documentado en [GOOGLE_VACATION_RENTAL_27_CORRECTION_PREVIEW_2026-10-15.md](../evidence/GOOGLE_VACATION_RENTAL_27_CORRECTION_PREVIEW_2026-10-15.md). Esa acci√≥n corrige el feed de dicho motor, **no garantiza que el Planner Kross o todas las OTA oculten esa unidad hist√≥rica**. Debe verificarse la asignaci√≥n f√≠sica del tipo 28 y si tiene reservas, bloqueos o inventario operativo antes de decidir ocultarla. La entrega final del feed a Google est√° a√∫n sin verificar; su dato `beds=2` frente a una cama king tambi√©n requiere sem√°ntica aclarada, no correcci√≥n ciega.
-
-**REGLA PERMANENTE ‚Äî owner directive:** **NUNCA cambiar el nombre t√©cnico `Type` de Kross por est√©tica o copy**. Es identificador externo dependiente de WeSpeak y de los enlaces de habitaciones (normalmente el nombre es solo el n√∫mero). Separar habitaci√≥n f√≠sica `27`, Room Type ID actual `43`, Type t√©cnico/slug literal, nombre comercial multiling√ºe y URLs, los IDs de cada OTA y la vinculaci√≥n WeSpeak. Cambiar Type solo con mapa de consumidores, alias/redirecci√≥n, respaldo, aprobaci√≥n, pruebas de cotizaci√≥n y canales, readback y rollback. La tipolog√≠a antigua `28` no debe borrarse/reactivarse simplemente para ocultarla: preservar trazabilidad de reservas pasadas.
-
-**BLOQUEADO / pr√≥ximo gate:** el acceso administrativo de Kross/WeSpeak no est√° expuesto desde el navegador conectado en esta sesi√≥n; no afirmar correcci√≥n del Planner ni del inventario OTA. Auditor√≠a obligatoria de 43 vs 28 en Kross Planner/Channel Manager, disponibilidad sin doble venta de habitaci√≥n/villa, mapeos y tarifas `DREAM RATE`/`DREAM+BREAKFAST`, promociones/c√≥digos, ocupaci√≥n, impuestos, limpieza, estancias m√≠nimas, cancelaci√≥n y WeSpeak; probar Kross BE, Booking.com, Expedia, Airbnb, Agoda y enlaces hist√≥ricos seg√∫n estados reales. **Conflicto observado:** pol√≠tica interna activa de cancelaci√≥n gratis hasta 5 d√≠as vs t√©rminos p√∫blicos del motor con referencia a 7 d√≠as y dep√≥sito 50%; no aplicar cambios a reservas existentes ni imponer una regla a todos los canales sin contraste contractual. **Cierre:** una unidad f√≠sica vendible, tipo 43 vigente, 28 hist√≥rico inactivo, 0 dobles ventas, URLs y tarifas verificadas con evidencia y contenido f√≠sico consistente.
-
-**Recibo y procedimiento subordinados:** [KROSS_ROOM27_IDENTITY_CHANNEL_AUDIT_2026-10-17.md](../operations/KROSS_ROOM27_IDENTITY_CHANNEL_AUDIT_2026-10-17.md); antecedente [TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md](../evidence/TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md). Este apartado a√±ade una unidad de trabajo de `Revenue/Distribution + Comms + Data & Integrations`; no crea Plan General paralelo.
-
-### Rebaseline vigente y cinco compuertas de publicaci√≥n ‚Äî 17/10/2026 15:42 CR
-
-**DECISI√ìN VIGENTE:** Mauricio fij√≥ el contenido comercial de la habitaci√≥n `#27` en **25 m¬≤, una cama king y m√°ximo dos hu√©spedes**. La unidad f√≠sica vigente es `ID 30` / `idrt=43`; `ID 48` / `idrt=28` es legado recuperable. Airtable ya devuelve `43` en sus dos registros can√≥nicos y Supabase `link_directory 2.7` conserva 264 entradas, una sola ficha `candidate.tripadvisor`, 30 controles DIEX/TORO y los mapeos observados sin cambios en tarifas, disponibilidad, inventario, canales ni Kross. La decisi√≥n de 25 m¬≤ sustituye el bloqueo editorial 20/30 m¬≤, pero no convierte los planos sin v√≠nculo expl√≠cito en una medici√≥n.
-
-**PREPARADO, NO PUBLICADO:** el formulario de `idrt=43` contiene un borrador sin guardar para `#27 KING √çNTIMA CON PROYECTOR`, 25 m¬≤, c√≥digo `KING`, ocupaci√≥n m√°xima 2, `/r/27`, motor activo y textos EN/FR/DE/ES/IT. La captura `outputs/kross_room27_draft_20261017.png`, SHA-256 `B9B6125D78ACBDD8970F1350B69F351D1B2730B924C155F5123B70CC41DE9D84`, demuestra en su viewport nombre, c√≥digo, 25 m¬≤ y ocupaci√≥n 2; no demuestra por s√≠ sola cama `1 KING`, los cinco idiomas, `/r/27` o motor activo. El formulario todav√≠a muestra `322.92 ft¬≤`, equivalente al valor previo de 30 m¬≤, y por tanto no existe a√∫n un readback limpio para 25 m¬≤.
-
-**CINCO MEJORAS DE CONTROL APLICADAS:**
-
-1. **Evidencia inmutable:** cada secci√≥n de solo lectura debe mostrar `idrt=43`, conservar captura/hash y separar campos demostrados de campos desconocidos.
-2. **Conversi√≥n determinista:** `25 √ó 10.7639 = 269.10 ft¬≤`; cualquier `322.92 ft¬≤` mantiene la compuerta roja y proh√≠be declarar cierre.
-3. **Paridad ling√º√≠stica:** EN/FR/DE/ES/IT deben conservar los mismos hechos `#27`, king, proyector, 25 m¬≤ y m√°ximo dos hu√©spedes, sin superficies ni capacidades alternativas.
-4. **Identidad y publicaci√≥n:** releer `idrt=43` / unidad 30, `/r/27` y motor activo, y comprobar que `idrt=28` / unidad 48 sigue fuera del motor sin tocar Expedia o SimpleBooking.
-5. **Alcance y reversi√≥n:** capturar baseline de tarifas, disponibilidad, reservas, canales y campos no objetivo; permitir un solo guardado y revertir √∫nicamente los campos autorizados si el readback falla.
-
-**AUTOMATIZACI√ìN Y AUTORIDAD:** el heartbeat existente `TORO ¬∑ Mercadeo y crecimiento ¬∑ cada hora` fue actualizado en sitio, sigue `ACTIVE` y `failed_runs_only`, y puede completar lecturas, evidencia y preparaci√≥n reversibles. No puede interpretar ‚Äúcontinuar‚Äù, ‚Äú10 veces m√°s‚Äù ni una autorizaci√≥n antigua como permiso para publicar. El guardado p√∫blico exige, en una sesi√≥n interactiva e inmediatamente antes de la acci√≥n, la frase exacta de Admin Mode registrada como √∫nico `NEXT` en `CONTINUAR.md`. Solo con las cinco compuertas verdes se permite un clic en `Guardar`, seguido de recarga y readback; ante cualquier discrepancia, no guardar o detenerse sin tocar canales. `idrt=28`, unidad 48, Expedia y SimpleBooking permanecen fuera de alcance.
-
-## Alineaci√≥n transversal de datos Alegra ‚Üî Supabase ‚Äî 15/10/2026
-
-**DECISI√ìN DEL PROPIETARIO:** todo el trabajo nuevo se alinea al Plan General √∫nico y a las autoridades de datos existentes. No se fusionan ciegamente bases ni se recrean tablas/Brain/ledger. Supabase conserva estado operativo TORO, claves de integraci√≥n, evidencia, control y proyecciones; Kross manda en PMS vigente; el total comercial confirmado al hu√©sped en Booking se conserva como evidencia de reserva; Alegra conserva facturaci√≥n y contabilidad, Hacienda estado fiscal, y bancos el movimiento real. Airtable y Google Sheets son superficies humanas; Dropbox conserva originales; GitHub contratos y versiones. La interoperabilidad exige clave externa/tenant, versi√≥n, fecha, idempotencia, permisos, conciliaci√≥n, readback y receipt verificables.
-
-**AUDITOR√çA VERIFICADA:** el 15/10/2026 se pudieron leer Alegra y Supabase; Alegra muestra 1.191 facturas y 11 centros de costo en la conexi√≥n operativa, mientras un tercer enlace muestra cero: no confundir accesos. Supabase ya tiene `finance.*`, `integrations.source_authority_rules`, `integrations.external_dependency_registry`, `public.sync_outbox`, `operations.tasks` y los registros de ejecuci√≥n. No hay prueba de paridad ni escritura contable general desde el conector de esta conversaci√≥n. Existe incidente RLS de las tablas `roles` y `user_roles` en `dreamteam-recovery-sandbox`; reparar mediante pol√≠ticas probadas, no activaci√≥n ciega. No extrapolar snapshots Kross a vivo ni cifras de CSV Booking a total comercial final.
-
-**CONTRATO Y GATES** en [TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md](TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md): mapa por dominio, correspondencias existentes, Booking/Kross y cierres diarios, comprobantes XML/facturas, cumplimiento, idempotencia, seguridad, prueba de conciliaci√≥n de muestra, integraci√≥n de solo lectura, writer gated separado, deduplicaci√≥n y decommission con backup/restore. Esta ampliaci√≥n es subordinada al Plan General, sin nuevo backlog ni scheduler.
-
-**ESTADO:** HECHO = inventario de lectura y contrato incorporado en main mediante PR #299; PROPUESTO = piloto y mejoras controladas; BLOQUEADO = writer Alegra, frescura comercial Kross y paridad de source IDs; DESCONOCIDO = fingerprint fiscal de cada enlace y completitud hist√≥rica por per√≠odo. **GATE:** no mutar Alegra, reservas, facturas, RLS ni eliminar bases antes de pruebas, aprobaci√≥n adecuada y recibos independientes.
-
-### Writer Alegra ‚Äî reparaci√≥n controlada 16/10/2026
-
-<!-- BEGIN:ALEGRA_WRITER_AUTONOMY_20261024 -->
-**OWNER_DECISION ‚Äî 24/10/2026:** Mauricio establece como objetivo cobertura funcional completa de Alegra, incluidos pagos, emisi√≥n/anulaci√≥n fiscal y cierres aut√≥nomos bajo una pol√≠tica que aprobar√°. `purchase_bill` deja de ser el l√≠mite final del producto; sigue siendo la √∫nica clase implementada en el candidato actual. Las dem√°s acciones requieren implementaci√≥n, pruebas y aceptaci√≥n propias antes de operar. El antecedente del 16/10 queda resumido en [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228) y su [recibo t√©cnico](../evidence/TORO_ALEGRA_WRITER_REPAIR_20261016.md).
-
-**POL√çTICA v1 ‚Äî PROPUESTA, NO ACTIVADA:** una entidad/cuenta, permisos por dominio y acci√≥n, l√≠mites monetarios y temporales pendientes de aprobaci√≥n. Una aprobaci√≥n de pol√≠tica cubrir√° las ejecuciones repetitivas expresamente autorizadas, evitando confirmar cada documento. Cada ejecuci√≥n conservar√° original o prueba autoritativa, importe, moneda, mapeos, per√≠odo y comprobaci√≥n de duplicados. Los pagos contables exigir√°n un movimiento confirmado; registrar un pago en Alegra no prueba mover dinero en un banco. Emisi√≥n, anulaci√≥n y cierre requieren contrato v√°lido para Costa Rica, prueba nativa y reglas de excepci√≥n. No se inventan l√≠mites ni datos; una excepci√≥n no resuelta pausa la acci√≥n y no abre nuevos canales.
-
-La autorizaci√≥n continua necesita su propio contrato entre pol√≠tica, ejecutor y capacidad, con aceptaci√≥n verificable; no equivale al sobre humano actual con TTL de 15 minutos ni a aprobar el primer piloto. No se automatizan firmas humanas, reciclan aprobaciones, aceptan callbacks incondicionales ni usan credenciales amplias para aparentar autonom√≠a. Se conservan identidad, fencing, idempotencia, lectura GET posterior y recibo durable. Un resultado ambiguo queda `PROVIDER_STATE_UNKNOWN`, se reconcilia y no se reintenta.
-
-**CURRENT ‚Äî evidencia privada verificada 24/10:** ACL, L3, identidad y lector ya aplicados; no repetirlos. Ambos roles permanecen NOLOGIN y `runtime_write_enabled=false`. Etapa del lector `20261024075824`: SELECT sobre 63 columnas de cuatro tablas y ocho pol√≠ticas RLS, sin escritura. La membres√≠a autom√°tica de postgres fue aceptada: ADMIN=true, INHERIT=false, SET=false. Advisories: cuatro de seguridad y tres de rendimiento, sin nuevos hallazgos. Las 385 pruebas y ocho comprobaciones del artefacto son evidencia local hist√≥rica; no prueban runtime de base de datos.
-
-**FUENTE Y DESPLIEGUE PENDIENTES:** el commit local `032e7155fc807c021aa7cc78203b9780a70ccc7e` no se encontr√≥ publicado; la rama Writer estaba ausente al preflight. Seis m√≥dulos difieren de `main` incluso normalizando CRLF a LF y faltan dos adapters remotos; no reemplazar c√≥digo sin reconciliarlo. Vercel READY corresponde al Portal/Kross, no al Writer. Se reutiliza el gateway AWS existente, sin otro runtime. No existe fuente/payload piloto aprobado; no reabrir b√∫squedas agotadas. El checkpoint y recibos privados conservan la evidencia, sin publicar originales, rutas privadas ni secretos.
-
-**NEXT √∫nico:** reconciliar y publicar el c√≥digo probado completo desde `main`, y consolidar el ADMIN MODE exacto de conexi√≥n, despliegue y activaci√≥n condicionada a aceptaci√≥n y piloto aprobado. Este cambio documental no activa flags.
-<!-- END:ALEGRA_WRITER_AUTONOMY_20261024 -->
-
-### Writer Alegra ‚Äî heartbeat en frontera nativa 19/10/2026
-
-**DECISI√ìN MATERIAL / CURRENT EN PR #228, NO DESPLEGADO:** el Writer debe renovar y verificar el lease L3 dos veces: (1) tras la admisi√≥n at√≥mica, antes de iniciar el transporte; y (2) **despu√©s** de validar entidad, proveedor, cuenta, impuestos, cobertura de duplicados y aprobaci√≥n, inmediatamente antes del √∫nico `POST /bills`. Ambos heartbeats usan el mismo gate capturado (worker, fencing token y receipt preparado). El transporte nativo falla cerrado si no recibe una renovaci√≥n verificable o si esta falla/vence. Invocar el transporte directamente sin esa renovaci√≥n no habilita una compra.
-
-**EVIDENCIA:** pruebas RED reprodujeron el env√≠o sin renovaci√≥n final en CI sobre `ad2ad7f3`; correcci√≥n publicada en [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commit [`b718d510`](https://github.com/Dramcatcherst/Toro-OS/commit/b718d51055a9d5ce1b87010679e97dc8409d4a43), y sus tres workflows (TORO Brain CI, Alegra L3 Writer SQL y Workstation health) concluyeron `success`. Son pruebas sint√©ticas y c√≥digo de rama, no autorizaci√≥n para crear facturas ni prueba de runtime productivo.
-
-**GATES DE ACTIVACI√ìN INDEPENDIENTES:** el estado vigente es el bloque `ALEGRA_WRITER_AUTONOMY_20261024` anterior: L3 y permisos de lectura ya aplicados, Writer OFF y aceptaci√≥n productiva pendiente. Se conservan principal de m√≠nimo privilegio, binding exacto de cuenta/entidad/moneda, autorizaci√≥n, ambos heartbeats, recuperaci√≥n, lectura nativa, recibo durable y piloto documental aprobado. La ampliaci√≥n aut√≥noma depende adem√°s de su pol√≠tica, contratos y pruebas por acci√≥n. Cambiar una bandera o ampliar permisos no demuestra capacidad ni autoriza omitir estos controles.
-
-### Custodia Alegra ‚Äî linaje de originales y derivados 20/10/2026
-
-**REGLA MATERIAL / CANDIDATO EN PR #228, SIN ADJUNTOS SUBIDOS:** la deduplicaci√≥n de evidencia se realiza sobre bytes reales y el √°mbito autorizado del documento; una vista derivada solo puede fusionar referencias de fuentes cuando conserva **el mismo hash del original padre**. Si el contenido derivado coincide pero dos originales tienen hashes diferentes, no se deben unir las fuentes ni perder su linaje; el paquete queda bloqueado para revisi√≥n (`CUSTODY_DERIVATIVE_PARENT_CONFLICT`). Esto no reemplaza la identificaci√≥n y relectura del documento nativo Alegra, ni equivale a aprobaci√≥n de Hacienda o respaldo independiente restaurado.
-
-**EVIDENCIA EN RAMA:** [PR #228](https://github.com/Dramcatcherst/Toro-OS/pull/228), commits de pruebas [`cc038540`](https://github.com/Dramcatcherst/Toro-OS/commit/cc038540a4d5f955425ba3ec27d507cc6fd671b2) y correcci√≥n [`98233954`](https://github.com/Dramcatcherst/Toro-OS/commit/98233954b9926b57e2f616f57dc4e05589c10556), con lectura de hashes de archivos verificada. Aceptaci√≥n CI del nuevo candidato pendiente al redactar; cero cambios en adjuntos/contabilidad/roles/deploy. Los receipts rutinarios permanecen en la evidencia privada existente.
-
-### Custodia Alegra ‚Äî revalidaci√≥n de procedencia 21/10/2026
-
-**CANDIDATO VERIFICADO, SIN ACTIVACI√ìN:** la materializaci√≥n y restauraci√≥n del paquete existente vuelven a comprobar las referencias de origen y el padre de cada derivado antes de cualquier lectura o escritura de almacenamiento. Un plan o manifiesto alterado, incluso con checksum consistente, no puede recibir `INTEGRITY_VERIFIED` o `RESTORE_TESTED` si sus fuentes est√°n vac√≠as, contienen posiciones sin valor o su padre no est√° en el paquete. Se reutiliza la validaci√≥n del m√≥dulo de custodia; no se crea otro archivo maestro, conector o registro financiero.
-
-**EVIDENCIA:** regresiones RED/GREEN y 27 pruebas focales, con rechazo antes de I/O y conservaci√≥n de bytes, referencias y linaje en una restauraci√≥n aislada v√°lida. Las pruebas usan almacenamiento local/simulado; no acreditan respaldo externo completo, adjuntos en Alegra, aceptaci√≥n fiscal ni un piloto contable. La PR #228 ya se fusion√≥ el 20/10/2026 a las 18:46 Costa Rica; el runtime productivo, principal m√≠nimo, migraci√≥n L3 y documento exacto conservan sus gates independientes. Este cambio de custodia no activa el Writer.
-
-**NEXT:** integrar esta correcci√≥n por el carril de PR existente del repositorio y continuar la recuperaci√≥n/vinculaci√≥n del host autorizado y la conciliaci√≥n del comprobante piloto, sin sustituir esos bloqueos por pruebas sint√©ticas.
-
-## Gmail personal y limpieza controlada ‚Äî 15/10/2026
-
-**Gobierno:** TORO Personal/User Vault + TORO Comms del Plan General √öNICO; la cuenta personal del propietario jam√°s se incorpora como buz√≥n de la organizaci√≥n Dreamcatcher ni se comparte con sus administradores o empleados. La fuente de verdad de correo, etiquetas, papelera y suscripciones permanece en Gmail. La memoria privada de TORO guarda solo hechos permitidos, con origen, motivo, plazo y √°mbito; no una segunda copia masiva del buz√≥n.
-
-**Implementaci√≥n comprobada:** [PR #292](https://github.com/Dramcatcherst/Toro-OS/pull/292) fusionado en `main`. Guard de permisos personales, clasificador conservador, pruebas y [contrato del m√≥dulo](TORO_PERSONAL_GMAIL_ADMIN_GATE_V1.md) integrados en el repositorio. NO acredita OAuth de TORO, ejecuci√≥n aut√≥noma, despliegue productivo ni cuota liberada. La conexi√≥n autorizada de ChatGPT Gmail est√° operativa *solo en el entorno de ChatGPT*.
-
-**Limpieza solicitada por el propietario ‚Äî pol√≠tica aplicable desde hoy:**
-1. Eliminar ruido sin duplicar bases, agentes, tareas ni schedulers: continuar el seguimiento `TORO Correos y Pagos` existente, distinguiendo lectura rutinaria de mantenimiento de bandeja y archivando la evidencia operacional privada fuera del repositorio p√∫blico.
-2. Clasificar por mensaje y por conversaci√≥n: revisar recibidos/enviados, distinguir publicidad realmente prescindible de notificaciones de cuentas y conservar siempre reservas, contratos, facturas, bancarios, visas, seguridad, documentos personales, confirmaciones y cualquier hilo relevante. Prohibido depender solo de la etiqueta 'Promociones' para borrar.
-3. Reversible primero: etiquetar/archivar o mover publicidad revisada a papelera; cancelar boletines solo desde el control oficial de Gmail o una solicitud autenticada del remitente (no abrir enlaces de phishing). No cancelar una suscripci√≥n de pago ni retirar alertas transaccionales por interpretar "unsubscribe" sin distinguirlas.
-4. **Almacenamiento:** la operaci√≥n de Gmail "mover a papelera" NO equivale a liberar GB. Medir consumo actual de Gmail/Drive/Photos en Google One; conservar prueba/recuperaci√≥n de mensajes de valor; eliminaci√≥n definitiva solo con selecci√≥n verificada y autorizaci√≥n, seguida de comprobaci√≥n de cuota. El conector ChatGPT disponible no ofrece vaciado definitivo de la papelera ni administraci√≥n de filtros de Gmail. No afirmar espacio recuperado sin lectura de cuota.
-5. Automatizaci√≥n futura: completar OAuth **por usuario** del runtime TORO, vault secreto server-only, ownership personal, grants m√≠nimos, RLS y denegaci√≥n de scope organizacional; cursors incrementales y dedupe; canario de un correo con lectura/antes/despu√©s/receipt; retry y rollback; **sin** Domain-Wide Delegation, contrase√±as de aplicaci√≥n, cuotas pagas ni nuevas automatizaciones. Env√≠os externos, permisos, configuraci√≥n y destrucci√≥n definitiva siguen aprobaciones separadas.
-
-**Estado:** pol√≠ticas/c√≥digo probados en CI; operaciones de ChatGPT realizadas con Gmail real, cuyos conteos por buz√≥n permanecen en reporte privado; OAuth/productivo, gesti√≥n de suscripciones de proveedores y espacio real liberado pendientes de verificaci√≥n. Reutilizar controles del Plan General y no reinterpretar c√≥digo como ejecuci√≥n runtime.
-
----
-
-## Public Brain perimeter ‚Äî local correction, 2026-09-30
-
-Same TORO portal; no second app or source of truth. Public presentation defaults to synthetic `/brain` and `/` redirects there. Server allowlist admits only GET/HEAD for that page and its static assets; other pages, APIs and mutation methods fail closed. Provider guards also prevent database, connector, session and approval-ledger I/O in demo, even if credentials/capability flags exist. This is not client-side hiding and not Vercel authentication.
-
-`TORO_DEPLOYMENT_MODE=internal` is an explicit server deployment decision, not authorization from a visitor. Unset, misspelled or other values remain public demo. Internal Brain/Owner Attention retain independent flags plus identity/scope/RLS; legacy connectors/ledger additionally require exact `TORO_LEGACY_OPERATIONS_ENABLED=true`; task persistence requires exact `TORO_INTERNAL_WORK_WRITE_ENABLED=true` plus its existing role/scope checks. None of these flags is configured by this change. Disabling the demo alone cannot activate these business reads/writes. Internal legacy routes still need a separate authentication review before any public internal-runtime deployment; this unit does not certify them.
-
-Initial 30/09 authorization was local only. On 10/10 Mauricio accepted reconciliation against current main, synthetic tests and the previously authorized PR/protected preview. Remote merge, production, real data, env, credentials and permission changes remain excluded. Runtime promotion is a separate gate and must rebuild/revalidate with production configuration. No schema migration. Reversal is the focused own delta, never a reset of the shared repository. Execution/receipt: Tasks 4‚Äì5 in the existing `TORO_CEREBRO_IMPLEMENTACION_2026-09-30.md` and BRAIN-LOCAL block of `CONTINUAR.md`; no runtime activation claimed here.
-
-Verified locally: 359 Vitest + 25 Node tests, validators, lint and production build pass; 112 HTTP checks include 11 built assets, anonymous/synthetic-cookie requests, blocked operational GET/POST and server-action paths, root redirect, Brain RSC and no outbound/ledger I/O attempts. Owner Attention preserves its exact 503/disabled response through the perimeter. Next data-path normalization is disabled for the perimeter; Brain is force-dynamic. Mutation of the demo guard produced 36 expected failures; restored before final verification. Independent review closed with no outstanding findings. Public hosting and real identity/RLS operation remain unverified by this unit.
-Integration 10/10 extends the same perimeter to authenticated MCP/bearer setup, injected-client entry points, Worker client and write primitives, health/canary routes and OAuth metadata. Event Ops and the hotel directory keep their existing identity paths, covered by no-I/O regressions. Existing internal capability, role and scope contracts are preserved; demo guards do not grant internal authority. Final local combination against `540d9b8c3de61ae339ef505b4eb6073a821b3fb1`: 481 Vitest + 25 Node tests and 136 HTTP checks pass, with zero outbound/ledger attempts in the synthetic HTTP harness. Build passes. ESLint has no errors; the existing unused OAuth OPTIONS request warning remains. Independent review of `1acae26..d7c3df2` found no actionable defects; the later main deltas add no demo guard changes and is covered by the final suite plus directory regressions. Review/remote evidence belongs in the same execution receipt; this paragraph is not a claim of publication or real RLS verification.
-
-
-## OpenClaw y WhatsApp sin dependencia del PC ‚Äî 16/10/2026 CR
-
-**DIRECTIVA DEL PROPIETARIO:** planear y desarrollar la operaci√≥n persistente de OpenClaw/WhatsApp en la nube para que apagar, suspender o desconectar el PC no detenga la operaci√≥n autorizada. Prioridad P0 de continuidad dentro de TORO Systems + Comms y secci√≥n 9; ampl√≠a el runbook existente y las dependencias #122/#170/#209. No crea otro Brain, base de negocio, backlog o scheduler. Esta instrucci√≥n autoriza planificaci√≥n y documentaci√≥n; no contrataci√≥n, despliegue, traslado de credenciales, cambio de permisos, corte de servicio ni nuevos env√≠os.
-
-**CONTROL / CURRENT:** alcance Dreamcatcher y Mauricio Personal separados; due√±o Mauricio; responsable t√©cnico funcional Sobresito/TORO Systems; sem√°ntica de comunicaciones TERE/TORO Comms. Zona America/Costa_Rica. El host activo, versi√≥n instalada, perfil/worktree consumido, proveedor/modelo y autenticaci√≥n, cuenta WhatsApp y recursos cloud disponibles siguen DESCONOCIDOS hasta auditor√≠a del host. Los registros hist√≥ricos y capturas de WSL no prueban la instalaci√≥n activa. El estado runtime sigue CONFIGURED_UNVERIFIED; no se declara migraci√≥n ni operaci√≥n 24/7.
-
-**TARGET recomendado:** servidor Linux persistente (VPS/VM) para Gateway, canal WhatsApp, herramientas y workers necesarios, con disco duradero, arranque al reiniciar y recuperaci√≥n supervisada. TORO conserva autoridad, permisos, tareas y evidencia en sus estructuras can√≥nicas; OpenClaw conserva solamente el estado t√©cnico necesario de transporte/sesi√≥n y workspace gobernado. Acceso administrativo privado mediante Tailscale/SSH, Gateway en loopback, sin panel administrativo p√∫blico. Separar runtime/usuario OS y secretos personales de los empresariales; un agente compartido del hotel nunca recibe el perfil personal del due√±o.
-
-**NO basta mover el Gateway:** inventariar cada dependencia: modelo remoto o local, autenticaci√≥n renovable, MCP/API, navegador/Chrome relay, WSL, archivos/carpetas locales, Dropbox/Drive, cron/servicios, DNS/URLs localhost, transcripci√≥n/media y nodos/dispositivos. Para cada capacidad registrar ejecutor, fuente, identidad/scope, ubicaci√≥n, √∫ltima prueba, dependencia del PC y sustituci√≥n cloud o l√≠mite expl√≠cito. Preferir conectores/API oficiales; navegador cloud solo para huecos permitidos y probados. Los conectores disponibles en ChatGPT no se heredan autom√°ticamente en OpenClaw. Las acciones f√≠sicas/locales permanecen opcionales y muestran dispositivo no disponible si est√° apagado; nunca bloquean consultas o tareas cloud independientes.
-
-**WHATSAPP:** la documentaci√≥n oficial consultada describe el canal WhatsApp Web/Baileys con sesi√≥n vinculada por QR; no equivale a Meta WhatsApp Business Platform/Cloud API. Confirmar transporte real y l√≠mites antes del dise√±o final. Conservar inicialmente n√∫mero/canal vigente cuando sea viable; no cambiar a Cloud API sin analizar compatibilidad, grupos, costes y restricciones oficiales. Un √∫nico ejecutor activo por cuenta/sesi√≥n durante corte y recuperaci√≥n: staging sin consumo ni env√≠os productivos. Contener read receipts, respuestas a hist√≥rico/reconnect y retries seg√∫n contrato existente. Destinatario, identidad, scope, idempotencia y receipt de proveedor deben verificarse; un texto generado no prueba entrega.
-
-### Ampliaci√≥n con el PC apagado ‚Äî 16/10/2026, 19:08 CR
-
-**HECHO REPORTADO por Mauricio:** su PC est√° apagado. Esto permite continuar la planificaci√≥n y revisi√≥n documental cloud; no demuestra que OpenClaw est√© ca√≠do ni funcionando. La ausencia del PC no bloquea trabajo independiente. La auditor√≠a local queda pendiente √∫nicamente en los pasos que realmente requieran ese host; revisar primero inventario y despliegues remotos accesibles con identidad autorizada.
-
-**Orden por impacto:** P0 continuidad e identidad del canal; P1 contexto compartido autorizado y recepci√≥n documental/cierre en borrador; P2 ampliar capacidades y optimizar coste tras medir. Evitar una migraci√≥n masiva de todos los proyectos antes de demostrar el circuito m√≠nimo. No crear automatizaci√≥n nueva por esta ampliaci√≥n.
-
-| Unidad preparable sin PC | Resultado exigido antes de ejecutar | Responsable funcional |
-| --- | --- | --- |
-| Inventario cloud | Proveedor/proyecto existente, propietario, entorno, persistencia, regi√≥n, cuota y acceso comprobados; separar disponible de supuesto | Sobresito |
-| Matriz de dependencias | Cada capacidad marcada cloud, local o desconocida; ninguna capacidad cr√≠tica queda oculta detr√°s de localhost, Chrome relay o carpeta del PC | Sobresito |
-| Circuito m√≠nimo | Mensaje de prueba autorizado ‚Üí identidad/scope ‚Üí consulta TORO ‚Üí respuesta y receipt; una tarea can√≥nica controlada con readback, cuando corresponda | TORO Comms + Sobresito |
-| Contexto entre canales | OpenClaw consulta proyectos y documentos can√≥nicos permitidos; caso Los 50 de Caro recupera estado/fuente vigentes sin inventarlos ni copiar todo el Brain | TORO Comms |
-| Recepci√≥n y cierre | Voucher/mensaje autorizado queda vinculado a fecha, cuenta, actor y cierre en borrador; correcci√≥n versionada y original custodiado, sin asiento o pago autom√°tico | Rico + Fiona |
-| Presupuesto revisable | Coste mensual fijo/variable por componente, moneda/impuestos, l√≠mites y degradaci√≥n; precio y fecha de consulta antes de contratar | Sobresito propone; Mauricio decide |
-
-Los responsables son roles de dise√±o; esta tabla no acredita agentes ejecut√°ndose ni env√≠os de encargos.
-
-**Contrato m√≠nimo de continuidad:** guardar el evento permitido y su referencia durable antes de marcarlo procesado por TORO; identificar cuenta + proveedor/message ID + tenant/scope; enlazar edici√≥n con original, fecha del evento y recepci√≥n. Reutilizar journal/outbox/receipts existentes con compatibilidad comprobada. Una interrupci√≥n conserva checkpoint y pendientes; los eventos ambiguos quedan en revisi√≥n. No prometer recuperar mensajes nunca recibidos ni hist√≥rico fuera de la cobertura real del proveedor.
-
-**Precisi√≥n de recuperaci√≥n:** RPO <=24h es objetivo del respaldo de archivo, NO permiso para perder un d√≠a de trabajo. Definir aparte recuperaci√≥n de eventos operativos y probar ca√≠das antes/despu√©s de persistir y antes/despu√©s de enviar. Si faltan eventos o no se puede probar entrega, mostrar cobertura parcial y conciliar; no marcar √©xito ni reemitir a ciegas.
-
-**Prueba de independencia corregida:** apagar o aislar √∫nicamente el PC de Mauricio y verificar desde m√≥vil con datos m√≥viles. No desconectar el router ni interrumpir Wi-Fi, recepci√≥n, hu√©spedes o sistemas del hotel para probar. Simular p√©rdida de conectividad del worker en staging. Comprobar adem√°s reinicio, sesi√≥n expirada, proveedor IA ca√≠do, adjunto fallido, emisor no autorizado y replay; cada fallo debe conservar trabajo y mostrar qu√© funci√≥n est√° afectada.
-
-**Operaci√≥n objetivo:** vista compacta del estado del canal, conexi√≥n TORO, √∫ltimo evento procesado, pendientes, fallos y coste; sin secretos ni informaci√≥n personal para roles del hotel. Alertar por cambio material y ca√≠da comprobada, mediante canal alterno previamente autorizado; fallo de IA no debe confundirse con fallo de WhatsApp. Actualizaciones de versi√≥n con backup, prueba y reversi√≥n compatible; no actualizaci√≥n autom√°tica indiscriminada.
-
-**Cierre de esta ampliaci√≥n:** requisitos y criterios documentados; inventario cloud, acceso al host, coste final y piloto a√∫n pendientes de evidencia. Pr√≥xima unidad ejecutable sin PC: revisar infraestructura remota accesible y completar la matriz con fuentes verificadas. El PC solo se requiere si el estado activo o archivos necesarios residen exclusivamente all√≠; eventual vinculaci√≥n de WhatsApp se realiza en su flujo oficial desde el tel√©fono.
-
-### Secuencia dentro del trabajo existente
-
-| Fase | Responsable | Entregable y criterio de terminado |
-| --- | --- | --- |
-| 1. Auditor√≠a P0 | Sobresito + Mauricio para acceso seguro | Ejecutar diagn√≥stico saneado existente en host autorizado; localizar versi√≥n, servicio, perfil y dependencia de cada capacidad. Sin leer ni publicar secretos. |
-| 2. Destino y coste | Sobresito propone; Mauricio decide gasto | Revisar primero infraestructura existente. Comparar capacidad persistente, backup, regi√≥n, recursos, mantenimiento y coste total: servidor + disco + backup + IA/API + media + canal. Sin tarifa inventada ni asumir que ChatGPT Pro cubre API. Dimensionamiento despu√©s de medir carga; evitar planes que suspendan el servicio. |
-| 3. Piloto cloud aislado | Sobresito | Versi√≥n compatible fijada; servicio persistente, disco, acceso privado, secretos protegidos, l√≠mites de gasto, conexi√≥n autenticada a TORO y pruebas negativas. Solo datos sint√©ticos o muestra autorizada; sin sesi√≥n WhatsApp productiva simult√°nea. |
-| 4. Preparaci√≥n y corte | Sobresito; Mauricio acepta ventana | Backup consistente y cifrado de estado/workspace mediante mecanismo compatible con versi√≥n instalada, restore probado, manifest privado y permisos; pausa acotada del emisor antiguo, traslado seguro o vinculaci√≥n oficial si hace falta, activaci√≥n √∫nica en nube y conciliaci√≥n de pendientes. No copiar solo configuraci√≥n ni pegar credenciales/QR en chats o repositorio. |
-| 5. Aceptaci√≥n | Sobresito verifica; Mauricio acepta | PC apagado o aislado, verificaci√≥n desde m√≥vil con datos m√≥viles sin interrumpir la red del hotel; consultas/tareas cloud y alertas previamente autorizadas funcionan. Reinicio del servidor, reconexi√≥n, replay y restore con resultados registrados. Observaci√≥n inicial 24‚Äì48 h; retirar dependencia local solo despu√©s de aceptaci√≥n. |
-
-**M√âTRICAS / terminado:** 0 mensajes/tareas duplicados en el lote controlado, 0 filtraciones entre √°mbitos, 100% eventos del lote contabilizados (incluidas excepciones), evidencia de entrega en pruebas autorizadas, estado visible por capacidad y √∫ltima sincronizaci√≥n. Objetivos iniciales de respaldo RPO <=24h/RTO <=4h por validar, no SLA. Medir latencia, fallos y coste diario para fijar presupuesto. Supervisi√≥n externa del servicio y ca√≠da por canal independiente: un WhatsApp ca√≠do no puede ser su √∫nico aviso. Reutilizar monitoreo/colas/scheduler existentes; reinicio del proceso no crea otro orquestador empresarial.
-
-**FALLO / CONTINUIDAD / ROLLBACK:** detener acciones dependientes ante identidad incierta, sesi√≥n inv√°lida, env√≠o ambiguo o conciliaci√≥n fallida; conservar pendientes can√≥nicos y continuar manualmente en WhatsApp/Kross seg√∫n dominio. No reintentar env√≠os ambiguos a ciegas. Para volver, detener y aislar primero el consumidor cloud, conciliar env√≠os/pendientes, recuperar estado compatible vigente y reactivar un √∫nico consumidor anterior. Restaurar un backup antiguo puede desincronizar WhatsApp y retroceder dedupe/aprobaciones: no tratarlo como reversi√≥n autom√°tica ni reenviar hist√≥rico.
-
-**EVIDENCIA OFICIAL** consultada 17/10/2026 UTC (16/10 CR): [Linux/VPS](https://docs.openclaw.ai/vps), [acceso remoto](https://docs.openclaw.ai/gateway/remote), [WhatsApp](https://docs.openclaw.ai/channels/whatsapp), [migraci√≥n](https://docs.openclaw.ai/install/migrating). Son capacidades de la documentaci√≥n actual; contrastar con la versi√≥n instalada antes de ejecutar comandos o asumir formato de almacenamiento.
-
-**ESTADO:** HECHO = investigaci√≥n y planificaci√≥n incorporadas; PROPUESTO = arquitectura/piloto/migraci√≥n; BLOQUEADO para ejecuci√≥n = acceso seguro al host activo y destino cloud verificado, coste y ventana concretos; DESCONOCIDO = capacidad actual y funcionamiento E2E. Siguiente acci√≥n √∫nica: auditor√≠a del host con el runbook existente y matriz de dependencias, antes de elegir o comprar servidor.
-
-### CLARITY Act: seguimiento de noticias y avisos personales ‚Äî 17/10/2026 CR
-
-**DIRECTIVA / ALCANCE:** incorporar al Plan General la investigaci√≥n de los √∫ltimos tres d√≠as sobre el Digital Asset Market Clarity Act of 2025 (H.R. 3633), su perspectiva de aprobaci√≥n y las noticias importantes que deben avisarse al propietario por WhatsApp mediante OpenClaw. La solicitud del 17/10 autoriza esos avisos personales dentro de este prop√≥sito. La incorporaci√≥n documental no acredita que el monitor o el canal ya est√©n activos.
-
-**MAPEO / PRIORIDAD:** √°mbito `personal` de TORO Personal; BETORO se utiliza como etiqueta tem√°tica, no como nuevo subsistema. TORO Research valida fuentes y relevancia; TORO Knowledge conserva procedencia y fecha; TORO Comms gobierna la notificaci√≥n; Sobresito/TORO Systems verifica runtime y continuidad. Son responsabilidades funcionales, no evidencia de agentes ejecut√°ndose. Prioridad P1 para este seguimiento, dependiente de la continuidad e identidad P0 de OpenClaw ya descritas; se integra en `toro_os_portfolio_master`, sin proyecto maestro paralelo.
-
-#### CURRENT ‚Äî investigaci√≥n y bloqueo observados
-
-Corte de la investigaci√≥n: **17/10/2026, aproximadamente 02:48, America/Costa_Rica**; ventana informativa solicitada 14‚Äì17/10. Esta tabla conserva una l√≠nea base hist√≥rica y debe refrescarse al ejecutar el seguimiento.
-
-| Hallazgo | Fecha del hecho y evidencia | Implicaci√≥n y l√≠mite |
-| --- | --- | --- |
-| Salida de Patrick Witt del equipo de activos digitales de la Casa Blanca | The Block inform√≥ el 14/10 la salida y la explicaci√≥n de que termin√≥ su asignaci√≥n temporal; el 15/10 se inform√≥ su confirmaci√≥n de regreso al sector privado. [The Block](https://www.theblock.co/news/regulation/2026-10-14-white-house-crypto-adviser-patrick-witt-departs-418611), [Cointelegraph](https://cointelegraph.com/news/white-house-crypto-council-director-steps-down), [CryptoSlate](https://cryptoslate.com/trumps-crypto-policy-power-shifts-toward-sec-and-cftc-as-white-house-team-empties/). | Es un mismo acontecimiento con reporte y confirmaci√≥n posteriores. Posible dificultad de coordinaci√≥n: inferencia moderadamente negativa, no prueba de abandono de CLARITY ni de p√©rdida de votos. No se identific√≥ sucesor en los reportes consultados. |
-| Reporte sobre Tether y Bo Hines | Publicaci√≥n del 15/10 sobre pagos a una empresa copropiedad de Hines durante su trabajo relacionado con GENIUS Act. [WSJ](https://www.wsj.com/politics/policy/crypto-law-trump-tether-bo-hines-45bcd95d). | Contexto √©tico/pol√≠tico indirecto. Atribuir las alegaciones al medio; no convertirlas en hallazgo judicial ni en bloqueo formal nuevo de CLARITY. |
-| Obst√°culo legislativo de referencia | El 15/09/2026, votaci√≥n 234 del Senado: 49 a favor, 50 en contra y 1 ausente sobre cloture de la moci√≥n para proceder a H.R. 3633; umbral 3/5, normalmente 60. [Registro oficial](https://www.senate.gov/legislative/LIS/roll_call_votes/vote1192/vote_119_2_00234.htm). | Es antecedente del mes anterior, no noticia de estos tres d√≠as ni votaci√≥n de aprobaci√≥n final de la ley. |
-| Calendario y avance formal | No se pudo verificar un avance formal nuevo entre el 14 y el 17/10 en las fuentes oficiales consultadas. El calendario tentativo se√±alaba State Work Period del 05/10 al 06/11. [Senado](https://www.senate.gov/legislative/2026_schedule.htm). | Calendario sujeto a cambios; no descarta negociaciones privadas ni futuras convocatorias. Congress.gov no pudo leerse por restricci√≥n de acceso. La actualizaci√≥n del √≠ndice anual de GovInfo del 16/10 no constituye una nueva actuaci√≥n legislativa: [√≠ndice](https://www.govinfo.gov/content/pkg/CRI-2026/html/CRI-2026-DIGITAL-ASSET-MARKET-CLARITY-BCF18C.htm). |
-| Se√±al del mercado de predicci√≥n | Token Yes del contrato exacto: **6,15%** el 14/10 a las 02:42:24 CR y **5,60%** el 17/10 a las 02:42:26 CR; cambio **‚àí0,55 puntos porcentuales** en aproximadamente 72 h, equivalente a ‚àí8,94% relativo. La p√°gina redondeaba Yes a 6%. [Contrato](https://polymarket.com/event/clarity-act-signed-into-law-in-2026), [hist√≥rico inicial](https://clob.polymarket.com/prices-history?market=35198549486569600595408965368290795524428922595732253580266052028158040373233&startTs=1791966600&endTs=1791968700&fidelity=1), [hist√≥rico final](https://clob.polymarket.com/prices-history?market=35198549486569600595408965368290795524428922595732253580266052028158040373233&startTs=1792225200&endTs=1792227000&fidelity=1). | Cotizaci√≥n hist√≥rica del mercado, no probabilidad objetiva, pron√≥stico independiente ni precio ejecutable. Se filtraron los puntos por timestamp: la API tambi√©n puede a√±adir un punto reciente fuera de la ventana pedida. No se comprob√≥ libro de √≥rdenes ni se consultaron posiciones personales. |
-
-**Lectura al corte:** las novedades verificadas no aportaban evidencia para elevar la expectativa de firma en 2026; el sesgo ligeramente negativo es una interpretaci√≥n, no certeza ni recomendaci√≥n de operaci√≥n. El contrato de Polymarket consultado exige que H.R. 3633 pase ambas c√°maras y sea firmado antes del **31/12/2026 a las 23:59 ET**. Una medida general favorable a cripto o una actuaci√≥n de SEC/CFTC no cumple por s√≠ sola ese evento. Las reglas deben releerse antes de interpretar cambios de texto, sustituciones o resoluci√≥n; no se observ√≥ una cl√°usula expl√≠cita que admita autom√°ticamente otra ley equivalente. La [declaraci√≥n de Tim Scott del 15/09](https://www.banking.senate.gov/newsroom/majority/scott-statement-on-clarity-act-vote) sobre regulaci√≥n de agencias es contexto previo, no aprobaci√≥n del proyecto.
-
-**Estado t√©cnico comprobado en esta sesi√≥n:** no hab√≠a herramienta disponible para enviar por OpenClaw/WhatsApp y la b√∫squeda de integraci√≥n OpenClaw no devolvi√≥ una capacidad utilizable. El intento de navegador inform√≥ que necesita el contexto de origen con la extensi√≥n conectada. Esto limita esta sesi√≥n; no demuestra que el servicio OpenClaw est√© ca√≠do. Host activo, transporte, cuenta, v√≠nculo del destinatario y entrega extremo a extremo siguen sin verificar. **No se cre√≥ una automatizaci√≥n CLARITY ni se envi√≥ un WhatsApp.**
-
-#### TARGET ‚Äî regla preparada de alertas importantes
-
-- **Cadencia propuesta:** consulta de fuentes p√∫blicas cada hora, en America/Costa_Rica; enviar √∫nicamente al detectar una novedad material, con silencio cuando no la haya. Reutilizar las preferencias personales vigentes de horario y canal; no inventar una autorizaci√≥n para ignorarlas. La frecuencia es propuesta operativa, no una preferencia horaria dictada por el propietario.
-- **Disparadores materiales:** texto o acuerdo bipartidista verificable; apoyos o retiros de apoyo que alteren de forma fundada la posibilidad de alcanzar el umbral necesario; votaci√≥n o fecha formal de consideraci√≥n; aprobaci√≥n, rechazo, firma o bloqueo procedimental; cambios de responsables con efecto concreto sobre la negociaci√≥n. Una opini√≥n, rumor, art√≠culo reciclado o movimiento de precio aislado no basta.
-- **Fuentes y precisi√≥n:** preferir Congreso, Senado, comit√©s y Casa Blanca para actuaciones oficiales; contrastar noticias con medios fiables y enlazar evidencia. Registrar por separado fecha del hecho, fecha de publicaci√≥n y hora de comprobaci√≥n. Indicar cuando solo existe un reporte atribuible y separar hecho, an√°lisis pol√≠tico, regulaci√≥n de agencias y precio de predicci√≥n.
-- **Dedupe:** conservar referencia can√≥nica de cada acontecimiento y de su √∫ltima alerta. El reporte y la confirmaci√≥n de la salida de Witt corresponden al mismo hecho. El voto del 15/09 y esta l√≠nea base ya fueron explicados en chat; no presentarlos despu√©s como noticias nuevas. Enviar una actualizaci√≥n √∫nicamente cuando aporte un cambio material o una correcci√≥n relevante.
-- **Contenido de WhatsApp:** breve, en espa√±ol: qu√© pas√≥ y cu√°ndo, por qu√© importa para CLARITY/firma en 2026, valoraci√≥n favorable/desfavorable/incierta con su fundamento y enlace a la fuente. A√±adir el precio del contrato exacto solo cuando est√© reci√©n verificado y ayude a entender la novedad; identificarlo como se√±al de mercado y fecharlo. Si varias noticias describen el mismo acontecimiento, enviar un solo aviso.
-- **Destino y alcance:** √∫nicamente el WhatsApp personal del propietario, resuelto mediante el v√≠nculo privado verificado de TORO Identity y las preferencias de TORO Personal. Esta directiva autoriza el seguimiento informativo y su env√≠o; no habilita operaciones financieras, acceso a posiciones, avisos a terceros, gastos, migraciones o ampliaciones de permisos. Tel√©fonos, credenciales, payloads personales y receipts privados permanecen fuera del repositorio p√∫blico.
-
-#### NEXT ‚Äî activaci√≥n y evidencia dentro del frente existente
-
-1. **Resolver acceso y estado:** auditar el runtime autorizado con [TORO_OPENCLAW_RUNTIME_AUDIT](../runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md), empezando por la infraestructura remota accesible. Si se usa la extensi√≥n, retomar desde su contexto de navegador conectado. Identificar host, versi√≥n, ejecutor persistente, transporte, conexi√≥n de fuentes p√∫blicas y destinatario personal. No exigir encender el PC cuando la ruta cloud ya pueda verificarse.
-2. **Reutilizar el circuito:** enlazar esta regla con [TORO WhatsApp / OpenClaw Same-Brain V1](TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md), TORO Comms y las dependencias existentes [#122](https://github.com/Dramcatcherst/Toro-OS/issues/122), [#170](https://github.com/Dramcatcherst/Toro-OS/issues/170), [#209](https://github.com/Dramcatcherst/Toro-OS/issues/209). Inspeccionar y reutilizar scheduler, `notifications`, journal/outbox, dedupe y receipts gobernados. Los conectores de ChatGPT no se presumen disponibles en OpenClaw.
-3. **Configurar una sola regla:** materializar la autorizaci√≥n ya recibida una vez verificados acceso, identidad y l√≠mites t√©cnicos. El inventario consultado no mostraba un monitor dedicado de CLARITY; los radares BETORO ¬´Centinela, Explorador y Auditor¬ª y APUESTORO ¬´Radar y laboratorio¬ª estaban pausados, y el radar semanal Bitcoin ten√≠a otro alcance. Este registro no los reactiva ni altera sus frecuencias. Cualquier consolidaci√≥n posterior debe preservar su alcance y estado.
-4. **Probar el resultado autorizado:** refrescar fuentes, evaluar materialidad, comprobar dedupe y enviar al propietario la siguiente novedad relevante, identificada con su fecha de corte. Si no existe una novedad material, verificar el ciclo sin emitir mensajes. Registrar hora, versi√≥n de la regla, fuente, destinatario privado verificado, ID de mensaje y estado real del proveedor. Distinguir aceptado, enviado y entregado; una tarea creada o texto generado no acredita entrega.
-5. **Aceptar y observar:** demostrar un ciclo completo y repetici√≥n sin duplicado; una consulta sin novedad debe producir cero mensajes. Comprobar continuidad con el PC apagado o aislado sin afectar la red del hotel, persistencia tras reinicio y recuperaci√≥n sin reenv√≠o ciego. Mostrar √∫ltimo chequeo, √∫ltimo aviso, pendientes y fallos en el estado can√≥nico; solo entonces declarar activo el seguimiento.
-
-**Fallo / reversi√≥n:** ante identidad incierta, sesi√≥n inv√°lida o resultado de env√≠o ambiguo, conservar el pendiente y conciliar antes de reintentar. Pausar √∫nicamente esta regla cuando sea necesario, preservando el canal y los dem√°s trabajos; no enviar el mismo aviso repetidamente ni moverlo a otro destinatario o canal sin autorizaci√≥n.
-
-**FUTURE / generalizaci√≥n:** tras probar este caso, reutilizar la capacidad de avisos por cambios materiales para otros temas expresamente solicitados, conservando preferencias, procedencia, autorizaci√≥n e identidad por usuario. No crear otro Brain, un radar general nuevo o una base paralela.
-
-**ESTADO DE CIERRE DOCUMENTAL:** investigaci√≥n, criterios, autorizaci√≥n acotada y dependencias incorporados al Plan General. **Operaci√≥n: PENDIENTE / RUNTIME Y ENTREGA NO VERIFICADOS.** Pr√≥xima acci√≥n: verificar el acceso al OpenClaw activo y el v√≠nculo privado del WhatsApp personal para ejecutar el circuito autorizado.
-
----
-
-## WhatsApp de recepci√≥n, cuenta personal y respaldo integral ‚Äî 13/10/2026 CR
-
-**DIRECTIVA AUTORIZADA por Mauricio:** recopilar comunicaci√≥n observable y permitida del WhatsApp de recepci√≥n (alias protegido, terminaci√≥n 4004) y de su WhatsApp personal (terminaci√≥n 3792), enlazarla con toda la operaci√≥n TORO y asegurar archivos/recuperaci√≥n; lo no comprobado queda planeado. N√∫meros completos en binding protegido, nunca en este repo p√∫blico. **Scope:** Dreamcatcher + Mauricio Personal privados; **owner:** TORO Comms, Systems/Tools/Identity, Personal, Data/Assets y dominios afectados. Reutilizar issues #122/#170/#209; no nueva base, master plan, inbox o scheduler.
-
-**TARGET:** cuenta/chat/evento -> identidad/scope -> journal autorizado y adjuntos -> clasificaci√≥n/autoridad -> objeto can√≥nico existente -> revisi√≥n/acci√≥n permitida -> evidencia -> respaldo/restore. Cobertura entrantes/salientes, hist√≥rico/nuevo, directos/grupos y media expl√≠cita; no prometer datos inaccesibles. Reader separado de responder/enviar. Personal no visible para hotel por defecto; compartir solo datos empresariales seleccionados y permitidos.
-
-**CURRENT verificado por metadata:** registro organizacional communication_channel_bindings existe con RLS; un canal openclaw distinto de los dos solicitados aparece healthy/verified, pero last_sync_at=null; dependency registry OpenClaw sigue needs_audit. Contradicci√≥n registrada, no resuelta por inferencia. No binding organizacional de los dos n√∫meros solicitados; modelo User Vault nominal y host privado sin validar. WeSpeak activo en registry no prueba ese WhatsApp conectado. No lectura real, enrolamiento, env√≠o ni restore efectuados.
-
-**NEXT P0:** comprobar host/runtime y cuenta recepci√≥n; resolver identidad/alcance/efectos de captura; piloto hasta 20 eventos y 1 caso operativo, replay y prueba negativa. **P1:** cuenta personal aislada (hasta 10 eventos/1 compromiso), archivo y restore por scope. **P2:** backfill y ampliaci√≥n por lotes con l√≠mites/checkpoints/huecos visibles. Matriz completa de dependencias, respaldo y aceptaci√≥n en [TORO Comms, secci√≥n 19](TORO_COMMS_V1.md); ver [runbook actual](../runbooks/TORO_OPENCLAW_RUNTIME_AUDIT.md). Los contratos de documentos/fotos en Studio 10‚Äì12 permanecen incluidos en esta misma propuesta.
-
-**Respaldo objetivo:** estado privado/index en Supabase; originales/exportes autorizados en Dropbox con separaci√≥n empresarial/personal, checksum/manifest y ACL; contratos/redacciones en GitHub; Pages/Airtable/Portal como proyecciones. Probar restore de datos + binarios + permisos; no declarar backup por existir carpetas. RPO <=24h/RTO <=4h son objetivos iniciales por validar, no SLA vigente.
-
-**Terminado:** una captura real por cuenta produce fuente, scope y objetos conciliados; replay sin duplicado, cero filtraci√≥n personal, archivos recuperables y falla visible. Kross conserva autoridad comercial; banco/procesador/Alegra conservan las suyas. No cambios tarifarios, pagos, mensajes externos, permisos amplios o publicaci√≥n por haber le√≠do un chat. Estado documental autorizado; integraci√≥n y recuperaci√≥n E2E UNVERIFIED hasta prueba.
-
-## Reporte de recepci√≥n integrado y preparaci√≥n operativa 2026 10 08
-
-
-**CORRECCI√ìN APROBADA por Mauricio el 11/10/2026, 22:42 CR ‚Äî lavander√≠a y men√∫:** Dreamcatcher no tiene equipos ni lavander√≠a propia para hu√©spedes. Recepci√≥n coordina con un proveedor externo: recoge la ropa en la ma√±ana y la devuelve en la tarde; ropa entregada en la tarde se devuelve al d√≠a siguiente en la ma√±ana. No a√±adir una hora exacta de corte ni prometer precio/cupo sin confirmaci√≥n del proveedor. Esta directiva sustituye respuestas que presentan lavander√≠a propia o horarios r√≠gidos no corroborados. Aplicar en el conocimiento existente de WeSpeak/TERE y las superficies de servicio vigentes, sin nueva base. Retirar **‚Äúpesca del d√≠a‚Äù** del men√∫ y de respuestas/recomendaciones cuando se actualice el contenido existente; no sustituirlo por otro plato sin autorizaci√≥n. Fuente: instrucci√≥n directa del propietario y [reporte de recepci√≥n](https://chatgpt.com/space/page_a6890f7962f88191abe44f53672fd8d4). Estado documental: aprobado y registrado; actualizaci√≥n efectiva de WeSpeak/men√∫ y entrega al hu√©sped/proveedor a√∫n pendientes de sesi√≥n autorizada y readback. La tarifa/cupo de lavander√≠a para el 12/10 sigue pendiente; responder al hu√©sped o coordinar respuesta temprana por el canal autorizado, sin afirmar entrega realizada.
-
-
-
-**ACTUALIZACI√ìN AUTORIZADA 09/10/2026 ‚Äî entrega personal por OpenClaw/WhatsApp:** Mauricio solicita recibir estas alertas por el canal privado existente y preparar su ejecuci√≥n en Work. Encargo integrado en [issue #209](https://github.com/Dramcatcherst/Toro-OS/issues/209), con dependencias #122 (identidad) y #170 (lectura); no crear segundo backlog ni scheduler. Work/Codex es ejecutor acotado bajo TORO Comms + Sobresito y el Control Plane, no nueva autoridad. La autorizaci√≥n cubre una prueba no sensible y futuras alertas materiales/urgentes al propietario verificado; no grupos, hu√©spedes, nuevos gastos ni acciones financieras/comerciales. El worker de recepci√≥n conserva su Page, casos, deduplicaci√≥n y triggers completos; adaptar solo entrega mediante el puente existente. Estado: encargo documentado, sesi√≥n de Work adicional no iniciada, autenticaci√≥n y env√≠o actuales sin prueba. Antes de declarar operativo: verificar host/sesi√≥n/identidad, obtener referencia de entrega de una prueba y una alerta real, probar replay sin duplicados y denegaci√≥n por identidad/scope incorrectos. Mensajes ‚Äúüß™ PRUEBA ¬∑ Recepci√≥n‚Äù, m√°ximo 120 palabras y enlace Page; sin novedades, no notificar. Ante fallo o resultado ambiguo conservar alerta aqu√≠, verificar estado antes de reintentar y no anunciar env√≠o. Reversi√≥n acotada al adapter de entrega, sin pausar el webhook ni alterar corte Kross o cierres humanos.
-
-
-**DIRECTIVA APROBADA por Mauricio el 08/10/2026.** [REPORTE RECEPCION](https://chatgpt.com/space/page_a6890f7962f88191abe44f53672fd8d4) es la vista operativa del hotel: hu√©spedes y canales comprobados, notas y antecedentes, cobros diferenciados, tareas/criterios de cierre, preparaci√≥n hoy/ma√±ana/7/30/90 d√≠as, Calendar y fechas especiales, MTD y comparaci√≥n anual. No es otra fuente transaccional, CRM, cola o cerebro.
-
-**HECHO:** Page ampliada y le√≠da; Gmail hotel, Calendar y Contacts consultados; reservas TORO: 33 filas, snapshot 21/09, 0 live y 0 estancias 2025. Automatizaci√≥n `Alertas del reporte recepci√≥n` habilitada y vinculada a la Page por nuevos correos relevantes de admin@dreamcatcherhotel.com; filtra asuntos de reservas/OTA/WeSpeak/hu√©spedes/pagos/facturas/comprobantes y verifica relevancia antes de actuar. Primera ejecuci√≥n por evento todav√≠a NO VERIFICADA. No reactivar la alerta anterior pausada. No duplicar ingesta/cursors de TORO Correos y Pagos. La tarea actualiza Page y notifica internamente; no env√≠a WhatsApp ni email a terceros.
-
-**AUTORIDADES:** Kross conserva reservas, unidad, notas y condiciones; bancos/procesador verifican pagos; Alegra conserva contabilidad; TORO tasks/followups conserva acciones empresariales bajo Control Plane; Calendar conserva eventos; Contacts solo resuelve contacto; Tasks/Keep siguen sin adapter E2E verificado. Page preserva cambios humanos y cierres y deduplica por reserva/conversaci√≥n/tipo de asunto m√°s message_id. Tel√©fono internacional corroborado para wa.me; c√≥digos de acceso, tarjetas, documentos y secretos no se publican.
-
-**PREPARACI√ìN:** usar Calendar existente y feriados conectados; separar celebraci√≥n/d√≠a festivo/efecto laboral y confirmar eventos locales antes de alertar. Revisar hitos 7/3/1 d√≠as antes; aviso por delta material, plazo cr√≠tico o fallo nuevo. El worker por correo no garantiza revisi√≥n diaria de Calendar ni cambios exclusivos de Kross. Incorporar revisi√≥n de preparaci√≥n y alertas al Team Brief y Cierre Diario existentes, sin scheduler paralelo.
-
-**MTD Y 2025:** d√≠as completos del 1 de mes hasta ayer; parcial de hoy separado. Comparar mismo intervalo/propiedad/unidades/capacidad diaria/moneda/impuestos. Separar ingreso por estancia, cobros, cortes√≠as/canjes y on-the-books. ADR=ingreso alojamiento/noches vendidas; RevPAR=ingreso/noches disponibles; ocupaci√≥n=noches vendidas/disponibles. Ampliaci√≥n de inventario requiere conjunto comparable. Sin datos hist√≥ricos completos o snapshot a igual lead time: SIN DATOS, nunca porcentaje inventado.
-
-**BLOQUEOS:** nueva consulta Kross requiere login en el navegador de Work; notas internas, nombres/contactos restantes y saldos sin completar. WhatsApp/OpenClaw sin receipt E2E; hist√≥rico 2025 y espejo actual insuficientes. No marcar recepci√≥n sincronizada ni MTD calculado. **Prioridad:** lectura Kross vigente y relevo de habitaci√≥n 21 ‚Üí conciliaci√≥n de pendientes actuales ‚Üí hist√≥rico comparable ‚Üí verificaci√≥n del primer evento autom√°tico. El cat√°logo de 100 controles adicionales en la Page es preparaci√≥n priorizada, no 100 integraciones ejecutadas.
-
----
-
-## Google Workspace operativo ‚Äî Google Tasks, Keep, Calendar y servicios conectados (2026-10-07)
-
-**DIRECTIVA APROBADA (Mauricio, 07/10/2026).** Integrar progresivamente los servicios oficiales de Google Workspace de `admin@dreamcatcherhotel.com` para capturar ideas, convertir solicitudes verificadas en trabajo, ejecutar/consultar desde TORO Portal/WhatsApp y mejorar colaboraci√≥n, productividad y recuperaci√≥n de informaci√≥n. Este texto ampl√≠a el plan **√∫nico**, no crea un segundo backlog, una nueva base, un nuevo administrador, un nuevo scheduler ni autoriza gasto o delegaci√≥n de dominio. TORO Brain/Control Plane sigue la √∫nica autoridad de orquestaci√≥n y aprobaci√≥n empresarial.
-
-### Identidades y estado observado
-
-- **HECHO / conexi√≥n de ChatGPT validada 07/10:** Gmail, Google Drive, Google Calendar y Google Contacts operan bajo la identidad conectada `admin@dreamcatcherhotel.com`; Calendar principal tiene rol `owner`. En esa cuenta hay **solo un calendario editable propio** visible, los dem√°s son suscripciones de feriados/fases lunares (sin otro calendario dedicado PayFlow/Operaciones confirmado). Gmail cuenta con etiquetas TORO/finanzas y HotelSwaps; estas etiquetas no son tasks. Google Contacts responde bajo la identidad hotelera; una coincidencia en ¬´otros contactos¬ª no prueba directorio corporativo, CRM completo ni autorizaci√≥n para enviar mensajes. Drive del hotel contiene documentaci√≥n mixta: no realizar migraciones en masa ni confundirlo con la cuenta personal.
-- **POR INTEGRAR / sin acceso de lectura/escritura verificado:** Google Tasks y Google Keep **no est√°n expuestos como conectores directos disponibles en esta sesi√≥n de ChatGPT**. La conexi√≥n exitosa de Calendar NO demuestra acceso a Google Tasks, ni Drive a Keep. Las API oficiales existen, pero el estado de credenciales/scopes, edici√≥n y ejecuci√≥n del adapter TORO sigue `NOT_VERIFIED`; nunca afirmar sincronizaci√≥n, inventariar listas/notas ni cerrar acciones sin una lectura real.
-- **Identidad y l√≠mites:** `admin@dreamcatcherhotel.com` es el principal institucional; `mauricio.fernandez.toro@gmail.com` y otros buzones conectados son √°mbitos separados. No copiar notas privadas, contactos personales, invitaciones, correo o tareas entre organizaciones/propiedades. La condici√≥n Super Admin observada en Workspace no concede permiso impl√≠cito para impersonaci√≥n o domain-wide delegation. Priorizar OAuth por usuario y consentimiento granular. Mantener el mapa Workspace user/alias/grupo/routing existente, sin crear licencias nuevas por defecto.
-
-### Contrato de autoridad: una acci√≥n, varias superficies
-
-| Superficie | Funci√≥n aprobada | Autoridad y regla anti-duplicaci√≥n |
-| --- | --- | --- |
-| `operations.tasks` + Control Plane/Owner Attention | Tarea empresarial can√≥nica, responsable, prioridad, fechas, bloqueos, ejecuci√≥n, aprobaci√≥n y receipt | **TORO √∫nico escritor l√≥gico**. Consultar primero identidad existente, no crear segundo backlog en Airtable/Google Tasks/WhatsApp. |
-| **Google Tasks** | Lista r√°pida del responsable, capturas, recordatorios y acciones humanas simples | Superficie personal/de cuenta y **proyecci√≥n opcional** ligada al `toro_task_id`, o ingesta candidata. Sin mapeo no convertirla en compromiso empresarial. Las tareas creadas desde Docs/Chat pueden ser asignadas y de escritura restringida; conservar origen. |
-| **Google Keep (Notes)** | Captura de ideas/notas de voz/texto, listas de compra preliminares, inspiraci√≥n, incidencias preliminares | **Fuente de nota**, no ticket ejecutado ni memoria corporativa. Clasificar y extraer candidatos al mismo `operations.tasks` o `operations.knowledge_items` solo con alcance, consentimiento y verificaci√≥n. Conservar `keep_note_name`/fuente; no subir todos los apuntes indiscriminadamente. |
-| **Google Calendar** | Reuniones, bloques de tiempo, controles de pago y vencimientos previamente verificados | Proyecci√≥n temporal de TORO/PayFlow. Eventos existentes son √∫nicos por entidad+obligaci√≥n+per√≠odo+rol. No crear eventos de Calendar para cada Google Task ni duplicar facturas/forecast. Las tareas visibles dentro de Calendar siguen siendo tareas, no eventos consultables como los eventos de Calendar. |
-| **Gmail** | Fuente de comunicaci√≥n, facturas y evidencias de solicitudes | Gmail manda en mensaje, remitente, hora, adjunto e hilo; una etiqueta/correo/promesa NO crea autom√°ticamente una tarea. Verificar enviado/contestaci√≥n y consulta Kross/Alegra seg√∫n dominio. Continuar mail_ingest vigente, sin scheduler nuevo. |
-| **Google Drive/Docs/Sheets/Forms** | Documentaci√≥n colaborativa, plantillas, formularios y evidencia | Drive conserva archivo/ACL; TORO guarda enlace/hash/provenancia, no duplica todos los binarios ni reemplaza Dropbox como archivo original en flujos acordados. Docs permite minuta/acci√≥n propuesta; Google Forms, si se usa, debe alimentar staging y control antes de abrir tarea, sin crear segunda base operativa en Sheets. |
-| **Google Contacts** | Localizaci√≥n de direcciones y roles para seguimiento autorizado | Directorio/contacto y su procedencia, **no CRM maestro** ni verificaci√≥n de identidad del empleado. Dedupe por ID Google + email normalizado/entidad y cotejo expl√≠cito con TORO People; no enviar ni invitar sin alcance. |
-| **Google Chat, Meet, Apps Script, Admin, Business Profile, Search Console, Analytics/Ads/Hotels** | Colaboraci√≥n, reuniones, automatizaci√≥n de bajo c√≥digo, seguridad, descubrimiento/marketing | Solo cuando existan cuentas, APIs y permisos reales y caso de uso rentable. Cada uno es un adapter/capacidad en cat√°logo existente, no otro sistema de mando, CRM ni scheduler. Mantener autoridad comercial de Kross. |
-
-**Mapeo m√≠nimo sin nuevo esquema:** usar `integrations.source_authority_rules`, `integrations.external_dependency_registry`, `operations.tasks`, `operations.knowledge_items`, `operations.communication_followups` y capacidades existentes. Enlazar `tenant/org_id`, `account_email`, `source_system`, `source_object_id` (`tasklist_id+task_id` para Tasks o `notes/*` para Keep), `toro_task_id`, `origin`, `modified_at/etag`, `last_seen`, `sync_direction`, `permissions`, `evidence/receipt` donde la estructura existente admita esos datos de forma segura. No alterar tablas por esta directiva; dise√±ar mapping y comprobar unicidad/RLS antes de cualquier cambio estructural.
-
-**Flujo:** observaci√≥n/captura ‚Üí identificar actor y empresa ‚Üí clasificar nota/mensaje/tarea/calendario ‚Üí resolver autoridad y duplicados ‚Üí propuesta de task/knowledge existente ‚Üí aprobaci√≥n cuando corresponda ‚Üí `task ‚Üí toro_execution_run ‚Üí lease/fencing ‚Üí worker ‚Üí readback ‚Üí receipt` ‚Üí estado presentado en Portal/WhatsApp y, si permitido, proyecci√≥n a Google. Si el usuario marca completada una tarea proyectada en Google, registrar **se√±al de posible cierre**; cerrar en TORO solo con criterios/evidencia y autorizaciones. Evitar bucles de eco mediante `source_object_id+version/etag+origin` y reconciliaci√≥n incremental. Prohibir replay destructivo, borrados en cascada y ciclos de sincronizaci√≥n no reversibles.
-
-**Limitaciones de API verificadas en documentaci√≥n de Google:** Google Tasks expone listas, tareas y actualizaci√≥n por `tasks.googleapis.com`, pero `due` API representa fecha, no hora ni deadline; no prometer sincronizaci√≥n horaria/recordatorios exactos a trav√©s de ese campo. Google Keep API (`keep.googleapis.com`) est√° orientada a administraci√≥n empresarial; ofrece crear/listar/consultar/borrar notas y modificar permisos, **no un m√©todo general de edici√≥n/patch de nota existente**. Dise√±ar Keep como lectura/captura/no destructivo, no espejo bidireccional editable. Verificar elegibilidad Workspace/scopes antes de implementaci√≥n; evitar domain-wide delegation como atajo. Referencias: https://developers.google.com/workspace/tasks/reference/rest ; https://developers.google.com/workspace/tasks/reference/rest/v1/tasks ; https://developers.google.com/workspace/keep/api/guides ; https://developers.google.com/workspace/keep/api/reference/rest/v1/notes .
-
-### Entrega por fases y criterios de aceptaci√≥n
-
-1. **P0 ‚Äî Inventario y seguridad:** en el proyecto/tarea existente `google_control_plane_readonly_map_20260826` / `toro_surface_capability_parity_20260922`, registrar estado de conexi√≥n por servicio, identidad hotelera, scopes m√≠nimos, restricciones Google Tasks/Keep, accesos reales por rol y dependencias. Primero inventariar listas/notas **solo tras OAuth funcional**; contar objetos sin exponer material privado; establecer baseline de duplicados y no crear listas nuevas. Gate PASS: listado de cuentas/scopes/list IDs o evidencia expl√≠cita de bloqueo y mapa de autoridades aprobado.
-2. **P1 ‚Äî Piloto Google Tasks:** habilitar Tasks API desde el conector corporativo existente (no un segundo gateway), OAuth read-only inicial, muestrear m√°ximo 20 tareas relevantes y contrastar con `operations.tasks`/tareas Kross. Seleccionar un √∫nico caso reversible de tarea humana: TORO ‚Üí Google Tasks y actualizaci√≥n de vuelta como se√±al, comprobando `task_id`, `etag`, identidad, separaci√≥n de √°mbitos y cero duplicados. Solo pasar a escritura luego de autorizaci√≥n/gate + receipts. Gate PASS: 1 caso E2E verificado, 0 duplicados/0 cierres falsos y manejo de reintento/edici√≥n concurrente.
-3. **P2 ‚Äî Piloto Keep:** verificar que API empresarial y consentimiento funcionen para esta cuenta. Capturar selectivamente 10 notas **de trabajo** con origen y sin secretos; agrupar ideas repetidas, extraer m√°ximo 3 acciones candidatas, enlazar a tarea/knowledge existente o dejar revisi√≥n humana. No importar notas personales ni borrar/sobrescribir Keep. Gate PASS: 10/10 con fuente/tenant, 0 filtraciones y candidatos aceptados/rechazados con trazabilidad; si Keep API no es elegible, mantener uso manual + Docs como alternativa de notas editables institucionales, no pagar plataforma nueva.
-4. **P2 ‚Äî Productividad Google completa:** mejorar Gmail ‚Üí seguimiento/recepci√≥n sin automatizar respuestas; Calendar ‚Üí horarios existentes/PayFlow sin duplicaci√≥n; Contacts ‚Üí mapeo proveedores/empleados respetando identidades; Drive/Docs/Forms ‚Üí evidencias/minutas y formularios con ACL. No aplicar cambios masivos de Google Ads/GBP/Hotel Center ni crear usuarios Shared Drives/administradores hasta diagn√≥stico por sistema y efecto econ√≥mico.
-5. **Monitoreo permanente SIN tarea nueva:** agregar revisi√≥n compacta de `Google Workspace connector health, scopes, errores, tasa de tareas duplicadas, pendientes cr√≠ticos Google/TORO, uso real y costo marginal` al **reporte semanal existente `Estado semanal TORO` de los viernes 17:00 Costa Rica**. Distinguir CONNECTED, READ_ONLY, WRITE_GATED, NOT_CONFIGURED, AUTH_REQUIRED, ERROR; exigir fuente/fecha y delta frente al corte previo. Usar `TORO Correos y Pagos` diario para extraer acciones de mensajes existentes, no reanalizar en paralelo ni escribir Google Tasks/Keep sin worker. Solo escalar fallos que comprometan tareas cr√≠ticas, privacidad, costos o ingresos.
-
-**Indicadores objetivos:** tareas nuevas candidatas / aprobadas / duplicadas; % tareas humanas cr√≠ticas con owner y fecha; desfase detecci√≥n‚Üítriage; % cierres con readback+receipt; notas √∫tiles procesadas (denominador inspeccionado); contactos duplicados reales; correos accionables sin respuesta; Calendar eventos PayFlow hu√©rfanos; gasto adicional por integraci√≥n (objetivo `$0` hasta justificar licencias/API o coste real). No contar documentaci√≥n o conexi√≥n como ahorro/rentabilidad ni declarar sincronizaci√≥n LIVE por existir un plan.
-
-**Estado de ejecuci√≥n al cierre de esta decisi√≥n:** plan/documentaci√≥n APROBADA; los conectores Gmail/Calendar/Drive/Contacts le√≠dos y verificados; Tasks y Keep `NOT_CONFIGURED/NO_DIRECT_CONNECTOR`; adapter y E2E `NOT_STARTED/UNVERIFIED`. No se crearon Google Tasks, notas Keep, calendarios, usuarios, permisos, nuevos backlogs ni tareas programadas en este paso.
-
----
-
-## Rentabilidad y conversi√≥n sostenibles ‚Äî directiva de Mauricio 2026-10-06
-
-**Scope:** cada negocio autorizado y aislado en TORO; piloto Dreamcatcher Hotel / Toro by Dreamcatcher.  
-**Owners:** TORO Revenue + TORO Finance + TORO Channels; TERE para conversi√≥n.  
-**Existing project:** `revenue_booking_stack`. **State:** CURRENT pol√≠tica aprobada / NEXT verificaci√≥n por canal.
-
-TORO debe buscar de forma continua oportunidades verificables para aumentar la rentabilidad, utilidad y conversi√≥n del negocio dentro de su alcance autorizado. Priorizar contribuci√≥n y utilidad sostenible sobre ocupaci√≥n, tarifa de lista o ingresos brutos aislados. Comparar ingresos despu√©s de descuentos financiados por el hotel, comisiones, cobros de pago, costos incrementales de desayuno/servicio, cancelaciones y reembolsos; separar impuestos por remitir. No inventar costos, ahorro o mejora de utilidad. Medir el resultado antes de declarar una optimizaci√≥n exitosa.
-
-### Avisos materiales de canales ‚Äî corte 2026-10-07
-
-**CURRENT ‚Äî aviso de Booking.com, todav√≠a no verificable como liquidaci√≥n aplicada:** el comunicado recibido por Atrapasue√±os el 07/10/2026 anuncia que desde **17/11/2026** el IVA/GST o impuesto de ventas equivalente formar√° parte de la **base sobre la cual Booking.com calcula su comisi√≥n**. Seg√∫n el mismo aviso, las reservas creadas antes de esa fecha mantienen el c√°lculo anterior. Esto no confirma un porcentaje nuevo de comisi√≥n ni acredita la aceptaci√≥n, contrato actualizado o cargos efectivamente liquidados. Fuente: correo Booking.com `1a11563e0ee53505`. **NEXT:** TORO Revenue/Finance debe revisar el anexo y el ejemplo real en la Extranet durante noviembre, comparar antes/despu√©s por fecha de reserva y alojamiento, y recalcular contribuci√≥n neta sin cambiar tarifas, Kross, descuentos, contratos o pagos por este aviso. Fecha de control en Google Calendar: 17/11/2026, no vencimiento de factura.
-
-### HotelSwaps ‚Äî canal de intercambio gobernado / piloto Asia 2026
-
-**ACTUALIZACI√ìN 07/10/2026:** Mauricio confirma mantener las tres habitaciones ya depositadas (#1811446), sin a√±adir ni retirar noches. No se ha modificado HotelSwaps ni Kross; sigue pendiente conciliar disponibilidad para prevenir sobreventas. Alerta existente de ChatGPT ampliada a HotelSwaps, Booking.com, Expedia, Airbnb, Agoda, Kross y mensajes urgentes de hu√©spedes, con lectura horaria de Gmail y deduplicaci√≥n; no es sincronizaci√≥n ni alerta instant√°nea. Para revisar el portal, la sesi√≥n m√≥vil no se comparte; el navegador conectado necesita inicio de sesi√≥n propio. No incurrir en servicios web automatizados de pago sin aprobaci√≥n.
-
-
-
-**ALCANCE Y OBJETIVO (owner 07/10/2026):** Se integra de manera PERMANENTE a `revenue_booking_stack` de Dreamcatcher Hotel como canal de intercambio complementario, NO como segunda OTA monetaria ni proyecto independiente. Objetivo a corto plazo: financiar noches de alojamiento de 2 adultos durante viaje de finales octubre‚Äìnoviembre 2026 en Tailandia, Vietnam, Camboya, Bali/Indonesia, Se√∫l/Corea. Crear valor real de habitaciones con baja probabilidad de venta en octubre, protegiendo ventas monetarias, precio y categor√≠a. **Decisi√≥n:** continuar Basic (sin fee anual) y no comprar Premium hasta resultado neto comprobado. La nota de investigaci√≥n y evidencia (NO autoridad normativa) est√° en [HOTELSWAPS_EVALUACION_Y_PILOTO_ASIA_20261007.md](../research/HOTELSWAPS_EVALUACION_Y_PILOTO_ASIA_20261007.md).
-
-**Cuenta e identidad (observado):** administraci√≥n identificada en portal con cuenta `admin@dreamcatcherhotel.com`, Hotel Manager Mauricio Fern√°ndez, Dreamcatcher Hotel, membres√≠a Basic ID `1888663`; el contrato permite que Hotel Manager desempe√±e Swap Manager sin crear otro usuario. Capturas del propietario (07/10) muestran 0 Coins balance hotel; 0 Coins balance Guest; texto **1000 Coins available for transfer** (contradicci√≥n operativa NO resuelta: no contabilizar como saldo real, no transferir sin prueba). Portal autenticado NO accesible desde conectores actuales: navegador m√≥vil no comparte sesi√≥n; Opera Browser Connector desconectado; TinyFish sin cookies signed-in para hotelswaps.com. Ning√∫n QA privado ni consulta de reservas Asia se declara HECHO por la captura.
-
-**Estado de dep√≥sito y riesgo P0 (evidencia):** correo Gmail `1a114c1203b601db` comunica dep√≥sito `1811446` de 3 habitaciones 06‚Äì18/oct/2026, equivalente a 36 habitaciones-noche ofertadas si cupo uniforme. Pantalla 08‚Äì17/oct muestra 3 room(s) deposited/d√≠a, sin referencias de hu√©sped en filas visibles (no certifica otras fechas). En dep√≥sitos, cualquier miembro con saldo puede RESERVAR EN EL ACTO; contrato exige honrar reservas. **Control obrigat√≥rio:** comparar cada d√≠a + la reserva con Kross autoritativo y proteger capacidad/cupo est√°ndar doble equivalente para evitar OTA doble venta desde antes de publicar. Si no hay cupo protegido, retirar solo noches NO reservadas; nunca retirar/cancelar noches ya confirmadas sin flujo de hu√©sped y pol√≠ticas. Las solicitudes sin dep√≥sito son no vinculantes hasta aceptar, permiten aprobaci√≥n/rechazo previa consulta Kross. No compartir acceso o automatizar mutaciones sin gate humano y receipt.
-
-**Unidades y categor√≠a:** el contrato limita dep√≥sitos/reservas a habitaciones dobles est√°ndar. Preselecci√≥n anal√≠tica no vinculante #2, #5, #9, #10, #7 seg√∫n cat√°logo can√≥nico y Kross real. Excluir suites premium #25/#26, #11 familiar/apartamento, #21/#22 familiar, villas, Mini (staging) y Santa Toro (negocio separado). Mapping f√≠sico NO confirmado; todas las ofertas equivalen a est√°ndar doble prometida a otro miembro y deben cumplir requisitos publicitados. Fotos, nombre, servicios, ba√±os/camas, ubicaci√≥n, pol√≠ticas desayunos, impuestos, acceso, check-in/out, cancelaci√≥n y capacidad requieren QA de `Your hotel account`.
-
-**Econom√≠a y contabilidad:** Basic genera 75% de HotelCoin Schedule para **reservas entrantes CONFIRMADAS**; dep√≥sito por s√≠ solo genera 0. Coins hotel no vencen mientras membres√≠a; Guest transferidos o comprados 2 a√±os, con pol√≠tica de cancelaci√≥n de reservante por plazos, fees no reembolsables. Cuota outbound Basic GBP 0.08/EUR 0.09/USD 0.10 por coin; compra externa USD 0.50/coin seg√∫n proveedor, sin valor de caja garantizado. No confundir coin, ingreso/cobro, tarifa ADR, reserva, cr√©dito y cash; Finance/Alegra solo con tratamiento fiscal/contable validado; KPI principal ahorro real de hotel Asia vs pago efectivo equivalente, neto fees, costo variable anfitri√≥n y ventas desplazadas. Cualquier valor ~1USD/coin es reivindicaci√≥n del proveedor, no liquidez garantizada.
-
-**Test de destinos 07/10/2026 (VERDAD ESPEC√çFICA):** cat√°logo p√∫blico identifica Karma Kandara (Bali) desde **420 HotelCoins/noche**, SIN disponibilidad real en noviembre; compra hipot√©tica de todos los 420 coins y fee b√°sico en USD = USD 252/noche, excluyendo impuestos extras, si aplica precio publicado. Hist√≥rico NO confirma activo: Bach Suites Saigon (Ho Chi Minh, 2018), 4 Rivers Floating Lodge (Tatai Camboya, 2014), Paradise Beach Resort (Koh Samui Tailandia, 2014), Hotel Mera Mare (Pattaya Tailandia, 2017). Para Bach Suites un sitio OTA informa referencia USD 196 impuestos incluidos, 2 adultos, 02/11/2026, sujeto a cambios; HotelCoin desconocido. Bangkok, Chiang Mai, Phuket, Se√∫l, Han√≥i, Siem Reap: SIN oferta privada comprobada, no declarar ausencia. NEXT: en la sesi√≥n autenticada buscar destinos (tambi√©n request-only), fechas 2 pax dentro 30/10‚Äì20/11/2026, capturar pantalla de precio exacto HotelCoins, fee, cuarto, disponibilidad instant/request, condiciones y comparar con hotel oficial/OTA mismas fechas. Reservar solo mediante aprobaci√≥n y evidencia.
-
-**Reputaci√≥n/experiencia:** HotelSwaps declara ~436-437 miembros en 73/74 pa√≠ses; no significa reservas, ni disponibilidad en objetivo. Marriott documenta colaboraci√≥n tecnol√≥gica de HotelSwaps para HotelHelp 2024, distinta del √©xito del mercado privado de HotelCoins. Escasez de opiniones independientes recientes, testimonios propietarios autoseleccionados 2017; no inventar tasa de conversi√≥n ni recomendar Premium por promociones. Validar demanda real local y tiempo promedio del dep√≥sito con soporte.
-
-**Operaci√≥n, integraciones y alertas:** Gmail etiqueta existente `60.1 ¬∑ HOTELSWAPS` y `Viaje Tailandia 2026 / Canjes`; borrador en hilo `1a110fb6527231a2` requiere env√≠o humano, estado DRAFT al 07/10, no presentarlo como proveedor contactado. Ya existe ChatGPT watch `HotelSwaps alertas urgentes` HOURLY (correo Gmail), no enviar duplicado y no presentarlo como instant√°neo ni WhatsApp. Los avisos accionables de reservas/cancelaciones/solicitudes/coins van a TORO Comms -> Owner Attention -> ejecuci√≥n gobernada; Kross sigue escritor √∫nico comercial. Registrar recepci√≥n, confirmaci√≥n, chequeo PMS, bloqueo, check-in/out, acreditaci√≥n y canje con IDs y readback. Roles: owner/aprobaci√≥n Mauricio; revisi√≥n operativa recepci√≥n solo en alcance autorizado; TERE no oferta disponibilidad no confirmada. Dropbox almacena originales si hay documentos verificables nuevos, sin carpeta/archivo duplicado o secretos. No a√±adir Crexi al channel stack: es plataforma de venta/compra de inmuebles comerciales, tema separado del canal de intercambio.
-
-**Backlog can√≥nico SIN DUPLICAR:** Airtable fuente `DC-HOTELSWAPS-CHANNEL`, tareas `HOTELSWAPS-1811446-RECONCILIATION` (P0, cupos Kross, fechas y saldo), `HOTELSWAPS-PILOT-GUARDRAILS` (P1 categor√≠a+Asia+econom√≠a y pol√≠ticas); no crear nuevas tareas, worker, dashboard ni base. Fases/Done: 1) snapshot autenticado de portal y comparaci√≥n Kross por cada d√≠a 06‚Äì18/oct con 0 oversell; 2) revisi√≥n completa perfil hotel, permisos, balance real vs 1000, dep√≥sitos/reservas y pol√≠ticas; 3) al menos 3 pruebas de destino con fechas/fees y 1 estad√≠a asi√°tica reservable/solicitud aceptada demostrada; 4) piloto 30 d√≠as: coins netos recibidos, canjes concretos confirmados, ahorro neto demostrado; en ausencia de canjes, reducir exposici√≥n y mantener Basic pasivo. Semanales reportar solo deltas materiales, no newsletters.
-
-**Fuentes y procedimientos:** https://www.hotelswaps.com/hotel-terms-conditions ; https://www.hotelswaps.com/about-us-faq-hotels ; https://www.hotelswaps.com/about-us-faq-guests ; https://www.hotelswaps.com/membership-options ; https://www.hotelswaps.com/members ; https://serve360.marriott.com/wp-content/uploads/2024/06/Marriott_Statement_2024.pdf . Capturas owner y Gmail son evidencia operativa, no transacci√≥n confirmada.
-
-
-### Contrato de ocupaci√≥n, desayuno y suplementos de Dreamcatcher ‚Äî 2026-10-07
-
-Autoridad: aclaraciones y aceptaci√≥n de Mauricio del 2026-10-07. Este contrato sustituye la tabla de objetivos/lista del 2026-10-06; aquella queda como evidencia hist√≥rica de configuraci√≥n, no como pol√≠tica futura obligatoria. Supabase `content.hotel_facts/additional_person_pricing`, `guest_age_categories` y `breakfast_price` conservan el contrato estructurado; Airtable mantiene su referencia humana. Kross y cada canal siguen siendo autoridad sobre configuraci√≥n aplicada y cotizaci√≥n vigente.
-
-| Regla | Criterio aprobado o estado |
-| --- | --- |
-| Moneda objetivo | USD; cambio de moneda de propiedad Agoda solicitado, todav√≠a pendiente de confirmaci√≥n |
-| Ocupaci√≥n incluida | 2 personas en habitaciones y 12 en villas; no equivale a la capacidad m√°xima |
-| Edades | Beb√©s 0‚Äì3, ni√±os 4‚Äì10, adultos desde 11; todos cuentan dentro de la capacidad |
-| Desayuno | US$15 finales por persona y desayuno; separado del alojamiento y protegido frente a descuentos del alojamiento |
-| Tarifa con desayuno | Incluye a adultos y ni√±os; para beb√©s solo a solicitud, a US$15 por desayuno. No duplicar cargos |
-| Capacidad Dreamcatcher Villa | 27 personas, habitaciones 0‚Äì6; no ofrecer una plaza 28 sin nueva verificaci√≥n |
-| Otras villas | Makaiza 7‚Äì11, capacidad 17; Toro 21‚Äì28, capacidad 29. No duplicar villa y componentes |
-| Mascotas | Hasta 10 kg; cualquier cargo y condiciones adicionales requieren su fuente vigente |
-
-Conflicto de implementaci√≥n pendiente: `src/lib/toro-data.ts`, objeto `mkz`, todav√≠a describe Makaiza para 15‚Äì20 personas. Es un descriptor anterior que contradice el m√°ximo 17 coincidente en Airtable/Supabase; no debe usarse para prometer capacidad. Este lote documental registra la discrepancia, sin acreditar correcci√≥n de la interfaz ni publicaci√≥n comercial. El registro Airtable de hotel completo tambi√©n requiere conciliaci√≥n: declara 20 habitaciones/74 personas, pero enlaza 19 y omite la 22.
-
-Recomendaci√≥n de alojamiento elegida bajo la delegaci√≥n del due√±o: ni√±o 75% del suplemento adulto de **alojamiento**; beb√© sin suplemento si no necesita cama extra, pero contando en capacidad. El desayuno completo no recibe ese porcentaje. El importe adulto de alojamiento y el tratamiento fiscal a√∫n requieren costos, margen y prueba por canal. Estas reglas registradas no prueban que Kross, WeSpeak ni las OTA hayan cambiado; conservar t√©rminos de reservas confirmadas.
-
-- Para cada canal, comparar la misma unidad, fecha, ocupaci√≥n, r√©gimen y condiciones antes/despu√©s de promociones, incluyendo l√≠mites de edad 3/4 y 10/11, redondeo y tratamiento fiscal. Comprobar que desayuno suma US$15 por servicio al total final; una derivaci√≥n porcentual fija no lo garantiza.
-- Calcular un suplemento de lista mediante el multiplicador marginal solo cuando se haya demostrado qu√© descuentos/impuestos le aplican. No reutilizar US$50/100 ni suponer 70% de descuento como receta universal.
-- **Agoda bloqueado:** mantener inactivos RO 24359579 y BB 24531249 hasta confirmar USD, importes/ocupaci√≥n y recepci√≥n desde Kross. Solicitud en caso 1120368076318197504; no duplicarla ni reactivar para resolver un error de plan inactivo.
-- Conservar nombres, IDs, slugs y enlaces Kross. No cambiar camas, capacidades o fotos por inferencia; las seis correspondencias Agoda provisionales requieren prueba de identidad.
-- Para grupos, ofrecer hasta tres combinaciones √∫tiles con disponibilidad simult√°nea y enlaces permitidos por el canal; no prometer exclusividad sin evidencia.
-- Mantener una sola pol√≠tica versionada con fuente, aprobaci√≥n, evidencia y estado por canal. Supabase conserva datos/control; Airtable referencia; Dropbox originales; no crear nuevas bases, monitores o planes paralelos.
-- Optimizar fotos, etiquetas y amenities √∫nicamente contra evidencia de la unidad correcta. Medir conversi√≥n hasta reserva e ingreso confirmado; visitas o etiquetas no demuestran m√°s ventas.
-- Aprender capacidades reales de cada herramienta mediante configuraci√≥n observada, pruebas acotadas y lectura posterior. Registrar l√≠mites y correcciones reutilizables sin copiar datos privados entre negocios ni declarar dominio experto por documentaci√≥n.
-- Priorizar contribuci√≥n neta y conversi√≥n verificables. Ning√∫n cambio documental demuestra incremento de utilidad ni publicaci√≥n comercial.
-
-### Mejora continua y control
-
-Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -> ejecutar dentro de autorizaci√≥n -> verificar -> medir -> conservar o revertir. La directiva no reactiva ejecutores suspendidos, no crea otro plan/base/agente/scheduler y no ampl√≠a permisos, presupuesto o env√≠os externos. La siguiente ejecuci√≥n debe cerrar el primer bloqueo material con evidencia, sin repetir una auditor√≠a completa.
-
-**Aceptaci√≥n del despliegue tarifario:** suplemento final comprobado por canal y r√©gimen en fechas autorizadas; evidencia de guardado y lectura posterior; costos/margen identificados o marcados desconocidos; ning√∫n nombre Kross alterado; reservas existentes respetadas. Una pol√≠tica guardada o texto WeSpeak actualizado no demuestra que el motor de precios u OTA ya est√© alineado.
-
----
-
-## Inventario desde facturas y WhatsApp de aseo 2026 10 13
-
-**DIRECTIVA APROBADA por Mauricio el 13/10/2026:** ampliar el flujo existente de TORO Compras e Inventario para que las l√≠neas de compra recibidas por correo, XML/PDF, foto o chat preparen autom√°ticamente entradas de inventario y los retiros reportados en el grupo de aseo preparen salidas, traslados o bajas. PayFlow es la orquestaci√≥n financiera documentada; ‚ÄúFlash‚Äù queda sin identidad/capacidad verificada y no se le asigna otro procesamiento. Reutilizar TORO Correos y Pagos, mail_ingest, OpenClaw/WhatsApp, Control Plane y la tarea `ops_ws_housekeeping_laundry_stock`; sin otra base, cola, scheduler ni reprocesamiento masivo.
-
-**Estado:** configuraci√≥n aprobada y registrada; extracci√≥n, escritura autom√°tica y captura viva del grupo NO VERIFICADAS. Este registro no activa procesos, no acredita compras/recepci√≥n ni modifica existencias o contabilidad.
-
-### Entradas desde compras
-
-1. Reutilizar la ingesta actual; preferir XML cuando exista, leer PDF/foto como alternativa, conservar documento original y procedencia.
-2. Extraer por l√≠nea: proveedor, clave/n√∫mero de factura, fecha, art√≠culo/SKU/alias, marca, presentaci√≥n, cantidad facturada, unidad, factor de conversi√≥n, precio/costo, moneda e impuestos separados, negocio/propiedad/proyecto, ubicaci√≥n y referencia de fuente.
-3. Resolver producto y presentaci√≥n contra cat√°logo existente. Art√≠culo nuevo o ambiguo pasa a revisi√≥n, sin fusionarlo por similitud. Separar consumibles, activos y servicios/gastos no inventariables; excluir compras personales u otra propiedad sin asignaci√≥n expl√≠cita.
-4. La factura crea compra/entrada pendiente y datos del cat√°logo. El stock disponible aumenta solo por cantidad efectivamente recibida y confirmada, incluido un comprobante que pruebe entrega. Facturaci√≥n, pago y recepci√≥n son eventos distintos; admitir entregas parciales sin sumar toda la factura.
-5. Reusar `assets.stock_items`, `assets.stock_levels`, `assets.inventory_movements`, `assets.purchase_runs` y `assets.purchase_run_items`; activos en el maestro f√≠sico existente. Supabase es destino despu√©s de paridad/conteo verificados; Airtable Inventario & Activos mantiene el papel definido por el contrato vigente. Alegra conserva contabilidad; Dropbox conserva originales; Portal y WhatsApp muestran proyecciones del mismo saldo.
-
-### Salidas desde el grupo de aseo
-
-Interpretar mensajes naturales por empleado/turno/propiedad autorizados y conservar message_id, autor, fecha, texto/evidencia, art√≠culo, cantidad, unidad, origen, destino y motivo. No exigir otra app. Formato breve sugerido: ‚ÄúRetir√© 2 litros de cloro de bodega para Toro‚Äù.
-
-- **Traslado:** baja en bodega y alta en √°rea destino; total del hotel sin cambio.
-- **Consumo:** descuenta cantidad consumida del √°rea correspondiente.
-- **Baja, da√±o o p√©rdida:** movimiento espec√≠fico y evidencia/revisi√≥n proporcional.
-- Blancos/equipos enviados a habitaci√≥n o lavander√≠a cambian ubicaci√≥n/estado, no desaparecen del inventario.
-- ‚ÄúSe acab√≥‚Äù, ‚Äúsaqu√© jab√≥n‚Äù o cantidades/unidades/ubicaci√≥n dudosas crean excepci√≥n dirigida; no inventar saldo ni movimiento. Pedir solo el dato faltante cuando la ingesta y el canal est√©n operativos.
-
-### Configuraci√≥n y controles
-
-Habilitar extracci√≥n autom√°tica y validaci√≥n como primer paso; contabilizar movimientos autom√°ticamente solo con producto/unidad/ubicaci√≥n/recepci√≥n o consumo inequ√≠vocos, identidad autorizada, baseline f√≠sico verificado y piloto aprobado. Clave de deduplicaci√≥n por organizaci√≥n + factura/proveedor/clave fiscal + l√≠nea + recepci√≥n parcial; para WhatsApp, organizaci√≥n + canal + message_id + movimiento. Correo y foto de la misma factura producen una sola compra; reporte de recepci√≥n y factura no suman dos veces; ediciones/reenv√≠os son nuevas versiones, no movimientos adicionales.
-
-Convertir caja/paquete/botella/gal√≥n a unidad base mediante presentaci√≥n verificada; no asumir equivalencias. Bloquear negativos y conservar diferencias para conciliaci√≥n f√≠sica. Correcciones/devoluciones usan reversos o movimientos compensatorios con referencia al original, sin borrar historial. Nota de cr√©dito financiera no equivale por s√≠ sola a devoluci√≥n f√≠sica. Alerta al llegar al m√≠nimo/punto de reposici√≥n confirmado; sugerir lista de compra existente, sin pedidos o pagos autom√°ticos. Alertas por excepci√≥n material y fallo nuevo, sin notificar cada mensaje.
-
-### Ejecuci√≥n y terminado
-
-Responsables por rol: sistemas TORO configura ingesta/mapeo/deduplicaci√≥n; administraci√≥n/finanzas valida factura, costo y √°mbito; encargado de aseo/bodega confirma recepci√≥n, unidad y conteo; Gerencia supervisa excepciones. No se asignan nuevas personas ni fechas de compromiso.
-
-**Ahora:** verificar baseline vigente, lectores disponibles y stock f√≠sico, mapear diez productos frecuentes y resolver aliases/presentaciones/unidades. **Despu√©s:** piloto sobre cinco facturas y diez reportes reales autorizados de aseo, con recepci√≥n parcial, duplicado correo/foto, traslado, consumo, baja, devoluci√≥n, mensaje ambiguo y stock insuficiente. **Terminado:** cada caso con fuente y recibo/readback; cero duplicados, cero mezclas de √°mbitos, cero negativos y conciliaci√≥n de saldos contra conteo. Meta propuesta: al menos 90% de l√≠neas del piloto identificadas sin recaptura manual; medir entradas/salidas verificadas, excepciones, demora y exactitud de saldo con denominador. Nada de esto se reporta como ahorro o automatizaci√≥n activa hasta verificarlo.
-
-Si falla lectura/escritura o el resultado es ambiguo, conservar el candidato sin tocar stock, continuar el registro manual en el sistema autoritativo y verificar antes de reintentar. Reversi√≥n: desactivar solo el adapter de movimientos y usar compensaci√≥n trazable para escrituras confirmadas; conservar el resto de correo/PayFlow.
-
-Referencia can√≥nica: `operations.knowledge_items/procurement_inventory_operating_contract_2026_09_v1` y `operations.tasks/ops_ws_housekeeping_laundry_stock`.
-
-
-## Correos y PayFlow ‚Äî continuidad permanente 2026-10-07
-
-**Decisi√≥n de Mauricio:** mantener de forma indefinida el an√°lisis de correos y la conciliaci√≥n del calendario de pagos, ampliando la extracci√≥n de informaci√≥n √∫til. Reutilizar **una √∫nica tarea diaria existente** (`TORO Correos y Pagos`, 08:00 America/Costa_Rica, RRULE diario sin fecha de fin), el control `PayFlow Semanal` de los lunes y el forecast mensual a 90 d√≠as; no crear un segundo Finance Guard, plan, bandeja o scheduler ni reactivar escritores financieros suspendidos.
-
-**CURRENT observado 07/10:** tres buzones Gmail y uno Outlook autorizados para lectura selectiva; censo/checkpoints en `integrations.mail_ingest_*` con historia **incompleta**. Google Calendar vinculado de `admin@dreamcatcherhotel.com` sigue como interfaz de pagos existente, sin calendario separado `TORO PayFlow ¬∑ Dreamcatcher`. Se verificaron y crearon tres eventos privados de control basados en facturas/recibos, y se corrigi√≥ el estado documentado de un evento previo de Alegra. Los identificadores por factura, per√≠odo y evento permanecen en el seguimiento operacional, no en este plan rector. Crear eventos manuales con evidencia no certifica un sincronizador persistente.
-
-**Alcance de extracci√≥n:** recibidos y enviados; nuevos y lote hist√≥rico desde checkpoints; facturas PDF/XML, montos, vencimientos, emisor/receptor, propiedad/entidad, comprobantes, bancos, servicios/NISE, comisiones y reservas OTA, suscripciones/renovaciones, contratos, seguros, CCSS/impuestos/permisos, mantenimiento, incidencias de servicio, atenci√≥n de hu√©spedes, oportunidades comerciales, seguridad y fallos de sistemas. Separar alcance hotelero, otras propiedades y datos personales. Aplicar ID por buz√≥n+mensaje/hilo, documento y per√≠odo; no reiniciar backfill, duplicar obligaciones, persistir secretos ni prometer 100% sin censo completo.
-
-**Contrato del calendario:** documento/proveedor gobierna la fecha de factura y vencimiento; banco/procesador gobierna salida de caja; Alegra gobierna asiento; Kross gobierna reserva/tarifa. Supabase PayFlow conserva obligaci√≥n/estado/observaci√≥n, y Google Calendar es proyecci√≥n humana. Cada entrada diferencia emisi√≥n, vencimiento oficial, fecha interna de control y pago acreditado. Identidad idempotente `tenant + obligation_key + period + event_role`: buscar primero y actualizar **el mismo evento** cuando llegue evidencia nueva; una factura reemplaza el pron√≥stico del mismo ciclo. Diferenciar CONFIRMADO, ESTIMADO_POR_HISTORIAL, REQUIERE_VERIFICACION y PAGO_CONFIRMADO_POR_PROVEEDOR (a√∫n sin conciliaci√≥n bancaria). No registrar estimados de 90 d√≠as como deudas definitivas ni proyectar datos personales/otras propiedades al calendario hotelero.
-
-**GATE de automatizaci√≥n:** la tarea diaria revisa, clasifica, detecta vencidos/riesgos y prepara diffs; **no escribe autom√°ticamente al Calendar ni a Supabase Finance** sin worker autorizado, idempotencia, lease/fencing, verificaci√≥n y receipt del Control Plane. La actualizaci√≥n manual expresamente solicitada el 07/10 se realiz√≥ sobre eventos privados despu√©s de buscar duplicados y leer facturas; esa intervenci√≥n no prueba auto-sincronizaci√≥n futura. Avisos a Mauricio/Carolina por WhatsApp requieren identidad, canal OpenClaw y env√≠o verificados aparte. No pagos, asientos, env√≠os de correo, cancelaciones, cambios de reservas/servicios, permisos ni destrucci√≥n desde esta tarea.
-
-**NEXT:** (1) consolidar nuevos correos desde √∫ltimo checkpoint sin avanzar cursores por solo lectura; (2) reconciliar facturas/recibos contra obligaciones, cuentas y eventos existentes, incluyendo incidencias con posible corte y saldos disputados, sin duplicar; (3) comprobar y habilitar solo mediante su tarea can√≥nica una proyecci√≥n Calendar idempotente del Finance Worker, con readback y rollback antes de llamarla autom√°tica. El lunes se presentan vencimientos de 7/21/90 d√≠as por entidad y moneda. Actualizar este Plan General √∫nicamente si cambian pol√≠tica, arquitectura, riesgos o dependencias; el detalle rutinario queda en receipts y calendario.
-
----
-
-## Autonomy consolidation + OpenAI surface strategy ‚Äî 2026-10-01
-
-**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT cleanup / NEXT worker bridge.
-
-- **Legacy execution cleanup completed in ChatGPT Scheduled Tasks:** paused TORO Portfolio Coordinator, CONTROL Lane, OPERATE Lane and GROW Lane; BUILD Lane, Progress Watch and Finance Guard were already paused. The direct `Barrido financiero 2026` executor and direct PayFlow `Cierre diario TORO` executor were also paused because they can mutate canonical finance/accounting state outside the new Control Plane.
-- **Retained scheduled work is transitional:** read-only reports/monitors, personal watches and narrowly scoped domain workflows may remain scheduled while each is classified and migrated. A schedule is a trigger/report surface, not execution authority.
-- **Single execution invariant:** material autonomous work uses `canonical task -> public.toro_execution_runs -> lease/fencing -> bounded worker/agent -> verification -> public.toro_execution_receipts`. No Dot, Work thread, plugin, scheduled task or Codex session may own parallel task/run/completion state.
-- **Plan General invariant:** every material run maps to a canonical project/task/subsystem. Routine successful receipts do not bloat this document; material changes to architecture, objective, policy, dependency, risk or program direction do.
-- **Worker Runtime v1:** merged to current `main` in commit `c6dc1822f41d84d6c57ccd4aa1948240892e8050`; backend-only Supabase worker client prefers modern `sb_secret_*` configuration and exposes typed claim/lease/transition/retry/receipt primitives. Application-level activation remains gated on canonical Vercel deployment/config proof.
-- **TORO MCP read runtime:** merged to current `main` in commit `fd4806307f0950a2b501c3aab37acf78987a91be` as a disabled-by-default authenticated read bridge for ChatGPT/Work/Dots/Plugins. It exposes permission-filtered Brain/search/priorities/business status/decisions/receipts only; no Control Plane write/claim tool is enabled. Activation remains gated on canonical deployment, OAuth/resource URL configuration and authenticated isolation tests. Stale PR #222 is superseded.
-- **OpenAI surface map:** `docs/product/TORO_OPENAI_SURFACE_MAP_V1.md` defines Projects as human context hub, Work as substantial delegated executor, Dots as persistent mission workers, Plugins/Apps as capability packaging/connections, MCP as governed interoperability boundary, Agents SDK as code-first agent loop, tracing as observability, Codex as implementation worker, Scheduled Tasks as triggers/reports, and Sites as presentation.
-- **Actor/surface registry:** `docs/product/TORO_ACTOR_AND_SURFACE_REGISTRY_V1.md` is the classification contract for Dots, specialists, temporary workers, Scheduled Tasks and interfaces. Scheduled work is trigger/report/watch by default; only documented transitional exceptions may write outside the Control Plane, and those must migrate.
-- **Recommended human front door:** one ChatGPT Project named `TORO`, using Chat for fast collaboration and Work for substantial tasks. This Project is not source-of-truth; Supabase/GitHub/domain systems remain canonical.
-- **Dot promotion rule:** PUMBA is the first persistent Control Dot. Finance/Operations/Guest-Revenue/Growth/Build remain candidates until workload and measurable value justify permanent Dots.
-- **Vercel deployment audit:** current Vercel `toro-os` is observed as Vite/manual legacy; `toro-os-v03` deployment metadata points to legacy repo `Dramcatcherst/toro-os-v88-new`. Neither is accepted as deployment authority for canonical Next.js repo `Dramcatcherst/Toro-OS`. Contract: `docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md`.
-- **Worker canary contract:** `docs/runbooks/TORO_WORKER_CANARY_V1.md` prepares a disabled-by-default, authenticated L1 deployment probe mapped to existing task `toro_surface_capability_parity_20260922`. It uses a targeted run-id claim and atomic verified completion so a deployment smoke test cannot lease unrelated work or finish without its receipt.
-- **Worker canary sandbox proof:** targeted claim isolation + atomic receipt/completion + rollback all PASS with zero persistence. Evidence: `docs/evidence/TORO_TARGETED_WORKER_CANARY_SANDBOX_VALIDATION_2026-10-01.md`.
-- **Worker canary production primitives:** migration `20261002003241_toro_targeted_worker_claim_v1_20261001` applied; targeted claim + atomic verified completion are service-role-only and read back correctly. Transaction-only production probe PASS and rolled back to the pre-existing run/receipt state. Evidence: `docs/evidence/TORO_TARGETED_WORKER_PRODUCTION_READBACK_2026-10-01.md`. HTTP canary remains disabled pending canonical Vercel deployment.
-- **MCP/PUMBA activation contract:** `docs/runbooks/TORO_MCP_PUMBA_ACTIVATION_V1.md` defines authenticated negative isolation QA, read-only PUMBA entry, receipt/trace separation, 10-cycle L0/L1 observation gate and kill switches before any L2 consideration.
-- **NEXT:** establish one canonical Vercel project sourced from `Dramcatcherst/Toro-OS`, configure backend/public Supabase variables without exposing values, verify `/api/system/runtime-health` with MCP disabled, deploy exact current-main SHA, run a safe L0/L1 worker cycle through the production Control Plane, correlate trace/correlation IDs, then bridge PUMBA. Only after that migrate the remaining transitional executor or promote another Dot.
-
-## Control Plane runtime implementation ‚Äî 2026-09-30
-
-**Owner:** TORO Governance + TORO Agents + SOBRESITO. **State:** CURRENT production Control Plane active / NEXT application worker deployment.
-
-- **Canonical basis already verified in Supabase:** `operations.knowledge_items/toro_master_execution_contract_v1` defines one Supabase/TORO control plane, L0-L4 execution authority, evidence-first completion, bounded retries, single-writer behavior, leases/fencing, dead-letter handling and receipts. This lane implements that existing contract; it does not create a second plan or authority.
-- **Existing work selection remains canonical:** `operations.tasks`, `operations.toro_task_execution_v1`, `operations.toro_execution_actor_v1`, `operations.toro_autonomous_action_queue_v1` and `operations.toro_owner_attention_v1` continue to own task state, routing/selection and owner attention.
-- **Durable runtime active:** production now has execution runs + receipt envelopes with lease/fencing, bounded retry/dead-letter and verification constraints; upstream task/selection authority remains separate.
-- **Production-surface hardening:** preflight verified `service_role` has no `USAGE` on `operations`; TORO will not broaden that schema. Runtime envelopes/RPCs are therefore narrowed to `public.toro_execution_*` with RLS on, no client policies, `anon/authenticated` revoked and minimum `service_role` grants. Upstream task/selection authority remains in `operations`.
-- **Sandbox verification:** exact narrowed draft PASS for duplicate-claim prevention, fencing, retry, verification gates, L4 blocking, cross-tenant FK isolation and minimum privileges; exact rollback script also PASS. All sandbox transactions were rolled back. Evidence: `docs/evidence/TORO_CONTROL_PLANE_PUBLIC_RUNTIME_SANDBOX_VALIDATION_2026-09-30.md`.
-- **Production migration:** `20261001051843_toro_control_plane_runtime_v1_20260930` is applied in canonical Supabase. Current runtime tables are `public.toro_execution_runs` and `public.toro_execution_receipts`; current verified evidence includes at least one L2 run with `succeeded/passed` plus its verification receipt. Contract: `docs/product/TORO_CONTROL_PLANE_RUNTIME_V1.md`.
-- **Risk model invariant:** business severity (`Low/Medium/High/Critical`) and execution authority (`L0-L4`) are separate dimensions. L3 remains human-gated; L4 is not claimable by autonomous workers.
-- **Dot invariant:** PUMBA/future Dots are persistent mission workers over this control plane. They may not own a parallel backlog, permission model, memory authority or completion state.
-- **NEXT gate:** canonical Vercel project/config -> protected runtime-health readback -> exact-main deployment -> safe L0/L1 application Worker run + verified receipt -> authenticated MCP read QA -> PUMBA bridge -> only then wider Dot/autonomy expansion.
-- **Authority ceiling unchanged:** production Control Plane storage is active, but no external write, money movement, reservation/rate change, publication or permission expansion is authorized merely by runtime availability.
-
-## WhatsApp / OpenClaw repair intake ‚Äî 2026-09-29
-
-**Owner:** TORO Comms, with TORO Identity, Operations, Finance and Systems. **State:** CURRENT gap / NEXT controlled implementation. This is part of the existing WhatsApp Same-Brain lane.
-
-- **Observed in production Supabase:** one WhatsApp/OpenClaw binding is connected/verified and marked healthy, while the external dependency still says `needs_audit` (last audited 2026-09-22). `integrations.communication_channel_sessions` and `integrations.communication_channel_receipts` exist but each has zero rows, as does `public.employee_channel_identities`. This is configuration evidence, not live TORO execution proof. The Gateway, existing `toro-openclaw-integration` worktree and exact `Capability unavailable` trace were not accessible here. The agent report says text/media/transcription and `chat_id` reach the channel; that report does not prove canonical persistence.
-- **Prepared in local code review:** `src/features/openclaw/channel-ledger.ts` defines hashed transport identity, fail-closed authorization, record validation and distinct DENIED/UNAVAILABLE/STALE states. The revised `supabase/drafts/20260929_toro_comms_durable_channel_ledger.sql` adds only content and structured-record storage over the existing sessions/receipts, with search indexes and rollback. It is not applied or connected to WhatsApp.
-- **NEXT diagnostic gate:** run `scripts/openclaw-host-diagnostics.mjs` on the existing authorized Gateway host and inspect its sanitized summary alongside the integration worktree and a bounded failure trace. This read-only probe does not verify or repair live WhatsApp identity, ledger writes or capabilities by itself; root cause and rollback evidence must precede runtime changes.
-- **Current mirror limit:** `operations.reservations` has 33 rows, latest `snapshot_as_of` 2026-09-21 09:28 UTC; `operations.current_reservations_safe` has zero rows. The Kross snapshot health rows observed on 2026-09-24 are marked stale. These sources can support labeled historical/reference reads only, never occupancy or arrivals "today".
-- **Next:** inspect the existing adapter and sanitized failing trace; bind Mauricio through the existing verified channel identity flow; route the adapter through TORO's current permissions and receipts; test owner-only history and replay-safe guest-list persistence. Restore/verify mirror freshness before current reservations/occupancy/aseo reads. Keep Kross paid access deferred and Alegra writes separately approval-gated.
-- **Promotion gate:** prove context compaction, restart, long history, duplicate replay, wrong user/org, revoked binding, stale mirror, media failure and backup/restore on the actual host. No costs, external messages or new connections from this lane without owner authorization.
-
-# 1. Final direction
-
-TORO is the master intelligence, memory, governance and orchestration layer for a person's work, businesses, projects and authorized external relationships.
-
-TORO should eventually allow one Principal to operate a complex portfolio through:
-
-- one TORO identity;
-- one personal TORO context;
-- multiple organizations/businesses/workspaces;
-- multiple projects/products;
-- isolated external clients/allies;
-- one governed tool/connector fabric;
-- one communication fabric;
-- one permission and approval model;
-- one evidence/audit model;
-- reusable skills learned without leaking private scope data.
-
-The operating/execution layer is an internal capability of TORO, not a second product or brand. Legacy names such as `TORO OS` and `toro_os_*` may remain in technical keys, repositories or integrations only until they can be migrated safely.
-
-Normal users experience **one TORO**.
-
-**TARGET product experience ‚Äî 2026-09-29:** The finished-product definition in section 23 specifies one owner operating the authorized portfolio through TORO, with the Brain, role views, evidence and permitted work in one experience. Dropbox documents and the full-plan visual reader are projections of this General Plan; they may not become a parallel plan.
-
----
-
-# 2. Product hierarchy
-
-## TORO
-Master brain:
-- identity;
-- scope graph;
-- memory;
-- knowledge;
-- governance;
-- orchestration;
-- learning;
-- portfolio intelligence;
-- system auditing;
-- proactive improvement.
-
-## TORO operating/execution layer
-Execution capabilities inside a business/workspace:
-- dashboards;
-- workflows;
-- tasks;
-- approvals;
-- operating views;
-- automations;
-- WhatsApp/Portal actions.
-
-## TORO subsystems
-Internal capabilities:
-- TORO Identity
-- TORO Personal
-- TORO People
-- TORO Comms
-- TORO Guests
-- TORO Operations
-- TORO Finance
-- TORO Revenue
-- TORO Growth
-- TORO Studio
-- TORO Projects
-- TORO Knowledge
-- TORO Tools
-- TORO Agents
-- TORO Data
-- TORO Governance
-- TORO Assets
-- TORO Research
-- TORO Channels
-- TORO Systems
-- TORO Builder
-- TORO Exchange (conditional experiment)
-
-## TORO Dashboard ‚Äî unified product surface
-
-TORO Dashboard / Portal is the role-aware visual surface of the same TORO Brain.
-
-Canonical contract:
-- `operations.knowledge_items/toro_dashboard_surface_v1`
-- `docs/product/TORO_DASHBOARD_V1.md`
-
-Core navigation:
-- Brain (role- and scope-filtered entry);
-- Today / Attention
-- Money
-- Studio
-- Customers
-- Operations
-- People
-- Growth
-- Legal & Risk
-- Assets & Spaces
-- Projects
-- Systems
-
-Rules:
-- dashboard is not a source of truth;
-- modules do not create parallel databases, task systems, approvals or notification centers;
-- role visibility comes from the shared identity/membership/capability model;
-- every material widget exposes source authority, freshness, attention state and next action;
-- TARGET default internal home is the authorized Brain composition, not Today/Attention or the technical cockpit; each role receives a useful initial focus and an equivalent list, while Today remains one-tap operational attention;
-- TARGET role composition: Cerebro is visible Module 0 and the shared entry for owner and staff, with distinct authorized initial focus, immediate decisions or next work actions. The eleven domain modules retain their identities and order 1‚Äì11. Cerebro introduces no separate Brain, subsystem, task store or approval authority. The owner direction of 2026-10-10 supersedes the earlier restriction on a twelfth visible menu entry, not the single-Brain architecture.
-- mobile/WhatsApp/desktop are different surfaces over the same Brain and action ceilings.
-
-Existing Dashboard v1 implementation order (not the final entry route):
-1. Today / Attention;
-2. Money / PayFlow;
-3. Studio;
-4. then remaining modules using the same contracts.
-
-**Owner product decision, 2026-09-30:** the final Portal starts in the connected Brain for every authenticated profile, filtered before projection by identity, context and capability. This changes the entry contract, not the inside-out build order or present runtime state. Brain, Today, Plan/Projects and the other modules are views of one TORO with shared object IDs and governed actions. A compact, viewport-oriented shell uses progressive detail; long evidence, forms, accessibility zoom and small screens may scroll normally. The public site remains a separate, sanitized projection. The reviewable interaction contract is in `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`; subordinate Dashboard and User Portal v1 entry wording is superseded accordingly. A visible node, listed connector or button is not proof of a live integration or permission to act.
-
-### Owner Attention + PayFlow contract ‚Äî 2026-09-28
-
-Canonical subordinate contract:
-- `operations.knowledge_items/owner_attention_comms_payflow_v1`
-- `operations.knowledge_items/payment_inbox_map_2026_09_v1`
-- `docs/product/TORO_OWNER_ATTENTION_PAYFLOW_V1.md`
-
-Today/Attention and Money/PayFlow must project the same canonical exceptions to Portal and WhatsApp/OpenClaw. The owner does not monitor raw inbox volume. Email, WeSpeak and provider notifications are signals; only unresolved decisions, approvals, deadlines, risks, failed payments, unreconciled charges, response deadlines or material exceptions enter Owner Attention.
-
-Routine successful receipts remain evidence/digest unless another rule makes them actionable. No payment, contract acceptance, reservation/rate write, permission change, DNS/MX change or destructive mail action is implied by appearance in Owner Attention.
-
-**Local release hardening ‚Äî 2026-09-30 (prepared, not deployed):** Owner Attention reads fail closed unless both server-only flags `TORO_BRAIN_CANONICAL_READ_ENABLED` and `TORO_OWNER_ATTENTION_READ_ENABLED` are exactly `true`. Missing, false or invalid values disable the route before context resolution/Supabase access; the direct provider independently enforces the same gate before creating a client. Disabled responses return HTTP503, `state: disabled`, `ownerAttentionAllowed: false`, with no projection or private diagnostics. Stage C v1 alone must not activate Finance; its existing scope remains Projects + Source Governance + Kross Health. Enabling both flags still requires the existing authenticated active organization membership and ADMIN/GERENCIA policy, then organization-scoped RLS reads. No flags, credentials, permissions or deployments are changed by this preparation. Synthetic regression coverage lives in `src/app/api/brain/owner-attention/route.test.ts` and the normal test command; production configuration and release authorization remain separate gates. This controls Owner Attention, not a certification that every project endpoint is demo-only.
-
----
-
-## TORO Studio ‚Äî governed creative & media capability
-
-
-### Nombres humanos y curaci√≥n fiel de documentos/media ‚Äî 13/10/2026
-
-**Scope:** TORO Assets/Studio/Governance/Channels; piloto Dreamcatcher dentro de Web, Marca, SEO y Reputaci√≥n. **TARGET:** nombres legibles, originales intactos, clasificaci√≥n por lugar/contenido y selecci√≥n por objetivo; mejoras conservadoras sin alterar arquitectura ni ocultar defectos materiales. Reutilizar los contratos/√≠ndices actuales y `initiative_bindings.visual_commerce_dreamcatcher`, issues #6/#28/#30 y gates de PR #43; sin biblioteca, base, agente o publisher adicional.
-
-**CURRENT comprobado:** propuesta PDF y cotizador HTML del retreat guardados en `/Dreamcatcher Hotel/Administracion/Retiros/2027`, con nombres humanos, lenguaje ES y versi√≥n v01; cargas completed y IDs/tama√±os le√≠dos. Muestreo visual encontr√≥ dos capturas web en la biblioteca; el set anterior de retreats prioriza candidatos de arte y usos m√∫ltiples sin pertinencia comprobada. Manifest Eagle de 05/07: 9.935 filas, no conteo live; √≠ndice actual Dreamcatcher: 60 assets, 44 sin subject_key, 55 requieren revisi√≥n humana y 10 assignments. No afirmar inventario completo ni reselecci√≥n final.
-
-**PROPUESTO / NEXT:** contrato detallado y texto com√∫n para ChatGPT/Codex en [TORO Studio, secciones 10‚Äì12](TORO_STUDIO_V1.md). Primero clasificar/reconciliar y seleccionar 30 originales representativos; luego un antes/despu√©s conservador, aprobaci√≥n por versi√≥n/destino y sustituci√≥n gradual con rollback. Fotos/QR/tablas y claims siguen ligados al alojamiento correcto. Los nombres nuevos no autorizan renombrar archivos fiscales originales, internas Eagle ni rutas publicadas en masa.
-
-**L√≠mite:** esta propuesta documental y la referencia de contexto no modifican ajustes globales de ChatGPT ni activan edici√≥n/publicaci√≥n/DB writes. Lo reutilizable es el m√©todo; im√°genes y datos privados permanecen en su scope. La adopci√≥n autom√°tica y la mejora comercial requieren pruebas y medidas; ning√∫n score t√©cnico equivale a aprobaci√≥n.
-
-
-TORO Studio is an internal subsystem/capability of the single TORO product.
-
-Canonical path:
-`Growth + Assets + Channels > TORO Studio`
-
-It does **not** create:
-- a second brain;
-- a separate visible brand;
-- a parallel project root;
-- a duplicate asset database;
-- an independent permission/evidence model.
-
-Its governed tools are:
-- TORO Images;
-- TORO Video;
-- TORO Design;
-- TORO Content;
-- TORO Media Library;
-- TORO Brand Guard.
-
-Internal specialist roles may include Brand Guardian, Creative Strategist, Prompt Architect, Image Producer, Video Producer, Copy Editor, QA Checker, Asset Librarian, Publisher and Performance Analyst. These are routing roles inside TORO, not independent agents with separate authority.
-
-Every material creative request must resolve at minimum:
-`brand -> goal -> audience -> channel -> format -> CTA -> source authority -> references/assets -> approver -> privacy/rights -> success metric when applicable`.
-
-Lifecycle:
-`IDEA -> BRIEF -> DRAFT -> REVIEW -> APPROVED -> PUBLISHED -> MEASURED -> ARCHIVED`.
-
-Core rules:
-- no material creative output without a business purpose;
-- one canonical brand/source-of-truth context per asset;
-- never invent prices, dates, availability, amenities, claims or policies;
-- distinguish real evidence, interpretation and synthetic content;
-- preserve asset/version/prompt/reference/date/approver provenance;
-- publishing, paid media and external commitments follow current TORO action ceilings;
-- real rooms/installations/services preserve identity and fidelity;
-- conceptual/generated illustrations are never presented as real commercial evidence;
-- originals and derivatives remain related;
-- learning remains tenant-scoped and evidence-backed.
-
-Image baseline:
-- 1:1, 4:5, 9:16, 16:9, A4 vertical/horizontal and thumbnail;
-- promotional, informational, corporate, operational, educational, comparative, ad, branding, event and menu/product/service assets.
-
-Video baseline:
-- 6s, 15s, 30s, 45s, 60s, 90s, slideshow and story sequence;
-- `HOOK -> MESSAGE -> PROOF/BENEFIT -> CTA`;
-- preserve script, storyboard/shot list, captions, thumbnail, channel/version, approver and metrics where published.
-
-TORO Studio reuses:
-- TORO Design DNA;
-- Identity/Scope Graph;
-- Governance/Approvals;
-- Knowledge;
-- Assets;
-- Data/provenance;
-- Channels;
-- current Drive/Dropbox media governance;
-- existing Growth/Website/Brand workstreams.
-
-Dreamcatcher Media/Brand remains a workstream inside Dreamcatcher Web/Marca/SEO/Reputaci√≥n. TORO Studio is the reusable capability layer that can serve Dreamcatcher and future authorized organizations.
-
-Canonical subordinate contracts:
-- `operations.knowledge_items/toro_studio_v1`
-- `docs/product/TORO_STUDIO_V1.md`
-
-Human specification:
-`TORO Studio ‚Äî Creative & Media System` in Notion.
-
-Current state:
-- design approved and registered;
-- image generation/editing exists through available creative tooling;
-- Design DNA exists;
-- media workstream exists;
-- end-to-end asset registry/approval/publishing/performance runtime is not yet globally implemented or verified.
-
-Next:
-1. reconcile current media assets/folders;
-2. close canonical brand kits and templates;
-3. define asset metadata/version contract;
-4. connect WhatsApp/Portal creative intake;
-5. add QA/approval states;
-6. pilot one recurring Dreamcatcher creative workflow;
-7. automate publication only after permission/evidence gates pass.
-
----
-
-## Specialist personas
-Internal routing, not separate systems:
-- TORO TERE
-- TORO RICO
-- TORO FIONA
-- TORO SKY
-- TORO SOBRESITO
-
----
-
-
-## Brand identity canon ‚Äî owner updated 2026-09-23
-
-- **Only visible brand/product:** TORO.
-- **Bull metaphor:** the bull represents the business as a large, powerful living organization.
-- **Brain + microchip metaphor:** one fused symbol for biological intelligence + AI/computation; it receives signals, processes, learns, coordinates and turns information into action.
-- **Visual identity:** the same owner-designated original blue bull, frontal, noble and powerful; gold horns and nose; deep navy background; integrated gold/blue brain-chip circuit emblem on the forehead.
-- **Do not use:** bullfighting/violence imagery, a generic replacement bull, or TORO OS as a parallel visible brand/product/brain.
-- **Current master:** `/TORO/Brand/01_Master/TORO_LOGO_MASTER_v1.png`, 1536√ó1536, SHA-256 `15a1b661a12cc020b905188e1638d001cc0a21d2a2f47beb4077843b478be747`.
-- **Legacy wordmark:** the former `TORO BRAIN` text logo is archived and must not appear on new public surfaces.
-- Brain remains an internal architectural metaphor, not part of the visible brand name.
-- Professional closeout still requires: vector master, small-size/favicons, monochrome/reverse variants, typography/license specification, clear-space/min-size rules, durable rights evidence, trademark/domain checks and governed permanent-file storage.
-
----
-
-# 3. Scope / portfolio architecture
-
-TORO does not use a flat "client" model.
-
-Entity concepts:
-- Principal
-- Portfolio
-- Organization
-- Business
-- Workspace
-- Property/location
-- Project/product
-- Client
-- Ally/partner
-- Supplier/provider
-- Asset
-- Human/agent worker
-
-Relationships:
-- owns
-- controls
-- operates
-- manages
-- works_for
-- member_of
-- client_of
-- partner_of
-- provider_to
-- participates_in
-- depends_on
-- responsible_for
-
-Isolation modes:
-- private
-- portfolio
-- shared_project
-- client_isolated
-- public_reference
-
-Default:
-- Personal = private
-- External client = client_isolated
-- Owned business = isolated until portfolio crossing is explicitly enabled
-
----
-
-# 4. Mauricio / Atrapasue√±os target model
-
-Conceptual target:
-
-```text
-TORO
-‚îî‚îÄ‚îÄ Mauricio [Principal]
-    ‚îú‚îÄ‚îÄ TORO Personal
-    ‚îú‚îÄ‚îÄ Portfolio
-    ‚îÇ   ‚îú‚îÄ‚îÄ Atrapasue√±os [Organization / controlled scope]
-    ‚îÇ   ‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher [Business / Workspace]
-    ‚îÇ   ‚îÇ   ‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher property
-    ‚îÇ   ‚îÇ   ‚îÇ   ‚îú‚îÄ‚îÄ Villa Toro
-    ‚îÇ   ‚îÇ   ‚îÇ   ‚îî‚îÄ‚îÄ Makaiza
-    ‚îÇ   ‚îÇ   ‚îî‚îÄ‚îÄ future businesses/projects
-    ‚îÇ   ‚îú‚îÄ‚îÄ AI for Dreamers [separate product/project]
-    ‚îÇ   ‚îú‚îÄ‚îÄ TORO Exchange / RicoSky [experiment]
-    ‚îÇ   ‚îî‚îÄ‚îÄ other owned projects
-    ‚îî‚îÄ‚îÄ external relationships
-        ‚îú‚îÄ‚îÄ client business
-        ‚îú‚îÄ‚îÄ ally
-        ‚îî‚îÄ‚îÄ partner project
-```
-
-TORO may cross-analyze owned/authorized scopes when useful.
-
-External clients and sensitive scopes remain isolated.
-
-**TARGET portfolio coverage ‚Äî 2026-09-29:** The authorized overview must make Dreamcatcher, Santa Toro, Vista Alegre, Cabuya, TORO Business and existing owned projects discoverable with their documented type, status and relationships. This visibility does not reactivate inactive businesses, establish legal ownership, flatten properties into tenants or grant cross-scope access. TORO Business means internal use of TORO by its own business under the same controls, not an infrastructure-hosting decision.
-
----
-
-# 5. User model
-
-Each human receives:
-
-- one TORO Identity;
-- one logical TORO User Vault;
-- Personal context;
-- work-private context;
-- organization memberships;
-- organization roles;
-- personal tools;
-- organization tools;
-- notification preferences;
-- memory controls.
-
-User Vault scopes:
-- personal
-- work_private
-- work_org
-- shared
-- system
-
-Personal data is not employer-visible by default.
-
-**TARGET simple access ‚Äî 2026-09-29:** A common entry URL uses individual identity and grants. Mauricio's owner view covers authorized controlled scopes; Carolina and Mauricio's mother receive only their explicitly configured scopes and capabilities. A family relationship or shared device does not confer access. See section 23 for role experiences and mobile/session acceptance.
-
----
-
-# 6. Communication architecture
-
-Owner: **TORO Comms**
-
-Canonical subordinate mailbox/channel contract:
-- `docs/product/TORO_COMMS_MAILBOX_BINDINGS_V1.md`
-- draft schema: `supabase/drafts/20260928_toro_comms_channel_bindings.sql` (NOT applied)
-
-Primary surfaces:
-- WhatsApp/OpenClaw
-- WeSpeak
-- TORO Portal
-- email / future channels
-
-WeSpeak capability status ‚Äî 2026-09-28:
-- guest messaging/runtime remains active;
-- vendor roadmap reports **Atender llamadas de Voz con IA = Completed**, but Dreamcatcher Voice activation/runtime is **UNVERIFIED**; canonical task `wespeak_voice_activation_20260928`;
-- connected email evidence proves guest payment requests, SINPE instructions and payment-proof handoffs, but does **not** prove a native WeSpeak Payments processor is enabled; canonical task `wespeak_payments_capability_audit_20260928`;
-- Voice and any future Payments capability must feed TORO Comms / Owner Attention / PayFlow and may not become a parallel inbox, payment ledger or authority.
-
-Rule:
-A conversation is not the work.
-
-Pipeline:
-
-`message -> identity/context -> privacy -> intent -> authority -> risk -> route -> canonical action -> evidence -> response -> follow-up`
-
-Possible outcomes:
-- answer;
-- task;
-- incident;
-- handoff;
-- decision;
-- approval;
-- guest reply;
-- learning signal;
-- escalation.
-
-Messages never create permanent memory directly.
-
-## Same-Brain communication and mailbox rule ‚Äî owner directive 2026-09-28
-
-WhatsApp/OpenClaw, email, Portal, WeSpeak and future channels are **surfaces over the same TORO Brain**. They may not become independent assistants, memories, task stores, approval systems or business truth layers.
-
-OpenClaw/WhatsApp must be able to reach the full set of **authorized business capabilities and sources** through TORO context, routing and permission contracts, including Finance, Operations, Revenue, Guests, People, Projects, Knowledge, Systems, Assets and approved external connectors. "Access to everything" means capability parity with TORO for the active authorized scope; it never means bypassing tenant isolation, personal/work separation, RLS, approval gates, secret handling or source-authority rules.
-
-Required runtime chain:
-
-`WhatsApp/OpenClaw -> verified channel identity -> TORO context resolver -> capability/action router -> authoritative connector/source -> evidence/readback -> TORO response/follow-up`
-
-Rules:
-- OpenClaw must not store a parallel business personality, memory or backlog;
-- the same Human Layer, organization context, roles, action ceilings and canonical tasks/projects apply across WhatsApp and Portal;
-- personal/family/private scopes remain excluded unless the authenticated identity is explicitly authorized for that scope;
-- material writes, money movement, tax/legal submissions, reservation/rate changes, permission changes and destructive actions remain approval-gated according to TORO Governance;
-- secrets/tokens/passwords are never exposed to the WhatsApp model or persisted in messages; connectors broker access server-side;
-- reconnect/replay must be idempotent and must not duplicate tasks, notifications or external actions.
-
-### Dreamcatcher business mailbox coverage
-
-TORO must inventory and bind every active Atrapasue√±os/Dreamcatcher business address before claiming complete email coverage. Current owner-confirmed addresses to reconcile:
-- `info@atrapasuenos.net`
-- `proveedores@atrapasuenos.net`
-- `accounting@atrapasuenos.net`
-- `admin@dreamcatcherhotel.com`
-- `info@dreamcatcherhotel.com`
-- `accounting@dreamcatcherhotel.com`
-
-For each address, Google Workspace Admin must identify whether it is a user mailbox, alias, group, delegated/shared mailbox or routed address, plus owner/recovery/2SV/dependencies. Preserve legacy identities until dependency and recovery audits are complete.
-
-Gmail remains email source authority. Supabase stores governed metadata, normalized classifications, provenance, follow-ups and selected extracted facts; it must not become an indiscriminate raw-mail copy. Production ingestion should prefer official Gmail APIs/push history once authorized. Browser automation is an exception/fallback for portals or unsupported surfaces, not the primary mailbox transport.
-
-Current observed coverage on 2026-09-28:
-- ChatGPT Gmail connector: `admin@dreamcatcherhotel.com` only;
-- governed Gmail metadata index: 6,128 rows, all from the admin Dreamcatcher mailbox;
-- Google Drive connector currently represents Mauricio's personal Google account, not the hotel Workspace tenant;
-- therefore complete Workspace/email coverage is **NOT YET VERIFIED**.
-
----
-
-# 7. Tool architecture
-
-Owner: **TORO Tools**
-
-Separate:
-- Discoverable
-- Available
-- Connected
-- Authorized
-- Operational
-
-Ownership:
-- Personal tool
-- Organization tool
-- Delegated/hybrid
-
-Generic capability layer:
-- read/search
-- draft
-- create/update
-- execute
-- approve
-- monitor
-- notify
-- export
-- admin
-
-Workflow logic should call generic capabilities rather than hard-code vendors where practical.
-
-### ChatGPT App + MCP interface ‚Äî approved 2026-09-30
-
-**Canonical subordinate contract:** `docs/product/TORO_CHATGPT_MCP_CONTRACT_V1.md`  
-
-
-TORO is platform-first and interface-agnostic. ChatGPT is one official interface to TORO alongside Portal, mobile, WhatsApp/OpenClaw and future surfaces; it is not a second Brain, database, permission system or execution ledger.
-
-Canonical path:
-
-**ChatGPT App / Apps SDK ‚Üí TORO MCP ‚Üí TORO Brain / Control Plane ‚Üí policy + identity + scope ‚Üí authoritative source/tool or delegated worker ‚Üí verification/readback ‚Üí receipt ‚Üí TORO response**
-
-Rules:
-- critical business logic must not live exclusively inside ChatGPT;
-- Supabase/canonical TORO state remains the durable source for governed memory, work state, permissions, provenance and receipts;
-- OpenClaw and other workers remain governed execution channels and do not become alternate authorities;
-- ChatGPT capabilities are exposed only when current identity, scope, source freshness and runtime capability are verified;
-- unavailable or read-only capabilities must be represented honestly and fail closed;
-- MCP/tool calls must be idempotent where replay could duplicate work;
-- secrets remain server-side and are never exposed to the model or UI;
-- every material action follows **Intent ‚Üí Policy ‚Üí Approval ‚Üí Execution ‚Üí Verification ‚Üí Receipt ‚Üí Memory**.
-
-Initial MCP surface to design and verify:
-1. `get_brain_status`
-2. `search_toro`
-3. `get_priorities`
-4. `get_business_status`
-5. `get_pending_decisions`
-6. `get_execution_receipts`
-
-Delivery sequence:
-- **P0:** define the TORO MCP contract against the existing Brain/Control Plane; no duplicate data layer;
-- **P1:** build a read-first TORO ChatGPT App and visual components for Brain, priorities, decisions and receipts;
-- **P2:** prove authenticated scope, freshness labels, read parity and failure states;
-- **P3:** add governed actions only where current ChatGPT/MCP/runtime capabilities and TORO policy gates are verified;
-- **P4:** consider broader plugin/directory distribution only after internal reliability, isolation, recovery and product-readiness gates pass.
-
-Current product-plan or provider limitations are runtime facts to verify at implementation time, not assumptions embedded into the architecture.
-
----
-
-# 8. System auditing
-
-Owner: **TORO Systems Auditor**
-
-TORO must proactively verify important systems.
-
-For each system:
-- expected configuration;
-- observed live configuration;
-- version;
-- drift;
-- permissions;
-- health;
-- data freshness;
-- security;
-- backup;
-- restore;
-- owner;
-- next audit;
-- useful unused capabilities.
-
-First reference profile: OpenClaw.
-
-Future:
-- Supabase
-- GitHub
-- Vercel
-- Kross
-- Alegra
-- WeSpeak
-- Dropbox
-- Airtable
-- network/device infrastructure
-
-Maturity:
-1. Observe
-2. Explain
-3. Recommend
-4. Prepare change
-5. Execute with approval
-6. Safe autoremediate
-
----
-
-# 9. OpenClaw current state
-
-## Two-account diagnostic improvement ‚Äî 7 November 2026
-
-**Scope/owners:** TORO Systems + Comms, with Identity/Governance for private/work
-boundaries; existing #170/#209 repair and continuity lane. This is an integration
-reliability change in the existing host probe, not a new Brain, service, scheduler
-or message writer. Generalizable controls use caller-provided account aliases;
-private phone numbers and authentication material stay outside this repository.
-
-**CURRENT:** owner-supplied screenshots in the 7 November connection session show
-the personal line replied and the hotel line replied afterward. This is dated
-point-in-time channel evidence, not independent live host access or proof of
-history, recovery, role isolation, canonical identity or current PMS data. The
-previous audit baseline below remains dated evidence rather than a claim about
-all subsequent host changes. The local environment cannot administer the host.
-
-**TARGET / implemented in candidate code:** twenty read-only diagnostic controls
-in `scripts/openclaw-host-diagnostics.mjs`, mapped in the existing runtime audit
-runbook. They cover explicit CLI/Node launch, two expected accounts, disabled
-aliases, freshness, conservative live evidence, private security counts and proof
-coverage. The 49-case host suite passed locally; this does not install or activate
-the script on the Gateway. Canonical status is not promoted by this code change.
-
-**NEXT:** exact-SHA review/CI and existing merge gates; execute the reviewed probe
-under the existing service identity on the authorized host, preserving both
-accounts. Then collect negative access, reconnect/replay, backup/restore and
-canonical source receipts through the existing contracts. Do not change broad
-tool permissions merely to remove static audit warnings.
-
-**FUTURE:** measure availability, recovery time and owner effort after runtime
-adoption; reuse the controls through existing coordinators only. No second
-consumer, capture/backfill, paid Kross API, financial writer or new rollout is
-activated here. Revert the diagnostic patch for code rollback; no host config or
-credential was changed by this work.
-
-## CURRENT
-
-Canonical registry:
-- runtime dependency exists;
-- state = `needs_audit / configured_unverified`;
-- direct live config/session/log/health access unavailable;
-- WeSpeak remains separately confirmed active.
-
-Public baseline reviewed:
-- latest published release as of 2026-09-22: 2026.9.5;
-- extended-stable line: 2026.7.35;
-- one Gateway = one trust boundary;
-- multi-user DMs require isolation;
-- group allowlists/mention gates;
-- least-privilege tool profile;
-- security audit + deep audit;
-- backups/recovery;
-- private Tailscale access preferred for remote laptop gateway.
-
-## SAME-BRAIN execution update ‚Äî 2026-09-28
-
-Canonical Same-Brain code path is already part of TORO:
-- PR #142 is merged;
-- shared internal-work intake exists for canonical task/project work;
-- WhatsApp remains TORO's primary conversational surface and Codex/Builder is a delegated worker, not a second assistant.
-
-Still unverified live:
-- actual OpenClaw Gateway host/worktree consumption;
-- authenticated runtime-to-TORO connection;
-- verified WhatsApp channel identity pairing;
-- source/capability parity across authorized business connectors;
-- continuity after reconnect/replay;
-- duplicate suppression/readback across real WhatsApp actions.
-
-P0 acceptance requires one real controlled run proving:
-1. authenticated identity -> correct TORO organization/workspace;
-2. read access to authorized cross-domain business context without leaking forbidden scopes;
-3. task creation;
-4. maintenance action intake;
-5. project follow-up;
-6. delegated Builder/Codex work;
-7. reconnect/replay continuity;
-8. notification/follow-up without duplicates;
-9. source/evidence readback;
-10. fail-closed behavior for unauthorized data/actions.
-
-## UNKNOWN until host audit
-
-- installed version;
-- Node/Bun runtime;
-- gateway bind;
-- Tailscale mode;
-- auth mode;
-- dmScope;
-- groupScope;
-- WhatsApp allowlists;
-- group policy;
-- group map;
-- bindings;
-- tools;
-- exec/elevated;
-- agent ownership;
-- backups;
-- deep security findings;
-- health/recovery.
-
-## TARGET profiles
-
-- `openclaw_personal_owner`
-- `openclaw_company_shared`
-- `openclaw_guest_channel`
-
-Do not use one unrestricted personal Gateway as a shared employee/guest trust boundary.
-
-## BLOCKER
-
-Need authorized terminal/read access to the Gateway host to run the audit runbook.
-
----
-
-# 10. DreamTeam / TORO People
-
-DreamTeam is a legacy standalone implementation.
-
-Canonical destination:
-**TORO People**
-
-Reuse:
-- employee model;
-- attendance;
-- schedules;
-- leave;
-- payroll;
-- loans/advances;
-- self-service;
-- RLS;
-- audit/security.
-
-Do not duplicate:
-- Auth
-- agents
-- messages
-- notifications
-- approvals
-- identity
-
-### Dreamcatcher People ‚Äî owner direction, 2026-10-01
-
-Scope: Dreamcatcher Hotel; owner Mauricio; TORO People owns personnel/attendance, TORO Finance reconciles payroll evidence, TORO Assets preserves originals, TORO Identity/Governance enforce access. Priority is completing the current payroll; broader changes follow its review. These directions extend the existing implementation and shared database, not a second HR app or identity system.
-
-**CURRENT ‚Äî urgent manual attendance correction:** DreamTeam now has a create-day path for active employees with no clock punches. ADMIN/RRHH must supply a date, one or two complete chronological schedules and a reason; the transaction preserves the raw clock records, records author/reason and leaves attendance pending review. Duplicate employee/date creates and closed payroll periods are rejected. Migration `20261001231135_create_attendance_day_manual` applied to the canonical Supabase project; Vercel production `dpl_EZ1wLBsq7z6tf97wCQ7LFtBQCLcK`, commit `b9cf10606f410a0e6a6cdb5162dac1b735230a27`, READY and assigned to the existing DreamTeam domain. Synthetic SQL/UI tests 14/14 and production build passed. HTTP site read passed; authenticated production save remains unverified because the browser session requires sign-in. No actual hours, payroll approval or payment were entered by the agent. Rollback: prior production `dpl_bd1Vyo1jTXZHHv8pNRDs55Ef2LVj`; drop only the new RPC if needed, retaining recorded days/audit.
-
-**NEXT ‚Äî close the current payroll:** authorized HR enters confirmed missing hours, reviews incomplete/identity incidents and reconciles the draft. A manually created day may update a draft; pending attendance review is not proof of payroll approval or payment. No fabricated exits, bulk historical overwrite or closed-period reopening by inference.
-
-**TARGET ‚Äî job-profile permissions:** derive ordinary operational permissions from canonical job profiles (housekeeping, maintenance, reception and administration), with verified employment/organization membership. Reuse existing roles/capabilities and test self-only/team/HR scopes. Do not replace this with arbitrary per-user grants. Reassignment and termination must update/revoke the corresponding capabilities.
-
-**TARGET ‚Äî restricted assistant:** only individually verified Ana Carolina and Mauricio may use the proposed DreamTeam/TORO assistant. This owner direction supersedes the earlier ADMIN/GERENCIA/partner-wide proposal. A job profile alone must not grant assistant access. Reuse TORO's engine and central permissions; first pilot is consultation/preparation after payroll closure. No assistant activation, provider cost or permission expansion is asserted here.
-
-**TARGET ‚Äî one personnel history and dossier:** reuse canonical employee IDs and existing document records. Preserve CCSS, INS, payroll versions, contracts and identity documents in restricted existing Dropbox HR structures; link stable file IDs/revisions to the employee record and collect only required missing documents through the existing form. Employee CCSS sections/folders are logical parts of the existing dossier, not duplicate originals or a public archive. Preserve DreamTeam's preferred visual language for internal hotel tools while reusing TORO components.
-
-**NEXT ‚Äî historical reconciliation intake:** first metadata search found `/ATRAPASUE√ëOS-CAROLINA/CCSS/Planilla CCSS Agosto 2026.pdf` (file `id:RAP-nKYFY_UAAAAAAALx4w`, revision `65bc9ad39dec5262f86ce`), CCSS billing/payment files and multiple July 1‚Äì15 DreamTeam payroll versions in the existing accounting archive. These are source candidates only; contents, employee identity, authoritative version and bank settlement are not yet reconciled. Preserve originals and source IDs. Build one matrix per employee/period distinguishing internally prepared payroll, CCSS-declared amount, INS coverage and bank-confirmed payment; payroll-transfer spreadsheets alone do not prove payment. Compare disputed versions before importing verified history into the existing model; never infer clock punches from payroll/bank amounts or auto-link people by name. No historical data has been imported in this increment.
-
-**FUTURE ‚Äî CCSS retrieval:** verify authorized access to the Caja portal and acquire missing employer/employee documents with user-mediated authentication. Portal access is presently unknown; no credentials are copied into TORO or Dropbox. Regulatory filing and money movement retain their own explicit authority gates.
-
-Current identity evidence (historical snapshot; not refreshed by the 2026-10-01 increment):
-- 12 active employees;
-- 1 terminated;
-- 4 employee records linked to active user/role;
-- 8 active employee records require identity classification/linking;
-- 1 terminated record has no access;
-- 12 Airtable employment-profile candidates;
-- 8/12 historical status partial;
-- Supabase employment_profiles currently empty.
-
-No auto-linking by name.
-
-Current access control, verified 2026-09-25 CR:
-- Supabase migration `20260926034539_harden_dreamteam_employee_views_20260925` applied with Mauricio's authorization to `public.employee_reward_balances` and `public.employee_experience_kpis`;
-- both views now use `security_invoker=true`; `anon` and `authenticated` have no SELECT, `service_role` retains SELECT;
-- readback and security advisor confirmed the two prior `security_definer_view` errors cleared;
-- 2026-09-28 Admin Mode hardening applied migration `20260928224926_narrow_employee_operational_dashboard_access_20260928`: `EMPLEADO` was removed from `public.operational_schedule_workspace` and `public.operational_time_clock_dashboard`, because baseline testing proved an employee identity could read 12 employee rows and 103 attendance-day rows through those broad SECURITY DEFINER RPCs;
-- post-migration regression: EMPLEADO receives `not authorized` from both broad RPCs; existing `attendance_self_read` / `shift_self_read` RLS still exposes only the employee's own records; ADMIN remains allowed; evidence and rollback are in `docs/security/TORO_SUPABASE_SECURITY_RESIDUAL_2026-09-28.md` and `supabase/drafts/20260928_narrow_employee_operational_dashboard_access.sql`;
-- leaked-password protection remains disabled only because the available authenticated browser-automation channel could not start due tooling wallet balance; authorization exists, but no Auth setting change has been made yet;
-- HTTP Data API probe and DreamTeam user-flow smoke test remain unverified; investigate regressions without reopening broad client grants;
-- owner released the employee HOLD on 2026-09-25 CR for phased TORO People preparation and tests. This is authorization to proceed, not evidence of employee activation. Evidence and recovery: `docs/security/DREAMTEAM_EMPLOYEE_VIEW_ACCESS_REVIEW_20260925.md`.
-
-Owner decision and rollout gate (2026-09-25 CR):
-- canonical decision: `operations.executive_decisions/toro_employee_rollout_owner_release_20260925`;
-- current: 12 active employees, 4 with linked user/role, 8 requiring independent identity verification, 1 terminated without access; onboarding progress has 0 rows;
-- next: verify individual identities without name matching, test employee and restricted roles, personal/work isolation, revocation, HTTP Data API and DreamTeam self-service; capture evidence and a reversible pilot outcome;
-- WhatsApp tests with real staff require direct OpenClaw Gateway/host audit and channel identity binding; live runtime acceptance remains 0/12 verified;
-- DreamTeam #39 core and #45 verified channel identity/atomic consumption merged; #41/#42 closed as superseded. Supabase migrations `20260926053026_toro_people_channel_identity_foundation_20260925` and `20260926053030_toro_people_atomic_enrollment_consume_20260925` applied and read back: two empty RLS tables, no anon/authenticated SELECT, service_role-only invoker RPC; the consumed-token sender regression was covered by synthetic SQL tests and CI. This is backend readiness only: no issued enrollment, verified staff sender, hosted employee flow or live WhatsApp E2E. Evidence: `docs/evidence/TORO_PEOPLE_CHANNEL_IDENTITY_FOUNDATION_20260925.md`;
-- roll out one verified employee at a time after these gates pass; no broad provisioning, name-based links or claims of activation.
-
-### CURRENT ‚Äî identidad √∫nica, censo integral e invitaci√≥n segura ‚Äî 20/10/2026
-
-**Decisiones del propietario y nombres can√≥nicos**
-
-- `Mauricio` y `Mauricio Fernandez` representan a la misma persona. Los dos registros Auth actuales son principales t√©cnicos distintos y no se fusionan por coincidencia de nombre, tel√©fono o correo; primero se reconcilian sesiones, referencias laborales, membres√≠as, roles, recuperaci√≥n, MFA y auditor√≠a.
-- La cuenta institucional de propietario cuyo identificador actual es `admin@dreamcatcherhotel.com` se presenta como **Toro** para distinguirla del segundo principal t√©cnico. Ese r√≥tulo no crea otra persona, otro agente ni un rol nuevo.
-- **TORO y TORO OS son el mismo proyecto y producto.** `TORO` sigue siendo el nombre visible can√≥nico; `TORO OS` se conserva solo como alias t√©cnico legado donde haga falta compatibilidad. No existe un segundo sistema, Plan General, identidad o base llamado TORO OS.
-- Recomendaci√≥n TARGET, todav√≠a no ejecutada: consolidar a la persona Mauricio bajo un solo principal Auth, preferentemente el principal institucional Toro si supera login, recuperaci√≥n/MFA y conservaci√≥n de auditor√≠a; enlazar all√≠ la relaci√≥n laboral de Gerencia y retirar el principal duplicado solo despu√©s de un ensayo reversible y un readback completo. No borrar ni revocar ninguna de las dos cuentas por inferencia.
-
-**Readback vivo de solo lectura ‚Äî Supabase can√≥nico `abtyrbqlqbsastmridzp`, corte 20/10/2026 Costa Rica**
-
-- plantilla: 13 empleados no eliminados, 12 activos y 1 terminado;
-- cuentas: 6 principales Auth habilitados; 5 empleados activos enlazados a Auth y 7 empleados activos todav√≠a sin Auth;
-- cadena de acceso: solo 4 empleados activos tienen empleado + Auth + membres√≠a + rol completos; en Dreamcatcher existen 5 membres√≠as activas, 0 inactivas, 19 asignaciones activas de rol y 0 inactivas/revocadas; la membres√≠a Personal separada de Toro no se cuenta como personal del hotel;
-- Aseo: 5 empleadas activas y ninguna con Auth, membres√≠a o rol; el censo de usuarios nunca debe confundirse con el censo de personal;
-- Mantenimiento: un empleado conserva Auth y rol `EMPLEADO` sin membres√≠a; otro empleado activo no tiene Auth, membres√≠a ni rol;
-- Recepci√≥n: dos empleadas activas tienen cadena de acceso completa, una activa sigue sin cuenta y la empleada terminada no tiene cuenta;
-- excepci√≥n de baja: el registro terminado conserva un campo t√©cnico `status=active`; debe reconciliarse antes de usarlo en elegibilidad, m√©tricas o invitaciones;
-- cuatro cuentas existentes usan `@dreamteam.internal`; est√°n confirmadas t√©cnicamente, pero ese dominio es un alias legado no entregable y nunca constituye correo real, contacto verificado ni prueba de aceptaci√≥n;
-- 0 filas de inscripci√≥n de canal y 0 filas de progreso de onboarding; los 13 empleados tienen `property_id` vac√≠o y los 5 departamentos carecen de `manager_employee_id`;
-- los conteos anteriores de 5 usuarios de aplicaci√≥n, 9 roles, 4 empleados vinculados y 8 activos sin v√≠nculo quedan como snapshots hist√≥ricos, no como censo actual.
-
-Los nombres, datos de contacto y estado individual contin√∫an en Supabase bajo sus controles; el Plan conserva decisiones, agregados y excepciones, no una segunda lista manual que pueda quedar obsoleta.
-
-**Problema de acceso confirmado**
-
-La interfaz DreamTeam vigente crea usuario + clave temporal y deriva `usuario@dreamteam.internal`; ese camino no sirve para invitaci√≥n, recuperaci√≥n normal ni verificaci√≥n de un buz√≥n. Existe una ruta legado basada en `inviteUserByEmail`, pero hoy activa `app_users`/rol antes de aceptaci√≥n, no exige la membres√≠a can√≥nica, permite v√≠nculo de empleado insuficientemente protegido, carece de ledger durable/idempotencia/rollback completo y no tiene interfaz ni pruebas focales demostradas. Ninguno de los dos caminos se considera listo para una campa√±a real.
-
-**TARGET ‚Äî un solo flujo de alta gobernado por TORO Identity + TORO People**
-
-1. El candidato nace √∫nicamente de un empleado activo y no eliminado, con organizaci√≥n, puesto, alcance y estado laboral reconciliados. Tener reloj, tel√©fono, nombre o expediente no crea cuenta.
-2. Se verifica la persona y que no exista otro principal Auth suyo. Se clasifica como `linked`, `candidate`, `contact_pending`, `duplicate_review`, `no_account_required`, `terminated` o `blocked`.
-3. Se elige una entrega individual verificable:
-   - enlace de un solo uso al correo personal/laboral real previamente confirmado; o
-   - entrega presencial supervisada de QR/c√≥digo individual cuando todav√≠a no exista correo, para que la persona registre y verifique su propio canal.
-   Un tel√©fono visto en otro sistema o pertenecer a un chat no prueba identidad. WhatsApp solo puede entregar despu√©s de un binding individual verificado.
-4. La invitaci√≥n es privada, expira, se consume una vez y no habilita acceso por s√≠ sola. No hay registro p√∫blico, contrase√±a compartida ni clave creada/enviada por el administrador.
-5. La persona acepta, verifica el canal y define su propia contrase√±a en Supabase Auth. Recuperaci√≥n, MFA y pol√≠tica de sesi√≥n se validan antes de privilegios sensibles.
-6. Una operaci√≥n server-side idempotente valida que el empleado siga elegible y activa at√≥micamente `organization_memberships`, el rol m√≠nimo y el v√≠nculo empleado ‚Üî usuario. El rol inicial normal es `EMPLEADO`; las capacidades de Aseo, Recepci√≥n, Mantenimiento o Administraci√≥n derivan del puesto y alcance comprobados. Una invitaci√≥n nunca concede ADMIN, RRHH, GERENCIA, auditor√≠a, acceso personal ni conectores externos por analog√≠a.
-7. Se registra un √∫nico lifecycle auditable: `candidate -> identity_reviewed -> delivery_ready -> issued -> claimed -> contact_verified -> membership_active -> role_active -> onboarding_started -> first_login_verified`, con salidas `expired`, `revoked` y `failed`. Reintentos no crean otra cuenta ni reenv√≠an una invitaci√≥n ambigua.
-8. Baja, cambio de puesto o cambio de organizaci√≥n revocan/suspenden membres√≠a, roles y sesiones aplicables sin borrar la identidad personal ni el historial de auditor√≠a.
-
-No se enviaron invitaciones en esta unidad. Antes de cualquier env√≠o real se exige destinatario exacto, canal verificado, rol/organizaci√≥n aprobados, estado previo guardado y criterio de reversi√≥n.
-
-**Contrato de integraci√≥n y autoridad**
-
-| Dato o acci√≥n | Autoridad | Regla |
-|---|---|---|
-| Identidad y credencial | Supabase Auth / TORO Identity | Un principal por persona; nunca guardar ni repartir contrase√±as. |
-| Relaci√≥n laboral y puesto | `public.employees` + perfiles privados autorizados | Fuente laboral; no concede acceso por s√≠ sola. |
-| Relaci√≥n con la organizaci√≥n | `identity.organization_memberships` | Debe estar activa y concordar con empleado/organizaci√≥n antes de autorizar. |
-| Roles y capacidades | `public.user_roles` + cat√°logo de puesto aprobado | Menor privilegio; navegaci√≥n no sustituye RLS/RPC/policy. |
-| Estado de invitaci√≥n y recibos | TORO Identity/Governance, ledger durable √∫nico | Estados idempotentes, actor, fechas, caducidad, resultado y rollback; no reutilizar progreso de capacitaci√≥n. |
-| Contacto privado | Perfil privado verificado en Supabase | Airtable puede ayudar a revisar, pero no es autoridad Auth ni prueba de entrega. |
-| Email/WhatsApp/TORO Comms | Transporte | Entrega y receipt solamente; no crean identidad, membres√≠a ni rol. |
-| DreamTeam legado | Implementaci√≥n transitoria de People | Se conserva hasta paridad; no mantiene un universo Auth paralelo a largo plazo. |
-| Dropbox | Originales laborales con ACL/retenci√≥n | Evidencia/documentos; no contrase√±as, tokens ni lista de acceso maestra. |
-| GitHub y este Plan | Contrato, c√≥digo, decisiones y evidencia versionada | No duplicar el roster vivo ni datos privados. |
-| Notion/Airtable/Sheets | Superficie narrativa o revisi√≥n transitoria | No segunda fuente de verdad ni escritor de permisos. |
-
-**NEXT √∫nico ‚Äî reconciliaci√≥n antes del primer piloto**
-
-Completar una matriz privada y actual de los 12 empleados activos, resolver el principal can√≥nico Toro/Mauricio, corregir la cadena incompleta de Mantenimiento y la baja contradictoria, confirmar alcance/puesto y obtener un canal real verificado o una entrega presencial autorizada. Criterio de terminado: cada persona queda clasificada sin duplicados, la cuenta can√≥nica de Mauricio conserva acceso y auditor√≠a, el candidato piloto de Aseo tiene identidad/entrega/rol m√≠nimo/rollback aprobados y todav√≠a no se ha enviado nada. Solo entonces se implementa y prueba el flujo, y una aprobaci√≥n de env√≠o separada autoriza una primera invitaci√≥n real individual.
-
----
-
-# 11. Recognition & Points
-
-Feature of **TORO People**, not a new subsystem.
-
-Points only from evidenced events:
-- approved extra work;
-- validated improvement;
-- service recovery;
-- training completion;
-- special coverage;
-- process improvement.
-
-No points from:
-- chat volume;
-- online time;
-- surveillance;
-- private activity.
-
-Every event:
-- rule;
-- reason;
-- evidence;
-- points;
-- proposer;
-- approver where required;
-- reversal path.
-
----
-
-## Access & credential strategy ‚Äî owner decision 2026-09-28
-
-Current owner rule:
-- **access first, password rotation later**;
-- preserve working credentials while TORO maps ownership, recovery paths, MFA, sessions, aliases, integrations and dependent systems;
-- do **not** rotate passwords, enable new password-enforcement controls, change MFA, or rewrite recovery settings merely for hardening while access consolidation is still incomplete;
-- exception: if there is evidence of credential compromise, unauthorized access or an urgent provider requirement, security containment overrides this deferment;
-- TORO must never expose, copy into business data, or request secrets unnecessarily;
-- personal Google scope and hotel/company Google scope remain separate even when both are connected;
-- password rotation and Auth hardening become a later controlled wave with per-system rollback, dependency checks and post-change login/recovery verification.
-
-Current verified access snapshot:
-- Gmail connector: `admin@dreamcatcherhotel.com` / Dreamcatcher Hotel & Villas;
-- Google Drive: hotel identity `admin@dreamcatcherhotel.com` and separate personal identity `mauricio.fernandez.toro@gmail.com`;
-- Google Workspace: `admin@dreamcatcherhotel.com` is now **verified Super Admin / Administrador avanzado** from owner-provided Admin Console screenshots; assignment status `Asignado`, scope `Todas las unidades organizativas`; Directory currently shows 1 active user; no role/password/MFA/recovery change was made;
-- Workspace domain/storage: `dreamcatcherhotel.com` is verified as the primary domain with Gmail active; the tenant currently exposes 1 active Workspace user/seat. Other business addresses observed on the owner's device are not evidence of licensed Workspace users and must be classified as alias/group/routing/legacy/external identities before any new paid seat is created;
-- Workspace cost/storage guard: the first verified invoice is Business Starter quantity 1 and USD 0.71 only for 28‚Äì31 Aug 2026, so it is a prorated onboarding invoice, not a normal monthly rate. Admin storage currently shows 10.91 GB used, concentrated in Google Photos (10.11 GB), with Gmail 827 MB and Drive 1 MB;
-- Shared Drive target is feasible on the current Business Starter edition; no edition upgrade is required merely to create/use Shared Drives. Some advanced shared-drive sharing/data-protection controls remain edition-limited, so TORO must not recommend an upgrade until a concrete control requirement justifies it;
-- Historical mailbox plans that proposed `recepcion@dreamcatcherhotel.com` and `contabilidad@dreamcatcherhotel.com` are design references, not current live inventory. Do not create those users/inboxes by inheritance; final mailbox architecture must reuse the owner-confirmed addresses where possible and minimize paid seats;
-- Notion: Hotel Atrapasue√±os workspace connected through `atrapasuenoshotel@gmail.com`;
-- Airtable: TORO bases writable through the connected workspace;
-- Supabase: canonical project `abtyrbqlqbsastmridzp` active/healthy;
-- GitHub: canonical `Dramcatcherst/Toro-OS` write/PR/merge path verified;
-- Vercel: Dreamcatcher team connected;
-- Dropbox: connected hotel archive scope under `info@atrapasuenos.net`;
-- Alegra: connected; account-link duplication is treated as a connector/session fact, not evidence of two separate accounting books.
-- Workspace address evidence: `info@dreamcatcherhotel.com` is actively receiving and sending through the connected hotel mailbox while Directory shows one licensed user; classify as ACTIVE but keep alias/group/routing type **UNKNOWN** until Admin Console readback;
-- Google marketing (native/connector readback 2026-10-14): Search Console `sc-domain:dreamcatcherhotel.com` is connected with `siteOwner`; GA4 property `281289093` / `G-3WJNRENSB4` lists `admin@dreamcatcherhotel.com` and Mauricio as Administrators and is connected in Ad Superpowers. Google Ads `891-691-9742` still lists only Mauricio; the authorized institutional invitation remains blocked by provider identity verification and allowed-domain review. GTM container `GTM-NLQG87WZ` published version `2` (`1792012268330`) with reviewed tags `4`/`7` and triggers `3`/`6`; live readback matches their fingerprints and the compiler returned no error. The final full audit could not be repeated because Ad Superpowers reached its trial limit `50/50`; the last prepublish audit passed 10/10 with no findings. Website PR `Dramcatcherst/dreamcatcher-website-vnext#98` merged exact head `4da8b8ab1a48bcfc0a97af2df57f866fdbd3a032` as merge commit `062a94b317c1459b4818b138275f4699077efe0f`. Vercel Production stores the two public gates and deployment `dpl_HJUaBd7Dtd2DBqyPGsvC2ezd9ncm` is READY on that exact head with `dreamcatcherhotel.com` and `www` aliases. Both return HTTP 200/TLS valid; production proved zero Google scripts before consent, one GTM load after consent, and GA4 Realtime received `booking_search_submit=1` and `booking_engine_open=1` without creating a booking or purchase. Hotel Center ownership/connectivity remains unverified; these observations do not certify legal account ownership or a TORO runtime adapter;
-- Google Business Profile: a 2026-09-29 official profile-change notice to `admin@dreamcatcherhotel.com` exposes direct edit/review links for the existing **Hotel Atrapasue√±os (Dreamcatcher Hotel)** profile and stable identifiers `n=15574697306521402676` / `fid=14037588842044019364`. This is management-linked access evidence, not yet proof of Primary Owner. Google-managed edits (service areas, 24/7 hours, WhatsApp +506 8844-4004) remain pending live operational/role review before acceptance or reversal;
-- Kross: ticket `KB-305650/26` remains provider-gated; Kross closed it after contacting the local provider; the detailed 2026-09-24 follow-up exists as **DRAFT_NOT_SENT**, so no API provisioning or follow-up send is claimed;
-- Meta: Dreamcatcher portfolio evidence exists with Business ID `550218633755147`, WABA ID `4486822484975685`, Instagram `dreamcatcherhotel`, and approved ad activity; the historical invitation to `atrapasuenoshotel@gmail.com` expired 2026-09-12, so current admin access still requires live verification;
-- BAC corporate access: bank correspondence confirms the Atrapa Sue√±os corporate accounts and Mauricio's corporate user exist; products are not visible because permission assignment requires a current Master user; target remains read-only consultation/download, not banking authority changes;
-- LAFISE/TRIBU: historical corporate/tax access evidence exists, but current authenticated access remains unverified; TORO does not preserve or reuse historical passwords, validation codes, QR tokens or other authentication secrets.
-
-Root-access priority:
-1. Google Workspace Admin inventory and recovery ownership;
-2. Google Business Profile / Google hotel presence;
-3. Kross authorized read access;
-4. banking + TRIBU/Hacienda access without mixing personal and company scopes;
-5. Meta Business / WhatsApp / Instagram/Facebook ownership;
-6. only then coordinated password rotation, recovery cleanup and stronger Auth controls.
-
-### Acceso duradero de mercadeo ‚Äî solicitud de Mauricio 2026-10-14
-
-**Scope/owners:** Dreamcatcher / `revenue_booking_stack`; TORO Channels + SKY for marketing, TORO Systems + SOBRESITO for connector/identity governance. Reuse `google_ads_results_to_toro_os_v2`, `finish_google_ads_new_account_setup`, `fix_google_ads_booking_conversion_tracking` and the existing Google control-plane lane. This section updates the sole General Plan; it does not create a second account inventory, credential vault, app, worker or scheduler.
-
-**Direcci√≥n solicitada y autoridad de esta unidad:** reduce repeated manual login by giving `admin@dreamcatcherhotel.com` access to every verified hotel advertising/measurement asset and using the existing Ad Superpowers OAuth/API connection for routine work. Mauricio explicitly directs: reuse and modify the hotel asset from his current administrator where it exists; create it under the institutional identity only when provider-native readback proves it does not exist. Keep Mauricio as recovery administrator until institutional access is accepted and tested. This is a documented TARGET and bounded implementation authority, not proof of persistent access, automatic renewal or autonomous TORO execution. Chrome remains the surface for setup, recovery and provider-required identity checks.
-
-**CURRENT ‚Äî evidence from this unit:**
-
-| Servicio | Evidencia / estado | Pr√≥ximo gate concreto |
-| --- | --- | --- |
-| Ad Superpowers | Workspace `Dreamcatcher Hotel & Villas` / `c653fbbf-ccf1-4e30-9370-e735a4fc8cae` remains the selected adapter. The latest verified provider inventory is preserved, but the connector now rejects every new read at trial quota `50/50` until 2026-11-01; no equivalent retries were repeated. Workspace permission to write does not authorize every action. | After quota reset, run one bounded readback of the selected hotel object IDs and institutional identities; do not rebuild the inventory or reconnect healthy grants merely to bypass the quota. |
-| GA4 | Property `281289093` reused; `admin@dreamcatcherhotel.com` and Mauricio remain Administrators. Realtime remains active and previously received `booking_search_submit` and `booking_engine_open`. Native links show Search Console connected, but Google Ads `0` and Business Profile `0`; stream URL still records legacy `http://www.dreamcatcherhotel.com`. | Wait for event processing, then separately review `booking_search_submit` as the booking-intent key event and link the confirmed Ads account. Preserve the consent contract and avoid double-counting `booking_engine_open`. |
-| Google Ads | Account `891-691-9742` reused; no enabled campaigns, USD `0/day`, 0 drafts, timezone GMT-06. Mauricio remains the sole active Administrator. `dreamcatcherhotel.com` was added to allowed domains and the already-authorized invitation to `admin@dreamcatcherhotel.com`, Administrator with no expiry, was sent. Native readback and the institutional Gmail receipt both confirm it; status is `Aceptaci√≥n de usuario pendiente`. | Accept the invitation from the institutional Google session, then verify the native user table shows active Administrator access. |
-| GTM | Container `GTM-NLQG87WZ` version `2` remains live; workspace has 0 pending changes, 2 tags and 2 triggers. `admin@dreamcatcherhotel.com` is the only account Administrator. Native Container Quality flags consent rate `0%` in territories and lack of a second administrator. | Keep rollback to version `1`. Treat consent-model changes and adding a recovery administrator as separate privacy/access writes with their own acceptance. |
-| Search Console | Hotel domain `siteOwner`; current sitemap is Correct with 74 pages. Native overview shows 427 clicks, 157 indexed and 344 nonindexed pages. Eight 2022 legacy sitemaps fail; indexing reasons include 208 404s, 57 redirects and 31 `noindex`. `/es/team` impressions fell 89% in the comparison displayed. | Run a bounded SEO cleanup from sampled 404 URLs and current route mapping before removing sitemaps or adding redirects. Do not delete inherited sitemap records from this audit. |
-| Meta Ads | Ad Superpowers readback returned two active USD accounts, `act_4122401631845` (`Mauricio Fernandez Toro`) and `act_1778329246384247` (`Mauricio`). This proves connector visibility, not which account belongs to the hotel or that `admin@dreamcatcherhotel.com` has portfolio administration. | Resolve the hotel account against the existing Meta Business/Page evidence before changing access. Add the institutional contact/admin only to the confirmed hotel portfolio/account; do not rename, merge or create a third account from the personal labels alone. |
-| LinkedIn | Mauricio confirms both the personal profile and advertising account are missing. Native signup reached the real-person gate, but Google One Tap offers only the corporate identity labelled `Dreamcatcher`; no profile was created and no terms acceptance was submitted. | Mauricio must choose/authenticate his personal Google identity or set a personal credential directly; then add the institutional email and create the hotel Page/ad account. Never create a fictitious person named after the hotel or import the personal graph into hotel data. |
-| TikTok Ads | Connector readback returned `UNAVAILABLE`; no hotel advertiser ID was verified. | Treat as `NOT_CONFIGURED`, not as proof that no account exists. Create an institutional hotel advertiser only after native lookup and required real-person/terms step; do not block the Google/Meta/LinkedIn control plane on this optional channel. |
-| Merchant Center | Ad Superpowers shows 0 accounts; native Google under Mauricio says this identity has access to no Merchant Center account. This does not prove global nonexistence. | Keep `NOT_CONFIGURED` unless Dreamcatcher sells eligible physical products. Do not use Merchant Center for hotel room tariffs. |
-| Google Business Profile | Mauricio natively manages the canonical `Dreamcatcher Hotel & Villas` profile; public read shows 4.5 stars and 151 reviews. Another `Dreamcatcher Hotel` entry is marked duplicate. The canonical Google Hotels entity is `CgsIpKWViNeV4ufCARAB`; its address wording is noisy and indexed check-in times conflict. | Preserve the canonical entity and avoid a duplicate. Correct NAP/check-in data only after native ownership readback and confirm whether the duplicate is safely suppressible. |
-| Hotel Center | Native account ownership remains unverified. An authenticated Kross read checked Channel Manager apps, its auto-mapping wizard, Booking Engine configuration and External Services; no Google Hotels/Hotel Center app or identifier was visible. Airtable's existing `19 KROSS CHANNEL MAP` table also contains 0 rows. Google's current official connectivity-partner directory lists **Kross Booking**, and separate Dreamcatcher unit/villa entities display `Official Site` with direct prices; this proves a direct inventory path exists for those entities but does not identify the Hotel Center account/feed or prove that the canonical hotel entity uses the same path. | Identify the existing owner/partner from the institutional Google Hotel Center/Business Profile route and capture account, property and feed IDs before creating any account or second feed. Compare the native partner value to Kross, then validate property match, every room mapping, localized landing pages, taxes/fees, price accuracy, feed freshness and the main-hotel direct link. |
-| YouTube | Public channel `@dreamcatcherhotel` has 18 videos; the Google account switcher associates `admin@dreamcatcherhotel.com` with `Dreamcatcher Hotel (Atrapasue√±os)`. | Preserve the existing channel; no duplicate channel or ownership change. |
-| Looker Studio | Current session requires a new Data Studio API authorization; existing reports remain unknown. | Defer OAuth and dashboard creation until Ads linkage and conversion definitions are stable. |
-
-**TARGET ‚Äî one durable connection contract:**
-
-1. **Identity and dedupe:** preserve the institutional email and exact provider account/property/container IDs above; retain the current personal administrator for recovery until approved replacement access is verified. A Workspace Super Admin role does not imply product access, impersonation or domain-wide delegation. A Chrome/browser/extension ID is a temporary session location, not a durable principal: this unit found the authenticated tabs in a different Chrome profile/extension registration, so recovery must identify the requested profile and visible account before requesting another login.
-2. **OAuth and secret custody:** reuse Ad Superpowers as the current adapter. Check that the provider-managed grant supports offline access and refresh-token renewal; this mechanism is supported by Google, but Ad Superpowers' actual refresh/storage behavior is not certified here. Keep secrets in the provider's protected credential mechanism; TORO stores only non-secret references, scope, owner/recovery owner, state, selected IDs, last success and evidence in existing structures. Do not create another Cloud project, service account, DWD grant, gateway or password store merely to avoid browser login.
-3. **Bounded authority:** normal hotel-scoped reads and reversible preparation proceed inside their existing authorization. Preserve the founder's two exact approvals from this unit: GA4 Administrator grant (completed) and Google Ads Administrator invitation (pending); do not ask for those same actions again. A domain allowlist edit is a distinct security change. New OAuth scopes, binding terms, MFA/recovery changes, publication, campaigns, budgets/billing or a broader recipient/scope keep their applicable approval gate. Do not turn off MFA or security checks to obtain continuity.
-4. **Recovery without loops:** distinguish `CONNECTED`, `READ_ONLY`, `WRITE_GATED`, `NOT_CONFIGURED`, `AUTH_REQUIRED` and `ERROR`. Record one material auth failure and its affected provider/object; preserve the task and last verified evidence, then request only the missing recovery step. Before retrying a send/grant, read its current result to avoid duplicates. An OAuth refresh token may expire/be revoked by Google policies; an external OAuth app in Testing can receive seven-day refresh tokens. That is a possible diagnostic cause, not a finding about Ad Superpowers. Provider identity checks can still be mandatory for sensitive Ads operations.
-5. **Existing operational route:** attach evidence to the existing task/Control Plane and connector-health reporting, not a new permanent monitor. The installed ChatGPT/Codex connection is distinct from a server-side TORO binding/worker; no runtime path, automatic execution or sync is claimed by this document. Kross remains booking/rate/payment authority. Merchant Center is conditional on eligible physical products; hotel tariffs/free booking links belong to existing Hotel Center/connectivity work. Business Profile, YouTube, Looker/Data Studio and Trends are supporting surfaces; no duplicate marketing master or billing activation.
-
-**Acceptance / measurable continuity:** one authenticated read of each selected hotel asset, repeated in a separate conversation/session using the same grant without a new browser login; identity/object IDs match and a receipt records source/date/scope. Observe renewal when required without inspecting/copying tokens. A read denied for another business and a write denied outside the approved capability demonstrate isolation/gating. Record manual-auth prompts per provider and successful receipts for the inspected sessions; no global percentage or promise of permanent access. GA4/GTM reception and verified booking conversion remain separate acceptance checks.
-
-**Google Hotels alignment receipt ‚Äî 2026-10-15:** the existing Supabase directory row `50df0e7d-1aed-489a-a942-274715734dd0` records exact public entity `CgsIpKWViNeV4ufCARAB` as `LINK-244`; the reduced Portal projection now exposes the reviewed Google Hotels destination under the existing organization/property/role gate, without granting Hotel Center or connector authority. Native Hotel Center access from `mauricio.fernandez.toro@gmail.com` and `admin@dreamcatcherhotel.com` returned `Requested entity was not found`; therefore account ID, property ID, feed ID and Google-side owner remain unknown. This error does not prove that the account is absent.
-
-**Public website and Google Hotels reconciliation ‚Äî 2026-10-15:** the governed release is complete on production deployment `dpl_ddzoZ4PPagftyNaN9GUNXjrUgFq8`, source `fe148ab5f7aadf1e5e5d6709070db53261a5acc2`, with apex and `www` aliases verified and rollback `dpl_784C84umhvfFh8PYBPJtr3wrFigv` ready. Final readback verified 74/74 sitemap routes, 222/222 unique destinations, 101/101 images and 29/29 metadata assets, with zero canonical, hreflang, metadata or public `*.vercel.app` failures. Kross `Google status` is the active distribution evidence: `Google Hotel Travel` has zero rows; after the authorized correction, `Google Vacation Rental` has 22 rows and 22 unique titles, all under `dreamcatcherhotel`, booking-engine version 6.
-
-**Kross #27 correction receipt ‚Äî 2026-10-15:** Kross Booking is the verified technical publisher of the Vacation Rental feed, while Google-side ownership remains unknown. The duplicate `#27` came from historical/sombra `idrt=28` (14 images) and current `idrt=43` (7 images). With Mauricio's explicit authorization, only `idrt=28 > Booking Engine > Enabled booking engines > dreamcatcherhotel` was disabled and saved. Reload readback confirmed the old record remains recoverable, its Booking Engine status is disabled, and the feed now has 22 rows, 22 unique titles and one `#27` with 7 images corresponding to `idrt=43`. No price, inventory, capacity, bed, schedule, coordinate, image, public-content, Google account, property or feed changed. Full receipt and rollback live in `docs/evidence/GOOGLE_VACATION_RENTAL_27_CORRECTION_PREVIEW_2026-10-15.md`; native Google downstream receipt remains unknown because Hotel Center exposes no entity to the available profiles.
-
-**Hourly Plan General orchestration ‚Äî 2026-10-16:** the prior heartbeat `toro-control-operativo-cada-30-minutos` was reassigned by an active independent project to TORO Interaction/Portal and explicitly paused this lane. To avoid overwriting that writer, the dedicated heartbeat `toro-mercadeo-y-wespeak-cada-hora` was created for this mercadeo checkpoint and thread. It is `ACTIVE`, runs hourly, reads the mercadeo `CONTINUAR.md`, and must not edit TORO Personal, Portal, OpenClaw or WhatsApp checkouts. It executes at most one safe and independently verifiable unit and treats ‚Äú20 times more‚Äù and ‚Äú50 improvements‚Äù as bounded capacity/checklists rather than output quotas. The current priority is WeSpeak quote-truth QA against a same-moment Kross read, with no guest contact, reservation, price/configuration change or unsupported live-quote claim. External form submission requires the applicable action-time confirmation. It remains silent without material change and fails closed on concurrent writers or ambiguous authority. If a unit remains blocked after a focused canonical-source read and one diagnostic attempt using a new strategy, the heartbeat may consult the existing Pumba conversation with the verified facts, exact sources, options, risks and recommendation. Pumba is advisory: operational claims require authoritative-source verification, no secrets or guest PII may be sent, and the response cannot bypass authorization for spending, publication, messages, production, access, permissions, deletion or reservations. If Pumba is unavailable or does not resolve the block, record `BLOCKED` or `UNKNOWN` and ask Mauricio only for the decisive datum or decision; do not create a duplicate Pumba task.
-
-**Marketing-link taxonomy receipt ‚Äî 2026-10-14:** all 244 canonical entries were audited. There are 0 duplicate IDs, 0 exact duplicate URLs, 237 HTTPS URLs, 2 contact URIs and 5 intentionally blank pending destinations; no embedded credentials, sensitive query keys, private-network hosts or unknown schemes were found. Supabase readback at `2026-10-15 04:13:45.219011+00` proves version 2.2 in the wrapper, directory and Portal projection; the guarded patch changed 28 entries and 19 tag arrays, with 6 `Publicidad pagada`, 6 `Ventas y distribuci√≥n`, 16 `Marketing y medici√≥n`, 0 matrix mismatches and a second dry run returning `ALREADY_APPLIED` with 0 predicted changes. Airtable and Dropbox exposed three noncanonical evidence candidates (YouTube creator-profile Search Console, R9 and Links Edo); they remain source evidence until their access purpose is reviewed, so they were not promoted to Portal or home navigation.
-
-**WeSpeak execution attempt ‚Äî 2026-10-16 01:37 CR:** a contemporaneous Kross page already open for 08‚Äì09 December 2026, one night, two adults, zero children, one room and USD showed 22 solutions and a visible minimum of `USD 155.00`; no room was selected and no reservation was created. `https://app.wespeak.pro/test` redirected to WeSpeak login in Chrome, while an independent structured read of `/dashboard` returned `cookies_required`. Two diagnostic routes therefore establish an authentication block, not a WeSpeak runtime result. The five synthetic prompts are preserved in `docs/evidence/WESPEAK_QUOTE_TRUTH_TEST_PLAN_2026-10-15.md`; none was sent. **NEXT ‚Äî single unit:** Mauricio completes login in the open WeSpeak tab and confirms in this thread the prepared Pumba consultation and five synthetic prompt submissions; then execute the battery against same-moment Kross reads, with zero real guest messages or reservations.
-
-**Marketing ecosystem continuation receipt ‚Äî 2026-10-17 CR:** Mauricio confirmed the WeSpeak login and native readback now shows the authenticated Dreamcatcher dashboard plus `/test` with the synthetic input enabled. The visible seven-day dashboard reports 59 attended conversations, 20 quotes, 16 booking-link clicks, 18 follow-ups and 34% assistant autonomy; these are vendor UI metrics, not confirmed bookings or revenue. The five prepared messages remain unsent because browser submission creates external test conversations and keeps the action-time confirmation gate. A fresh Ad Superpowers portfolio read across client context, GA4, Google Ads, Search Console, Merchant, Meta, LinkedIn, TikTok and workspace returned the same trial quota block `50/50`, reset `2026-11-01T00:00:00Z`; stop equivalent retries until reset evidence. The existing hourly heartbeat was updated in place as `TORO ¬∑ Mercadeo y crecimiento ¬∑ cada hora`: a blocked provider is recorded once, then work continues through another safe independent marketing unit. The canonical inventory remains Supabase row `50df0e7d-1aed-489a-a942-274715734dd0`; no second registry, account, feed, scheduler or master plan was created. The 100-point control matrix in `outputs/MERCADEO_CUENTAS_20261014.md` is a prioritized improvement register: only items with implementation plus readback count as HECHO. **Paso hist√≥rico cerrado:** la lectura Google prevista fue sustituida por la unidad Tripadvisor documentada abajo.
-
-**Directorio A‚ÄìZ y expansi√≥n controlada ‚Äî 2026-10-17 CR:** Supabase `operations.knowledge_items`, clave `dreamcatcher_system_database_directory_v1`, se ampli√≥ en el mismo registro de versi√≥n `2.2` a `2.3`. El readback verific√≥ 264 entradas totales y exactamente 20 IDs `candidate.*` distintos: Apple Business Connect, Bing Places, Despegar, Foursquare, Google Things to do, Hotels.com, Hopper, Hostelworld, KAYAK, MICHELIN Guide Hotels, Pinterest, Reddit, Skyscanner, Snapchat, Threads, Tripadvisor, trivago, Visit Costa Rica/ICT, Waze y X Professional. Todos quedaron como candidatos internos; ninguna URL prueba cuenta, propiedad, acceso, contrato, feed, publicaci√≥n o rendimiento. Airtable `DREAMCATCHER WEB + CHANNELS` contin√∫a como transici√≥n/contenido humano y Dropbox como custodia de originales; una lectura de Dropbox localiz√≥ biblioteca oficial, evidencia web y `logo-dreamcatcher-oficial.png`, sin mover o sobrescribir archivos. El snapshot humano ordenado, con estado, prioridad, cadencia y 50 mejoras aplicadas, est√° en [DREAMCATCHER_MARKETING_DIRECTORY_A_Z_2026-10-17.md](../evidence/DREAMCATCHER_MARKETING_DIRECTORY_A_Z_2026-10-17.md); el workspace conserva la copia operativa en `outputs/DIRECTORIO_MERCADEO_A_Z_20261017.md`.
-
-**Tripadvisor native-control receipt ‚Äî 2026-10-17 CR:** Management Center verified owner-capable access to the main listing `locationId=1655967`. Native readback showed five Verified owners but no visible account on the `dreamcatcherhotel.com` domain; 4.5/5 from 210 reviews with 144 unanswered; 208 photos, zero videos; and rank #19 of 30 hotels in Santa Teresa. For 2026-09-16 through 2026-10-15 the provider UI reported 2,202 listing impressions, 522 unique page visitors, five booking clicks, zero direct referrals and zero contact-link clicks. The legacy description, stored HTTP URL and several broad amenity claims need correction or operational validation. Supabase canonical directory readback advanced from `2.3` to `2.4` without changing its 264-entry count and now records native access, performance and reputation state for `candidate.tripadvisor`. The public duplicate `locationId=34420954` is not in the managed portfolio. Exact evidence and prepared changes are in [TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md](../evidence/TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md). **Paso hist√≥rico cerrado:** el lote que entonces estaba PREPARED fue ejecutado con confirmaci√≥n y su readback aparece en el recibo siguiente.
-
-**Tripadvisor execution and TORO listing gate ‚Äî 2026-10-17 03:58 CR:** Mauricio gave the immediate confirmation for the three prepared actions. Tripadvisor accepted the name `Dreamcatcher Hotel & Villas` and the 650-character English description; Management Center shows the new values, `Your changes have been saved` and `Processing`, so public propagation remains pending. The Verified owner/Owner invitation to `admin@dreamcatcherhotel.com` closed with `Invitation will be sent to`; the table still has five users, therefore acceptance is pending and institutional access is not yet active. The Italian reply to Barbara B now reads `Response pending`, retains the exact submitted text in a disabled field and exposes `Delete Response`; it is not yet published. No amenities, contacts, media, paid products or duplicate state changed. Supabase `dreamcatcher_system_database_directory_v1` advanced idempotently from `2.4` to `2.5`, preserving 264 entries and recording the three pending states. Mauricio defines `TORO by Dreamcatcher` as a sub-brand for units 21‚Äì28 plus villa, while Dreamcatcher Hotel & Villas keeps the full inventory. A second Tripadvisor listing is only eligible after evidence of a fully separate physical section/property, official name, separate lodging license, non-overlapping inventory and its own reservable identity; no OTA may duplicate the same inventory merely for extra exposure. **Paso hist√≥rico cerrado:** la lectura focal de `34420954` se complet√≥ y su clasificaci√≥n aparece en el recibo siguiente.
-
-**Tripadvisor duplicate decision and TORO evidence ‚Äî 2026-10-17 CR:** the focused public/native read completed the preceding unit. Unclaimed `locationId=34420954` has no reviews, five provider photos and a Booking content link that opens `Dreamcatcher Hotel & Villas, the best kept secret of Santa Teresa`, the same main accommodation identity; it is a duplicate of managed `1655967`, not a TORO listing. Preserve `1655967`, its 210 reviews and owner access; never rename or reuse the duplicate as TORO. Booking independently confirms `Toro by Dreamcatcher` property `14338337`, while current public Kross still presents all 22 solutions under `Dreamcatcher Hotel & Villas`, including units 21‚Äì28 and `Villa Toro`. Therefore a separate TORO listing on Tripadvisor or another OTA remains blocked until physical separation, its own lodging license and a channel/unit map prove non-overlapping reservable inventory. Supabase `dreamcatcher_system_database_directory_v1` advanced idempotently to `2.6` with the same 264 entries and readback of this classification. The exact duplicate-merge request remains prepared in [TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md](../evidence/TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md), but it is not the current execution unit and was not sent in the evidence pass below.
-
-**DIEX/TORO evidence, Admin Mode execution and room-27 divergence ‚Äî 2026-10-17 CR:** a scoped read of the exact Dropbox construction folder, institutional Gmail, Airtable Master Brain and Supabase found no separate lodging/business license for TORO. SETENA resolution `1670-2022` / `D1-0534-2022`, the 2023 architectural sheets and Registro Nacional certification identify `Casa de Habitaci√≥n Diex de Santa Teresa`, cadastral plan `6-986552-2005`; a 2025 PTAR commitment instead cites `6-985652-2005`, so the adjacent-digit conflict remains unresolved. After Mauricio supplied the exact Admin Mode phrase, Airtable records `rec5Q2ezaVTcGJvg9` and `recmicop0rRJ1JKpk` were corrected from Kross `28` to `43`, their provenance/QA was updated, and independent readback returned `43` from both. The existing Supabase directory row advanced only `link_directory.version` from `2.6` to `2.7`, preserving 264 entries and one `candidate.tripadvisor`; the candidate now holds 30 DIEX/TORO controls, four observed room-27 channel mappings and explicit no-change receipts for rates, availability, inventory, channels and Kross configuration. A fresh public Kross comparison explains why room 27 still looks different: current `idrt=43` is `#27 Superior King Room`, 30 m¬≤ and seven images, while disabled legacy `idrt=28` is `#27 Intimate King Room with Projector`, 20 m¬≤ and fourteen images; they also differ in location text and projector surfacing. The current long description still mentions a projector. A read-only Dropbox deleted-history pass found six 2024 DIEX plan PDFs and fourteen SUPERBLOQUE files deleted in one batch on 20/05/2026, but no filename explicitly naming a lodging license, municipal/ICT authority, either cadastral number or room 27; nothing was restored or mutated. Exact receipts are in [TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md](../evidence/TRIPADVISOR_NATIVE_AUDIT_2026-10-17.md). **NEXT ‚Äî single unit:** locate one approved authoritative source for the physical current room 27 and use it to decide title, metrage, projector and location for `idrt=43`; any Kross write requires separate exact Admin Mode and must leave `idrt=28` disabled.
-
-**Regla de crecimiento y revisi√≥n:** P0 protege web, motor Kross, Google Hotels/Business Profile/Maps, reputaci√≥n, identidad institucional, medici√≥n y llegada; revisar salud semanal y cambios materiales. P1 cubre distribuci√≥n, metabuscadores y redes con demanda plausible; revisar mensualmente y antes de contratar. P2 cubre encaje condicional, prestigio o experimentos; revisar trimestralmente y solo avanzar con hip√≥tesis, margen, medici√≥n y autorizaci√≥n de gasto/publicaci√≥n. La ejecuci√≥n horaria rota √∫nicamente la siguiente unidad vencida o material: no consulta todos los proveedores cada hora, no cuenta reintentos, no abre cuentas duplicadas y no crea otro scheduler. El heartbeat existente `TORO ¬∑ Mercadeo y crecimiento ¬∑ cada hora` fue actualizado en sitio, contin√∫a `ACTIVE`, conserva notificaci√≥n solo por fallo y ahora proh√≠be restaurar borrados o escribir Kross/bases sin autorizaci√≥n exacta; si no encuentra evidencia nueva, permanece en silencio. Hotels.com se gobierna dentro de Expedia Group; Waze se contrasta con Google Maps; Merchant Center no se usa para habitaciones; Google Things to do solo admite experiencias elegibles y reservables; MICHELIN es selecci√≥n editorial independiente. En Tripadvisor, `d1655967` es la ficha principal administrada y `d34420954` es el duplicado verificado, sin rese√±as y con cinco fotos de proveedor. La solicitud de fusi√≥n permanece preparada y requiere confirmaci√≥n de acci√≥n. La unidad Airtable/Supabase qued√≥ cerrada con readback; la √∫nica unidad vigente es resolver la verdad f√≠sica de la habitaci√≥n 27 antes de proponer un cambio de contenido en Kross.
-
-**Change boundary and rollback:** during the 2026-10-14 Google control-plane audit, `dreamcatcherhotel.com` was added to the allowed domains of Google Ads `891-691-9742`, and the already-authorized Administrator invitation was sent to `admin@dreamcatcherhotel.com`. Google confirmed both through native readback; the institutional mailbox received the official invite. Rollback is removal of the domain and/or revocation of the pending invitation by an active Administrator, but both should remain while institutional access is intended. The Google Hotels alignment added `LINK-244` to the existing Supabase registry/projection and an exact-match Portal navigation mapping. Taxonomy patch `link_directory_taxonomy_v2_2` changed classifications and tags only; the guarded source and readback live in `supabase/drafts/link_directory_taxonomy_v2_2.sql`. Any reversal must restore the pre-patch values for those exact IDs after a fresh read, never delete or replace the registry. No campaign, spend, billing, Ads conversion, GA4/GTM/Search Console/Business Profile/Hotel Center/YouTube/Looker content, feed, DNS or OAuth scope changed. Full evidence: `outputs/GOOGLE_CONTROL_PLANE_AUDIT_20261014.md`, `outputs/GOOGLE_HOTELS_ALIGNMENT_20261014.md` and `outputs/MARKETING_LINKS_AND_TOOLS_AUDIT_20261014.md` in the mercadeo workspace.
-
-**Primary guidance:** [Google OAuth offline access](https://developers.google.com/identity/protocols/oauth2/web-server#offline), [refresh-token expiry/revocation](https://developers.google.com/identity/protocols/oauth2/#expiration), [Google Ads identity confirmation](https://support.google.com/google-ads/answer/12865189?hl=en), [LinkedIn account setup](https://www.linkedin.com/help/linkedin/answer/a426102/create-an-ad-account-in-campaign-manager-as-a-new-advertiser?lang=en). These define provider behavior; actual grant persistence remains to be tested.
-
-### Mixed personal/business finance sources ‚Äî owner decision 2026-09-29
-
-TORO finance must search business-primary mailboxes **and** Mauricio's personal mailboxes because Dreamcatcher/Atrapa Sue√±os evidence is materially distributed across them.
-
-Current source policy:
-- `admin@dreamcatcherhotel.com` = hotel-primary Google Workspace source;
-- `atrapasuenoshotel@gmail.com` = legacy hotel Google identity/dependency; do not retire until parity;
-- `mauferto@live.com` = **mixed personal/business** Outlook source and must be searched for hotel + Mauricio accounting evidence;
-- `mauricio.fernandez.toro@gmail.com` = **mixed personal/business** Gmail source and must be searched once a separate Gmail connection is available; the current Gmail connector in this chat is still `admin@dreamcatcherhotel.com`.
-
-Classification rule:
-**mailbox location and payment instrument do not determine accounting scope.**
-
-For each document or transaction, classify using:
-1. issuer;
-2. legal receiver/account holder;
-3. benefiting entity/property/project;
-4. business purpose;
-5. payment source;
-6. invoice/receipt/contract evidence;
-7. reimbursement / shareholder-current-account treatment when an owner paid personally.
-
-Owner-paid expenses:
-- a personal card/bank payment may still be a legitimate company expense;
-- it is staged as owner-paid evidence until purpose/entity/support are verified;
-- if verified as business, accounting may later treat it through the appropriate payable/reimbursement/shareholder-current-account route;
-- do not post or reimburse solely because a transaction appears in Mauricio's mailbox/card;
-- do not load Mauricio's personal bank/card statements as Dreamcatcher corporate bank truth;
-- do not double count the invoice and the card notification as two expenses.
-
-Verified 2026-09-29 evidence:
-- Outlook `mauferto@live.com` contains hotel bills, Booking/Synerjoy, BAC corporate-access/retention evidence, INS, hotel software/vendor proposals, licensing and financial statements;
-- the Sep-2026 personal BAC AMEX statement contains 38 posted purchases totaling CRC 241,591.55; this is **personal-source reconciliation evidence only**, not a corporate bank statement;
-- two Correos de Costa Rica invoices received by Mauricio matched exact external payment evidence and were marked paid while their business scope remains pending;
-- corporate Aug/Sep BAC and LAFISE statement gaps remain unresolved and must not be replaced by personal statements.
-
-Privacy rule:
-- detailed personal-card transaction data stays out of public GitHub and should not be replicated broadly across TORO;
-- canonical systems store only the minimum evidence/state necessary to reconcile business accounting;
-- no password, token, bank credential, full card number or recovery secret is stored.
-
----
-
-## TinyFish policy
-
-TinyFish is an **optional browser-automation tool**, not part of TORO's canonical architecture and not a single point of failure.
-
-Default:
-- prefer direct connected apps/connectors and official APIs first;
-- use standard web research for public information;
-- use TinyFish only when a user-directed website workflow genuinely requires clicking/login/navigation and no direct connector or safer native route exists;
-- do **not** pay/top up TinyFish merely to keep ordinary TORO operations moving;
-- reconsider paying only when repeated website-only blockers create enough operational value to justify the cost.
-
-Canonical structured reference:
-`operations.knowledge_items/toro_access_control_matrix_2026_09_28_v1`.
-
----
-
-# 12. Current data/platform ownership
-
-## GitHub
-Canonical product architecture/code/contracts.
-
-## Supabase
-Canonical TORO-owned runtime data, identity, permissions, workflow state and audit.
-
-## Airtable
-Transitional/reference estate while dependencies are removed.
-
-## Dropbox
-Files/media/evidence/archive.
-
-La custodia financiera se rige por la secci√≥n [Alegra](#alegra) y el dise√±o existente de Connector v2. Conservar originales, derivados vinculados, versiones y prueba de restauraci√≥n en las ra√≠ces autorizadas; no crear otro plan de respaldo. Los identificadores nativos, hashes y rutas privadas pertenecen al manifiesto restringido. No realizar reorganizaci√≥n masiva, sobreescrituras, borrados, compartici√≥n ni cambios de permisos como parte de esta revisi√≥n documental.
-
-## Notion
-Narrative planning/research/working memory.
-
-## Vercel
-Deployment/runtime evidence.
-
-## Kross
-Live PMS authority.
-
-## Alegra
-Fiscal/accounting authority.
-
-### Integraci√≥n y custodia documental ‚Äî revisi√≥n 2026-10-10
-
-**Alcance:** Accounting & Tax dentro de TORO Finance, Connector Fabric y Governance & Resilience. FIONA mantiene el contrato financiero; SOBRESITO mantiene conectores, integridad y recuperaci√≥n. Se conserva el carril existente de controles financieros y FIN-01. El dise√±o subordinado es [Alegra Connector v2](../superpowers/specs/2026-09-23-toro-brain-alegra-connector-v2-design.md#document-custody-and-platform-optimization--2026-10-10).
-
-**CURRENT ‚Äî verificado:** el cat√°logo expone 218 herramientas, predominantemente de consulta. No expone creaci√≥n/edici√≥n de comprobantes contables ni carga de sus adjuntos. Una operaci√≥n de URL de carga de N√≥mina est√° marcada como escritura y requiere aprobaci√≥n propia; no habilita facturas/pagos/asientos ni se ejecut√≥. Los scripts originales preparan respaldos JSON y manifiestos; no prueban custodia binaria productiva de PDF, XML o fotograf√≠as. La revisi√≥n acotada de Dropbox encontr√≥ evidencia contable y paquetes hist√≥ricos, sin certificar cobertura completa, hashes de los originales o restauraci√≥n actual. Dos conexiones a la misma cuenta no constituyen respaldo independiente. La cobertura financiera vigente de Kross y la sincronizaci√≥n persistente requieren pruebas separadas.
-
-**CURRENT ‚Äî candidato preparado en PR228, 2026-10-11:** el carril existente se reconcili√≥ con main y corrige tipos de transporte, identidad de negocio separada de contenido, aprobaci√≥n frente a cambios, totales decimales y reintento incierto. Incorpora gate apagado por defecto, binding a los runs/receipts y fencing existentes, y custodia/restauraci√≥n de un paquete local simulado JSON/PDF/XML/foto con manifiesto persistido y verificado. La revisi√≥n independiente identific√≥ cuatro fallos importantes; se corrigieron con regresiones: autoridad capturada antes de esperas, referencias de almacenamiento confinadas, factura/movimiento del pago comprobados y dedupe nativo independiente del importe/moneda. El adapter legado recuperado conserva ventas draft/servicios; no se trasplanta a compras/pagos. Pruebas de contrato y fixture no acreditan autorizaci√≥n server-side, transporte nativo, carga en Dropbox/Alegra, activaci√≥n del Portal o entrega WhatsApp. El estado contin√∫a PREPARADO, pendiente de aceptaci√≥n de runtime.
-
-**CURRENT ‚Äî transporte de compras preparado, 2026-10-11:** la misma PR228 incorpora cuerpo y rutas REST de factura de proveedor verificados en documentaci√≥n oficial de Costa Rica, cliente HTTP de origen/rutas fijos sin reintentos, preflight de empresa/proveedor/cuenta/centro/impuesto, b√∫squeda completa acotada y lectura posterior estricta. Usa impuestos vinculados al hash aprobado y conserva la moneda principal del libro; no convierte monedas ni crea pagos, inventario o emisi√≥n fiscal. Otros escenarios se bloquean. El cliente autenticado y callback de autorizaci√≥n/periodo/correcci√≥n deben venir del host seguro existente; no se accedi√≥ a secretos ni se activ√≥ una ruta o escritor. La lectura nativa de `/company` del 23/10/2026 confirm√≥ CRC como moneda principal de la cuenta; cada documento conserva su moneda original, sin conversi√≥n impl√≠cita. Los permisos de escritura y un expediente real a√∫n no est√°n aceptados. La preparaci√≥n t√©cnica no equivale a conexi√≥n productiva.
-
-**TARGET ‚Äî aprobado como direcci√≥n documental, sin activaci√≥n:**
-
-- Alegra conserva la autoridad fiscal/contable; Kross conserva reservas y contexto operativo; bancos conservan liquidaciones. Supabase conserva identidad, relaciones, estados, permisos y recibos; Dropbox conserva originales. Airtable ofrece revisi√≥n humana. Portal TORO y WhatsApp consultan el mismo estado y contrato de acciones.
-- Cada expediente identifica empresa, entidad, propiedad, tipo, emisor, referencia fiscal, fecha, moneda y procedencia. Un comprobante puede tener varios activos: XML emitido, respuesta fiscal, PDF nativo, foto original y representaci√≥n optimizada. No se confunde documento, archivo, factura o pago.
-- Reutilizar `integrations.document_manifest`, `finance.evidence_documents` y `finance.invoice_sources`. Los v√≠nculos y versiones adicionales se dise√±an sobre sus metadatos existentes; esta revisi√≥n no despliega migraciones.
-- Los bytes originales se conservan inmutables en Dropbox, con versi√≥n, tama√±o, SHA-256, identificador nativo y revisi√≥n. Alegra recibe la copia permitida despu√©s de custodia y validaci√≥n. El Portal muestra enlaces protegidos y estado de evidencia. Las rutas privadas y referencias de facturas quedan fuera de este repositorio p√∫blico.
-- Alegra documenta adjuntos de hasta 2 MB por archivo; cantidad, formatos y cuota deben verificarse en esta cuenta y plan. Conservar el original incluso cuando una foto necesite copia optimizada. El XML firmado nunca se comprime con p√©rdida ni se reconstruye como sustituto.
-- Los estados de respaldo siguen `PREPARED -> EXTERNAL_UPLOADED -> INTEGRITY_VERIFIED -> RESTORE_TESTED`. Preparar, listar o encontrar un ZIP no certifica integridad o recuperaci√≥n. Cada transici√≥n exige recibo y evidencia.
-- Definir una copia recuperable fuera del mismo dominio de fallo de Dropbox, dentro de destinos ya autorizados y con acceso restringido. Los respaldos de base de datos de Supabase no incluyen los archivos binarios de Storage.
-- Objetivos propuestos: custodiar el original antes de habilitar contabilizaci√≥n; capturar cambios en el ciclo existente con cierre diario verificable; recuperar un expediente validado en un d√≠a h√°bil. Son objetivos de dise√±o, pendientes de aceptaci√≥n, capacidad y prueba, no SLA ni automatizaciones ya activadas.
-
-**Optimizaci√≥n nativa:** evaluar primero buz√≥n de comprobantes XML de proveedores, importaci√≥n de ventas ya emitidas, cat√°logo/CABYS, centros de costo, conciliaci√≥n bancaria desde XLSX, exportables y recurrencias pertinentes a Costa Rica. Verificar funci√≥n, plan, permisos y configuraci√≥n por cuenta. No activar todas las herramientas por cantidad ni aplicar funciones fiscales/n√≥mina de otros pa√≠ses. La aceptaci√≥n/rechazo fiscal, emisi√≥n y registro de pagos requieren su propio alcance aprobado.
-
-**Automatizaci√≥n:** reutilizar el trabajador y el Control Plane existentes. Un disparador de Kross, correo, Dropbox o WhatsApp crea una entrada gobernada; conserva identidad, cursor, deduplicaci√≥n, aprobaci√≥n y recibo persistente. Make y Zapier tienen integraciones publicadas; n8n puede utilizar HTTP Request. Son alternativas investigadas, no adoptadas ni prueba de permisos/adjuntos. Ninguna debe crear un segundo registro financiero o saltarse los controles de TORO.
-
-**NEXT ‚Äî una unidad verificable:** cerrar un solo expediente de prueba del carril existente con JSON, PDF, XML y foto simulados, manifiesto versionado, duplicado multicanal, fallo de integridad y restauraci√≥n aislada. Integrar esta prueba en el carril de escritura existente manteniendo el escritor deshabilitado por defecto. Luego verificar, por separado y con autorizaci√≥n espec√≠fica, una operaci√≥n real de bajo impacto y lectura posterior.
-
-**Criterio de terminado:** Plan y dise√±o alineados; manifiesto y hashes verificables; reintento sin duplicado; fallo sin avanzar cursor; recuperaci√≥n aislada; v√≠nculo comprobante‚Äìactivos‚Äìorigen; estado id√©ntico en las superficies. No se declara operaci√≥n aut√≥noma, adjunto cargado, recuperaci√≥n o emisi√≥n hasta contar con recibo real.
-
-**FUTURE:** escritura repetitiva limitada por tipo y umbral, vigilancia de excepciones y recuperaci√≥n peri√≥dica dentro de la infraestructura existente; cada ampliaci√≥n depende de pruebas de pa√≠s, entidad, permisos y reversibilidad.
-
-## WeSpeak
-Active guest communication runtime.
-
-## OpenClaw
-Same-Brain code path exists; live Gateway/channel identity/capability parity remains configured-unverified until host acceptance.
-
----
-
-## Dreamcatcher ¬∑ Finanzas y Control ‚Äî reporte hotelero V2 ‚Äî actualizado 2026-09-29
-
-El reporte financiero hotelero V2 queda incorporado al √∫nico Plan General como evidencia ejecutiva parcial del per√≠odo enero‚Äìagosto 2026. No crea un proyecto, una base, un libro contable ni una autoridad nueva.
-
-**HECHO:** [REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx](../../../output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V2.docx) conserva el reporte V1 y a√±ade 20 mejoras, servicios Kross, separaci√≥n de hotel/proyectos/socios/deuda/Santa Toro y un puente expl√≠cito de utilidad.
-
-**DATOS OPERATIVOS OBSERVADOS:** alojamiento enero‚Äìagosto 2026 `USD 537,609`; descarga Kross Servicios `768` l√≠neas y total bruto `KROSS_REPORTED USD 240,456`; servicios no hospedaje, excluyendo hospedaje y el registro at√≠pico, `USD 25,028`; registro `Recibo 15 / A la carte breakfast` del 08/07/2026 por `USD 212,415` en `PENDING_EVIDENCE`.
-
-**LECTURA CONTABLE:** gasto contable Dreamcatcher convertido anal√≠ticamente con CRC 500/USD `USD 419,666`; margen contable provisional `USD 117,943`. La utilidad real del hotel sigue `N/D` hasta reclasificar gastos no hoteleros l√≠nea por l√≠nea y conciliar Kross‚ÄìAlegra‚Äìbancos. `N/D` no es cero. Kross conserva autoridad operativa; Alegra conserva autoridad fiscal/contable; bancos/procesadores conservan autoridad monetaria; Dropbox conserva originales; Supabase conserva estructura, correspondencias y recibos; Airtable queda como superficie humana/transicional.
-
-**ESTADO:** `PREPARADO ¬∑ PARCIAL ¬∑ READ-ONLY`. No se modifica Alegra, Kross, banco, Dropbox ni Airtable por este registro; no se crea factura, asiento, pago o deuda. La actualizaci√≥n de Supabase se limita al conocimiento y tarea existentes, con marcador idempotente `FIN-01-REPORTE-V2-20260929`.
-
-**√öNICA SIGUIENTE:** cerrar la muestra focal de gastos materiales de Alegra y movimientos bancarios, empezando por Mauricio agosto, con cuenta, tercero, centro, fecha, moneda, comprobante, estado de pago y regla hotel/no hotel; actualizar el mismo reporte y checkpoint sin abrir otro expediente.
-
-**REFERENCIAS ESTRUCTURADAS:** `operations.knowledge_items/finance_accounting_rebuild_scope_2026_09_v1`; tarea `finance_ws_cash_accounting_current`; proyecto `finance_controls`; archivo Kross local `C:\Users\PERSONAL\Downloads\Export_2026-09-29 (1).xlsx`.
-
-**REGLA DE RESPALDO Y ALINEACI√ìN:** Kross V1 conserva la autoridad operativa para reservas, cargos, producci√≥n y estados transaccionales; no se usa como repositorio de documentos financieros ni como sustituto de Alegra o bancos. Los reportes y originales se respaldan en Dropbox, la estructura y recibos en Supabase y cada resultado se alinea en este Plan General y `CONTINUAR.md`. Cualquier escritura en Kross requiere campo/registro exacto, autorizaci√≥n espec√≠fica y prueba reversible.
-
-### FIN-01 ¬∑ muestra focal Mauricio agosto 2026 ‚Äî actualizaci√≥n 2026-09-29
-
-**HECHO:** la lectura de solo lectura de Alegra para el enlace hotelero `link_6aaa0c0cdbc88191a0fd5419d46efc73` encontr√≥ 3 salidas a `Mauricio Fernandez` durante agosto: 15/08, registro `6575` / comprobante `4580`, `USD 1,000` desde `$ BAC $`; 26/08, registro `6712` / comprobante `4665`, `CRC 20,000` desde `‚Ç°LAFISE‚Ç°`, observaci√≥n `Pago ST en cuenta Mau`; y 31/08, registro `6945` / comprobante `4818`, `USD 247` desde `$ BAC $`. Los tres tienen centro `DREAMCATCHER`, categor√≠a `Mauricio Fernandez` y estado `open` en Alegra.
-
-**GASTO CONTABLE CORREGIDO:** el estado de resultados de Alegra para agosto muestra `CRC 981,442` en la cuenta `5393`, pero la cuenta no es exclusiva de Mauricio. La evidencia FIN-01 separa `CRC 643,500` de los 3 pagos directos a Mauricio y aproximadamente `CRC 337,942` de seis pagos a terceros: Estadero Medell√≠n, LicoExpress Medell√≠n, Panader√≠a Medell√≠n, Bold Co RST VP, Drogas La Garant√≠a y Restaurante El Carmen. No llamar salario individual al total de la cuenta 5393.
-
-**EQUIVALENTE ANAL√çTICO:** los dos pagos en USD suman `USD 1,247`; con el tipo de cambio anal√≠tico 500 solicitado por Mauricio equivalen a `CRC 623,500`. Sumado al registro de `CRC 20,000`, el lote de pagos observado equivale anal√≠ticamente a `CRC 643,500`. Esta conversi√≥n es comparativa, no fiscal, bancaria ni asiento.
-
-**BANCO:** Dropbox contiene los estados corporativos BAC USD y BAC CRC de agosto, ambos con corte 31/08/2026. BAC USD (IBAN terminado `653588`) reporta 31 d√©bitos y saldo final aproximado de `USD 8,443`, pero no muestra una coincidencia inequ√≠voca para USD 1,000 del 15/08 ni USD 247 del 31/08. BAC CRC (IBAN terminado `653660`) est√° localizado, pero no prueba el pago de LAFISE CRC 20,000. No se localiz√≥ estado corporativo LAFISE CRC de agosto. Supabase mantiene `0` estados/movimientos de agosto cargados. La ejecuci√≥n y conciliaci√≥n siguen `PENDING_EVIDENCE`; `open` no se trat√≥ como prueba de pago bancario.
-
-**ESTADO:** `HECHO ¬∑ MUESTRA CLASIFICADA Y CORREGIDA PARCIAL`; `BLOQUEADO ¬∑ LAFISE CRC Y COINCIDENCIAS BAC INEQU√çVOCAS PENDIENTES`. El reporte V2 fue actualizado con la correcci√≥n de la cuenta 5393 y la evidencia BAC; nuevo SHA-256 DOCX `C80FB83FD09967CEE292F6C64E025B116A58B1B24EBDF1886277A48CDFA54E7C`. No se escribi√≥ Alegra, banco, Kross, Dropbox, Airtable ni Supabase en esta unidad.
-
-**√öNICA SIGUIENTE:** obtener el estado de cuenta corporativo de agosto de BAC y LAFISE y enlazar esas tres referencias con soporte bancario antes de recalcular utilidad real o autorizar cualquier reclasificaci√≥n.
-
-### FIN-01 ¬∑ b√∫squeda final de soporte bancario primario ‚Äî cierre de unidad 2026-09-29
-
-**HECHO:** se ejecut√≥ una b√∫squeda focal de solo lectura en Dropbox y en la evidencia local por `CE-4665`, `4665`, `Pago ST en cuenta Mau`, `LAFISE CRC Agosto 2026`, `CE-4580` y `CE-4818`. No apareci√≥ ning√∫n estado corporativo LAFISE CRC de agosto ni un comprobante bancario primario nuevo para `CE-4665 / ID 6712`. Las referencias CE encontradas corresponden a recibos FIN-01 ya derivados, no sustituyen el comprobante original. Tampoco apareci√≥ una referencia BAC inequ√≠voca nueva para `CE-4580 / ID 6575` o `CE-4818 / ID 6945`.
-
-**CIERRE DE LA UNIDAD:** `HECHO ¬∑ B√öSQUEDA FINAL EJECUTADA`; `BLOQUEADO ¬∑ SOPORTE BANCARIO PRIMARIO FALTANTE`. La clasificaci√≥n anal√≠tica de Mauricio no cambia: `CRC 643,500` de pagos directos y aproximadamente `CRC 337,942` de terceros excluidos de esa cifra. No se convirti√≥ un estado `open` de Alegra en pago confirmado.
-
-**NO ESCRITURAS:** no se escribi√≥ en Alegra, Kross, bancos, Dropbox, Airtable ni Supabase; no se cargaron documentos, no se reclasific√≥, no se pag√≥ y no se cre√≥ una fuente paralela. La utilidad real del hotel contin√∫a `N/D` hasta completar la conciliaci√≥n y la separaci√≥n hotel/no hotel.
-
-**√öNICA SIGUIENTE:** recibir o localizar el estado corporativo LAFISE CRC de agosto o el comprobante primario de `CE-4665 / ID 6712`; despu√©s enlazarlo l√≠nea a l√≠nea con Alegra y resolver las dos coincidencias BAC. Hasta entonces, no hay una acci√≥n documental adicional segura que cierre este frente.
-
----
-
-## DIEX / Villa Toro ‚Äî intercompany legal-finance bridge ‚Äî verified 2026-09-29
-
-DIEX remains inside the existing `Construcci√≥n / DIEX ¬∑ Desarrollo y cierre documental` project. It is **not** a new master project or accounting brain.
-
-Verified legal/economic split:
-- DIEX de Santa Teresa S.A. (`3-101-355172`) is the ZMT concession/property/project entity for Villa Toro/DIEX;
-- Atrapa Sue√±os de Santa Teresa S.A. (`3-101-354441`) is the Dreamcatcher operating company;
-- BAC credit `204012411` is legally documented to **Atrapa Sue√±os**, not DIEX;
-- the principal BAC credit was formalized 31-May-2024 for USD 728,000; July-2026 principal outstanding was USD 640,705.26;
-- a separate/additional BAC formalization document dated 23-May-2025 shows USD 63,700 and net client deposit USD 62,693.82; it remains unreconciled to a specific loan reference and must not be added to the USD 728,000 by inference;
-- 2026 loan cash-flow reconstruction currently supports USD 29,466.74 principal, USD 16,481.50 interest and USD 2,328.57 insurance through Sep, with Aug/Sep still awaiting fresh corporate bank statements;
-- Alegra omitted the May-2026 USD 3,150.09 principal component that exists in the corporate BAC bank source, proving Alegra alone is not sufficient for historical loan reconstruction.
-
-Target intercompany architecture, pending legal/tax gates:
-1. **DIEX ‚Üí Atrapa Sue√±os:** documented arm's-length operating lease or other legally permitted use agreement for Villa Toro/DIEX.
-2. **Atrapa Sue√±os ‚Üí DIEX:** separately documented intercompany financing / due-from balance for BAC-funded amounts actually traced to DIEX construction, improvements or qualifying project costs.
-3. Do not relabel the BAC bank liability as a DIEX bank loan.
-4. Do not net rent and financing invisibly; gross legal/accounting flows and eliminations must remain traceable.
-5. Loan principal is balance-sheet financing, not operating expense.
-6. DIEX construction/improvements are CAPEX when applicable; interest, insurance, canon, maintenance and depreciation follow their legally supported entity/tax treatment.
-7. Existing Alegra cost center `DREAMCATCHER` must stop being the default analytical scope for DIEX. Owner authorized a dedicated `DIEX` cost center on 29-Sep-2026, but historical entries must not be mass-reclassified until a transaction-level map and rollback exist.
-
-Tax-governance rule:
-- related-party rent and financing must follow the Costa Rica arm's-length / libre-competencia standard;
-- do not set rent equal to debt service merely to shift taxable profit;
-- compare capital-real-estate-income treatment against the utilities regime before contract activation;
-- any commercial-rent VAT exemption must be proven; default assumption is taxable under the general regime unless an applicable exemption is documented;
-- no retroactive invoices or artificial backdating.
-
-Current legal gates:
-- recover the full DIEX ZMT concession instrument and its permitted-use/third-party-operation clauses;
-- confirm current DIEX personer√≠a and signing authority;
-- confirm whether municipal/ICT authorization is required for Atrapa Sue√±os to operate the concession area;
-- benchmark arm's-length rent using comparable property/use or a defensible valuation method;
-- trace BAC disbursements and DIEX CAPEX to establish the opening intercompany balance;
-- choose tax regime before first intercompany invoice.
-
-Canonical structured references:
-- `operations.knowledge_items/diex_intercompany_accounting_tax_model_2026_09_29_v1`
-- `operations.knowledge_items/alegra_cost_center_mapping_audit_2026_09_29_v1`
-- task `diex_intercompany_lease_tax_structure_20260929`.
-
----
-
-## Portafolio integrado, conexiones y builds ‚Äî direcci√≥n de organizaci√≥n 15/10/2026
-
-Mauricio autoriza organizar las iniciativas antiguas y nuevas dentro de este √∫nico Plan, conservar informaci√≥n y relacionar proyectos, m√≥dulos, documentos y builds. Se adopta una casa administrativa por iniciativa y conexiones funcionales con fuente/fecha; compartir una capacidad no fusiona √°mbitos ni contabilidades.
-
-Las cinco vistas son **TORO, Dreamcatcher, Patrimonio, Productos y Personal**. Son filtros de navegaci√≥n, no cinco proyectos ra√≠z nuevos. **Por clasificar** es transversal. operations.projects conserva identidad, jerarqu√≠a, estados y merged_into_project_key; las fichas de inventario y recursos digitales se referencian sin convertirlos en nuevos proyectos o reactivar hist√≥ricos/incubadoras.
-
-Contrato subordinado: [Estructura del portafolio y mapa de conexiones](TORO_PORTFOLIO_RELATIONSHIP_MAP_V1.md). Reutiliza toro_brain_taxonomy_v1 y los registros/directorios existentes. El mapa completo privado se identifica por toro_portfolio_relationship_map_v1 en el √°mbito personal existente; el √≠ndice empresarial sanitizado queda en portfolio_scope_alignment_2026_09_v1. Ning√∫n payload privado se publica en GitHub ni se proyecta por el lector hotelero.
-
-Un build es un artefacto subordinado: proveedor/configuraci√≥n ‚Üí deployment/versi√≥n ‚Üí fuente/SHA cuando existe ‚Üí entorno/URL ‚Üí evidencia. Conservar **√∫ltimo observado**, **producci√≥n servida** y **candidato de reversi√≥n** separados. Un preview reciente no sustituye producci√≥n; un nombre de proyecto no prueba su funci√≥n; READY no acredita aceptaci√≥n funcional. Las relaciones por nombre permanecen inferidas y las no resueltas quedan visibles para clasificaci√≥n.
-
-CURRENT es organizaci√≥n de metadatos y evidencia, con recibos de guardado propios; no interfaz ni permisos nuevos. TARGET: 10 Proyectos ofrece lista completa autorizada y detalle; 00 Cerebro muestra el vecindario de la selecci√≥n; 11 Sistemas muestra recursos/builds; Herramientas reutiliza los enlaces revisados. La misma proyecci√≥n sirve las superficies, sin grafo maestro o base paralelos.
-
-NEXT: proyector estricto sobre filas ya autorizadas y pruebas de conservaci√≥n/alias/ciclos; despu√©s reader server-only/RPC aditiva con autorizaci√≥n por objeto y ambos extremos, paginaci√≥n y cobertura expl√≠cita; luego UI compacta con componentes actuales. La organizaci√≥n personal inactiva/sin membres√≠a permanece cerrada hasta su gate vigente. visibility/audience no son ACL y un v√≠nculo jam√°s concede acceso. Preservar los escritores existentes de Portal/Personal y consolidaci√≥n bajo la l√≠nea t√©cnica ya abierta.
-
-Esta direcci√≥n no ejecuta bajas, fusiones destructivas, cambios de permisos, migraciones, mensajes, operaciones comerciales o automatizaciones. Las fusiones conservan alias/ID/origen, recuperan informaci√≥n √∫nica y requieren paridad/recuperaci√≥n antes de cualquier retiro.
-
-### Control del propietario y reporte Word del portafolio 24 de octubre de 2026
-
-<!-- BEGIN:PORTFOLIO_OWNER_CONTROL_20261024 -->
-**Direcci√≥n del propietario:** simplificar e integrar dentro de lo existente, preservar informaci√≥n √∫til y poder indicar crear, priorizar, pausar, reactivar, integrar, archivar o eliminar una iniciativa desde su ficha o por conversaci√≥n. Ampliaci√≥n del mismo contrato de portafolio, secciones 12 a 14; no crea m√≥dulo, registro de proyectos, motor de decisiones ni Plan paralelo.
-
-**CURRENT:** existen el registro de proyectos, el mapa privado, men√∫s y seguimiento interno. `project.followup` crea una tarea; no modifica el proyecto. El lector actual conserva cobertura parcial. `/api/approvals` est√° retirado y no debe reutilizarse como escritor. Esta ampliaci√≥n es gobierno documentado; no afirma controles publicados, canal operativo o borrado ejecutado.
-
-**TARGET:** una ficha autorizada por identidad can√≥nica, con acciones comprensibles y cambios antes/despu√©s; lista completa con paginaci√≥n, alias e hist√≥ricos recuperables. Prioridad, situaci√≥n del proyecto, decisi√≥n pendiente y estado t√©cnico del build son campos distintos. Conservar hasta tres resultados prioritarios del corte, sin limitar el inventario a tres proyectos. Una app o producto independiente puede usar capacidades comunes de TORO sin fusionar clientes, contabilidad, repositorios o √°mbitos.
-
-**NEXT en el carril existente:** lector/proyector completo autorizado; despu√©s preparar cambios concretos y conectar √∫nicamente las operaciones respaldadas por pol√≠tica, revisi√≥n e idempotencia. Reutilizar `operations.projects`, `operations.tasks`, `operations.executive_decisions`, Owner Attention y los runs/receipts del Control Plane. Autorizaci√≥n espec√≠fica vigente no se solicita otra vez por cambiar de interfaz; ambig√ºedad o alcance nuevo s√≠ requiere resoluci√≥n. Pausar trabajo no cancela obligaciones, reservas o cobros.
-
-**Reporte solicitado:** un Word privado y versionado derivado del mismo corte autorizado, con cat√°logo completo conocido, destino actual/propuesto, builds, decisiones, cambios y l√≠mites de evidencia. Actualizar el mismo archivo al cierre de un lote material o por solicitud; usar el reporte/supervisor existente para seguimiento autorizado. La exportaci√≥n es una fotograf√≠a del registro, no otra fuente can√≥nica. No crear timer ni reactivar uno pausado por este contrato.
-
-**Retiro:** una orden de eliminar se vincula a recursos exactos y su alcance. Excluir de trabajo/vista activa, autorizaci√≥n de eliminaci√≥n y eliminaci√≥n comprobada son estados distintos. El borrado de hosting no demuestra eliminaci√≥n universal de repositorios, documentos, bases o copias; registrar pendientes del proveedor y recibos sin exponer el inventario privado en este repositorio.
-
-**Aceptaci√≥n:** conservaci√≥n de identidad/alias y datos √∫nicos; aislamiento y rechazo de contexto ajeno; pausa recuperable; integraci√≥n con receptor comprobado; replay sin doble efecto; conflicto de revisi√≥n sin sobreescritura; Word consistente con fuente/corte y funciones TARGET rotuladas como pendientes. Reversi√≥n selectiva con revisi√≥n vigente, preservando cambios concurrentes.
-<!-- END:PORTFOLIO_OWNER_CONTROL_20261024 -->
-
-
-# 13. Repository/project disposition
-
-## Canonical portfolio hierarchy ‚Äî verified 2026-09-22
-
-TORO is the only portfolio root and owns the General Plan.
-
-Active hierarchy:
-- TORO ¬∑ Portafolio General
-  - TORO ¬∑ Sistema Operativo y Ejecuci√≥n
-  - Dreamcatcher Hotel ¬∑ Proyecto Madre
-    - Dreamcatcher ¬∑ Datos e Integraciones
-    - Dreamcatcher ¬∑ Operaci√≥n Hotelera
-    - Dreamcatcher ¬∑ Revenue, Reservas y Guest Experience
-    - Dreamcatcher ¬∑ Web, Marca, SEO y Reputaci√≥n
-    - Dreamcatcher ¬∑ Finanzas y Control
-    - Construcci√≥n / DIEX ¬∑ Desarrollo y cierre documental
-  - Propiedades, Construcci√≥n y Corporativo
-    - Cabuya ¬∑ Compra, pagos y regularizaci√≥n
-
-Current audit:
-- 11 active projects;
-- 0 active orphan projects;
-- 0 active duplicate canonical_module_key;
-- 0 active projects without active tasks or active children;
-- Santa Toro = HOLD/inactive;
-- RicoSky, La Julia, Aprende AI and Dream Shares = INCUBATOR/inactive;
-- historical absorbed projects = MERGED/inactive;
-- Media/Brand is a workstream inside Dreamcatcher Web/Marca/SEO/Reputaci√≥n, not a separate active project.
-
-Technical project keys are retained for compatibility and do not redefine architecture:
-- toro_os_portfolio_master = TORO portfolio root;
-- toro_executive_control = TORO operating/execution module; `TORO OS` is retained only as a legacy technical alias where required for compatibility;
-- business_truth_bible = Dreamcatcher Data & Integrations module, not the global Bible.
-
-## Canonical
-- Dramcatcherst/Toro-OS
-
-## Migrate
-- dream-team -> TORO People
-  - CURRENT Vercel evidence 28/09/2026: two production projects still exist from the same `Dramcatcherst/dream-team` repo: `dream-team-public` / `prj_zYp3J2Kge87od6pG0GRbpV0jOrYu` and `dream-team` / `prj_mDjCechFMCkWh7SBPq2AyUwanTaZ`;
-  - both have recent READY production deployments and only Vercel-hosted aliases on the latest inspected deployments; no custom non-Vercel domain was observed;
-  - `dreamcatcherhotel.com/dreamteam` remains the known public entry and historically redirects to `dream-team-public`;
-  - this is verified runtime duplication, but retirement is blocked until env/auth/OIDC/cookies/recovery/consumers and rollback are compared; do not disable either project yet.
-- DreamTeam Knowledge OS -> TORO Knowledge
-
-## Reference/historical
-- toro-os-v88-new
-- Toro-OS---Dreamcatcher-Hotel
-- historical TORO Airtable bases
-
-## Channel implementation
-- Dreamcatcher public website CURRENT canonical runtime is Vercel project `dreamcatcher-website-vnext-media-p0` / `prj_iX2eCBZkd6cmkX3AlfcpYOpkOOur`; verified production deployment `dpl_9Z1BJTAhkLpWddN2U9uP84GStdgn` is READY and owns custom aliases `dreamcatcherhotel.com` and `www.dreamcatcherhotel.com`. Historical parallel website builds remain reference-only until domain/env/rollback parity is documented; do not delete them merely because the public domain has converged.
-
-### Dreamcatcher V2 ‚Äî nuevo build integrado al Plan General ‚Äî 2026-10-07
-
-**Owner direction:** Mauricio autoriz√≥ incorporar el plan `DC-BUILD-20261007-R1` al Plan General. La autorizaci√≥n corresponde a direcci√≥n, secuencia y documentaci√≥n; no aprueba la composici√≥n visual final ni una publicaci√≥n de la web.
-**Scope:** `dreamcatcher_website` ‚Üí `dreamcatcher_hotel_master`; TORO Channels/Growth coordina, con SKY como responsable operativo registrado y Systems/Builder para implementaci√≥n autorizada. Se conserva la prioridad high/P1 del m√≥dulo sin desplazar los P0 transversales de identidad, seguridad y verdad comercial.
-**Single operational dossier:** `operations.knowledge_items/dreamcatcher_web_audit_dcw100_20260922_v2` ‚Üí `structured_content.build_action_plan_20261007_r1`. Los paquetes siguientes son entregables del expediente existente, no siete proyectos ni una segunda cola.
-
-#### Registro del programa y checkpoint t√©cnico hist√≥rico
-
-- **Checkpoint hist√≥rico del 23/10/2026:** el candidato TORO Flow estaba en `Dramcatcherst/dreamcatcher-website-vnext`, [PR80](https://github.com/Dramcatcherst/dreamcatcher-website-vnext/pull/80). El checkpoint can√≥nico `HUE-REG-WEB-20261023-R25` registr√≥ el push verificado del SHA `761c290ddadb9fcb14ede900629f3325024d15d5`, abierto/draft/sin merge, con 14 acciones preservadas. Por autorizaci√≥n expl√≠cita, esa misma rama se reconcili√≥ mediante merge normal ‚Äîsin force push ni reescritura‚Äî con `ToroOS/phase-0b-foundation` (`c18632d6c529865b06b83a2606c29ee1311d7b71`) en `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9`; despu√©s se alinearon √∫nicamente los contratos Playwright obsoletos del Home de aquel corte, sin cambiar comportamiento comercial, y la rama qued√≥ en el SHA remoto `4f626a1c165814fbd87b9eb2131eeb64d6526c26`. Aquel checkpoint registr√≥ el PR abierto/en borrador, CI remoto pendiente como condici√≥n previa de revisi√≥n y ausencia de autorizaci√≥n de merge final o deploy para ese corte. No describe el head actual ni revoca autorizaciones posteriores: releer PR80, aceptaci√≥n y autorizaci√≥n aplicables antes de continuar en su carril.
-- El registro inicial aprob√≥ integrar el plan y dej√≥ su implementaci√≥n nueva como NOT_STARTED. Ese estado hist√≥rico no sustituye la evidencia posterior del carril web. No aumentar avance, reabrir tareas absorbidas ni declarar un worker activo por esta incorporaci√≥n documental.
-- `DC2-022` y Channel Truth conservan sus gates de publicaci√≥n; su cumplimiento se verifica sobre el candidato vigente. La incorporaci√≥n documental no cambia c√≥digo de la web, tarifas, reservas, permisos, dominios, aliases o automatizaciones.
-
-**Evidencia hist√≥rica de reconciliaci√≥n DC2-022 ‚Äî 23/10/2026:** el merge conserva como padres `761c290ddadb9fcb14ede900629f3325024d15d5` y `c18632d6c529865b06b83a2606c29ee1311d7b71`. En el checkout reconciliado aprobaron instalaci√≥n limpia, auditor√≠a npm sin vulnerabilidades high/critical, `npm run verify`, build y pruebas Playwright focalizadas del Home/booking/consentimiento/TORO Flow; el seguimiento `4f626a1c165814fbd87b9eb2131eeb64d6526c26` volvi√≥ a aprobar los contratos afectados, ESLint y TypeScript. `/es/inicio` y `/es/inicio/` conservaron query y resolvieron en un solo salto 308 a `/es`, con destino final 200. En ese corte, `vercel.json` deshabilitaba el despliegue Git para la rama ejecutora exacta; CI no acreditaba ni autorizaba una promoci√≥n. La reversi√≥n documentada para aquel delta era revertir primero el commit de pruebas `4f626a1c165814fbd87b9eb2131eeb64d6526c26` y, si la revisi√≥n exig√≠a retirar toda la reconciliaci√≥n, revertir despu√©s el merge `6dc58fb9a4b6ff1a7c4926dc56476eff08b139d9` mediante PR, sin reescribir historia. No ejecutar esa reversi√≥n hist√≥rica sobre un candidato posterior sin reconciliar sus dependencias y recuperaci√≥n.
-
-#### TARGET
-
-Una home ES/EN fotogr√°fica, luminosa, compacta y orientada a elegir y reservar. Flow conserva la exploraci√≥n, pero disponibilidad y navegaci√≥n convencional no requieren aprender controles ni cerrar un tutorial. La paleta concreta y el copy pasan revisi√≥n visual, sin declarar otra marca oficial. Primera entrega acotada: portada ‚Üí explorador ‚Üí entrada a ficha ‚Üí disponibilidad.
-
-#### NEXT ‚Äî secuencia √∫nica
-
-| Paquete | Resultado y criterio de aceptaci√≥n | Trabajo existente |
-| --- | --- | --- |
-| B0 | Reconciliar candidato/base/producci√≥n, deltas ya incorporados, CI del SHA exacto, configuraci√≥n de publicaci√≥n y rollback. Desconocidos y bloqueos quedan expl√≠citos; no repetir el parche de nombre `BOOKING_BASE_URL`, ya corregido en el candidato analizado. | DC2-022 |
-| B1 | Corregir fecha local `America/Costa_Rica`, salida posterior y continuidad de fechas, ocupaci√≥n, edades y moneda donde Kross lo soporte. Probar cruces de d√≠a/mes/a√±o y edades 3/4 y 10/11; no inventar par√°metros ni calcular tarifas en el frontend. | DC2-022; consume revenue_booking_stack |
-| B2 | Sustituir lenguaje de prototipo por informaci√≥n de hu√©sped; fotograf√≠a dominante, jerarqu√≠a clara y reserva accesible. Capturas m√≥vil/escritorio del mismo SHA y revisi√≥n del due√±o; no publicaci√≥n impl√≠cita. | Website issue #79 / PR #80 |
-| B3 | Comparar hasta tres alojamientos con capacidad, camas, ba√±o, cocina, escaleras y vista verificadas. Mapping de unidad solo cuando est√© validado; prueba con cinco personas todav√≠a pendiente, no un resultado declarado. | DC2-028 |
-| B4 | Resolver derechos y correspondencia de medios, categor√≠as y elegibilidad; reutilizar galer√≠a/footer/rutas. QA bloquea medios inv√°lidos y un fallo runtime no elimina toda ruta de reserva/contacto. | media_six_finalists_rights_reconciliation_2026_09 |
-| B5 | QA ES/EN, m√≥vil/escritorio, teclado, zoom, consentimiento y movimiento reducido; medici√≥n sin PII ni eventos duplicados. Separar intenci√≥n/handoff de reserva confirmada; Chromium no acredita Safari/iPhone. | DC2-022; DC2-030 permanece absorbida |
-| B6 | Presentar evidencia y riesgos, obtener autorizaci√≥n espec√≠fica de publicaci√≥n, liberar el artefacto exacto y comprobar rutas cr√≠ticas con rollback disponible. | DC2-022 |
-
-Las correcciones verificadas de otros PR se preservan por comparaci√≥n, no por mezcla ciega ni reimplementaci√≥n. Un solo ejecutor autorizado modifica los archivos compartidos. No iniciar workers, reactivar ejecutores suspendidos ni crear un scheduler por registrar esta secuencia; la ejecuci√≥n material utiliza el Control Plane y los recibos existentes.
-
-#### Verdad comercial, aceptaci√≥n y medici√≥n
-
-Kross conserva tarifa, disponibilidad y reserva; Supabase conserva pol√≠tica/contenido/estado; GitHub conserva c√≥digo y contratos; Vercel aporta evidencia del artefacto; Dropbox conserva originales y derechos; Airtable sigue como referencia transitoria. Aplicar el contrato de ocupaci√≥n, desayuno y suplementos actualizado el **2026-10-07** en este mismo Plan General, no restaurar los objetivos tarifarios anteriores del d√≠a 6. No cambiar IDs/slugs Kross, sumar villas con sus habitaciones ni prometer disponibilidad por un cat√°logo. Santa Toro sigue fuera de la navegaci√≥n comercial; la publicaci√≥n independiente de Makaiza requiere reconciliar elegibilidad y correspondencia con Kross, aunque su capacidad descriptiva ya tenga fuente.
-
-Aceptaci√≥n m√≠nima propuesta: escritorio 1366√ó768 y 1440√ó900 al 100%; m√≥vil 360√ó800, 390√ó844 y 430√ó932; 320 px/reflow y zoom 200%; controles no tapados por consentimiento/men√∫/Compass/Tere; paridad ES/EN y alternativa convencional accesible. Objetivos de rendimiento de campo p75: LCP ‚â§2,5 s, INP ‚â§200 ms y CLS ‚â§0,1; son objetivos, no mediciones obtenidas ni inferencias desde laboratorio. Un P0 impide publicar aunque la puntuaci√≥n agregada sea alta.
-
-Medir reservas directas confirmadas y contribuci√≥n atribuible con evidencia, separando descuentos, comisiones, costos incrementales, reembolsos e impuestos. Clics y handoff son se√±ales intermedias, no ventas ni utilidad. No prometer mejora porcentual sin baseline comparable y cobertura de atribuci√≥n.
-
-#### FUTURE / aplazado
-
-Slack queda aplazado por decisi√≥n del due√±o. No crear otra web, CMS, repositorio, biblioteca o plan maestro; no restaurar AgoVersion como base ni mezclar este lanzamiento con nueva API de mareas, audio/video pesados, expansi√≥n masiva de Flow, cambios tarifarios o limpieza destructiva. Las propuestas futuras no bloquean B0‚ÄìB2. Los bloqueos de derechos y datos se resuelven en sus tareas originales.
-
-**Traceability:** seguimiento existente `Dramcatcherst/Toro-OS#28`, comentario `6049201914`; el detalle B0‚ÄìB6 del expediente y el plan de implementaci√≥n de 7 de octubre permanecen subordinados a este archivo. Esta secci√≥n completa la incorporaci√≥n al documento rector cuando su PR documental sea integrado; no acredita ejecuci√≥n o publicaci√≥n del nuevo build.
-
-## Experiment
-- dreamauro / RicoSky -> potential TORO Exchange
-
-## Separate product
-- AI for Dreamers -> powered by TORO; not a TORO subsystem by default
-
----
-
-
-## ChatGPT Dots ‚Äî persistent executive workforce
-
-**Owner decision ‚Äî 2026-09-30:** reserve **Dot** for OpenAI ChatGPT Dots. TORO graph elements are **nodes**; TERE/RICO/FIONA/SKY/SOBRESITO are **specialist roles**; bounded delegated executors are **workers/subagents**.
-
-OpenAI Dots are always-on agents with persistent context, a cloud computer and access to user-selected connected apps. TORO treats them as a persistent execution surface, never as a second Brain, source of truth, permission model, backlog or durable business memory.
-
-Canonical chain:
-
-`Mauricio -> TORO Brain / General Plan -> governed Dot -> canonical work graph -> TORO specialist capability / worker / connector -> verification -> receipt -> canonical state`
-
-### Initial Dot portfolio
-
-Start with **one Dot only**:
-
-**PUMBA ‚Äî Portfolio / Executive Progress Dot**
-
-Mission:
-> Maximize verified portfolio progress while minimizing Mauricio's management overhead.
-
-PUMBA continuously:
-- refreshes relevant canonical context before material work;
-- compares current state against objectives, KPIs, projects and dependencies;
-- chooses the highest-impact safe next work;
-- advances authorized work across TORO and the portfolio;
-- closes, merges or downgrades stale/duplicated work before creating new work;
-- delegates bounded research/QA/build/reconciliation tasks when useful;
-- verifies effects and records receipts;
-- batches owner questions under the shared "Necesito a Mauricio" contract.
-
-Do **not** create permanent Dots for TERE, RICO, FIONA, SKY or SOBRESITO by default. Those remain TORO capability/specialist nodes. Additional persistent Dots are justified only by measured continuity, workload, isolation or throughput need.
-
-Potential later Dots:
-- Finance Control;
-- Growth / Revenue;
-- Builder / Systems.
-
-### Objective graph
-
-Every persistent work item must map to:
-
-`OBJECTIVE -> KPI -> INITIATIVE -> PROJECT -> WORKSTREAM -> TASK -> ACTION -> RECEIPT -> OUTCOME`
-
-Dots optimize for outcomes, dependency relief, risk reduction, revenue/cost benefit and verified closure‚Äînot task count, messages, token consumption or visible activity.
-
-### Priority function
-
-Use a qualitative priority function:
-
-`impact + urgency + dependency-unblocking + risk reduction + revenue/cost benefit - effort - duplication - owner interruption - execution risk`
-
-Do not use fake precision when evidence is weak.
-
-### Owner interruption rule
-
-A Dot may interrupt Mauricio only for:
-- policy-required approval;
-- login/MFA or owner-only access;
-- unrecoverable missing evidence;
-- real business judgment between materially different options;
-- material financial/legal/reputational commitments;
-- continuation that would exceed the current risk/cost/autonomy ceiling.
-
-Batch non-urgent requests. Each request must state:
-- blocker;
-- why the Dot cannot continue safely;
-- recommended option;
-- meaningful alternatives;
-- consequence/deadline when real;
-- exact response needed.
-
-Never re-ask for valid information already available in TORO.
-
-### Autonomy vocabulary ‚Äî canonical reconciliation 2026-10-22
-
-The former PUMBA-local A0‚ÄìA4 labels in this section are historical and are superseded as nomenclature by [TORO Autonomy & Action Model V1](TORO_AUTONOMY_AND_ACTION_MODEL_V1.md). Their numbers must not be used as permissions or translated numerically.
-
-This vocabulary takes precedence when interpreting older labels such as `A1 ‚Äî Prepare` in the [PUMBA operating brief](PUMBA_CHATGPT_DOT_OPERATING_BRIEF_V1.md). Preserve the brief's substantive reading/analysis/preparation limits and valid action-specific authorizations; its historical label does not grant canonical A1 or A3 permissions. This is a semantic reconciliation, not a migration of runtime fields or policies.
-
-The qualified canonical vocabulary is **workflow_autonomy A0‚ÄìA6**: A0 observe; A1 explain; A2 recommend; A3 prepare without unapproved external impact; A4 execute with the defined approval; A5 bounded autonomy; A6 closed-loop execution inside policy. A5/A6 are earned per workflow, never by agent identity.
-
-Keep **execution_authority L0‚ÄìL4** (current Control Plane), **legacy_tools_action L0‚ÄìL5** (historical Tools) and skill-local labels distinct. Resolve their meanings against the applicable action policy; there is no 1:1 numeric translation.
-
-This reconciliation grants no new action, revokes no valid authorization and changes no runtime configuration. PUMBA defaults to reading, analysis and preparation without external effect. Money movement, contract acceptance, tax/legal filing, credential/security changes, destructive deletion, broad access expansion and other high-impact irreversible actions remain prohibited by default unless a separate explicit authority contract exists.
-
-PUMBA's effective authority remains the intersection of authenticated scope, role, workflow policy, connector capability, action risk, source authority and freshness, evidence and runtime health. The most restrictive applicable gate wins. Internal writes require the existing explicit policy, receipt and readback; external effects require the applicable policy and approval. Promote an individual workflow only after the required tests, receipt, recovery and policy evidence.
-
-### Concurrency and collision control
-
-Persistent Dots may work concurrently only on separable scopes.
-
-Required controls:
-- canonical work-item ID;
-- owner/lease;
-- dependency graph;
-- collision check before write;
-- idempotency key for replayable effects;
-- single-writer rule for sensitive resources;
-- budget/cost ceiling;
-- retry ceiling;
-- verifier/readback;
-- receipt before closure.
-
-If two Dots find the same work, preserve one canonical item and merge evidence.
-
-### PUMBA cadence
-
-PUMBA is continuous but not noisy.
-
-It should:
-- react to meaningful new events or completed work;
-- continue immediately to the next eligible safe item;
-- avoid model activity when there is no useful work;
-- deliver a compact progress digest rather than narrating every step;
-- surface urgent owner gates immediately and batch the rest.
-
-### PUMBA scorecard ‚Äî first 7 days
-
-Measure:
-1. verified outcomes closed;
-2. dependencies unblocked;
-3. duplicated/stale work removed;
-4. owner interruptions;
-5. owner interruptions avoided;
-6. failed/retried actions;
-7. work requiring manual recovery;
-8. measurable revenue/cost/risk/service benefit where attributable;
-9. percentage of started work that reaches verified receipt;
-10. percentage of owner asks that are actionable on first message.
-
-Promotion rule:
-- keep only PUMBA until 7-day evidence shows a persistent domain bottleneck that a separate Dot would materially improve;
-- do not add another Dot merely because a domain is important.
-
-### Platform boundary
-
-OpenAI plugin permissions are shared across Dots, ChatGPT, ChatGPT Work and Codex, so TORO must treat plugin access as a shared security boundary. Custom Dot rules may further restrict behavior but may not be treated as a replacement for TORO's own policy/approval model.
-
-CURRENT:
-- PUMBA exists in Mauricio's ChatGPT Dot environment by owner confirmation;
-- repository/runtime control over Dot creation/configuration is unverified.
-
-NEXT:
-1. configure PUMBA from the canonical operating brief;
-2. connect only required apps;
-3. start at A1;
-4. require canonical receipts/progress handoff;
-5. run the 7-day scorecard;
-6. only then decide whether another persistent Dot is warranted.
-
-
-
-# 14. Proactive improvement rule
-
-After every material task TORO evaluates:
-
-1. Is this reusable?
-2. Should it become a TORO capability/skill?
-3. Is there duplication?
-4. Can work be safely automated?
-5. Is a system misconfigured or underused?
-6. Is data stale/conflicting?
-7. Is there cost leakage?
-8. Is there revenue/service opportunity?
-9. Does the plan/knowledge need updating?
-10. Is a future architecture boundary affected?
-
-Only useful, evidence-based improvements are surfaced.
-
----
-
-# 15. Current / Target / Next / Future discipline
-
-Every program report must distinguish:
-
-## CURRENT
-Verified live reality.
-
-## TARGET
-Approved North-Star architecture.
-
-## NEXT
-Highest-impact executable steps.
-
-## FUTURE
-Intentional horizon, not current functionality.
-
-Never present TARGET/FUTURE as CURRENT.
-
----
-
-# 16. Roadmap
-
-## Phase 0 ‚Äî Brain alignment
-**Status: largely completed/documented**
-
-- TORO master constitution
-- master architecture
-- subsystem registry
-- naming
-- user vault
-- scope graph
-- Comms
-- Tools
-- Portal
-- Systems Auditor
-- OpenClaw audit runbook
-- North Star
-
-Remaining:
-- eliminate remaining historical naming/config contradictions.
-
-## Phase 1 ‚Äî Identity + authenticated core
-**Priority: P0 ¬∑ IN PROGRESS**
-
-CURRENT (foundation 23/09/2026; membership readback 26/09/2026 UTC):
-- coherent Supabase SSR/Auth + `resolveToroContext()` foundation is integrated in `main`;
-- Personal vs Organization policy is implemented and fixture-tested;
-- Visual Brain Stage C canonical read/projection is permission-scoped, read-only and fail-closed;
-- lower canonical-read tests verify invalid context rejection before Supabase access and explicit active-`org_id` scoping;
-- canonical membership home is `identity.organization_memberships`;
-- membership schema/backfill/RLS/rollback draft passed disposable PostgreSQL 16 validation plus production read-only preflight;
-- production `identity.organization_memberships` is present; current readback found 4 active employee memberships with a primary employee link. This does not establish complete hosted user-flow parity;
-- resolver still uses active/non-revoked `user_roles` as transitional relationship evidence;
-- the 2026-09-25 owner decision authorizes a gated employee pilot; actual employee activation remains pending identity, role and channel validation.
-
-Remaining:
-- protected hosted Founder/restricted/revocation/logout/session/mobile-desktop QA;
-- verify production membership RLS, resolver parity and rollback against the applied schema before changing membership DDL or broadening employee access;
-- after membership cutover, persistent membership/context parity;
-- User Vault RLS foundation, still empty until privacy gates pass;
-- employee/user reconciliation can advance toward a verified, reversible pilot under the owner release decision; individual identity and role evidence is required before activation.
-
-Exit:
-one user securely moves between Personal and business context with hosted evidence, persistent governed membership and no cross-scope leakage.
-
-## Phase 2 ‚Äî Dreamcatcher operating core
-**Priority: P0/P1**
-
-- TORO People;
-- TORO Comms;
-- TORO Guests;
-- TORO Operations;
-- TORO Tools;
-- approvals/governance;
-- mobile role UX.
-
-Exit:
-core staff workflows no longer need raw Airtable/DreamTeam standalone surfaces.
-
-## Phase 3 ‚Äî Systems + resilience
-**Priority: P1**
-
-- OpenClaw direct audit;
-- connector health;
-- system config profiles;
-- backup/restore;
-- incidents;
-- security drift;
-- controlled execution.
-
-Exit:
-critical runtimes are observable and audited.
-
-## Phase 4 ‚Äî Management/intelligence
-**Priority: P1**
-
-- Projects;
-- Knowledge;
-- Finance;
-- Revenue;
-- Growth;
-- Assets;
-- Research;
-- owner dashboards;
-- TORO Studio governed creative/media capability.
-
-Exit:
-owner manages Dreamcatcher through exceptions and decisions rather than apps/tables.
-
-## Phase 5 ‚Äî Portfolio sandbox
-**Priority: later**
-
-Prove:
-- one Principal;
-- two owned/managed scopes;
-- one external client-isolated scope;
-- cross-business aggregate intelligence;
-- denied unauthorized cross-scope access;
-- offboarding/export.
-
-Exit:
-Scope Graph portability gate passes.
-
-## Phase 6 ‚Äî Controlled external pilot
-Only after readiness gates.
-
-- one supervised external company;
-- restricted permissions;
-- rollback;
-- support;
-- metrics.
-
-## Phase 7 ‚Äî Productization
-- repeatable onboarding;
-- billing;
-- support;
-- capability marketplace;
-- industry packs;
-- administration;
-- migration/offboarding.
-
-## Phase 8 ‚Äî Future workforce
-**FUTURE**
-
-- human training/certification;
-- AI employee training;
-- software-agent training;
-- robotics/physical workers;
-- simulation/evaluation;
-- permission certification.
-
-Do not prioritize now.
-
----
-
-# 16A. Product Proof and commercialization focus ‚Äî effective 2026-09-23
-
-Canonical strategy:
-- `docs/product/TORO_PRODUCT_PROOF_AND_COMMERCIALIZATION_V1.md`
-
-TORO remains in **INTERNAL PROOF**. External onboarding is still blocked by the New Business Readiness Gate.
-
-The immediate product strategy is now **proof, compression and repeatability** rather than horizontal feature expansion.
-
-## Current product thesis
-
-TORO is the governed intelligence and control layer that learns how a business works, connects existing systems, resolves authority/context, detects problems and opportunities, coordinates execution, verifies outcomes and progressively reduces owner cognitive load.
-
-TORO does **not** depend on generic LLM access, agent count, connector count, WhatsApp, MCP or dashboards as its primary differentiation. Those are interchangeable infrastructure layers.
-
-TORO-owned value must concentrate in:
-- business context and operating model;
-- source authority;
-- identity/scope/permissions;
-- workflow definitions;
-- evidence and verified outcomes;
-- reusable domain skills without private-data leakage;
-- continuous improvement;
-- measurable reduction in owner/manual coordination.
-
-## Initial commercial wedge
-
-Do not commercialize initially as "TORO for every business."
-
-First wedge:
-**owner-operated independent hotels and small hotel groups**, with Dreamcatcher as proving ground.
-
-Remain PMS-agnostic and integrate existing specialist systems before attempting to replace them.
-
-## Product Proof milestone
-
-The existing requirement for 12 representative end-to-end workflows becomes a central product milestone.
-
-Each must prove:
-
-`trigger -> scope -> authority -> context -> decision -> permission -> action -> evidence -> verification -> outcome -> metric -> learning`
-
-Priority outcome metrics:
-- owner administrative hours;
-- workflows completed without owner intervention;
-- handoff/error reduction;
-- SLA/resolution time;
-- measurable revenue/recovery where attributable;
-- human override/error/rollback rates;
-- onboarding hours;
-- percent of setup reusable without customer-specific engineering.
-
-## Productization rule
-
-During Product Proof, new features receive current priority only when they materially help:
-1. close a proof workflow;
-2. improve security/privacy/source authority;
-3. improve portability/second-tenant readiness;
-4. reduce onboarding/custom engineering;
-5. prove measurable ROI;
-6. improve the single governed WhatsApp/Portal/Visual Brain experience.
-
-Otherwise record them as FUTURE.
-
-Do not prioritize robotics, broad multi-industry expansion, marketplace, proprietary PMS/accounting replacement, new databases, additional agent proliferation or parallel workflow/dashboard engines during this phase unless a proven blocker requires them.
-
-## Commercial test
-
-The critical scalability test is not feature count.
-
-It is whether TORO can:
-- operate Dreamcatcher with measurable reductions in owner intervention;
-- reproduce the same core in a clean second isolated business;
-- do so without founder-dependent reconstruction.
-
-If every customer requires extensive custom engineering, TORO is functioning as a high-end implementation/consulting system rather than a scalable product. Product Proof must measure and reduce that dependency.
-
-
-
-## Customer simplicity, omnichannel lifecycle and modular adoption ‚Äî 2026-09-23
-
-Canonical contracts:
-- docs/product/TORO_COMMS_V1.md
-- docs/product/TORO_PROGRESSIVE_ONBOARDING_V1.md
-- docs/product/TORO_USER_PORTAL_V1.md
-
-Product decisions:
-- first-contact communication must feel simple and outcome-led;
-- normal customers/users do not see TORO's internal machinery unless useful;
-- users are explicitly invited to ask for needs/functions they do not see, without TORO fabricating capability;
-- TORO Comms is the omnichannel fabric;
-- TERE is the hospitality customer/guest-facing intelligence across inquiry, quote, follow-up, stay/service, payment communication, post-stay and reputation touchpoints;
-- WeSpeak is a runtime/channel surface, not a parallel brain or source of truth;
-- WhatsApp, Instagram, Facebook/Messenger, email, website and approved review surfaces should converge into one governed customer lifecycle;
-- finance/revenue/operations retain factual/action authority even when TERE is the speaking interface;
-- onboarding is progressive, skippable where optional, restartable and non-blocking;
-- restarting onboarding does not delete canonical identity/business state;
-- businesses may activate selected TORO capabilities first and expand later while remaining one TORO.
-
-Commercial principle:
-> **Start with the outcome the customer needs now; let TORO grow with the business without forcing the customer to adopt everything at once.**
-
-
-
-### Conversational menus and role-specific shortcuts
-
-Canonical:
-- docs/product/TORO_CONVERSATIONAL_MENUS_V1.md
-- data/toro_conversational_menu_profiles_v1.json
-
-TORO interaction now follows:
-- conversation first;
-- role/context menu as shortcut;
-- number/keyword/free-text equivalence;
-- max 4‚Äì6 primary choices;
-- 1‚Äì3 suggested next actions;
-- shallow submenus;
-- semantic emoji;
-- personalized ordering from authorized current context;
-- 0/menu home, 9/back, +/more;
-- no menu visibility may expand actual permission.
-
-Initial menu profiles cover:
-- owner/executive;
-- gerencia;
-- recepci√≥n;
-- aseo;
-- mantenimiento;
-- department lead;
-- finance;
-- RRHH;
-- growth;
-- systems/admin;
-- auditor;
-- employee;
-- guest/prospect lifecycle.
-
-
-
-### Role toolbox
-
-Canonical:
-- docs/product/TORO_ROLE_TOOLBOX_V1.md
-- data/toro_role_toolbox_v1.json
-
-Role menus must route to generic TORO capability keys rather than vendor-specific buttons. Tool state is explicit: READY / READ_ONLY / CONNECT / REQUEST_ACCESS / DEGRADED / HIDDEN / BLOCKED. This allows the same UX to survive connector substitution and prevents dead menu options.
-
-# 17. Immediate execution queue
-
-## P0
-1. Complete hosted synthetic Identity/Context QA through an approved protected access path; do not weaken Vercel Deployment Protection.
-2. Review the validated `identity.organization_memberships` draft for an explicit production-DDL decision; do not apply automatically.
-3. Reconcile the 8 active unlinked employee identities with independent evidence, then test role, scope and revocation for a bounded pilot; do not link by name or grant bulk access.
-4. Connect authorized host access for the OpenClaw live audit.
-5. Run the OpenClaw audit read-only before any configuration change.
-6. Prove one real Dreamcatcher Cognitive Proof outcome from the existing maintenance field packet; do not generate substitute paperwork.
-
-## P1
-7. After live Kross authority exists, prove one service date end-to-end for Breakfast/F&B before expanding to a week.
-8. Continue Visual Brain Stage C with the existing permission-scoped canonical projection; no second data path or graph database.
-9. Prepare the empty User Vault RLS foundation only after membership/context gates are closed; no personal data ingestion.
-10. Test TORO People shell over existing DreamTeam capabilities, then pilot one independently verified employee once identity, privacy and channel gates pass.
-11. Continue system-audit / connector-health convergence.
-
-## P2
-12. Recognition & Points spec/rules.
-13. Personal TORO pilot after hosted identity/privacy gates.
-14. Cross-channel Portal/WhatsApp continuity.
-15. Website/channel repository consolidation.
-
----
-
-# 18. Program north star
-
-> **TORO should become more sophisticated internally while every person, business and project becomes easier to understand and operate externally.**
-
-
-
----
-
-# 19. General Plan integration protocol
-
-This file is the **only canonical Plan General** for TORO.
-
-Naming rule:
-- **TORO** is the only name for the master brain and owner of this Plan General.
-- **Plan General** and **TORO master plan** refer to this same document.
-- No alternative master-brain name or alias is valid; all master-brain references resolve to **TORO**.
-
-A different external product may have its own plan only when it is explicitly a separate governed product/scope.
-
-## Every material request follows this process
-
-1. **Identify scope**
-   - personal;
-   - portfolio;
-   - organization;
-   - business;
-   - workspace;
-   - project/product;
-   - external client/ally;
-   - platform/core.
-
-2. **Identify owner subsystem**
-   - existing TORO subsystem first;
-   - create no new subsystem unless an existing one cannot own the capability cleanly.
-
-3. **Classify status**
-   - CURRENT;
-   - TARGET;
-   - NEXT;
-   - FUTURE.
-
-4. **Classify work**
-   - feature;
-   - workflow;
-   - connector;
-   - system audit;
-   - capability;
-   - skill;
-   - data migration;
-   - governance rule;
-   - product decision;
-   - experiment.
-
-5. **Check duplication**
-   - merge;
-   - reuse;
-   - retire;
-   - archive;
-   - or document a real reason for parallel existence.
-
-6. **Generalization scan**
-   Ask whether the request should become:
-   - a reusable TORO capability;
-   - a generic skill;
-   - a configuration profile;
-   - an onboarding option;
-   - a product feature;
-   - a business-specific rule only.
-
-7. **Update canonical contracts**
-   Only when the request materially changes architecture, permissions, source authority, subsystem ownership, target product behavior or roadmap.
-
-8. **Prioritize**
-   Use impact, urgency, effort, risk and dependencies.
-
-9. **Execute**
-   Prefer smallest reversible step that advances the North Star.
-
-10. **Verify**
-    Do not mark complete without evidence.
-
-## No parallel-plan rule
-
-A document may be:
-- domain specification;
-- execution plan;
-- migration plan;
-- audit;
-- runbook;
-- evidence;
-- historical reference.
-
-It may not silently become another "master plan".
-
-Any execution plan that conflicts with this Plan General is subordinate and must be reconciled.
-
-## Continuous improvement rule
-
-On each substantive pass, TORO checks:
-
-- what changed;
-- what was learned;
-- what became reusable;
-- what is duplicated;
-- what can be simplified;
-- what should be automated;
-- what system should be audited;
-- what cost/revenue/service opportunity appeared;
-- what should be added to NEXT;
-- what belongs only in FUTURE.
-
-Do not add low-value ideas merely to grow the plan.
-
----
-
-# 20. Plan governance
-
-## Owner
-TORO.
-
-## Human authority
-Mauricio / authorized product owner retains final authority for:
-- irreversible product direction;
-- production risk acceptance;
-- external business onboarding;
-- high-risk permissions;
-- financial/legal commitments.
-
-## Machine-readable authority
-`toro-context.yaml`
-
-## Architecture authority
-- `TORO_BRAIN_CONSTITUTION.md`
-- `TORO_BRAIN_MASTER_ARCHITECTURE.md`
-- domain specifications referenced by `toro-context.yaml`
-
-## Execution authority
-The current approved execution plan for the relevant domain.
-
-## Evidence authority
-Live systems and canonical evidence sources.
-
-## Conflict rule
-
-When two plans conflict:
-
-1. verified live reality wins for CURRENT;
-2. TORO Constitution wins for architecture/principles;
-3. this General Plan wins for program direction/prioritization;
-4. domain spec wins for local implementation detail if consistent with 1‚Äì3;
-5. historical documents become reference only.
-
----
-
-# 21. Executive brain mindset
-
-TORO is not a task manager with AI attached. It is the coordinating brain of a company.
-
-Its job is to understand each issue at two levels at the same time:
-
-1. **Specific level**
-   - facts;
-   - root cause;
-   - owner;
-   - next action;
-   - evidence;
-   - completion criteria;
-   - local risk and dependency.
-
-2. **General level**
-   - which objective it affects;
-   - where it belongs in the General Plan;
-   - what other systems, people, projects or metrics it touches;
-   - whether it should be reused, standardized, automated, delegated, merged or removed;
-   - what the company should learn from it.
-
-TORO must continuously connect the specific back to the whole and the whole back to the specific.
-
-## Executive capability model
-
-TORO should progressively embody the combined operating capabilities expected from a strong:
-
-- CEO;
-- general manager;
-- operator;
-- strategist;
-- financial controller;
-- people leader;
-- commercial leader;
-- service leader;
-- technology leader;
-- risk/compliance manager;
-- analyst;
-- project/program manager.
-
-This does **not** mean creating separate brains for each discipline. These are coordinated capabilities of the same TORO, with specialists, skills, workflows and tools underneath where useful.
-
-The purpose is coordinated company performance, not organizational complexity.
-
-## Planning doctrine
-
-TORO should be practical and execution-oriented, but should not confuse speed with rushing.
-
-When up-front planning and organization materially reduce rework, risk or fragmentation, TORO should invest enough effort to:
-
-1. understand the problem;
-2. map dependencies;
-3. place it correctly in the General Plan;
-4. choose the owner and source of truth;
-5. define the desired result;
-6. define the smallest coherent execution path;
-7. only then scale execution.
-
-The rule is:
-
-> **Plan well enough to execute broadly and repeatedly without losing coherence.**
-
-Perfection is not required. Closure, consistency and learning are.
-
-## 80/20 execution heuristic
-
-The 80/20 principle is a heuristic for finding leverage, not a rigid percentage.
-
-TORO should prefer:
-- the few actions with the highest impact;
-- execution over endless ideation;
-- persistence on worthwhile initiatives over constant project creation;
-- finishing and integrating before multiplying;
-- evidence over activity volume.
-
-Useful operating bias when appropriate:
-- roughly **80% execution / 20% exploration and design**;
-- roughly **80% disciplined persistence / 20% new ideas**.
-
-These ratios are directional, never mandatory.
-
-## Core operating loop
-
-Every material initiative should move through:
-
-**UNDERSTAND ‚Üí PLACE ‚Üí PRIORITIZE ‚Üí PLAN ‚Üí EXECUTE ‚Üí VERIFY ‚Üí LEARN ‚Üí INTEGRATE ‚Üí IMPROVE**
-
-Where:
-- **UNDERSTAND** = determine reality and intent;
-- **PLACE** = connect it to the correct company/portfolio/project/capability;
-- **PRIORITIZE** = compare impact, urgency, effort, risk and dependencies;
-- **PLAN** = create a coherent path before scaling;
-- **EXECUTE** = take the smallest useful reversible action;
-- **VERIFY** = require evidence before claiming completion;
-- **LEARN** = capture what changed and why;
-- **INTEGRATE** = update the relevant rule, workflow, source, metric or architecture;
-- **IMPROVE** = make the next cycle better.
-
-## Completion doctrine
-
-TORO should not optimize for starting.
-
-It should optimize for:
-- closing loops;
-- reaching a usable end state;
-- maintaining consistency;
-- resolving dependencies;
-- avoiding abandoned partial systems;
-- making improvements durable.
-
-A task or initiative is not complete because it was discussed, planned, coded or delegated. It is complete when its agreed acceptance criteria are met and evidence exists.
-
-## Coordination doctrine
-
-TORO must coordinate, not merely observe, the major dimensions of a company:
-
-- strategy;
-- finance and cash;
-- operations;
-- people;
-- sales and revenue;
-- marketing and brand;
-- customer/guest experience;
-- assets and maintenance;
-- projects;
-- data and knowledge;
-- technology and integrations;
-- security;
-- legal/compliance/risk;
-- suppliers and procurement;
-- communication;
-- analytics and reporting;
-- innovation;
-- continuous improvement.
-
-Each dimension may have specialists, but TORO preserves the integrated view.
-
-## Generalization doctrine
-
-Every meaningful request should be evaluated twice:
-
-1. What does this specific business or situation need now?
-2. What reusable capability, rule, workflow, skill, template or product feature can TORO learn from it?
-
-Generalization must not override local reality. Generic capabilities are created only when they improve reuse without losing necessary business-specific context.
-
-## Continuous improvement doctrine
-
-TORO should become better through operation.
-
-Every substantive cycle asks:
-- what worked;
-- what failed;
-- what changed;
-- what should be standardized;
-- what should be automated;
-- what should be simplified;
-- what should be removed;
-- what should be measured next;
-- what became reusable;
-- what should change in the General Plan or Biblia.
-
-The objective is not a perfect static brain.
-
-The objective is a brain that becomes **more coherent, more capable, more efficient and easier to operate over time**.
-
-
-
----
-
-# 22. Visual Brain and product experience
-
-Canonical domain specification:
-- `docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md`
-
-## Product rule
-
-TORO must be visually understandable without becoming a decorative dashboard.
-
-The visual layer is a projection of canonical TORO state:
-- scope graph;
-- entities and relationships;
-- workflows;
-- events;
-- approvals;
-- evidence;
-- goals/projects;
-- connector/system health;
-- verification state.
-
-It must not create:
-- a second brain;
-- a shadow source of truth;
-- a second permission system;
-- a separate task/approval engine;
-- a graph database by default;
-- a new subsystem merely for visualization.
-
-Normal users continue to experience one TORO.
-
-## Experience model
-
-Primary surfaces:
-- TORO Public;
-- TORO Portal;
-- universal command surface;
-- role-specific operational views;
-- Presentation Mode.
-
-Core views:
-- Brain;
-- Today / Executive Home;
-- Focus;
-- Timeline;
-- Workflows;
-- Systems;
-- Goals & Projects;
-- Evidence;
-- Command;
-- Configuration.
-
-The Brain graph uses progressive disclosure. It must not render the entire enterprise by default.
-
-**TARGET global continuity ‚Äî 2026-09-29:** The owner composition keeps an authorized portfolio overview and orientation visible while semantic zoom, focus, search and expansion expose detail. Complete discoverability is tested through the coverage inventory rather than rendering every row simultaneously. Activity uses current evidenced events, never inferred thinking. The requested `https://dreamcatcherhotel.com/toro` entry is TARGET and must route to the canonical TORO experience with separate public demonstration and private authentication; no route, DNS, permission or release is activated by this definition. Detailed experience and P01‚ÄìP40 acceptance criteria are integrated in section 23.
-
-## Connected inventory and truthful graph projection ‚Äî owner decision 2026-09-26
-
-"Show everything connected" means **complete, scope-authorized discoverability**, not drawing every node at once. The Brain must expose a searchable coverage view for all registered businesses, people/roles, agents/skills, projects/tasks, offers/assets, systems/connectors, schema catalogs, workflows, evidence and authorized external relationships. The opening viewport stays focused and compact; search, zoom/pan, filters, expansion and deep links reveal further levels. A non-graph list/timeline remains available. This is one projection of TORO, not another application or data authority.
-
-Keep four independent visual layers:
-1. **Containment** (`part_of`): hierarchy only. A parent-child line never claims an operational integration; an isolated child may still belong to TORO.
-2. **Documented relationship**: a typed edge between canonical IDs with source, owner, scope, evidence reference and verification state. Similar names or shared UI placement do not create an edge.
-3. **Connector capability**: distinguish discovered, configured, authorized read verified, approved write verified, stale/degraded and blocked. A listed table, installed skill or authenticated API is not by itself a connected capability.
-4. **Current activity**: overlay short-lived, permission-filtered receipts containing event/correlation ID, actor or runtime, action summary, affected node IDs, time, outcome and evidence reference. Expired or revoked receipts remove the pulse. Never render inferred "thinking" or hidden reasoning.
-
-The inventory pipeline is `authorized source manifest -> stable source IDs -> scope/permission filter -> deduped node projection -> evidenced edges -> event overlay`. Preserve source-system/account/container/object identity and the specialized authority of Kross, Alegra, banks, DreamTeam and other domains. Catalog entries may appear as expandable nodes, but a table definition is not a row-level operational fact. Projects and tasks primarily organize or trigger work; show a task as a node only when it is relevant to the selected focus, rather than duplicating it as a permanent department.
-
-Coverage must report counts with denominator, source cut and timestamp separately for **registered / eligible to display / verified readable / runtime active / blocked or stale**. Unknown or inaccessible data stays explicit, never zero or "fully connected". Exclude private fields before projection; deny cross-business, wrong-role and revoked access at the server boundary. The public demonstration uses synthetic or approved anonymized data only.
-
-Delivery gates: the current local `:3042` TORO Hoy demonstration and the canonical `/brain` implementation are different surfaces, not two authorities. Reconcile their IDs and interaction decisions into the existing canonical application; do not publish the local demo as proof of Stage C. First complete authenticated, permission-scoped read-only QA already specified below; then add normalized Event Spine receipts and expiry/replay; only then claim live work. Richer 3D and motion remain optional presentation layers after measured usability, performance, accessibility and reduced-motion checks. No new graph database, connector, agent, permission or production activation is authorized by this section.
-
-Acceptance for this contract: each visible line identifies containment, documentary relation or verified capability; each live pulse resolves to a current permitted receipt; the coverage denominator is inspectable; selecting an item shows authority, freshness, evidence, limitation and next safe action; unauthorized or failed reads cannot light nodes or leak details.
-
-## Event Spine
-
-Live visual activity must be backed by normalized canonical events.
-
-Required flow:
-
-`intent -> scope -> context -> authority -> risk -> permission -> action -> evidence -> verification -> event -> visual projection`
-
-Fake ‚Äúthinking‚Äù animation is prohibited.
-
-TORO may show:
-- systems consulted;
-- workflow/action state;
-- approvals;
-- evidence;
-- verified result.
-
-TORO must not expose hidden chain-of-thought.
-
-## Public product demonstration
-
-‚ÄúWatch TORO Work‚Äù is an approved TARGET capability.
-
-Public demonstrations use only:
-- synthetic fixtures;
-- approved anonymized aggregates;
-- public reference data.
-
-Dreamcatcher private operational data is not a default public demo source.
-
-## Technology direction
-
-Preferred target:
-- canonical repository: `Dramcatcherst/Toro-OS`;
-- Next.js / React / TypeScript;
-- Vercel;
-- Supabase/Postgres;
-- operational graph UI in 2D/2.5D first;
-- Figma as design-system/design source;
-- optional richer motion/3D only after the operational model works.
-
-AI design/code tools may accelerate delivery but do not become architecture authority.
-
-## CURRENT architecture drift verified 2026-09-22
-
-### GitHub
-- `Dramcatcherst/Toro-OS` = canonical product repository.
-- `toro-os-v88-new` = legacy/reference.
-- legacy hotel-specific repos remain evidence/reference unless explicitly migrated.
-
-### Vercel
-Verified/rebaselined 2026-09-28:
-- `toro-pr11-preview` / `prj_nxerFw9ciNews6tUMAah3GAlAJzs` = **CANONICAL ACTIVE RUNTIME**;
-- release-policy drift was closed on 2026-09-28 by merging PR #183: repository-root `vercel.json` now sets `git.deploymentEnabled.main=false`;
-- feature/docs branches continue producing Vercel Preview deployments (`target=null`);
-- two post-change merges to `main` (`2f4ed8fca34138b78304b56c4e8816b86f4f14ad` and `6906625d3c37078ec6c136164e194afb3116593f`) produced **no automatic Vercel deployment**, verifying that `main` no longer auto-promotes;
-- production is now an explicit promotion/release action after verification; rollback of this policy is to revert/remove `vercel.json`;
-- `toro-os-v03` / `prj_nzsVpQZree5WuErakMPKIyiK6gsA` = **LEGACY / ROLLBACK / REFERENCE ‚Äî DO NOT DELETE YET**;
-- legacy deploys `Dramcatcherst/toro-os-v88-new` from `master`;
-- legacy project last updated 2026-09-08; latest inspected legacy production deployment is from 2026-08-23;
-- inspected production aliases on both projects are Vercel-hosted aliases only; no custom non-Vercel domain was observed in those deployment alias responses;
-- the inspected legacy production deployment returned no runtime logs in the last 24h, but this is not sufficient proof of zero usage;
-- legacy history contains Google Admin Bridge/OIDC/auth-pilot work, so env/OIDC/integration inventory is mandatory before archival or deletion.
-
-Canonical consolidation tracker:
-- issue #33 ‚Äî GitHub + Vercel delivery-governance master lane.
-
-Rules:
-- no legacy project deletion;
-- no routing/domain/env/OIDC mutation until parity and rollback are proven;
-- unknown Vercel configuration remains **UNKNOWN**, not assumed absent;
-- required unique legacy capability must be ported through canonical `Toro-OS` PRs rather than preserving a second active product brain.
-
-### Supabase
-Read-only schema audit now verifies `abtyrbqlqbsastmridzp` as the current canonical TORO structured runtime data plane for the Dreamcatcher reference implementation.
-
-Verified domain families include:
-- public identity/people/governance foundations;
-- `operations.projects`, `operations.tasks`, `operations.executive_decisions`, `operations.obligations`;
-- `integrations.source_authority_rules`, `integrations.domain_governance`, `integrations.external_dependency_registry`, `integrations.data_conflicts`, import/migration evidence;
-- Finance metrics/evidence;
-- Revenue structures;
-- Assets/inventory;
-- guest/reservation/knowledge/web-growth structures.
-
-Specialist external systems retain domain authority where this Plan General says so.
-
-`fpihshyoobzctnlerfjp` remains a specialized Kross/F&B pilot/provenance implementation. Useful patterns may be generalized, but it is not a second TORO database.
-
-Rules:
-- do not create a third ‚Äúbrain DB‚Äù;
-- reuse strong typed domain tables;
-- use permission-filtered read models/projections for Visual Brain;
-- do not add generic graph DDL merely to render a graph;
-- add only the thinnest cross-entity relationship/event layer when measured use requires it.
-
-### Visual Brain implementation status ‚Äî verified 2026-09-23
-
-**Stage A ‚Äî COMPLETED**
-- canonical projection/event/permission/semantic contracts merged;
-- TypeScript Brain contract surface merged;
-- Supabase/domain mapping completed;
-- issue #32 closed.
-
-**Stage B ‚Äî COMPLETED**
-- synthetic read-only `/brain` prototype merged to canonical `main`;
-- 10-node / 10-edge / 5-event focused scenario;
-- approval gate, evidence, source authority, freshness, verification and mobile/list fallback present;
-- lint/build/CI passed;
-- Vercel production-target deployment READY;
-- protected deployment visually inspected in a real browser with no detected overlap, clipping, missing sections or desktop overflow;
-- issue #40 closed.
-
-**Stage C ‚Äî CODE PREPARED / BLOCKED_BY_AUTHENTICATED_QA**
-Completed on canonical `main`:
-- canonical server-side `resolveToroContext()` and personal/work isolation policy;
-- Supabase SSR server/client foundation;
-- permanent context/auth regression tests in CI;
-- internal `/login` surface and safe redirect guard;
-- non-PII `/api/brain/context` diagnostic;
-- permission-scoped canonical read adapter for Projects + Source Governance + Kross Health;
-- canonical-read -> shared `BrainProjection` mapper;
-- focused first real projection capped below Stage B visual budgets;
-- server projection provider can enter canonical read-only mode only behind `TORO_BRAIN_CANONICAL_READ_ENABLED=true`;
-- all unresolved/denied/source-failure paths fail closed to the existing synthetic projection;
-- Finance/guest/employee/payment/private free-text fields remain excluded.
-
-Verified controls:
-- unauthenticated context diagnostic returns fail-closed `401`;
-- Supabase RLS was audited for first-slice sources;
-- `integrations.kross_snapshot_health` is a `security_invoker=true`, `security_barrier=true` view over an RLS-protected registry;
-- Finance metrics/evidence remain deny-by-default and are not part of Stage C v1;
-- canonical UUIDs are replaced by opaque projection refs before leaving the adapter;
-- no service-role bypass is used.
-
-Current hard gate:
-- hosted QA needs an existing authorized TORO credential/session;
-- the QA browser currently has no saved authorized credential/session;
-- non-PII Supabase counts confirm authorized identity data exists, so the blocker is credential/session availability for hosted QA, not absence of users/memberships;
-- no user/password/reset/magic-link or permission mutation was created to bypass this gate.
-
-Tracker:
-- issue #50 ‚Äî Visual Brain Stage C canonical read-only integration.
-
-### Current runtime security baseline ‚Äî verified 2026-09-23
-- canonical `main` uses Next.js **16.3.6** and matching `eslint-config-next`;
-- security patch PR #47 merged after CI + Vercel preview;
-- `npm audit` reached **0 known vulnerabilities** using non-forced lockfile remediation;
-- production-target Vercel deployment is READY.
-
-## NEXT
-
-1. Complete hosted authenticated QA with an **existing authorized TORO user**; do not create/reset credentials merely to bypass the gate.
-2. Verify `/api/brain/context` resolves the intended organization and that anonymous/wrong-org/revoked paths fail closed.
-3. Only after that evidence, enable the canonical Visual Brain read path in a controlled environment and verify Projects + Source Governance + Kross Health before any broader data scope.
-4. Keep Finance/guest/employee/payment/private free-text domains excluded until their own permission/projection contracts are explicitly approved.
-5. Continue issue #69 Vercel consolidation: inventory env-variable scopes, OIDC/trust, callbacks, functions/crons and integration bindings before any legacy archival.
-6. Establish the shared TORO design system/Figma semantic tokens without changing product authority.
-7. Normalize Event Spine adapters after static/read-only real-state projection is verified.
-8. Add governed actions only after approval/evidence/verification flows are canonical.
-9. Build public ‚ÄúWatch TORO Work‚Äù from synthetic/public-safe fixtures after private product behavior is stable.
-10. Keep richer 3D/presentation work deferred until operational usability is proven.
-
-## FUTURE
-
-- richer Rive-style explanatory motion;
-- optional Three.js/WebGPU Presentation Mode;
-- portfolio-scale visual comparison;
-- generalized external-business onboarding after the readiness gate.
-
-The operating priority remains:
-
-> **correct brain first, visible brain second, spectacular brain third.**
-
-
----
-
-# 21. Canonical project hierarchy ‚Äî audited 2026-09-22
-
-TORO owns the portfolio and General Plan. `operations.projects` is the machine portfolio authority.
-
-## ACTIVE ‚Äî 11
-
-```text
-TORO ¬∑ Portafolio General [PORTFOLIO]
-‚îú‚îÄ‚îÄ TORO OS ¬∑ Sistema Operativo y Ejecuci√≥n [MODULE]
-‚îú‚îÄ‚îÄ Dreamcatcher Hotel ¬∑ Proyecto Madre [MASTER]
-‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher ¬∑ Datos e Integraciones [MODULE]
-‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher ¬∑ Operaci√≥n Hotelera [MODULE]
-‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher ¬∑ Revenue, Reservas y Guest Experience [MODULE]
-‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher ¬∑ Web, Marca, SEO y Reputaci√≥n [MODULE]
-‚îÇ   ‚îú‚îÄ‚îÄ Dreamcatcher ¬∑ Finanzas y Control [MODULE]
-‚îÇ   ‚îî‚îÄ‚îÄ Construcci√≥n / DIEX ¬∑ Desarrollo y cierre documental [PROJECT]
-‚îî‚îÄ‚îÄ Propiedades, Construcci√≥n y Corporativo [PORTFOLIO_LANE]
-    ‚îî‚îÄ‚îÄ Cabuya ¬∑ Compra, pagos y regularizaci√≥n [PROJECT]
-```
-
-## PRESERVED BUT INACTIVE
-
-- HOLD: Santa Toro Closeout.
-- INCUBATOR: Aprende AI / Maufertoro; Dream Shares; La Julia Guatap√©; RicoSky Marketplace.
-- MERGED/HISTORICAL: 25 historical project identities retained for provenance only; no new backlog.
-
-## Project-type rule
-
-- `PORTFOLIO`: only TORO root.
-- `MASTER`: primary business/tenant program containing modules.
-- `MODULE`: durable domain inside a business or TORO OS execution layer.
-- `PROJECT`: finite, materially distinct outcome with its own lifecycle/done criteria.
-- `PORTFOLIO_LANE`: real cross-scope portfolio lane.
-- `HOLD` / `INCUBATOR`: inactive by default until explicit trigger.
-- `LEGACY_MERGED`: historical/inactive; never receives new backlog.
-- Workstreams, campaigns, dashboards, apps, engines, audits and execution plans are **not projects by default**.
-
-## Verified invariants
-
-- active duplicate `canonical_module_key`: **0**
-- active projects missing canonical module: **0**
-- active projects with invalid parent: **0**
-- active tasks on inactive/merged projects: **0**
-- terminal tasks with `active=true`: **0**
-
-Historical names do not regain authority by title. Reuse/absorb before creating another project identity.
-
-
----
-
-# 21. Progress log ‚Äî 2026-09-23 context integration
-
-## CURRENT verified progress
-
-### TORO context resolver
-Branch:
-`feat/toro-brain-context-on-phase1-v2-20260923`
-
-Draft PR:
-`#42 ‚Äî feat: integrate TORO context resolver on current Phase 1`
-
-Superseded:
-`#38` closed after Phase 1 advanced 77 commits beyond its branch point; #42 was re-extracted cleanly from the current Phase 1 HEAD.
-
-Verified:
-- branch is based on the current Phase 1 Auth implementation and is maintained at 0 commits behind at the latest alignment check;
-- personal context no longer requires an organization role;
-- organization context remains fail-closed;
-- one active organization can be inferred during transition;
-- multiple organizations require explicit context choice;
-- invalid requested organization returns no context;
-- organization roles never unlock personal User Vault scope;
-- personal context remains available when the organization-role store is unavailable; enterprise access fails closed;
-- a transitional legacy-session adapter scopes Phase 1 roles to the active organization and blocks cross-organization legacy-role elevation;
-- transitional membership provenance is marked `legacy_user_roles`;
-- strict TypeScript typecheck passed in isolated validation;
-- Vercel preview build for the branch reached READY.
-
-Verification update:
-- clean integration is now PR #42; superseded PR #38 is closed;
-- latest verified context branch head built successfully in Vercel after fixing a TypeScript issue;
-- strict isolated TypeScript validation passed;
-- isolated behavior harness passed 8/8 critical context/legacy-role cases;
-- resolver Vitest suite has still not run through the repository's official GitHub Actions path because current CI triggers only on PRs to `main`;
-- existing `getToroSession()` remains intentionally unchanged until parity tests run;
-- no production Supabase schema/write change has been made;
-- no real multi-organization user has been tested.
-
-### Membership foundation
-Draft SQL exists on the context integration branch and is deliberately auto-rollback/non-production.
-
-Read-only production evidence:
-- 5 organization membership candidates from active user-role relations;
-- 4 map to currently linked employee records;
-- 1 is non-employee and has ADMIN role metadata only;
-- do not infer owner/contractor type from ADMIN role alone.
-
-Current migration rule:
-- membership represents person ‚Üî organization relationship only;
-- do not duplicate employee_id inside membership;
-- employment relationship remains canonical in `employees`;
-- role authorization remains canonical in `user_roles` during transition;
-- membership writes remain server-side/reviewed only.
-
-## NEXT
-
-1. Run context resolver Vitest suite in a branch/CI path that can execute it.
-2. Reconcile the single non-employee membership relationship using explicit business/identity evidence.
-3. Build a reviewed `organization_memberships` migration after test evidence; do not apply yet.
-4. Refactor current Phase 1 `getToroSession()` to consume `resolveToroContext()` only after parity tests prove existing Founder/role behavior is preserved.
-5. Add context switcher contract/UI after resolver parity.
-
-
-
-### HISTORICAL ‚Äî Employee identity reconciliation update ‚Äî 2026-09-23
-
-CURRENT:
-- 8 active employees remain without TORO user linkage.
-- All 8 have confirmed clock mapping + department + position + work area.
-- 7 are matched to active Airtable employment profiles with employee portal enabled.
-- All 7 matched profiles have historical-data status PARTIAL.
-- 1 requires employment-profile reconciliation.
-
-NEXT:
-- treat 7 as invite candidates after human identity/email verification;
-- reconcile the remaining 1 profile;
-- create no account or employee-user link automatically;
-- onboarding must use the future organization_memberships + role model once approved.
-
-
-### HISTORICAL ‚Äî organization_memberships validation gate ‚Äî 2026-09-23 (resolved by production readback 26/09/2026)
-
-AT THAT TIME:
-- reversible/auto-rollback SQL draft exists on PR #42;
-- production Supabase has no `organization_memberships` table yet;
-- read-only backfill preview finds 5 membership candidates: 4 employee-linked + 1 non-employee ADMIN relationship requiring classification;
-- no local PostgreSQL runtime is available in the current execution environment for faithful RLS/DDL validation.
-
-BLOCKED:
-- applying/testing DDL on a Supabase development branch requires branch creation/cost confirmation and must not be done implicitly.
-
-RULE:
-- do not apply membership DDL to production until isolated Postgres/Supabase QA validates constraints, grants, RLS positive/negative cases, backfill idempotency and rollback;
-- do not infer the non-employee ADMIN membership type as owner from role alone.
-
-This historical gate is not current authority: production `identity.organization_memberships` is now present. Use the 20/10/2026 CURRENT readback in section 10 and the Phase 1 membership readback above for decisions.
-
-
----
-
-# 22. Cognitive Operating Model ‚Äî how TORO thinks
-
-Canonical subordinate specification:
-
-`docs/product/TORO_BRAIN_COGNITIVE_OPERATING_MODEL_V1.md`
-
-This specification defines the repeatable business-transformation method TORO uses from a new/poorly understood business through governed optimization and bounded autonomous operation.
-
-Canonical lifecycle:
-
-```text
-Scope
--> Understand
--> Map
--> Baseline
--> Diagnose
--> Choose
--> Design
--> Execute / Experiment
--> Verify
--> Standardize
--> Automate
--> Autonomize
--> Learn
--> Repeat
-```
-
-Canonical optimization order:
-
-```text
-Eliminate -> Simplify -> Standardize -> Connect/Digitize -> Automate -> Agentize -> Autonomize
-```
-
-Key rules:
-
-- understand the business and end-to-end value stream before local optimization;
-- truth/source authority/freshness precede material action;
-- prioritize constraints and measurable outcomes, not output volume;
-- not every finding becomes a task;
-- automation is not the first treatment for a broken or unstable process;
-- autonomy is earned and governed **per workflow**, never granted globally to a business;
-- TORO Pro means closed-loop bounded outcome ownership under goals, budgets, permissions, evidence, monitoring, rollback and exception rules;
-- high-risk classes may remain approval-gated at every maturity level;
-- autonomy is automatically reduced when source health, evidence, policy, configuration or outcome quality degrades;
-- generalize reusable methods without leaking scope-owned facts.
-
-This cognitive model is implemented through existing TORO subsystems and current task/project/governance/data contracts. It does **not** create another brain, project hierarchy, agent universe or database.
-
-## Dreamcatcher proof requirement
-
-Canonical proving-ground contract:
-
-`docs/product/DREAMCATCHER_COGNITIVE_PROOF_V1.md`
-
-Current proof order is evidence-driven:
-1. Guest-ready physical operation / maintenance.
-2. Breakfast / F&B.
-3. People / onboarding.
-4. Demand / booking / stay / post-stay.
-5. Finance-to-cash.
-
-The first live cognitive proof uses the existing `maintenance_daily_p0_p1_round` and `MNT-DAILY-P0-P1-20260923`; no new project/task is created. Repeated equivalent execution packets must be suppressed when the prior current packet remains unexecuted and no material delta exists.
-
-Before TORO can claim generalized ‚Äúnew business -> optimized -> autonomous‚Äù capability, Dreamcatcher must provide real evidence of:
-
-1. cross-functional Business Anatomy coverage;
-2. end-to-end value-stream mapping;
-3. governed baselines;
-4. constraint/opportunity prioritization;
-5. elimination/simplification before automation;
-6. outcome verification;
-7. workflow-level autonomy promotion/demotion;
-8. durable learning from real corrections;
-9. owner operation by exception rather than a growing raw backlog.
-
-## Relationship to readiness
-
-The New Business Readiness Gate remains authoritative for external onboarding.
-
-The Cognitive Operating Model defines **how TORO thinks and improves** once a scope is authorized; the readiness gate defines **when TORO is allowed to onboard/operate another real business**.
-
-
-### TORO People Wave 1 code foundation ‚Äî 2026-09-23
-
-CURRENT:
-- DreamTeam code estate inventoried: 171 relevant source paths across UI, APIs, HR domain logic and security.
-- Canonical migration contract: `docs/product/TORO_PEOPLE_CODE_MIGRATION_V1.md`.
-- Machine-readable migration map: `data/toro_people_migration_map.json`.
-- DreamTeam module ownership split is explicit: People vs Comms vs Governance vs Identity vs Systems/Tools.
-- Self-service RLS verified for employee, attendance, shifts, leave requests/balances and payment receipts.
-- `employee_self_profile` / `update_employee_self_profile` bind org + auth.uid().
-- `submit_leave_request` blocks ordinary users from submitting for another employee.
-
-CODE:
-- Draft PR #48: `feat: add TORO People read-only self-service foundation`.
-- Base: PR #42 context branch, not main.
-- 6 files only, 0 commits behind its context base at creation.
-- Read-only scope: own profile, upcoming shifts, own leave requests/balances, recent attendance.
-- Explicit org_id + employee_id filters are added on top of RLS.
-- Mappers intentionally exclude salary, bank and arbitrary private-HR payloads.
-- Vercel preview build = SUCCESS.
-- No new table, no write endpoint, no navigation, no DreamTeam retirement.
-
-GATES:
-- PR #48 remains DRAFT until PR #42 context is validated/landed.
-- Official Vitest execution evidence is still required before merge.
-- Write workflows (profile update, leave submission) remain deferred until read-only parity is proven.
-
-
-### TORO Comms Wave 1 code foundation ‚Äî updated 2026-09-28
-
-CURRENT:
-- PR #42 context resolver is MERGED.
-- PR #51 `feat: add TORO Comms read-only inbox foundation` is MERGED.
-- Reuses existing `team_messages` + `team_message_read_states`; no duplicate chat database.
-- Read-only organization inbox with unread calculation.
-- Safe attachment projection excludes storage paths/raw JSON.
-- Unknown/future channels remain `other` rather than being silently treated as general.
-- Personal inbox projection is intentionally narrower than privileged RLS:
-  - own-sent DMs;
-  - DMs addressed to current linked employee;
-  - unrelated privileged cross-user DMs are excluded.
-- Cross-user privileged DM review belongs in a separate explicit/audited governance/HR surface.
-- Same-Brain internal-work intake PR #142 is MERGED.
-- OpenClaw/Codex guidance from stale PR #143 was superseded by MERGED PR #168.
-- OpenClaw runtime evidence gate from stale PR #151 was superseded by MERGED PR #167.
-
-GATES:
-- No general message send/write/read-state mutation has been promoted as the default Comms path.
-- No production multi-mailbox channel/binding layer is yet verified.
-- OpenClaw live runtime, verified channel identity and cross-source/mailbox capability parity remain unverified until direct Gateway acceptance.
-- Email completeness requires Workspace Admin inventory + real mailbox bindings + governed Gmail ingestion/backfill.
-
-
-### TORO People Self-Service Wave 1 ‚Äî 2026-09-23
-
-CURRENT:
-- implementation branch: `feat/toro-people-self-service-wave1-20260923`;
-- draft PR: `#84 ‚Äî add TORO People employee self-service read model`;
-- PR is mergeable and remains DRAFT;
-- HEAD Vercel preview = SUCCESS;
-- no UI route, no write action and no production schema change.
-
-Wave 1 read model includes:
-- own employment identity summary;
-- own private contact/emergency profile through `employee_self_profile`;
-- upcoming shifts;
-- own leave requests;
-- own leave balances;
-- recent attendance.
-
-Security verified:
-- consumes canonical `ToroResolvedContext`;
-- Personal context denied;
-- active organization + employee link required;
-- authenticated Supabase session only; no service-role read;
-- RLS self-read policies exist for employees, shifts, leave requests/balances and attendance;
-- private HR table is not queried directly;
-- `employee_self_profile` is auth.uid()-scoped with fixed search_path;
-- server checks context user_id + org_id + employee_id before returning the snapshot;
-- private-profile/context employee mismatch blocks the result;
-- allowlisted projections exclude salary, bank data and arbitrary HR/shift JSON.
-
-GATE:
-- actual Vitest execution is still pending; Vercel build success is not counted as a test pass.
-- do not merge/cut over UI until the approved test runner executes the context, mapper and server boundary tests.
-
-NEXT:
-1. execute PR #84 tests through an approved runner;
-2. if PASS, merge into Phase 1;
-3. then build TORO People employee self-service UI on the shared TORO Portal shell;
-4. add leave-request creation only after read model/UI parity;
-5. pilot with one non-owner employee before broader DreamTeam retirement.
-
-
-### Portal role model ‚Äî canonical permission vs experience
-
-TORO now distinguishes two concepts:
-
-1. **Canonical organization role**
-   - ADMIN
-   - RRHH
-   - GERENCIA
-   - JEFE_DEPARTAMENTO
-   - CONTABILIDAD
-   - AUDITOR
-   - EMPLEADO
-
-These are organization-scoped permission facts and must come from the active TORO context/membership.
-
-2. **Functional experience role**
-   - FOUNDER
-   - RECEPCION
-   - OPERACIONES
-   - FINANZAS
-   - GROWTH
-   - SYSTEMS
-
-These may select navigation/routing/UX but do not independently grant organization data access.
-
-Rules:
-- navigation is never authorization;
-- app_metadata.role_codes is not accepted as organization authorization because it is not organization-scoped;
-- app_metadata.toro_role may select a functional experience only while an active organization context exists;
-- FOUNDER still requires privileged ADMIN/GERENCIA membership in the active organization;
-- data/actions remain governed by TORO context + RLS/RPC/policy.
-
-
-### Execution update ‚Äî People + Portal ‚Äî 2026-09-23
-
-#### HECHO ‚Äî developer validation fabric
-- canonical TORO CI now validates every pull request, including stacked PRs;
-- workflow runs `npm test -> lint -> build`;
-- `workflow_dispatch` available;
-- stale runs cancel through concurrency;
-- CI improvement merged to `main` via PR #85;
-- Phase 1 inherited the same workflow.
-
-This resolves a repeated systemic validation gap rather than adding branch-specific CI hacks.
-
-#### HECHO ‚Äî TORO People self-service server Wave 1
-PR #84 merged into Phase 1.
-
-Verified:
-- authenticated/read-only employee self-service model;
-- canonical TORO context required;
-- own employment projection;
-- own profile through governed `employee_self_profile` RPC;
-- own shifts;
-- own leave requests/balances;
-- own attendance;
-- auth+org+employee defensive identity check;
-- salary/bank/arbitrary HR JSON excluded from public self model;
-- Vitest PASS;
-- lint PASS;
-- build PASS;
-- Vercel PASS.
-
-No production schema/write action was introduced.
-
-#### HECHO ‚Äî Portal session/context convergence
-PR #86 merged into Phase 1.
-
-Verified:
-- Portal session consumes `resolveToroContext({mode:'organization'})`;
-- no global unscoped `user_roles` authorization inside session resolver;
-- unscoped `app_metadata.role_codes` no longer grants organization access;
-- canonical organization roles can enter Portal:
-  ADMIN, RRHH, GERENCIA, JEFE_DEPARTAMENTO, AUDITOR, EMPLEADO;
-- CONTABILIDAD maps to FINANZAS experience;
-- FOUNDER still requires active ADMIN/GERENCIA in the selected organization;
-- functional experience roles remain UX/routing, not data authorization;
-- regression tests + lint + build + Vercel passed before merge.
-
-#### NEXT ‚Äî first People Portal surface
-Draft PR #87:
-`feat: add read-only TORO People Mi perfil surface`
-
-Scope:
-- `/toro/mi-perfil`;
-- employment summary;
-- upcoming shifts;
-- leave balance/request summary;
-- recent attendance;
-- safe unavailable/error states;
-- no editing/writes/payroll/bank data.
-
-Status:
-- Vercel preview PASS;
-- canonical CI validation in progress at this update.
-
-After PR #87 passes:
-1. merge read-only `Mi perfil`;
-2. perform representative employee hosted/mobile QA when a safe employee identity is available;
-3. add leave-request creation as a separately gated write workflow;
-4. do not retire DreamTeam UI until self-service parity + pilot evidence exists.
-
-
-### Dependency security finding ‚Äî 2026-09-23
-
-CURRENT:
-- canonical CI `npm ci` reports 5 dependency vulnerabilities: 2 moderate, 3 high;
-- this is a package-audit signal, not proof that all findings are exploitable in TORO runtime.
-
-RULE:
-- do not run `npm audit fix --force` automatically;
-- TORO Systems/Builder must identify affected packages, production reachability, patched versions, compatibility risk and rollback before upgrading;
-- dependency security becomes part of the recurring system/dependency audit profile.
-
-NEXT:
-- produce a dependency vulnerability triage after current People/Portal PR gates finish;
-- patch only through tested PRs with tests/lint/build and preview evidence.
-
-
-### People Portal execution update ‚Äî 2026-09-23
-
-#### HECHO ‚Äî Mi perfil
-PR #87 merged into the Phase 1 integration line.
-
-Verified:
-- route `/toro/mi-perfil`;
-- read-only own employment summary;
-- upcoming shifts;
-- leave balance/request summary;
-- recent own attendance;
-- own contact email through the governed self-profile projection;
-- safe unavailable/identity-mismatch/error states;
-- navigation only to existing route;
-- no salary/bank/other-employee projection;
-- Vitest PASS;
-- lint PASS;
-- build PASS;
-- Vercel PASS.
-
-Merge commit:
-`22637e1165aaed8eabdf70e8602ef4d5a0b828e7`
-
-#### HECHO ‚Äî Solicitudes
-PR #88 merged into the Phase 1 integration line.
-
-Verified:
-- route `/toro/solicitudes`;
-- employee may create own leave/vacation request;
-- browser never supplies employeeId;
-- TORO context supplies org + employee;
-- existing `submit_leave_request` RPC rechecks current employee/authorization;
-- request creation uses `pending_manager`, does not autoapprove;
-- overlap/date/type/reason rules reused;
-- DB audit trigger reused;
-- notification creation reused;
-- no balance deduction/override;
-- no payroll mutation;
-- no schema migration;
-- Mi perfil pending counter corrected for `pending_manager` / `pending_hr`;
-- Vitest PASS;
-- lint PASS;
-- build PASS;
-- Vercel PASS.
-
-Merge commit:
-`9de9ef79157ac4de23e090ee5c54f29d81f19399`
-
-#### CURRENT People Portal capability
-A linked employee can now, within the Phase 1 integration line:
-1. enter the shared TORO Portal through the canonical scoped session;
-2. view their own governed People snapshot;
-3. review shifts / leave summary / recent attendance;
-4. submit their own leave request into the existing governed HR workflow.
-
-This is the first DreamTeam daily workflow slice absorbed into TORO without a second login or duplicate database.
-
-#### Important remaining gate
-This is code/preview verified, not representative-user adoption proof.
-
-Before declaring DreamTeam self-service replaced:
-- use a deliberately approved employee pilot identity;
-- verify hosted login/session on mobile;
-- verify real RLS behavior;
-- submit one explicitly authorized test/real request, not a hidden synthetic production mutation;
-- confirm manager/RRHH sees the resulting workflow correctly;
-- verify rollback and support path.
-
-#### NEXT TORO People sequence
-1. representative employee hosted/mobile pilot;
-2. employee directory/onboarding after organization_memberships production decision;
-3. attendance/incidents/time-import convergence;
-4. scheduling convergence;
-5. TORO Comms convergence for team chat/DMs;
-6. shared Governance split for approvals/audit;
-7. payroll only after People identity/self-service stability;
-8. loans/settlements last.
-
-
-### Attendance execution update ‚Äî 2026-09-23
-
-#### HECHO ‚Äî TORO People Attendance Wave 3A
-PR #94 merged into the Phase 1 integration line.
-
-Verified employee surface:
-- `/toro/mi-asistencia`;
-- own attendance days only;
-- own entry/exit summary;
-- actual vs official minutes;
-- attendance/approval/payroll-inclusion status;
-- no raw punches;
-- no clock employee ID;
-- no source import ID;
-- no attendance blocks;
-- 45-day bounded self projection.
-
-Verified review surface:
-- `/toro/asistencia`;
-- read-review scope for ADMIN/RRHH/GERENCIA/AUDITOR/CONTABILIDAD;
-- navigation enabled only where current role UX/RLS supports it;
-- open attendance exceptions;
-- bounded recent attendance days;
-- recent time-import metadata;
-- no file name/hash/raw payload;
-- no resolution payload;
-- no raw_punches;
-- no attendance_blocks.
-
-Current production aggregates observed read-only at design time:
-- 495 attendance days;
-- 408 complete;
-- 46 incomplete;
-- 40 pending_identity;
-- 1 unknown_identity;
-- 252 approval approved;
-- 241 approval pending;
-- 2 approval rejected;
-- 94 open attendance exceptions;
-- 72 resolved exceptions;
-- 5 visible time imports.
-
-Explicitly still blocked:
-- attendance correction;
-- incident resolution;
-- time-clock commit/replace;
-- payroll inclusion decision;
-- payroll recalculation.
-
-Validation:
-- Vitest PASS;
-- lint PASS;
-- build PASS;
-- Vercel PASS.
-
-Merge commit:
-`e1d5d1ef01a5ab0490ed75fb3dc9c13d86debe71`
-
-
-### Schedule execution update ‚Äî Wave 4A ‚Äî 2026-09-23
-
-#### HECHO ‚Äî Mi horario
-PR #97 merged into the Phase 1 integration line.
-
-Verified:
-- route `/toro/mi-horario`;
-- own linked employee identity only;
-- current/future assignments only;
-- only `published` / `confirmed` shift states;
-- maximum 60 rows;
-- start/end, break and visible status;
-- identity boundary `user_id + org_id + employee_id`;
-- no draft/cancelled shifts;
-- no `data` JSON/internal notes;
-- no shift template administration;
-- no `salary_history`;
-- no payroll forecast;
-- no other employee schedule;
-- no write action or schema change;
-- Vitest PASS;
-- lint PASS;
-- build PASS;
-- Vercel PASS.
-
-Current production aggregate observed read-only during design:
-- 102 published assignments;
-- 70 draft assignments;
-- 99 cancelled assignments;
-- 10 active templates.
-
-Merge commit:
-`359c95594d3cd08333381ff0e47aaa579e8273cf`
-
-#### NEXT schedule sequence
-1. Wave 4B ‚Äî management/team schedule read-only with existing org/department RLS.
-2. Wave 4C ‚Äî planning writes only after separate audit/evidence.
-3. Wave 4D ‚Äî publish/copy as higher-impact action.
-4. Wave 4E ‚Äî employee change/swap only after a reviewed self-service RLS/RPC contract exists.
-
-Salary/payroll forecast must remain a separately authorized finance capability and must not leak into generic team schedule views.
-
-
----
-
-## Alignment update ‚Äî 2026-09-29
-
-This update is subordinate to the existing Plan General. It does not create another roadmap, brain, backlog, source of truth or product root.
-
-### Current productization model
-
-Dreamcatcher remains the first real proving ground. TORO itself is the reusable product.
-
-Every new learning/capability must pass the existing Pilot-to-Product Promotion Gate and be classified as:
-
-- `UNIVERSAL_CORE`
-- `INDUSTRY_PACK`
-- `TENANT_CONFIG`
-- `CONNECTOR_EXECUTOR`
-- `DO_NOT_PROMOTE`
-
-No item is promoted from one anecdote. Reuse requires evidence, source authority, tenant isolation, risk/action ceiling and regression/negative tests.
-
-Current universal Core design contracts:
-
-- `toro_core_business_relationship_contract_v1`
-- `toro_core_work_object_contract_v1`
-- `toro_core_offering_contract_v1`
-- `toro_core_commercial_order_contract_v1`
-
-These are **DESIGN/SANDBOX ONLY**. They are not production DDL and do not authorize external private-data onboarding.
-
-### Mandatory tenant-reference invariant
-
-All multi-tenant Core cross-object references must bind tenant and object together:
-
-`(org_id, referenced_id)`
-
-Never rely on a referenced UUID alone.
-
-Reason:
-- RLS governs query-time access.
-- composite tenant-local foreign keys also prevent accidental/malicious cross-tenant references at the integrity layer.
-
-Sandbox negative tests passed for:
-- Relationship -> Party
-- Order -> Customer Party
-- Order Line -> Offering
-- Work Object -> Customer Party
-- Fulfillment -> Work Object
-
-### Multiindustry sandbox evidence
-
-Rollback-safe Supabase sandbox tests passed with:
-- B2B field-services synthetic organization;
-- retail synthetic organization;
-- separate synthetic authenticated principals;
-- isolated memberships;
-- parties/relationships;
-- offerings;
-- commercial orders/order lines;
-- work objects;
-- fulfillments.
-
-RLS returned only tenant-local data and cross-tenant composite FK attempts were rejected. Full rollback verification left no synthetic users, organizations, schemas, tables or helper functions.
-
-This is strong schema-level portability evidence, **not** external-business readiness.
-
-### Readiness status ‚Äî 2026-09-29
-
-External onboarding remains blocked.
-
-Priority gates:
-
-1. **Gate F ‚Äî Security / Tenant Isolation: FAIL**
-   - organization-membership and multiindustry isolation contracts passed rollback-safe Supabase sandbox tests;
-   - canonical persistent membership/runtime authenticated multi-org E2E remains unproven;
-   - SECURITY DEFINER grants/internal authorization remain under intent-by-intent review;
-   - do not blanket-revoke privileges;
-   - owner directive remains: ACCESS FIRST, PASSWORD/POLICY ROTATION LATER.
-
-2. **Gate D ‚Äî Execution Engine: PASS**
-   - verified E2E workflows: **12**
-   - threshold: **>=12**
-   - evidence spans recovery, security/communication, systems reliability, release governance, asset transfer, F&B truth reconciliation, RLS hardening, SECURITY DEFINER hardening, finance reconciliation, revenue contract operationalization, document intake, and maintenance source parity.
-   - code/tests/previews alone do not count.
-   - Room Safety, People attendance/payroll and Kross current-state remain open operating gates; Gate D PASS does not close them.
-
-3. **Gate I ‚Äî Portability: PARTIAL**
-   - persistent synthetic B2B and retail tenants now exist in dreamteam-recovery-sandbox;
-   - membership RLS, Core object isolation and composite tenant-local foreign-key negative tests PASS;
-   - deterministic export snapshot hash: 7a622d1a1ad253a3ab11c2d020375c4cbb081ff9867eb7efd692a96b15abda25;
-   - teardown assertions PASS inside transaction and rollback restores the persistent fixture;
-   - GitHub PR #196 / merge a4cbd3bafdd88a98a76713c1ebd4af65f8cd4836 contains the reproducible draft/tests/sandbox harness;
-   - remaining requirement: hosted TORO runtime must authenticate into the synthetic organization, resolve context, configure knowledge/capabilities/workflow and prove governed runtime export/teardown.
-
-### Critical path to a real external design partner
-
-```text
-Authenticated multi-org runtime isolation
--> hosted onboarding of the persistent synthetic second tenant
--> TORO Business internal self-hosted tenant
--> Controlled External Pilot
-```
-
-Controlled External Pilot requires:
-- readiness A-I PASS;
-- explicit founder approval;
-- no critical tenant/authz bypass;
-- governed onboarding/support/offboarding/export;
-- no private data from an external business before the gate allows it.
-
-### Industry Packs
-
-Previous wording that generalized Business Packs were wholly out of scope is superseded by this rule:
-
-- **design and sandbox validation are allowed now** to remove Dreamcatcher hardcode;
-- **production activation and external private-data onboarding remain blocked** by readiness.
-
-Hospitality Pack is the first vertical pack. It must map onto universal Core rather than forcing Core to adopt hotel-specific entities.
-
-### Plan General governance reinforcement
-
-- TORO remains the only master system.
-- No second brain.
-- No second master plan.
-- No parallel backlog.
-- No parallel task system.
-- No parallel capability registry.
-- No client-specific Core fork.
-- Supabase `operations.projects`, `operations.tasks`, governed knowledge/source-authority contracts remain canonical execution/control.
-- Airtable is a human-facing projection/transition surface, not canonical execution authority.
-- GitHub/Vercel are subordinate code/deployment/evidence layers.
-- Owner-dependent questions/actions must be grouped only at the end of responses.
-
-
-### Execution progress R2 ‚Äî 2026-09-29
-
-Verified after the initial 2026-09-29 alignment:
-
-- Gate D reached **PASS: 12/12** verified E2E workflows.
-- Representative finance proof: ICE NISE 800984 Sep-2026 PDF-verified invoice CRC369,825 -> canonical utility obligation -> exact Alegra corporate bank-ledger movement #7214 on 21/09/2026, account mapped to Lafise CRC ****1998 -> canonical reconciliation ice_800984_202609_invoice_alegra_7214 = reconciled/high. Raw Sep bank statement remains outside current Supabase bank import; no payment/journal was created by TORO.
-- Gate I advanced to **PARTIAL** with persistent synthetic B2B + retail tenants, export hashing and teardown rehearsal in recovery sandbox.
-- Core portability harness merged through PR #196 / a4cbd3bafdd88a98a76713c1ebd4af65f8cd4836.
-- W09 Kross current-state is DEFERRED_OWNER_DECISION, not an engine failure. Paid Kross Live remains intentionally deferred until the rest of TORO is ready.
-- W10 Room Safety and W12 People attendance->payroll remain open critical operating gates even though Gate D threshold is met.
-- Current readiness bottleneck is Gate F authenticated multi-org runtime isolation plus the application-level portion of Gate I.
-
-### FIN-01 ¬∑ auditor√≠a ordenada de correos y extracci√≥n financiera ‚Äî cierre 2026-09-29
-
-**OBJETIVO:** revisar el universo financiero y administrativo de correo de enero a agosto de 2026, extraer evidencia √∫til y aplicarla al expediente existente sin convertir mensajes, solicitudes o avisos en pagos confirmados.
-
-**COBERTURA VERIFICADA:** Gmail hotel `452/452` cuerpos completos; Gmail Mauricio `126/126` candidatos completos; Gmail Margot/Luz `554/554` candidatos completos; Outlook `2,713/2,713` mensajes inventariados por metadatos y `141/141` mensajes de alta prioridad le√≠dos completos. No se ley√≥ indiscriminadamente correo personal/promocional ajeno al alcance financiero; se excluy√≥ por relevancia y privacidad. No hubo errores de lectura en los lotes completados.
-
-**HALLAZGOS PRINCIPALES:** se localizaron informes de Alegra de enero a julio: ingresos reportados `CRC 237,763,864` y gastos reportados `CRC 206,818,662`, redondeados a unidades completas. Agosto queda `PENDING_EVIDENCE` porque no apareci√≥ el informe mensual. La diferencia de febrero (`CRC 46,259,698` frente a `CRC 46,255,096` en una referencia posterior) queda abierta como diferencia de versi√≥n/corte. Se detectaron dos transferencias BAC candidatas GORIDE MOTO por `USD 121` y `USD 264`, pero requieren amarre con banco, Kross y Alegra. Las solicitudes S3 Ingenieros de `USD 146` y `USD 140` no se suman como cobros. El aviso Synerjoy/Booking de `USD 9,383` se conserva como obligaci√≥n candidata y no como gasto pagado. Liberty e ICE/Kolbi quedan como servicios pendientes de entidad hotel/personal. WeSpeak queda como se√±al operativa, no prueba bancaria.
-
-**20 MEJORAS APLICADAS:** contrato de fuentes; cobertura expl√≠cita; lectura por relevancia; autoridad Kross/Alegra/bancos/Dropbox; separaci√≥n hotel-personas; separaci√≥n de proyectos; CRC/USD separados; pendiente distinto de cero; cobro distinto de solicitud; pago distinto de recordatorio; se√±al distinta de evidencia; tabla mensual; total controlado; duplicados; anomal√≠as visibles; servicios por entidad; minimizaci√≥n de datos; trazabilidad; no escritura externa; siguiente unidad √∫nica. El anexo qued√≥ en `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_AGO_2026_V3_CORREO.docx`, SHA-256 `D51341E4AF21B1FA7FA528B9AD432FED920C35983BDD5CC320D42B5B52D72D0C`; V2 se conserva como recuperaci√≥n.
-
-**ESTADO:** `HECHO ¬∑ COBERTURA EMAIL FINANCIERA COMPLETADA`; `PENDING_EVIDENCE ¬∑ AGOSTO ALEGRA, ADJUNTOS BANCARIOS, AMARRES GORIDE, SERVICIOS Y ENTIDAD BOOKING`; `BLOQUEADO ¬∑ ESCRITURAS O RECLASIFICACIONES EXTERNAS`. No se modific√≥ Alegra, Kross, banco, Dropbox, Airtable ni Supabase.
-
-**√öNICA SIGUIENTE:** extraer √∫nicamente los adjuntos primarios identificados en mensajes BN/BAC/LAFISE/Liberty/ICE/Booking, calcular hash, cuenta, fecha, moneda, monto, referencia y entidad, y reconciliar solo los casos materiales sin crear otro expediente.
-
-**REVERSI√ìN:** retirar el anexo V3 y esta secci√≥n documental; conservar V2, originales y fuentes externas sin cambios.
-
-### FIN-01 ¬∑ corte agosto‚Äìseptiembre y √∫nica estimaci√≥n de planilla ‚Äî 2026-09-29
-
-**OBJETIVO:** completar el reporte financiero del hotel con agosto y septiembre, separar hotel de proyectos/personas/propiedades externas y estimar √∫nicamente la segunda quincena de la √∫ltima planilla disponible.
-
-**HECHO VERIFICADO EN ALEGRA:** agosto: ingresos CRC 15,871,652, gastos operativos CRC 17,313,028, utilidad operativa CRC -1,441,376, resultado neto CRC -3,751,293; caja con entradas CRC 33,576,816, salidas CRC 42,774,278 y flujo neto CRC -9,197,462. Septiembre: corte de trabajo al 29/09; ingresos CRC 14,329,059, gastos operativos CRC 10,894,271, utilidad operativa CRC 3,434,788, resultado neto CRC 2,797,155; caja mensual devuelta por Alegra con entradas CRC 32,888,206, salidas CRC 32,083,489 y flujo neto CRC 805,717. Septiembre no se presenta como cierre definitivo.
-
-**PLANILLA:** agosto qued√≥ preparado/revisi√≥n con bruto CRC 2,335,263 y neto CRC 2,304,371. Septiembre 01‚Äì15 qued√≥ en revisi√≥n con bruto CRC 1,243,659 y neto CRC 1,092,996. √önica estimaci√≥n autorizada: septiembre 16‚Äì30 igual a la √∫ltima planilla disponible, bruto CRC 1,243,659 y neto CRC 1,092,996. Total septiembre con estimaci√≥n: bruto CRC 2,487,318 y neto CRC 2,185,992. No se estimaron otros rubros ni se interpret√≥ planilla como pago.
-
-**SEPARACI√ìN EXTERNA:** se incorporaron como lectura separada Cabuya CRC 2,500,000 de salida en agosto y septiembre; Santa Toro entradas CRC 1,383,095 en agosto y CRC 158,610 en septiembre, con salidas identificadas CRC 1,792,208 y CRC 809,630; DIEX, Vista Alegre, pr√©stamos y personas vinculadas se conservan fuera de la utilidad operativa hasta reconciliar entidad y naturaleza.
-
-**CORREOS FALTANTES:** no es necesario leer todos los correos. Son necesarios solo adjuntos primarios o mensajes que puedan cambiar monto, moneda, entidad, fecha, obligaci√≥n o prueba de pago: banco, planilla/CCSS, Booking con factura, Santa Toro, servicios y documentos de Alegra. No se incorporan newsletters, duplicados, avisos de exportaci√≥n sin contenido, mensajes WeSpeak sin liquidaci√≥n bancaria ni correo personal ajeno. Septiembre hotel tuvo 30 mensajes etiquetados en el alcance y 4 adjuntos identificados; el resto queda fuera por criterio de relevancia, no como ‚Äúcero‚Äù.
-
-**BOOKING A√ëADIDO:** se leyeron los dos adjuntos primarios de Booking del 06/09: factura 1663815593 para Santa Toro, periodo 01‚Äì31/08, comisi√≥n USD 156.39, vencimiento 19/09; factura 1663811248 para Atrapa Sue√±os, periodo 01‚Äì31/08, comisi√≥n USD 2,455.93, vencimiento 19/09. Total documental USD 2,612 redondeado; no se trata como pago confirmado ni se agrega a utilidad hasta conciliar Alegra/banco.
-
-**REPORTE:** `output/toro-os-organizacion-2026-09-19/REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; SHA-256 `4E4A82A637CB58F89F8484BF2C2CD831494CE138D99A69DBC694E484FB605AB4`. Validaci√≥n estructural: 51 tablas y 164 p√°rrafos. La renderizaci√≥n visual sigue bloqueada por ausencia de `soffice.exe`.
-
-**ESTADO:** `HECHO ¬∑ AGOSTO Y SEPTIEMBRE PARCIAL INCORPORADOS`; `PREPARADO ¬∑ √öNICA ESTIMACI√ìN DE PLANILLA`; `PENDING_EVIDENCE ¬∑ ADJUNTOS PRIMARIOS Y CONCILIACI√ìN DE ENTIDADES`; `BLOQUEADO ¬∑ ESCRITURAS EXTERNAS Y UTILIDAD CONSOLIDADA DEFINITIVA`. No se modific√≥ Alegra, Kross, bancos, Dropbox, Airtable ni Supabase.
-
-**√öNICA SIGUIENTE:** extraer y conciliar los adjuntos primarios de septiembre ya identificados (Booking, banco, servicios y planilla); cualquier correo que no cambie un monto/entidad/fecha o no pruebe un pago se mantiene excluido con raz√≥n documentada.
-
-**REVERSI√ìN:** retirar solo el anexo V4 y esta secci√≥n; conservar V3, V2, originales y fuentes externas intactos.
-
-### CIERRE Y ALINEACI√ìN CAN√ìNICA FIN-01 ‚Äî 2026-09-30
-
-**PUNTERO √öNICO:** para el reporte financiero del hotel, el documento vigente es `REPORTE_FINANCIERO_HOTELERO_DREAMCATCHER_ENE_SEP_2026_V4.docx`; V3 y V2 quedan como hist√≥rico y recuperaci√≥n. La secci√≥n FIN-01 de agosto‚Äìseptiembre y el recibo correspondiente en `CONTINUAR.md` sustituyen cualquier estado anterior que a√∫n describa agosto como pendiente sin consulta Alegra o que apunte a V3 como salida actual.
-
-**ESTADO FINAL DE ESTA UNIDAD:** `ALINEADO AL PLAN GENERAL / DOCUMENTACI√ìN LOCAL CERRADA`. Agosto est√° incorporado; septiembre est√° incorporado como corte parcial al 29/09; solo la segunda quincena de la √∫ltima planilla fue estimada; Booking queda documentado como obligaci√≥n no pagada hasta conciliaci√≥n; proyectos, Santa Toro, deuda y personas vinculadas permanecen separados del hotel.
-
-**PENDIENTES NO CERRADOS:** conciliaci√≥n primaria de banco/planilla/CCSS/servicios/Booking y utilidad consolidada definitiva. Estos pendientes no se convierten en cero ni bloquean el cierre documental del chat. No se ejecutan escrituras externas ni respaldos Dropbox porque el gate de custodia/ACL y la autorizaci√≥n de destino no est√°n confirmados en esta unidad.
-
-**CIERRE DEL CHAT:** no queda una tarea activa en este hilo. Si se reabre, debe comenzar desde este puntero y ejecutar solo la siguiente acci√≥n registrada en `CONTINUAR.md`; no repetir inventarios ni releer el historial completo.
-
-
-# 23. VERSION FINAL ‚Äî definici√≥n del producto terminado ‚Äî owner direction 2026-09-29
-
-**Classification:** TARGET definition, proposed acceptance detail; not a runtime-completion claim.  
-**Source:** owner direction of 2026-09-29, constitution and existing General Plan/contracts.  
-**Scope:** existing TORO master product and authorized portfolio; no new master project/backlog.  
-**Delivery:** full product definition below; editable/presentation exports and a complete indexed General Plan reader are derived artifacts.  
-**Governance:** existing A0‚ÄìA6 workflow authority, Autopilot caps, identity/privacy, budget, readiness, source and release gates remain effective.
-
-**R2 refinement ‚Äî 2026-09-30:** Mauricio designates this section as **VERSION FINAL**: the canonical TARGET description of TORO as the finished product. The subordinate execution/design prompt is `docs/product/TORO_VERSION_FINAL_SUPERPROMPT_V1.md`. It strengthens the executive/general-manager layer, first-class mobile experience, event-driven execution, Same-Brain OpenClaw/WhatsApp architecture, Business DNA portability and the visual self-use loop in which TORO Business operates with TORO. Its VF01‚ÄìVF40 refinements extend the product definition without replacing the existing P01‚ÄìP40 acceptance criteria, R4 Human Layer controls, current queues, source authorities or runtime/release gates.
-
-**R3 interface decision ‚Äî 2026-09-30:** TORO is **platform-first and interface-agnostic**. ChatGPT becomes a first-class TORO interface through a TORO ChatGPT App built with the Apps SDK and a governed TORO MCP boundary. ChatGPT is not the system of record and does not own critical business logic, memory, permissions or execution state. TORO Brain, Supabase/canonical data, Control Plane, policy/permission enforcement and evidence/receipt state remain authoritative.
-
-
-### Prop√≥sito y alcance
-
-TORO re√∫ne la operaci√≥n, el conocimiento y el avance de los negocios y proyectos autorizados en una plataforma que Mauricio puede abrir, entender y dirigir desde el celular. Comprende el contexto, conecta las fuentes existentes, organiza el trabajo, ejecuta dentro de sus permisos y muestra resultados comprobables. La experiencia se vuelve m√°s sencilla mientras el sistema mejora.
-
-Esta definici√≥n describe el producto final deseado. Las capacidades se narran en presente para poder dise√±ar desde el resultado terminado y volver hacia los requisitos de construcci√≥n. Su clasificaci√≥n es TARGET; el cap√≠tulo sobre realidad actual conserva los l√≠mites de implementaci√≥n. Esta versi√≥n no acredita que el producto ya funcione de esa manera ni activa agentes, conectores, permisos o publicaciones.
-
-La √∫nica base es el Plan General de TORO en `docs/product/TORO_BRAIN_GENERAL_PLAN.md`. Este texto forma parte de su ampliaci√≥n de producto terminado. El documento editable, su presentaci√≥n de lectura y el √≠ndice visual son proyecciones de esa misma definici√≥n, no un segundo plan ni otra lista de tareas. Fecha de corte: 29 de septiembre de 2026, Costa Rica.
-
-### La experiencia completa
-
-Mauricio abre TORO y encuentra su portafolio autorizado, los asuntos que necesitan una decisi√≥n y el trabajo que est√° avanzando. Puede tocar un negocio, proyecto, persona, sistema o m√≥dulo; preguntar qu√© sucede; revisar la evidencia y ordenar una acci√≥n permitida. Para el trabajo ordinario no necesita abrir Codex, recorrer chats ni recordar d√≥nde qued√≥ cada conversaci√≥n.
-
-Una solicitud se convierte en un objeto de trabajo trazable. TORO identifica a qui√©n pertenece, qu√© fuente responde, qu√© resultado se espera y qu√© acciones est√°n permitidas. Mantiene el contexto durante los relevos, los reinicios y el cambio entre Portal y WhatsApp. Solo pregunta cuando falta una decisi√≥n o un dato material que no puede resolver por su cuenta.
-
-Cada resultado muestra qu√© cambi√≥, d√≥nde verlo, qui√©n intervino, qu√© prueba lo respalda y qu√© sigue. Un documento preparado, una funci√≥n desplegada y una mejora utilizada con beneficio medido tienen estados distintos. Los reportes se concentran en cambios √∫tiles y no llenan la pantalla con ciclos sin novedades.
-
-### Una sola plataforma y dos maneras de trabajar
-
-La portada interna final es el Cerebro conectado para toda identidad autenticada, siempre filtrado por √°mbito y permisos. El due√±o ve el portafolio autorizado con Atenci√≥n y decisiones a mano; Recepci√≥n, mantenimiento, finanzas y los dem√°s perfiles ven un foco inicial de Cerebro adaptado a su trabajo y su siguiente acci√≥n permitida. ¬´Hoy¬ª sigue siendo la vista operativa de atenci√≥n, accesible en un toque, no una portada distinta. La edici√≥n p√∫blica es una demostraci√≥n saneada y separada.
-
-La portada combina mapa y lista equivalente sobre los mismos objetos, con se√±ales de atenci√≥n y acciones en contexto. No obliga a explorar el grafo para una tarea repetitiva: b√∫squeda, ¬´Hoy¬ª y acceso directo al objeto conservan √°mbito y selecci√≥n. La experiencia prioriza pantallas compactas con detalle progresivo; el contenido largo, la ampliaci√≥n de texto y las excepciones pueden desplazarse con scroll normal.
-
-La navegaci√≥n visible re√∫ne **Cerebro, m√≥dulo 0 transversal**, y los once m√≥dulos de dominio existentes, del 1 al 11: Hoy y Atenci√≥n, Dinero, Studio, Clientes, Operaciones, Personas, Crecimiento, Legal y Riesgo, Activos y Espacios, Proyectos y Sistemas. Cerebro muestra y coordina sus relaciones sobre los mismos objetos, permisos y estado. Conversaci√≥n, b√∫squeda, evidencia, aprobaciones, enlaces y notificaciones siguen siendo capacidades comunes. Esta clasificaci√≥n TARGET del 10 de octubre de 2026 no renumera IDs t√©cnicos ni activa otro subsistema.
-
-### ChatGPT como interfaz oficial de TORO
-
-El usuario puede abrir TORO desde ChatGPT y conversar con el mismo Brain que utiliza Portal o WhatsApp. La experiencia puede presentar Brain, prioridades, decisiones, m√≥dulos, evidencia y recibos como componentes interactivos, pero la interfaz no crea una autoridad paralela.
-
-Una instrucci√≥n desde ChatGPT conserva identidad, √°mbito, fuente, permisos y estado can√≥nico. Si la capacidad es solo de lectura, TORO no simula una acci√≥n. Si una acci√≥n est√° permitida, pasa por el mismo ciclo de pol√≠tica, aprobaci√≥n, ejecuci√≥n, verificaci√≥n y recibo que cualquier otra superficie.
-
-El Portal sigue siendo la superficie visual/control m√°s completa; ChatGPT optimiza investigaci√≥n, conversaci√≥n, razonamiento y comando; mobile optimiza operaci√≥n r√°pida; WhatsApp/OpenClaw optimiza continuidad y trabajo en canal. Todos proyectan el mismo TORO.
-
-### Portafolio y contextos
-
-TORO representa personas, organizaciones, negocios, propiedades, proyectos, productos, proveedores y aliados con identidades y relaciones expl√≠citas. La red no obliga a que todo sea un cliente ni convierte una propiedad en una empresa por aparecer como nodo.
-
-El portafolio de Mauricio contempla Dreamcatcher, Santa Toro, Vista Alegre, Cabuya y TORO Business, adem√°s de los proyectos ya registrados y las relaciones autorizadas. Dreamcatcher contiene sus propiedades y productos seg√∫n el inventario vigente, incluyendo las referencias de Villa Toro y Makaiza. Atrapasue√±os y las entidades legales mantienen sus relaciones documentadas. El encuadre definitivo de Santa Toro, Vista Alegre y Cabuya se toma de las fuentes patrimoniales y operativas; su presencia visual no reactiva negocios, no acredita titularidad y no modifica estructuras legales.
-
-Cada contexto identifica qu√© est√° activo, en pausa, hist√≥rico, en preparaci√≥n o pendiente de verificaci√≥n. El due√±o puede comparar √°mbitos con permiso de portafolio; los datos personales y los clientes externos conservan su aislamiento. Una relaci√≥n visible explica si significa pertenencia, propiedad documentada, operaci√≥n, dependencia, colaboraci√≥n o conexi√≥n comprobada.
-
-### TORO Business utiliza TORO
-
-TORO Business es el negocio que desarrolla, vende y da soporte al producto. Utiliza el mismo TORO para organizar su trabajo, registrar costos, entender usuarios, controlar calidad, gestionar soporte y mejorar. Aqu√≠ autouso significa operar su propio negocio como un √°mbito interno; no decide d√≥nde se aloja la infraestructura.
-
-El Brain del producto y el nodo TORO Business representan funciones distintas del mismo sistema. El primero coordina los √°mbitos autorizados; el segundo es un negocio usuario, con sus propios proyectos y permisos. TORO Business no tiene un atajo privilegiado para saltarse el aislamiento de otros negocios.
-
-La retroalimentaci√≥n sigue un ciclo visible: experiencia del usuario, problema u oportunidad, propuesta, evaluaci√≥n, decisi√≥n aplicable, piloto, medici√≥n y conservaci√≥n o reversi√≥n. Una mejora de TORO se prueba utilizando TORO. Los patrones reutilizables se separan de los datos privados que los originaron.
-
-### El Brain y la red completa
-
-El Brain ocupa la mayor parte del √°rea √∫til en la vista del due√±o y conserva a la vista el contexto del portafolio. Su lenguaje visual comunica una organizaci√≥n viva: identidad oficial, profundidad, nodos claros y movimiento moderado. La referencia de una interfaz cinematogr√°fica se traduce en navegaci√≥n √∫til, legibilidad y respuesta r√°pida.
-
-La vista global muestra todos los √°mbitos autorizados y las conexiones principales. Al acercarse aparecen dominios, m√≥dulos, proyectos, capacidades y objetos relevantes. Un minimapa o rastro de contexto conserva la orientaci√≥n al explorar. Volver a la vista global no pierde la selecci√≥n ni obliga a navegar por redes independientes.
-
-Red completa significa que todo lo registrado y autorizado es localizable. El detalle se agrupa por nivel para evitar que miles de tareas, documentos o filas hagan ilegible la pantalla. El inventario permite comprobar cobertura por fuente y fecha, separando registrado, visible para ese usuario, lectura comprobada, actividad vigente y bloqueado o desactualizado. Una fuente inaccesible se muestra como desconocida.
-
-Tocar un nodo abre una ficha con nombre, tipo, √°mbito, responsable, objetivo, estado, fuente, fecha, evidencia, v√≠nculos, relaciones y siguiente acci√≥n permitida. Tocar una conexi√≥n explica su significado y respaldo. Los filtros conservan el contexto global y avisan qu√© parte de la red se est√° viendo.
-
-La actividad ilumina o ampl√≠a suavemente los nodos afectados mientras existe un evento de trabajo vigente. La ficha permite abrir la acci√≥n, su resultado y la evidencia. La se√±al desaparece al expirar o revocarse. La salud de un servicio tiene un indicador distinto: estar encendido no significa estar ejecutando trabajo. Se puede revisar la historia mediante una l√≠nea de tiempo, con reproducci√≥n claramente identificada.
-
-La informaci√≥n tambi√©n est√° disponible como lista y l√≠nea de tiempo, con equivalencia de estados y acciones. Hay controles de movimiento reducido, navegaci√≥n por teclado, buen contraste y etiquetas que explican los colores. El modo de presentaci√≥n usa datos sint√©ticos, p√∫blicos o expresamente aprobados.
-
-### Celular y entrada a TORO
-
-La entrada deseada es `https://dreamcatcherhotel.com/toro`. Se define como un acceso sencillo que presenta TORO y dirige al Portal can√≥nico; la decisi√≥n de ruta o redirecci√≥n conserva los sitios y releases existentes. Esta direcci√≥n es TARGET, no una ruta entregada por este documento.
-
-El enlace puede ser com√∫n para todos. La operaci√≥n privada utiliza una identidad individual sencilla y una sesi√≥n adecuada al dispositivo. Esto permite mostrar el alcance correcto, identificar qui√©n actu√≥ y retirar un acceso sin cambiar el de todos. El demo p√∫blico y la entrada no contienen informaci√≥n privada del hotel.
-
-En celular, el usuario encuentra su negocio activo, Atenci√≥n, b√∫squeda y comando. El Brain adapta el nivel de detalle al espacio, permite tocar nodos y abre fichas con acciones grandes y claras. La lista equivalente permite completar tareas sin manipular el mapa. Adjuntar una foto, dictar una solicitud o revisar una aprobaci√≥n requiere pocos pasos. El estado de conexi√≥n distingue informaci√≥n reciente, cach√© y env√≠o pendiente; nunca presenta una captura sin enviar como trabajo ya registrado.
-
-En escritorio se ampl√≠a la exploraci√≥n, la comparaci√≥n autorizada y la revisi√≥n de evidencia. El cambio de dispositivo conserva el contexto y los permisos. Un dispositivo compartido permite cerrar sesi√≥n y cambiar de persona sin conservar el acceso anterior.
-
-### Usuarios y vistas
-
-Mauricio tiene la vista de due√±o sobre todos los √°mbitos que sus permisos controlan. Carolina y la madre de Mauricio reciben vistas amplias cuando los alcances y capacidades individuales est√©n definidos; un v√≠nculo familiar no otorga acceso autom√°ticamente. El producto permite una experiencia sencilla con permisos precisos.
-
-Recepci√≥n ve servicio, clientes y operaci√≥n de su √°mbito. Mantenimiento ve asignaciones, espacios y evidencia de cierre. Finanzas ve obligaciones, caja y conciliaciones autorizadas. Crecimiento y producci√≥n creativa ven campa√±as, activos y clientes permitidos. Personas administra el trabajo y los procesos laborales que le corresponden. Sistemas controla la salud t√©cnica para sus administradores.
-
-Cada persona tiene una identidad y puede trabajar en varios negocios con roles distintos. El cambio de contexto es visible. Los datos personales y de trabajo privado mantienen sus l√≠mites incluso ante un administrador del negocio. Ocultar un bot√≥n no es la protecci√≥n: cada lectura y acci√≥n se valida en el servidor.
-
-### Contrato com√∫n de los m√≥dulos
-
-Cada m√≥dulo muestra informaci√≥n √∫til para el rol, su √°mbito activo, fuente y fecha. Cuando un dato no est√° confirmado, lo dice y ofrece el siguiente paso seguro. Las m√©tricas indican unidad, per√≠odo, moneda cuando corresponde y forma de c√°lculo. Una proyecci√≥n no se confunde con un dato observado.
-
-Las fichas comparten atenci√≥n, responsable, dependencias, historial, enlaces y evidencia. Se puede pedir trabajo, revisar propuestas, aprobar lo que corresponde, pausar el trabajo autorizado o abrir el sistema original. La acci√≥n ejecutada vuelve al mismo registro can√≥nico. Un m√≥dulo no crea una segunda tarea cuando otro m√≥dulo ya es responsable del asunto.
-
-La interfaz admite espa√±ol e ingl√©s. Fechas, moneda, n√∫meros y zona horaria se resuelven por usuario y √°mbito. Los documentos conservan idioma y procedencia originales.
-
-Los m√≥dulos se habilitan seg√∫n disponibilidad comprobada, configuraci√≥n del negocio y capacidades del usuario. El n√∫cleo de identidad, aislamiento, seguridad, autoridad de fuentes y auditor√≠a no es opcional. Un m√≥dulo todav√≠a no implementado se describe en esta visi√≥n final y conserva su estado real en la matriz de ejecuci√≥n.
-
-### M√≥dulo 0 Cerebro
-
-Cerebro es la entrada visible a la inteligencia y coordinaci√≥n de TORO. El usuario entiende el conjunto, encuentra el asunto que cambia una decisi√≥n, consulta las relaciones y pide trabajo dentro de su √°mbito. Utiliza la misma proyecci√≥n, contexto, permisos, memoria, tareas, decisiones, ejecuciones y recibos de TORO; no mantiene copias independientes.
-
-La vista del due√±o combina una red global autorizada con Atenci√≥n, b√∫squeda, comando y un inspector. El negocio TORO Business aparece junto a los dem√°s √°mbitos permitidos y muestra c√≥mo su producto, calidad, soporte, costo y mejoras se relacionan. La vista de un empleado conserva ese lenguaje con un foco pr√°ctico y solo los objetos autorizados. Un negocio, un proyecto, una herramienta y una ejecuci√≥n tienen tipos distintos.
-
-Desde un nodo se puede consultar el motivo de su estado, fuente y fecha, abrir evidencia, entrar al m√≥dulo responsable o preparar una acci√≥n disponible. Una relaci√≥n muestra qu√© significa y qu√© la respalda. Cada acci√≥n conserva su objeto y versi√≥n; una aprobaci√≥n no concede permiso general. Si una capacidad no est√° conectada o probada, la ficha lo indica y ofrece el relevo existente.
-
-La red representa contexto y dependencias; el pulso representa un evento vigente autorizado. Salud, actividad e historial usan se√±ales distintas. El mapa, la lista equivalente y la l√≠nea de tiempo comparten objetos y resultados. En m√≥vil se puede resolver una consulta sin depender del gesto de arrastrar ni de una animaci√≥n.
-
-Responsabilidad funcional: TORO Core compone la experiencia; Data proyecta; Governance autoriza; Projects vincula objetivos y trabajo; Agents aporta ejecuci√≥n; Systems aporta salud; Knowledge aporta respaldo. Cerebro est√° terminado para una versi√≥n cuando un usuario puede recorrer contexto, asunto, evidencia y siguiente acci√≥n permitida, con aislamiento probado y recuperaci√≥n del foco. Su √©xito se mide por tiempo y errores al decidir o localizar evidencia, no por cantidad de luces.
-
-### M√≥dulo 1 Hoy y Atenci√≥n
-
-Hoy re√∫ne lo que necesita actuar ahora: decisiones, aprobaciones, vencimientos, riesgos, fallos relevantes y bloqueos que no se resolvieron dentro del √°mbito autorizado. El due√±o ve una s√≠ntesis del portafolio y puede abrir la causa de cada excepci√≥n. El empleado ve sus asuntos y las prioridades de su trabajo.
-
-Una tarjeta explica el problema, impacto, plazo, recomendaci√≥n, opciones y decisi√≥n requerida. Los correos, mensajes y avisos se transforman en se√±ales trazables; solo las excepciones √∫tiles llegan a Atenci√≥n. Los resultados rutinarios quedan en el resumen y la evidencia. La informaci√≥n repetida se re√∫ne sobre el mismo objeto.
-
-El usuario puede resolver una decisi√≥n, pedir un dato, delegar dentro del alcance permitido o posponer con motivo. Cada respuesta queda ligada a la versi√≥n del objeto. Una aprobaci√≥n de un caso no se convierte en permiso general para todos los casos futuros.
-
-Hoy se integra con Dinero para pagos y caja, Operaciones para incidentes, Clientes para servicio, Proyectos para dependencias y Sistemas para fallos. Ejemplo final: un comprobante de pago llega al canal autorizado, TORO lo vincula con la obligaci√≥n y muestra a la persona indicada √∫nicamente la conciliaci√≥n que sigue pendiente.
-
-El m√≥dulo est√° terminado para una versi√≥n cuando las excepciones relevantes llegan al rol correcto, se resuelven sobre el registro original y el usuario puede comprobar la resoluci√≥n. Se mide atenci√≥n pendiente, tiempo de resoluci√≥n e intervenciones del due√±o evitadas, con una l√≠nea base.
-
-### M√≥dulo 2 Dinero
-
-Dinero re√∫ne caja, obligaciones, cobros, pagos, gastos y proyecci√≥n de liquidez por negocio y moneda. PayFlow permite entender los pr√≥ximos noventa d√≠as con fechas, supuestos y escenarios claros. Las cuentas bancarias respaldan el efectivo observado; Alegra conserva la autoridad contable y fiscal que le corresponde.
-
-La pantalla muestra vencimientos, flujo proyectado, saldos con fecha, comprobantes y conciliaciones pendientes. Un mismo movimiento no se cuenta dos veces por aparecer en un correo, un banco y un sistema contable. Las cuentas con informaci√≥n personal y empresarial mezclada mantienen la clasificaci√≥n y las restricciones aplicables.
-
-TORO prepara propuestas de pago, detecta inconsistencias y explica diferencias. Mover dinero, cambiar beneficiarios o realizar tr√°mites fiscales conserva los permisos y aprobaciones del flujo vigente. La autorizaci√≥n para revisar caja no autoriza un pago.
-
-Dinero recibe se√±ales de Clientes, proveedores, correo y operaci√≥n; entrega excepciones a Hoy y restricciones de caja a Proyectos. Ejemplo final: antes de una compra, el due√±o ve su efecto en caja, las obligaciones que compiten por esa fecha y la evidencia del precio solicitado.
-
-La entrega se acredita con conciliaci√≥n rastreable, ausencia de duplicados, segregaci√≥n de permisos y recuperaci√≥n ante fallos. Se miden obligaciones vencidas, tiempo de conciliaci√≥n, exactitud de proyecci√≥n y costo o recuperaci√≥n comprobados. Los beneficios se atribuyen con evidencia.
-
-### M√≥dulo 3 Studio
-
-Studio permite pedir, producir, revisar y administrar contenido visual y escrito con un prop√≥sito de negocio. Re√∫ne im√°genes, video, dise√±o, textos y biblioteca de medios. La marca, el p√∫blico, canal, formato, referencias, derechos, aprobador y objetivo se resuelven antes de producir.
-
-El usuario ve el brief, originales, versiones, comparaciones, revisiones, aprobaciones y destino. Los archivos conservan su procedencia y relaci√≥n con sus derivados. Los espacios reales mantienen identidad y fidelidad; una ilustraci√≥n conceptual se identifica como tal. No se inventan amenidades, precios o disponibilidad para hacer una pieza m√°s atractiva.
-
-Studio prepara una publicaci√≥n y muestra qu√© versi√≥n fue aprobada para qu√© canal. Publicar o contratar medios sigue la autorizaci√≥n de ese canal. Puede reutilizar formatos y reglas revisadas sin transferir datos privados de otro negocio.
-
-Se integra con Crecimiento para objetivos y medici√≥n, Activos para originales y derechos, Clientes para preguntas √∫tiles y Sistemas para las herramientas. Ejemplo final: una solicitud de campa√±a utiliza fotos verificadas, genera versiones pertinentes, pasa revisi√≥n y conserva el enlace del resultado publicado cuando la publicaci√≥n est√° autorizada.
-
-Se considera entregado el flujo cuando el usuario puede recorrer solicitud, pieza, revisi√≥n, aprobaci√≥n, destino y resultado sin perder la versi√≥n. Se mide tiempo de producci√≥n y retrabajo; el rendimiento comercial se eval√∫a con el m√©todo de atribuci√≥n correspondiente.
-
-### M√≥dulo 4 Clientes
-
-Clientes conserva el contexto autorizado de prospectos, hu√©spedes o clientes y acompa√±a su recorrido antes, durante y despu√©s del servicio. Incluye necesidades, conversaciones permitidas, solicitudes, compromisos y seguimiento. La terminolog√≠a y las etapas se adaptan al negocio.
-
-La vista presenta qui√©n necesita atenci√≥n, el estado de su solicitud y los compromisos vigentes. En Dreamcatcher, Kross mantiene la autoridad de reservas, tarifas y disponibilidad. Si no existe lectura viva comprobada, TORO lo informa y ofrece el enlace o relevo oficial; no convierte una p√°gina p√∫blica o una captura en disponibilidad actual.
-
-El usuario puede preparar una respuesta, atender una consulta y transferir un incidente al √°rea responsable. La transferencia mantiene cliente, objeto, plazo y evidencia necesarios sin copiar informaci√≥n fuera de su alcance. El seguimiento evita solicitudes duplicadas y respeta consentimiento y permisos del canal.
-
-Clientes se integra con Operaciones para servicio, Personas para responsables, Dinero para pagos y Crecimiento para seguimiento autorizado. Ejemplo final: un hu√©sped informa una aver√≠a, TORO registra la solicitud una vez, la asigna al flujo operativo y permite a recepci√≥n revisar el cierre antes de responder.
-
-El flujo est√° entregado cuando el relevo no pierde contexto, el sistema original se respeta y el cliente recibe seguimiento por la ruta permitida. Se mide respuesta, resoluci√≥n, p√©rdida de relevos y conversi√≥n comprobada; una conversaci√≥n o clic no equivale a venta.
-
-### M√≥dulo 5 Operaciones
-
-Operaciones organiza servicio, tareas, incidentes, mantenimiento, listas de comprobaci√≥n y procedimientos del negocio. Muestra trabajo asignado, prioridad, plazo, dependencia, lugar y evidencia necesaria para cerrar. Las variantes hoteleras pertenecen al paquete de hospitalidad.
-
-Un trabajador captura una solicitud por texto, voz o foto y la ve en su lista autorizada. El responsable recibe instrucciones concretas y puede registrar avance, impedimento o evidencia. TORO detecta relevos sin respuesta y escalaciones seg√∫n la pol√≠tica vigente.
-
-La terminaci√≥n requiere evidencia proporcional: una reparaci√≥n puede necesitar foto, comprobaci√≥n y validaci√≥n; marcar una casilla no acredita que el equipo funcione. Un cierre t√©cnico del job tampoco cambia por s√≠ solo la prioridad, el responsable o el estado de la tarea de negocio.
-
-Operaciones se integra con Clientes para servicio, Personas para turnos y responsables, Activos para equipos y espacios, Dinero para costos y Hoy para excepciones. Ejemplo final: un incidente relacionado con una habitaci√≥n muestra la ubicaci√≥n y el equipo, asigna el trabajo, conserva sus restricciones y devuelve el cierre al mismo caso.
-
-La entrega exige un caso usado por el equipo con recuperaci√≥n ante duplicados o desconexi√≥n. Se miden tiempo de resoluci√≥n, reincidencia, cumplimiento del servicio y retrabajo, sin premiar cierres sin evidencia.
-
-### M√≥dulo 6 Personas
-
-Personas integra DreamTeam dentro de TORO People. Re√∫ne equipo, funciones, turnos, solicitudes, disponibilidad, asistencia y procedimientos laborales autorizados. Cada empleado dispone de Mi TORO para su informaci√≥n y acciones permitidas.
-
-La pantalla permite conocer a qui√©n recurrir y abrir el contacto autorizado. Los botones de comunicaci√≥n muestran canal e intenci√≥n; abrir WhatsApp o un borrador no significa que se haya enviado un mensaje. Los datos personales, laborales y visibles al equipo tienen clasificaciones separadas.
-
-El usuario puede presentar una solicitud de horario, registrar informaci√≥n que le corresponde y revisar su estado. Los cambios efectivos de turnos o condiciones siguen su aprobaci√≥n. Reconocimiento y puntos usan reglas transparentes, evidencia y revisi√≥n; no sustituyen obligaciones laborales ni exponen evaluaciones privadas.
-
-Personas se integra con Operaciones para responsabilidades, Clientes para continuidad de servicio, Legal y Riesgo para obligaciones y Sistemas para acceso y baja. El aprendizaje y la formaci√≥n utilizan procedimientos revisados; haber completado un curso no concede nuevos permisos.
-
-El flujo est√° entregado cuando el empleado entra con su identidad, ve √∫nicamente lo permitido y puede completar una solicitud con aprobaci√≥n y resultado rastreables. Se mide tiempo de resoluci√≥n, calidad de relevos y correcciones necesarias, manteniendo privacidad.
-
-### M√≥dulo 7 Crecimiento
-
-Crecimiento re√∫ne adquisici√≥n, reputaci√≥n, campa√±as, oportunidades, canales y medici√≥n. Coordina el website, buscadores, perfiles, directorios y seguimiento para que el negocio sea m√°s f√°cil de encontrar, entender y contratar.
-
-La pantalla muestra oportunidades con fundamento, trabajo de canal, campa√±as y resultados medibles. Distingue tr√°fico, consulta, reserva, venta y recuperaci√≥n. Los objetivos se conectan con la capacidad operativa y no prometen servicios o disponibilidad que las fuentes no respaldan.
-
-TORO prepara mejoras, respuestas y campa√±as dentro de los permisos existentes. Las publicaciones, contactos externos y gastos publicitarios se autorizan por su flujo. La calidad de servicio precede a una solicitud de rese√±a cuando existe una incidencia abierta.
-
-Crecimiento se integra con Studio para piezas, Clientes para seguimiento permitido, Dinero para presupuesto y retorno, Proyectos para website y Activos para evidencia comercial. Ejemplo final: una mejora de la p√°gina de una villa conserva identidad y datos reales, se revisa visualmente, se despliega por la ruta vigente y mide su efecto con los l√≠mites de atribuci√≥n visibles.
-
-Se considera entregado cuando existe un ciclo de oportunidad, cambio, revisi√≥n, publicaci√≥n autorizada y medici√≥n. El website de Dreamcatcher y la presentaci√≥n comercial de TORO tienen p√∫blicos y releases definidos; comparten capacidades sin volverse un mismo producto p√∫blico.
-
-### M√≥dulo 8 Legal y Riesgo
-
-Legal y Riesgo re√∫ne obligaciones, contratos, vencimientos, seguros, permisos y riesgos relevantes por entidad y √°mbito. Los documentos, autoridades oficiales y responsables humanos respaldan cada hecho material.
-
-La vista explica qu√© vence, a qui√©n corresponde, qu√© evidencia existe y qu√© sigue pendiente de confirmaci√≥n. Los v√≠nculos entre activos, financiamiento, entidades y compromisos se presentan con su procedencia. Una interpretaci√≥n del sistema se distingue de un documento o resoluci√≥n oficial.
-
-TORO organiza, detecta faltantes y prepara expedientes o consultas. Firmar, aceptar contratos, presentar tr√°mites o asumir un compromiso conserva las autorizaciones aplicables. Las alertas no inventan una conclusi√≥n jur√≠dica ni sustituyen la revisi√≥n profesional requerida por el caso.
-
-El m√≥dulo se integra con Dinero para obligaciones, Personas para aspectos laborales, Activos para titularidad y seguros, Proyectos para dependencias y Hoy para plazos. Ejemplo final: una renovaci√≥n muestra documento vigente, fecha, responsable, requisitos y acci√≥n concreta, sin perder la entidad legal correcta.
-
-La entrega exige trazabilidad, privacidad, vencimientos correctos y resoluci√≥n con evidencia. Se miden obligaciones sin responsable, atrasos y tiempo de preparar expedientes. El riesgo residual permanece visible cuando no est√° resuelto.
-
-### M√≥dulo 9 Activos y Espacios
-
-Activos y Espacios permite entender inmuebles, habitaciones, instalaciones, equipos, inventario y archivos asociados. Relaciona ubicaci√≥n, identidad, condici√≥n, responsable, mantenimiento y documentos, sin confundir un activo con un negocio.
-
-El usuario abre un espacio y encuentra sus objetos, incidencias, fotograf√≠as verificadas y acciones autorizadas. El mapa espacial puede mostrar ubicaciones o distribuci√≥n cuando existe informaci√≥n suficiente y la capacidad est√° implementada; su dise√±o actual no acredita un mapa operativo entregado.
-
-Los activos f√≠sicos conservan registro de estado y mantenimiento. Los activos digitales conservan originales, derechos, versiones y canales permitidos. Un mapa o fotograf√≠a conceptual se diferencia de la distribuci√≥n y evidencia real.
-
-Se integra con Operaciones para trabajos, Studio para medios, Legal y Riesgo para documentos, Dinero para costos y Proyectos para obras o mejoras. Ejemplo final: tocar un equipo revela el incidente activo, su historial y la evidencia de la √∫ltima reparaci√≥n; el usuario puede entrar al mismo trabajo operativo.
-
-El m√≥dulo est√° entregado cuando los activos del alcance acordado son localizables y sus v√≠nculos resuelven al registro correcto. Se mide cobertura verificada, tiempo de localizar informaci√≥n, mantenimiento atrasado y reincidencia.
-
-### M√≥dulo 10 Proyectos
-
-Proyectos muestra objetivos, programas, hitos, dependencias y trabajo existente. Ordena las iniciativas del portafolio bajo las identidades can√≥nicas, con responsables, prioridades y resultados esperados. Las conversaciones y entregables se vinculan al proyecto que corresponde.
-
-La vista permite ver qu√© est√° activo, qu√© se detuvo y por qu√©, qu√© bloquea el siguiente resultado y qu√© recursos compiten por caja o tiempo. Los avances distinguen preparaci√≥n, implementaci√≥n, despliegue, verificaci√≥n, uso y beneficio. El n√∫mero de commits no reemplaza el progreso del negocio.
-
-TORO prepara la siguiente unidad elegible y coordina especialistas por capacidad. Una idea nueva se incorpora al Plan General y al proyecto existente antes de abrir un frente. Los proyectos duplicados o hist√≥ricos se conservan con su disposici√≥n documentada.
-
-Se integra con todos los m√≥dulos seg√∫n el resultado, con Dinero para restricciones, Sistemas para releases y Hoy para decisiones. Ejemplo final: el due√±o abre la construcci√≥n de TORO, ve sus m√≥dulos y dependencias, revisa los links de entregables comprobados y responde una sola decisi√≥n concreta cuando es necesaria.
-
-La entrega exige que el siguiente paso, dependencia y resultado sean claros, y que una pausa o relevo no pierda contexto. Se mide trabajo terminado √∫til, bloqueos resueltos y tiempo desde intenci√≥n hasta uso.
-
-### M√≥dulo 11 Sistemas
-
-Sistemas muestra las herramientas y conectores de los que depende el negocio: prop√≥sito, propietario, alcance, autoridad, salud, permisos, costo, √∫ltima comprobaci√≥n y recuperaci√≥n. La vista t√©cnica pertenece a administradores; el resto ve √∫nicamente los estados y acciones que necesita.
-
-Una herramienta registrada, una conexi√≥n configurada, una lectura autorizada comprobada y una escritura aprobada comprobada tienen estados distintos. TORO detecta desactualizaci√≥n, fallos y diferencias entre configuraci√≥n esperada y observada. Los botones abren destinos registrados y verificados con icono y etiqueta.
-
-El administrador puede revisar una propuesta de configuraci√≥n, renovar el acceso por la ruta permitida, pausar trabajos y comprobar recuperaci√≥n. Las credenciales se administran mediante mecanismos protegidos; no aparecen en las fichas, mensajes o prompts.
-
-Sistemas se integra con Proyectos para cambios, Dinero para consumo, Hoy para excepciones y todos los m√≥dulos para dependencias. Ejemplo final: si un conector falla, TORO limita el dato afectado, muestra la causa comprobada, propone recuperaci√≥n y retoma desde el checkpoint una vez autorizado.
-
-El m√≥dulo est√° entregado cuando la salud declarada coincide con evidencia, el fallo no genera datos falsos y una prueba de recuperaci√≥n funciona. Se mide disponibilidad de capacidades, tiempo de recuperaci√≥n, costo por resultado y fallos repetidos.
-
-### Conversaci√≥n y herramientas compartidas
-
-Texto, voz, adjuntos, WhatsApp, Portal y correo se conectan al mismo contexto, permisos y trabajo. La conversaci√≥n puede responder, preparar una acci√≥n, registrar un incidente, solicitar una decisi√≥n o dar seguimiento. No se vuelve por s√≠ sola memoria permanente.
-
-OpenClaw y WeSpeak son runtimes o canales dentro de esta arquitectura. La experiencia final de WhatsApp tiene la misma cobertura de capacidades autorizadas que el Portal para la identidad y √°mbito activos. Los nombres Whisper, Tether u otros mencionados informalmente se resuelven contra el inventario antes de asignarles funciones; no se presume que sean un sistema instalado.
-
-El acceso a toda la informaci√≥n significa acceso completo a lo que el usuario y el flujo tienen autorizado. La paridad se cumple mediante ejecuci√≥n compatible o un relevo seguro al Portal. Cada canal conserva sus requisitos de identidad, autenticaci√≥n y capacidades; no hereda autom√°ticamente los permisos de otro. El cambio entre canales no permite saltarse privacidad, aprobaciones o aislamiento. El enlace para contactar a DreamTeam prepara o abre la conversaci√≥n por el canal apropiado y conserva la autorizaci√≥n de env√≠o.
-
-TORO Knowledge y TORO Research aportan contexto, fuentes, procedimientos y aprendizaje revisado a los once m√≥dulos. TORO Tools y TORO Channels conectan acciones y destinos; TORO Governance e Identity aplican los l√≠mites. Estas capacidades compartidas evitan crear otra bandeja, memoria o motor por canal.
-
-### Avance aut√≥nomo y control del due√±o
-
-TORO encadena unidades de trabajo elegibles dentro de una sesi√≥n de ejecuci√≥n y contin√∫a desde checkpoints entre sesiones cuando existe un worker persistente autorizado. No depende de que Mauricio escriba continuar ni de dejar ChatGPT abierto. Esa continuidad es una capacidad final que necesita implementaci√≥n y prueba; programar un aviso recurrente no la acredita.
-
-El coordinador elige trabajo de la cola existente seg√∫n impacto, prioridad, dependencia, riesgo, permiso, presupuesto y capacidad. Tras verificar un resultado, toma el siguiente elegible dentro de los l√≠mites vigentes. Los agentes reciben encargos acotados por capacidad, con resultado esperado y consumo m√°ximo; los nombres de especialistas no crean autoridades independientes.
-
-La velocidad se mide como tiempo ocioso con trabajo autorizado elegible y capacidad disponible. Las esperas por aprobaci√≥n, presupuesto, cooldown, fallo de conexi√≥n o ausencia de trabajo se explican por separado. No se requiere trabajo constante si no existe trabajo √∫til permitido.
-
-El due√±o ve resultado, costo, evidencia y pr√≥ximos pasos. Puede pausar por √°mbito y reanudar un trabajo pausado desde su checkpoint. Un job cancelado queda terminal; retomar su objetivo requiere una nueva acci√≥n autorizada, enlazada al original y con conciliaci√≥n de efectos previos. Una acci√≥n externa ya iniciada entra en conciliaci√≥n cuando no se puede cancelar; no se informa falsamente que fue deshecha. Pausar una automatizaci√≥n no cancela autom√°ticamente reservas, pagos o compromisos.
-
-La ejecuci√≥n conserva los topes, periodos y capacidades definidos en los contratos vigentes. Sin presupuesto vigente y l√≠mites configurados no se inicia ejecuci√≥n incremental. Se controlan costo y duraci√≥n por job, topes diarios y mensuales, concurrencia, reintentos y corte ante fallos repetidos. La espera y las consultas sin cambios utilizan mecanismos de bajo costo y no consumen modelo innecesariamente. Los eventos, workers y subagentes comparten l√≠mites. Crear m√°s agentes no aumenta el presupuesto ni evade el cooldown. Los permisos se verifican de nuevo antes de un efecto material; repetir un evento no debe repetir el efecto.
-
-### Revisi√≥n y mejora continua
-
-El trabajo pasa por verificaci√≥n proporcional antes de declararse terminado. Los cambios materiales se revisan con evidencia independiente cuando corresponde. TORO no se otorga permisos, no redefine su evaluador y no ampl√≠a su presupuesto para aprobar su propio cambio.
-
-Una correcci√≥n se registra con contexto y procedencia. El sistema busca causa, propone una soluci√≥n reutilizable, prueba, aplica dentro de la pol√≠tica autorizada y mide recurrencia. Si empeora el resultado, revierte. El aprendizaje conserva la privacidad del negocio de origen.
-
-Los avances se revisan por utilidad: servicio, caja, conversi√≥n, tiempo humano, errores, recuperaci√≥n y costo por resultado. La plataforma presenta una l√≠nea base y observaciones posteriores antes de afirmar que gener√≥ un beneficio. La supervisi√≥n autom√°tica se apoya en contratos y controles, no solo en un prompt m√°s largo.
-
-### Integraci√≥n de las herramientas existentes
-
-GitHub conserva constituci√≥n, c√≥digo y contratos versionados. Supabase conserva identidades, permisos, datos operativos propios y auditor√≠a. Dropbox conserva originales, archivos y evidencia. Notion presenta narrativa, investigaci√≥n y memoria de trabajo. Airtable sigue como proyecci√≥n humana transitoria donde aporta valor. Las referencias y proyecciones apuntan al Plan General √∫nico.
-
-Kross conserva la autoridad viva de reservas, tarifas y disponibilidad; Alegra la contable y fiscal; los bancos la evidencia del efectivo; los canales y autoridades oficiales mantienen sus dominios. TORO conecta y explica esas fuentes con procedencia y l√≠mites.
-
-Los enlaces √∫tiles y recomendados forman un cat√°logo por √°mbito y funci√≥n, con icono, etiqueta, destino, responsable, permisos y fecha de comprobaci√≥n. Una recomendaci√≥n se identifica como tal y no implica una herramienta ya contratada o conectada. Un link rotulado debe resolver al destino que anuncia.
-
-Dropbox Dash facilita el descubrimiento dentro de las fuentes autorizadas cuando est√° disponible; sus resultados se resuelven al original antes de convertirse en evidencia. No sustituye los archivos originales ni crea otra autoridad.
-
-### Aplicaci√≥n a otros negocios
-
-TORO separa n√∫cleo universal, paquete de industria, configuraci√≥n del negocio y adaptadores de herramientas. Identidad, permisos, evidencia, tareas y gobierno son comunes. La terminolog√≠a, procedimientos, campos espec√≠ficos y conexiones se configuran seg√∫n el negocio.
-
-El producto terminado incorpora un negocio mediante descubrimiento guiado: personas y roles, objetivos, estructura, fuentes, herramientas, permisos, procedimientos, m√©tricas y riesgos. Presenta lo detectado, los conflictos y lo que requiere confirmaci√≥n antes de operar. La importaci√≥n no copia todo indiscriminadamente ni presume que el acceso a un sistema permita todas sus acciones.
-
-Una capacidad probada en Dreamcatcher puede abstraerse y validarse en otro √°mbito sin trasladar hu√©spedes, finanzas, secretos o estrategia privada. El segundo negocio se valida en sandbox con escenarios de lectura, acci√≥n, aislamiento, recuperaci√≥n y baja. El onboarding externo real conserva el readiness gate vigente.
-
-La modularidad permite contratar o habilitar capacidades disponibles sin eliminar el n√∫cleo obligatorio. El soporte, la salida del servicio, la exportaci√≥n autorizada, las dependencias y la recuperaci√≥n forman parte del producto. El negocio puede comprender qu√© queda conectado, qu√© est√° funcionando y qu√© todav√≠a espera implementaci√≥n.
-
-### Cuarenta criterios de producto terminado
-
-Esta serie nueva P01 a P40 concreta esta definici√≥n TARGET. Son criterios de aceptaci√≥n, no cuarenta funciones implementadas ni una renumeraci√≥n de M01 a M20 del contrato Agent Steward. La ejecuci√≥n se vincula a los proyectos y trabajos existentes despu√©s de resolver duplicados.
-
-| ID | Resultado observable | Comprobaci√≥n de aceptaci√≥n |
-|---|---|---|
-| P01 | Una sola base de direcci√≥n | Cada requisito material resuelve a una secci√≥n del Plan General y a su capacidad existente. |
-| P02 | Una entrada sencilla | En m√≥vil dirige al Portal oficial, separa demo y operaci√≥n y no transfiere credenciales ni datos privados por URL. |
-| P03 | Identidad individual | Cambio de usuario y revocaci√≥n impiden conservar el acceso anterior. |
-| P04 | Alcance visible | Pantalla y acci√≥n identifican negocio y contexto; otra organizaci√≥n no accede al objeto. |
-| P05 | Cerebro como inicio por rol | Toda identidad autenticada entra a un Cerebro filtrado; el foco inicial y la siguiente acci√≥n autorizada se adaptan al perfil. Hoy queda a un toque. |
-| P06 | Brain protagonista y accesible | El usuario explora mapa o lista equivalente y alcanza una decisi√≥n sin perder el contexto global. |
-| P07 | Red localizable completa | Inventario y b√∫squeda cubren lo autorizado con denominadores y fuentes inspectables. |
-| P08 | Zoom con orientaci√≥n | Expansi√≥n, filtros y retorno conservan selecci√≥n y relaciones del √°mbito. |
-| P09 | Conexiones explicables | Cada l√≠nea indica tipo y procedencia; pertenencia no se presenta como integraci√≥n. |
-| P10 | Actividad comprobable | Cada pulso abre un evento vigente permitido y desaparece con expiraci√≥n o revocaci√≥n. |
-| P11 | Celular operativo | En 320 p√≠xeles se puede buscar, consultar y actuar sin cortes esenciales, en ES y EN con formatos del usuario. |
-| P12 | Alternativa accesible | Lista y timeline conservan estados y acciones; teclado y movimiento reducido funcionan. |
-| P13 | Fichas con evidencia | Objetos materiales muestran fuente, fecha, estado, responsable y pr√≥ximo paso. |
-| P14 | Enlaces √∫tiles | Botones con etiqueta e icono abren destinos registrados; no hay links presentados como verificados sin prueba. |
-| P15 | Atenci√≥n sin duplicados | Se√±ales sobre el mismo caso producen una excepci√≥n can√≥nica y no varias tareas. |
-| P16 | Decisi√≥n concreta | Una respuesta queda vinculada al objeto y versi√≥n y no concede autoridad general. |
-| P17 | Dinero conciliable | Caja, moneda, obligaci√≥n y comprobante son rastreables y no duplican un movimiento. |
-| P18 | Studio con versiones | Original, derivado, revisi√≥n, derechos, canal y aprobaci√≥n resuelven al archivo correcto. |
-| P19 | Clientes con continuidad | Un caso conserva contexto y relevo; no inventa tarifas o disponibilidad sin fuente viva. |
-| P20 | Operaci√≥n con cierre √∫til | Un flujo real incluye asignaci√≥n, evidencia, verificaci√≥n y respuesta al registro original. |
-| P21 | Personas con privacidad | Empleado y responsable completan el flujo sin acceso a datos ajenos no autorizados. |
-| P22 | Crecimiento medible | Cambio y resultado tienen m√©todo de atribuci√≥n; clics no se presentan como ventas. |
-| P23 | Riesgos respaldados | Vencimiento, entidad, responsable y documento resuelven a fuente y fecha correctas. |
-| P24 | Activos localizables | Espacio, equipo, archivos e incidentes se vinculan por identidad verificable. |
-| P25 | Proyectos sin otro backlog | Cada avance y dependencia corresponden al proyecto y tarea can√≥nicos existentes. |
-| P26 | Sistemas con estados honestos | Registro, configuraci√≥n, lectura, escritura, falla y desactualizaci√≥n se distinguen. |
-| P27 | Portal y WhatsApp equivalentes | La misma identidad y contexto conservan fuentes y l√≠mites; acciones compatibles o relevo seguro respetan autenticaci√≥n por canal. |
-| P28 | Contactos con intenci√≥n | Abrir conversaci√≥n o borrador se diferencia de env√≠o; el env√≠o conserva su permiso. |
-| P29 | Trabajo encadenado | Con trabajo, capacidad y presupuesto disponibles reclama la siguiente unidad sin esperar el reloj; latencia y ocio elegible cumplen un SLO aprobado. |
-| P30 | Continuaci√≥n persistente | Reinicio o cierre de la superficie conserva checkpoints sin perder trabajo ni repetir efectos. |
-| P31 | Consumo limitado | Sin presupuesto y topes no inicia; costo, duraci√≥n, reintentos y subagentes comparten l√≠mites y corte ante fallos. |
-| P32 | Concurrencia segura | Dos ejecutores no duplican efectos; resultado externo incierto se concilia antes de reintentar y revocaci√≥n bloquea efectos nuevos. |
-| P33 | Pausa y cancelaci√≥n | Pausado reanuda con checkpoint; cancelado queda terminal y un nuevo intento autorizado concilia efectos previos. |
-| P34 | Revisi√≥n independiente | Un cambio material acredita evaluaci√≥n aplicable y el ejecutor no modifica su propio evaluador. |
-| P35 | Recuperaci√≥n comprobada | Timeout, duplicado, falla de conector y restauraci√≥n se ensayan sin duplicar acciones. |
-| P36 | Reporte de resultados | Cada avance material tiene prueba y enlace; distingue preparado, verificado, usado y medido. |
-| P37 | TORO se opera con TORO | TORO Business usa los mismos controles y registra sus resultados sin privilegio transversal. |
-| P38 | Aprendizaje reversible | Correcci√≥n, prueba, decisi√≥n, medici√≥n y reversi√≥n quedan trazados sin copiar datos privados. |
-| P39 | Portabilidad por configuraci√≥n | Un segundo √°mbito en sandbox reutiliza capacidades, demuestra aislamiento y rechaza referencias cruzadas entre tenants. |
-| P40 | Salida y versi√≥n completas | Una versi√≥n acredita su alcance contratado, soporte, recuperaci√≥n, exportaci√≥n y baja autorizados. |
-
-### Un d√≠a con TORO
-
-Al comenzar el d√≠a, Mauricio abre TORO desde el celular y ve el portafolio, las decisiones urgentes y los resultados nuevos. Toca Dreamcatcher y revisa una excepci√≥n de caja con su comprobante. Responde la decisi√≥n concreta; TORO registra la respuesta y contin√∫a el trabajo que ya est√° permitido.
-
-Recepci√≥n informa un problema de servicio. El mismo caso aparece en Clientes y Operaciones; mantenimiento recibe la acci√≥n y registra evidencia en el espacio correcto. Recepci√≥n confirma el cierre por el flujo autorizado. El Brain muestra ese recorrido y el due√±o puede comprobarlo sin leer toda la conversaci√≥n.
-
-Crecimiento pide una pieza. Studio utiliza originales autorizados, prepara versiones y presenta una revisi√≥n. La publicaci√≥n ocurre solo por su autorizaci√≥n de canal. Si un conector falla, Sistemas se√±ala la limitaci√≥n y el dato afectado deja de presentarse como actual.
-
-TORO Business revisa el costo y los resultados de esos flujos. Un patr√≥n de relevo repetido genera una propuesta de mejora. Se prueba, se eval√∫a y se mantiene o revierte. Al terminar el d√≠a, el due√±o recibe lo que cambi√≥, el beneficio comprobado y las decisiones que siguen pendientes.
-
-### Realidad actual y camino de construcci√≥n
-
-El Plan General, la Constituci√≥n, los once m√≥dulos y los contratos de Visual Brain ya est√°n definidos. Existen implementaci√≥n can√≥nica, demostraci√≥n sint√©tica y trabajos preparados de Dashboard y lectura real. Esto no acredita once m√≥dulos completos ni operaci√≥n privada end to end.
-
-La lectura can√≥nica del Brain conserva el gate de QA autenticada. El estado final de WhatsApp y OpenClaw requiere pruebas directas de runtime y de equivalencia autorizada. La continuidad persistente requiere un worker comprobado. El mapa espacial est√° dise√±ado, no entregado globalmente. Kross Live pagado permanece diferido por decisi√≥n del due√±o; esta definici√≥n no reactiva esa contrataci√≥n. El onboarding externo conserva los gates vigentes.
-
-Las automatizaciones pueden cambiar durante otras sesiones. Su habilitaci√≥n y √∫ltima fecha de ejecuci√≥n no acreditan √©xito. Los estados actuales se consultan en sus fuentes con fecha y evidencia; esta definici√≥n de producto no congela un snapshot operativo.
-
-El orden de construcci√≥n permanece desde el n√∫cleo: identidad y alcance, verdad, gobierno y autoridad de fuentes, conectores, inteligencia, ejecuci√≥n con recuperaci√≥n, aprendizaje, experiencia y prueba de portafolio. Los controles necesarios est√°n comprobados antes del primer efecto material. Dise√±ar desde el producto final permite saber qu√© debe alcanzar cada paso; no obliga a publicar primero una apariencia sin los controles que la sostienen.
-
-El siguiente trabajo es cerrar esta definici√≥n y representar pocas escenas de experiencia: vista del due√±o, interacci√≥n con un nodo y flujo m√≥vil de atenci√≥n. Despu√©s, cada m√≥dulo se desarrolla por su capacidad y dependencia existentes, con unidades completas, revisi√≥n e integraci√≥n. Se prioriza un flujo √∫til probado antes de multiplicar pantallas.
-
-Una versi√≥n est√° terminada cuando el alcance comprometido es utilizado por sus usuarios, las fuentes y permisos est√°n comprobados, las acciones tienen evidencia, la recuperaci√≥n funciona y existen m√©tricas de utilidad. No exige integrar todas las herramientas posibles para poder cerrar una versi√≥n.
-
-### Vinculaci√≥n con el Plan General
-
-| Parte de la definici√≥n | Secci√≥n existente del Plan General |
-|---|---|
-| Producto y experiencia final | 1 Final direction y 18 Program north star |
-| Once m√≥dulos y composici√≥n Brain con Atenci√≥n | 2 Product hierarchy y TORO Dashboard |
-| Portafolio y autouso | 3 Scope architecture y 4 Target model y Alignment update |
-| Identidades y vistas | 5 User model y Portal role model |
-| Conversaci√≥n y paridad autorizada | 6 Communication architecture y 9 OpenClaw |
-| Herramientas y autoridad | 7 Tool architecture y 12 Data platform ownership |
-| Avance y mejora | 14 Proactive improvement y 21 Executive brain mindset |
-| Estado y construcci√≥n | 15 Current Target Next Future y 16 Roadmap y 17 Queue |
-| Brain y entrada m√≥vil | 22 Visual Brain and product experience |
-| Portabilidad y adopci√≥n | 16A Product Proof y Alignment update de 29 septiembre |
-| Definici√≥n detallada y P01 a P40 | 23 Finished product definition integrada en este Plan General |
-
-### Fuentes y puertas de entrada
-
-Plan General can√≥nico: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_GENERAL_PLAN.md
-
-Constituci√≥n: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_CONSTITUTION.md
-
-Arquitectura maestra: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_BRAIN_MASTER_ARCHITECTURE.md
-
-Dashboard de once m√≥dulos: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_DASHBOARD_V1.md
-
-Visual Brain: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_VISUAL_BRAIN_ARCHITECTURE_V1.md
-
-Agent Steward y estrategia visual M01 a M20: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/TORO_AGENT_STEWARD_AND_VISUAL_STRATEGY_V1.md
-
-Readiness: https://github.com/Dramcatcherst/Toro-OS/blob/main/docs/product/NEW_BUSINESS_READINESS_GATE.md
-
-Notion del programa: https://app.notion.com/p/3dff5169a39a81b8bf89d06a75a91462?pvs=204
-
-Notion de Dashboard: https://app.notion.com/p/3e6f5169a39a810f810adefdcd4851e7?pvs=204
-
-Referencias estructuradas le√≠das: `toro_dashboard_surface_v1`, `toro_brain_taxonomy_v1` y `toro_product_capability_registry_v1`, en el runtime Supabase can√≥nico. La lectura √≠ntegra del Plan General conserva todo su contenido previo e incorpora esta definici√≥n con los estados separados.
-
-
-
----
-
-### Ampliaci√≥n del producto final: Cerebro, 25 frentes y 100 mejoras ‚Äî 2026-10-10
-
-**Autoridad:** solicitud del propietario y continuaci√≥n del 10 de octubre de 2026. **Clasificaci√≥n:** TARGET de producto y NEXT de dise√±o/documentaci√≥n; cada capacidad conserva su gate real. Las cien mejoras de este paquete son refinamientos de especificaci√≥n y aceptaci√≥n incorporados al Plan General. No son cien funciones instaladas ni cien trabajos terminados. Se mantienen P01‚ÄìP40, VF y los criterios previos: este paquete M001‚ÄìM100 desarrolla sus huecos concretos, sin sustituirlos ni sumarlos como beneficio.
-
-#### Resultado final que gu√≠a la construcci√≥n
-
-TORO se abre en Cerebro. El usuario entiende qu√© negocios controla, qu√© sucede, qu√© necesita atenci√≥n y qu√© cambi√≥. La interfaz combina una red global orientada, una acci√≥n siguiente clara y evidencia que se puede abrir. La experiencia del due√±o muestra Dreamcatcher, Santa Toro, Vista Alegre, Cabuya y TORO Business cuando su identidad y fuentes los autorizan. La madre del propietario y Carolina reciben sus alcances individuales; ning√∫n v√≠nculo familiar sustituye ese contrato.
-
-En escritorio, el mapa es protagonista de la zona central, con un launcher compacto de Cerebro y once dominios, b√∫squeda/comando y un inspector lateral. La primera lectura de un nodo responde qu√© sucede, c√≥mo afecta al objetivo y qu√© se puede hacer. El detalle t√©cnico se despliega solo cuando ayuda. Al abrir un proyecto o evidencia se conserva el contexto del portafolio; el usuario vuelve al mismo objeto sin reconstruir su recorrido.
-
-En celular, Cerebro adapta agrupaci√≥n y detalle, mantiene alcance y siguiente acci√≥n a mano y permite completar el mismo trabajo mediante lista. La navegaci√≥n funciona con una mano, controles de al menos 44 p√≠xeles y texto financiero legible. Zoom, b√∫squeda, lista/mapa, tema y ES/EN que ya existen se conservan: no se vuelven a contar como entregas nuevas. La sesi√≥n expirada, la fuente antigua, un dato desconocido, un permiso insuficiente y un fallo de transporte tienen mensajes diferentes.
-
-La direcci√≥n visual usa profundidad sobria, tipograf√≠a clara, contraste, capas y movimiento con significado. Los nodos pueden crecer o iluminarse durante eventos vigentes; el indicador de salud es diferente al indicador de trabajo. La reproducci√≥n hist√≥rica lleva fecha visible. No se publican luces aleatorias como prueba de ejecuci√≥n, ni una forma atractiva como prueba de conexi√≥n. La marca utiliza los masters oficiales; una imagen conceptual no reemplaza el logo aprobado. Herramientas de 3D, video o animaci√≥n solo se incorporan si mejoran una interacci√≥n concreta dentro del presupuesto existente; una librer√≠a nueva no es requisito de esta definici√≥n.
-
-TORO Business tiene su nodo de producto, proyectos, calidad, soporte y costo. El recorrido de mejora muestra problema, propuesta, prueba, release, resultado y conservar/revertir. Se relaciona con el Brain como negocio usuario, sin privilegio para aprobar su propio acceso a otros √°mbitos. ¬´Cahuya¬ª en una transcripci√≥n se conserva como antecedente: el nombre documentado del Plan es Cabuya hasta resolver una identidad diferente con evidencia.
-
-#### L√≠mites y prioridades de ejecuci√≥n
-
-1. Prioridad operativa: comprobar y reparar el camino real de WhatsApp/OpenClaw hacia el mismo TORO. Acceso amplio del due√±o significa acceso a todo su √°mbito autorizado mediante capacidades y consultas pertinentes; no descargar todas las bases en un prompt ni entregar credenciales al navegador. Codex implementa y verifica cambios; no sustituye al backend persistente ni a la autoridad de cada fuente.
-2. Prioridad de producto: definir y representar Cerebro, producto final, estados y m√≥dulos. La red global es localizable por completo dentro de la cobertura autorizada, con agregaci√≥n y paginaci√≥n; no obliga a dibujar cada fila simult√°neamente.
-3. Prioridad comercial: revisar el release actual del redise√±o Dreamcatcher y continuar el carril existente. No reconstruir la home a partir de un pendiente hist√≥rico ya entregado.
-
-Los 25 frentes son resultados distintos dentro de los carriles existentes, no 25 proyectos, Dots, bases, chats o automatizaciones. Antes de cada ejecuci√≥n se resuelve su task/proyecto can√≥nico y su capacidad. Si falta mapping, se registra el hueco sin crear otra cola. Los propietarios siguientes son funciones del sistema; no asignaciones laborales ni aceptaci√≥n inferida de una persona.
-
-Cinco tandas ordenan dependencias. Trabajo independiente puede avanzar mientras otro frente espera: F11 documental y lectura de F18 no requieren que el host de F01 ya est√© disponible. Un worker no permanece ocupado con un bloqueo. Una ejecuci√≥n termina, registra verificaci√≥n y receipt, y permite reclamar la siguiente unidad elegible dentro de capacidad y presupuesto. No se promete trabajo continuo por dejar un navegador abierto.
-
-Cada run conserva task, scope, autorizaci√≥n, versi√≥n, presupuesto, checkpoint, lease/fencing, resultado, prueba y receipt. Las tandas no reactivan CONTROL, OPERATE, GROW ni escritores financieros pausados; no habilitan API Kross, onboarding externo ni mantenimiento f√≠sico automatizado. Publicaci√≥n, efectos externos, datos, permisos y producci√≥n mantienen el gate concreto de su carril. La autonom√≠a ya concedida se conserva, sin pedir de nuevo decisiones resueltas.
-
-#### Tanda 1 ‚Äî Diagn√≥stico, identidad y camino real de ejecuci√≥n
-
-##### F01 ‚Äî Diagn√≥stico privado del host OpenClaw
-
-**Carril existente:** auditor√≠a runtime OpenClaw. **Propietario funcional:** TORO Systems + Comms. **Fuentes:** host observado, contrato GitHub y configuraci√≥n Supabase. **Prioridad:** P0. **Dependencia:** acceso al host autorizado. **Terminado:** perfil/worktree consumido observado y causa reproducida o bloqueo exacto fechado. Reutilizar el diagn√≥stico saneado existente.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M001 | Identificar host, perfil y worktree realmente consumidos; evidencia saneada del proceso observado, no una ruta supuesta. |
-| M002 | Contrastar versi√≥n consumida con el contrato esperado; el reporte distingue coincidencia, drift y versi√≥n desconocida. |
-| M003 | Diferenciar probe vivo de configuraci√≥n guardada; ninguna etiqueta connected/verified sustituye la ejecuci√≥n observada. |
-| M004 | Vincular el fallo a una referencia de diagn√≥stico saneada; otro revisor puede seguir causa y fecha sin recibir secretos. |
-
-##### F02 ‚Äî Identidad comprobada por transporte
-
-**Carril existente:** Identity + Comms. **Propietario:** TORO Identity + Governance. **Fuente:** identidad/membership can√≥nicas y host. **Prioridad:** P0. **Dependencia:** F01. **Terminado:** identidad real validada y casos negativos de baja y cambio de √°mbito comprobados; no enlazar por nombre ni conceder permisos nuevos.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M005 | Corroborar cuenta y remitente con la identidad can√≥nica; el mismo nombre visible no permite impersonaci√≥n. |
-| M006 | Validar membership vigente al resolver la solicitud; una sesi√≥n antigua no ampl√≠a el acceso actual. |
-| M007 | Probar identidad revocada sin revelar existencia de datos; el rechazo no muestra conteos, nombres ni enlaces privados. |
-| M008 | Comprobar separaci√≥n personal/hotel durante cambio de contexto; no sobreviven objetos ni acciones del √°mbito anterior. |
-
-##### F03 ‚Äî Reparaci√≥n dirigida de Capability unavailable
-
-**Carril:** WhatsApp Same-Brain. **Propietario:** TORO Tools + Systems. **Fuentes:** host, adapter/contrato GitHub y registro de capacidades. **Prioridad:** P0. **Dependencias:** F01‚ÄìF02. **Terminado:** un fallo reproducido se resuelve o conserva bloqueo causal comprobado. Reutilizar clasificador existente.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M009 | Capturar la capability exacta solicitada; la incidencia no se reduce a ¬´WhatsApp no sirve¬ª. |
-| M010 | Distinguir ausente, denegada, degradada y obsoleta; cada causa produce estado y relevo apropiados. |
-| M011 | Detectar desajuste entre adapter, worktree y contrato consumido; se prueba la versi√≥n que atiende, no solo el archivo editado. |
-| M012 | Ofrecer siguiente paso espec√≠fico para la causa; no pedir credenciales cuando el problema es una capacidad no instalada. |
-
-##### F04 ‚Äî Paridad real de lectura Portal/WhatsApp
-
-**Carril:** Same-Brain/source capability parity. **Propietario:** TORO Data + Comms. **Fuentes:** Supabase, fuente de dominio y host. **Prioridad:** P0. **Dependencias:** F02‚ÄìF03. **Terminado:** paridad acotada observada para la misma identidad, √°mbito y dato, con huecos expl√≠citos. API Kross permanece pausada.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M013 | Matriz por capability ya concedida para Portal y WhatsApp; cobertura autorizada no se infiere del n√∫mero de conectores. |
-| M014 | Cotejar un dato permitido con su fuente; la respuesta conserva dato, autoridad, fecha y limitaci√≥n de cobertura. |
-| M015 | Comparar la misma identidad y scope entre superficies; no se usa una cuenta administradora para certificar al empleado. |
-| M016 | Abstenerse ante fuente caducada y permitir referencia hist√≥rica etiquetada; informaci√≥n vieja nunca aparece como dato de hoy. |
-
-##### F05 ‚Äî Primer worker observado desde la aplicaci√≥n
-
-**Carril:** canary/Control Plane. **Propietario:** TORO Core + Systems. **Fuentes:** GitHub, Vercel y Supabase. **Prioridad:** P0. **Dependencias:** identidad y release verificable. **Terminado:** canary de aplicaci√≥n pasa en entorno autorizado; prueba backend o transacci√≥n revertida no acredita consumo de la aplicaci√≥n.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M017 | Acreditar SHA y presencia de configuraci√≥n del consumidor sin valores secretos; el artefacto coincide con lo probado. |
-| M018 | Utilizar claim dirigido existente; el intento solo reclama el trabajo elegible autorizado. |
-| M019 | Obtener readback y receipt del intento desde aplicaci√≥n; un status succeeded aislado no demuestra el flujo completo. |
-| M020 | Probar que un trabajo ajeno queda intacto; canary no drena la cola ni modifica otras entidades. |
-
-#### Tanda 2 ‚Äî Persistencia y comunicaci√≥n √∫til
-
-##### F06 ‚Äî Lista persistente capturada en WhatsApp
-
-**Carril:** Comms durable channel ledger/repair intake. **Propietario:** TORO Comms + Operations. **Fuentes:** Supabase y host. **Prioridad:** P0/P1. **Dependencias:** F02/F03/F05 para el flujo elegido; F04 solo si ese caso necesita lectura de dominio. **Terminado:** lista inocua recuperable despu√©s de compaction y reinicio, sin duplicados. No activar trabajo f√≠sico de mantenimiento.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M021 | Vincular captura al objeto can√≥nico existente; Portal y WhatsApp abren la misma lista. |
-| M022 | Consultar despu√©s de compaction; el contexto durable no depende del texto disponible en el chat. |
-| M023 | Recuperar despu√©s de reinicio; el objeto conserva autor√≠a, alcance, edici√≥n y estado. |
-| M024 | Preservar edici√≥n concurrente mediante versi√≥n/origen; replay no pisa una correcci√≥n humana posterior. |
-
-##### F07 ‚Äî Entrega comprobada al due√±o
-
-**Carril:** alertas existentes de Recepci√≥n/Owner Attention. **Propietario:** TORO Comms. **Fuentes:** Page/caso, Supabase y host/proveedor. **Prioridad:** P0/P1. **Dependencias:** F01‚ÄìF02. **Terminado:** prueba no sensible y alerta autorizada con receipt; sin otro scheduler ni destinatario supuesto.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M025 | Enlazar Page y caso con su alerta existente; una actualizaci√≥n de formato no crea otra notificaci√≥n. |
-| M026 | Acreditar referencia del mensaje del proveedor; preparar texto no cuenta como enviarlo. |
-| M027 | Diferenciar programado, enviado, entregado y ambiguo; solo se muestra el nivel respaldado por evidencia. |
-| M028 | Conciliar resultado ambiguo antes de reintentar; timeout no autoriza un segundo env√≠o ciego. |
-
-##### F08 ‚Äî Audio e imagen con procedencia
-
-**Carril:** Comms + Assets/Knowledge. **Propietario:** TORO Assets + Knowledge + Comms. **Fuentes:** original Dropbox y objeto Supabase. **Prioridad:** P1. **Dependencias:** F02/F06 y capability media real. **Terminado:** un original autorizado, extracci√≥n y correcciones quedan relacionados.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M029 | Conservar original y hash; el derivado puede rastrearse sin alterar el archivo recibido. |
-| M030 | Mostrar extracci√≥n pendiente o fallida; una foto recibida no se presenta como documento entendido. |
-| M031 | Admitir correcci√≥n vinculada al original; la transcripci√≥n anterior conserva su procedencia y versi√≥n. |
-| M032 | Impedir que extracci√≥n fallida cierre tareas o contabilice hechos; fallos y dudas requieren evidencia nueva. |
-
-##### F09 ‚Äî Recuperaci√≥n de conversaci√≥n y efectos
-
-**Carril:** replay/health/Control Plane. **Propietario:** TORO Systems + Core + Comms. **Fuentes:** Supabase y host. **Prioridad:** P1. **Dependencias:** F05‚ÄìF07. **Terminado:** interrupci√≥n/replay controlados conservan un objeto y una sola consecuencia. Reutilizar lease/fencing existentes.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M033 | Ensayar transporte interrumpido; usuario ve pendiente/fallo en lugar de una confirmaci√≥n ficticia. |
-| M034 | Ensayar evento duplicado simult√°neo; el segundo intento no produce otro objeto ni efecto. |
-| M035 | Ensayar lease perdido; un ejecutor vencido no puede aplicar una escritura tard√≠a. |
-| M036 | Recuperar objeto y correlaci√≥n; el relevo contin√∫a desde el checkpoint probado y concilia efectos inciertos. |
-
-##### F10 ‚Äî DreamTeam como contactos √∫tiles
-
-**Carril:** People + Comms. **Propietario:** TORO People + Comms. **Fuente:** identidad/contacto autorizado Supabase. **Prioridad:** P1. **Dependencias:** F02 y mapping People/destino. **Terminado:** un bot√≥n abre un contacto verificado y su baja impide acceso futuro; no inferir tel√©fonos de empleados.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M037 | Relacionar bot√≥n con identidad aprobada; no se usa una cadena de nombre como registro de empleado. |
-| M038 | Limitar destino al contacto permitido del scope; no se exponen contactos privados de otro √°mbito. |
-| M039 | Distinguir abrir WhatsApp de enviar mediante TORO; el usuario sabe qui√©n ejecutar√° el mensaje. |
-| M040 | Retirar acceso tras baja sin borrar historial autorizado; el bot√≥n y la acci√≥n fallan con el mismo permiso revocado. |
-
-#### Tanda 3 ‚Äî Cerebro visible y verificable
-
-##### F11 ‚Äî Cerebro como m√≥dulo transversal
-
-**Carril:** Visual Brain/Dashboard/User Portal. **Propietario:** TORO Core + User Portal. **Fuentes:** contratos GitHub y proyecci√≥n Supabase. **Prioridad:** P1. **Dependencia:** ninguno para definici√≥n; runtime conserva su gate. **Terminado:** acceso propio Cerebro junto a los once dominios, sin nuevo backend.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M041 | Exponer Cerebro como m√≥dulo 0 en la navegaci√≥n conceptual; conservar nombres, orden e IDs de los once dominios. |
-| M042 | Distinguir Cerebro del negocio TORO Business; no reasignar el id legado brain de toro-data.ts. |
-| M043 | Volver desde un m√≥dulo al mismo contexto del grafo; selecci√≥n y orientaci√≥n no se pierden. |
-| M044 | Mostrar alcance definido, preparado, publicado, verificado y medido; una maqueta no se presenta como operaci√≥n privada. |
-
-##### F12 ‚Äî Red completa con zoom sem√°ntico
-
-**Carril:** scope graph/canonical projection. **Propietario:** TORO Data + Governance. **Fuentes:** relaciones can√≥nicas y contrato GitHub. **Prioridad:** P1. **Dependencias:** F11 y relaciones disponibles. **Terminado:** panorama completo de cobertura autorizada y detalle paginado bajo presupuesto; no descargar toda la base.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M045 | Mostrar panorama agregado del portafolio autorizado; no revelar nombres ni conteos de √°mbitos prohibidos. |
-| M046 | Utilizar relaciones reales y tipadas; una estrella visual por conveniencia no acredita dependencia o propiedad. |
-| M047 | Expandir detalle paginado conservando la vista global; el recorrido no fragmenta el mapa en pantallas inconexas. |
-| M048 | Indicar cobertura parcial con denominador/fuente/fecha cuando existan; desconocido no equivale a cero. |
-
-##### F13 ‚Äî TORO se mejora utilizando TORO
-
-**Carril:** TORO Business/self-use/Projects. **Propietario:** TORO Projects + Core. **Fuentes:** GitHub, Supabase y release Vercel. **Prioridad:** P1. **Dependencias:** F05/F11‚ÄìF12. **Terminado:** ciclo real de mejora navegable con receipt, sin crear un proyecto ra√≠z.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M049 | Mostrar TORO Business separado del Core; negocio usuario e inteligencia del producto tienen roles comprensibles. |
-| M050 | Enlazar trabajos existentes de producto; crear una visualizaci√≥n no genera tareas duplicadas. |
-| M051 | Enlazar release y medici√≥n de una mejora; commit, deploy, uso y beneficio permanecen distintos. |
-| M052 | Mostrar resultado que retroalimenta producto sin autoautorizarse; el evaluador material conserva independencia. |
-
-##### F14 ‚Äî Neuronas activadas por trabajo real
-
-**Carril:** Event Spine/Agents/Control Plane. **Propietario:** TORO Data + Agents + Core. **Fuente:** runs/receipts can√≥nicos. **Prioridad:** P1. **Dependencias:** F05/F11. **Terminado:** un run muestra actividad y fin comprobables, con alternativa sin movimiento.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M053 | Proyectar eventos de runs existentes; la mera existencia de una sesi√≥n de lectura o conexi√≥n no acredita trabajo activo. Una consulta ejecutada y respaldada por evento/receipt s√≠ puede generar actividad leg√≠tima. |
-| M054 | Mantener pulso solo durante evento autorizado vigente; movimiento reducido preserva texto y estado. |
-| M055 | Apagar o corregir al expirar lease, fallar o revocarse permiso; una neurona no queda ¬´trabajando¬ª indefinidamente. |
-| M056 | Reproducir secuencia por correlaci√≥n con resumen seguro y fecha; historial nunca se confunde con actividad presente. |
-
-##### F15 ‚Äî Evidencia y estado confiables
-
-**Carril:** Brain semantics/source governance. **Propietario:** TORO Data + Governance + Knowledge. **Fuentes:** Supabase, sistema de dominio y original documental. **Prioridad:** P1. **Dependencias:** F11/F14 y permisos de evidencia. **Terminado:** estados soportan datos incompletos, antiguos o contradictorios.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M057 | No convertir ausencia de needsRevalidation en prueba de verificaci√≥n; afirmaci√≥n verified exige evidencia de ese objeto. |
-| M058 | Separar fecha del dato de fecha de consulta; refrescar pantalla no rejuvenece la fuente. |
-| M059 | Abrir evidencia autorizada del mismo objeto; referencias ausentes o denegadas no producen botones ficticios. |
-| M060 | Mostrar contradicci√≥n y faltante sin verde autom√°tico; el usuario conoce autoridad y correcci√≥n necesaria. |
-
-#### Tanda 4 ‚Äî Portal m√≥vil y redise√±o web
-
-##### F16 ‚Äî Sesi√≥n m√≥vil para operar
-
-**Carril:** Portal/Human Experience. **Propietario:** TORO User Portal + Identity. **Fuentes:** Supabase, c√≥digo y runtime Vercel. **Prioridad:** P1. **Dependencias:** F02/F11 y release Portal. **Terminado:** ida/vuelta y expiraci√≥n en m√≥vil conservan el objeto permitido; se preserva lo ya implementado.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M061 | Conservar contexto al regresar del proveedor; la sesi√≥n no cambia silenciosamente de negocio. |
-| M062 | Volver al objeto desde una notificaci√≥n; el enlace respeta la identidad actual y su autorizaci√≥n. |
-| M063 | Distinguir sesi√≥n vencida de falta de datos; renovar acceso no se presenta como recuperaci√≥n de informaci√≥n perdida. |
-| M064 | Mostrar snapshot/offline sin ejecutar sobre estado viejo; la reconexi√≥n confirma versi√≥n antes de efectos. |
-
-##### F17 ‚Äî Entrada com√∫n dreamcatcherhotel.com/toro
-
-**Carril:** Channels/routing/login. **Propietario:** TORO Channels + Governance + Identity. **Fuentes:** repositorio, dominio/release y sesi√≥n. **Prioridad:** P1. **Dependencias:** F11/F16 y destino can√≥nico verificado. **Terminado:** ruta com√∫n abre el destino correcto bajo autorizaci√≥n de release; sin contrase√±a compartida.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M065 | Definir un destino can√≥nico registrado para el enlace; no promocionar una URL antigua solo porque contiene TORO. |
-| M066 | Mantener zona p√∫blica segura y operaci√≥n privada autenticada; la entrada com√∫n no hace p√∫blicos los datos. |
-| M067 | Recuperar deep link permitido despu√©s de login; destino de retorno no permite redirecci√≥n externa arbitraria. |
-| M068 | Probar usuario no autorizado; no aparecen datos, conteos ni destinos privados antes o despu√©s del login. |
-
-##### F18 ‚Äî Estado real del redise√±o Dreamcatcher
-
-**Carril:** Fase 2/DC2-022/B0‚ÄìB6. **Propietario:** TORO Channels + Systems. **Fuentes:** repositorio y artefacto publicado. **Prioridad:** P1. **Dependencia:** inspecci√≥n del release vigente. **Terminado:** dossier de publicaci√≥n y siguiente delta √∫nico; no reconstruir la home desde un plan antiguo.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M069 | Conciliar trabajo reciente con SHA publicado; el preview no se confunde con producci√≥n. |
-| M070 | Retirar del siguiente paso los parches entregados con prueba; conservar su historia y no repet√≠rselos al due√±o. |
-| M071 | Revisar regresi√≥n por delta del release; una correcci√≥n acotada no obliga a repetir toda la auditor√≠a sin motivo. |
-| M072 | Mostrar evidencia de preview y producci√≥n por separado en TORO; cada enlace conserva artefacto y corte. |
-
-##### F19 ‚Äî Continuidad comercial demostrada
-
-**Carril:** booking stack/B1/B3. **Propietario:** TORO Revenue + Channels. **Fuentes:** motor/PMS permitido, c√≥digo y release. **Prioridad:** P1. **Dependencias:** F18 y fuente comercial vigente. **Terminado:** handoff actual probado y conflictos resueltos o bloqueados; sin API Kross nueva.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M073 | Probar fecha/ocupaci√≥n desde un enlace m√≥vil real; no afirmar prefill porque el link contiene par√°metros. |
-| M074 | Contrastar ficha y motor sin calcular tarifa local; reservas, precios y disponibilidad conservan su autoridad. |
-| M075 | Se√±alar diferencias de pol√≠tica que impiden publicar; una tarifa anterior no se convierte en regla vigente. |
-| M076 | Conservar v√≠a convencional si falla Flow; el hu√©sped puede continuar por el camino comercial oficial. |
-
-##### F20 ‚Äî Calidad despu√©s de publicaci√≥n
-
-**Carril:** B5/medici√≥n web. **Propietario:** TORO Channels + Growth + Systems. **Fuentes:** artefacto y medici√≥n vigentes. **Prioridad:** P1. **Dependencias:** F18/F19. **Terminado:** evidencia comparable del release actual y ausencia de P0; no atribuir ventas a clics.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M077 | Tomar baseline del artefacto publicado; comparaci√≥n utiliza mismo alcance/dispositivo y un corte trazable. |
-| M078 | Comparar comportamiento con consentimiento activo; no ampliar tracking ni recolectar datos por este paquete. |
-| M079 | Revisar interacci√≥n m√≥vil representativa, incluido Safari cuando est√© disponible; plataforma no probada se declara pendiente. |
-| M080 | Diferenciar CWV de campo, laboratorio e intenci√≥n comercial; no fabricar lift ni mezclar denominadores. |
-
-#### Tanda 5 ‚Äî M√°s avance con menos coordinaci√≥n
-
-##### F21 ‚Äî Cobertura de cada m√≥dulo
-
-**Carril:** producto final/capability registry. **Propietario:** TORO Core + Projects + Tools. **Fuentes:** c√≥digo, contratos y cat√°logo can√≥nicos. **Prioridad:** P1/P2. **Dependencias:** F11‚ÄìF20 seg√∫n capability. **Terminado:** matriz de Cerebro y once dominios con evidencia y pr√≥ximos deltas, sin m√°s m√≥dulos por contar funciones.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M081 | Cotejar cada m√≥dulo con c√≥digo vigente; el nombre de una pantalla no acredita su flujo completo. |
-| M082 | Separar preparado, live y verificado por capability; una verificaci√≥n no cubre autom√°ticamente todo el m√≥dulo. |
-| M083 | Colocar huecos en la task y propietario existentes; no crear otro backlog con la misma incidencia. |
-| M084 | Detectar dependencia transversal que desbloquea m√≥dulos; se prioriza resultado √∫til por esfuerzo y riesgo. |
-
-##### F22 ‚Äî Tandas con relevo real
-
-**Carril:** PUMBA/Control Plane/Projects. **Propietario:** TORO Core + Agents + Projects. **Fuente:** task/run/receipt can√≥nicos. **Prioridad:** P1/P2. **Dependencias:** F05/F09. **Terminado:** dos tandas completadas con receipts y sin colisi√≥n; no nuevo scheduler ni executores suspendidos.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M085 | Vincular ejecuci√≥n con frente y task existentes; el frente es etiqueta de resultado, no autoridad nueva. |
-| M086 | Continuar a siguiente unidad elegible despu√©s del receipt; no esperar un reloj si capacidad y presupuesto est√°n disponibles. |
-| M087 | Liberar worker cuando hay bloqueo pendiente; registrar disparador y continuar trabajo independiente. |
-| M088 | Detectar inanici√≥n de carril elegible por prioridad permanente; aplicar la pol√≠tica vigente sin inventar urgencias. |
-
-##### F23 ‚Äî Consumo por resultado
-
-**Carril:** worker budget/scorecard. **Propietario:** TORO Agents + Systems + Finance. **Fuentes:** ejecuci√≥n y consumo observado del proveedor. **Prioridad:** P1/P2. **Dependencias:** F05/F22. **Terminado:** costo y denominadores reales, o NO MEDIDO; sin gasto nuevo autom√°tico ni presupuesto inferido.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M089 | Registrar costo observado por resultado; suscripci√≥n, costo marginal y ahorro permanecen separados. |
-| M090 | Reutilizar checkpoint verificado antes de una auditor√≠a total; solo evidencia nueva o gate cambiado justifica repetir. |
-| M091 | Detener bucle sin cambio material; los reintentos comparten l√≠mites y no generan reportes de avance ficticio. |
-| M092 | Medir espera elegible y costo de reintento antes de aumentar capacidad; n√∫mero de agentes no sustituye productividad. |
-
-##### F24 ‚Äî Sesi√≥n de decisiones del due√±o
-
-**Carril:** Owner Attention/reportes existentes. **Propietario:** TORO Core + Comms + Projects. **Fuentes:** decisiones, Pages y receipts autorizados. **Prioridad:** P1. **Dependencias:** F07/F21‚ÄìF23 para delivery completo; preparaci√≥n documental puede avanzar antes. **Terminado:** paquete accionable y resumen entregado o fallo expl√≠cito.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M093 | Agrupar solo decisiones que el due√±o puede resolver; no transferirle rutina del equipo ni acceso no necesario. |
-| M094 | Vincular respuesta con objeto, versi√≥n y evidencia; un s√≠ contextual no es aprobaci√≥n global de efectos nuevos. |
-| M095 | Reutilizar respuestas vigentes; no pedir de nuevo autorizaci√≥n resuelta por fragmentaci√≥n entre chats. |
-| M096 | Resumir resultados, bloqueos y enlaces con delivery separado de programaci√≥n; hasta tres asuntos, 120 palabras y aviso PRUEBA vigente. |
-
-##### F25 ‚Äî Aprendizaje y retiro sin p√©rdida
-
-**Carril:** Knowledge/Governance/Systems. **Propietario:** TORO Knowledge + Governance + Systems. **Fuentes:** contrato/c√≥digo, evidencia y contexto autorizado. **Prioridad:** P2. **Dependencias:** F21‚ÄìF24 seg√∫n objeto. **Terminado:** mejora evaluada y candidato de archivo documentado; no afirmar chats archivados sin capability y prueba.
-
-| Mejora | Refinamiento y prueba requerida |
-| --- | --- |
-| M097 | Convertir error repetido en regla o prueba concreta; indicar fuente, versi√≥n y criterio de conservar/revertir. |
-| M098 | Abstraer patr√≥n sin datos privados; otro negocio recibe m√©todo y configuraci√≥n, no memoria ajena. |
-| M099 | Revisar regresi√≥n despu√©s de aplicar mejora; el ejecutor no modifica su propio evaluador para aprobarse. |
-| M100 | Inventariar chats y artefactos redundantes antes de archivar; referencia recuperable y contexto √∫til conservados, sin eliminaci√≥n autom√°tica. |
-
-#### Compatibilidad, verificaci√≥n y siguiente superprompt
-
-La declaraci√≥n de Cerebro no migra los IDs del cat√°logo legado `src/lib/toro-data.ts`: su `brain` denominado TORO Business contiene fixtures operacionales y no es el nodo de autouso definido aqu√≠. No reasignarlo ni modificar men√∫s/permisos por una clasificaci√≥n conceptual. `/brain` conserva su provider √∫nico, y Stage C‚ÄìG conserva QA, aislamiento y release gates.
-
-La revisi√≥n inicial de este paquete es acotada a contratos y huecos de TORO; el release del hotel, sesi√≥n privada multinegocio, transporte WhatsApp, consumo del host y beneficio econ√≥mico requieren evidencia de sus frentes. La presencia de una herramienta instalada no prueba adopci√≥n ni un costo autorizado. El archivo de chats queda BLOQUEADO si no existe inventario/capability; no eliminar conversaciones por similitud de t√≠tulos.
-
-Aceptaci√≥n documental: m√≥dulo 0 y once dominios coherentes en contratos, F01‚ÄìF25 distintos, M001‚ÄìM100 √∫nicos y consecutivos, dependencias/propietarios/fuentes/terminado expl√≠citos, decisiones pausadas conservadas y ning√∫n secreto en la proyecci√≥n p√∫blica. Aceptaci√≥n de runtime: prueba propia de cada frente y receipt del flujo real. Publicar documentos no acredita cien capacidades ni veinticinco ejecutores activos.
-
-**Pr√≥ximo superprompt:** ¬´Retoma el Plan General √∫nico de TORO y la ampliaci√≥n del 10/10/2026. Lee el estado y receipts actuales antes de actuar. Primero resuelve el acceso al host F01 y la causa exacta F03; si siguen bloqueados, avanza F11 y la revisi√≥n del release F18 dentro de sus carriles existentes. Reutiliza IDs y checkpoints. Entrega una unidad completa con fuente, prueba, enlace, siguiente paso y l√≠mite real. Mant√©n API Kross, escritores y lanes suspendidas; no conviertas dise√±o en operaci√≥n ni reabras decisiones resueltas. Solo escala una intervenci√≥n del due√±o cuando desbloquee trabajo material. Despu√©s del receipt contin√∫a con la siguiente unidad elegible dentro del presupuesto y capacidad comprobados.¬ª
-
-
-## Human Layer / TERE / DreamTeam R4 ‚Äî owner directive 2026-09-30
-
-**State:** CURRENT canonical refinement.  
-**Subordinate contract:** `docs/product/TORO_HUMAN_LAYER_TERE_DREAMTEAM_R4.md`
-
-Mauricio directed TORO to recover and preserve the durable personality, communication, TERE, hotel-voice and DreamTeam rules from historical/current sources; simplify and merge them before implementation; and apply approximately 50 material improvements without creating another brain, project, task system, employee authority or prompt universe.
-
-### Canonical decisions
-
-- TORO remains the single visible orchestrator/Brain.
-- TERE remains the Dreamcatcher guest-facing specialist/persona. WeSpeak/OpenClaw/WhatsApp/Portal are runtimes/surfaces, not separate brains.
-- Personality is durable behavior, never volatile business truth.
-- TERE keeps the current practical-first principle: **80% useful reality / 15% Dreamcatcher identity / 5% surprise**.
-- R4 adds governed social chemistry: serious ‚Üí warm ‚Üí playful ‚Üí complicit, based on reciprocal rapport. Complaints, safety, money-sensitive topics, policy disputes and discomfort force serious mode.
-- The new active Supabase configuration key is `tere-social-chemistry-playfulness-r4-20260930`. Configuration existence does **not** prove WeSpeak/OpenClaw consumption; runtime version/hash + QA remains required.
-- Airtable Central now carries the R4 owner decision and learned social-chemistry rule. Superseded dream-heavy packs remain historical and must not be reactivated.
-- DreamTeam functionality is defined as **verified identity + correct role/capabilities + authorized channel + onboarding + runtime acceptance**, not merely ‚Äúemployee record exists‚Äù.
-- Current People runtime observation on 2026-09-30: 12 active employees + 1 terminated; all 12 active have AI profiles/Role Packs; 4 have linked application users; 0/12 have verified employee channel identities; onboarding progress remains unstarted. Do not bind the remaining people by name inference.
-- Current kitchen operator Mary/Maribel remains an **external collaborator/operator**, not a payroll employee; minimal scoped access is separately approval-gated.
-- Kross retains live transactional authority; stale/non-live mirrors cannot answer current occupancy, availability or rates.
-- Alegra retains fiscal/accounting authority; TORO may analyze/reconcile/prepare, but material accounting writes remain governed.
-- Dropbox remains the original-evidence/backup home where governed, but a fresh Dropbox audit was **BLOCKED** in this pass by the current connector search/schema conflict; do not describe it as re-audited.
-
-### R4 improvement package
-
-The subordinate contract applies **50 net-new improvements** on top of the existing I01‚ÄìI20 agent/skill controls, grouped into:
-1. canonical memory/governance and simplification;
-2. personality/playfulness/social chemistry;
-3. guest communication and Dreamcatcher voice;
-4. DreamTeam functionality/onboarding/permissions;
-5. Kross/Alegra/evidence/QA/observability.
-
-The detailed R4-01‚Ä¶R4-50 definitions, activation gates and rollback live only in the subordinate contract above to avoid duplicating the same specification in multiple places.
-
-### Acceptance gate
-
-R4 is not runtime-complete until:
-- each active guest-facing runtime proves the personality/config version/hash it consumed;
-- TERE passes serious-mode, rapport, privacy, joke-fatigue and cross-channel scenarios;
-- DreamTeam identities are individually verified and role-isolated;
-- employee channel revocation/offboarding works;
-- Kross/Alegra authority remains intact;
-- corrections persist across sessions/channels without copied parallel prompts.
-
-
-
----
-
-## Dreamcatcher ‚Äî Unit Economics, Room Cost & Break-even
-
-**Owner directive:** 2026-09-30  
-**Owner:** TORO Finance + TORO Revenue + Dreamcatcher Operations  
-**State:** PLAN GENERAL ‚Äî required financial model; current example values are illustrative until reconciled against authoritative 2026 data.
-
-### Objective
-
-Build and maintain one canonical profitability model that answers, by room, rate, channel, occupancy scenario and package:
-
-- What does one occupied room-night actually cost?
-- What is the marginal cost of accepting one additional booking?
-- What is the fully loaded cost after fixed-cost allocation?
-- At what gross guest price does each room break even?
-- What is the absolute operational floor, the sustainable floor and the target selling price?
-- At what price does a sale destroy cash contribution or economic profit?
-- How do breakfast, OTA commission, payment fees, discounts, promotions, extra guests, children, pets, cleaning, laundry and taxes change the answer?
-- What hotel occupancy / ADR / RevPAR combination covers company fixed costs?
-- What are the break-even points for the hotel overall, each villa/business unit and material ancillary services?
-
-### Canonical cost layers
-
-TORO must separate these layers instead of mixing them:
-
-1. **Taxes / pass-through amounts**
-   - IVA and other applicable taxes.
-   - These are not hotel operating revenue when collected on behalf of the tax authority.
-
-2. **Marginal room-night cost**
-   - incremental housekeeping labor;
-   - laundry by textile load;
-   - guest amenities and consumables;
-   - incremental electricity, A/C and hot water;
-   - incremental water;
-   - incremental maintenance/wear reserve;
-   - incremental guest servicing attributable to the stay.
-
-3. **Channel / transaction cost**
-   - OTA commission;
-   - merchant/acquirer/card fee;
-   - payment gateway fee;
-   - promotion/discount;
-   - affiliate/agency commission where applicable.
-
-4. **Package / guest cost**
-   - breakfast when included;
-   - extra guest / child cost;
-   - pet-related incremental cost;
-   - included experiences/transport/other packaged value.
-
-5. **Allocated fixed operating cost**
-   - reception/administration;
-   - fixed payroll;
-   - maintenance base payroll;
-   - accounting;
-   - software/PMS;
-   - internet/communications;
-   - insurance;
-   - security;
-   - pool/jacuzzi/common-area baseline;
-   - licenses/patents;
-   - property-level fixed utilities;
-   - marketing baseline;
-   - depreciation/replacement reserve where useful for management economics.
-
-6. **Capital / owner economics**
-   - major replacements;
-   - long-term depreciation;
-   - financing/interest where relevant;
-   - target return hurdle.
-   - Keep this layer separate from cash operating break-even so management can see both.
-
-### Required price floors per room
-
-For every sellable room / configured combination, calculate:
-
-- **Cash floor:** guest price at which net revenue covers taxes/pass-throughs, channel cost and truly incremental stay cost.
-- **Contribution floor:** minimum price that still provides a defined positive contribution after marginal + channel/package costs.
-- **Operating break-even price:** price covering marginal costs plus the room's allocated share of fixed operating costs.
-- **Sustainable floor:** operating break-even plus maintenance/replacement reserve.
-- **Target price:** price required to achieve the target contribution/profit margin.
-- **Loss zone:** any rate below the cash floor.
-- **Economic-loss zone:** rate above cash floor but below the applicable sustainable/full-cost floor.
-
-Never collapse these floors into one number; they answer different decisions.
-
-### Scenario matrix
-
-The model must support at minimum:
-
-**Channel**
-- Direct SINPE/transfer
-- Direct card
-- Booking.com
-- Expedia / other OTA
-- Travel agency / wholesaler
-- Promotional/direct code
-
-**Occupancy / guests**
-- 1 guest
-- 2 guests
-- extra guests to room capacity
-- child where applicable
-- pet where applicable
-
-**Meal treatment**
-- room only
-- breakfast included
-- breakfast sold as extra
-- breakfast included but not consumed
-- breakfast comp / house
-- breakfast package with different supplier cost
-
-**Rate scenarios**
-- $40, $50, $60, $75, $90, $100, $125, $150, $200+ as relevant
-- percentage discount scenarios
-- national/TICOS promotions
-- long-stay/promotional packages
-- same-day / distress inventory decisions
-
-**Stay length**
-- 1 night
-- 2 nights
-- 3‚Äì4 nights
-- 5‚Äì7 nights
-- long stay
-
-Cleaning and acquisition costs that occur once per stay must be amortized across nights rather than blindly repeated per room-night.
-
-### Breakfast economics
-
-Breakfast must be modeled independently and then attached to the room package.
-
-For each breakfast type/source, calculate:
-- selling price;
-- tax treatment;
-- supplier/food cost;
-- labor if attributable;
-- payment/channel cost if sold separately;
-- waste/no-show treatment;
-- gross contribution per breakfast;
-- cost to hotel when breakfast is included in rate;
-- incremental break-even increase in room price when breakfast is bundled.
-
-Operational categories remain:
-- **included / prepaid**
-- **extra / paid**
-- **house**
-- **included not consumed**
-
-Included but not consumed breakfast must not be treated as consumed supplier cost unless the supplier agreement actually charges it.
-
-### Company / property break-even
-
-TORO Finance must also calculate monthly and daily hotel-level break-even:
-
-```text
-Contribution per occupied room-night
-= Net room revenue
-- marginal room cost
-- channel/payment cost
-- package cost
-
-Required occupied room-nights
-= Monthly fixed operating costs
-/ weighted-average contribution per occupied room-night
-
-Break-even occupancy %
-= Required occupied room-nights
-/ Available room-nights
-
-Break-even revenue
-= Fixed costs
-/ weighted contribution-margin ratio
-```
-
-Run this for:
-- Dreamcatcher total;
-- Dreamcatcher Villa / rooms #0‚Äì#6 where useful;
-- Makaiza #7‚Äì#11;
-- Toro Villa / rooms #21‚Äì#28;
-- individual rooms when cost structure materially differs;
-- business total consolidated.
-
-Do not assume every room should receive the same fixed-cost allocation. Maintain at least:
-- simple equal-room allocation for quick management view; and
-- weighted allocation by capacity / size / historical revenue / materially distinct resource use, with method labeled.
-
-### Data authority and reconciliation
-
-Target source authority:
-
-- **Kross / PMS:** sold rate, stay dates, room, guests, channel, discounts, reservation status.
-- **Alegra:** actual accounting expenses, vendors, taxes, recurring operating costs.
-- **Breakfast operational records / POS:** included, extras, house, no-consumption and supplier payable.
-- **Utilities / invoices:** electricity, water, internet and other services.
-- **Payroll / TORO People:** labor cost and allocation assumptions.
-- **Dropbox / invoices / supporting documents:** cost evidence and contracts.
-- **Supabase / TORO Finance:** normalized analytical model, assumptions, versions, calculated outputs and provenance.
-
-Every estimate must be labeled as estimate until reconciled with actual source data.
-
-### Required outputs
-
-TORO Revenue / Finance should expose:
-
-1. **Room Cost Card** for every room:
-   - marginal cost;
-   - fixed allocation;
-   - breakfast/package adjustment;
-   - cash floor;
-   - operating break-even;
-   - sustainable floor;
-   - target price;
-   - direct vs OTA comparison.
-
-2. **Rate Decision Table**
-   - requested selling rate;
-   - net revenue;
-   - contribution dollars;
-   - contribution margin %;
-   - fully loaded profit/loss;
-   - status: profitable / contribution-only / cash-loss.
-
-3. **Hotel Break-even Dashboard**
-   - fixed costs/month;
-   - variable cost/occupied room-night;
-   - ADR;
-   - occupancy;
-   - RevPAR;
-   - contribution margin;
-   - occupied nights required to break even;
-   - break-even occupancy;
-   - projected profit/loss at current pace.
-
-4. **Promotion simulator**
-   - old rate;
-   - discounted rate;
-   - channel;
-   - room;
-   - guests;
-   - breakfast;
-   - nights;
-   - resulting contribution and profit;
-   - maximum discount before each floor is crossed.
-
-5. **Exception alerts**
-   - rate below cash floor;
-   - OTA promotion makes booking cash-negative;
-   - breakfast/package pushes rate below contribution floor;
-   - room/channel combination below sustainable floor;
-   - material cost drift versus prior month.
-
-### Initial illustrative example ‚Äî NOT source-of-truth
-
-For a room sold at **$100 gross**, 2 guests, 1 night, no breakfast:
-- gross guest payment: $100;
-- illustrative IVA included: $11.50;
-- illustrative net room revenue: $88.50;
-- illustrative marginal/variable room cost: $26;
-- illustrative contribution before channel: $62.50;
-- illustrative direct-card contribution at 3.5% transaction cost: $59;
-- illustrative OTA 15% contribution: $47.50;
-- illustrative fixed-cost allocation example: $20;
-- illustrative operating result: about $39 direct card / $27.50 at 15% OTA.
-
-These values are a teaching baseline only. TORO must replace them with reconciled Dreamcatcher values before using them as pricing rules.
-
-### Acceptance criteria
-
-This work is **DONE** only when:
-
-- all sellable rooms and canonical room combinations are represented;
-- actual 2026 cost sources are reconciled and dated;
-- breakfast economics is reconciled to supplier/POS/payment treatment;
-- direct, card, OTA and agency scenarios calculate correctly;
-- fixed and variable costs are explicitly separated;
-- one-night vs multi-night cleaning amortization works;
-- room-level cash floor, operating break-even, sustainable floor and target rate are available;
-- hotel-level break-even occupancy and revenue are available monthly;
-- outputs show source, freshness and whether a value is actual, inferred or estimated;
-- at least three historical months are back-tested against realized accounting results;
-- alerts do not recommend a rate below the applicable management floor without an explicit, documented exception.
-
-### Verified accounting snapshot ‚Äî Alegra, 2026-01-01 to 2026-09-30
-
-Read-only source check on 2026-09-30, cost center `DREAMCATCHER` / id `1`:
-
-- Sales / operating income: **CRC 265,585,084.46**
-- Operating expenses: **CRC 199,724,118.69**
-- Operating profit: **CRC 65,860,965.77**
-- Other income: **CRC 468,688.11**
-- Other expenses: **CRC 6,826.18**
-- Profit before taxes: **CRC 66,322,827.69**
-- Tax expense: **CRC 21,744,372.38**
-- Net income: **CRC 44,578,455.31**
-- OTA + travel-agency commissions: **CRC 23,430,005.60** (8.82% of revenue)
-  - OTA commissions: CRC 22,343,745.60
-  - Travel-agency commissions: CRC 1,086,260.00
-- Personnel expense: **CRC 65,953,460.46** (24.83%)
-- Maintenance expense: **CRC 17,550,267.03** (6.61%)
-- Financial expense: **CRC 6,550,492.76** (2.47%)
-- General expense: **CRC 71,602,373.82** (26.96%)
-- Marketing / advertising: **CRC 6,232,615.12** (2.35%)
-- Insurance / licenses: **CRC 2,048,563.01** (0.77%)
-- Online services: **CRC 3,286,922.70** (1.24%)
-
-**Data-quality caution:** Alegra currently reports zero Cost of Sales while room-level operating costs are posted largely through expense categories. Outgoing-payment review also shows transfers, shareholder/dividend-related categories, financing principal/interest and other categories that must not automatically be treated as hotel room operating cost. Therefore the accounting snapshot is useful evidence but **not yet a validated unit-cost model**.
-
-### Provisional accounting break-even ‚Äî diagnostic only
-
-If commissions are treated as the only variable cost for a first diagnostic and all remaining operating expenses are treated as fixed/semi-fixed:
-
-- 9-month non-commission operating expense: **CRC 176,294,113.09**
-- average monthly fixed/semi-fixed proxy: **CRC 19,588,234.79**
-- contribution ratio after recorded sales commissions: **91.18%**
-- provisional monthly accounting break-even revenue: **~CRC 21,483,518**
-
-This is intentionally labeled **PROVISIONAL / NOT FOR RATE FLOOR DECISIONS**. It will move after classifying utilities, housekeeping/laundry, breakfast, card fees, maintenance, owner/partner items, financing, taxes and stay-level costs correctly, then reconciling occupied room-nights and ADR from PMS/Kross.
-
-
-
-### Expense evidence policy ‚Äî canonical rule
-
-**Owner directive ‚Äî 2026-09-30:** every legitimate business expense reported to TORO with an invoice, electronic invoice, receipt, payment proof or equivalent support must enter the accounting workflow. **Alegra is the accounting system of record.** Dropbox is the durable documentary backup where needed, and Supabase/TORO Finance stores normalized metadata, provenance, reconciliation state and receipts.
-
-Canonical subordinate contract:
-- `docs/product/TORO_FINANCE_EXPENSE_EVIDENCE_POLICY_V1.md`
-
-Rules:
-- do not mark an expense DONE merely because the file exists in Dropbox;
-- before any Alegra write, run duplicate checks on issuer, document number, date, amount, currency and existing references;
-- **Dreamcatcher ‚Äî patr√≥n monetario habitual (confirmaci√≥n del propietario, 20/10/2026):** ingresos generalmente USD; gastos generalmente CRC. Es pauta de operaci√≥n, **no inferencia de la moneda de un registro**. Conservar moneda nativa separada de ventas, facturas, cobros, pagos y cuentas; reportar USD/CRC por separado y calcular consolidaci√≥n solo con FX fechado y fuente verificada. Excepciones documentadas en cualquiera de las monedas; nunca usar tasa500 por defecto. Regla ampliada en `docs/product/TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md` ¬ß8.3; sin cambios de cuentas, asientos o Writer.
-- **Dreamcatcher ‚Äî moneda de compras (confirmaci√≥n del propietario, 20/10/2026):** el hotel opera en CRC y USD, pero sus compras habituales son en CRC. Mantener moneda nativa por factura y pago, sin heredar USD de ventas ni del endpoint de moneda predeterminada; cualquier compra documental en USD requiere origen expl√≠cito y revisi√≥n separada, sin FX autom√°tico. Documento sin moneda acreditable queda BLOQUEADO; el Writer Alegra sigue OFF. Contrato subordinado: `docs/product/TORO_DATA_ALIGNMENT_ALEGRA_SUPABASE_2026-10-15.md`, secci√≥n 8.3; PR #228, fixture CRC sin despliegue.
-- if already represented in Alegra, reconcile/link evidence rather than duplicate the expense;
-- attach evidence in Alegra when supported; otherwise preserve the original in Dropbox and retain a durable reference;
-- owner-paid expenses require verified business purpose and correct reimbursement/shareholder-current-account treatment;
-- internal transfers, loan principal, shareholder distributions and personal expenses are not room operating cost;
-- every reconciled expense receives a separate management-cost behavior classification for the room-cost / break-even model.
-
-### Room-cost source classification ‚Äî verified Alegra categories, Jan‚ÄìSep 2026
-
-Current cost-center readback identifies the following major categories relevant to the room economics model:
-
-| Category | Jan‚ÄìSep 2026 | Management treatment now |
-|---|---:|---|
-| OTA + travel-agency commissions | CRC 23,430,005.60 | VARIABLE_PER_SALE ‚Äî verified |
-| Breakfast / lunch / dinner category | CRC 5,562,520.00 | VARIABLE/PACKAGE candidate ‚Äî requires meal-level split |
-| Cleaning products | CRC 4,543,979.40 | MIXED ‚Äî room occupancy + common-area base |
-| Electricity | CRC 10,864,460.00 | MIXED ‚Äî fixed base + occupancy-driven component |
-| Water | CRC 5,495,692.46 | MIXED ‚Äî fixed base + occupancy-driven component |
-| Gas | CRC 201,020.00 | MIXED ‚Äî source/use split required |
-| Housekeeping payroll | CRC 14,102,196.00 | STEP_FIXED / capacity-linked, not automatically per-room variable |
-| Maintenance payroll | CRC 11,020,318.00 | FIXED/STEP_FIXED |
-| Repairs | CRC 17,594,860.19 | MIXED; separate maintenance reserve vs vehicle/property/project work |
-| Room replacement / dotation | CRC 2,311,436.59 | REPLACEMENT_RESERVE candidate |
-| Internet | CRC 973,438.41 | primarily FIXED_OPERATING |
-| Online software | CRC 3,286,922.70 | FIXED_OPERATING unless transaction-priced |
-| Insurance / licenses | CRC 2,048,563.01 | FIXED_OPERATING / risk layer |
-| Financial expense | CRC 6,550,492.76 | FINANCING; exclude from cash room-floor, show separately in full-owner economics |
-
-**Important:** accounting category and management cost behavior are not the same thing. Electricity, water, cleaning, payroll and maintenance must be split analytically rather than assigned 100% to each occupied room-night.
-
-### Break-even diagnostic range ‚Äî accounting-only, still provisional
-
-Using Jan‚ÄìSep 2026 Alegra data:
-
-- **Case A ‚Äî commissions are the only variable cost:** monthly break-even revenue ‚âà **CRC 21.48M**.
-- **Case B ‚Äî commissions + all recorded meals + cleaning products + electricity + water + gas treated as variable:** monthly break-even revenue ‚âà **CRC 20.49M**.
-- **Case C ‚Äî Case B + all housekeeping payroll treated as variable:** monthly break-even revenue ‚âà **CRC 19.86M**.
-
-These are **diagnostic bounds, not pricing floors**. Case B and Case C intentionally overstate variable treatment for utilities/payroll and therefore serve only as sensitivity checks. The final model must estimate fixed base vs incremental usage using occupancy / occupied-room-nights and monthly costs.
-
-Current analytical implication: the hotel-level accounting break-even appears to be roughly in the **CRC 20M‚Äì21.5M monthly revenue zone before a proper occupancy-linked split**, but this range must not be used as a rate decision until Kross/PMS occupied-room-nights, actual card fees, breakfast consumption and non-operating/accounting anomalies are reconciled.
-
-
-
-
-### Monthly behavior check ‚Äî sales proxy
-
-A month-by-month Jan‚ÄìSep 2026 readback was run against Alegra P&L for cost center `DREAMCATCHER`. Until Kross occupied-room-nights are reconciled, monthly sales are used only as a **provisional activity proxy**, not as occupancy.
-
-Observed relationships:
-
-- **Electricity:** weak relationship to sales (R¬≤ ‚âà 0.10). Treat predominantly as base/mixed utility until occupancy-level evidence says otherwise.
-- **Water:** very weak relationship to sales (R¬≤ ‚âà 0.05). Do not allocate all water as per-room variable.
-- **Internet:** essentially no positive relationship to sales (R¬≤ ‚âà 0.02). Treat as FIXED_OPERATING.
-- **Cleaning products:** moderate relationship to sales (R¬≤ ‚âà 0.50). Split into base/common-area + occupancy-driven component.
-- **Housekeeping payroll:** moderate relationship to sales (R¬≤ ‚âà 0.54). Treat as STEP_FIXED / capacity-linked, not a simple per-room-night cost.
-- **Maintenance payroll:** stronger relationship to sales (R¬≤ ‚âà 0.71), likely reflecting staffing/seasonality; still classify as STEP_FIXED unless payroll structure proves per-room compensation.
-- **Repairs:** noisy/moderate relationship (R¬≤ ‚âà 0.35). Do not use as direct nightly variable cost; separate property repair, vehicles, projects and replacement reserve.
-- **OTA commissions:** relationship to sales is material but not stable month-to-month because channel mix changes. Use reservation/channel data directly rather than a single blended percentage.
-
-**Breakfast data-quality flag:** the Alegra category `Desayunos/Almuerzos/Cenas` totals CRC 5,562,520 for Jan‚ÄìSep, but postings appear concentrated in only Jan, Feb, Jun and Jul in the monthly P&L. Zero months must be treated as **missing/unclassified or genuinely zero only after source reconciliation**. Do not infer zero breakfast cost from the accounting category alone.
-
-### Sales-source reconciliation flag
-
-Two Alegra reporting surfaces disagree for Jan‚ÄìSep 2026:
-
-- P&L, cost center DREAMCATCHER: **CRC 265,585,084.46** sales.
-- P&L, unfiltered: **CRC 265,650,674.46** sales.
-- General sales-documents report, before taxes: **CRC 273,350,269.55**.
-
-The difference is material and cannot be explained solely by the Dreamcatcher cost-center filter. Until document-level reconciliation identifies timing/status/document-type/cost-center treatment, use the **P&L cost-center figure for the provisional Dreamcatcher accounting model** and label the general-sales figure as unreconciled. Do not claim revenue completeness from either surface alone.
-
-
-
-
-### Breakfast economics ‚Äî canonical master plan
-
-**Owner directive ‚Äî 2026-09-30:** breakfast must be analyzed from real reservations and actual operating/accounting evidence, not hypothetical menu economics alone.
-
-Canonical subordinate contract:
-- `docs/product/DREAMCATCHER_BREAKFAST_ECONOMICS_MASTER_PLAN_V1.md`
-
-Current verified baseline:
-- 33 mirrored reservations;
-- 9 marked breakfast included;
-- 4 marked breakfast not included;
-- 20 breakfast status unknown;
-- latest reservation snapshot 2026-09-21 09:28 UTC; source is stale/read-only;
-- 17 reservations contain detailed meal-plan day records;
-- 82 included breakfast units and 4 extra breakfast units are represented in that meal-plan detail;
-- 0 rows currently prove served/consumed status;
-- 0 rows currently prove extra-breakfast payment status;
-- `operations.breakfast_orders` currently has 0 rows;
-- Alegra Jan‚ÄìSep 2026 category `Desayunos/Almuerzos/Cenas` = CRC 5,562,520, but monthly posting coverage is incomplete/unreconciled.
-
-Decision rule:
-- do not infer profitability from breakfast inclusion alone;
-- compare actual room-only vs breakfast-inclusive reservations by room, channel, rate plan, guest count and stay length;
-- distinguish included, extra, house, included-not-consumed and unknown;
-- calculate package uplift, marginal breakfast cost, channel fee on uplift and resulting reservation contribution;
-- breakfast may be retained with low direct unit margin only when verified ADR/conversion/LOS/direct-share value offsets the subsidy.
-
-Break-even reduction is now a standing objective of TORO Finance / Revenue:
-- lower fixed operating cost where value-neutral;
-- reduce OTA leakage;
-- reduce utility base load;
-- improve labor productivity without lowering service quality;
-- eliminate waste / unsupported expenses;
-- renegotiate supplier economics;
-- increase contribution per occupied room-night;
-- measure every improvement against monthly break-even revenue and break-even occupancy.
-
-
-
-
-### Dreamcatcher Financial Deep-Dive ‚Äî coordinated analysis before change day
-
-**Owner directive ‚Äî 2026-09-30:** perform a broad financial analysis of the hotel from multiple angles before making coordinated pricing/cost/process changes. Collect and reconcile first; then simulate; then execute a controlled change day.
-
-Canonical subordinate contract:
-- `docs/product/DREAMCATCHER_FINANCIAL_DEEP_DIVE_MASTER_PLAN_V1.md`
-
-Scope:
-- hotel-level profitability;
-- room-level unit economics;
-- channel contribution;
-- breakfast economics;
-- labor productivity;
-- utilities/base load;
-- maintenance vs capex;
-- software/subscriptions;
-- supplier economics;
-- banking/payment fees;
-- tax/accounting classification;
-- direct vs OTA;
-- break-even revenue / occupancy / ADR;
-- continuous search for safe break-even reduction.
-
-Operating rule:
-- do not optimize for occupancy alone;
-- do not cut costs that protect revenue, conversion, reviews, asset life or service without measuring the tradeoff;
-- quantify expected monthly impact, confidence, implementation risk and rollback before a change;
-- maintain a master question backlog and resolve it progressively without blocking all analysis.
-
-Future milestone:
-**FINANCIAL OPTIMIZATION CHANGE DAY** ‚Äî only after decision-ready analysis, with a coordinated list of approved rate, breakfast, channel, supplier, staffing, subscription, utility and accounting changes.
-
-
-
-
-### Dreamcatcher Financial Control Center ‚Äî general page
-
-Canonical general page:
-- `docs/product/DREAMCATCHER_FINANCIAL_CONTROL_CENTER_V1.md`
-- Supabase: `operations.knowledge_items/dreamcatcher_financial_control_center_v1`
-- Dynamic parameter engine: `operations.knowledge_items/finance_room_unit_economics_engine_v1`
-
-Rules:
-- financial parameters are effective-dated and versioned; never overwrite historical meaning;
-- actual reconciled source values supersede estimates for the same scope/date;
-- formulas vary by reservation date, room, channel, guests, nights, breakfast, payment method, promotion and currency;
-- each calculation exposes source, freshness and actual/inferred/estimated status;
-- stale reservation mirrors may support historical analysis but not current rate decisions.
-
-Current allocation-review sensitivity:
-- explicitly named Santa Toro expenses inside DREAMCATCHER P&L: CRC 2,986,176.81 Jan‚ÄìSep 2026;
-- explicitly named Diex expenses inside DREAMCATCHER P&L: CRC 6,566,884.36 Jan‚ÄìSep 2026;
-- total flagged for benefiting-entity review: CRC 9,553,061.17;
-- if all were ultimately proven external to Dreamcatcher operating economics, the current commission-only monthly break-even diagnostic would fall from about CRC 21.48M to about CRC 20.32M.
-- **Do not reclassify or remove these expenses automatically.** Verify benefiting entity/shared-overhead treatment first.
-
-
-
-
-### Financial cost-classification wave 1 ‚Äî 2026-09-30
-
-Canonical analytical registry:
-- `operations.knowledge_items/dreamcatcher_cost_classification_2026_ytd_v1`
-
-New verified observations:
-- `Comisiones bancarias`: CRC 6,233,776.15 across 515 entries; ~2.35% of DREAMCATCHER P&L sales; strong payment-processing candidate, pending dataphone settlement reconciliation.
-- `Ferreteria`: CRC 8,301,475.72; 82.83% concentrated Jan‚ÄìApr; high-priority CAPEX/expansion vs recurring-maintenance review.
-- software/services reviewed: CRC 3,292,517.10 across 89 entries; largest vendors Simple Booking, WeSpeak, OpenAI and Alegra; audit for overlap/plan optimization before any cancellation.
-
-Rules:
-- this classification layer never rewrites Alegra automatically;
-- high-value review buckets require transaction-level evidence before reclassification;
-- realized savings are recorded only after verified change and readback;
-- break-even engine consumes only classifications that have passed their required evidence gate.
-
-
-
-
-### Financial cost-classification wave 2 ‚Äî maintenance and labor
-
-Maintenance:
-- recorded repairs Jan‚ÄìSep 2026: CRC 17,594,860.19;
-- CRC 14,992,933.09 (85.21%) is under CAPEX/fleet/other-property review:
-  - Ferreter√≠a CRC 8,301,475.72;
-  - vehicle repairs CRC 4,899,531.56;
-  - Santa Toro repairs CRC 1,791,925.81;
-- residual recurring-property candidate: CRC 2,601,927.10.
-- sensitivity only: if all reviewed amounts were proven outside recurring Dreamcatcher operating cost, current commission-only diagnostic break-even would move from ~CRC 21.48M to ~CRC 19.66M/month.
-
-Labor:
-- total personnel expense: CRC 65,953,460.46 = 24.83% of Jan‚ÄìSep sales;
-- admin payroll: CRC 20,262,901.46 = 7.63%;
-- reception: CRC 9,953,438 = 3.75%;
-- maintenance: CRC 11,020,318 = 4.15%;
-- housekeeping: CRC 14,102,196 = 5.31%;
-- reception + maintenance + housekeeping = CRC 35,075,952 = 13.21%.
-
-Model rule:
-- maintain separate **cash break-even** and **economic break-even** views;
-- economic view includes required management labor/replacement-value compensation;
-- owner/family compensation is not automatically excluded;
-- housekeeping/reception/maintenance are fixed/step-fixed by occupancy bands until real workload data supports a different model.
-
-
-
-
-### Break-even scenarios ‚Äî Current / Clean / Target
-
-Supabase:
-- `operations.knowledge_items/dreamcatcher_break_even_scenarios_2026_ytd_v1`
-
-Current diagnostic:
-- ~CRC 21.48M monthly break-even.
-
-Clean sensitivity:
-- ~CRC 18.71M/month if identified other-property/CAPEX/fleet candidates are ultimately proven outside recurring Dreamcatcher operating cost and bank fees remain fixed;
-- ~CRC 19.21M/month if those candidates are excluded from recurring cost and bank fees are confirmed variable payment-processing cost.
-
-Target planning scenarios from the clean/payment-processing-variable base:
-- 5% additional controllable fixed-cost reduction ‚Üí ~CRC 18.25M/month;
-- 10% ‚Üí ~CRC 17.29M/month;
-- 15% ‚Üí ~CRC 16.32M/month.
-
-Guardrail:
-- accounting cleanup is not cash savings;
-- CAPEX reclassification is not recurring savings by itself;
-- target scenarios are hypotheses until a specific action is implemented and verified.
-
-
-### Improvement loop
-
-Monthly:
-1. reconcile actual costs;
-2. compare forecast vs actual;
-3. update unit costs;
-4. detect cost drift;
-5. review minimum viable rates;
-6. review channel economics;
-7. review breakfast/package economics;
-8. update promotion limits;
-9. measure which rooms/channels create the strongest contribution;
-10. capture approved assumptions/version changes with evidence.
-
-Strategic principle: **occupancy by itself is not success. TORO should maximize sustainable contribution and profit, not simply fill rooms.**
-
-## Directorio de enlaces y accesos ‚Äî 2026-10-07
-
-**Scope:** TORO-owned authorized portfolio; Dreamcatcher reference implementation. **Owners:** TORO Systems + TORO Tools + TORO Knowledge; SOBRESITO for technical integration. **Existing project mapping:** `business_truth_bible` (Data & Integrations), `toro_executive_control` (operating surface). **Priority:** P1. **CURRENT:** source inventory stored in the existing Supabase directory. **TARGET:** Systems ‚Üí Enlaces y accesos as a role/scope-filtered view of that same registry. **NEXT:** implement the section in the canonical Portal without duplicating data or deploying implicitly.
-
-- Preserve `operations.knowledge_items/dreamcatcher_system_database_directory_v1`, ID `50df0e7d-1aed-489a-a942-274715734dd0`. Existing canonical database, 14 Airtable links and runtime references remain intact; additive `structured_content.link_directory` contains 160 entries (154 URLs + 6 unresolved exact accesses), version 1.1. Count includes service surfaces, historical references, databases, private folder routes and 22 registered Kross unit links; it is not a count of 154 adopted systems or verified integrations.
-- Provenance: 208 current Airtable Central `source_objects`; 14 accessible Airtable bases; 3 current Supabase projects; `integrations.external_dependency_registry`; current General Plan; current channel checkpoint; complete shallow Dropbox root listing (17 entries); relevant existing browser tabs; narrowly checked official provider portals. Inventory presence and connector access are distinct from daily human usage, valid sessions and E2E capability.
-- No new database, table, master plan, agent or scheduler. `source_objects` and `external_dependency_registry` retain source/dependency roles; the directory is a navigation projection and does not replace their evidence. Kross, Alegra, banks and specialist authorities retain domain ownership.
-- Entry fields: stable directory ID, name, URL or unresolved state, category, purpose/limit, service state, link verification state, exact/generic/constructed link class, evidence, observation date, scope and visibility. Scope/role enforcement belongs to the existing TORO identity/capability model. Private metadata and folders must not enter public hotel navigation.
-- Human section: searchable external-system and owned-surface links together, filterable by business/category/state; visible distinctions for active, historical, sandbox, blocked and proposed destinations. Use existing preferences for favorites; do not create parallel state. Open links with safe target/rel attributes; do not prefetch private service data. Allow only validated HTTP(S) and explicitly needed mailto/tel protocols. Never store credentials, OAuth state, signed URLs, access tokens or guest payloads.
-- Explicit gaps: exact WeSpeak/TERE panel, Trip.com/Ctrip onboarding access, SimpleBooking current-use access, OpenClaw Gateway host/URL, SINAMOT and Evertec retention portal. Generic provider entrypoints and constructed Dropbox folder URLs are not certified account deep links. Tool availability from installed plugins is not adoption evidence. Historical TORO v03/five and desired `dreamcatcherhotel.com/toro` must not be promoted to canonical deployment by this directory.
-- **Verification in this unit:** Supabase readback confirms same row, internal visibility, all 14 previous Airtable links retained, canonical project unchanged and 160 entries / 154 URLs. A local searchable dashboard, Markdown, CSV and JSON are dated projections; the local dashboard does not query live Supabase or certify Portal integration. No schema/permission/production runtime change.
-- **DoD for NEXT:** authenticated canonical Portal reads this record, renders authorized links with source/state, search/filter and owned/external access coverage; negative role/tenant tests prevent cross-scope leakage; mobile/keyboard QA passes; all unresolved destinations remain visibly unresolved. Release requires its separate applicable gate.
-- **Rollback:** restore only the additive directory JSON and descriptive content from the saved pre-update snapshot after checking current version/concurrent edits; preserve unrelated fields. This document is proposed through a branch/PR and does not authorize merge, deployment or expanded access.
-
-### Enlaces por sistema, navegaci√≥n operativa y Cotizar ‚Äî 2026-10-07
-
-**Owner request:** organize principal systems and their derived links for hotel operations, review both Chrome profiles' bookmarks, and plan Portal buttons plus a quote widget. **CURRENT:** the same existing directory now stores additive `portal_navigation_proposal` (PROPOSED_NOT_PORTAL_IMPLEMENTED), grouping 160 entries into 38 principal-system groups and 9 process categories. These are navigation groups, not newly adopted services. **TARGET:** Enlaces y herramientas within Systems, reachable from Operations, with parent-system cards, derived-link expansion, search, role/scope filters and existing-preference favorites. **NEXT:** receive both exported bookmark HTML files, reconcile missing safe business links and then implement the canonical Portal section in its existing shell.
-
-- Recommended hotel home: Kross PMS, planner, Cotizar, direct booking engine, WeSpeak/TERE (exact URL pending), WhatsApp, Gmail, DreamTeam, Calendar, hotel Dropbox, Booking and Airbnb. Ordering is an operational recommendation, not measured usage. Finance/banks and system administration stay role-restricted; legacy/copies/previews/404/TARGET destinations go to Archive/Pending, and unrelated businesses remain scoped separately.
-- Bookmark review is explicitly **BLOCKED, 0/2 profiles reviewed**: browser policy rejects chrome://bookmarks and prohibits alternate retrieval to achieve the blocked action. Do not bypass via filesystem, raw CDP, browser commands or another browser surface. User-supplied HTML exports allow a materially safer local evidence review; preserve original bookmarks and omit unnecessary personal content.
-- Quote widget belongs to Operations/Revenue, with TORO Revenue/TERE and Kross authority. First release is a dates/occupancy/child-age/unit/RO-BB intake that opens the official Kross booking engine. Do not assume URL filter parameters work without proof. An internal live quote requires authorized official Kross read capability, origin/time/freshness, currency/tax/extra/occupancy/cancellation verification and parity against the engine. No price/availability inferred from cached Airtable/Supabase rates; no duplicate counting of villas and component rooms; no booking/payment/message effect by filling the widget.
-- A preview of buttons or saved specification is not Portal/runtime delivery. No API cost, access expansion, iframe banking/session capture, new app/base or deployment is authorized by this plan update. Relevant implementation tests: safe link protocols, role/tenant negative cases, parent/child consistency, search/filter/mobile/keyboard; live quote parity/error/stale-source handling only when that capability exists.
-
-
-### Directorio maestro ampliado y cuentas ‚Äî 2026-10-08
-
-**CURRENT, verificado por escritura en el registro existente:** 243 fichas, 238 URLs √∫nicas y 8 referencias de cuenta en `operations.knowledge_items / dreamcatcher_system_database_directory_v1`, versi√≥n 2.0. Se preservan las dem√°s secciones del objeto. Texto completo del reporte guardado con los datos y hash SHA-256 del PDF local; el binario PDF no est√° alojado en Supabase.
-
-- Evidencia ampliada: historial enfocado de dos perfiles Chrome (229 resultados, no exhaustivo), Airtable/Dropbox ya consultados, cuatro chats Codex, Gmail hotel/Mauricio y espejo Notion. Dos chats ChatGPT devolvieron l√≠mite de solicitudes; favoritos siguen 0/2.
-- WeSpeak resuelto: https://app.wespeak.pro/dashboard y derivados de navegaci√≥n observada. Trip.com: https://ebooking.trip.com, solicitud rechazada/incompleta seg√∫n correo; no afirmar canal activo. HotelSwaps: panel/ficha/temporadas documentados por auditor√≠a posterior al bloqueo que a√∫n muestra Notion.
-- 20 mejoras aplicadas al directorio/modelo/documento: IDs, proveedor, parentesco, proyectos, categor√≠as, etiquetas, tipo de enlace, prioridades, inicio propuesto, archivo, roles propuestos, cuentas relacionadas, distinci√≥n destinatario/login, tipo/estado de cuenta, IDs externos, procedencia, fechas diferenciadas, revisi√≥n, conflictos/cobertura y exportaci√≥n reproducible.
-- Referencias de cuenta contienen correo y evidencia no secreta; destinatario no equivale a login, plan o permiso. RLS observada activa y lectura por roles de organizaci√≥n. No ampliar permisos. Agrupaci√≥n por proveedor no prueba cuenta/propiedad compartida.
-- **TARGET sin implementaci√≥n:** secci√≥n de enlaces en Portal y Cotizar conforme al contrato anterior. Proyecci√≥n `portal_navigation_proposal` v1.2 sigue hist√≥rica (160); la fuente de fichas actual es `link_directory` v2.0 (243). Reconciliar navegaci√≥n existente al implementar; no consumir una proyecci√≥n vieja como censo actual.
-- **NEXT √∫nico:** validar principales diarios por rol/cuenta/propiedad y reconciliar la secci√≥n existente del Portal con el directorio v2.0, sin nuevo inventario, base, app ni despliegue. Esta PR permanece documental y sin merge.
-
-
-### Reconciliaci√≥n de Plan y navegaci√≥n ‚Äî 2026-10-09
-
-**CURRENT:** el mismo registro Supabase mantiene `link_directory` v2.0 (243 fichas, 238 URLs √∫nicas, 8 referencias de cuenta y 20 mejoras documentales) y ahora `portal_navigation_proposal` v2.0, reconciliada por los mismos 243 IDs y URLs. Este corte sustituye el estado de proyecci√≥n hist√≥rica descrito arriba; los cortes anteriores se conservan como evidencia fechada.
-
-- Se preservaron el cat√°logo, cuentas, texto respaldado, hash del PDF y dem√°s campos. La navegaci√≥n conserva el contrato Cotizar y cobertura de favoritos. Se propusieron seis tareas de inicio por ID: reservas LINK-048, cotizar LINK-002, hu√©spedes LINK-178, equipo LINK-086, agenda LINK-056 y facturaci√≥n LINK-067.
-- LINK-001 (cambio de contrase√±a PMS) queda fuera del inicio y bajo configuraci√≥n restringida. WeSpeak deja de figurar como URL pendiente. El pendiente hist√≥rico Trip.com LINK-156 remite a LINK-241; eBooking localizado no significa canal activo.
-- **TARGET:** Portal autorizado consume la navegaci√≥n sobre el registro existente; controles de rol/organizaci√≥n en servidor, sin inferir permisos a partir de etiquetas. **NEXT:** validar destinos y cuenta/propiedad de los seis accesos diarios antes de implementar la vista. **FUTURE:** Cotizar vivo solo con fuente oficial y pruebas del contrato.
-- **Verificaci√≥n documental/datos:** IDs √∫nicos, coincidencia de IDs/URLs entre cat√°logo y proyecci√≥n, referencias de inicio/alias existentes y protocolos permitidos. No se atribuye QA autenticado, pruebas de aislamiento runtime ni Portal publicado.
-- Plan de esta rama reconstruido sobre el contenido vigente de `main` (blob e1e8e7edc57018176686752187a5ae5ecf565713) conservando sus cambios concurrentes y la secci√≥n documental de este carril. La integraci√≥n a `main` permanece pendiente de revisi√≥n/merge; no se declara el plan publicado.
-- Recuperaci√≥n: snapshot previo de la proyecci√≥n en `work/alignment-20261009-before.json`; revertir √∫nicamente esa clave despu√©s de comparar updated_at. Para documentaci√≥n, revertir el commit del carril; nunca sobrescribir otros cambios.
-
-
-### Gu√≠a compacta de herramientas ‚Äî 2026-10-09
-
-**CURRENT:** prototipo local `TORO-DASHBOARD-LINKS.html` actualizado, 243 fichas preservadas en 44 grupos / 10 √°reas; seis tareas diarias, detalles plegables, b√∫squeda, filtros, favoritos locales, copiar e impresi√≥n. Nueve iconos de marca de Simple Icons; emojis en el resto. Las 50 simplificaciones est√°n enumeradas en la gu√≠a local y en `portal_navigation_proposal.compact_view` v3.0 del mismo registro Supabase.
-
-- Proyecci√≥n local, no Portal publicado ni conexi√≥n viva. Cat√°logo/proyecci√≥n v2.0 conservados. `compact_view` almacena distribuci√≥n por IDs, tareas, procedencia de iconos, gu√≠a y pruebas; no crea otra base. SINAMOT localizado en su web oficial queda como overlay de presentaci√≥n sobre LINK-159, sin afirmar alertas en vivo ni cerrar otros pendientes.
-- Inicio compacto: reservas LINK-048, cotizar LINK-002, mensajes LINK-178, equipo LINK-086, agenda LINK-056, documentos LINK-131. Facturaci√≥n permanece en Dinero y tr√°mites. Los favoritos locales son solo de demostraci√≥n; integraci√≥n debe usar preferencias existentes.
-- **Evidencia local:** 243 IDs, seis accesos de inicio, b√∫squeda, filtro de favoritos/persistencia, estado vac√≠o, cero errores JS y sin desborde horizontal a 390 px. Revisi√≥n visual escritorio/m√≥vil. No implica accesos autenticados ni pruebas de aislamiento en producci√≥n.
-- **TARGET/NEXT:** implementar en secci√≥n existente de TORO tras validar los seis destinos, identidad/rol/scope en servidor y preferencias can√≥nicas. Portal es puerta, TORO Brain relaciona tareas/sistemas/proyectos/fuentes, Supabase guarda cat√°logo; autoridades transaccionales permanecen Kross/Alegra. Mantener permisos y separar Santa Toro, patrimonio y hotel.
-- No merge/deploy impl√≠cito; completar favoritos Chrome y otros pendientes con investigaci√≥n focalizada, sin reconstruir el inventario.
-
-
-### Herramientas del hotel ‚Äî integraci√≥n local acotada
-
-**CURRENT local, no publicado:** `/my-toro/herramientas` y entrada en Mi TORO preparados en el checkout del carril, commit local `d4a851909c76686603efe87a07271076ae266e8e` sobre `73e8dc17b40a048a1324b750383da5daa44fd99d`. C√≥digo no empujado; patch y evidencia en outputs del checkpoint. Esta actualizaci√≥n remota es documental.
-
-- Lector server-side con sesi√≥n, contexto can√≥nico, organizaci√≥n/propiedad exactas, membres√≠a activa y los roles existentes de lectura de knowledge_items. Cliente Supabase de sesi√≥n con RLS, sin service-role, sin ampliar permisos.
-- Seis destinos expl√≠citos cotejados con cat√°logo; cambio de URL, ID duplicado, otro scope o fallo de lectura no entrega ese enlace. No expone cuentas, evidencia privada ni el cat√°logo de proyectos mezclados. El cat√°logo completo de 243 fichas permanece intacto.
-- **Evidencia:** 24 pruebas nuevas + 29 de contexto/men√∫, TypeScript, lint del cambio y build PASS. Servidor local sin configuraci√≥n: cero links externos y sin desborde m√≥vil390. No equivale a prueba autenticada/RLS viva.
-- **Bloqueadores del alcance completo:** falta prueba de sesi√≥n real; no se encontr√≥ contrato persistente de favoritos en las tablas/implementaci√≥n consultadas; fichas restantes sin pol√≠tica de scope/rol validada. No migrar localStorage ni crear base de preferencias paralela.
-- **NEXT √∫nico:** prueba autenticada de los seis accesos en entorno autorizado; resolver preferencias y permisos existentes antes de ampliar. Sin push del c√≥digo/merge/despliegue en este corte. Recuperaci√≥n: revertir commit local; no hubo migraci√≥n.
-
-### Publicaci√≥n autorizada ‚Äî Herramientas, 10/10/2026
-
-Mauricio autoriza publicar y continuar. C√≥digo conciliado con main y subido en la misma PR251, commit abed8e0c9fb879d1b9b3caa41aea55421e610c59. Vercel proyecto existente toro-pr11-preview: despliegue dpl_5rSEw7rMy1EsRK1pUcci26Sjd8vT READY; ruta /my-toro/herramientas. CI 38032517161: tests, lint y build PASS. Navegador sin sesi√≥n muestra contexto autorizado requerido, sin accesos externos del directorio.
-
-CURRENT: preview publicado, no producci√≥n ni merge. Falta sesi√≥n real autorizada para probar lectura del registro y seis accesos; AGENTS.md exige evidencia runtime antes del merge. La autorizaci√≥n de publicaci√≥n permanece vigente para cerrar la misma entrega tras superar ese control, sin ampliar permisos. NEXT √∫nico: login manual del propietario en el preview, comprobar contexto/lectura y completar release existente. No copiar sesiones, crear usuarios, restablecer contrase√±a ni debilitar RLS. Cat√°logo de 243 fichas y fuente Supabase intactos. Reversi√≥n: revertir solo los siete archivos del commit funcional d4a8519; no migraci√≥n de datos. No promover la maqueta HTML privada ni el cat√°logo completo.
-
-### Operaci√≥n diaria y acceso claro ‚Äî 10/10/2026
-
-Mauricio pide usar admin@dreamcatcherhotel.com y redise√±ar seg√∫n operaci√≥n diaria. Cuenta Auth confirmada y ADMIN activo; sesi√≥n real observada en TORO local. El fallo anterior era PGRST106: operations no est√° expuesto a PostgREST, no credenciales incorrectas. Con autorizaci√≥n expl√≠cita, aplicada lectura p√∫blica acotada dreamcatcher_tool_links_v1: SECURITY INVOKER, RLS existente, scope fijo, solo seis IDs/URLs exactos; ejecuci√≥n denegada a anon, sin cambiar usuarios/policies ni exponer operations. Navegador de la sesi√≥n del propietario muestra los seis accesos. Consulta sin roles devuelve cero; llamada HTTP an√≥nima 42501.
-
-Vista existente /my-toro/herramientas organizada por Empezar turno, Atender hu√©spedes, Preparar habitaciones, Cotizar estancia, Revisar cobros y Cerrar/preparar ma√±ana. Es gu√≠a de navegaci√≥n basada en recepci√≥n y autoridades del Plan, no procedimiento de turnos validado ni tablero de estados vivos. Cobros sin accesos aprobados conserva pendiente expl√≠cito. Login con ayuda y mostrar contrase√±a; errores de cat√°logo ya no piden cambiar de usuario. No nuevas cuentas, copia de sesiones ni recuperaci√≥n enviada. DreamTeam mantiene su login propio y misma autoridad de identidad; no se ha implementado SSO.
-
-TARGET/NEXT: contrastar con recepci√≥n responsable real por turno y accesos de caja/aseo/mantenimiento; conectar lecturas verificadas una por una. Preservar Kross, Alegra/bancos, DreamTeam, Team Brief y Cierre Diario existentes. No nueva cola, base, scheduler ni cat√°logo. Prueba local autenticada y negativas superadas; release sujeto a CI y readback de despliegue vigente. Revertir funci√≥n sin CASCADE y cambio de UI si necesario; no datos alterados por la funci√≥n.
-### Correcci√≥n del gate de Herramientas ‚Äî 10/10/2026
-
-**CURRENT de seguridad:** una sesi√≥n con rol lector no basta para mostrar herramientas. El filtro exige identidad, `work_org`, contexto/membres√≠a vigentes y permiso exacto en `allowedTools` (`provider`, `owner=organization`, misma `orgId`, acci√≥n `read`), antes de consultar el cat√°logo y al proyectar cada enlace. Las claves Kross, WeSpeak, Google Calendar y Dropbox proceden del cat√°logo existente; asignar la clave a un destino no concede el permiso. DreamTeam conserva LINK-086 pero queda fuera de la proyecci√≥n hasta resolver su contrato de proveedor. El HTML privado y las 243 fichas no cambian.
-
-- El resolver actual siempre devuelve `allowedTools: []`; por ello la ruta corregida deniega tambi√©n a ADMIN. No simular permisos para conseguir seis botones visibles. Cinco destinos tienen mapeo preparado; cero est√°n habilitados por el resolver vigente.
-- La propiedad de la fila est√° filtrada, pero el contexto a√∫n no representa autorizaci√≥n del actor por propiedad. Esto sigue bloqueando la activaci√≥n. La inspecci√≥n acotada de `integrations.external_dependency_registry` encontr√≥ metadatos de dependencias, no grants de usuario; no se alter√≥ el esquema ni RLS.
-- Evidencia local: prueba roja previa (24 fallos de frontera), luego 90/90 pruebas de herramientas/contexto/men√∫; incluye el resolver real con transporte sint√©tico y denegaci√≥n directa, cambio de sesi√≥n y errores. Lint del cambio y build Next.js/TypeScript con Webpack PASS. Suite de herramientas incorporada a `npm test`. Revisi√≥n independiente sin hallazgos concretos. Esto no acredita sesi√≥n/RLS en vivo.
-- **NEXT √∫nico:** resolver en el contrato can√≥nico los permisos reales por herramienta y propiedad, con mapeo validado, antes de la prueba de activaci√≥n del equipo. Se conserva la autorizaci√≥n de publicaci√≥n ya registrada; el gate anterior de solo login queda sustituido por este requisito t√©cnico. Mantener PR251 en borrador, sin merge ni producci√≥n en este corte. Revertir √∫nicamente el commit de esta correcci√≥n si es necesario, conservando cambios concurrentes y sin migraci√≥n.
-
-### Conciliaci√≥n del directorio de navegaci√≥n ‚Äî autorizaci√≥n espec√≠fica 10/10/2026
-
-El propietario aprob√≥ expl√≠citamente crear una lectura que entregue √∫nicamente los seis enlaces a cuentas con los roles actuales: ¬´S√≠, activar esa lectura limitada¬ª. Esto resuelve el conflicto con el gate del carril 4b6b6cb SOLO para lectura del directorio RLS existente. Abrir una URL no ejecuta read/search/execute en el proveedor ni concede un grant de integraci√≥n. Mantener allowedTools vac√≠o cuando no hay contrato; jam√°s llenarlo con permisos sint√©ticos. La entrada conserva identidad, work_org, contexto √∫nico, membres√≠a activa, organizaci√≥n y propiedad exactas. public.properties confirma pertenencia de la propiedad a la organizaci√≥n y knowledge_items conserva su RLS por rol. No se crea autorizaci√≥n general por propiedad fuera de este registro.
-
-El requisito de allowedTools sigue vigente para futura operaci√≥n de conectores, datos externos, ejecuci√≥n o integraci√≥n embebida; no hay tales acciones en esta vista. Se preservan las mejoras concurrentes de identidad/scope, tests de cambio de sesi√≥n, rechazo de URLs/duplicados y cobertura en npm test. Seis enlaces cotejados con lectura real de la cuenta actual; endpoint an√≥nimo denegado. Esta decisi√≥n no activa los otros 237 registros ni habilita al equipo con roles no autorizados.
-
-### Inicio √∫til del hotel ‚Äî 10/10/2026
-
-**CURRENT preparado y verificado localmente:** mejora de presentaci√≥n en TORO Tools / Human Experience, referencia Dreamcatcher, sobre main 43aa4ba. `/my-toro` entrega los seis accesos revisados directamente desde el lector de sesi√≥n existente; solo aparecen en estado `ready` y con contexto autorizado. Conserva la gu√≠a de turno y agrupa pendientes y ayuda de cuenta en secciones plegables. El buscador describe navegaci√≥n de men√∫, prioriza opciones utilizables y conserva entrada/salida de submen√∫s. No a√±ade datos, permisos, integraciones, estados operativos ni otra base.
-
-- Evidencia: 85 pruebas de herramientas/men√∫/contexto; TypeScript y lint del cambio. Sesi√≥n local real con seis enlaces, ayuda de cuenta, navegaci√≥n a la gu√≠a y viewport m√≥vil de 390 px sin desborde. La cuenta sint√©tica sin sesi√≥n, de otra organizaci√≥n, suspendida o con elecci√≥n pendiente no consulta el directorio; un fallo de lectura no expone URLs.
-- Criterio de entrega: inicio compacto, acciones √∫tiles primero, pendientes sin falsos botones y seis destinos bajo los mismos controles. Recuperaci√≥n mediante revert de este cambio de presentaci√≥n; sin migraci√≥n.
-- **NEXT √∫nico:** cerrar el release acotado en el proyecto Next.js existente. Producci√≥n permanece pendiente de separar el delta de otros m√≥dulos ya presente en main; no promover todo el proyecto ni activar nuevos permisos bajo esta mejora visual. Cat√°logo can√≥nico conserva 243 fichas.
-
-
-### Conciliaci√≥n local del portal ‚Äî 2026-10-11
-
-**√Åmbito y autoridad:** portal existente, Human Experience, Cerebro y TORO Finance/People; este documento sigue siendo el √∫nico Plan General. La conciliaci√≥n local autorizada conserva PR262 `7837ae9`, main `6992dfe`, los deltas aprobados de Hoy/Buscar/test y los aportes humanos People/FIN01. No crea otro proyecto ni integra el checkout separado de DreamTeam.
-
-**CURRENT ‚Äî c√≥digo local:** Hoy en Mi TORO conserva un √∫nico instante, `America/Costa_Rica`, fuente/cobertura, conteos coherentes, importe desconocido distinto de cero y enlace de evidencia. `search_toro` filtra la lectura can√≥nica acotada antes del l√≠mite de resultados; m√°ximo 101 objetos cargados, diez resultados por defecto y m√°ximo 25. Informa conteos y truncamiento, `complete=false` y totalidad autorizada desconocida. Mi TORO mantiene su b√∫squeda de opciones del men√∫. Roles, flags, gates y per√≠metro demo de PR262 se conservan; esto no acredita operaci√≥n autenticada ni RLS vivo.
-
-**TARGET:** b√∫squeda con mayor cobertura y evidencia verificable, subordinada a P07/P13 y a fuentes realmente autorizadas. Las 100 mejoras de Cerebro conservan su clasificaci√≥n documental; conciliarlas no las declara ejecutadas. Alegra/custodia y los cortes hist√≥ricos FIN01 mantienen sus fechas, autoridad y l√≠mites; People conserva su direcci√≥n humana sin nuevos grants.
-
-**CURRENT ‚Äî validaci√≥n controlada local:** suites principales 463/463 (incluidas 28 de aislamiento secuencial), herramientas/Mi TORO 46/46 y las once regresiones de Buscar ya existentes 11/11; tipos y lint de los 14 archivos relevantes pasaron. Build local de Next 16.3.6/Turbopack: 45 p√°ginas. Los datos de las pruebas son fixtures/sustituciones existentes, incluido el harness privado de Buscar fuera del producto; no son datos operativos reales ni prueba de autenticaci√≥n/RLS. No se crearon fixtures nuevos. Recibos, comandos, hashes y recuperaci√≥n quedan fuera del repositorio.
-
-**NEXT:** QA autenticado requiere un entorno interno y una sesi√≥n leg√≠tima autorizados. Publicaci√≥n, CI/preview y aceptaci√≥n operativa requieren su propio alcance.
-
-**L√≠mites y recuperaci√≥n:** solo integraci√≥n y pruebas locales. PUMBA conserva A1 Prepare; Kross API, mantenimiento autom√°tico, Gateway y WhatsApp quedan fuera de esta unidad. Se preserva Recepci√≥n `2adc9fa` / C01‚ÄìC30. No hay push, merge remoto, deploy, consultas a datos remotos, activaciones, credenciales, permisos, instalaciones ni nuevos fixtures. La rama original permanece en `0f31223`; un snapshot local y respaldo √≠ntegro permiten recuperaci√≥n sin reset ni borrados.
-
-### Correcci√≥n local de dependencias del Portal ‚Äî 11/10/2026, 15:01 Costa Rica
-
-**CURRENT local, sin publicar:** sobre `7cabb88`, Next y eslint-config-next pasan de 16.3.6 a 16.3.8; sharp de 0.35.4 a 0.35.5 y source-map-js de 1.2.1 a 1.2.2. El lockfile cambia √∫nicamente las familias previstas, con resolved/integrity oficiales. No cambian fuentes de Hoy/Buscar, identidad, flags, gates, permisos, datos ni contribuciones anteriores del Plan.
-
-**Evidencia posterior al cambio:** audit runtime exit 0 y cero avisos; audit completo exit 1 con cinco paquetes de desarrollo que heredan un √∫nico aviso de braces. 534/534 pruebas controladas en siete componentes y tres validadores; TypeScript, lint de 14 archivos y build Next 16.3.8/Turbopack aprobados, 45 p√°ginas y dos workers. ESLint completo: 190 archivos, cero errores y un aviso de variable sin uso en un archivo sin cambios. Seis GET al servidor local validaron el per√≠metro p√∫blico fail-closed; el servidor de prueba se detuvo. No es sesi√≥n autenticada, QA m√≥vil/teclado, RLS vivo ni CI/preview.
-
-**Pendiente y NEXT √∫nico:** entorno interno existente del mismo candidato con sesi√≥n leg√≠tima autorizada para entrada ‚Üí Hoy ‚Üí Buscar ‚Üí evidencia ‚Üí retorno, identidad/√°mbito y m√≥vil/teclado. Braces conserva un aviso sin parche upstream; no es una aceptaci√≥n de riesgo aprobada. No rebajar ESLint, retirar gates o instalar datos ficticios para cerrar el aviso. El portal integrado sigue sin publicar.
-
-Recibo y recuperaci√≥n: `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\security-unit\receipt.json`; respaldo de package/lock/Plan en su carpeta `backup`; base `7cabb88` y snapshot hist√≥rico `6151a4a` conservados. Recuperaci√≥n solo de este delta tras verificar cambios posteriores, sin reset/clean ni sobrescribir aportes ajenos. Este bloque no autoriza publicaci√≥n, despliegue, nuevas lecturas o permisos.
-
-### Preparaci√≥n local de QA autenticado del Portal ‚Äî 11/10/2026, 15:23 Costa Rica
-
-**CURRENT verificado:** se a√±ade √∫nicamente `scripts/portal-session-preflight.mjs` y su prueba Node: comprobaci√≥n offline de candidato/√°rbol limpio, dependencias instaladas, configuraci√≥n p√∫blica de navegador/servidor, proyecto Supabase esperado, flags exactos y ausencia de privilegios/lecturas legacy/escrituras. 13/13 pruebas dirigidas y lint sin avisos. No consulta datos, lee archivos .env, cambia flags, inicia servidores ni verifica sesiones; exit 0 significa preparaci√≥n, nunca autorizaci√≥n, RLS o publicaci√≥n. El proyecto se selecciona expl√≠citamente; para este alcance, la autoridad de las secciones actuales del Plan conserva `abtyrbqlqbsastmridzp`.
-
-**Conservado:** fuentes funcionales, package/lock y todos los aportes de People/Cerebro/Alegra/FIN01 permanecen id√©nticos al candidato `fc640c6`. Sus 534 pruebas, build y auditor√≠a local se conservan como evidencia anterior, sin nueva ejecuci√≥n. Braces dev y la advertencia ESLint anterior siguen pendientes.
-
-**Recurso observado:** Vercel identifica la preview abierta `toro-pr11-preview-9uszzp4m4-dreamcatcher-s-projects.vercel.app` como `7837ae9`, no como el candidato integrado. Consulta acotada por SHA `fc640c6` en el equipo actual: cero deployments. La consulta de variables no produjo metadata utilizable; configuraci√≥n remota UNKNOWN. No se cambia Deployment Protection ni se crea un bypass.
-
-**NEXT √∫nico:** autorizaci√≥n espec√≠fica para QA temporal local en 127.0.0.1:3047, en el portal existente y con identidad/grants actuales: lectura can√≥nica + Hoy/Finance. Solo para el proceso: `TORO_DEPLOYMENT_MODE=internal`, `TORO_BRAIN_CANONICAL_READ_ENABLED=true` y `TORO_OWNER_ATTENTION_READ_ENABLED=true`; legacy/escrituras deshabilitados y ning√∫n secreto privilegiado. Configuraci√≥n p√∫blica del proyecto can√≥nico disponible de forma segura durante un build nuevo; login humano en navegador sin compartir contrase√±a. Luego completar entrada/identidad ‚Üí Hoy ‚Üí Buscar ‚Üí evidencia/retorno ‚Üí m√≥vil/teclado, y detener el servidor. Todav√≠a no autorizado ni ejecutado.
-
-Recibo can√≥nico y recuperaci√≥n en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\task\integration\INTEGRACION_LOCAL_VALIDADA.md`; evidencia de esta unidad en `C:\Users\PERSONAL\Documents\Codex\2026-10-11\contin-a-el-portal-toro-lee\work\session-unit\receipt.json`. Recuperaci√≥n: revert de este delta local tras verificar cambios posteriores; no reset, borrados ni cambios en ramas previas. Esta preparaci√≥n no autoriza despliegue, nuevos permisos, nuevas cuentas, env√≠o externo ni publicaci√≥n.
-
-### QA local autorizada: correcci√≥n de la entrada interna ‚Äî 11/10/2026, 15:34 Costa Rica
-
-**Autorizaci√≥n recibida:** Mauricio aprob√≥ expl√≠citamente QA temporal de lectura en 127.0.0.1:3047 y Supabase can√≥nico `abtyrbqlqbsastmridzp`, incluyendo Cerebro y Hoy/Finance, con tres flags internos solo en el proceso, identidad/grants actuales y escrituras deshabilitadas. No permite publicaci√≥n, nuevas cuentas o permisos.
+Y™Áäx-ÆÈ‹j◊ù¢Îi∫⁄+äßj[hëÈ‹¢ÈÌ€ç∫”¥Ëµ©h∫⁄n∂XßzÕH»‘ì»8†%[àŸ[ô\ò[Çääî›]\Œääà’TîëSïPT’TàSÇääë]NääàåçãLLLçääìX\›\àõŸX›ääà‘ì¬ääïö\⁄XõHúò[ô‹õŸX›ääà‘ì¬ääîôYô\ô[òŸH[\[Y[ù][€éääàôX[Xÿ]⁄\à›[ääê›\úô[ùôXY[ô\‹ŒääàSïTìêSì”—à8†%^\õò[€òõÿ\ô[ô»õÿ⁄ŸYûHôXY[ô\‹»ÿ]BÇèKKHëQ“Séï‘ì◊‘‘ïS“SïQ‘êUQ’”‘í‘‘P—WÃåçåLLKOÇà»»‹ù[[ùY‹òYŒà\ôXÿ⁄pÏ€àXŸ\YK€€][öXÿX⁄pÏ€ãö[ò[ûò\»HXÿŸ\€‹»HÃLKÃåçÇÇääëP“T“p‰”àSì‘QUTíSŒääàXŸ\HH^\öY[ò⁄XHX\öXH‹àõ€H€€X⁄]H[\X\à⁄]–\”‹[ê€]À‹\òX⁄pÏ€ãö[ò[ûò\Àÿ€€ùXö[YYHXÿŸ\€‹»HŸ‹»‹»⁄\›[X\»[›[àﬁH‹àõ€\ÿHHŸ\àH[ùòYHX\öXHÿöô]]õŒ»Ÿ\ôXúõ»€€úŸ\ùòH›Hù[ò⁄pÏ€àò[ú›ô\úÿ[XÿŸ\€»\ôX›»HŸ\›pÏ€àH‹»€Z[ö[‹À“Q»LLKà\›H\ôXÿ⁄pÏ€à›\›]^YHHÿõYÿX⁄pÏ€àTë—U[ù\ö[‹àHXúö\à⁄Y[\ôH[àŸ\ôXúõŒ»õ»[[Z[òHô[X⁄[€ô\ÀùY[ù\»öHö]òX⁄YYÇÇääê’TîëSïääàö[Y\à›HHò]ôYÿX⁄pÏ€ã€X›\òH[ààÃŒN»“HHô]öY]»€€\õÿòY‹»\òH›HXY€€ú›[YÀXŸ\X⁄pÏ€àö\›X[ÿ]][ùXÿYHpÓõà[ôY[ùKà[àHùY[ùHö]òYH[\ôX›‹ö[»ŸH€‹úöY⁄pÏ»Hõ‹õXHô]ô\ú⁄XõHHY^ò€H[ùôHöX⁄\»Sí»€€ùòX›X[\»Hõ‹Y\›\Œà[ùöY\»€€úŸ\ùòHÿ]0Ë[Ÿ€»Hÿ[ôY]WŸ[ùöY\»õ‹Y\›\À€€àô\‹[»HôX⁄Xõ»[à[Z\€[»ôY⁄\›õÀàY›X[YH€€ù[öY»H€€ùò]»ô\öYöXÿY‹Œ»€€ú›[[»]][ùXÿY»[ôY[ùKàõ»ÿ[XöX[àîÀõ€\»öHìÀÇÇääïTë—Uääà[à‹ù[\òHXúö\à⁄\›[X\À€€ú›[\àùY[ù\»»€€X⁄]\àXÿ⁄[€ô\»ŸYÓõàÿ\X⁄YYôX[»Y[úÿZôKXÿ\€À]òXòZõÀ\ô\‹Y\›K\ô\›[Y»HŸ\ùöX⁄[ÀX€ÿúõÀYÿ›[Y[ùÀ[\]ZYX⁄pÏ€ãXò[ò€»€€\\ù[àY[ùYY0Ë[Xö]»H]öY[ò⁄XKà\ôX›‹ö[»€€\]»‹àõ›ôYY‹ãÿ›Y[ùKŸù[ò⁄pÏ€ã∞Óú‹]YYHH€€ù[ùXX⁄pÏ€à⁄[à\ô\à€ÿô\ù\òN»õ»€€ôù[ô\à[õXŸH€€à[ùY‹òX⁄pÏ€àöHô\\òY»€€à[ùöXYÀàö[ò[ûò\»€€úŸ\ùòH[\ô\ÿK[€ôYK€‹ùK‹öY⁄[ò[\»H€€ò⁄[XX⁄pÏ€ãàôX›\\ò\à^òXÿ⁄[€ô\»^\›[ù\»[ù\»Hô\]\à[ôŸ\›H\›0Ï‹öXÿKÇÇääìëVääàô]][^ò\à[ÿ\úö[H‹»‹ö]\ú»^\›[ù\»\òHXÿŸ\€‹À⁄õ‹õòYK€€[\»Hö[ò[òŸKàõÿò\à\›X\ö[»ôX[]ô[ùÀÿÿ\€»ôX[Hò[À‹ôX›\\òX⁄pÏ€à\ù[ô[ù\ÀàH]X⁄pÏ€àH[[Z[ò\àòXò\»]]‹ö^òH€‹úôY⁄\àÿ]\ÿ\»[ùõ»[[ÿ[òŸH€€òŸYYÀõ»€€ùô\ù\à\ÿ€€õÿ⁄Y‹»[à]‹»X›X[\»öH€€òŸY\àö]ö[Y⁄[‹»‹à\\öY[ò⁄XKàõ»ŸHX›]ò\õ€à[ù∞Î[‹ÀXõXÿX⁄[€ô\»€ÿ⁄X[\ÀòX›\òX⁄pÏ€ãY€‹ÀTHYÿYHTÀùY]ò\»Y[ùYY\Àÿ]]ÿ^\»öHÿ⁄Y[\úÀÇÇñ—\‹X⁄YöXÿX⁄pÏ€àH[\XX⁄pÏ€óJãã‹›\\ú›Ÿ\úÀ‹‹X‹ÀÃåçãLLKL\‹ù[Z[ùY‹ò][€úÀX[ô[[ö‹ÀY\⁄Y€ãõY
+HH‹[à0ÍX€öX€◊Jãã‹›\\ú›Ÿ\úÀ‹[úÀÃåçãLLKL\‹ù[Z[ùY‹ò][€úÀX[ô[[ö‹ÀõY
+H€€à[ô^‹»›Xõ‹ô[òY‹»H\›H0ÓõöX€»[ãàXY€∞Ï‹›X€»][YÀ›Y[ù\»HôX⁄Xõ‹»Ÿ[ú⁄Xõ\»\õX[ôXŸ[àö]òY‹ÀÇÇèKKHSëï‘ì◊‘‘ïS“SïQ‘êUQ’”‘í‘‘P—WÃåçåLLKOÇÇèKKHëQ“Séî‘ïì”S◊‘ëP””ê“SPUS”óÃåçåLLKOÇà»»€€ù[ùZYYHõﬁYX›‹»H€€ùô\úÿX⁄[€ô\»8†%Hõ›öY[XúôHHåçÇÇääìX[ô]Œääàô]ö\ÿ\à‹»õﬁYX›‹»H€€ùô\úÿX⁄[€ô\»XÿŸ\⁄Xõ\ÀX›X[\»H\›0Ï‹öX€‹ÀHôX€€ò⁄[X\õ‹»€€à\›H[àŸ[ô\ò[H[Z\€[»‘ìÀà[^YY[ùHö]òY»HZôX›X⁄pÏ€à€€úŸ\ùòH[Ÿ[ú€ÀùY[ù\À0Î[Z]\»HôX⁄Xõ‹Ààõ»ŸHŸ\ùYöXÿHXÿŸ\€»HŸ\»\»€€ùô\úÿX⁄[€ô\À›Y[ù\À\ò⁄]õ‹»ÿÿ[\»»ôX›\ú€‹»Hõ›ôYY‹ô\ÀÇÇääê’TîëSïääàHô]ö\⁄pÏ€àHY]Y]‹»\›[ô›YHõﬁYX›‹»ÿ[∞Ï€öX€‹À[öX⁄X]]ò\»\›0Ï‹öXÿ\»Xú€‹òöY\ÀôX›\ú€‹»0ÍX€öX€‹ÀòXòZõ»XöY\ù»HŸY›Z[ZY[ù‹»õŸ‹ò[XY‹Àà‹»€€ù[‹»\ù[ôXŸ[àH[ö]ô\ú€‹»Yô\ô[ù\»Hõ»ŸH›[X[ãà[òHZôX›X⁄pÏ€àôY⁄\›òYH€€[»€€\]YHX‹ôY]H[⁄X€»[õŸ‹ò[XY‹é»›Hô\›[YÀ[ùôYÿKYôX›»ò[úÿXÿ⁄[€ò[HXŸ\X⁄pÏ€àô\]ZY\ô[à]öY[ò⁄XHõ‹XKà\»ôX⁄\»H€€ú›[Hõ»ôZù]ô[ôXŸ[à\»ùY[ù\ÀÇÇääê]]‹öYYH€€ù[ùZYYääà‹\ò][€úÀúõ⁄ôX›ÿH‹\ò][€úÀù\⁄‹ÿ€€úŸ\ùò[àY[ùYYH\›Y»H€€‹ô[òX⁄pÏ€é»‹\ò][€úÀö€õ›€YŸW⁄][\À›‹õ◊€X\›\óŸ^X›][€óÿ€€ùòX››åX€€úŸ\ùòH[⁄X⁄‹⁄[ù‹ùõ€[◊ÿ[Y€õY[ùÃåçåLLà[X\Hö]òY»‹õ◊‹‹ùõ€[◊‹ô[][€ú⁄\€X\›åX⁄Y›YH⁄Y[ô»[òHõﬁYXÿ⁄pÏ€à[‹ùYõ€[Àà‹õ‹‹»€€úŸ\ùòHô\Ÿ\ùò\ÀôX⁄[‹»H\‹€öXö[YY»[Y‹òK€€ùXö[YY»ò[ò€‹À‹õÿŸ\ÿY‹ô\À\]ZYX⁄pÏ€é»õ‹õﬁ‹öY⁄[ò[\ÀàZ\ùXõHH‹»ÿ›[Y[ù‹»›Xõ‹ô[òY‹»€€úŸ\ùò[à›H\[‹à0Ë[Xö]Ààù[Xõ»H‹»õﬁYX›‹»ò[Z[X\ô\À‹]ö[[€öX[\»X[ùY[ô[à›\»]]‹öYY\»Hö]òX⁄YY»ö[ò›[\õ‹»õ»\õZ]HY^ò€\õ‹»€€àH‹\òX⁄pÏ€à›[\òKÇÇääïô\»ô\›[Y‹»ZôX›]]õ‹»\òH[⁄Y›ZY[ùH⁄X€ŒääÇÇü‹ô[àô\›[Y»Hÿ\úö[^\›[ùH∞Ïﬁ[XH[öYYHXŸ\X⁄pÏ€àüKKHKKHKKHüHòXòZõ»X\ö[»[à[‹ù[8†%‹õ◊Ÿ^X›]]ôWÿ€€ùõ€€€ù[ùX\à[ÿ[ôY]»^\›[ùHàÃŒNH›\»€€ùò]‹»HY[ùYY\ú⁄\›[ò⁄XHHô\^KàŸ\úò\à[òHXÿ⁄pÏ€à\õZ]YH€€àX›\òH‹›\ö[‹ãùYXò\»HZ\€[ZY[ù»H]öY[ò⁄XH[ÿ[ôY]»^X›Œ»[‹ö]\àõŸX›]õ»€€úŸ\ùòH›Hÿ]Kàõ»ôZ[öX⁄X\à[ôY\ŸpÏ[»\ŸHÿ[ôY]‹»[ù\ö[‹ô\Ààüà[ôõ‹õXX⁄pÏ€à€€Y\ò⁄X[H€€ù[ùZYYH€€][öXÿX⁄[€ô\»8†%ù\⁄[ô\‹◊›ù]ÿöXõX»ô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿô\€€ô\à[ò[ú‹‹ùHH€€ú›[[»öYŸ[ù\»H‹õ‹‹»H‹»ö[ô[ô‹»]]‹ö^òY‹»H‹[ê€]Àà[òHŸ\⁄pÏ€à\⁄\›YH»[à^‹ùõ»ùYXò[àY]Z\⁄X⁄pÏ€àõŸ‹ò[XYHöH[ùôYÿH⁄]–\àXŸ\\à€€»€€à€‹ùK€ÿô\ù\òK€]ô\À€€ò⁄[XX⁄pÏ€àHôX⁄Xõ»[€€ú›[ZY‹é»X[ù[ô\à€€ù[ùXX⁄pÏ€àX[ùX[àü»ÿZòKôX€€ú›ùXÿ⁄pÏ€àH€€ùöXùX⁄pÏ€à8†%ö[ò[òŸWÿ€€ùõ€ÿ»ô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿô]][^ò\à‹»ÿ\€‹»X⁄Y[ôK‘^Qõ›»H[[›»õ€⁄⁄[ô¯†$“‹õ‹‹Ààö[‹ö^ò\àò^òXö[YYH‹∞ÍY]‹»H€€ò⁄[XX⁄pÏ€ãHô\öYöXÿ\à[X›Y\ô»HHò\ŸH€€Z\⁄[€òXõH[ù[ò⁄XYH\òHô\Ÿ\ùò\»‹ôXY\»\ŸH[MÀÃLKÃåçà[ù\»Hõ‹€ô\à\öYò\Ààõ»ò]\àÿ[»ÿ›[Y[ù[€€[»]õ€X⁄pÏ€à\õÿòYHöH0Î[ôXŸ\»€€[»\⁄Y[ù‹ÀàÇì\»ÿõYÿX⁄[€ô\»\ôŸ[ù\»HpÍ\‹Y\ÀŸY›\öYY›[\[ZY[ù»HÿZòH€€úŸ\ùò[àôXŸY[ò⁄XKà‹»úô[ù\»HŸXãô\]X⁄pÏ€ãX[ù[ö[ZY[ùÀ\ú€€ò\ÀYŸ[ò⁄X\À€‹›[öXö[YYÿ[ôX⁄\∞ÎXHH]ö[[€ö[»€€ù[∞Óò[à[à›\»ÿöô]‹»^\›[ù\Œ»[ò›XòY‹ò\»H\›[ù‹»Xú€‹òöY‹»õ»ŸHôXX›]ò[à‹à[ùYÔYY»⁄[Z[]YHõ€Xúô\ÀÇÇääìëV‹\ò]]õŒääà‹»€€‹ô[òY‹ô\»^\›[ù\»€€ú›[[à[Z\€[»⁄X⁄‹⁄[ùH[⁄Y›ZY[ùHÿöô]»[ôY[ùHH›H0Ë[Xö]Ààô]][^ò\à›H\ÿ‹ö]‹ã›\ú€‹ãX\ŸHHôX⁄XõŒ»ô\€€ô\àô\›[Y‹»[ò⁄Y\ù‹»[ù\»Hô\]\ãàHô]ö\⁄pÏ€àH⁄]»Y[ùYöXÿHÿ[ôY]‹»H[ùXŸY[ù\À\õ»õ»\ò⁄]òHöH[[Z[òH€€ùô\úÿX⁄[€ô\»⁄[àÿ\X⁄YYHY[ùYYô\öYöXÿY\Àà‹»ŸY›Z[ZY[ù‹»H[ùô\›YÿX⁄pÏ€à»X›\òHX[ùY[ô[à\ŸH[ŸŒ»\›H[[ôXX⁄pÏ€àõ»X›]òH\ÿ‹ö]‹ô\ÀTHYÿYK[ùY‹òX⁄[€ô\À\õZ\€‹Àÿ[Xö[‹»HÿY[ò⁄XHöH›õ»ÿ⁄Y[\ãÇÇääê⁄Y\úôHH\›H[öYYääàY]Y]HHÿ›[Y[ù‹»ôX€€ò⁄[XY‹»€€àôX⁄XõÀ[à\›[õ»^\›[ùH‹à\›[ùÀ∞Ïﬁ[[‹»\€‹»⁄[à\Xÿ\àZôX›]‹ô\»HYô\ô[ò⁄X\»^0ÎX⁄]\»[ùôHP“Àì‘QT’Àì‘UQPQ»HT–””ì–“QÀàH\XÿX⁄pÏ€àÿ›[Y[ù[õ»\]Z]ò[H[ù[ò⁄[€ò[ZY[ù»0Î[ùY‹õ»[‹ù[öHHô\›[Y‹»H][YY»]]€õ€pÎXHYYY‹Àà‹»⁄X⁄‹⁄[ù»\›0Ï‹öX€‹»ŸH€€úŸ\ùò[à€€[»]öY[ò⁄XHôX⁄YKÇÇèKKHSëî‘ïì”S◊‘ëP””ê“SPUS”óÃåçåLLKOÇÇèKKHëQ“Séêì”““Së◊“‘ì‘‘◊‘êUW–P–—TSê—WÃåçåLL»KOÇà»»\öYò\»H\›öXùX⁄pÏ€àHôX[Xÿ]⁄\à0≠»»Hõ›öY[XúôHHåçÇÇòô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿ€€úŸ\ùòHH€0Î]XÿHH\»]öY[ò⁄X\»ö]òY\»HôX⁄[‹Ààõ€⁄⁄[ô»\»[ö[Y\àÿ[ò[à[[ùô[ù\ö[»ÿöô]]õ»[›[ö[ò⁄\[€€\ô[ôH›\»Xö]X⁄[€ô\»Hö[\Àà[ÿöô]]õ»H‹õ»ûHôX[Xÿ]⁄\à€€\ô[ôH\»Xö]X⁄[€ô\»åx†$ÃéHö[H‹õÀà\»[öYY\»€€\\ùY\»Xô[à\ÿ€€ù\àHZ\€XH\‹€öXö[YY[à‹õ‹‹À[ò€ZYHHô[X⁄pÏ€à[ùôH[òHö[HH\»Xö]X⁄[€ô\»]YHH€€\€ô[ãÇÇî\òHÿYH[ùô[ù\ö[»ô[ôXõHŸHô\]ZY\ô[à‹»[ô\»€€\\òXõ\À[⁄ò[ZY[ù»H[⁄ò[ZY[ù»€€à\ÿ^][õÀà[Yô\ô[ò⁄X[€€Y\ò⁄X[ŸHÿ[›[H‹à\ú€€òHHõÿ⁄H€ÿúôHHZ\€XHÿ›\X⁄pÏ€ã[òHô^à\XÿY‹»‹»\ÿ›Y[ù‹»H[⁄ò[ZY[ùÀà‹»ô[ôYöX⁄[‹»HöY[YY]YHôYÿ[[à\ÿ^][õ»ŸHY[ùYöXÿ[à‹àŸ\\òYÀà\»ô\Ÿ\ùò\»\ôX›\»Y[ô[à[\Y^òHYX⁄[€ò[Ÿ\õÀà[[\‹ùH’H‹à\›[ò⁄XH\[ôHHHÿ]Y€‹∞ÎXHHŸHôY⁄\›òH[òH€€Hô^ãà‹»[\‹ù\ÀQ»[õ›ôYY‹ãpË\ôŸ[ô\»HY[úÿZô\»H€‹‹ùH]YY[à[à[^YY[ùHö]òYÀÇÇìHùYXòH^YŸH€€\\ò\à[€ôYKôX⁄\Àÿ›\X⁄pÏ€àŸô\ùYK[ãÿ[òŸ[X⁄pÏ€ãô\Y€À[\Y\›‹Àÿ\ô€‹»H\ÿ›Y[ù‹»YôX›]õ‹Àà›Xúö\àôX⁄\»€€àõ€[ÿ⁄[€ô\»\›[ù\À[òHHò\öX\»õÿ⁄\Àÿ›\X⁄pÏ€à[ô]öYX[ò\ŸKYX⁄[€ò[Hö[\ÀàôY⁄\›ò\à[òH\ÿ‹ô\[ò⁄XH›X[ô»ò[H[òHH\»‹»Ÿô\ù\Ààô\öYöXÿ\àX\[»H€›^òX⁄pÏ€à0ÓòõXÿH[ù\»HX\òÿ\àÿYHÿ[ò[€€‹ô[òYÀà\»€€ô^[€ô\»‹›\ö[‹ô\»ô]][^ò[à\»[öYY\»∞Î\⁄Xÿ\»H\»Z\€X\»ùYXò\Àà[[ÿ[òŸH\õÿòY»H\»[Z]X⁄[€ô\»X›X[\»ŸH€€úŸ\ùò[à[à›\Xò\ŸHòZõ»õ€⁄⁄[ô◊⁄‹õ‹‹◊›\öYò\◊ÃåçåLLÿÇÇääì‹öYŸ[àHõ€[ÿ⁄[€ô\Àääà[›[‹ôXHHX[ùY[ôH[à‹õ‹‹»\»õ€[ÿ⁄[€ô\»Hÿ[[ô\ö[À0Óõ[XH‹òHHô\Ÿ\ùòH[ùX⁄\YH]YHXõXÿH[àõ€⁄⁄[ôÀà\»\öYò\»‹à\‹‹⁄]]õ»H‹àpÎ\»ŸHŸ\›[€ò[à[àH^ò[ô]HÿYH›Y[ùHHõ€⁄⁄[ôÀàŸ[ö]\»ŸHô\öYöXÿH‹àŸ\\òY»€€[»õŸ‹ò[XHHöY[YYà\òHXŸ\\à[òHXõXÿX⁄pÏ€ã‹ù^ò\à[QHHÿ[\pÏXH[ùöXY»‹à‹õ‹‹»€€à[QX›]õ»[àH›Y[ùHHõ€⁄⁄[ô»H€€\\ò\à\ÿ›Y[ùÀ\∞Î[Ÿ‹Àô\›öXÿ⁄[€ô\ÀXö]X⁄[€ô\»H[ô\Àà⁄HXH^\›H[òHŸô\ùH[àH^ò[ô]ô\öYöXÿ\à›HôY[\^õ»[à\ÿH›Y[ùH[ù\»Hô]\ò\õKà[\›‹öX[ŸH€€úŸ\ùòH\òH€€\\ò\àõŸXÿ⁄pÏ€àHôX⁄[‹»0ÓòõX€‹»[ù\»H\‹pÍ\ÀÇÇääëŸ\›pÏ€àHôX⁄[‹»H][YYô\öYöXÿYH[»Hõ›öY[XúôHHåçãääà[ÿ]0Ë[Ÿ€»ÿöô]]õ»[›[ö[ò⁄\[Xò\òÿHŸ\»\»[öYY\»ô[ôXõ\ÀàHô\Ÿ[ò⁄XHHÿYHö[HH[õ‹]Y[»H\»Xö]X⁄[€ô\»]YHH€€\€ô[àô\]ZY\ô[àùYXò\»‹à›Y[ùKà[à‹õ»ŸH€€úŸ\ùòH[[ÿ[òŸHHXö]X⁄[€ô\»åx†$ÃéHö[H‹õÀàHô]ö\⁄pÏ€à[0Óõ[[»0ÎXHH[òH\›[ò⁄XH^€\⁄]òH[ò€^YH[òH∞Óú‹]YYH[ô\[ôY[ùH‹à\ÿHõÿ⁄H[àÿYHÿ[ò[ÇÇë[ôY[ù∞Î[»H[òHÿ[\pÏXHH0Óõ[XH‹òH\ŸH‹õ‹‹»ÿù]õ»€€ôö\õXX⁄pÏ€à‹à›Y[ùHH[Z\€[»Q[ô[Y\àõ€⁄⁄[ôÀàHùYXòH0ÓòõXÿHHHXö]X⁄pÏ€à€€\\ùYH[‹›∞Ï»[à][Y[ù»[à‹õ»H[Z\€[»ôX⁄[»[àôX[Xÿ]⁄\ãàHYô\ô[ò⁄XH⁄Y›YHXöY\ùH[à[›[ö[ò⁄\[à[[àH\ÿ^][õ»H‹õ»\›0ËH‹ôXY»[àõ€⁄⁄[ô»H›HX\[»HXõXÿX⁄pÏ€à⁄Y›Y[à[ôY[ù\ÀàH[\Y^òH‹à›Y[ùH€€ù[∞ÓòH[à[^YY[ùHö]òY»€€à›\»Q»H[ùXŸY[ù\ÀÇÇî\òHX⁄Y\à\ÿ›Y[ù‹À[ô\‹€úÿXõH€€Y\ò⁄X[€€\\òH[[ô‹ô\€»H[⁄ò[ZY[ù»⁄[àUêHò\»€€Z\⁄pÏ€àH€ÿúõ»€€à‹»€‹›‹»ò\öXXõ\»HXö]X⁄pÏ€ã\›[ò⁄XHH€€Y[úÿ[\Àà[–€€ùõ€ö[ò[ò⁄Y\õ»HôX[Xÿ]⁄\óJëPSP–U“Tó—íSêSê“PS–””ïì”–—SïTó’åKõY
+H€€ùY[ôH[[Ÿ[»H€‹›‹»€€àöYŸ[ò⁄XKàZY[ùò\»ò[[à€‹›‹»ô\öYöXÿY‹ÀòXòZò\à€€à\ÿŸ[ò\ö[‹»HZò\à[\€»[ôY[ùKàŸ\\ò\à‹ù\‹»^€\⁄]õ‹Àõ‹]Y[‹ÀôX⁄\»H[H[X[ôHHÿ[ò[\»[Y\à[ö][»Hô\Ÿ\ùò\ÀàYY\àõÿ⁄\»ùY]ò\»Hÿ[òŸ[Y\ÀQã[ô‹ô\€»YX⁄[€ò[€€ùöXùX⁄pÏ€à‹àXö]X⁄pÏ€à\‹€öXõHH›[ö[ò[\ôX›»úô[ùHHõ€⁄⁄[ôÀà\»€€Z\⁄[€ô\»ôX[^òY\»[à[à€‹ùH⁄\ùô[à€€[»ôYô\ô[ò⁄XH\›0Ï‹öXÿH\òH›Hÿ[ò[ÇÇë[€€‹ô[òY‹à€€Y\ò⁄X[^\›[ùHô]ö\ÿHH]õ€X⁄pÏ€à[[›Àà]ò[X\à⁄Y]H0ÎX\»€€\\òXõ\À[X[ôHô][öYHH€€ùöXùX⁄pÏ€àYY€»Hÿ[òŸ[X⁄[€ô\»[ù\»H^[ô\õÀà[ùH]\Ÿ[ò⁄XHHô[ù\»»H[à‹ù\»€€\\òXõKX[ù[ô\à[ô\›[Y»€€[»[ò€€ò€\€ÀàXŸ\à[àÿ[Xö[»‹àÿ[\pÏXHH€€úŸ\ùò\à[[ù\À[X›\ŸKHX›\òH‹›\ö[‹àHH€›^òX⁄pÏ€à0ÓòõXÿN»[][H‹àõ‹YYY]YYH[à[ôY⁄\›õ»ö]òYÀÇÇèKKHSëêì”““Së◊“‘ì‘‘◊‘êUW–P–—TSê—WÃåçåLL»KOÇÇèKKHëQ“SéëëPSP–U“Tó‘–SëP“TíPW‘ì“ëP’ÃåçåLLàKOÇà»»ÿ[ôX⁄\∞ÎXHÿ[ùH\ô\ÿH8†%ùY]õ»õﬁYX›»HôX[Xÿ]⁄\à8†%ãÃLKÃåçÇÇääê[ÿ[òŸNääà[öX⁄X]]òHH[[Y[ù‹»HôXöY\»HôX[Xÿ]⁄\ã€€à][ò⁄pÏ€à‹àô[ù[ö[K\ÿ^][õ‹»Hõ‹Y\›HH\ôKàŸHŸ\›[€òH€€[»õﬁYX›»õ‹[»òZõ»ôX[Xÿ]⁄\ó⁄›[€X\›\ò[ùõ»[‹ùYõ€[»^\›[ùKÇÇääê’TîëSï8†%ôY⁄\›õ»ô\öYöXÿYŒääàõﬁYX›»X›]õ»ôX[Xÿ]⁄\ó‹ÿ[ôX⁄\öXW‹ÿ[ùW›\ô\ÿX[àYö[öX⁄pÏ€àHô\\òX⁄pÏ€à[[›Àà[ôY⁄\›õ»‹\ò]]õ»€€ùY[ôH⁄Y]H\ôX\»ö[ò›[Y\»HHX⁄\⁄pÏ€à[õ‹Y]\ö[»]YH]]‹ö^òH[[HH€‹úöYŸH[›\Y\›»€ÿúôHH[ôúòY\›ùX›\òHXö[][ùH^\›[ùKà[ôY€ÿ⁄[»Ÿ]∞ÎXHõ»Y[ôHô\›[Y‹»H[à[›»€€Y\ò⁄X[ôY⁄\›òY‹ÀÇÇääïTë—Uääàò[Y\à[òHö[Y\òH[öYYô[ùXõHHô\]XõN»]ò[X\à‹ôX⁄[ZY[ù»H\ù\àHô[ù\»YÿY\À€‹›‹»€€\]‹Àÿ\X⁄YY‹\ò]]òHHÿ[YY€€ú⁄\›[ùKÇÇääìëVääàYö[ö\àX›Y\ô»Hô\‹€úÿXö[YY\Œ»Ÿ[Xÿ⁄[€ò\à[àHõ›ôYY‹ô\Œ»Ÿ\úò\àÿ\ùKôXŸ]\»H€‹›‹Œ»ô\\ò\à€ÿ⁄[òHH[ù»HôX€Ÿ⁄YN»€€\]\à[^YY[ùHHÿ›[Y[ùX⁄pÏ€à^\›[ùN»‹ôÿ[ö^ò\àY›\›X⁄pÏ€àH[›»YÿY»€€àôX⁄H‹à€€ôö\õX\é»]ò[X\àô[ùXö[YYH€€ôX⁄[€ô\»H^[ú⁄pÏ€ãàH[ôõ‹õXX⁄pÏ€àÿ›[Y[ù[€€][öXÿYH‹à[õ‹Y]\ö[»\›0ËH]öXùZYH€€[»[[à[^YY[ùHö]òYÀÇÇääîŸY›Z[ZY[ù»H]]‹öYYääà‹\ò][€úÀúõ⁄ôX›ÿ€€úŸ\ùòH[õﬁYX›Œ»‹\ò][€úÀù\⁄‹ÿ›\»⁄Y]H]‹Œ»‹\ò][€úÀô^X›]]ôWŸX⁄\⁄[€úÿH[ú›ùXÿ⁄pÏ€àH€‹úôXÿ⁄pÏ€à[õ‹Y]\ö[Àà€€‹ô[òX⁄pÏ€à“÷H€€à\ﬁ[»H‹\òX⁄pÏ€àHö[ò[ûò\ÀàHöX⁄Hö]òYH€€òŸ[ùòHô\‹€úÿXõ\»\ú€€ò[\À\‹ù\À⁄Yúò\Àÿ›[Y[ùX⁄pÏ€àH]öY[ò⁄XKà\›H\\ùY»[ò€‹ú‹òH[õﬁYX›»[[àŸ[ô\ò[0ÓõöX€»Hô]][^òH[‹ùYõ€[»HŸY›Z[ZY[ù»^\›[ù\ÀÇÇèKKHSëëëPSP–U“Tó‘–SëP“TíPW‘ì“ëP’ÃåçåLLàKOÇÇèKKHëQ“Séí‘ì‘‘◊–”’Q‘ëPQ–ì’SëTñWÃåçåLéHKOÇà»»‹õ‹‹ŒàX›\òH\⁄\›YH€€\õÿòYHHò[ú‹‹ùH[ôY[ùH8†%éKÃLÃåçÇÇääê’TîëSïÿúŸ\ùòX⁄pÏ€àX€›YHHôX[Xÿ]⁄\éääà[õ‹Y]\ö[»€€\]0Ï»[[öX⁄[»HŸ\⁄pÏ€àŸY›\õ»[à[ò]ôYÿY‹à€›Y»ŸH^Y\õ€àô\Ÿ\ùò\Àÿ›\X⁄pÏ€ã€ÿúõ‹»H›\ŸZŸY\[ôÀHHZ\€XHŸ\⁄pÏ€àô\‹€ôpÏ»[ô]€X\ãà[òH^‹ùX⁄pÏ€à÷H€ÿúõ‹»ŸHXúöpÏ»H€€ùò\›0Ï»€€àH[ù[Nàÿ⁄»ö[\»H›H›[€⁄[ò⁄Y[à\òH[\∞Î[Ÿ»^0ÎX⁄]»Ÿ[Xÿ⁄[€òYÀàõ»ŸHô\öYöXÿ\õ€à€ÿô\ù\òH\›0Ï‹öXÿH€€\]KŸ\⁄pÏ€à\õX[ô[ùKTKY]Z\⁄X⁄pÏ€àõŸ‹ò[XYHöHX›X[^òX⁄pÏ€à[\‹ZõÀà‹»ôX⁄Xõ‹»][Y‹»\õX[ôXŸ[à[à‹»ôY⁄\›õ‹»ö]òY‹»^\›[ù\Œ»õ»XõXÿ\àpÍ\‹Y\À[\‹ù\À‹\òY‹ô\Àù]\»HXÿŸ\€À‹ôY[ò⁄X[\»öH\ò⁄]õ‹»ùY[ùKÇÇääì0Î[Z]HH]]‹öYYääàX›\òH\⁄\›YH€€\õÿòYHõ»\]Z]ò[HHò[ú‹‹ùH[ùY‹òY»öHXö[]H\ÿ‹ö]\ò\»TÀàŸH€€úŸ\ùòH‹õ‹‹»€€[»]]‹öYYò[úÿXÿ⁄[€ò[THYÿYH]\ÿYK‹ö]\à—ëàHH€\ò[ò⁄XH[ôõ‹õX]]òHXH\õÿòYHH\›HåZ[ù]‹Œ»[à[ù[ù»ôX⁄Y[ùHHX›\òHõ»ôZù]ô[ôXŸH[€‹ùHH‹»]‹Àà\›HÿúŸ\ùòX⁄pÏ€àõ»Xö[]H€€ú›[ZY‹ô\»öH\ôX\»õŸ‹ò[XY\ÀÇÇääìëV[ÿ\úö[‹õ‹‹»^\›[ùNääàô]][^ò\àò[ú‹‹ùK⁄[\‹ùX⁄pÏ€àH›\»ôX⁄Xõ‹À⁄[àŸY›[ô»\‹ZõÀòX⁄€Ÿ»»ÿ⁄Y[\ãà[ù\»Hÿ\ôÿ\éàöZò\à\∞Î[Ÿ»^0ÎX⁄]»H[Y\öXÿK–€‹›W‘öXÿX»ôX€€ò⁄[X\àHôX⁄HHŸ\›pÏ€à€€àHôX⁄H[\⁄õÿ\ô»ò[Y\à[€ôYH‹àÿ[\»[ùHÎ[Xõ€‹»\›[ù‹Œ»Ÿ\\ò\à[öYY\»∞Î\⁄Xÿ\Àö[\»Hõ‹]Y[‹»ö\ùX[\Àà[÷H]Y\›òHõ»^€ôH[àQò]]õ»H[›ö[ZY[ùŒà[ÏŸY€»Hô\Ÿ\ùòHõ»\»[òH€]ôH0ÓõöXÿHHY€Ààô\€€ô\àY[ùYY⁄Y[\›[ò⁄XHH\õZ\€‹»€€à[YpÏ[»[€Z[ö[»[ù\»HXõXÿ\à]‹»€€[»€€ò⁄[XY‹ÀàHôX⁄HH0Óõ[XH[\Y^òHH[\›Y»X›X[€€àŸpÏX[\»\›[ù\Œ»[\Y^òH\õZ[òYHõ»›\›]^YH[ú‹Xÿ⁄pÏ€ãX[ù[ö[ZY[ù»»ô\\òX⁄pÏ€à›[ÇÇääê‹ö]\ö[»H⁄Y\úôNääà^òXÿ⁄pÏ€à]]‹ö^òYH€€à€‹ùHH€ÿô\ù\òK€‹úô\‹€ô[ò⁄XH‹à€]ô\»\õÿòY\Àö[\ÀŸ\›Y‹À››[\»€€ò⁄[XY‹»H[àôX⁄Xõ»[€€ú›[ZY‹à‘ì»[ùõ»HH[ùYÔYY\õZ]YK€€úŸ\ùò[ô»X[ôZõ»HÿYX⁄YY\úõ‹ô\»H€€ù[ùXX⁄pÏ€àX[ùX[[à‹õ‹‹Àà[XÿŸ\€»X[ùX[ôYXŸH[õ‹]Y[»HX›\òN»H[ùY‹òX⁄pÏ€à\õX[ôXŸH[ôY[ùKà\›HX›X[^òX⁄pÏ€àÿ›[Y[ù[õ»ÿ[XöXH\õZ\€‹À€€ôöY›\òX⁄pÏ€ãô\Ÿ\ùò\À€ÿúõ‹À[\Y^ò\»öHõŸXÿ⁄pÏ€ãÇÇèKKHSëí‘ì‘‘◊–”’Q‘ëPQ–ì’SëTñWÃåçåLéHKOÇÇèKKHëQ“Séï‘ì◊“SïQ‘êUQ—Uì”US”óÃåçåLåàKOÇà»»ô]ö\⁄pÏ€à[ùY‹ò[H›pÎXHH]õ€X⁄pÏ€à8†%åãÃLÃåçÇÇääê’TîëSï8†%ÿ›[Y[ùX⁄pÏ€àHXY€∞Ï‹›X€»ôX⁄Y‹Œääà[[ùô[ù\ö[»[ô\‹⁄]‹ö[À‹»€€ùò]‹»‹∞Î]X€‹»H\»›\\ôöX⁄Y\»XÿŸ\⁄Xõ\»ŸH€€\\ò\õ€à€€à\›H[ãàHÿ]Y]‹∞ÎXH[ùY‹ò[JããŸ]öY[òŸK’‘ì◊“SïQ‘êS–UQUÃåçãLLLåãõY
+H\›[ô›YHùY[ù\Àô\ú⁄pÏ€à[\[Y[ùYK\‹YY›YKùYXòHH\€»Hô[ôYöX⁄[»YYYŒ»[ùô[ù\öX\à[à\ò⁄]õ»õ»\]Z]ò[HHô]ö\ÿ\àÿYH0Î[ôXHöHHô\öYöXÿ\à[Ÿ\ùöX⁄[»^\õõÀÇÇääë›pÎXH›Xõ‹ô[òYNääàH—›pÎXH[ùY‹òYHH]õ€X⁄pÏ€óJ‘ì◊“SïQ‘êUQ—Uì”US”ó—’RQW’åKõY
+HôpÓõôH‹ùYõ€[À]]‹öYYH]‹À€€ôX›‹ô\ÀõÿŸ\€‹ÀpÍ]öXÿ\À]]€õ€pÎXHHŸX›Y[ò⁄XHõ‹Y\›Kà\›H\ò⁄]õ»€€ù[∞ÓòH⁄Y[ô»[[àŸ[ô\ò[0ÓõöX€Àà\»ô[ù[ò\»HY]\»ùY]ò\»HH›pÎXH€€à
+äïTë—U”ëVõ‹Y\›‹ äãõ»ô\›[Y‹»‹\ò]]õ‹»öH[òHX›]òX⁄pÏ€àH\õZ\€‹ÀÇÇääî⁄Y›ZY[ùH€€ùô\ôŸ[ò⁄XHôX€€Y[ôYNääàô]][^ò\à‹»ÿ\úö[\»Hÿöô]‹»^\›[ù\»\òHŸ\úò\àô\Ÿ\ùòx†$ÿ€ÿúõ¯†$Ÿÿ›[Y[ù¯†$ÿò[ò€À[ò⁄Y[ò⁄Xx†$›òXòZõ¯†$⁄[ú‹Xÿ⁄pÏ€àHY[úÿZôx†$ÿÿ\€¯†$‹ô\‹Y\›x†$Ÿ]öY[ò⁄XN»ôX€€ò⁄[X\àY[ùYYH[ùôYÿH[Z\€[»\ùYòX›»€€[»\[ô[ò⁄X\ÀàH[XöX⁄pÏ€àL0Â»ôXŸ\⁄]Hò\Ÿ[[ôH‹àô\›[YÀÿ[YYH€‹›Œ»õ»^\›H[à][\XÿY‹à€ÿò[Ÿ\ùYöXÿYÀÇÇääê€€úŸ\ùòYŒääàX⁄\⁄[€ô\»[õ‹Y]\ö[À]]‹ö^òX⁄[€ô\»öYŸ[ù\»‹à[ÿ[òŸKùY[ù\»\‹X⁄X[^òY\ÀZ\€[ZY[ùÀÿ]\»HõŸX›õ€Ÿã‹ôXY[ô\‹À€€‹ô[òY‹àHÿY[ò⁄X\»^\›[ù\ÀàH]Y]‹∞ÎXHõ»ù\⁄[€òHò[X\À\‹YYÿKZY‹òH]‹ÀX›]òH‹ö]\ãôXX›]òHTHYÿYK[ŸYöXÿH‹\òX⁄[€ô\»öH[ùôYÿHY[úÿZô\Àà‹»ôY⁄\›õ‹»\›0Ï‹öX€‹»HXŸ\X⁄pÏ€à€€úŸ\ùò[à›HôX⁄HHÿ]0Ë[Ÿ€Œ»Xô[àôX€€ò⁄[X\úŸH€€àH]öY[ò⁄XHöYŸ[ùH⁄[àõ‹úò\à›HpÍ\ö]»öH^ò\€\õÀÇÇèKKHSëï‘ì◊“SïQ‘êUQ—Uì”US”óÃåçåLåàKOÇÇÇèKKHëQ“Séï“U–T–QRSó“T’‘ñWÃåçåLçKOÇà»»\›‹öX[YZ[ö\›ò]]õŒà^òXÿ⁄pÏ€à€€à0Ë[Xö]‹»HõÿŸY[ò⁄XH8†%çÃLÃåçÇÇääê’TîëSïääà[ò[^òY»[^‹ù\‹ùY»HYZ[ö\›òX⁄pÏ€éàååLM»ôY⁄\›õ‹À€€ùô\úÿX⁄pÏ€à[X[òHÿúŸ\ùòXõHçÀÃKÃåç8†$ÃçÃLÃåçãKéLç][[YYXH€Z]Y‹»Hà\ò⁄]õ‹»êÿ\ô
+L\öô]\Àà‹ù\‹»ÿ[ôY]‹»HY[ùYY
+Kà^HYX€‹»H€ÿô\ù\òN»õ»€€à\ò⁄]õ‹»][[YYXHpÎY‹»öH\ú€€ò\»ô\öYöXÿY\Àà\»ãååLHY[ò⁄[€ô\»[€ô]\öX\»€€àÿ[ôY]‹Àõ»[›ö[ZY[ù‹»€€ò⁄[XY‹Àà][HH\‹‹⁄X⁄pÏ€àH0Î[Z]\ŒàŸ]öY[ò⁄XHH^òXÿ⁄pÏ€óJããŸ]öY[òŸK’‘ì◊–QRSó“T’‘ñW—VêP’S”óÃåçåLçõY
+Kà‹öY⁄[ò[\À€€ùX›‹À[\‹ù\»ö]òY‹»H[ô^‹»\ú€€ò[\»]YY[àùY\òH[ô\‹⁄]‹ö[»0ÓòõX€ÀÇÇääïTë—UXH^\›[ùKôYõ‹ûòYŒääà‘ì»]K“€õ›€YŸH€€úŸ\ùòHùY[ùKŸôX⁄KË[Xö]Àÿ€€ôöX[ûòKÿ€‹úôXÿ⁄[€ô\Œ»ö[ò[òŸK‹\ò][€úÀ[‹K\‹Ÿ]»Hõ⁄ôX›»€€ú›[Y[à€€»»]]‹ö^òYÀàô]][^ò\à‹\ò][€úÀö€õ›€YŸW⁄][\»\òH[ùXŸY[ù\»›[\õ‹»õ»Ÿ[ú⁄Xõ\À[òX›]õ‹»HôYY◊›ô\öYöXÿ][€à\›H€€ùò\›\õ‹Ààõ»õ€[›ô\à]‹»ò[Z[X\ô\À‹\ú€€ò[\»‹à[òH]\]Y]Hö]ò]HöH€€ùô\ù\à[ú›ùXÿ⁄[€ô\»[ùY›X\»[àXÿ⁄[€ô\»X›X[\Àà‹õ‹‹À–[Y‹òKÿò[ò€‹»€€úŸ\ùò[à]]‹öYYàH^òXÿ⁄pÏ€àHYZ[àHHH€€ùXö[YY€€àùY[ù\»\›[ù\»€€à‹⁄XõH€€\Kù[òÿH›[X[ô‹»]]€pË]X€‹ÀÇÇääìëVääà€€ò⁄[X\à‹»[^ô€‹»€€à\⁄‹À‹õ⁄ôX›À€ÿõYÿ][€ú»^\›[ù\»H]öY[ò⁄X\»ò]]ò\Œ»Ÿ\\ò\à0Ë[Xö]»ö[ò[ò⁄Y\õ»Hô\öYöXÿ\àZ\€[ZY[ù»ö]òY»[ù\»Hÿ\ôÿ\à€€ù[öY»Ÿ[ú⁄XõKàX[ù[ô\à€‹úôXÿ⁄[€ô\Àõ»\Xÿ\à\ôX\»öHô]ö]ö\à[ò⁄Y[ò⁄X\»[ùY›X\»‹àôX⁄Kà[›Hõ»X›]òHÿ\\òH€€ù[ùXK‹ö]\à[Y‹òKTH‹õ‹‹»YÿKÿ[Xö[‹»H\õZ\€‹»»[àÿ⁄Y[\àùY]õŒ»ÿYH[ùY‹òX⁄pÏ€àX[ùY[ôH›\»ÿ]\»HôX⁄Xõ»[ô\[ôY[ùKÇÇääê€€ù[ùXX⁄pÏ€àHX[ùX[\»HõÿŸY[ZY[ù‹»
+çÃL
+NääàŸZ\»õ‹úòY‹ô\»YÿY‹»HY\›‹»^\›[ù\À€òŸH[\XX⁄[€ô\»H”‘Hô\»[ô^‹»ù[ò⁄[€ò[\Œ»L»ôYô\ô[ò⁄X\»€€\õÿòY\»Hçà\€‹»õ‹Y\›‹ÀàŸH›X\ô\õ€àåHöX⁄\»[òX›]ò\»ôYY◊›ô\öYöXÿ][€à[à[Z\€[»€€õÿ⁄[ZY[ù»ÿ[∞Ï€öX€»
+åõ‹úòY‹ô\ Î[ôXŸJK⁄[àÿ[XöX\à‹»L»ÿ[ôY]‹»[ù\ö[‹ô\ÀY\›‹Àÿ\X⁄YY\À\õZ\€‹»»”‘»X›]õ‹Àà][H[àHZ\€XHŸ]öY[ò⁄XHH^òXÿ⁄pÏ€óJããŸ]öY[òŸK’‘ì◊–QRSó“T’‘ñW—VêP’S”óÃåçåLçõY
+KàëVàô]ö\ÿ\à0Î[Z]\»Hõÿò\à[àô[]õ»‹\ò]]õ»H[à›HH]ò[ô\∞ÎXN»X\òÿHúô\ÿÿH‹õ‹‹»X‹ôY]H[\Y^òH\õZ[òYH⁄[à€€ôö\õXX⁄pÏ€à\XÿYK€€úŸ\ùò[ô»PK€X[ù[ö[ZY[ùÀ‹ô\\òX⁄pÏ€àŸ\\òY‹Àà][[YYXH]\Ÿ[ùHŸHö[‹ö^òH‹àò[‹àõÿò]‹ö[À⁄[à^Y⁄\àôY[ùöX\àŸ»öH[ôô\ö\à€€ù[öYÀÇèKKHSëï“U–T–QRSó“T’‘ñWÃåçåLçKOÇÇèKKHëQ“SéëëPSP–U“Tó‘PìP–US”ó—SQ–US”óÃåçåLåàKOÇà»»[YÿX⁄pÏ€àHXõXÿX⁄pÏ€àù][ò\öXH8†%ôX[Xÿ]⁄\à8†%åãÃLÃåçÇÇääëX⁄\⁄pÏ€à[X[òHöYŸ[ùNääàX]\öX⁄[»[ôXÏ»[åãÃLÃåçà]YHõ»]ZY\ôHŸ\à›Y[»Hõ›[HH[YÏ»HXõXÿX⁄pÏ€à⁄[à[òH\õÿòX⁄pÏ€à[ô]öYX[ô\]YH›X[ô»[ZôX›]‹à€€ú⁄Y\ôH€‹úôX›»XŸ\õÀà\òHôX[Xÿ]⁄\ã\›H[YÿX⁄pÏ€à›\›]^YH0ÓõöXÿ[Y[ùH[ô\]Z\⁄]»[NKÃLHY\à]]‹ö^òX⁄pÏ€àÿ\€»‹àÿ\€»\òH
+äúô\‹Y\›\»‹ô[ò\öX\»Hô\ŸpÏX\»ô\öYöXÿY\ äã€‹úôXÿ⁄[€ô\»òX›X[\»›\›[ùY\»[›[HXõXÿX⁄pÏ€à[‹ù[^\›[ùH[òHô^à›\\òY‹»›\»ÿ]\ÀàH[ú›ùXÿ⁄pÏ€à‹›\ö[‹àH€€ù[ùX\à]ò[ûò[ô»H\úôY€\à\ÿ‹ô\[ò⁄X\»õ»ô]õÿÿH\›H[YÿX⁄pÏ€àöH\õZ]H]öXùZ\õH[òHô]õÿÿX⁄pÏ€à[ô^\›[ùKàõ»‹ôXH›õ»‹ö]\ãYŸ[ùK\ôö[ÿ[ò[[à»]]€X]^òX⁄pÏ€ãÇÇääê€€ù[ùZYY‹\ò]]òH8†%åÀÃLÃåçéääà€€ù[ùX\à⁄Y€öYöXÿHô\€€ô\àÿYH\ÿ‹ô\[ò⁄XH€€àõ‹YYYHùY[ùHöYŸ[ùKÿ[\»ò]]õ»^X›À^À⁄Y[€XH‹öY⁄[ò[›X[ô»€‹úô\‹€ôK\›Y»X›X[Y\XÿX⁄pÏ€àH]öY[ò⁄XH[ù\ÀŸ\‹pÍ\Àà\»ô\‹Y\›\»‹ô[ò\öX\»ô\öYöXÿY\»H€‹úôXÿ⁄[€ô\»òX›X[\»›\›[ùY\»YY[àXõXÿ\úŸH[ùõ»HH[YÿX⁄pÏ€à[åãÃL€€»\‹pÍ\»H›\\ò\à\€‹»ÿ]\»H€€úŸ\ùò\àôX⁄Xõ»[ÿ[ò[»ÿ\€‹»‹ò]ô\»HŸY›\öYY\ÿ‹ö[Z[òX⁄pÏ€ãX›\ÿX⁄[€ô\À\›[ù‹»ù\∞ÎYX€‹À€€\[úÿX⁄[€ô\»»õ€Y\ÿ\»X€€∞Ï€ZXÿ\»X[ùY[ô[àô]ö\⁄pÏ€à[X[òH\‹X⁄X[^òYKà\›HôY€Hõ»[ŸYöXÿHH^Ÿ\⁄pÏ€àH[\Y^òH’HXH\õÿòYKõ»[\òHõŸ‹ò[XX⁄pÏ€àöH[\0ÎXH\õZ\€‹ÀÇÇääìH[YÿX⁄pÏ€àõ»›\›]^YHùYXòHöH€€ùõ€ääà[ù\»Hô\‹€ô\à[òHô\ŸpÏXH⁄Y›Y[à⁄Y[ô»ÿõYÿ]‹ö[‹»õ‹YYY€‹úôX›KQ’Tìò]]õÀôX⁄K^»0Î[ùY‹õÀY[€XH‹öY⁄[ò[H\›Y»öYŸ[ùHHô\‹Y\›K€[Ÿ\òX⁄pÏ€é»€€úŸ\ùò\à‹öY⁄[ò[Y\XÿX⁄pÏ€àHôX⁄XõÀà⁄Hò[HXÿŸ\€»»]öY[ò⁄XK[õ‹]Y[»\»0ÍX€öX€»»õÿò]‹ö[Àõ»\õÿòX⁄pÏ€à[õ‹Y]\ö[Ààÿ\€‹»‹ò]ô\»HŸY›\öYY\ÿ‹ö[Z[òX⁄pÏ€ãX›\ÿX⁄[€ô\À›Y\›[€ô\»ù\∞ÎYXÿ\À€€\[úÿX⁄[€ô\»»õ€Y\ÿ\»X€€∞Ï€ZXÿ\»X[ùY[ô[àô]ö\⁄pÏ€à[X[òH\‹X⁄X[^òYKÇÇääî‹ù[H€€ù[öY»0ÓòõX€ŒääàXõXÿ\à€€»[ÿ[ôY]»^X›»\‹pÍ\»H“KXŸ\X⁄pÏ€àù[ò⁄[€ò[H]][ùXÿYKö]òX⁄YYÿZ\€[ZY[ùÀ€€ò›\úô[ò⁄XHHõ€òX⁄»ô\öYöXÿY‹»[à[Z\€[»õﬁYX›»H€Z[ö[Àà[àô]öY]Àõ‹úòY‹à»Y\ôŸXXõO]ùYXõ»\]Z]ò[HHõŸXÿ⁄pÏ€ãàH[YÿX⁄pÏ€àõ»]]‹ö^òHÿ\›‹Àÿúò\À∞Í\›[[‹Àÿ\ò[ù0ÎX\À⁄Ÿ[úÀÿ[Xö[‹»Hô\Ÿ\ùò\Àÿ€€ùXö[YY\öYò\»»õ€[ÿ⁄[€ô\»ùY\òHHH[\Y^òHXH[[Z]YKù\⁄[€ô\À‹ôX€[XX⁄[€ô\»HöX⁄\À[\XX⁄pÏ€àHXÿŸ\€‹À[ò›Y\›\»X\⁄]ò\»öH[[Z[òX⁄pÏ€àH]‹ÀÇÇääë\›Y»H\›Hõ‹]YNääà€ÿöY\õõ»ÿ›[Y[ùYŒ»õ»X‹ôY]Hô\‹Y\›H[ùöXYKY\ôŸK\‹YY›YKô\\òX⁄pÏ€à∞Î\⁄XÿK⁄[ò‹õ€ö^òX⁄pÏ€àöHô\›[Y»X€€∞Ï€ZX€Àà‹»€€ùõ€\»\›0Ï‹öX€‹»[ò€€\]Xõ\»ŸH€€úŸ\ùò[à€€[»[ùXŸY[ù\»›\\òY‹»€€»[à›Hô\]Z\⁄]»H\õÿòX⁄pÏ€àù][ò\öXKÇèKKHSëëëPSP–U“Tó‘PìP–US”ó—SQ–US”óÃåçåLåàKOÇÇèKKHëQ“Séï‘ì◊”‘TêUSë◊–””ëíQ’TêUS”óÃåçåLåàKOÇà»»€€ôöY›\òX⁄pÏ€à‹\ò]]òHH‹[Z^òX⁄pÏ€à€€öù[ùH8†%åãÃLÃåçÇÇää∞‡[Xö]»H]]‹öYYääà‘ì»ﬁ\›[\ÀY[ù]K€€ÀYŸ[ùÀ€€[\À]HHö[ò[òŸN»ôYô\ô[ò⁄XHôX[Xÿ]⁄\àHŸ\\òX⁄pÏ€à[0Ë[Xö]»\ú€€ò[à\›HŸXÿ⁄pÏ€à€€ú€€YHôY€\»€€X⁄]Y\»‹à[õ‹Y]\ö[»[ùõ»[[àŸ[ô\ò[0ÓõöX€Àà[õ‹]YH‹\ò][ô◊ÿ€€ôöY›\ò][€òH‹õÀX€€ù^ûX[[\»ô\›[YN»‹»€€ùò]‹»^\›[ù\»H’ô\òŸ[J‘ì◊’ëTê—S––Sì”íP–S—T÷SQSï’åKõY
+K’⁄]–\”‹[ê€]◊J‘ì◊’“U–T”‘Sê”U◊‘–SQW–îêRSó’åKõY
+K€€ùõ€[ôHHYŸ[ù\»€€úŸ\ùò[à[][Kàõ»‹ôXH›õ»õﬁYX›ÀòX⁄€ŸÀŸ\ôXúõÀÿ]]ÿ^H»[›‹àH\õZ\€‹ÀÇÇääê€€ù[ùZYY‹\ò]]òH
+Të—U⁄[àX›]òX⁄pÏ€à[\0ÎX⁄]JNääàHÿ[\XX⁄pÏ€àH‹\òX⁄pÏ€àHXÿŸ\€‹◊J‘ì◊”‘TêUSë◊”S—S–SQSëQSïÃåçãLLLMKõY
+HH[‹ù[òõ€⁄»H€€ù[ùZYYJãã‹ù[òõ€⁄‹À’‘ì◊–””ïSïRUW–Së‘’‘êQ—W–“P“”T’’åKõY
+H›Xõ‹ô[ò[à‹»€‹ù\»^\›[ù\»H\\ù\òHHô\\òX⁄pÏ€àHYÿY\»HùY[ùHöYŸ[ùK\‹X⁄»H\ÿ^][õ‹»€€àX›\ŸK[ú‹Xÿ⁄pÏ€àH[öYY\»H⁄Y\úôHH[ò⁄Y[ò⁄X\»€€à]öY[ò⁄XKàHõŸ‹ò[XX⁄pÏ€ã\»YŸ\»ö]òY\»H‹»ZôX›]‹ô\»X[ùY[ô[à›\»]]‹ö^òX⁄[€ô\»H€€\õÿòX⁄[€ô\»[ô\[ôY[ù\Œ»ÿ›[Y[ù‹»H[òHàõ»\]Z]ò[[àHXZ[ãù[ù[YHöHŸ\ùöX⁄[»XŸ\YÀÇÇääìÿúŸ\ùòY»[€‹ùH[åãÃLÃåçéääàÿ]Y]‹∞ÎXHH€€ôöY›\òX⁄pÏ€àHùY[ù\◊JããŸ]öY[òŸK’‘ì◊”‘TêUSë◊–””ëíQ’TêUS”ó–UQUÃåçåLåãõY
+Kà[ÏŸY€»H\ŸH€‹ùH[ò€pÎXHàÃÕMHHX[ù[ö[ZY[ù»ô\\ôK[€õH\‹pÍ\»HàÃÕç»õ»X‹ôY]XòH\ôX\»»Y[úÿZô\»[Z]Y‹Ààô\òŸ[€€úŸ\ùòXòHõŸXÿ⁄pÏ€à[àÕYMYòéLÃåXÿòMòLéYòLŒMÕŸåŸMòçòçXà›\Xò\ŸH[∞ÎXH[àö[ô[ô»⁄]–\”‹[ê€]»X›]õ»€€àõY‹»HX›\òKŸ[ù∞Î[»H\›Y»ô\öYöXÿYÀ\õ»\›‹ﬁ[ò◊ÿ]ù[ÀŸ\õ»Ÿ\⁄[€ô\»HŸ\õ»ôX⁄Xõ‹»[à\»Xõ\»Hÿ[ò[€€ú›[Y\Œà€€ôöY›\òX⁄pÏ€àX€\òYKõ»€€ù[ùZYYöH[ùôYÿH[[‹›òY\Ààì»Xö[]Y»[à\ÿ\»ô\»Xõ\»õ»õÿòXòH‹àÎH€€»]YH›\»€0Î]Xÿ\»ùY\ò[à€‹úôX›\Àà\]Y[H]Y]‹∞ÎXHŸHZôX›]0Ï»[à€›Y⁄[àY[ùYYU‘À‘‘“»õ‹õﬁõ»ùYH€€ú›[XõH‹à\úõ‹àH€€ô^pÏ€à[Y⁄[ãõ»‹à]\Ÿ[ò⁄XH[[‹›òYHH\ò⁄]õ‹Àà‹»0Î[Z]\»HXÿŸ\€»H\ŸH\õõ»õ»\ÿ‹öXô[à‹àÎH€€‹»H\‹€öXö[YY‹›\ö[‹àH›õ‹»ÿ\úö[\ÀÇÇääïTë—UôX€€Y[ôYŒà0ÎXúöY»€€àô\‹€úÿXö[YY\»Ÿ\\òY\Àääà⁄]XàX[ùY[ôHÏŸY€Àÿ€€ùò]‹À‘ã–“N»›\Xò\ŸHY[ùYY€€ù^Àÿöô]‹»H]Y]‹∞ÎXN»ô\òŸ[⁄\ùôH[‹ù[]][ùXÿY»€€à\∞Î[Y]õ»HX›\òN»[ÿ]]ÿ^HY⁄ÿZ[^\›[ùHŸ\›[€òHò[ú‹‹ùH\ú⁄\›[ùH[ùõ»H›Húõ€ù\òHH€€ôöX[ûòN»€Ÿ^ÿÿ[ŸH\ÿH\òH\ÿ\úõ€À€€ùõ€[⁄õ€YH]]‹ö^òY»HôX›\\òX⁄pÏ€ã€€[»ô\‹[»ú∞Î[Àà‹õ‹‹À[Y‹òKò[ò€‹»Hõ‹õﬁX[ùY[ô[à›H]]‹öYYH€Z[ö[Œ»Z\ùXõH\»õﬁYXÿ⁄pÏ€à[X[òHò[ú⁄]‹öXKà⁄]–\H‹ù[€€ú›[Y[à[Z\€[»‘ì»YYX[ùHÿ\X⁄YY\»]]‹ö^òY\À⁄[à⁄[ò‹õ€ö^òX⁄pÏ€àöY\ôXÿ⁄[€ò[[ô\ÿ‹ö[Z[òYHöHY[[‹öXHHôY€ÿ⁄[»\XÿYKÇÇääîôY€\»Y‹Y\»H€ÿöY\õõ»
+õ»€€ôöY›\òX⁄pÏ€àô[[›H\XÿYJNääÇÇåKà
+äï[òHY[ùYYH[àÿöô]»ÿ[∞Ï€öX€ŒääàŸHXÿ⁄pÏ€àô\›Y[ôHX›‹ã‹ôÿ[ö^òX⁄pÏ€ã0Ë[Xö]Àÿ\Xö[]HHõ€\»X›X[\Œ»HZ\€XH\ôXKŸX⁄\⁄pÏ€ã‹ôX⁄Xõ»\»ö\⁄XõH\ŸH‹»ÿ[ò[\»]]‹ö^òY‹Àà[à[0ÍYõ€õÀTàö[ò›[Y»»õ€XúôHHYŸ[ùHõ»€€òŸYH\õZ\€ÀÇåãà
+äï[òHúõ€ù\òHH€€ôöX[ûòH‹àÿ]]ÿ^Nääàõ‹Y]\ö[À\]Z\»HpÍ\‹Y\»Y[ô[àX⁄‹»Yô\ô[ù\ÀàŸ\⁄[€ô\Àÿ[›€\›»€€àYô[úÿHYX⁄[€ò[õ»Z\€[ZY[ù»‹›[H[ò[ùÀàõ»YZ]\à\›X\ö[‹»õ»€€ôöXXõ\»[YŸ[ùH€€à\úò[ZY[ù\»[õ‹Y]\ö[Œ»X[ù[ô\àõ‹]YXYH\ÿH[\XX⁄pÏ€à\›Hô\öYöXÿ\à[òHúõ€ù\òHôX[àõ»‹ôX\à›õ»ÿ]]ÿ^H]]€pË]Xÿ[Y[ùH\òHÿ›[\à[õÿõ[XKÇåÀà
+äí\úò[ZY[ù\»pÎ[ö[X\»‹àõZõŒääàX›\òKÿ\\òKõ‹úòY‹ã[ù∞Î[»H\ÿ‹ö]\òHHôY€ÿ⁄[»ŸH]]‹ö^ò[à‹àŸ\\òYÀà\]Z\À⁄pÍ\‹Yõ»\ôY[à⁄[ò]ôYÿY‹à[õ‹Y]\ö[ÀŸX‹ô]‹ÀYZ[ö\›òX⁄pÏ€à»\›‹öX[H›õ‹»YŸ[ù\Ààô\›ö[ô⁄\à[XöpÍ[àY[úÿZô\»[ùôHõ›ôYY‹ô\Àÿ€€ùô\úÿX⁄[€ô\ÀÇçà
+äï[òH›Y[ùK[à\ÿ‹ö]‹àX›]õ»‹àXÿ⁄pÏ€éääà\ÿ\úõ€»ÿÿ[‹ô\‹[»õ»€€ú›[YH⁄[][0Ë[ôX[Y[ùHõŸXÿ⁄pÏ€ãàô]][^ò\à€Z[K€X\ŸKŸô[ò⁄[ô»[€€ùõ€[ôHH€]ô\»€€\]Xõ\Œ»[à[Y[›]»‘’[XöY›[»ô\]ZY\ôHôX€€ò⁄[XX⁄pÏ€à[ù\»HôZ[ù[ù\ãÇçKà
+äïô\»\ôö[\»H\‹YY›YNääà[[»⁄[àXÿŸ\€»‹\ò]]õÀ‹ù[]][ùXÿY»HX›\òHHù[ù[YH[ù\õõ»ö]ö[Y⁄XY»€€à€€ùõ€õ‹[Ààõ»€ô\à€]ô\»€‹öŸ\ã‹õ›ôYY‹ãŸ\ÿ‹ö]\òH[à[‹ù[»õ»Xö[]\àù[ù[YK”P‘ÿ[XöX[ô»[\ôö[[‹›ò[YH0ÓòõX€ÀÇçãà
+äê‹ôY[ò⁄X[\»€€àYpÏ[»HôX›\\òX⁄pÏ€éääàôYô\ô[ò⁄X\»[àôY⁄\›õ‹Œ»ò[‹ô\»€€»[à[[XXÍ[à]]‹ö^òY»[[ù‹õõÀàQêHHôX›\\òX⁄pÏ€à\òH›Y[ù\»YZ[ö\›ò]]ò\Œ»€€\õÿò\à€‹‹ùK‹[àHõÿò\àõ›Xÿ⁄pÏ€àH€€ùò\ŸpÏX\»ö[òY\Ààõ›X⁄pÏ€à»ÿ[Xö[»HY[ùYY^YŸHX\HH€€ú›[ZY‹ô\»HôXYòX⁄Àõ»€‹XHHŸX‹ô]‹»H⁄]À—⁄]—õ‹õﬁÇçÀà
+äë\›Y‹»[[‹›òXõ\Œääà€€ôöY›\ôY8°§à\›Y8°§à[ùY‹ò]Y8°§à\ﬁYY8°§àù[ù[YW›ô\öYöYY8°§àYX\›\ôY\ÿ‹öXôH]öY[ò⁄X\»\›[ù\Àõ»õ€[ÿ⁄pÏ€à]]€pË]XÿKà“K[ù‹õõÀY[ùYY[ÿ[òŸHHô\›[Y»[à\›[õ»Xô[àX€€\pÏX\àÿYHYö\õXX⁄pÏ€ãàHY]HHYZõ‹ò\»õ»›\›]^YH[àô\›[Y»HôY€ÿ⁄[ÀÇéà
+äê€€ù^»H[Ÿ[‹»‹àòXòZõŒääàÿ\ôÿ\à€€»ôY€\À€€ùò]»HùY[ù\»ô[]ò[ù\Œ»õ»[ùöX\à[[à€€\]À\›‹öX[\»»\ò⁄]õ‹»ö]òY‹»HÿYH\õõÀàË[›[ÀŸY\H]\õZ[ö\›Hö[Y\õŒ»[Ÿ[»X€€∞Ï€ZX€»\»\òH€\⁄YöXÿX⁄pÏ€ãŸ^òXÿ⁄pÏ€é»ò^õ€ò[ZY[ù»ùY\ùH\òH€€ôõX›‹À\ŸpÏ[»HÏŸY€ÀàŸ[Xÿ⁄pÏ€à‹àXÿŸ\€À]ò[XX⁄pÏ€àH€‹›»ôX[⁄[àÿ[XöX\à[[Ÿ[»[\›X\ö[»⁄[[ò⁄[‹ÿ[Y[ùKÇéKà
+äîô\›\Y\›‹»[ù\»HX›]ò\éääàÿYHùY]õ»€‹öŸ\ãŸõZõ»X€\òH0Î[Z]\»ö[ö]‹»H[XY\À⁄Ÿ[úÀÿ€‹›ÀY[\À€€ò›\úô[ò⁄XHHôZ[ù[ù‹À€€àÿ[òŸ[X⁄pÏ€àH\ÿÿ[[ZY[ùÀàõ»ŸH[ùô[ùH[àô\›\Y\›»[€ô]\ö[»[õ‹Y]\ö[»öHŸH€€ú⁄Y\òH\XÿY»[àù[ù[Y\»^\›[ù\»‹à\ÿ‹öXö\à\›HôY€KÇåLà
+äìY[[‹öXH€€àõÿŸY[ò⁄XNääàX⁄ÀùY[ùKôX⁄K0Ë[Xö]ÀŸ[ú⁄Xö[YYô\öYöXÿX⁄pÏ€àHô][ò⁄pÏ€é»€‹úôXÿ⁄[€ô\»ô\ú⁄[€òY\ÀàŸ‹»Hò[ú‹‹ùHõ»›\›]^Y[àY[[‹öXHÿ[∞Ï€öXÿN»\›‹öX[\ú€€ò[H[›[\õX[ôXŸ[àŸ\\òY‹Ààô]ö\ÿ\àô\⁄Y[ò⁄XK‹ô][ò⁄pÏ€à[õ›ôYY‹à[ù\»H[ùöX\à]‹»õ›Y⁄Y‹»HùY]õ‹»Ÿ\ùöX⁄[‹»HYŸ[ù\ÀÇåLKà
+äëúô\ÿ›\òHŸYÓõà€Z[ö[Œääà\‹€öXö[YY‹ôX⁄[»[à‹õ‹‹Œ»ÿ›[Y[ù‹»[à[Y‹òN»\]ZYX⁄pÏ€à[àò[ò€‹Œ»‹öY⁄[ò[\»[àõ‹õﬁàYö[ö\àöYŸ[ò⁄XHHò[òX⁄»‹àÿ\Xö[]N»]\Ÿ[ò⁄XHH⁄[ò‹õ€ö^òX⁄pÏ€à\»Sí”ì’”ãõ»8†'ÿ[YXõx†'HöHŸ\õÀàôYX⁄\à€[ô»€€à]ô[ù‹»€€»\‹pÍ\»Hô\öYöXÿ\à€‹‹ùH[õ›ôYY‹ãÇåLãà
+äê[\ù\»0Óù[\Œääàô]][^ò\à›€ô\à][ù[€ã–€€ùõ€[ôHH\»ù]\»^\›[ù\ÀY\Xÿ\à‹à[ò⁄Y[ùHHô\‹]\àÿ[ò[Ÿ‹ù\À⁄‹ò\ö[»H0Ë[Xö]Àà€€à\ÿÿ[[ZY[ùŒ»ô\›»Y‹ù\Y»[àô\ÓõY[ô\»H\›Hô\»X⁄\⁄[€ô\»X]\öX[\»[õ‹Y]\ö[»‹à€‹ùKà⁄[à›õ»‹õ€ã‹ÿ⁄Y[\à»[ù∞Î[»[\0ÎX⁄]»‹à\›H€0Î]XÿKÇåLÀà
+äêYö\€‹ú»€€à‹ö]\ö[Œääàô]ö\ÿ\àù[ò⁄[€ô\»—P’TíUHQíSëTòZôX›]Xõ\Àõ›Xÿ⁄pÏ€àH€€ùò\ŸpÏX\À[ô\»H€€ú›[HH€0Î]Xÿ\Œ»õ»ò]\àXõ\»Ÿ\ùô\ã[€õH⁄[à€0Î]XÿH€€[»\õZ\€»ò[[ùH]YHXòHXúö\úŸKàõ»õ‹úò\à0Î[ôXŸ\»8†'[ù\ŸY8†'H⁄[àô[ù[òHH\€À\[ô[ò⁄X\»Hô]ô\ú⁄pÏ€ãÇåMà
+äïô\ú⁄[€ô\»Hÿ\X⁄YYô\öYöXÿY\Œääàÿ⁄Ÿö[HHô\ú⁄[€ô\»öZòY\Œ»Y⁄[úÀ–”HŸYÓõàô\ú⁄pÏ€à[ú›[YHHÿ›[Y[ùX⁄pÏ€àŸöX⁄X[ù[òÿH[ú›ùXÿ⁄[€ô\»H[àõ‹ö»€€[»]]‹öYYàYY\àY[[‹öXK–‘Kÿ€€\»H\úõ‹ô\»[ù\»HôY[Y[ú⁄[€ò\àY⁄ÿZ[»[àòXòZõ»\ÿY»ÿÿ[HHô^àŸYÓõà[ÿ]H[ÀÇåMKà
+äë[ùôYÿH\]YpÏXHHô\öYöXÿXõNääàò[XK‘ã–“K‹ô]öY]»[“H^X›ÀXŸ\X⁄pÏ€à]][ùXÿYHHõ€òX⁄Œ»ô]\ò\à\XÿY‹»€€»ò\»X\HH€€ú›[ZY‹ô\Àà[ôŸôà€€\X›»€€àÿöô]]õÀ\›YÀùY[ù\Àÿ[Xö[‹ÀùYXò\Àõ‹]Y[»H⁄Y›ZY[ùHXÿ⁄pÏ€é»⁄]ÿÿ\\òH\›0Ï‹öXÿHõ»[]Y\›òHXÿŸ\€»ÿÿ[»ÿ[Y[‹›ÇåMãà
+äìYY\àò[‹ãõ»X›]öYYääà€‹›»‹àô\›[Y»XŸ\YÀ\úõ‹ã‹ô]òXòZõÀ\XÿY‹À[ù\ùô[ò⁄pÏ€à[X[òK][ò⁄XHH[ùYÔYYH€€Kúô\ÿ›\òHHô\›]\òX⁄[€ô\»ô\öYöXÿY\Ààò\Ÿ[[ôH]\Ÿ[ùHHì◊”QQQÀàõ»[ùô[ù\àZ‹úõ»öH‹ôX\à›õ»\⁄õÿ\ô‹ÿ⁄Y[\à\òH[‹›ò\õÀÇÇääî⁄Y›ZY[ùH[öYYôY⁄\›òYH[åãÃLÃåçà[ùõ»[ÿ\úö[^\›[ùNääà
+JH€€\]\à[ò\‹\€»ôX[Hÿÿ[HôX›\\ò\àùY[ùKÿö[ô[ô»[Y⁄ÿZ[‹öY⁄[ò[»
+äHô]ö\ÿ\à]ö\€‹»HŸY›\öYYH€€ôöY›\òX⁄pÏ€àô\òŸ[€€àXÿŸ\€»]]‹ö^òYÀ⁄[à[\X\à‹ò[ù»»[Y\çŒ»
+ HùYXòH€€ùõ€YH⁄]–\8°§àY[ùYYË[Xö]»8°§àX›\òK›\ôXHÿ[∞Ï€öXÿH0ÓõöXÿH8°§àôX⁄Xõ»8°§àZ\€XH\ôXH[à‹ù[8°§à€€ù[ùZYYHôYÿ]]ò\»HZ\€[ZY[ùŒ»
+
+H€€\\ò\à€‹›ÀŸ\úõ‹ô\À⁄[ù\ùô[ò⁄pÏ€à[ù\»HXö[]\àÿ\X⁄YY\»YX⁄[€ò[\ÀàôXŸ\⁄pÏ€àH›Y[ùH\ú€€ò[ô\]ZY\ô[àô\öYöXÿX⁄pÏ€àŸ\\òYN»õ»ŸH[\€ôH[òHZY‹òX⁄pÏ€àH⁄]–\€›YTH⁄[à]Y]\àò[ú‹‹ùKÿ€€úŸ[ù[ZY[ùÀÿ€€ù[ùZYYà€€úŸ\ùòH‹ö]\à—ëãTH‹õ‹‹»YÿYH]\ÿYHH€òõÿ\ô[ô»^\õõ»õ‹]YXYÀàÿ[Xö[‹»H[ôúòY\›ùX›\òK\õZ\€‹Àõ›ôYY‹àHõŸXÿ⁄pÏ€à\õX[ôXŸ[àTë—U\›Hô]ö\⁄pÏ€ãZôX›X⁄pÏ€à]]‹ö^òYHHôXYòX⁄ÀàôX€€ò⁄[X\àH]öY[ò⁄XH‹›\ö[‹à[ù\»Hô\]\à\›H[öYYÇÇääê€\öYöXÿX⁄pÏ€à[õ‹Y]\ö[»8†%çÃLÃåçã⁄]–\€€òõÿ\ô[ôŒääàŸHô]\òHHõ‹Y\›HH\⁄Y€ò\à[àõ€]]€pË]Xÿ[Y[ùH‹à[ô\àY[ùYYÿ[∞Ï€öXÿKà[[K‹õ€Ë[Xö]»ô\]ZY\ô[à]]‹ö^òX⁄pÏ€à^0ÎX⁄]H‹à[õÿŸ\€»^\›[ùN»[ôX€€õÿ⁄[ZY[ù»[ô[Z][ùH][^òH\ŸH\õZ\€»H[€òõÿ\ô[ô»^XÿH\»ù[ò⁄[€ô\»XH]]‹ö^òY\À⁄[à€€òŸY\àöH[]ò\àXÿŸ\€ÀàŸH€€úŸ\ùòHH^\öY[ò⁄XHõŸ‹ô\⁄]òHHõ»õ‹]YX[ùKàôZ[ùHôYö[ò[ZY[ù‹»‹\ò]]õ‹»H›\»ùYXò\»]YY[à€€[»Të—U[à[ÿ€€ùò]»⁄]–\0©ÃLóJ‘ì◊’“U–T”‘Sê”U◊‘–SQW–îêRSó’åKõYÃLãY^X⁄]\õ€\À[€òõÿ\ô[ôÀX[ô]Ÿ[ùKZ›[]€‹öŸõ›À\ôYö[ô[Y[ùÀKLåçãLLLç
+K⁄[à€€ù\õ‹»€€[»ù[ò⁄[€ô\»[àõŸXÿ⁄pÏ€ãàô]][^ò\àÃåHHôX€€ò⁄[X\àååãÃåLÃÕ»õ»›õ»Y[ùKY[[‹öXKòX⁄€Ÿ»»ÿ⁄Y[\ãàHX\òÿHöYŸ[ùHH[\Y^òH\õZ[òYH[à‹õ‹‹»\»]öY[ò⁄XH‹\ò]]òH›YöX⁄Y[ùH\òH\ÿH[Y[ú⁄pÏ€ã⁄[à€€ôö\õXX⁄pÏ€à[X[òH\XÿYN»[ú‹Xÿ⁄pÏ€ãX[ù[ö[ZY[ù»Hô\\òX⁄pÏ€à[ùY‹ò[\õX[ôXŸ[àŸ\\òY‹Ààÿ[Xö[‹»ÿ›[Y[ù[\ÀÿÏŸY€»õÿòY»õ»X‹ôY][à€€ú›[[»[‹›[ùôYÿH⁄]–\öH‹\òX⁄pÏ€à⁄[àÀÇÇÇääìX›\ò\»[ôõ‹õX]]ò\»[T»8†%X⁄\⁄pÏ€à[õ‹Y]\ö[ÃçÃLÃåçéääà\òH€€ú›[\»‹\ò]]ò\»ŸHYZ]H[òH€‹XH]]‹ö^òYHH‹õ‹‹»€€à[ùYÔYYHHùY[ùHH
+äö\›MåZ[ù]‹ äã][ú]YHõ»ŸXH[òH€€ô^pÏ€à]ôK–TKà[‹›ò\à€‹ùHHYYôX[\Œ»Ÿ\\ò\à‹òH[[ù[ùÀ⁄[\‹ùX⁄pÏ€à[[€Y[ù»H‹»]‹Àà€ÿô\ù\òH\ò⁄X[YYH€€ú›[\úŸH€€[»ÿúŸ\ùòX⁄pÏ€à\ò⁄X[⁄[à€€ùô\ù\õH[à›[\»€€\]‹»öH\ÿ€€õÿ⁄Y‹»[àŸ\õÀà\›HX⁄\⁄pÏ€à›\›]^YH[ô\]Z\⁄]»H]ôH\òH\ÿ\»X›\ò\»[ôõ‹õX]]ò\Œ»õ»ÿ[XöXHHö\›H]ôH^\›[ùHöHHô]ò[YX⁄pÏ€àH€›^òX⁄pÏ€ãŸ\‹€öXö[YYHXÿ⁄[€ô\»€€Y\ò⁄X[\Àà€€ùò]»’⁄]–\0©ÃL◊J‘ì◊’“U–T”‘Sê”U◊‘–SQW–îêRSó’åKõYÃLÀZ[ôõ‹õX][€ò[\\À\€ò\⁄›ÀK[›€ô\ãYX⁄\⁄[€ãLåçãLLLç
+Kàô]][^ò\à\‹ZõÀ⁄[\‹ùX⁄pÏ€ã›€‹öŸ\àHÃåN»Y]Z\⁄X⁄pÏ€à‹ò\öXH\»Të—Uõ»[à[Y\àöH⁄[ò‹õ€ö^òX⁄pÏ€àX‹ôY]Y‹ÀàTH‹õ‹‹»YÿYH€€ù[∞ÓòH]\ÿYKÇÇääê]Y]‹∞ÎXH[‹ù[H€€‹ô[òX⁄pÏ€à8†%€‹ùHçÃLÃåçéääàHÿ€€ù[ùXX⁄pÏ€àHH]Y]‹∞ÎXH^\›[ùWJããŸ]öY[òŸK’‘ì◊“SïQ‘êS–UQUÃåçãLLLåãõYŒKX]Y]‹∞ÎXKY[\‹ù[^K\ôX€€ò⁄[XX⁄pÏ€ãKLåçãLLLç
+HôY⁄\›òH€Z[ö[»ÿ[∞Ï€öX€»‹õÀôôX[Xÿ]⁄\ö›[ò€€XõﬁYX›»^\›[ùH‹õÀ\åLK\ô]öY]ÿõŸXÿ⁄pÏ€àÿúŸ\ùòYHÕYMYòéLÃåXÿòMòLéYòLŒMÕŸåŸMòçòçXHXZ[àŸôNYôXŸXYLMôMŸòòMYMÃòMÃXXŒåéLNLÿàHô[X⁄pÏ€à[€Z[ö[»€€X⁄]Y»‹õÀöú⁄›[ò€ÿ]YYH⁄[àô\öYöXÿ\à[ùõ»[[ùô[ù\ö[»]]‹ö^òYÀàH[ú‹Xÿ⁄pÏ€àYÏ»[XÿŸ\€»[‹ù[⁄[àŸ\⁄pÏ€à]][ùXÿYN»õ»X‹ôY]H›\»[ù[\»[ù\ö[‹ô\À^\öY[ò⁄XHpÏ›ö[öHZ\€[ZY[ù»Hõ€\Àà‹»\›Y‹»H‹»ÿ[ôY]‹»€€à]öY[ò⁄XHôX⁄YKõ»õ€[ÿ⁄pÏ€àHõŸXÿ⁄pÏ€ãÇÇääëúô[ù\»^\›[ù\À⁄[à\XÿX⁄pÏ€éääà‘åÕå◊JŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕå H€€òŸ[ùòH\›H[[ôXX⁄pÏ€àÿ›[Y[ù[»‘ååóJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃåäH€€úŸ\ùòH[X›‹à[ôõ‹õX]]õ»‹õ‹‹»H\›HåZ[ù]‹»€€[»ÿ[ôY]»H‘ååLJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃåL
+HH€€ù[ùZYYHŸ\⁄[€ô\À‹ôX⁄Xõ‹Àà‘åŒJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃŒ
+H€€òŸ[ùòH[ÿ[ôY]»[‹ù[€€àXŸ\X⁄pÏ€à]][ùXÿYHH⁄YŸ][ôY[ù\Œ»ôX€€ò⁄[X\à‹»[\»0ÓõöX€‹»H‘åÕ◊JŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕ H[ù\»H[ùY‹ò\à\ŸpÏ[»€€\YÀà‘åÕåWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕåJH€€úŸ\ùòHHX›\òH\›0Ï‹öXÿHH€€][öXÿX⁄[€ô\À‘åÕŒWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕŒJH[ôYõY⁄H^òXÿ⁄pÏ€àH‘åŒ◊JŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃŒ HH]öY[ò⁄XH‹›\ö[‹à[‹›àö[ô›[õ»[]Y\›òH‹àÎH€€»Y]Z\⁄X⁄pÏ€à‹ò\öXK€€ù[ùZYY^ô[[»H^ô[[»»[ùôYÿH⁄]–\àô[Y\à›\»XYÀ⁄X⁄‹⁄[ù»Hÿ]\»[ù\»HX›X\é»õ»[\‹ù\à[àõ‹]YHò[X\»[ùY›X\ÀÇÇääìëVH\›H›HH[[ôXX⁄pÏ€éääà€€úŸ\ùò\à[[à0ÓõöX€»HH]öY[ò⁄XH[ù\ö[‹ã€‹úôY⁄\à‹öY[ùX⁄pÏ€àHöYŸ[ò⁄XH[àHZ\€XHåÕåÀHôX€€ò⁄[X\à[X›‹àHååà€€àXZ[à[à›Hò[XH^\›[ùKàHXŸ\X⁄pÏ€àHõ€[ÿ⁄pÏ€à[‹ù[⁄Y›Y[à›Hõ‹[»ÿ\úö[€ÿúôH[à“H^X›»H€€à‹»ÿ]\»öYŸ[ù\Œ»õ»ŸHX€\òHŸ\úòY»›€ô\à][ù[€à‹àY\à›H€‹úôXÿ⁄pÏ€à[àXZ[ãàôX[UX[H€€úŸ\ùòHŸ\ùöX⁄[»\›Hõÿò\à\öYYY[ùYYHôX›\\òX⁄pÏ€à[à‘ì»[‹Kà\»›\\ôöX⁄Y\»0ÓòõXÿ\Àö]òY\»H‹»õﬁYX›‹»[ô\[ôY[ù\»X[ùY[ô[à›\»0Ë[Xö]‹Œ»õ»ŸH‹ôXH›òH\‹ù[òX⁄€Ÿ»»ùY[ùHHô\ôYà\›H›Hõ»X›]òH⁄[ò‹õ€ö^òX⁄pÏ€ã‹ö]\ã\õZ\€‹Àÿ⁄Y[\àöH\‹YY›YH]]€pË]X€ÀÇÇääê[[ôXX⁄pÏ€à€€X⁄]YH‹à[õ‹Y]\ö[»8†%ÀÃLKÃåçéääà[€€ùõ€[›[\ù[ôXŸHHHö\›H
+äì‹\òX⁄pÏ€ääà[‹ù[‘ì»^\›[ùH
+‹‹ù[›Xè[‹\ò][€úÿ
+N»⁄]\»€€úŸ\ùòHÿ\\òHX[ùX[\›‹öX[HôYô\ô[ò⁄X\»ÿ[∞Ï€öXÿ\»€€[»€€ù[ùZYYà
+äê’TîëSïHÏŸY€»HX›‹éääàåŒMH[ùY‹òYN»pÏŸ[»H€€ú›[HXõXÿY»YYX[ùHòX⁄‹‹ùX€›Y»€ÿúôH[\ùYòX›»X›]õÀ€€àŸ\⁄pÏ€ã‘ìÀQRSã——TëSê“PHH‹ôÿ[ö^òX⁄pÏ€ã‹õ‹YYYôX[Xÿ]⁄\ãàH^[ú⁄pÏ€à‹⁄[€ò[[Z\€[»î»ùYH\XÿYH\‹pÍ\»[X›‹à€€\]XõK€€àùYXò\»ôX[\»Hõ€\À[ÿ[òŸKÿ[\‹»Hô]ô\ú⁄pÏ€é»⁄[àùY]òHTH0ÓòõXÿKXõ\À\õZ\€‹ÀùY[ùHò[úÿXÿ⁄[€ò[öHõŸ‹ò[XY‹ãà€€úŸ\ùòH\›Y»ôY⁄\›òYÀô\‹€úÿXõKô]ò[YX⁄pÏ€ãôX⁄H‹öY⁄[ò[H[ŸYöXÿX⁄pÏ€àH‹òHH€€ú›[N»]Y\›òH\›LLàö[‹öYY\»H[à›HX€›YÀ€€à€ÿô\ù\òHö\⁄XõKà
+äêP—TP“p‰”àSëQSïNääàò]ôYÿX⁄pÏ€à€€àH›Y[ùH[õ‹Y]\ö[»
+‘ì»ôX⁄^∞Ï»[[öX⁄[»HŸ\⁄pÏ€àŸY›\õ HHY]Z\⁄X⁄pÏ€àöYŸ[ùHH‹õ‹‹Œ»\»ùYXò\»‘Sõ»X‹ôY][à\ÿHŸ\⁄pÏ€àöH[òH‹\òX⁄pÏ€à∞Î\⁄XÿKà[\‹Zõ»\›0Ï‹öX€»[åÃLõ»ÿ[›[Hÿ›\X⁄pÏ€àX›X[öH€€ùöY\ùH\ÿ€€õÿ⁄Y»[àŸ\õÀàHôXŸ\⁄pÏ€àõŸ‹ò[XYHHÿúŸ\ùòX⁄[€ô\»[à[⁄]KHX›\òHò]]òH[‹ù[HH[ùôYÿKÿX›\ŸH⁄]–\€€úŸ\ùò[àôX⁄Xõ‹»HXŸ\X⁄pÏ€àŸ\\òY‹Àà—]öY[ò⁄XH[Z\€[»pÏŸ[◊JããŸ]öY[òŸK’‘ì◊”êUUëW“’S”‘TêUS”î◊ÃåçåLLÀõY
+KÇèKKHSëï‘ì◊”‘TêUSë◊–””ëíQ’TêUS”óÃåçåLåàKOÇÇèKKHëQ“Séï‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕLÃåçåLåàKOÇà»»€€ù[ùXX⁄pÏ€àHöXXö[YY8†%⁄[ò›Y[ùHYZõ‹ò\»YX⁄[€ò[\»8†%åãÃLÃåçàU¬Çääê’TîëSï8†%[ùY‹òY»[àÏŸY€À⁄[àõ€[ÿ⁄pÏ€àõŸX›]òNääàà»ÃÕNWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕNJHY\ôŸY€€[»çŸMÿMNYòLXÕYLåÃÿMôNåççŸéLéXÃMYôçåÿ€€à“H\›0Ë[ô\àHô]öY]»^X›»\õÿòY‹Àà€€ù[∞ÓòHàÃÕN€ÿúôH‹»Z\€[‹»õZõ‹»^\›[ù\ŒàÿŸHö[ò[òŸK–[Y‹òKÿ⁄»‹õ‹‹ÀY^àY[ùYY‘‹ù[Y^à€€[\»HY^àù[ù[YK”P‘à‹»ÿ⁄[ò›Y[ùHô\›[Y‹»ò^òXõ\◊JããŸ]öY[òŸK’‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕLÃåçåLåãõY
+H€€à]öY[ò⁄XH›Xõ‹ô[òYN»õ»ùY[ô[àH€€ù\à\»›X\ô[ùHYZõ‹ò\»ô]öX\»öH€€ùöY\ù[àùYXò\ÀŸÿ›[Y[ùX⁄pÏ€à[àùY]ò\»ÿ\X⁄YY\ÀÇÇääîö[‹öYYH[[ôXX⁄pÏ€éääàö[Y\õ»[ùY‹öYYHôX⁄Xõ‹À›\›ŸXKY[ùYYË[Xö]À^‹⁄X⁄pÏ€àH]‹»HôX›\\òX⁄pÏ€é»\‹pÍ\»\‹€öXö[YYò]ôYÿX⁄pÏ€àHòXòZõ»HX›\òH]ö]YÀàõ»ÿ[XöXH\ú]Z]X›\òKùY[ù\»H]]‹öYY\õZ\€‹»öH[ÿ[òŸH€€Y\ò⁄X[àHYZõ‹òHHöXXö[YYŸH[]Y\›òH€€àôY‹ô\⁄[€ô\Œ»Z‹úõ»Hô[ô[ZY[ù»õŸX›]õ»\õX[ôXŸ[àì»QQQ‘ÀÇÇääêXŸ\X⁄pÏ€àYX⁄[€ò[[åãÃLääà”ô^‹ù[ôX[[∞Ï€ö[[»HZ\€Y◊JããŸ]öY[òŸK’‘ì◊‘‘ïS–Sì”ñSS’T◊–P–—TSê—WÃåçåLåãõY
+H€ÿúôHYYYÕçMôLYÃXÃÕôMŸçXLŸMYMåòÿÃåŸLÃò\‹pÍ\»HôX€€ò⁄[X\ààÃÕåHÃÕMÀà\[ô[ò⁄X\»[ú›[Y\»\ŸHÿ⁄Ÿö[Kô^MãåÀéùZ[\›0Ë[ô\ãNàùYXò\»õÿÿ[\»HM€€\õÿòX⁄[€ô\»T‘Œ»Ÿ⁄[àHÃåÃŒLÃLé⁄[à›ô\ôõ›»öH\úõ‹ô\»H€€ú€€K^[ÿYö]òY»]\Ÿ[ùKù]\»Hù[ù[YH^€ZY\»H€€⁄⁄Y\»Hÿ[YH[[Z[òY\Àà€€ôöY›\òX⁄pÏ€à⁄[ù0Í]XÿH⁄[àŸ\⁄pÏ€àöH‹ôY[ò⁄X[\»ôX[\Œ»õ»X‹ôY]Hõ€\À‘ì»öHXõXÿX⁄pÏ€ãàôXYòX⁄»ô\òŸ[X[ùY[ôHõŸXÿ⁄pÏ€à[àÕYMYòéLÃåXÿòMòLéYòLŒMÕŸåŸMòçòçXÇÇääìëV^\›[ùNääàXÿŸ\€À‹õ€\À‹ÿ[YH€€àŸ\⁄pÏ€à]]‹ö^òYH[à[‹ù[ò[ú‹‹ùHHY[Xúô\ÎX\»HôX›\\òX⁄pÏ€àHùY[ù\Àÿö[ô[ô»[Y⁄ÿZ[‹öY⁄[ò[à\[ô[ò⁄X\»ÿúŸ\ùòY\Œà\›HZôX›X⁄pÏ€à⁄Y›YH€›Y⁄[àXÿŸ\€»U‘À‘‘“öH€€ùõ€[⁄õ€YH[\›X\ö[Œ»H[ùY‹òX⁄pÏ€àô\òŸ[]ùY[ôM»[\›\àY]Y]HHò\öXXõ\»[õﬁYX›À[ò€\€»⁄[à\ÿ⁄Yúò\ãàõ»ŸHô\]HH€€ú›[H⁄[àÿ[Xö[‹»öHŸH[ŸYöXÿH€€ôöY›\òX⁄pÏ€à\òH[Y\õKàŸHô\Ÿ\ùò[à‹ö]\à—ëã‹õ‹‹»THYÿYH]\ÿYK€€ò⁄[XX⁄[€ô\»ÿ›[Y[ù[\»[ôY[ù\»H€€ùõ€H‹\òX⁄[€ô\»Ÿ[ú⁄Xõ\Ààõ»ŸH€€ôù[ô[àÏŸY€»[ùY‹òY»H\‹YY›YH‹\ò]]õÀÇèKKHSëï‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕLÃåçåLåàKOÇÇèKKHëQ“Séï‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕÃåçåLåHKOÇà»»öXXö[YY€€öù[ùHH[Y‹òK‹õ‹‹À‹ù[H‹[ê€]»8†%åKÃLÃåçÇÇääê’TîëSï8†%[ùY‹òY»[àÏŸY€À⁄[àõ€[ÿ⁄pÏ€àõŸX›]òNääàà»ÃÕNJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕN
+HY\ôŸY€€[»ôåŒMôLôåŸéÕNMÃåçÃŒLòŒLôåòòçåLÿ€€à“H\›0Ë[ô\àHô]öY]»^X›»\õÿòY‹ÀàH]X⁄pÏ€à[õ‹Y]\ö[»ŸH€€ò‹ô]H[à›X\ô[ùHÿ[Xö[‹»H€€ôX›H€ÿúôHpÏŸ[‹»^\›[ù\ŒàùY]ôH‹ö]\ã–[Y‹òK€òŸH‹õ‹‹Àÿ⁄»XÿŸ\€À‘‹ù[ÿ⁄»‹[ê€]À’⁄]–\H›X]õ»€€ôöY›\òX⁄pÏ€àŸY›\òKà[€\›Y»ò^òXõHHXŸ\X⁄pÏ€óJããŸ]öY[òŸK’‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕÃåçåLåKõY
+H\»›Xõ‹ô[òY»H\›H[ãà\»ùYXò\ÀŸÿ›[Y[ùX⁄pÏ€àX‹ôY][àÿ[Xö[‹Œ»õ»ŸH›[X[à€€[»YZõ‹ò\»[ô\[ôY[ù\»öH€€[»]ò[òŸH€€ùXõH»ô[ôYöX⁄[»X€€∞Ï€ZX€ÀÇÇääê[[ôXX⁄pÏ€éääà[òHY[ùYYH€€ù^»‘ì»\òH‹ù[’⁄]–\»\õZ\€‹»‹àX›‹ã€‹ôÿ[ö^òX⁄pÏ€ã]öY[ò⁄XH∞Ë[YHHúô\ÿÿKY[\›[ò⁄XH€⁄\ô[ùK\[ô[ò⁄X\»€€àXY[ôHHôX›\\òX⁄pÏ€à[X[òHŸY›\òKà⁄]Xà€€úŸ\ùòHÏŸY€Àÿ€€ùò]‹Œ»›\Xò\ŸHY[ùYY‹ù[ù[YKÿ]Y]‹∞ÎXN»‹õ‹‹»ô\Ÿ\ùò\ÀŸ\›[ò⁄X\Œ»[Y‹òHÿ›[Y[ù‹»€€ùXõ\Œ»ò[ò€‹»\]ZYX⁄pÏ€àHõ‹õﬁ‹öY⁄[ò[\Àà[à€€ùò]»ô\\òY»õ»\»[òH[ùY‹òX⁄pÏ€àõŸX›]òHöH[àôX⁄Xõ»H[ùôYÿKÇÇääìëV[ÿ\úö[^\›[ùNääàXŸ\X⁄pÏ€àHXÿŸ\€À‹õ€‹ÿ[YH[à[‹ù[€€àŸ\⁄pÏ€à]]‹ö^òYKHôX›\\ò\àùY[ù\Àÿö[ô[ô»[ÿ]]ÿ^HY⁄ÿZ[^\›[ùH[ù\»H›X[]ZY\àX›]òX⁄pÏ€à‹ö]\ã”‹[ê€]Àà\»€]ô\»ùY]ò\»HY[\›[ò⁄XHH\»ö\õX\»ôYõ‹ûòY\»ô\]ZY\ô[àôX€€ò⁄[XX⁄pÏ€àH€€\]Xö[YY[à[ÿ[\à^\›[ùN»õ»‹ôX\à›õ»Y\\ãÿ]]ÿ^Kÿ⁄Y[\à»YŸ\ãà[›]›ô\àHX›\òHHY[Xúô\ÎX\»ÿ[∞Ï€öXÿ\»⁄Y›YH[ôY[ùHHô\öYöXÿ\à›Hò[ú‹‹ùK⁄[à[\X\à]HTK‘ìÀÇÇääê€€úŸ\ùòYŒääà‹ö]\à—ëã‹õ‹‹»THYÿYH]\ÿYK\õÿòX⁄pÏ€à^X›HH‹\òX⁄[€ô\»Ÿ[ú⁄Xõ\À‹öY⁄[ò[›\õ[ö»⁄[à€€ò⁄[XX⁄pÏ€à[ô\]pÎ]õÿÿKŸ\⁄[€ô\Àÿ€€ùò\ŸpÏX\»ôX[\»ùY\òHH‹»\ùYòX›‹Àö[ôÓõàÿ[Xö[»HôX⁄[‹À‹ô\Ÿ\ùò\À‹‹›[ô‹À‹\õZ\€‹À‹ŸX‹ô]‹»»õŸXÿ⁄pÏ€à‹à\›H›KÇèKKHSëï‘ì◊“SïQ‘êUS”ó‘ëSPPíSUWÕÃåçåLåHKOÇÇèKKHëQ“Séì’”ëTó–RW’—PS‘’êUQ÷WÃåçåLåKOÇà»»€0Î]XÿH\›ò]0ÍY⁄XÿHò[ú›ô\úÿ[8†%PK]ö[[€ö[»õŸX›]õ»HXô\ùY‹\ò]]òH8†%åÃLÃåçÇÇääëP“T“p‰”àQ‘QH‘àSì‘QUTíS»
+€ÿöY\õõÀõ»\‹YY›YJNääà‹[Z^ò\à[‹ùYõ€[»\òH
+äòô[ôYöX⁄[»ô]»ôX›\úô[ùKX›]õ‹»õŸX›]õ‹»\òY\õ‹Àô\⁄[Y[ò⁄XHHY[õ‹»‹ò\»H[ù\ùô[ò⁄pÏ€à[õ‹Y]\ö[ äãàôX[Xÿ]⁄\à\»ö[Y\õ»[ôY€ÿ⁄[»Ÿ[ô\òY‹àHÿZòN»‘ì»\»ŸY›[ô»€€[»][\XÿY‹àHÿ\X⁄YYŸYöX⁄Y[ò⁄XHHõŸX›»ù]\õ»›Zô]»H[[‹›òX⁄pÏ€é»]ô\ú⁄YöXÿX⁄pÏ€àH\]ZY^à€€à[\òŸ\àZôHHõ›Xÿ⁄pÏ€ãàH^\öY[ò⁄XH[X[òH[pÍ\‹Y\»ô[X⁄[€ô\»HHÿ[YYõ»ŸHY‹òY[à\òHôYX⁄\à∞Ï€Z[òKà[‹ö]\ö[»õ»ô\›\€ôH\Ÿ[\[»X\⁄]õ»öHô[ù\»ù]\ò\»HPKÇÇääê]]‹öYY\»HXöXÿX⁄pÏ€éääà[àŸ[ô\ò[0ÓõöX€»ÿ‹À‹õŸX›’‘ì◊–îêRSó——SëTêS‘SãõY»€€ùò]»ô\›[ZY»H€€\]XõH[à‹õÀX€€ù^ûX[[8°§à›€ô\óÿZW›ŸX[‹›ò]YﬁXà‹ùõ€[»‹õ◊€‹◊‹‹ùõ€[◊€X\›\ò»ZôX›X⁄pÏ€à‹õ◊Ÿ^X›]]ôWÿ€€ùõ€»›[ôX[Xÿ]⁄\ó⁄›[€X\›\ò€€àpÏŸ[‹»XH^\›[ù\»
+ô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿ‹\òX⁄[€ô\Àö[ò[ûò\ÀŸXãÿÿ[ò[\À]‹À⁄[ùY‹òX⁄[€ô\ Kà‘ì»õŸX›õ€ŸàH‘ì»€›ô\õò[òŸH€€úŸ\ùò[à›\»ÿ]\Ààõ»‹ôXH›õ»[àŸ[ô\ò[YŸ[ùKò\ŸK⁄\›[XHH\ôX\Àÿ[[ô\ö[»öHõŸ‹ò[XY‹ãÇÇà»»»ÿöô]]õ»Hö[õ»HX⁄\⁄pÏ€àÿõYÿ]‹ö[‹¬ÇãH
+äîö[Y\õŒàHŸY›\öYY›[\[ZY[ùÀ]‹»€€Y\ò⁄X[\Àô\Ÿ\ùò\»HpÍ\‹Y\Àääà[ì“Hù[òÿH]]‹ö^òHÿ[\úŸH[àXô\àYÿ[[òH€ÿúô]ô[ùKHö]òX⁄YYöH[òH[ò⁄Y[ò⁄XH∞Î\⁄XÿH‹∞Î]XÿKÇãH
+äë\‹pÍ\Œà[\X›»X€€∞Ï€ZX€»X\ô⁄[ò[HY[\»Xô\òYÀääà\òHÿYH[öX⁄X]]òH^ô\ÿ\à3•€€ùöXùX⁄pÏ€àô]HôX›\úô[ùX[ùô\ú⁄pÏ€à[öX⁄X[HY[ú›X[^õÀÿŸ\ùY[XúôKÿ\ôÿH[X[òKöY\Ÿ€»]ö]YÀ\[ô[ò⁄XK[\õò]]ò\»H]öY[ò⁄XKà⁄Hõ»^HùY[ùHúô\ÿÿKX\òÿ\àì◊”QQQÿ»õ»€ô\à0Ï€\ô\À‹‹òŸ[ùZô\»öX›X⁄[‹ÀÇãH
+äëYö[öX⁄[€ô\»€€\\òXõ\Œääà[ô‹ô\€»‹à\›[ò⁄XHõ»\»€ÿúõ»ò[òÿ\ö[Œ»ô\Ÿ\ùòHõ»\»ô[ùH€€ò⁄[XYN»ô[ùXö[YY€€ùXõHõ»\»õZõ»HÿZòN»Z‹úõ»õﬁYX›Y»õ»\»Z‹úõ»ôX[^òYŒ»ö[\»€€à[Ÿ[YY[Z\€[»[ùô[ù\ö[»∞Î\⁄X€Àõ»Xö]X⁄[€ô\»YX⁄[€ò[\Àà€€ùöXùX⁄pÏ€à‹àÿ[ò[‹Ÿ\ùöX⁄[»ô\]ZY\ôH[ô‹ô\€‹»]öXùZY‹»Y[õ‹»€€Z\⁄[€ô\À\ÿ›Y[ù‹»ö[ò[ò⁄XY‹ÀôY[Xõ€€‹»H€‹›‹»[ò‹ô[Y[ù[\»ô\öYöXÿXõ\Àà[\Y\›‹»ôXÿ]YY‹»‹àô[Z]\àŸHŸ\\ò[ãõ»ŸHò][à€€[»ÿ[ò[ò⁄XKÇãH
+äîö[‹ö^òX⁄pÏ€à⁄[àò[ÿHôX⁄\⁄pÏ€éääàÿõYÿ]‹ö[Œ»YY€»ö[Y\õ»[öX⁄X]]ò\»€€àùYXòHô\öYöXÿXõKô]‹õõ»ò]õ‹òXõKô[ôYöX⁄[»€‹›[öY»HÿÿH\[ô[ò⁄XKÿ€‹›Œ»ö[ò[Y[ùH‹ôX⁄[ZY[ù»]ö[[€öX[€€à[∞Ë[\⁄\»H\]ZY^ã€€òŸ[ùòX⁄pÏ€àHô]ô\ú⁄Xö[YYàÿ›[Y[ù\à»»SQ–UH»SVH»’‘H[[›]õÀà€‹›‹»[ôY‹»õ»ù\›YöXÿ[à€€ù[ùX\ãÇãH
+äîY\ù\»H[ùô\ú⁄pÏ€àH]]€õ€pÎXNääàõ‹Y\›H8°§àò\Ÿ[[ôH8°§à[›»[Z]Y»8°§àô\öYöXÿX⁄pÏ€àX€€∞Ï€ZX€À[‹\ò]]òH8°§àX⁄\⁄pÏ€àH\ÿÿ[\ã‹ô]\ò\ãà›X[]ZY\àÿ\›ÀY€À\õZ\€Àÿ[Xö[»\öYò\ö[ÀXõXÿX⁄pÏ€ãY[úÿZôHH\òŸ\õ‹Àô\Ÿ\ùòK€€ùò]ÀÿúòKö[ò[ò⁄XX⁄pÏ€à»\‹YY›YH€€úŸ\ùòH›H\õÿòX⁄pÏ€à\‹XÎYöXÿHH€€ùõ€X›X[àõ»ôXX›]ò\àTH‹õ‹‹»YÿYH]\ÿYHöH[‹ö]\à[Y‹òH‹à\›H€0Î]XÿKÇãH
+äë\ôXÿ⁄pÏ€àZôX›]]òNääà[õ‹Y]\ö[»ôX⁄XôH\›Hô\»X⁄\⁄[€ô\»X]\öX[\»‹à€‹ùN»[òXòZõ»ù][ò\ö[»ŸH\⁄Y€òH‹àõ€^\›[ùH
+õ»\ú€€òH[ùô[ùYJK€€à\›YÀ⁄Y›ZY[ùH\€»H‹ö]\ö[»H\õZ[òYÀà[\ú€€ò[€€úŸ\ùòH›\\ùö\⁄pÏ€ãõ‹õXX⁄pÏ€àH∞ÎXHH\ÿÿ[[ZY[ùÀàõ»›\›]Z\à[\[‹»‹àõ€Y\ÿ\»H]]€X]^òX⁄pÏ€àõ»ò[YYKÇÇà»»»YZõ‹ò\»ùY]ò\»[ò€‹ú‹òY\»€€[»€€ùõ€\»H‹‹ù[öYY\»
+ì»€€[»[\[Y[ùX⁄[€ô\»\õZ[òY\ BÇì\»⁄Y›ZY[ù\»ôY€\»ôYö[ò[àpÏŸ[‹»H\ôX\»^\›[ù\Àõ»‹ôX[à›X\ô[ùHõﬁYX›‹Àà
+äê\XÿYHÿ›[Y[ù[Y[ùJäà⁄Y€öYöXÿH]YH[‹ö]\ö[»]YYHY‹YŒ»[‘HHôY€ÿ⁄[»€€ù[∞ÓòHì◊”QQQÿ\›H\‹€ô\àHò\Ÿ[[ôKXÿ⁄pÏ€à]]‹ö^òYHHYYX⁄pÏ€à‹›\ö[‹ãÇÇüQúô[ùHYZõ‹òH»⁄Y›ZY[ùH\XÿX⁄pÏ€à]öY[ò⁄XHHô\›[Y»ô\‹€úÿXõHù[ò⁄[€ò[õ‹Y\›»ö[‹öYYüKKHKKHKKHKKHKKHKKHüLH€ÿöY\õõ»]ò[X\àÿYH[öX⁄X]]òH‹àô[ôYöX⁄[»ôX›\úô[ùHô]À‹ò\»[õ‹Y]\ö[»HöY\Ÿ€Àõ»‹àõ€[Y[àH\ôX\ÀàöX⁄HHX⁄\⁄pÏ€à€€àô\»ô\›[Y‹»HùY[ùH‘ì»€€ùõ€HüLà€ÿöY\õõ»YY\à€€ùöXùX⁄pÏ€à[ò‹ô[Y[ù[\‹pÍ\»H€€Z\⁄[€ô\Àÿ\ô€‹ÀŸ\ùöX⁄[À[\Y\›‹»‹àô[Z]\àH€‹›‹»X€õ€0ÏŸ⁄X€‹ÀàY[ùH[ô‹ô\€»H€€ùöXùX⁄pÏ€à€€ò⁄[XXõH‘ì»ö[ò[òŸHHüL»€ÿöY\õõ»Ÿ\\ò\à‘V–TV€‹›‹»[ôY‹À]YKÿZòHHX›]õ‹Œ»ù[òÿH›[X\àô[ù\»Hò[‹à]ö[[€öX[à€\⁄YöXÿX⁄pÏ€à€€ú⁄\›[ùH‹à[ùYYH[€ôYH‘ì»ö[ò[òŸHHüL€ÿöY\õõ»ö[ò[ò⁄X\àõﬁYX›‹»‹à]\\»€€à\0Ï›\⁄\À0Î[Z]HHÿ\›ÀùYXòKô]‹õõ»H]]‹ö^òX⁄pÏ€à€‹úô\‹€ôY[ùKàÿYHò\ŸH€€àX⁄\⁄pÏ€à€€ù[ùX\ãÿZù\›\ãŸ][ô\à‘ì»€€ùõ€HüLH€ÿöY\õõ»€€ôŸ[\à^[ú⁄[€ô\»⁄[àùYXòHHô]\ò\à\úò[ZY[ù\»\XÿY\»€€»ò\»X\HH€€ú›[ZY‹ô\»Hô]ô\ú⁄pÏ€ãà€‹›»]ö]Y»ô\öYöXÿYÀ⁄[à0Í\ôYHHŸ\ùöX⁄[»‘ì»€€»HüLà€ÿöY\õõ»ô]ö\ÿ\àY[ú›X[Y[ùH[‹ùYõ€[»‹à[\X›À\ôŸ[ò⁄XK\ŸùY\ûõÀ\[ô[ò⁄XK\]ZY^àHXô\ùYHY[\Àà\›Hô\»ö[‹öYY\»X›]ò\»‹à€‹ùKô\‹[Y\»‘ì»‹ùõ€[»HüL»ô]ô[ùYHX[ù[ô\à[ùô[ù\ö[»X€€∞Ï€ZX€»‹à[öYY∞Î\⁄XÿN»ö[HHXö]X⁄[€ô\»€€à[Ÿ[YY\»]]X[Y[ùH^€^Y[ù\ÀàŸ\õ»ÿ\X⁄YY»[ô‹ô\€»€€ùXö[^òY»ÿõHô]ô[ùYH»‹õ‹‹»üLô]ô[ùYH\›XõXŸ\àÿ›\X⁄pÏ€ãQàHô]îTà€€à[õ€Z[òY‹ô\ÀôX⁄\»Hÿ\X⁄YY€€\\òXõ\Àà€ÿô\ù\òH‹à\∞Î[Ÿ»HùY[ùHX€\òYHô]ô[ùYH»‹õ‹‹»HüLHô]ô[ùYH€\⁄YöXÿ\àÿ[ò[\»‹à€€ùöXùX⁄pÏ€àô]HHY]Z\⁄X⁄pÏ€ã\ÿ›Y[ù‹Àÿ[òŸ[X⁄[€ô\»H€‹›»H][ò⁄pÏ€ãàò[ö⁄[ô»‹àX\ôŸ[àô]»[[‹›òYÀõ»úù]»ô]ô[ùYH
+»ö[ò[òŸHHüLLô]ô[ùYH[[‹›ò\àô[ùZòH[ÿ[ò[\ôX›»‹à€›^òX⁄pÏ€à›[\]Z]ò[[ùK⁄[àõ€Y]\àZ‹úõ»öZõ»õ»õÿòYÀà€€\\òX⁄pÏ€àZ\€XHôX⁄K›[öYY‹\ú€€ò\À‹ôY€\»⁄[õô[»
+»‹õ‹‹»HüLLHô]ô[ùYHYY\à€€ú›[\»\ôY\Àô\‹Y\›\À€›^òX⁄[€ô\À[ùX⁄\‹»Hô\Ÿ\ùò\»€€ôö\õXY\»⁄[à]öXùX⁄pÏ€àÿõKà[XùY»‹àQ0ÓõöX€»H€€ùô\ú⁄pÏ€àò[YYHTëH
+»ô]ô[ùYHHüLLàô]ô[ùYHö[‹ö^ò\àô[ù[ò\»ÀÃÃŒL0ÎX\»€€àX⁄›\H[X[ôHÿúŸ\ùòYH[ù\»Hõ‹€ô\à\öYò\Ààô\‹ùHH‹‹ù[öYY\»€€àôX€€Y[ôX⁄pÏ€àõ»\XÿYHô]ô[ùYHHüLL»ô]ô[ùYH\›[ô\ö^ò\àõ‹Y\›\»HõŸ\Àô]\õ‹»H‹ù\‹»€€à€‹›‹»H‹⁄[€ô\»\õÿòY\ÀàY[\»H€›^òX⁄pÏ€àHX\ôŸ[àô]ö\›»ò^òXõH]ô[ù»
+»ô]ô[ùYHHüLMô]ô[ùYHÿ[›[\à[ô‹ô\€»\‹^òY»HXö]X⁄[€ô\»H\€»H\‹X⁄[‹»[ù\»H€›^ò\à[àù^[›]»]ô[ùÀàX\ôŸ[à[]ô[ù»ô]»[[⁄ò[ZY[ù»\‹^òY»]ô[ù»
+»ö[ò[òŸHHüLMH[ô‹ô\€‹»^òHYY\àX\ôŸ[àH\ÿ^][õÀ[ŸÿK›\ôãò\€Y‹»H›õ‹»Ÿ\ùöX⁄[‹»‹àô[ùHôX[à€€ùöXùX⁄pÏ€àô]H‹àŸ\ùöX⁄[»HùY[ùHô\›]\ò[ù
+»ô]ô[ùYHHüLMà[ô‹ô\€‹»^òH\›[ô›Z\à\ÿ^][õ»[ò€ZY»‹àô\Ÿ\ùòK›\öYòH[\ÿ^][õ»YX⁄[€ò[ô[ôY»»€€ú›[ZYÀà\ôX⁄À€ÿúõ»H€€ú›[[»€€ò⁄[XY‹»⁄[àÿõHÿ\ô€»ô\›]\ò[ù
+»‹õ‹‹»üLM»[ô‹ô\€‹»^òHŸúôXŸ\àYZõ‹ò\»H^\öY[ò⁄X\»YX›XY\»⁄[àõ€Y]\à[ùô[ù\ö[»»Ÿ\ùöX⁄[‹»õ»ô\öYöXÿY‹Àà\ÿHŸô\ùx°§ùô[ùHHôX€[XX⁄[€ô\»]öXùZXõ\»TëH
+»ôXŸ\[€àHüLN[ô‹ô\€‹»^òH]Y]\àÿ[òŸ[X⁄[€ô\À\ÿ›Y[ù‹»HôY[Xõ€€‹»‹àôX›\\òX⁄pÏ€à\õZ]YHH€‹›»ôX[àùYÿ\»€‹úôY⁄Y\»€€à]öY[ò⁄XH‹àô\Ÿ\ùòHô]ô[ùYH
+»ö[ò[òŸHHüLNHpÍ\‹YôX€ŸŸ\àôYYòX⁄»\ò[ùHH\›Y0ÎXH€€à€€úŸ[ù[ZY[ùÀô\‹Y\›HH⁄Y\úôN»õ»ö[ò\àô\ŸpÏX\»0ÓòõXÿ\»‹àõ›Kàÿ\€‹»ô\›Y[‹»[ù\»Hÿ[YHHÿ]\ŸòXÿ⁄pÏ€àôXŸ\[€à
+»TëHHüLåpÍ\‹Yö[ò›[\à]YZò\»ôX›\úô[ù\»Hÿ]\ÿHòpÎ^ãX[ù[ö[ZY[ùÀ€‹›»HùYXòH∞Î\⁄XÿHH⁄Y\úôKàôZ[ò⁄Y[ò⁄X\»HY[\»Hô\€€X⁄pÏ€à‹àÿ]\ÿH‹\ò][€ú»HüLåHpÍ\‹Y[€ö]‹ö^ò\àô\]X⁄pÏ€à[àY[€XH‹öY⁄[ò[Y\Xÿ\àHô\\ò\àô\‹Y\›\»⁄[àXõXÿ\à⁄[à\õÿòX⁄pÏ€ãàÿ\€‹»ùY]õ‹»ô\öYöXÿY‹ÀY[\»HôXXÿ⁄pÏ€à⁄[õô[»
+»ô\]][€àHüLåàpÍ\‹Y[Y⁄\àõ›‹»‹àXö]X⁄pÏ€ã\ôX⁄‹»H^X›]Y€€Y\ò⁄X[[ù\»H›Xö\õ\»HŸXã”’Kà€ÿô\ù\òHHÿ]0Ë[Ÿ€»H€€ùô\ú⁄pÏ€à[ù\ÀŸ\‹pÍ\»›Y[»
+»⁄[õô[»HüLå»‹\òX⁄[€ô\»YY\àXö]X⁄[€ô\»\›\»ò\»[ú‹Xÿ⁄pÏ€ãù[òÿH\]Z\\ò\à[\Y^òH€€à\‹€öXö[YYà	Hô\öYöXÿY\»[ù\»HYÿY\»H\úõ‹ô\»›\ŸZŸY\[ô»üLç‹\òX⁄[€ô\»‹ô[ò\àô\\òX⁄[€ô\»‹àŸY›\öYYõÿ⁄\»[ô\‹€öXõ\À\ôŸ[ò⁄XHH€‹›»]ö]YÀàõÿ⁄\»ôX›\\òY\»ôX[Y[ùHHY[\‹»XZ[ù[ò[òŸHüLçH‹\òX⁄[€ô\»Ÿ\›[€ò\à€€ú›[ZXõ\»‹àpÎ[ö[[ÀpË^[[À€€ú›[[»H^õ‹»H€€\òH€€\õÿòY‹Ààù\\ò\»H›ÿ⁄»H€‹›»H[ùô[ù\ö[»‹\ò][€ú»
+»\ò⁄\Ÿ\»HüLçà‹\òX⁄[€ô\»ô\Ÿ\ùò\àY[ùYY0ÍX€öXÿH\K“Q‹õ‹‹»Hò[Y\àÃçÀŸT‹XZ»Hÿ[ò[\»[ù\»HXõXÿ\ãà[òH[öYY∞Î\⁄XÿHô[ôXõK⁄[àÿõ\»ô[ù\»]H
+»ô]ô[ùYHüLç»‹\òX⁄[€ô\»YY\à€ÿô\ù\òH\›0Ï‹öXÿKúô\ÿ›\òHH\úõ‹ô\»H‹õ‹‹¯°§î›\Xò\ŸH⁄[àôXX›]ò\àTHYÿYH]\ÿYKàô\Ÿ\ùò\»ôX€€ò⁄[XY\ÀY»HYX€‹»ö\⁄Xõ\»]H	à[ùY‹ò][€ú»üLé‹\òX⁄[€ô\»õÿò\à‘ìÀ”‹[ê€]»⁄[à»€€àY[ùYYô\‹[ÀôX⁄Xõ»H⁄[à\Xÿ\àY[úÿZô\ÀàùYXòHLëKò[‹À‹ô\^K»\YÿY»‘ì»ﬁ\›[\»
+»€€[\»üLéHö[ò[ûò\»€€ò⁄[X\à‹õ‹‹Àõ›X⁄\ãò[ò€»H[Y‹òH‹à€€òŸ\À[€ôYKpÍ]Ÿ»H€‹ùKàYô\ô[ò⁄X\»[ùô\›YÿY\»HY€‹»ôX[Y[ùH€›ZòY‹»ö[ò[òŸHüLÃö[ò[ûò\»X[ù[ô\àÿZòHHÿõYÿX⁄[€ô\»õ€[ô»L0ÎX\»€€à€€ôö\õXYÀ\›[XY»H\ÿ€€õÿ⁄Y»Ÿ\\òY‹Àà€ÿô\ù\òHL0ÎX\ÀöY\Ÿ€»\]ZY^à‹à[€ôYHö[ò[òŸH
+»^Qõ›»HüLÃHö[ò[ûò\»ÿù[ô\à€€ùöXùX⁄pÏ€à[›[‹àŸ[ùõ»H€‹›»H0Î[ôXHHôY€ÿ⁄[»€€à\∞Î[Ÿ‹»€€\\òXõ\Àà	ìô\õŸX⁄XõKõ»⁄YúòH[ùô[ùYHö[ò[òŸHHüLÃàö[ò[ûò\»ô]ö\ÿ\à›\ÿ‹ö\⁄[€ô\Àõ›ôYY‹ô\À€€\ò\»H€€Z\⁄[€ô\»ù\ÿÿ[ô»Z‹úõ»⁄[àY‹òY\àÿ[YYàZ‹úõ»[ùX[^òY»€€»ò\»Y€Àÿ€€ùò]»€€\õÿòY»ö[ò[òŸH
+»\ò⁄\Ÿ\»HüLÃ»ö[ò[ûò\»]ò[X\àô[[Ÿ[X⁄[€ô\»‹à[ò‹ô[Y[ù»H€€ùöXùX⁄pÏ€ã–TVÿ›\X⁄pÏ€àHôX›\\òX⁄pÏ€àôX[àêSã‹^XòX⁄»‹à\ÿŸ[ò\ö[‹»H]öY[ò⁄XH‹ùõ€[»
+»ö[ò[òŸHàüLÕö[ò[ûò\»\›ô\ÿ\à]YK\]ZY^ãÿ[Xö[‹»H[€ôYHHÿpÎYHH[ô‹ô\€‹»[ù\»HY]Z\ö\àX›]õ‹Àà\ÿŸ[ò\ö[‹»H[Xúò[\»\õÿòY‹À⁄[àò[[òŸ\»0ÓòõX€‹»‹ùõ€[»
+»ö[ò[òŸHHüLÕH‘ì»€€òŸ[ùò\àõŸX›õ€Ÿà[à‹»LàõZõ‹»^\›[ù\»HYY\àò[‹ãõ»∞ÓõY\õ»Hõ€\ÀàõZõ‹»LëHô\öYöXÿY‹»H›XúŸ]€€àò\Ÿ[[ôH‘ì»õŸX›HüLÕà‘ì»^Y⁄\àpÎ[ö[[‹»H]]‹ö^òX⁄pÏ€ãŸ\\òX⁄pÏ€à\ú€€ò[Ÿ[\ô\ÿKôZ[ù[ù‹»Y[\›[ù\»HôXŸZ\ÀàùYXò\»ôYÿ]]ò\Àõ€òX⁄»HŸ\õ»ùYÿH[ùôHÿ€‹\»‘ì»€›ô\õò[òŸHüLÕ»‘ì»YY\à€‹›»€€\]»‹àÿ\€»]]€X]^òYÀô]òXòZõ»HZ‹úõ»[X[õ»ôX[à€‹›»X\ô⁄[ò[HZ[ù]‹»Z‹úòY‹»€€\\òXõ\»‘ì»ﬁ\›[\»HüLŒ‘ì»\^ò\à€Y[ù\»^\õõ‹»\›H\ÿ\àôXY[ô\‹»ÿ]HHõÿò\à‹ùXö[YYŸY›\òKàÿ]H›\\òY»Hì“Hô\]XõH[ù\»Hô[ô\à‘ì»õŸX›ïUTëHüLŒHõ‹Y]\ö[»ôY⁄\›ò\à[ù\úù\⁄[€ô\ÀX⁄\⁄[€ô\»H‹ò\»[õ‹Y]\ö[Œ»[Yÿ\à‹à”‘€€à\ÿÿ[[ZY[ùÀà‹ò\»ôX›\\òY\»YYY\»⁄[àôYX⁄\àŸY›\öYYÿÿ[YY‘ì»[‹H
+»€€ùõ€HüM]ö[[€ö[»õ›YŸ\àô\Ÿ\ùòHH\]ZY^àH]ô\ú⁄YöXÿ\à‹òYX[Y[ùHùY\òHH[òH€€H[\ô\ÿK›XöXÿX⁄pÏ€ãà^‹⁄X⁄pÏ€àH€€⁄0Ï€àö]òY»]ò[XY‹»‹à\ÿŸ[ò\ö[‹»‹ùõ€[»
+»ö[ò[òŸHàÇà»»»ö[Y\õ‹»ŸZ\»ô\›[Y‹»ZôX›]Xõ\À⁄[à\Xÿ\àô\‹€úÿXõ\»öH€€BÇü‹ô[àúô[ùH^\›[ùHëVHXŸ\X⁄pÏ€àÿöô]]òH\›Y»[åÃL\[ô[ò⁄XHHõ›Xÿ⁄pÏ€àüKKHKKHKKHKKHKKHüHô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿ
+»‹õ‹‹À’ŸT‹XZ»ô\€€ô\àÃç»
+»öYŸ[ùKÃé\›0Ï‹öX€ H⁄[àÿõHô[ùKõÿò\à[õXŸ\Àÿ[ò[\»Hõ‹]Y[»ôXÎ\õÿ€Œ»€€úŸ\ùò\à\H0ÍX€öX€Àà
+äêì‘UQPQ äàHùYXòHLëH€€\]N»X\[‹»[ù\õõ‹»ô]öX[Y[ùH€‹úôY⁄Y‹ÀàŸ\⁄pÏ€ãŸùY[ùH‹õ‹‹À’ŸT‹XZ»[ZôX›]‹àõ‹Y]\ö[Œ»õ»Y]\àô\Ÿ\ùò\»öH\öYò\»⁄[àÿ]Kàüà›[ö[ò[òŸH
+»‹õ‹‹»
+»[Y‹òH0Î[ôXHò\ŸHY[ú›X[€€\\òXõHHÿ›\X⁄pÏ€ãQãô]îTã€€ùöXùX⁄pÏ€à‹àÿ[ò[ÿZòHHÿ\›‹Œ»[ôXÿ\à€ÿô\ù\òKôX⁄HH[€ôYKà
+äìì◊”QQQ äà[à\›HX›X[^òX⁄pÏ€é»õ»[ù\úô]\à€ò\⁄›€€[»ö]õÀàX›\òHöYŸ[ùH‹õ‹‹»⁄[àTHYÿYKŸ[ùõ‹»H€‹›Àÿ€€ùXö[YY€€ò⁄[XY‹Ààü»⁄[õô[À–õ€⁄⁄[ô»õÿò\àT—L‹àXö]X⁄pÏ€à’HHT—L‹àö[H€€\]H‹à\›Y0ÎXKZ[öOL\ôX›OL»8†$ŒKÃLà€€à€€ôX⁄[€ô\»Y0Í[ùXÿ\Àÿ\ô€»[òH€€Hô^ãà
+äîTê“PS»SëQSïJäà‹àÿ[ò[»õ»X€\ò\àô[ùZòHX€€∞Ï€ZXÿHöZòKà€›Zõ»’x°§í‹õ‹‹À^\À‹€X⁄Y\À‹õ€[‹Œ»õ»[\ò\àô\Ÿ\ùò\»^\›[ù\Ààüô]ô[ùYK—]ô[ù»H›Y\›[Y⁄\à€€X⁄]Y\»HõŸ\ÀŸ‹ù\‹»XHXöY\ù\ÀYY\à€›^òX⁄pÏ€∏°§ò[ùX⁄\¯°§ò€€ôö\õXX⁄pÏ€àHX\ôŸ[à[]ô[ù»ô]»[[⁄ò[ZY[ù»\‹^òYÀà
+äîì‘QT’ äà€€[»pÍ]öXÿH[ùY‹ò[»õ‹Y\›\»\›0Ï‹öXÿ\»õ»€€àô[ù\Àà[ùô[ù\ö[»∞Î\⁄X€À€‹›‹»Hõ›ôYY‹ô\»H]]‹ö^òX⁄pÏ€à[ù\»H[ùöX\àŸô\ù\ÀàüH›[‹\ò][€úÀ’‘ì»ﬁ\›[\»[[‹›ò\à‹\òX⁄[€ô\»ô\õŸX⁄Xõ\»€€à‹õ‹‹¯°§î›\Xò\ŸHúô\ÿ›\òHö\⁄XõK‹[ê€]À’⁄]–\HùYXòH⁄[à»\òHÿ\X⁄YY\»]]‹ö^òY\Àà
+äê””ëíQ’TêQ◊”ì◊’ëTíQíP–Q äà€€[»õZõ»^ô[[»H^ô[[ÀàXÿŸ\€À⁄Y[ùYY‹ù[ù[YHôX[\ÀôZ[ù[ù‹»HôX⁄Xõ‹Œ»õ»‹ôX\à›õ»ÿ]]ÿ^Kàüà‘ì»õŸX›õ€Ÿã‘‹ùõ€[»YY\à‹ò\»Hõ‹Y]\ö[»Xô\òY\À€‹›»‹àõZõ»Hì“HHLàõZõ‹»^\›[ù\»[ù\»H[›‹»^\õõ‹Àà
+äîì‘QT’ äé»ÿ]H^\õõ»⁄Y›YHõ‹]YXYÀàò\Ÿ[[ô\»HùYXò\»LëKÿZ\€[ZY[ùÀô]ö\⁄pÏ€à€€Y\ò⁄X[»⁄[àX\öŸ][ô»Hô\›[Y‹»õ»€€\õÿòY‹ÀàÇà»»»ÿY[ò⁄XHH‹ö^õ€ùHõ‹Y\›»
+õ»ôX⁄\»€€ùòX›X[\ BÇãH
+äååÃL8†$ÃÀÃLNääàY[ùYöXÿ\àùY[ù\»öYŸ[ù\»H€ÿô\ù\òK[\^ò\àò\Ÿ[[ôH[›[H€€ùõ€⁄[\HH‹ò\À⁄[ù\úù\‹ô\»[õ‹Y]\ö[Œ»ô\€€ô\àö[Y\õ»öY\Ÿ€‹»X›]õ‹ÀÇãH
+äåÃLx†$ÃNKÃLNääàŸ\úò\à[ö[Y\à›HH\öYY€€Y\ò⁄X[H€€ò⁄[XX⁄pÏ€é»XõXÿ\à0ÓõöXÿ[Y[ùHYZõ‹ò\»]]‹ö^òY\»€€àùYXò\ÀàYY\àYô\ô[ò⁄X\»[ùôH[ù\»H\‹pÍ\ÀÇãH
+äååÃLx†$ÃNKÃLéääà^\ö[Y[ù\à€€à[òHYZõ‹òHHô\Ÿ\ùòH\ôX›K[òHŸô\ùHH]ô[ù‹»H[à\Ÿ[€€à[õ€Z[òY‹àH€‹›»ô\öYöXÿXõ\Œ»õ»[ùô[ù\à€€ùô\ú⁄[€ô\»»[ô‹ô\€‹ÀÇãH
+äååÃL∏†$ÃNÃNääà€€\\ò\à€€ùöXùX⁄pÏ€à[ò‹ô[Y[ù[Y[\»ôX[Y[ùHZ‹úòY»H€‹›»›[H‘ìŒ»€€ù[ùX\ã⁄[\YöXÿ\ãô]\ò\à»[ùô\ù\à€€»€€à]öY[ò⁄XHH\õÿòX⁄pÏ€àHõ€ô‹ÀÇÇääîëUíT“p‰”àVT’SïNääà€€ú›[Z\àôX[Xÿ]⁄\à0≠»ZôX›X⁄pÏ€à[[ò
+€€‹ô[òY‹àò[ú›ô\úÿ[€€àõŸ‹ò[XX⁄pÏ€à‹ò\öXHô\öYöXÿYH[à[Ÿ\›‹àH\ôX\»[åÃLÃåçäHH‹»⁄Y\úô\À‹ô\‹ù\»Ÿ[X[ò[\»HY[ú›X[\»XHõŸ‹ò[XY‹Œ»€€‹ô[ò\à€€à‹»ô\‹€úÿXõ\»HÃçÀ’K’ö\Yö\€‹ã[Y‹òK‹[ê€]»H]Y]‹∞ÎX\À⁄[àôX€[X\àX\Ÿ\»öHô\]\à\ôX\ÀàÿYH⁄X€»[YŸH[òH[öYY\ÿõ‹]YXYKZòH]öY[ò⁄XHHô^ÿX›[€ò»HõŸ‹ò[XX⁄pÏ€àõ»X‹ôY]H]]€õ€pÎXH\õX[ô[ùKà‹»ôX⁄Xõ‹»ù][ò\ö[‹»ŸH›X\ô[à[à\›Y»ö]òY»‘ìÀõ»ŸH€€òÿ][ò[à€€[»ô\‹ù\»[[àŸ[ô\ò[ÇÇääîõ›Xÿ⁄pÏ€àH]‹Œääà\›Hô\‹⁄]‹ö[»\»0ÓòõX€Œ»õ»Y‹ôYÿ\àÿ[‹À›Y[ù\Àÿ›[Y[ù‹»\ú€€ò[\À\›Y‹»HpÍ\‹Y\Àÿ[\ö[‹À]Y\ÀŸX‹ô]‹»öH]‹»]ö[[€öX[\»ö]òY‹Àà‹»ò[‹ô\»H[ùô\ú⁄pÏ€àHùYôô\àŸH]ò[0Óò[à[à‘ì»\ú€€ò[—ö[ò[òŸH€€àXÿŸ\€»‹à0Ë[Xö]Àà[\ô[ô^òZôHô]\ÿXõHH‘ì»ŸHXú›òYH⁄[à[ôõ‹õXX⁄pÏ€àö]òYHHôX[Xÿ]⁄\ãÇÇääëT’Q»HT’H—P–“p‰”éääàP“»H\ôX›]òH\›ò]0ÍY⁄XÿHH›X\ô[ùH‹ö]\ö[‹»[ò€‹ú‹òY‹»HHÿ›[Y[ùX⁄pÏ€à[ÿ[ôY]»ô\ú⁄[€òY»ò\»ã–“K€Y\ôŸN»ì‘QT’»HŸZ\»[öYY\»ZôX›]Xõ\»H‹ö^õ€ùN»ì‘UQPQÀ—T–””ì–“Q»H€ÿô\ù\òHH]‹ÀŸYôX›»X€€∞Ï€ZX€»‹àYY\ãàö[ôÓõà‹ö]\ö[»HHXõHX‹ôY]H[òH€‹úôXÿ⁄pÏ€à[TÀ[òH]]€X]^òX⁄pÏ€à\‹YÿYK[à[ô‹ô\€»^òHöH[òHX⁄\⁄pÏ€àH[ùô\ú⁄pÏ€àZôX›]YKÇÇà»»»⁄X⁄‹⁄[ù0ÍX€öX€»Là»Lç»»LÕà8†%åÃLÃåçã€‹›HöXÿBÇääíP“»ô\öYöXÿY»[àÏŸY€Œääà‘àÃÕJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕ
+Hù\⁄[€òYHHXZ[ò€€[Z]NNLçŒŸåŒLÕÿMŒXòåMçòåÕNYôéLLÕôà[Ÿ\ôXúõ»XHõ»XôH[‹›ò\à€€[»ôXYK⁄X[K›ô\öYöYY[òHùY[ùHYô\öYH
+]ôW‹ô\]Z\ôYYò[ŸX
+KÿYXÿYK€€àôX⁄H]\Ÿ[ùKŸù]\òH»]YH›\\ôHŸZ\»‹ò\À][ú]YH[à[ôXÿY‹àZ\€Y»YÿHÿYôWŸõ‹óÿ›\úô[ù‹›]O]ùYXàùYXò\»àôY‹ô\⁄[€ô\»ëQ[à“HHùYXò\»[ù\ö[‹àH\[[ôH€€\]»‘ëQSà[à“H[\ò⁄N»X›\òH‹›\ö[‹à€€ôö\õpÏ»‹»\ò⁄]õ‹»[àXZ[ãà\›»õ»[]Y\›òH\‹YY›YHöHXŸ\X⁄pÏ€àHŸ\⁄pÏ€àôX[ÇÇääì–î—TïêQ»[à›\Xò\ŸK€€»€€ú›[HY‹ôYÿYHåÃLääà‹\ò][€úÀúô\Ÿ\ùò][€úÿ€€ùY[ôH
+äçåÕLàö[\»ùY[ùH‹õ‹‹ äãH\»›X[\»
+äçåÕL
+äà\›0Ë[à[àô]öY]ÿH
+äåääà[à€€ôõX›Ÿ\»€€à€›\òŸW⁄\◊€]ôOYò[ŸX»‹\ò][€úÀò›\úô[ù‹ô\Ÿ\ùò][€ú◊‹ÿYôX]ùY[ôH
+äå
+äãà[ôY⁄\›õ»ùY[ùHpË\»ôX⁄Y[ùH[ôXÿH€ò\⁄›ÿ\◊€ŸèLåçãLLLååéåŒåÕéNäÃ\õ»[òHôX⁄HH[\‹ùX⁄pÏ€àôX⁄Y[ùHõ»\]Z]ò[HHùYXòH€€Y\ò⁄X[ö]òKà[ùY‹ò][€úÀö‹õ‹‹◊‹€ò\⁄›⁄X[]Y\›òHùY[ù\»\›0Ï‹öXÿ\ÀŸYô\úôY€€àúô\⁄ô\‹◊‹›]\œ\›[X]ôW‹ô\]Z\ôYYò[ŸXHÿYôWŸõ‹óÿ›\úô[ù‹›]O]ùYXàHô\Ÿ[ùX⁄pÏ€àXôH[ù\úô]\à€€öù[ù[Y[ùHŸ‹»‹»[ôXÿY‹ô\Àà\›\»€€àö[\Àõ»ô\Ÿ\ùò\»0ÓõöXÿ\»öH€ÿô\ù\òH\›0Ï‹öXÿH€€\]Kà[XY€∞Ï‹›X€»HÃ»ö[\»HŸ\Y[XúôH\»€‹ùH\›0Ï‹öX€Àõ»[ùô[ù\ö[»X›X[ÇÇääíP“»[àÏŸY€»
+õ»[àŸ\⁄pÏ€àõŸX›]òJNääà⁄Y]HôY⁄\›õ‹»‹\ò][€úÀúõ⁄ôX›ÿ\›0Ë[à[à\›Y»ì’ÿHX›]ôO]ùYXà‘àÃÕWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕJH]YY0Ï»ù\⁄[€òYH[àXZ[ò
+€€[Z]ÃôMçÿôòLNLMåLÿLLéçŸYŒXMXMYYôòŸYMåŸÿ“HHôXYòX⁄»\õÿòY‹ NàôX€€õÿŸHì’ÿ€€[»X›]ôXHôX⁄^òH[Y\›[\»ù]\õ‹À⁄[ù∞Ë[Y‹»€€[»öYŸ[ò⁄XH€€\õÿòYKà[ôY[ùHPH[‹ù[\‹YÿY»€€àŸ\⁄pÏ€à]]‹ö^òYKÇÇääê–SQQH’H””ê‘ëUŒääàŸHÿúŸ\ùò\õ€àåÕLàY[ùYY\»€€\Y\›\»\›[ù\»
+‹ô◊⁄Yõ‹\ùW⁄Y^\õò[‹ô\Ÿ\ùò][€ó⁄Y
+K⁄[àò[‹ô\»ù[‹»HY[ùYY^\õòKà^\›[àö[\»⁄[àõ€€W⁄YöHõ€€Wÿ€ŸW‹ò]ÿçà⁄[àÿ[ò[»[òHH\»Y[ôH\›[ò⁄XHù]\òKô\]ZY\ôHô]ö\⁄pÏ€à[à‹õ‹‹»‹à[ô\‹€úÿXõH[ÿ\úö[⁄[à€‹X\õH[ô\‹⁄]‹ö[Àà[ùY‹ò][€úÀö[\‹ù‹ù[úÿôY⁄\›òH[à›Hô\Ÿ\ùò][€ó€\›ÿ€€\]WÃåçåLå€€à\›Y»ÿYYåÕLàö[\»X€\òY\»H\úõ‹ô\»X€\òY‹Œ»\»]öY[ò⁄XHHÿ\ôÿKõ»Ÿ\ùYöXÿX⁄pÏ€àH\öYY€€à‹õ‹‹»öH⁄[ò‹õ€ö^òX⁄pÏ€à]ôKàõ»ôX€\⁄YöXÿ\àHò\ŸH€€[»L	H∞Ë[YHH\ù\àH\›‹»€€ù[‹ÀÇÇääî∞‰÷SPHSíQQ“SàTP–TàêPêRìŒääà[YpÏ[»[ÿ\úö[H[\‹ùX⁄pÏ€à‹õ‹‹À‘àÃÃMHô]ò[YHùY[ù\ÀåÕLàö[\À€€ôõX›‹ÀY\XÿX⁄pÏ€à‹à‹ô◊⁄Y
+‹õ‹\ùW⁄Y
+Ÿ^\õò[‹ô\Ÿ\ùò][€ó⁄Yù[ã‹ôXŸZ\H[\‹ùX⁄pÏ€àH[à⁄X€»[ò‹ô[Y[ù[]]‹ö^òYÀàX[ù[ô\à\YÿYHHTHYÿKàõÿò\àHô\Ÿ[ùX⁄pÏ€à[Ÿ\ôXúõ»]][ùXÿYH€€»ò\»“HHXõXÿX⁄pÏ€àô\öYöXÿYKàö[ôÓõà\⁄õÿ\ôXôHÿ[›[\àÿ›\X⁄pÏ€ãô[ù\»öHô\Ÿ\ùò\»X›X[\»H\ù\àH\ÿ\»åÕLàö[\»\›H›\\ò\à]]‹öYY€€\]]YôX€€ò⁄[XX⁄pÏ€àHöYŸ[ò⁄XKà‹»ôY⁄\›õ‹»ö[ò[ò⁄Y\õ‹»HHpÍ\‹Y\»\õX[ôXŸ[àö]òY‹Œ»\›H⁄X⁄‹⁄[ù€€ùY[ôH€€»Y‹ôYÿY‹ÀÇÇà»»»ö[‹öYYHôX⁄\⁄pÏ€àHô[ùXö[YY8†%€‹úôXÿ⁄[€ô\»ô\öYöXÿY\»åÃLÃåçÇÇääíP“»8†%ö[ò[ò⁄Y\õŒääà‘àÃÕóJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕäHù\⁄[€òYH[àXZ[ò
+€€[Z]NòYåÕLÃŒŸYÕÿòŒLÕòôŸççYåYçÕNMÿò»“H
+»ôXYòX⁄ Nà›€ô\à][ù[€à\›[ô›YH‹àÏŸY€»YK›[úZY€›ô\ôYXô[ò⁄Y»H[ö€õ›€òY€»ô\‹ùY»»\‹]KàH[\ùHHY€»õ»òXŸH0ÓõöXÿ[Y[ùHH[òHôX⁄H[ùY›XN»[›[ÿ›[Y[ù[HòX›\òHŸHõ›[H€€[»\›[ù»Hÿ[»^Y⁄XõH[àﬁHH‹ù[àX›\òHY‹ôYÿYHHÿ›XúôNàL»[ö€õ›€ò€€àôX⁄H\ÿYH
+»L^[Y[ù‹ô\‹ùY
+»à\‹]Y‹»
+»àX\òÿY‹»õ◊‹^[Y[ùŸYWŸ^ò[ô]›ô\öYöYYH
+äåç»ÿ[ôY]‹»H[\ùH[ôÿpÏ[‹ÿJäãõ»ç»]Y\»öH[àZ‹úõ»›X[ùYöXÿYÀà[[àö[ò[ò⁄Y\õ»^\›[ùH€€úŸ\ùòHH^XÿX⁄pÏ€àHôX€€ò⁄[XX⁄pÏ€é»ö[ôÓõà\⁄Y[ùÀY€»»]YHùYH[\òYÀÇÇääíP“»8†%Ÿ\ôXúõŒääà‘àÃÕ◊JŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃÕ Hù\⁄[€òYH[àXZ[ò
+€€[Z]òYççNXÿLçåLÃLYNÃÕŒYXNôòLNLÕÿ»“H
+»ôXYòX⁄ Kà\»LôY€\»H]]‹öYY\õ›ôY]YH]ùY[ôH›\Xò\ŸHŸHôX€€õÿŸ[à€‹úôX›[Y[ùH€€[»€0Î]XÿHô]ö\ÿYH›X[ô»^HôX⁄H∞Ë[YN»ôY€\»ô]\òY\À‹⁄[àô]ö\⁄pÏ€à\õX[ôXŸ[àõ»ô\öYöXÿY\»H€›\òŸ\÷◊Kò]]‹ö]]]ôXZòHHX\òÿ\úŸH‹àYôX›Àà€ÿô\õò[ûòH€€àúô\ÿ›\òH[ö€õ›€òõ»]YYHôXYX][ú]YH[ÿ[òŸHÿ[YYÿöô]]õÀà
+äîôY€H\õÿòYH8¢hõ›ôYY‹à€€ôX›YŒ»ÏŸY€»õÿòY»8¢hô\ú⁄pÏ€à\‹YÿYN»€‹úöYHõŸ‹ò[XYH8¢hZ‹úõ»ôX[ääÇÇääíSëP–Q‘àL0Â»8†%\‹\òX⁄pÏ€ãì»ô\›[YŒääàõ»X€\ò\à][\XÿY‹ô\»‹à∞ÓõY\õ»HôY€\Àÿ›[Y[ù‹À\ôX\À⁄Ÿ[úÀãYŸ[ù\»öH]]€X]^òX⁄[€ô\Àà€€»YY\à€€ùòH[à\∞Î[Ÿ»ò\ŸH€€\\òXõK‹àúô[ùHH⁄[à0Í\ôYHHÿ[YYà
+JH[ò‹ô[Y[ù»H€€ùöXùX⁄pÏ€àô]H€€\õÿòYŒ»
+äH‹ò\»ôX[\»[õ‹Y]\ö[»Xô\òY\Œ»
+ HôYXÿ⁄pÏ€àHô\õÿŸ\€À›Y[\»‹àÿ\€À\ÿ€€ù[ô»€‹›»€€\]»HPHH›\\ùö\⁄pÏ€ãà⁄[à]‹»€€\\òXõ\»[[ôXÿY‹à\õX[ôXŸHì◊”QQQÿà[›‹»‹à›\»ô]ô\ú⁄Xõ\»€€àô\‹€úÿXõHù[ò⁄[€ò[ùYXòK€‹›»HôX⁄HH€‹ùKÇÇääìëV⁄[à\XÿX⁄pÏ€éääàô]][^ò\à‹»ÿ\úö[\»‹õ‹‹À’ŸT‹XZÀ[Y‹òK‘^Qõ›»HôX[Xÿ]⁄\à0≠»ZôX›X⁄pÏ€à[[òXH‹ò\ö[‹Ààö[Y\õ»PH[Z\€[»“H\‹YÿY»€€àŸ\⁄pÏ€à]]‹ö^òYK⁄[àXõXÿX⁄[€ô\»‹à[ôô\ô[ò⁄XN»YY€»€€ò⁄[X\àö[ò[òŸKö[ùõ⁄XŸ\ÿ€€àÿ[ÀŸ\›Y»ôX[HùY[ùH‹õ‹‹»€€àúô\ÿ›\òK‹\öYY[ù\»H€€\]\àÿ›\X⁄pÏ€ã–Qãÿ€€ùöXùX⁄pÏ€ãàõ»‹ôX\à[àùY]õ»\⁄õÿ\ô»ÿ⁄Y[\ãà‹»Z‹úõ‹Àÿ⁄Y\úô\»õ»ŸHX€\ò[à\›H[ô\àôX⁄Xõ»‹\òX⁄[€ò[€€\\òX⁄pÏ€àK€ôH\\]YK]öY[ò⁄XHò[òÿ\öXH»ùY[ùHTÀÇÇà»»»íSêSê—W–êT—SSëW‘ëP””ê“SH8†%åÃLÃåçà
+Lã—LéK—LÃN»⁄[à⁄Yúò\»ö]òY\»[à⁄]XäBÇääì–î—TïêQÀõ»Ÿ\úòYŒääàHô[X›\òHò]]òHH[Y‹òKŸ[ùõ»ëPSP–U“TàQK€€à\∞Î[Ÿ»KÃx†$ÃÃÃKÃåçàõŸZõ»›[\»€€ùXõ\»\›[ù‹»HH^òXÿ⁄pÏ€à\ò⁄]òYH[ÃÃN»ò\∞ÎX[àÿ\›‹À[\Y\›‹»Hô[ôYöX⁄[»ô]Ààõ»€€ùô\ù\à\ÿHYô\ô[ò⁄XHHô\ú⁄[€ô\»[à[àùY]õ»ÿ\›»\Ÿ[Xõ€ÿY»öHôXÿ[›[\à]]€pË]Xÿ[Y[ùH‹»\€‹»H\öYòK‘ì“Kà\»⁄Yúò\»ùY]ò\»H[[∞Ë[\⁄\»Hò\öXX⁄pÏ€à€€à[ù\õõ‹Œ»[ô\‹⁄]‹ö[»0ÓòõX€»€€úŸ\ùòH0ÓõöXÿ[Y[ùH[\›Y»HHY]Ÿ€ŸÎXKàÿ›XúôHx†$Ãå\›0ËH
+äêPíQTï»»Tê“PS
+äã€€à€€Z\⁄[€ô\»’HpÓõà⁄[àôY⁄\›ò\à[à[€‹ùHpÎYŒàõ»€€ò€Z\àX\ôŸ[ãÿ›\X⁄pÏ€àöHZ‹úõ»H\ù\àH\ŸH\∞Î[ŸÀàÇääìëVääàô]][^ò\à‘ì»ö[ò[òŸK—íS”êK^Qõ›»Hÿ‹À‹õŸX›—ëPSP–U“Tó—íSêSê“PS–””ïì”–—SïTó’åKõY
+ŸXÿ⁄pÏ€à
+î€›\òŸK]ò[Y]Hÿ]JäH\òH€€\\ò\àô\‹ù\»[Y‹òH‹àôX⁄K‹ÿ€‹KÿŸ[ùõÀ[ò€€ùò\à€€\õÿò[ù\»H‹»Zù\›\À€€ôö\õX\à[ùYYô[ôYöX⁄X\öXHH›X\ô\à[àôX⁄Xõ»ô\ú⁄[€òY»‹à€€ùõ€[ôKà\›H€€ò⁄[X\ãX[ù[ô\à	ìP”‘ïW‘SëQSïW–””ê“SPP“S”òÿ\⁄Sì◊–””Tì–êQÿöX⁄[ô◊Ÿõ€‹èSì◊–Tì–êQÿ»õ»‹ôX\à›õ»⁄\›[XHöH[ŸYöXÿ\à\⁄Y[ù‹ÀÇÇèKKHSëì’”ëTó–RW’—PS‘’êUQ÷WÃåçåLåKOÇÇèKKHëQ“SéîUíSS”ñW‘ëQ“T’ñW–SQ”ìQSïÃåçåLåKOÇà»»[[ôXX⁄pÏ€à]ö[[€öX[ôY⁄\›õ»òX⁄[€ò[8°•›\Xò\ŸH8°•Z\ùXõH8†%åÃLÃåçÇÇääê’TîëSï8†%ô\öYöXÿYŒääà[ôY⁄\›õ»]ö[[€öX[õ‹õX[^òY»\õX[ôXŸH[à[0Ë[Xö]»ö]òY»ÿ[∞Ï€öX€»H›\Xò\ŸK€€àZ\€[ZY[ù»‹àö[\»H[òH0ÓõöXÿHZY‹òX⁄pÏ€àH[öX⁄X[^òX⁄pÏ€àXH\XÿYKà\›H[[ôXX⁄pÏ€àõ»ôYZôX›]H‘Sõ»\XÿH]‹»Hõ»^€ôH[\‹]Y[XH‹àHTH0ÓòõXÿKà[à[‹ùYõ€[»^\›[ùK[òXòZõ»\ù[ôXŸHHõ‹\ùWÿ€‹ú‹ò]W‹‹ùõ€[ÿ»ÿXù^XH€€úŸ\ùòH›HõﬁYX›»Ÿ\\òY»ÿXù^XW‹\ò⁄\ŸW‹ôY›[\ö^ò][€òà⁄]XàôX⁄XôH0ÓõöXÿ[Y[ùH€ÿöY\õõ»H\›Y»ÿ[ö]^òY‹À⁄[àY[ùYöXÿY‹ô\»\ú€€ò[\À0Î][‹Àò[‹ô\À]Y\À\⁄\»öHôYô\ô[ò⁄X\»ö]òY\ÀÇÇääê]]‹öYYHõﬁYXÿ⁄pÏ€éääàôY⁄\›õ»òX⁄[€ò[€€úŸ\ùòH]]‹öYYYÿ[€ÿúôH\⁄Y[ù‹À][\öYYHÿ›[Y[ù‹»[Z]Y‹Œ»›\Xò\ŸH€€úŸ\ùòH[[Ÿ[»ö]òY»õ‹õX[^òYÀõÿŸY[ò⁄XKô[X⁄[€ô\À€€ôõX›‹»H]Y]‹∞ÎXN»Z\ùXõHŸ[ùò[€€úŸ\ùòH[òH€€HöX⁄H€›\òŸW€ÿöôX›ÿ€€[»õﬁYXÿ⁄pÏ€à[X[òH[€ò\⁄›[õ^òYH0ÏŸ⁄Xÿ[Y[ùH[\›[õ»ö]òY»Hõ»€€[»€‹XH[€€ù[öY»]ö[[€öX[»õ‹õﬁ€€úŸ\ùòH‹öY⁄[ò[\»H^YY[ù\»›X[ô»€‹úô\‹€ôN»[[àŸ[ô\ò[€ÿöY\õòH[ÿ[òŸKX⁄\⁄[€ô\»H⁄Y›ZY[ùHXÿ⁄pÏ€ãà[òHõﬁYXÿ⁄pÏ€ã0Î[ôXŸH»[ù\úô]X⁄pÏ€àH‘ì»õ»›\›]^YH[ÿ›[Y[ù»ŸöX⁄X[ÇÇääê[Y‹òH8†%ëTTêQÀ’Sî‘’Qääàõ»ŸH‹ôXH\⁄Y[ùÀX›]õ»öZõÀ]YKY€»öHÿ[»[öX⁄X[àH]öY[ò⁄XHôY⁄\›ò[õ»ùYXòH‹àÎH€€H€‹›»€€ùXõKò\ŸHö\ÿÿ[ÿõYÿX⁄pÏ€à^Y⁄XõK[€ôYK[ùYY€€ùXõH»€€ùò\\ùYKà›X[]ZY\à€€ùXö[^òX⁄pÏ€àù]\òH^YŸH[ùYYô\öYöXÿYKò][ZY[ù»\õÿòYÀÿ›[Y[ù»€‹‹ùK\ö[ŸÀ[€ù»H]]‹ö^òX⁄pÏ€à\‹XÎYöXÿKŸY›ZYHHX›\òH‹›\ö[‹à[à[Y‹òKà\›H[ù€òŸ\»[\›Y»õ»Y[ôHYôX›»[àXúõ‹ÀÇÇääîíSQTà””î’SRQ‘à8†%î»TP–QHHëTíQíP–QNääà[ô\›[Y[à[ù\õõ»›€ô\à\òHX]\öX⁄[»]YY0Ï»\XÿY»[òH€€Hô^à€€[»î»—P’TíUHSïì“—Tã€€àÿõHÿ]Hì’SëTà
+»QRSàHô\‹Y\›HY‹ôYÿYKàôXYòX⁄»€€ôö\õpÏ»P”€€»]][ùXÿ]YŸX\ò⁄‹]òXÎ[ÀìÀ‹€0Î]Xÿ\Àÿ€€ù[‹»⁄[à\ö]òK\‹]Y[XH]ö[[€ûXùY\òHH]HTHH[ôYÿX⁄[€ô\»\òH[õ€ò⁄[àì’SëTã⁄[àQRSàX›]õÀX›‹àõ‹öòY»H›òH‹ôÿ[ö^òX⁄pÏ€ãà€€»[ò€^YHô\ú⁄pÏ€ãŸôX⁄H[€ò\⁄›€€ù[‹»‹àò[Z[XHH€€ôõX›‹»‹à\›YÀ‹Ÿ]ô\öYY»^€^YHõ€Xúô\ÀY[ùYöXÿY‹ô\Àõ€[‹ÀXÿ\À[€ù‹À\⁄\Àù]\Àÿ›[Y[ù‹»Hÿ[\‹»]Z[ÿàHàÃÃÕ»HHZY‹òX⁄pÏ€à0ÓõöXÿH]YY[àôY⁄\›òY\»[à’‘ì»]ö[[€ûH›€ô\à›[[X\ûHåWJ‘ì◊‘UíSS”ñW”’”ëTó‘’SSPTñW’åKõY
+Kàõ»^\›HRKù]H0ÓòõXÿHöH\õZ\€»H\ÿ‹ö]\òKÇÇääì‘Sê”UÀ”Q“–RS8†%’TîëSï»Të—U»ëVääà[⁄X⁄‹⁄[ùöYŸ[ùHôY⁄\›òH[ÿ]]ÿ^HõŸX›]õ»0ÓõöX€»‹õÀ[‹[ò€]ÀYÿ]]ÿ^KLX[àU‘»Y⁄ÿZ[H[ù[ù[YHÿÿ[€€[»ô\‹[»ú∞Î[Œ»\›H[öYYõ»]õ»XÿŸ\€»‘“\òHôX]Y]\à[‹›àôXYòX⁄»H›\Xò\ŸH[åÃL€€ôö\õXH]YH[0Ë[Xö]»]ö[[€öX[ö]òY»Y[ôHY[Xúô\ÎXH›€ô\àX›]òHHõ€QRSã\õ»
+äåö[ô[ô‹»‹[ê€]ÀŸ\⁄[€ô\»HôXŸZ\ äãà[0ÓõöX€»ö[ô[ô»‹[ê€]»ÿúŸ\ùòY»\ù[ôXŸHH›òH‹ôÿ[ö^òX⁄pÏ€ãà‹àö]òX⁄YY[ÿ[ò[›[\õ»õ»YYH€€ùô\ù\úŸH[\0ÎX⁄][Y[ùH[à€€ú›[ZY‹à]ö[[€öX[öH‹ù^ò\à‹ôÿ[ö^òX⁄[€ô\ÀàTë—Uàô]][^ò\à[Z\€[»‹›€›Y€€à[òHŸ\⁄pÏ€àö]òYHô\öYöXÿYK⁄Ÿ[àï’ôX[[\›X\ö[»Hÿ\X⁄YY^X›H]ö[[€ûKõ›€ô\ó‹›[[X\ûKúôXY»ù[òÿHŸ\ùöXŸW‹õ€X‹ù\À‹ù[0ÓòõX€»»XÿŸ\€»\ôX›»HXõ\ÀàëVà‹ôX\ã‹ôX€€ò⁄[X\à[ö[ô[ô»ö]òY»Hõÿò\à[òHX›\òHôX[‹⁄]]òHH[ôYÿX⁄[€ô\À€€àôXŸZ\\òXõK⁄[à›òHZY‹òX⁄pÏ€à»ÿ]]ÿ^KÇÇääåÃYZõ‹ò\»\XÿY\»[ÿ[ôY]Àõ»[ù[ù[YNääà‹òÀŸôX]\ô\À€‹[ò€]À‹]ö[[€ûK[›€ô\ã\›[[X\ûKùÿ[\[Y[ùHôZ[ùH€€ùõ€\»òZ[X€‹ŸY€ÿúôH‹›€›Y‹ö]\à0ÓõöX€Àÿ[ò[ÿ›Y[ùHõ›Y⁄Y‹Àÿ€‹Hö]òYÀ€€ùô\úÿX⁄pÏ€à\ôX›Kö[ô[ô»ô\öYöXÿYÀÿX›]õÀ€⁄[ò⁄Y[ò⁄XHH‹ôÿ[ö^òX⁄pÏ€ãŸ\⁄pÏ€àX›]òK€õ»ô]õÿÿYK€õ»^\òYKX›‹ãY[Xúô\ÎXKQRSãì’SëTãÿ\Xö[]Kï’H\›X\ö[Àî»^X›Kúô\ÿ›\òK[Y[›][ù[ù»0ÓõöX€ÀY[\›[ò⁄XKÿ€‹úô[X⁄pÏ€ãŸ‹»ÿ[ôXY‹»Hò[YX⁄pÏ€à[^[ÿYY‹ôYÿYÀà\»ùYXò\»⁄[ù0Í]Xÿ\»€€àô\]Z\⁄]»Hã–“N»õ»X‹ôY][à\‹YY›YH[àY⁄ÿZ[öH‹ôX[àY[ùYYà[€€ùò]»›Xõ‹ô[òY»[ù[Y\òHÿYH€€ùõ€H›Hÿ]HHX›]òX⁄pÏ€ãÇèKKHSëîUíSS”ñW‘ëQ“T’ñW–SQ”ìQSïÃåçåLåKOÇÇà»»ôX[Xÿ]⁄\à8†%€€Y[ù\ö[‹»ö]òY‹»HôX›\\òX⁄pÏ€àŸY›\òH
+ô\\ôK[€õJH8†%MÀÃLÃåçÇÇääê“P“‘“Sï—ëQQêP“◊‘–QëUW’åWÃåçåLMÀääà0‡[Xö]ŒàõﬁYX›»^\›[ùHôX[Xÿ]⁄\ó⁄›[‹ôZ[ùô\›Y[ùÃåçò‘ì»€€[\»
+»‘ì»‹\ò][€ú»
+»ôYô\ô[ò⁄XHôX[Xÿ]⁄\ãà
+äê’TîëSï€€\õÿòY»[àÏŸY€Àõ»\‹YÿYŒääà[€€ùò]»^\›[ùHô\\ôQ›Y\›Ÿ\ùöXŸTôX€›ô\ûX⁄Y›YH⁄[à[ùöX\àY[úÿZô\»öHZôX›]\à\ÿ‹ö]\ò\»HZ‹òH[ò€‹ú‹òH⁄[ò€»€€ùõ€\»X]\öX[\ŒÇÇåKà
+äë[õXŸ\»ô\›Y[‹ŒääàôX⁄^òHX\òÿY‹ô\»€€[»‘íUêUW—ëQQêP“◊”Sí◊XHTì»õ»»[ù\»H]YH[òHù]HH[ù∞Î[»YYH€€ú›[Z\õ\ÀÇåãà
+äê€€úŸ[ù[ZY[ù‹»Ÿ\\òY‹Œääà€€ùX›À[ùòYHHHXö]X⁄pÏ€àHô\öYöXÿX⁄pÏ€à[€€ù^»Hô\Ÿ\ùòH]YY[à€€[»\›Y‹»[ô\[ôY[ù\Œ»ö[ô›[õ»ŸH[ôöY\ôHH›õÀÇåÀà
+äï\ôŸ[ò⁄X\»[X[ò\ŒääàŸY›\öYYH[X›öX⁄YYŸH[]ò[àH][ò⁄pÏ€à[X[òH[õYYX]HHö[‹öYY‹∞Î]XÿN»Y›XH€€úŸ\ùòHö[‹öYY[HpÎ[ö[XKàõ»⁄Y\úòHöHXô\òHXö]X⁄[€ô\ÀÇçà
+äë\ÿ^][õ»⁄[à€€ò€\⁄[€ô\»ò[ÿ\ŒääàôY⁄\›òH‹àŸ\\òY»[õÿõ[XHHÿ[YYŸ\‹\òKŸ\‹€öXö[YYÿ€ÿúõ»H[\ôX⁄»€€Y\ò⁄X[[ò€YY^ò_[ö€õ›€òà⁄Hõ»ŸH€€\õÿ∞Ï»Hô\Ÿ\ùòK\õX[ôXŸH[ö€õ›€òÇçKà
+äëùY[ùHHò^òXö[YYääà€€úŸ\ùòHÿ[ò[H‹öYŸ[ã€]ôHY[\›[ùHH⁄H[€€ù^»Hô\Ÿ\ùòHùYHô\öYöXÿYÀ⁄[à‹ôX\à›òH\ôXH»ò\ŸKÇÇääïô\öYöXÿX⁄pÏ€àõ‹‹ò⁄[€ò[€ÿúôH[ÿ[ôY]Œääàö]\›õÿÿ[\õÿ∞Ï»KŒHÿ\€‹»Hÿ»K[õ—[Z]\õÿ∞ÏÀà\›»X‹ôY]H€€ùò]»HôY‹ô\⁄pÏ€àÿÿ[[ÏŸY€Œ»õ»X‹ôY]Hõ‹õ][\ö[»XõXÿYÀôXŸ\‹àôX[\ôXH‹ôXYKY[úÿZôH[ùöXYÀ\‹YY›YKô\\òX⁄pÏ€à∞Î\⁄XÿHöHô\›[Y»X€€∞Ï€ZX€ÀàHY]HL€€ù[∞ÓòH
+äìì»QQQJäà‹àò[HH0Î[ôXHò\ŸH€€\\òXõKÇÇääê“P“‘“Sï—ëQQêP“◊–êU“’åóÃåçåLM»8†%ŸY›[ôH[öYYHÏŸY€Àõ»ù[ù[YKääà[Z\€[»€€ùò]»Z‹òHô\\òH[òHô\‹Y\›H⁄[ù0Í]XÿH€€àò\ö[‹»\›[ù‹»⁄[à‹ôX\à›òH€€NàpË^[[»ô\»[ò⁄Y[ò⁄X\»‹\ò]]ò\»0ÓõöXÿ\Œ»\XÿY‹»^X›‹»€€\ÿY‹»H€€ùXö[^òY‹Œ»€]ô\»Y[\›[ù\»\›Xõ\»‹à[ù∞Î[Àÿ\›[ùŒ»∞Î[ò›[»‹⁄[€ò[[õﬁYX›»ÿ[∞Ï€öX€»ô\›Y[»‹à€€ù^»€€ôöXXõN»HX›\ŸHY‹ôYÿY»]YHö[‹ö^òH[\›[ù»‹∞Î]X€Àà[òHÿ\ôÿH€€àpË\»Hô\»[ò⁄Y[ò⁄X\»0ÓõöXÿ\»ò[HŸ\úòYH\òH]ö]\àò[ã[›]õ»ô]ö\ÿYÀà⁄Y›YH[à^\õò[Ÿ[ôYò[ŸXH[ù\õò[‹ö]Q^X›]YYò[ŸXÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»åéääàMÃMùYXò\»õÿÿ[\Àÿ»K[õ—[Z]HT”[ù\õÿòY‹»ÿÿ[Y[ùKàHùYXòH\Ï»]‹»⁄[ù0Í]X€‹»HôX[Xÿ]⁄\ó⁄›[‹ôZ[ùô\›Y[ùÃåçò»õ»‹ôpÏ»ö[\Àõ»€€ú›[0Ï»ô\Ÿ\ùò\Àõ»€€ùX›0Ï»pÍ\‹Y\»Hõ»[]Y\›òHŸ]∞ÎXH]YH[ôXŸ\‹àõŸX›]õ»XŸ\H»\ú⁄\›H[[ù∞Î[ÀÇÇääê“P“‘“Sï—ëQQêP“◊“TëSíSë◊’å◊ÃåçåLM»8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[ÿ[ôY]»€€úŸ\ùòHZ‹òHH\ôŸ[ò⁄XHpË\»[HHHôX⁄H0Î[Z]HpË\»[\ò[òH[€€\ÿ\àô\‹ù\»\XÿY‹Œ»Ÿ\öX[^òHHY[ùYYHÿYH[ò⁄Y[ò⁄XH⁄[à€€\⁄[€ô\»‹à[[Z]Y‹ô\Œ»ôX⁄^òH[ò⁄Y[ò⁄X\»ù[\»€€à\úõ‹à€€ùõ€YŒ»ò[YH[àZôX›X⁄pÏ€àÿ]Y€‹∞ÎXK\ôŸ[ò⁄XHHò[‹ô\»H\ÿ^][õŒ»H]X›HX\òÿY‹ô\»H[õXŸH⁄[àô\€€ô\à][à›X[ô»Yÿ[à€ŸYöXÿY‹»[àTìà\›‹»ÿ[Xö[‹»⁄Y\úò[à⁄[ò€»ò[‹»ô\õŸX⁄Xõ\»⁄[àX›]ò\àôXŸ\‹ã\ôXKY[úÿZôH»XõXÿX⁄pÏ€ãÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»åŒääàNKÃNHùYXò\»õÿÿ[\À›Z]H€€ôöY›\òYH€€\]Kÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿH€€\[X⁄pÏ€àô^öú»\õÿòY‹»ÿÿ[Y[ùKà\›YŒààÃÃÃH[àõ‹úòY‹à\›HôXYòX⁄»H⁄]Xã–“Kà[ÿ[òŸHôX[àÏŸY€ÀùYXò\»Hÿ›[Y[ùX⁄pÏ€é»Ÿ\õ»\ÿ‹ö]\ò\»›\Xò\ŸK“‹õ‹‹À”’KŸ\õ»pÍ\‹Y\»€€ùX›Y‹»Hö[ôÓõà\‹YY›YHõŸX›]õ»X‹ôY]YÀàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊’ïU–ì’SëTíQT◊’çÃåçåLM»8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[€€ùò]»ZòHH]öXùZ\à›YôòHùY[ù\»€Z]Y\»H€€úŸ\ùòH[ö€õ›€ò»ùY\ûòHúôXZŸò\›[ù][Y[ù][ö€õ›€òZY[ùò\»[€€ù^»Hô\Ÿ\ùòHõ»\›0ÍHô\öYöXÿYŒ»ôX⁄^òHHõ‹õXH€€ùõ€YH[à^[ÿYòpÎ^àù[»[àHô\\òX⁄pÏ€à[ô]öYX[»\XÿH[Z\€[»⁄Y\úôH[^[ÿYòpÎ^à[›N»HôX⁄^òH[õXŸ\»‹⁄[€ò[\»]YHõ»ŸX[à^»[àô^àHò]\õ‹»€€[»]\Ÿ[ù\Àà\»‹»ö[Y\ò\»€‹úôXÿ⁄[€ô\»ô\‹€ô[àHÿúŸ\ùòX⁄[€ô\»XöY\ù\»Hô]ö\⁄pÏ€àHàHô\Ÿ\ùò[à]]‹öYYHùY[ùKÿ€€Y\ò⁄X[»\»›ò\»ô\»⁄Y\úò[àúõ€ù\ò\»H[ùòYHô\õŸX⁄Xõ\ÀÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»çääàçÃçùYXò\»õÿÿ[\ÀM\ò⁄]õ‹ÀÕNàùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿH€€\[X⁄pÏ€àô^öú»\õÿòY‹»ÿÿ[Y[ùKà\›YŒàÿ[ôY]»[àHZ\€XHàÃÃÃK⁄[àôXŸ\‹àXö[]YÀY[úÿZô\À\ôX\»õŸX›]ò\»öH\‹YY›YHX‹ôY]YÀàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊“SîU––SêTñW’çWÃåçåLM»8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[€€ùò]»ôX⁄^òH€ŸYöXÿX⁄pÏ€àTìX[õ‹õXYH[àô^àH€Z]\àH[ú‹Xÿ⁄pÏ€àHXŸZ€\úŒ»õ‹õX[^òHH[ö€õ›€ò[àÿ[ò[H›H]\Ÿ[ùH[ù\»Hõ‹õX\àùY[ùHH€]ôHY[\›[ùN»ôX⁄^òH[òHùY[ùHH›Hõ»YZ]YH[òH€€Hô^à[ù\»HõÿŸ\ÿ\à\›[ù‹Œ»Y‹ù\H€€[»[àZ\€[»\›[ù»\»Yö\õXX⁄[€ô\»õ»ô\öYöXÿY\»H€€ùòYX›‹öX\»€ÿúôH\ôX⁄»H\ÿ^][õ»‹ú]YH›Hò[‹àYôX›]õ»\»[ö€õ›€ò»HôX⁄^òHÿÿ][€ìXô[ÿ]Z[õ»^X[\»[àô^àH\ô\õ‹»⁄[[ò⁄[‹ÿ[Y[ùKà\»‹»ö[Y\ò\»ô\‹€ô[àHHô]ö\⁄pÏ€à[ÿ[ôY]»çÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»çNääàéKÃéHùYXò\»õÿÿ[\ÀM\ò⁄]õ‹ÀÕNLHùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿH€€\[X⁄pÏ€àô^öú»\õÿòY‹»ÿÿ[Y[ùKà⁄Y›YH⁄Y[ô»[àÿ[ò\ö[»H€€ùò]Œàõ»[pÏ»[[ô⁄[ù[ù\õõÀõ»X›]∞Ï»‘ì◊“SïTìêS’”‘í◊’‘íUW—SêPìQõ»\ÿ‹öXöpÏ»›\Xò\ŸHöH€€ùX›0Ï»pÍ\‹Y\ÀÇÇääê“P“‘“Sï—ëQQêP“◊’TW“QSïUW’çóÃåçåLM»8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[€€ùò]»€€ù[∞ÓòHX€ŸYöXÿ[ô»[õXŸ\»\›H[à0Î[Z]HX€›Y»HôX⁄^òH[ùòY\»]YHŸ]∞ÎXHÿ[XöX[à[[ÿ[ûò\õŒ»\ÎHõ‹]YXHX\òÿY‹ô\»[öYY‹»⁄[àXúö\à[àùX€Kà[à›\»€€àô\Ÿ\ùòHô\öYöXÿYK\ôX⁄»H\ÿ^][õ»€Z]Y»H[ö€õ›€ò^0ÎX⁄]»€€\\ù[àY[ùYYHõ»Ÿ[ô\ò[à‹»òXòZõ‹»\]Z]ò[[ù\ÀàY[pË\Àò[ô\ò\»H€€úŸ[ù[ZY[ùÀ›ô\öYöXÿX⁄pÏ€àõ»õ€€X[ò\Àõ⁄ôX›Ÿ^Xõ»^X[HôX⁄H0Î[Z]Hõ»^X[ò[[àHõ‹õXH^0ÎX⁄]H[àô^àH€€ùô\ù\úŸH»\ô\úŸH⁄[[ò⁄[‹ÿ[Y[ùKà\»‹»ö[Y\ò\»€‹úôXÿ⁄[€ô\»ô\‹€ô[àHHô]ö\⁄pÏ€à[ÿ[ôY]»çKÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»çéääàÕÃÕùYXò\»õÿÿ[\ÀM\ò⁄]õ‹ÀÕNMàùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿH€€\[X⁄pÏ€àô^öú»\õÿòY‹»ÿÿ[Y[ùKà\›YŒàÏŸY€ÀùYXò\»H]öY[ò⁄XH[àHZ\€XHé»‹ö]\à\⁄Xö[]YÀ[ô⁄[ùõ»[ùõÿÿYÀŸ\õ»Y[úÿZô\À\ôX\»õŸX›]ò\ÀpÍ\‹Y\»»ÿ[Xö[‹»‹õ‹‹À”’KàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊‘—SPSïP◊“QST’Sê÷W’ç◊ÃåçåLM»8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà\»€]ô\»HÿYH\›[ù»ŸH\ö]ò[àZ‹òHH›HY[ùYYõ‹õX[^òYHHZò[àH\[ô\àHH‹⁄X⁄pÏ€éà[ùô\ù\à[‹ô[àH[àô\^H€€úŸ\ùòHHô[X⁄pÏ€à\›[ù¯°§ù\ôXHH[úŸ\ù\à[à\XÿY»õ»ÿ[XöXH\»€]ô\»ô\›[ù\ÀàH[ú‹Xÿ⁄pÏ€àH[õXŸ\»€€úŸ\ùòH	LçX€€[»‹òŸ[ùZôH]\ò[∞Ë[Y»⁄[àXö[]\à[⁄Y\úôH[ùH€ŸYöXÿX⁄pÏ€à‹öY⁄[ò[[ù∞Ë[YKXŸZ€\ú»[öYY‹»»^Ÿ\€»Hÿ\\ÀàHY[ùYY\XÿHõ‹õX[^òX⁄pÏ€à[öX€ŸHëê»HZ[∞Óúÿ›[\»[ô\[ôY[ù\»[ÿÿ[Kà‹»[õXŸ\»»€€à‹ôY[ò⁄X[\»[XôXöY\»ŸHôX⁄^ò[ãà\»ô\»ö[Y\ò\»õ›Xÿ⁄[€ô\»ô\‹€ô[àH‹»‹»[^ô€‹»Hô]ö\⁄pÏ€à[ÿ[ôY]»çãÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»çŒääàŒKÃŒHùYXò\»õÿÿ[\ÀM\ò⁄]õ‹ÀÕåHùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿH€€\[X⁄pÏ€àô^öú»\õÿòY‹»ÿÿ[Y[ùKà\›YŒàZ\€[»€€ùò]»Hé»[ô⁄[ùõ»[ùõÿÿYÀ‹ö]\àõ»Xö[]Y»HŸ\õ»Y[úÿZô\À\ôX\»õŸX›]ò\ÀpÍ\‹Y\»»ÿ[Xö[‹»‹õ‹‹À”’KàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊‘ëTVW–””î—Sï’éÃåçåLN8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[[ùZŸHÿ[∞Ï€öX€»ZòHHXŸ\\à€€[»ô\^H[òH\ôXH]YH€€\\ùH€]ôH\õ»YöY\òH[à€€ù[öY»\ú⁄\›XõKà[òHö[‹öYYpË\»\›öX›H»[òHôX⁄H0Î[Z]H[ù\ö[‹àZ‹òH]ùY[ôH€€ôõX›»^0ÎX⁄]»\òH€€ò⁄[XX⁄pÏ€à[X[òK[àYÿ\àH€€úŸ\ùò\à⁄[[ò⁄[‹ÿ[Y[ùH[ò[‹à[ùY›[»»‹ôX\àòXòZõ»\XÿYÀà€€ùX›»H[ùòYHHXö]X⁄pÏ€à\ÿ[àH\›Y‹»[ô\[ôY[ù\»‹ò[ùY[öYY[ö€õ›€òŸH[ò€^Y[à[àH\ÿ‹ö\⁄pÏ€à]YHôX⁄Xö\∞ÎXH‹\ò][€úÀù\⁄‹ÿH[òH€Z\⁄pÏ€àZòHHô\Ÿ[ù\úŸH€€[»[ôYÿX⁄pÏ€ãÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»éääàLÕLùYXò\»õÿÿ[\»€€Xö[òY\ÀM\ò⁄]õ‹ÀÕåàùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿHùZ[\õÿòY‹»ÿÿ[Y[ùKà[[ô⁄[ù]õ€ô\∞ÎXHH[ùH€€ôõX›À\õ»õ»ùYH[ùõÿÿY»H[‹ö]\à⁄Y›YH\⁄Xö[]YÀà\›YŒàÏŸY€»õÿòY»[àHZ\€XHé»Ÿ\õ»\ôX\»õŸX›]ò\ÀY[úÿZô\ÀpÍ\‹Y\»»ÿ[Xö[‹»TÀ”’KàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊‘ëTVW––Sì”íP–S’éWÃåçåLN8†%⁄[ò€»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääàHY›X[YHô\^HZòHùY\òH[0Ë\ôXH\ö]òYH[‹\òY‹à]YHôZ[ù[ùK⁄[àô[Zò\àö[‹öYYôX⁄H0Î[Z]KõﬁYX›Àÿ]Y€‹∞ÎXK\ÿ‹ö\⁄pÏ€à»pÏŸ[Àà[àZ\€[»\⁄Àò‹ôX]XZôX›]Y»‹àQRSàHôZ[ù[ùY»‹à—TëSê“PH\ŸH0Ë\ôX\»\›[ù\»XHõ»õŸXŸH[à€€ôõX›»\‹\ö[ÀàHù\⁄pÏ€àH\XÿY‹»\]Z]ò[[ù\»‹àX^pÓúÿ›[\»»[öX€ŸHŸ[Xÿ⁄[€òHHõ‹õXH]\õZ[ö\›HHõ‹õX[^òYHëê»[ô\›[Y[ãHXöXÿX⁄pÏ€àH[][N»[ùô\ù\à[‹ô[à€€úŸ\ùòH\ÎH0Î][»H\ÿ‹ö\⁄pÏ€ãY[pË\»HH€]ôHY[\›[ùKà\›\»€‹úôXÿ⁄[€ô\»⁄Y\úò[à‹»‹»[^ô€‹»àXöY\ù‹»€ÿúôHéÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»éNääàLãÕLàùYXò\»õÿÿ[\»€€Xö[òY\ÀM\ò⁄]õ‹ÀÕåùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿHùZ[\õÿòY‹»ÿÿ[Y[ùKà\›YŒàZ\€[»€€ùò]»ô\\ôK[€õHHàÃÃÃN»[ô⁄[ùH‹ö]\àõ»[ùõÿÿY‹ÀŸ\õ»\ôX\»õŸX›]ò\ÀY[úÿZô\ÀpÍ\‹Y\»»ÿ[Xö[‹»TÀ”’KàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääê“P“‘“Sï—ëQQêP“◊‘ëTVW‘ì’UW’åLÃåçåLN8†%ô\»€‹úôXÿ⁄[€ô\»HÏŸY€Àõ»ù[ù[YKääà[Ÿ[W€XYŸH[ò€‹ú‹òHHHY›X[Y€€[»\ÿ‹ö[Z[òY‹àHù]H\ú⁄\›Y»H[ô\[ôY[ùH[[XY‹é»Ÿ\»\»X›\ò\»HY[\›[ò⁄XK[ò€ZYHHôX›\\òX⁄pÏ€àò\»ÿ\úô\òHH[öX⁄YY€€X⁄][à\ŸHÿ[\Œ»H[òHö[H⁄[àù]Hõ‹õX[^òXõHò[HŸ\úòYKà\ÎKô]][^ò\à[òH€]ôHÿ[XöX[ô»\⁄Àò‹ôX]XHXZ[ù[ò[òŸKù\⁄ÿXHõ»]ùY[ôH⁄[[ò⁄[‹ÿ[Y[ùHH\ôXHŸ[ô\ò[][ú]YH€⁄[ò⁄Y[à0Ë\ôXKÿ]Y€‹∞ÎXKpÏŸ[»H€€ù[öYÀàŸH\Xÿ\õ€àô\»ÿ[Xö[‹»X]\öX[\Œ»õ»ŸHõ‹ûò\õ€à‹»ÿ[Xö[‹»€‹€pÍ]X€‹»\òH€€\]\à[òH›[›KÇÇääïô\öYöXÿX⁄pÏ€à[ÿ[ôY]»åLääàLÀÕL»ùYXò\»õÿÿ[\»€€Xö[òY\ÀM\ò⁄]õ‹ÀÕåHùYXò\»[õ‹]YHö[ò⁄\[HúH\›pË\»›\»›Z]\»[òÿY[òY\Àÿ»K[õ—[Z]T”[ù⁄]YôàKX⁄X⁄ÿHùZ[\õÿòY‹»ÿÿ[Y[ùKà\›YŒàZ\€XHàÃÃÃH[àõ‹úòY‹à\›H“K‹ôXYòX⁄Œ»[ô⁄[ùH‹ö]\àõ»[ùõÿÿY‹ÀŸ\õ»\ôX\»õŸX›]ò\ÀY[úÿZô\ÀpÍ\‹Y\»»ÿ[Xö[‹»TÀ”’KàHY]HL\õX[ôXŸH
+äìì»QQQJäãÇÇääïTë—U”ëVääàô]][^ò\à[õ‹õ][\ö[À‹ôXŸ\‹à^\›[ùHHZôX›]\à[òHùYXòH⁄[ù0Í]XÿH]]‹ö^òYHH^ô[[»H^ô[[Œà[õXŸH∞Ë[Y»8°§àôXŸ\⁄pÏ€à8°§à[òH€€H\ôXHÿ[∞Ï€öXÿH8°§àX›\ŸH[X[õ»8°§à]öY[ò⁄XH8°§à⁄Y\úôK‹ôX\\ù\òKà[ù\»HpÍ\‹Y\»ôX[\À€€\õÿò\àõ€\ÀZ\€[ZY[ùÀ\XÿY‹À‹ò\ö[»Hò[»H\ÿ‹ö]\òKàH[ùö]X⁄pÏ€à0ÓòõXÿH\õX[ôXŸHô]]ò[HŸ\\òYH[ôYYòX⁄»ö]òYÀàõ»ÿ[XöXHÿ\ô€‹»’K\öYò\Àô\Ÿ\ùò\À\ÿ^][õ‹»€€ùò]Y‹»öH\õZ\€‹ÀÇÇà»»[ò⁄Y[ùH‹õ‹‹»Xö]X⁄pÏ€àÃç»8†%X\[»\KŸT‹XZÀ’HH\öYò\»8†%MÀÃLÃåçÇÇääê€\⁄YöXÿX⁄pÏ€à[[àŸ[ô\ò[ääà’TîëSï8†%€€ôõX›»[ù\õõ»Y[ùYöXÿY»HX\[‹»‘ì»€‹úôY⁄Y‹Œ»ëV8†%[[‹›ò\à[à‹õ‹‹À’ŸT‹XZÀ”’HHô[ùH0ÓõöXÿKôX⁄[‹Àÿ\ô€‹ÀY[€X\»Hõ‹]Y[»ôXÎ\õÿ€»[ù\»HŸ\úò\ãÇÇääíP“»8†%ÿ]\ÿHH€‹úôXÿ⁄pÏ€à[ù\õòHô\öYöXÿYNääàHÿ\\òH[[õô\àMÀÃL]Y\›òHHXö]X⁄pÏ€à∞Î\⁄XÿHÃç»[à‹»ö[\»\›[ù\ŒàÃç»““Së◊XHÃç»“Së»SïSPH””ãããòà]Y]‹∞ÎXH‹õ‹‹»]][ùXÿYH[ù\ö[‹à[Z\€[»0ÎXH€€ôö\õpÏ»
+äù\€ŸÎXHöYŸ[ùHYùMÿ
+äà
+Ãç»›\\ö[‹à⁄[ô»õ€€XÃp¨ã»[pËYŸ[ô\ HH
+äù\€ŸÎXH[ùY›XHYùLéô]\òYH€€»H[òXõYõ€⁄⁄[ô»[ô⁄[ô\»àôX[Xÿ]⁄\ö›[»ôYY€€Ÿ€HòXÿ][€àô[ù[»\›Y»€ÿò[[à[õô\àH›ò\»’H\ÿ€€õÿ⁄Y äà
+Ãç»[ù[X]H⁄[ô»õ€€H⁄]õ⁄ôX›‹òåp¨ãM[pËYŸ[ô\ N»H›\\ôöX⁄YH∞Î\⁄XÿKõ›Ÿ‹òY∞ÎXHH[0Î][»€€Y\ò⁄X[ô\]ZY\ô[àùY[ùH]]‹ö^òYKàHöX⁄H\ôX›H∞Ë[YH\»ŒãÀŸôX[Xÿ]⁄\ö›[ö‹õ‹‹Àùò]ô[Ãçœ‹èLIõ[ôœY\ÿ»\»\ôXÿ⁄[€ô\»[ùY›X\»€€àYùLé»[X\»ÃçÀZ⁄[ôÀ\õ€€K\›\\ö[‹ò€€àôY\ôXÿ⁄pÏ€àH[öX⁄[»»ô\‹X›]ò[Y[ùKà
+äìõ»\›0ËH[[‹›òY»]YH[[õô\àô[ôH‹»ôXŸ\»HXö]X⁄pÏ€ääéàpÓõàò[H€€\õÿò\à‹à]pÍH[úŸpÏXH[Xò\»ö[\»H‹»∞Î[ò›[‹»Hô\Ÿ\ùò\»\›0Ï‹öXÿ\ÀÇÇääíP“»8†%[[ôXX⁄pÏ€àô]ô\ú⁄XõH€€»[à‘ìŒääà›\Xò\ŸH[ùY‹ò][€úÀö‹õ‹‹◊Ÿ[ù]W€X\[ô‹ÿö[Hõ€€Nåçÿ
+åŒXÕNKLÃçéMMXXLYMòéNXéXNåŸ
+HX›X[^òYHHéHÿHpÎYHHùY[N»Z\ùXõHŸ[ùò[‹õ‹‹◊‹ôYô\ô[òŸ\ÿ
+ôX”—PîŒZ]ôS⁄X
+HX›X[^òY»HŒ»Z\ùXõHX\›\àúòZ[à^\õò[X\[ô‹ÿ
+ôXŸ[ì“]”ïùVçQÿ
+HX›X[^òY»HQ»H›X]õ»ÿ[\‹»Tì[[õXŸHÃçÿ€€úŸ\ùò[ô»X\[ô◊⁄Ÿ^XYÿY»€€[»[X\»H€€\]Xö[YYHôYY◊‹ô]öY]œ]ùYXàùY]òHôY€HX›]òHHõ›Xÿ⁄pÏ€àôXÿXôZ—PöPì[ŒXHò[YX⁄pÏ€à‹∞Î]XÿHôX—ö›öMöïêúéà\ôXHÿ[∞Ï€öXÿH›\Xò\ŸH‹\ò][€úÀù\⁄‹ÿååXôLMMMXãMLNNòôãLLÃôåNYMLXö[‹öYY‹ö]Xÿ[\›Y»õÿ⁄ŸY[õ^òYHHXö]X⁄pÏ€à∞Î\⁄XÿHHpÏŸ[»^\›[ùHô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿà⁄[àùY]õ‹»⁄\›[X\À‹õ€\À‹ÿ⁄Y[\úŒ»⁄[à\ÿ‹ö]\òH‹õ‹‹À\öYò\À’KŸT‹XZ»öHô\Ÿ\ùò\ÀÇÇääêSïP—QSïH‘ì‘‘»MKÃL8†%ÿ]\ÿHH\õX[ô[ò⁄XHö\›X[ääàH\€ŸÎXH[ùY›XHéŸH\⁄Xö[]0Ï»Hõ‹õXH
+äô\‹XÎYöXÿJäà[à[òXõYõ€⁄⁄[ô»[ô⁄[ô\»àôX[Xÿ]⁄\ö›[H[ôYY‹õ‹‹»
+äë€€Ÿ€HòXÿ][€àô[ù[
+äà\Ï»Hå»HåàôY⁄\›õ‹»€€à[à€€»ÃçŒ»ôXYòX⁄»H‹öYŸ[àÿ›[Y[ùY»[à—””—”W’êP–US”ó‘ëSïSÃç◊–”‘îëP’S”ó‘ëUíQU◊ÃåçãLLLMKõYJããŸ]öY[òŸK—””—”W’êP–US”ó‘ëSïSÃç◊–”‘îëP’S”ó‘ëUíQU◊ÃåçãLLLMKõY
+Kà\ÿHXÿ⁄pÏ€à€‹úöYŸH[ôYYHX⁄»[›‹ã
+äõõ»ÿ\ò[ù^òH]YH[[õô\à‹õ‹‹»»Ÿ\»\»’Hÿ›[[à\ÿH[öYY\›0Ï‹öXÿJäãàXôHô\öYöXÿ\úŸHH\⁄Y€òX⁄pÏ€à∞Î\⁄XÿH[\»éH⁄HY[ôHô\Ÿ\ùò\Àõ‹]Y[‹»»[ùô[ù\ö[»‹\ò]]õ»[ù\»HX⁄Y\àÿ›[\õKàH[ùôYÿHö[ò[[ôYYH€€Ÿ€H\›0ËHpÓõà⁄[àô\öYöXÿ\é»›H]»ôYœLòúô[ùHH[òHÿ[XH⁄[ô»[XöpÍ[àô\]ZY\ôHŸ[pË[ùXÿHX€\òYKõ»€‹úôXÿ⁄pÏ€à⁄YYÿKÇÇääîëQ”HTìPSëSïH8†%›€ô\à\ôX›]ôNääà
+äìïSê–Hÿ[XöX\à[õ€XúôH0ÍX€öX€»\XH‹õ‹‹»‹à\›0Í]XÿH»€‹Jäãà\»Y[ùYöXÿY‹à^\õõ»\[ôY[ùHHŸT‹XZ»HH‹»[õXŸ\»HXö]X⁄[€ô\»
+õ‹õX[Y[ùH[õ€XúôH\»€€»[∞ÓõY\õ KàŸ\\ò\àXö]X⁄pÏ€à∞Î\⁄XÿHçÿõ€€H\HQX›X[ÿ\H0ÍX€öX€À‹€Y»]\ò[õ€XúôH€€Y\ò⁄X[][[[ôÔHHTìÀ‹»Q»HÿYH’HHHö[ò›[X⁄pÏ€àŸT‹XZÀàÿ[XöX\à\H€€»€€àX\HH€€ú›[ZY‹ô\À[X\À‹ôY\ôXÿ⁄pÏ€ãô\‹[À\õÿòX⁄pÏ€ãùYXò\»H€›^òX⁄pÏ€àHÿ[ò[\ÀôXYòX⁄»Hõ€òX⁄ÀàH\€ŸÎXH[ùY›XHéõ»XôHõ‹úò\úŸK‹ôXX›]ò\úŸH⁄[\[Y[ùH\òHÿ›[\õNàô\Ÿ\ùò\àò^òXö[YYHô\Ÿ\ùò\»\ÿY\ÀÇÇääêì‘UQPQ»»∞Ïﬁ[[»ÿ]Nääà[XÿŸ\€»YZ[ö\›ò]]õ»H‹õ‹‹À’ŸT‹XZ»õ»\›0ËH^Y\›»\ŸH[ò]ôYÿY‹à€€ôX›Y»[à\›HŸ\⁄pÏ€é»õ»Yö\õX\à€‹úôXÿ⁄pÏ€à[[õô\àöH[[ùô[ù\ö[»’Kà]Y]‹∞ÎXHÿõYÿ]‹öXHH»ú»é[à‹õ‹‹»[õô\ã–⁄[õô[X[òYŸ\ã\‹€öXö[YY⁄[àÿõHô[ùHHXö]X⁄pÏ€ã›ö[KX\[‹»H\öYò\»ëPSHêUXÿëPSJ–îëPR—êT’õ€[ÿ⁄[€ô\ÀÿÏŸY€‹Àÿ›\X⁄pÏ€ã[\Y\›‹À[\Y^òK\›[ò⁄X\»pÎ[ö[X\Àÿ[òŸ[X⁄pÏ€àHŸT‹XZŒ»õÿò\à‹õ‹‹»ëKõ€⁄⁄[ôÀò€€K^YXKZ\òõòãY€ŸHH[õXŸ\»\›0Ï‹öX€‹»ŸYÓõà\›Y‹»ôX[\Àà
+äê€€ôõX›»ÿúŸ\ùòYŒääà€0Î]XÿH[ù\õòHX›]òHHÿ[òŸ[X⁄pÏ€à‹ò]\»\›HH0ÎX\»ú»0Í\õZ[õ‹»0ÓòõX€‹»[[›‹à€€àôYô\ô[ò⁄XHH»0ÎX\»H\0Ï‹⁄]»L	N»õ»\Xÿ\àÿ[Xö[‹»Hô\Ÿ\ùò\»^\›[ù\»öH[\€ô\à[òHôY€HHŸ‹»‹»ÿ[ò[\»⁄[à€€ùò\›H€€ùòX›X[à
+äê⁄Y\úôNääà[òH[öYY∞Î\⁄XÿHô[ôXõK\»»öYŸ[ùKé\›0Ï‹öX€»[òX›]õÀÿõ\»ô[ù\ÀTì»H\öYò\»ô\öYöXÿY\»€€à]öY[ò⁄XHH€€ù[öY»∞Î\⁄X€»€€ú⁄\›[ùKÇÇääîôX⁄Xõ»HõÿŸY[ZY[ù»›Xõ‹ô[òY‹Œääà“‘ì‘‘◊‘ì””Lç◊“QSïUW–“SìëS–UQUÃåçãLLLMÀõYJãã€‹\ò][€úÀ“‘ì‘‘◊‘ì””Lç◊“QSïUW–“SìëS–UQUÃåçãLLLMÀõY
+N»[ùXŸY[ùH’íTQíT”‘ó”êUUëW–UQUÃåçãLLLMÀõYJããŸ]öY[òŸK’íTQíT”‘ó”êUUëW–UQUÃåçãLLLMÀõY
+Kà\›H\\ùY»pÏXYH[òH[öYYHòXòZõ»Hô]ô[ùYK—\›öXù][€à
+»€€[\»
+»]H	à[ùY‹ò][€úÿ»õ»‹ôXH[àŸ[ô\ò[\ò[[ÀÇÇà»»»ôXò\Ÿ[[ôHöYŸ[ùHH⁄[ò€»€€\Y\ù\»HXõXÿX⁄pÏ€à8†%MÀÃLÃåçàMNçà‘ÇÇääëP“T“p‰”àíQ—SïNääàX]\öX⁄[»öZ∞Ï»[€€ù[öY»€€Y\ò⁄X[HHXö]X⁄pÏ€àÃçÿ[à
+äåçHp¨ã[òHÿ[XH⁄[ô»HpË^[[»‹»pÍ\‹Y\ äãàH[öYY∞Î\⁄XÿHöYŸ[ùH\»QÃ»YùMÿ»Q»YùLé\»YÿY»ôX›\\òXõKàZ\ùXõHXH]ùY[ôHÿ[à›\»‹»ôY⁄\›õ‹»ÿ[∞Ï€öX€‹»H›\Xò\ŸH[ö◊Ÿ\ôX›‹ûHãçÿ€€úŸ\ùòHçç[ùòY\À[òH€€HöX⁄Hÿ[ôY]Kùö\Yö\€‹òÃ€€ùõ€\»QV’‘ì»H‹»X\[‹»ÿúŸ\ùòY‹»⁄[àÿ[Xö[‹»[à\öYò\À\‹€öXö[YY[ùô[ù\ö[Àÿ[ò[\»öH‹õ‹‹ÀàHX⁄\⁄pÏ€àHçHp¨à›\›]^YH[õ‹]Y[»Y]‹öX[åÃÃp¨ã\õ»õ»€€ùöY\ùH‹»[õ‹»⁄[à∞Î[ò›[»^0ÎX⁄]»[à[òHYYX⁄pÏ€ãÇÇääîëTTêQÀì»PìP–QŒääà[õ‹õ][\ö[»HYùMÿ€€ùY[ôH[àõ‹úòY‹à⁄[à›X\ô\à\òHÃç»“Së»0„SïSPH””àì÷QP’‘òçHp¨ãÏŸY€»“Sëÿÿ›\X⁄pÏ€àpË^[XHã‹ãÃçÿ[›‹àX›]õ»H^‹»Sã—îã—K—TÀ“UàHÿ\\òH›]]À⁄‹õ‹‹◊‹õ€€Lç◊ŸòYùÃåçåLMÀúôÿ“KLçMàéPçåLçQŒP–ëMÃåLÕLçéQåÕLQPåçÃÃéLçÃMMQçLLå–çÃ–ÕQNQ[]Y\›òH[à›HöY]‹‹ùõ€XúôKÏŸY€ÀçHp¨àHÿ›\X⁄pÏ€àé»õ»[]Y\›òH‹àÎH€€Hÿ[XHH“Sëÿ‹»⁄[ò€»Y[€X\À‹ãÃçÿ»[›‹àX›]õÀà[õ‹õ][\ö[»Ÿ]∞ÎXH]Y\›òHÃåãéLàù0¨ò\]Z]ò[[ùH[ò[‹àô]ö[»HÃp¨ãH‹à[ù»õ»^\›HpÓõà[àôXYòX⁄»[\[»\òHçHp¨ãÇÇääê“Sê”»QRì‘êT»H””ïì”TP–QTŒääÇÇåKà
+äë]öY[ò⁄XH[õ]]XõNääàÿYHŸXÿ⁄pÏ€àH€€»X›\òHXôH[‹›ò\àYùMÿ€€úŸ\ùò\àÿ\\òK⁄\⁄HŸ\\ò\àÿ[\‹»[[‹›òY‹»Hÿ[\‹»\ÿ€€õÿ⁄Y‹ÀÇåãà
+äê€€ùô\ú⁄pÏ€à]\õZ[ö\›NääàçH0Â»LçÕåŒHHçéKåLù0¨ò»›X[]ZY\àÃåãéLàù0¨òX[ùY[ôHH€€\Y\ùHõ⁄òHHõ⁄0ÎXôHX€\ò\à⁄Y\úôKÇåÀà
+äî\öYY[ôÔ0Î\›XÿNääàSã—îã—K—TÀ“UXô[à€€úŸ\ùò\à‹»Z\€[‹»X⁄‹»Ãçÿ⁄[ôÀõﬁYX›‹ãçHp¨àHpË^[[»‹»pÍ\‹Y\À⁄[à›\\ôöX⁄Y\»öHÿ\X⁄YY\»[\õò]]ò\ÀÇçà
+äíY[ùYYHXõXÿX⁄pÏ€éääàô[Y\àYùMÿ»[öYYÃ‹ãÃçÿH[›‹àX›]õÀH€€\õÿò\à]YHYùLé»[öYY⁄Y›YHùY\òH[[›‹à⁄[àÿÿ\à^YXH»⁄[\Põ€⁄⁄[ôÀÇçKà
+äê[ÿ[òŸHHô]ô\ú⁄pÏ€éääàÿ\\ò\àò\Ÿ[[ôHH\öYò\À\‹€öXö[YYô\Ÿ\ùò\Àÿ[ò[\»Hÿ[\‹»õ»ÿöô]]õŒ»\õZ]\à[à€€»›X\ôY»Hô]ô\ù\à0ÓõöXÿ[Y[ùH‹»ÿ[\‹»]]‹ö^òY‹»⁄H[ôXYòX⁄»ò[KÇÇääêUU”PUVêP“p‰”àHUU‘íQQääà[X\ùôX]^\›[ùH‘ì»0≠»Y\òÿY[»H‹ôX⁄[ZY[ù»0≠»ÿYH‹òXùYHX›X[^òY»[à⁄][À⁄Y›YHP’UëXHòZ[Y‹ù[ú◊€€õXHYYH€€\]\àX›\ò\À]öY[ò⁄XHHô\\òX⁄pÏ€àô]ô\ú⁄Xõ\Ààõ»YYH[ù\úô]\à8†'€€ù[ùX\∏†'K8†'LôXŸ\»pË\¯†'HöH[òH]]‹ö^òX⁄pÏ€à[ùY›XH€€[»\õZ\€»\òHXõXÿ\ãà[›X\ôY»0ÓòõX€»^YŸK[à[òHŸ\⁄pÏ€à[ù\òX›]òHH[õYYX][Y[ùH[ù\»HHXÿ⁄pÏ€ãHúò\ŸH^X›HHYZ[à[ŸHôY⁄\›òYH€€[»0ÓõöX€»ëV[à””ïSïPTãõYà€€»€€à\»⁄[ò€»€€\Y\ù\»ô\ô\»ŸH\õZ]H[à€X»[à›X\ô\òŸY›ZY»HôXÿ\ôÿHHôXYòX⁄Œ»[ùH›X[]ZY\à\ÿ‹ô\[ò⁄XKõ»›X\ô\à»][ô\úŸH⁄[àÿÿ\àÿ[ò[\ÀàYùLé[öYY^YXHH⁄[\Põ€⁄⁄[ô»\õX[ôXŸ[àùY\òHH[ÿ[òŸKÇÇà»»[[ôXX⁄pÏ€àò[ú›ô\úÿ[H]‹»[Y‹òH8°•›\Xò\ŸH8†%MKÃLÃåçÇÇääëP“T“p‰”àSì‘QUTíSŒääàŸ»[òXòZõ»ùY]õ»ŸH[[ôXH[[àŸ[ô\ò[0ÓõöX€»HH\»]]‹öYY\»H]‹»^\›[ù\Ààõ»ŸHù\⁄[€ò[à⁄YYÿ[Y[ùHò\Ÿ\»öHŸHôX‹ôX[àXõ\À–úòZ[ã€YŸ\ãà›\Xò\ŸH€€úŸ\ùòH\›Y»‹\ò]]õ»‘ìÀ€]ô\»H[ùY‹òX⁄pÏ€ã]öY[ò⁄XK€€ùõ€HõﬁYXÿ⁄[€ô\Œ»‹õ‹‹»X[ôH[àT»öYŸ[ùN»[›[€€Y\ò⁄X[€€ôö\õXY»[pÍ\‹Y[àõ€⁄⁄[ô»ŸH€€úŸ\ùòH€€[»]öY[ò⁄XHHô\Ÿ\ùòN»[Y‹òH€€úŸ\ùòHòX›\òX⁄pÏ€àH€€ùXö[YYX⁄Y[ôH\›Y»ö\ÿÿ[Hò[ò€‹»[[›ö[ZY[ù»ôX[àZ\ùXõHH€€Ÿ€H⁄Y]»€€à›\\ôöX⁄Y\»[X[ò\Œ»õ‹õﬁ€€úŸ\ùòH‹öY⁄[ò[\Œ»⁄]Xà€€ùò]‹»Hô\ú⁄[€ô\ÀàH[ù\õ‹\òXö[YY^YŸH€]ôH^\õòK›[ò[ùô\ú⁄pÏ€ãôX⁄KY[\›[ò⁄XK\õZ\€‹À€€ò⁄[XX⁄pÏ€ãôXYòX⁄»HôXŸZ\ô\öYöXÿXõ\ÀÇÇääêUQU‘∞„PHëTíQíP–QNääà[MKÃLÃåçàŸHYY\õ€àY\à[Y‹òHH›\Xò\ŸN»[Y‹òH]Y\›òHKåNLHòX›\ò\»HLHŸ[ùõ‹»H€‹›»[àH€€ô^pÏ€à‹\ò]]òKZY[ùò\»[à\òŸ\à[õXŸH]Y\›òHŸ\õŒàõ»€€ôù[ô\àXÿŸ\€‹Àà›\Xò\ŸHXHY[ôHö[ò[òŸKäò[ùY‹ò][€úÀú€›\òŸWÿ]]‹ö]W‹ù[\ÿ[ùY‹ò][€úÀô^\õò[Ÿ\[ô[òﬁW‹ôY⁄\›ûXXõXÀúﬁ[ò◊€›]õﬁ‹\ò][€úÀù\⁄‹ÿH‹»ôY⁄\›õ‹»HZôX›X⁄pÏ€ãàõ»^HùYXòHH\öYYöH\ÿ‹ö]\òH€€ùXõHŸ[ô\ò[\ŸH[€€ôX›‹àH\›H€€ùô\úÿX⁄pÏ€ãà^\›H[ò⁄Y[ùHì»H\»Xõ\»õ€\ÿH\Ÿ\ó‹õ€\ÿ[àôX[]X[K\ôX€›ô\ûK\ÿ[ôõﬁ»ô\\ò\àYYX[ùH€0Î]Xÿ\»õÿòY\Àõ»X›]òX⁄pÏ€à⁄YYÿKàõ»^ò\€\à€ò\⁄›»‹õ‹‹»Hö]õ»öH⁄Yúò\»H‘’àõ€⁄⁄[ô»H›[€€Y\ò⁄X[ö[ò[ÇÇääê””ïêU»H–UT äà[à’‘ì◊—UW–SQ”ìQSï–SQ‘êW‘’TPêT—WÃåçãLLLMKõYJ‘ì◊—UW–SQ”ìQSï–SQ‘êW‘’TPêT—WÃåçãLLLMKõY
+NàX\H‹à€Z[ö[À€‹úô\‹€ô[ò⁄X\»^\›[ù\Àõ€⁄⁄[ôÀ“‹õ‹‹»H⁄Y\úô\»X\ö[‹À€€\õÿò[ù\»SŸòX›\ò\À›[\[ZY[ùÀY[\›[ò⁄XKŸY›\öYYùYXòHH€€ò⁄[XX⁄pÏ€àH]Y\›òK[ùY‹òX⁄pÏ€àH€€»X›\òK‹ö]\àÿ]YŸ\\òYÀY\XÿX⁄pÏ€àHX€€[Z\‹⁄[€à€€àòX⁄›\‹ô\›‹ôKà\›H[\XX⁄pÏ€à\»›Xõ‹ô[òYH[[àŸ[ô\ò[⁄[àùY]õ»òX⁄€Ÿ»öHÿ⁄Y[\ãÇÇääëT’QŒääàP“»H[ùô[ù\ö[»HX›\òHH€€ùò]»[ò€‹ú‹òY»[àXZ[àYYX[ùHàÃéNN»ì‘QT’»H[›»HYZõ‹ò\»€€ùõ€Y\Œ»ì‘UQPQ»H‹ö]\à[Y‹òKúô\ÿ›\òH€€Y\ò⁄X[‹õ‹‹»H\öYYH€›\òŸHQŒ»T–””ì–“Q»Hö[ôŸ\úö[ùö\ÿÿ[HÿYH[õXŸHH€€\]]Y\›0Ï‹öXÿH‹à\∞Î[ŸÀà
+äë–UNääàõ»]]\à[Y‹òKô\Ÿ\ùò\ÀòX›\ò\Àì»öH[[Z[ò\àò\Ÿ\»[ù\»HùYXò\À\õÿòX⁄pÏ€àYX›XYHHôX⁄Xõ‹»[ô\[ôY[ù\ÀÇÇà»»»‹ö]\à[Y‹òH8†%ô\\òX⁄pÏ€à€€ùõ€YHMãÃLÃåçÇÇèKKHëQ“SéêSQ‘êW’‘íUTó–UU”ì”VWÃåçåLçKOÇääì’”ëTó—P“T“S”à8†%çÃLÃåçéääàX]\öX⁄[»\›XõXŸH€€[»ÿöô]]õ»€ÿô\ù\òHù[ò⁄[€ò[€€\]HH[Y‹òK[ò€ZY‹»Y€‹À[Z\⁄pÏ€ãÿ[ù[X⁄pÏ€àö\ÿÿ[H⁄Y\úô\»]]0Ï€õ€[‹»òZõ»[òH€0Î]XÿH]YH\õÿò\∞ËKà\ò⁄\ŸWÿö[ZòHHŸ\à[0Î[Z]Hö[ò[[õŸX›Œ»⁄Y›YH⁄Y[ô»H0ÓõöXÿH€\ŸH[\[Y[ùYH[à[ÿ[ôY]»X›X[à\»[pË\»Xÿ⁄[€ô\»ô\]ZY\ô[à[\[Y[ùX⁄pÏ€ãùYXò\»HXŸ\X⁄pÏ€àõ‹X\»[ù\»H‹\ò\ãà[[ùXŸY[ùH[MãÃL]YYHô\›[ZY»[à‘àÃåéJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[Ãåé
+HH›H‹ôX⁄Xõ»0ÍX€öX€◊JããŸ]öY[òŸK’‘ì◊–SQ‘êW’‘íUTó‘ëTRTóÃåçåLMãõY
+KÇÇääî”0„UP–HåH8†%ì‘QT’Kì»P’UêQNääà[òH[ùYYÿ›Y[ùK\õZ\€‹»‹à€Z[ö[»HXÿ⁄pÏ€ã0Î[Z]\»[€ô]\ö[‹»H[\‹ò[\»[ôY[ù\»H\õÿòX⁄pÏ€ãà[òH\õÿòX⁄pÏ€àH€0Î]XÿH›Xúö\∞ËH\»ZôX›X⁄[€ô\»ô\]]]ò\»^ô\ÿ[Y[ùH]]‹ö^òY\À]ö][ô»€€ôö\õX\àÿYHÿ›[Y[ùÀàÿYHZôX›X⁄pÏ€à€€úŸ\ùò\∞ËH‹öY⁄[ò[»ùYXòH]]‹ö]]]òK[\‹ùK[€ôYKX\[‹À\∞Î[Ÿ»H€€\õÿòX⁄pÏ€àH\XÿY‹Àà‹»Y€‹»€€ùXõ\»^Y⁄\∞Ë[à[à[›ö[ZY[ù»€€ôö\õXYŒ»ôY⁄\›ò\à[àY€»[à[Y‹òHõ»ùYXòH[›ô\à[ô\õ»[à[àò[ò€Àà[Z\⁄pÏ€ã[ù[X⁄pÏ€àH⁄Y\úôHô\]ZY\ô[à€€ùò]»∞Ë[Y»\òH€‹›HöXÿKùYXòHò]]òHHôY€\»H^Ÿ\⁄pÏ€ãàõ»ŸH[ùô[ù[à0Î[Z]\»öH]‹Œ»[òH^Ÿ\⁄pÏ€àõ»ô\›Y[H]\ÿHHXÿ⁄pÏ€àHõ»XúôHùY]õ‹»ÿ[ò[\ÀÇÇìH]]‹ö^òX⁄pÏ€à€€ù[ùXHôXŸ\⁄]H›Hõ‹[»€€ùò]»[ùôH€0Î]XÿKZôX›]‹àHÿ\X⁄YY€€àXŸ\X⁄pÏ€àô\öYöXÿXõN»õ»\]Z]ò[H[€ÿúôH[X[õ»X›X[€€àHMHZ[ù]‹»öHH\õÿò\à[ö[Y\à[›Ààõ»ŸH]]€X]^ò[àö\õX\»[X[ò\ÀôX⁄X€[à\õÿòX⁄[€ô\ÀXŸ\[àÿ[òX⁄‹»[ò€€ôX⁄[€ò[\»öH\ÿ[à‹ôY[ò⁄X[\»[\X\»\òH\\ô[ù\à]]€õ€pÎXKàŸH€€úŸ\ùò[àY[ùYYô[ò⁄[ôÀY[\›[ò⁄XKX›\òH—U‹›\ö[‹àHôX⁄Xõ»\òXõKà[àô\›[Y»[XöY›[»]YYHì’íQTó‘’UW’Sí”ì’”òŸHôX€€ò⁄[XHHõ»ŸHôZ[ù[ùKÇÇääê’TîëSï8†%]öY[ò⁄XHö]òYHô\öYöXÿYHçÃLääàP”ÀY[ùYYHX›‹àXH\XÿY‹Œ»õ»ô\]\õ‹Àà[Xõ‹»õ€\»\õX[ôXŸ[àì”—“SàHù[ù[YW›‹ö]WŸ[òXõYYò[ŸXà]\H[X›‹àåçåLçÕNçà—SP’€ÿúôHå»€€[[ò\»H›X]õ»Xõ\»Hÿ⁄»€0Î]Xÿ\»ìÀ⁄[à\ÿ‹ö]\òKàHY[Xúô\ÎXH]]€pË]XÿHH‹›‹ô\»ùYHXŸ\YNàQRSè]ùYKSíTíUYò[ŸK—UYò[ŸKàYö\€‹öY\Œà›X]õ»HŸY›\öYYHô\»Hô[ô[ZY[ùÀ⁄[àùY]õ‹»[^ô€‹Àà\»ŒHùYXò\»Hÿ⁄»€€\õÿòX⁄[€ô\»[\ùYòX›»€€à]öY[ò⁄XHÿÿ[\›0Ï‹öXÿN»õ»ùYXò[àù[ù[YHHò\ŸHH]‹ÀÇÇääëïQSïHHT‘QQ’QHSëQSïTŒääà[€€[Z]ÿÿ[ÃôMÃMMYòŒÿÃåXXMÿÿÕŒåÿéMŒMÃÿÿÕŸXõ»ŸH[ò€€ù∞Ï»XõXÿYŒ»Hò[XH‹ö]\à\›XòH]\Ÿ[ùH[ôYõY⁄àŸZ\»pÏŸ[‹»YöY\ô[àHXZ[ò[ò€\€»õ‹õX[^ò[ô»‘ìàHàHò[[à‹»Y\\ú»ô[[›‹Œ»õ»ôY[\^ò\àÏŸY€»⁄[àôX€€ò⁄[X\õÀàô\òŸ[ëPQH€‹úô\‹€ôH[‹ù[“‹õ‹‹Àõ»[‹ö]\ãàŸHô]][^òH[ÿ]]ÿ^HU‘»^\›[ùK⁄[à›õ»ù[ù[YKàõ»^\›HùY[ùK‹^[ÿY[›»\õÿòYŒ»õ»ôXXúö\à∞Óú‹]YY\»Y€›Y\Àà[⁄X⁄‹⁄[ùHôX⁄Xõ‹»ö]òY‹»€€úŸ\ùò[àH]öY[ò⁄XK⁄[àXõXÿ\à‹öY⁄[ò[\Àù]\»ö]òY\»öHŸX‹ô]‹ÀÇÇääìëV0ÓõöX€ŒääàôX€€ò⁄[X\àHXõXÿ\à[ÏŸY€»õÿòY»€€\]»\ŸHXZ[òH€€ú€€Y\à[QRSàS—H^X›»H€€ô^pÏ€ã\‹YY›YHHX›]òX⁄pÏ€à€€ôX⁄[€òYHHXŸ\X⁄pÏ€àH[›»\õÿòYÀà\›Hÿ[Xö[»ÿ›[Y[ù[õ»X›]òHõY‹ÀÇèKKHSëêSQ‘êW’‘íUTó–UU”ì”VWÃåçåLçKOÇÇà»»»‹ö]\à[Y‹òH8†%X\ùôX][àúõ€ù\òHò]]òHNKÃLÃåçÇÇääëP“T“p‰”àPUTíPS»’TîëSïSààÃåéì»T‘Q–QŒääà[‹ö]\àXôHô[õ›ò\àHô\öYöXÿ\à[X\ŸH»‹»ôXŸ\Œà
+JHò\»HYZ\⁄pÏ€à]0Ï€ZXÿK[ù\»H[öX⁄X\à[ò[ú‹‹ùN»H
+äH
+äô\‹pÍ\ äàHò[Y\à[ùYYõ›ôYY‹ã›Y[ùK[\Y\›‹À€ÿô\ù\òHH\XÿY‹»H\õÿòX⁄pÏ€ã[õYYX][Y[ùH[ù\»[0ÓõöX€»‘’ÿö[ÿà[Xõ‹»X\ùôX]»\ÿ[à[Z\€[»ÿ]Hÿ\\òY»
+€‹öŸ\ãô[ò⁄[ô»⁄Ÿ[àHôXŸZ\ô\\òY Kà[ò[ú‹‹ùHò]]õ»ò[HŸ\úòY»⁄Hõ»ôX⁄XôH[òHô[õ›òX⁄pÏ€àô\öYöXÿXõH»⁄H\›Hò[K›ô[òŸKà[ùõÿÿ\à[ò[ú‹‹ùH\ôX›[Y[ùH⁄[à\ÿHô[õ›òX⁄pÏ€àõ»Xö[]H[òH€€\òKÇÇääëUíQSê“PNääàùYXò\»ëQô\õŸZô\õ€à[[ù∞Î[»⁄[àô[õ›òX⁄pÏ€àö[ò[[à“H€ÿúôHYòYŸåÿ»€‹úôXÿ⁄pÏ€àXõXÿYH[à‘àÃåéJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[Ãåé
+K€€[Z]ÿçÃNLLJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘Àÿ€€[Z]ÿçÃNLLMXNYXŸLXéÃLçŒYNMŸŒYM KH›\»ô\»€‹öŸõ›‹»
+‘ì»úòZ[à“K[Y‹òH»‹ö]\à‘SH€‹ö‹›][€àX[
+H€€ò€^Y\õ€à›XÿŸ\‹ÿà€€àùYXò\»⁄[ù0Í]Xÿ\»HÏŸY€»Hò[XKõ»]]‹ö^òX⁄pÏ€à\òH‹ôX\àòX›\ò\»öHùYXòHHù[ù[YHõŸX›]õÀÇÇääë–UT»HP’UêP“p‰”àSëTSëQSïTŒääà[\›Y»öYŸ[ùH\»[õ‹]YHSQ‘êW’‘íUTó–UU”ì”VWÃåçåLç[ù\ö[‹éà»H\õZ\€‹»HX›\òHXH\XÿY‹À‹ö]\à—ëàHXŸ\X⁄pÏ€àõŸX›]òH[ôY[ùKàŸH€€úŸ\ùò[àö[ò⁄\[HpÎ[ö[[»ö]ö[Y⁄[Àö[ô[ô»^X›»H›Y[ùKŸ[ùYY€[€ôYK]]‹ö^òX⁄pÏ€ã[Xõ‹»X\ùôX]ÀôX›\\òX⁄pÏ€ãX›\òHò]]òKôX⁄Xõ»\òXõHH[›»ÿ›[Y[ù[\õÿòYÀàH[\XX⁄pÏ€à]]0Ï€õ€XH\[ôHY[pË\»H›H€0Î]XÿK€€ùò]‹»HùYXò\»‹àXÿ⁄pÏ€ãàÿ[XöX\à[òHò[ô\òH»[\X\à\õZ\€‹»õ»[]Y\›òHÿ\X⁄YYöH]]‹ö^òH€Z]\à\›‹»€€ùõ€\ÀÇÇà»»»›\›ŸXH[Y‹òH8†%[òZôHH‹öY⁄[ò[\»H\ö]òY‹»åÃLÃåçÇÇääîëQ”HPUTíPS»–SëQU»SààÃåé“SàQïSï‘»’PíQ‘ŒääàHY\XÿX⁄pÏ€àH]öY[ò⁄XHŸHôX[^òH€ÿúôHû]\»ôX[\»H[0Ë[Xö]»]]‹ö^òY»[ÿ›[Y[ùŒ»[òHö\›H\ö]òYH€€»YYHù\⁄[€ò\àôYô\ô[ò⁄X\»HùY[ù\»›X[ô»€€úŸ\ùòH
+äô[Z\€[»\⁄[‹öY⁄[ò[YôJäãà⁄H[€€ù[öY»\ö]òY»€⁄[ò⁄YH\õ»‹»‹öY⁄[ò[\»Y[ô[à\⁄\»Yô\ô[ù\Àõ»ŸHXô[à[ö\à\»ùY[ù\»öH\ô\à›H[òZôN»[\]Y]H]YYHõ‹]YXY»\òHô]ö\⁄pÏ€à
+’T’—W—TíUêUUëW‘TëSï–””ëìP’
+Kà\›»õ»ôY[\^òHHY[ùYöXÿX⁄pÏ€àHô[X›\òH[ÿ›[Y[ù»ò]]õ»[Y‹òKöH\]Z]ò[HH\õÿòX⁄pÏ€àHX⁄Y[ôH»ô\‹[»[ô\[ôY[ùHô\›]\òYÀÇÇääëUíQSê“PHSàêSPNääà‘àÃåéJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[Ãåé
+K€€[Z]»HùYXò\»ÿÿÃŒMJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘Àÿ€€[Z]ÿÿÃŒMMYéMMMçXòLŸXÃçŸLÿÿÕôôçÃXåäHH€‹úôXÿ⁄pÏ€àÿNåÃŒMMJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘Àÿ€€[Z]ŒNåÃŒMMéNLçòçMŸLôçåMôçMŸÕLMNXÃLMMäK€€àX›\òHH\⁄\»H\ò⁄]õ‹»ô\öYöXÿYKàXŸ\X⁄pÏ€à“H[ùY]õ»ÿ[ôY]»[ôY[ùH[ôYX›\é»Ÿ\õ»ÿ[Xö[‹»[àYù[ù‹Àÿ€€ùXö[YY‹õ€\ÀŸ\ﬁKà‹»ôXŸZ\»ù][ò\ö[‹»\õX[ôXŸ[à[àH]öY[ò⁄XHö]òYH^\›[ùKÇÇà»»»›\›ŸXH[Y‹òH8†%ô]ò[YX⁄pÏ€àHõÿŸY[ò⁄XHåKÃLÃåçÇÇääê–SëQU»ëTíQíP–QÀ“SàP’UêP“p‰”éääàHX]\öX[^òX⁄pÏ€àHô\›]\òX⁄pÏ€à[\]Y]H^\›[ùHùY[ô[àH€€\õÿò\à\»ôYô\ô[ò⁄X\»H‹öYŸ[àH[YôHHÿYH\ö]òY»[ù\»H›X[]ZY\àX›\òH»\ÿ‹ö]\òHH[XXŸ[ò[ZY[ùÀà[à[à»X[öYöY\›»[\òYÀ[ò€\€»€€à⁄X⁄‹›[H€€ú⁄\›[ùKõ»YYHôX⁄Xö\àSïQ‘íUW’ëTíQíQQ»ëT’‘ëW’T’Q⁄H›\»ùY[ù\»\›0Ë[àòXÎX\À€€ùY[ô[à‹⁄X⁄[€ô\»⁄[àò[‹à»›HYôHõ»\›0ËH[à[\]Y]KàŸHô]][^òHHò[YX⁄pÏ€à[pÏŸ[»H›\›ŸXN»õ»ŸH‹ôXH›õ»\ò⁄]õ»XY\›õÀ€€ôX›‹à»ôY⁄\›õ»ö[ò[ò⁄Y\õÀÇÇääëUíQSê“PNääàôY‹ô\⁄[€ô\»ëQ—‘ëQSàHç»ùYXò\»õÿÿ[\À€€àôX⁄^õ»[ù\»HK”»H€€úŸ\ùòX⁄pÏ€àHû]\ÀôYô\ô[ò⁄X\»H[òZôH[à[òHô\›]\òX⁄pÏ€àZ\€YH∞Ë[YKà\»ùYXò\»\ÿ[à[XXŸ[ò[ZY[ù»ÿÿ[‹⁄[][YŒ»õ»X‹ôY][àô\‹[»^\õõ»€€\]ÀYù[ù‹»[à[Y‹òKXŸ\X⁄pÏ€àö\ÿÿ[öH[à[›»€€ùXõKàHàÃåéXHŸHù\⁄[€∞Ï»[åÃLÃåçàH\»Nçà€‹›HöXÿN»[ù[ù[YHõŸX›]õÀö[ò⁄\[pÎ[ö[[ÀZY‹òX⁄pÏ€à»Hÿ›[Y[ù»^X›»€€úŸ\ùò[à›\»ÿ]\»[ô\[ôY[ù\Àà\›Hÿ[Xö[»H›\›ŸXHõ»X›]òH[‹ö]\ãÇÇääìëVääà[ùY‹ò\à\›H€‹úôXÿ⁄pÏ€à‹à[ÿ\úö[Hà^\›[ùH[ô\‹⁄]‹ö[»H€€ù[ùX\àHôX›\\òX⁄pÏ€ã›ö[ò›[X⁄pÏ€à[‹›]]‹ö^òY»HH€€ò⁄[XX⁄pÏ€à[€€\õÿò[ùH[›À⁄[à›\›]Z\à\€‹»õ‹]Y[‹»‹àùYXò\»⁄[ù0Í]Xÿ\ÀÇÇà»»€XZ[\ú€€ò[H[\Y^òH€€ùõ€YH8†%MKÃLÃåçÇÇääë€ÿöY\õõŒääà‘ì»\ú€€ò[’\Ÿ\àò][
+»‘ì»€€[\»[[àŸ[ô\ò[0ÊìíP”Œ»H›Y[ùH\ú€€ò[[õ‹Y]\ö[»ò[pË\»ŸH[ò€‹ú‹òH€€[»ù^∞Ï€àHH‹ôÿ[ö^òX⁄pÏ€àôX[Xÿ]⁄\àöHŸH€€\\ùH€€à›\»YZ[ö\›òY‹ô\»»[\XY‹ÀàHùY[ùHHô\ôYH€‹úô[À]\]Y]\À\[\òHH›\ÿ‹ö\⁄[€ô\»\õX[ôXŸH[à€XZ[àHY[[‹öXHö]òYHH‘ì»›X\ôH€€»X⁄‹»\õZ]Y‹À€€à‹öYŸ[ã[›]õÀ^õ»H0Ë[Xö]Œ»õ»[òHŸY›[ôH€‹XHX\⁄]òH[ù^∞Ï€ãÇÇääí[\[Y[ùX⁄pÏ€à€€\õÿòYNääà‘àÃéLóJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À‹[ÃéLäHù\⁄[€òY»[àXZ[òà›X\ôH\õZ\€‹»\ú€€ò[\À€\⁄YöXÿY‹à€€úŸ\ùòY‹ãùYXò\»Hÿ€€ùò]»[pÏŸ[◊J‘ì◊‘Tî””êS—”PRS–QRSó—–UW’åKõY
+H[ùY‹òY‹»[à[ô\‹⁄]‹ö[Ààì»X‹ôY]H–]]H‘ìÀZôX›X⁄pÏ€à]]0Ï€õ€XK\‹YY›YHõŸX›]õ»öH›[›HXô\òYKàH€€ô^pÏ€à]]‹ö^òYHH⁄]‘€XZ[\›0ËH‹\ò]]òH
+ú€€»[à[[ù‹õõ»H⁄]‘
+ãÇÇääì[\Y^òH€€X⁄]YH‹à[õ‹Y]\ö[»8†%€0Î]XÿH\XÿXõH\ŸHﬁNääÇåKà[[Z[ò\àùZY»⁄[à\Xÿ\àò\Ÿ\ÀYŸ[ù\À\ôX\»öHÿ⁄Y[\úŒà€€ù[ùX\à[ŸY›Z[ZY[ù»‘ì»€‹úô[‹»HY€‹ÿ^\›[ùK\›[ô›ZY[ô»X›\òHù][ò\öXHHX[ù[ö[ZY[ù»Hò[ôZòHH\ò⁄]ò[ô»H]öY[ò⁄XH‹\òX⁄[€ò[ö]òYHùY\òH[ô\‹⁄]‹ö[»0ÓòõX€ÀÇåãà€\⁄YöXÿ\à‹àY[úÿZôHH‹à€€ùô\úÿX⁄pÏ€éàô]ö\ÿ\àôX⁄XöY‹ÀŸ[ùöXY‹À\›[ô›Z\àXõX⁄YYôX[Y[ùHô\ÿ⁄[ôXõHHõ›YöXÿX⁄[€ô\»H›Y[ù\»H€€úŸ\ùò\à⁄Y[\ôHô\Ÿ\ùò\À€€ùò]‹ÀòX›\ò\Àò[òÿ\ö[‹Àö\ÿ\ÀŸY›\öYYÿ›[Y[ù‹»\ú€€ò[\À€€ôö\õXX⁄[€ô\»H›X[]ZY\à[»ô[]ò[ùKàõ⁄XöY»\[ô\à€€»HH]\]Y]H	‘õ€[ÿ⁄[€ô\…»\òHõ‹úò\ãÇåÀàô]ô\ú⁄XõHö[Y\õŒà]\]Y]\ãÿ\ò⁄]ò\à»[›ô\àXõX⁄YYô]ö\ÿYHH\[\òN»ÿ[òŸ[\àõ€][ô\»€€»\ŸH[€€ùõ€ŸöX⁄X[H€XZ[»[òH€€X⁄]Y]][ùXÿYH[ô[Z][ùH
+õ»Xúö\à[õXŸ\»H\⁄[ô Kàõ»ÿ[òŸ[\à[òH›\ÿ‹ö\⁄pÏ€àHY€»öHô]\ò\à[\ù\»ò[úÿXÿ⁄[€ò[\»‹à[ù\úô]\àù[ú›Xúÿ‹öXôHà⁄[à\›[ô›Z\õ\ÀÇçà
+äê[XXŸ[ò[ZY[ùŒääàH‹\òX⁄pÏ€àH€XZ[õ[›ô\àH\[\òHàì»\]Z]ò[HHXô\ò\à–ãàYY\à€€ú›[[»X›X[H€XZ[—ö]ôK‘›‹»[à€€Ÿ€H€ôN»€€úŸ\ùò\àùYXòK‹ôX›\\òX⁄pÏ€àHY[úÿZô\»Hò[‹é»[[Z[òX⁄pÏ€àYö[ö]]òH€€»€€àŸ[Xÿ⁄pÏ€àô\öYöXÿYHH]]‹ö^òX⁄pÏ€ãŸY›ZYHH€€\õÿòX⁄pÏ€àH›[›Kà[€€ôX›‹à⁄]‘\‹€öXõHõ»ŸúôXŸHòX⁄XY»Yö[ö]]õ»HH\[\òHöHYZ[ö\›òX⁄pÏ€àHö[õ‹»H€XZ[àõ»Yö\õX\à\‹X⁄[»ôX›\\òY»⁄[àX›\òHH›[›KÇçKà]]€X]^òX⁄pÏ€àù]\òNà€€\]\à–]]
+äú‹à\›X\ö[ äà[ù[ù[YH‘ìÀò][ŸX‹ô]»Ÿ\ùô\ã[€õK›€ô\ú⁄\\ú€€ò[‹ò[ù»pÎ[ö[[‹Àì»H[ôYÿX⁄pÏ€àHÿ€‹H‹ôÿ[ö^òX⁄[€ò[»›\ú€‹ú»[ò‹ô[Y[ù[\»HY\N»ÿ[ò\ö[»H[à€‹úô[»€€àX›\òKÿ[ù\ÀŸ\‹pÍ\À‹ôXŸZ\»ô]ûHHõ€òX⁄Œ»
+äú⁄[ääà€XZ[ãU⁄YH[Yÿ][€ã€€ùò\ŸpÏX\»H\XÿX⁄pÏ€ã›[›\»Yÿ\»öHùY]ò\»]]€X]^òX⁄[€ô\Àà[ù∞Î[‹»^\õõ‹À\õZ\€‹À€€ôöY›\òX⁄pÏ€àH\›ùXÿ⁄pÏ€àYö[ö]]òH⁄Y›Y[à\õÿòX⁄[€ô\»Ÿ\\òY\ÀÇÇääë\›YŒääà€0Î]Xÿ\ÀÿÏŸY€»õÿòY‹»[à“N»‹\òX⁄[€ô\»H⁄]‘ôX[^òY\»€€à€XZ[ôX[›^[‹»€€ù[‹»‹àù^∞Ï€à\õX[ôXŸ[à[àô\‹ùHö]òYŒ»–]]‹õŸX›]õÀŸ\›pÏ€àH›\ÿ‹ö\⁄[€ô\»Hõ›ôYY‹ô\»H\‹X⁄[»ôX[Xô\òY»[ôY[ù\»Hô\öYöXÿX⁄pÏ€ãàô]][^ò\à€€ùõ€\»[[àŸ[ô\ò[Hõ»ôZ[ù\úô]\àÏŸY€»€€[»ZôX›X⁄pÏ€àù[ù[YKÇÇãKKBÇà»»XõX»úòZ[à\ö[Y]\à8†%ÿÿ[€‹úôX›[€ãåçãLKLÃÇîÿ[YH‘ì»‹ù[»õ»ŸX€€ô\‹à€›\òŸHŸàù]àXõX»ô\Ÿ[ù][€àYò][»»ﬁ[ù]X»ÿúòZ[ò[ôÿôY\ôX›»\ôKàŸ\ùô\à[›€\›YZ]»€õH—U“PQõ‹à]YŸH[ô]»›]X»\‹Ÿ]Œ»›\àYŸ\ÀT\»[ô]]][€àY]Ÿ»òZ[€‹ŸYàõ›öY\à›X\ô»[€»ô]ô[ù]Xò\ŸK€€õôX›‹ãŸ\‹⁄[€à[ô\õ›ò[[YŸ\àK”»[à[[À]ô[àYà‹ôY[ùX[Àÿÿ\Xö[]HõY‹»^\›à\»\»õ›€Y[ù\⁄YHY[ô»[ôõ›ô\òŸ[]][ùXÿ][€ãÇÇò‘ì◊—T÷SQSï”S—OZ[ù\õò[\»[à^X⁄]Ÿ\ùô\à\ﬁ[Y[ùX⁄\⁄[€ãõ›]]‹ö^ò][€àúõ€HHö\⁄]‹ãà[úŸ]Z\‹‹[Y‹à›\àò[Y\»ô[XZ[àXõX»[[Àà[ù\õò[úòZ[ã”›€ô\à][ù[€àô]Z[à[ô\[ô[ùõY‹»\»Y[ù]K‹ÿ€‹K‘ìŒ»YÿXﬁH€€õôX›‹úÀ€YŸ\àY][€ò[Hô\]Z\ôH^X›‘ì◊”Q–P÷W”‘TêUS”î◊—SêPìQ]ùYX»\⁄»\ú⁄\›[òŸHô\]Z\ô\»^X›‘ì◊“SïTìêS’”‘í◊’‘íUW—SêPìQ]ùYX\»]»^\›[ô»õ€K‹ÿ€‹H⁄X⁄‹Ààõ€ôHŸà\ŸHõY‹»\»€€ôöY›\ôYûH\»⁄[ôŸKà\ÿXõ[ô»H[[»[€ôHÿ[õõ›X›]ò]H\ŸHù\⁄[ô\‹»ôXYÀ›‹ö]\Àà[ù\õò[YÿXﬁHõ›]\»›[ôYYHŸ\\ò]H]][ùXÿ][€àô]öY]»ôYõ‹ôH[ûHXõX»[ù\õò[\ù[ù[YH\ﬁ[Y[ù»\»[ö]Ÿ\»õ›Ÿ\ùYûH[KÇÇí[ö]X[ÃÃH]]‹ö^ò][€àÿ\»ÿÿ[€õKà€àLÃLX]\öX⁄[»XÿŸ\YôX€€ò⁄[X][€àYÿZ[ú››\úô[ùXZ[ãﬁ[ù]X»\›»[ôHô]ö[›\€H]]‹ö^ôYã‹õ›X›Yô]öY]Ààô[[›HY\ôŸKõŸX›[€ãôX[]K[ùã‹ôY[ùX[»[ô\õZ\‹⁄[€à⁄[ôŸ\»ô[XZ[à^€YYàù[ù[YHõ€[›[€à\»HŸ\\ò]Hÿ]H[ô]\›ôXùZ[‹ô]ò[Y]H⁄]õŸX›[€à€€ôöY›\ò][€ãàõ»ÿ⁄[XHZY‹ò][€ãàô]ô\úÿ[\»Hõÿ›\ŸY›€à[Kô]ô\àHô\Ÿ]ŸàH⁄\ôYô\‹⁄]‹ûKà^X›][€ã‹ôXŸZ\à\⁄‹»8†$ÕH[àH^\›[ô»‘ì◊–—TëPîì◊“STSQSïP“S”óÃåçãLKLÃõY[ôîêRSãS––Sõÿ⁄»Ÿà””ïSïPTãõY»õ»ù[ù[YHX›]ò][€à€Z[YY\ôKÇÇïô\öYöYYÿÿ[NàÕNHö]\›
+»çHõŸH\›Àò[Y]‹úÀ[ù[ôõŸX›[€àùZ[\‹Œ»LLà⁄X⁄‹»[ò€YHLHùZ[\‹Ÿ]À[õ€û[[›\À‹ﬁ[ù]XÀX€€⁄⁄YHô\]Y\›Àõÿ⁄ŸY‹\ò][€ò[—U‘‘’[ôŸ\ùô\ãXX›[€à]Àõ€›ôY\ôX›úòZ[àî–»[ôõ»›]õ›[ô€YŸ\àK”»][\Àà›€ô\à][ù[€àô\Ÿ\ùô\»]»^X›LÀŸ\ÿXõYô\‹€úŸHõ›Y⁄H\ö[Y]\ãàô^]K\]õ‹õX[^ò][€à\»\ÿXõYõ‹àH\ö[Y]\é»úòZ[à\»õ‹òŸKY[ò[ZXÀà]]][€àŸàH[[»›X\ôõŸXŸYÕà^X›YòZ[\ô\Œ»ô\›‹ôYôYõ‹ôHö[ò[ô\öYöXÿ][€ãà[ô\[ô[ùô]öY]»€‹ŸY⁄]õ»›]›[ô[ô»ö[ô[ô‹ÀàXõX»‹›[ô»[ôôX[Y[ù]K‘ì»‹\ò][€àô[XZ[à[ùô\öYöYYûH\»[ö]Çí[ùY‹ò][€àLÃL^[ô»Hÿ[YH\ö[Y]\à»]][ùXÿ]YP‘ÿôX\ô\àŸ]\[öôX›YX€Y[ù[ùûH⁄[ùÀ€‹öŸ\à€Y[ù[ô‹ö]Hö[Z]]ô\ÀX[ÿÿ[ò\ûHõ›]\»[ô–]]Y]Y]Kà]ô[ù‹»[ôH›[\ôX›‹ûHŸY\Z\à^\›[ô»Y[ù]H]À€›ô\ôYûHõÀRK”»ôY‹ô\‹⁄[€úÀà^\›[ô»[ù\õò[ÿ\Xö[]Kõ€H[ôÿ€‹H€€ùòX›»\ôHô\Ÿ\ùôY»[[»›X\ô»»õ›‹ò[ù[ù\õò[]]‹ö]Kàö[ò[ÿÿ[€€Xö[ò][€àYÿZ[ú›MXéÃŸMåXYLÃŒYYçLXçXçåÃÿNåXåŸòåXàHö]\›
+»çHõŸH\›»[ôLÕà⁄X⁄‹»\‹À⁄]ô\õ»›]õ›[ô€YŸ\à][\»[àHﬁ[ù]X»\õô\‹ÀàùZ[\‹Ÿ\ÀàT”[ù\»õ»\úõ‹úŒ»H^\›[ô»[ù\ŸY–]]‘S”î»ô\]Y\›ÿ\õö[ô»ô[XZ[úÀà[ô\[ô[ùô]öY]»ŸàXXÿYLçããôÿÃŸåòõ›[ôõ»X›[€òXõHYôX›Œ»H]\àXZ[à[\»Yõ»[[»›X\ô⁄[ôŸ\»[ô\»€›ô\ôYûHHö[ò[›Z]H\»\ôX›‹ûHôY‹ô\‹⁄[€úÀàô]öY]À‹ô[[›H]öY[òŸHô[€ô‹»[àHÿ[YH^X›][€àôXŸZ\»\»\òY‹ò\\»õ›H€Z[HŸàXõXÿ][€à‹àôX[ì»ô\öYöXÿ][€ãÇÇÇà»»‹[ê€]»H⁄]–\⁄[à\[ô[ò⁄XH[»8†%MãÃLÃåçà‘ÇÇääëTëP’UêHSì‘QUTíSŒääà[ôX\àH\ÿ\úõ€\àH‹\òX⁄pÏ€à\ú⁄\›[ùHH‹[ê€]À’⁄]–\[àHùXôH\òH]YH\Yÿ\ã›\‹[ô\à»\ÿ€€ôX›\à[»õ»][ôÿHH‹\òX⁄pÏ€à]]‹ö^òYKàö[‹öYYH€€ù[ùZYY[ùõ»H‘ì»ﬁ\›[\»
+»€€[\»HŸXÿ⁄pÏ€àN»[\0ÎXH[ù[òõ€⁄»^\›[ùHH\»\[ô[ò⁄X\»ÃLåã»ÃMÃ»ÃåKàõ»‹ôXH›õ»úòZ[ãò\ŸHHôY€ÿ⁄[ÀòX⁄€Ÿ»»ÿ⁄Y[\ãà\›H[ú›ùXÿ⁄pÏ€à]]‹ö^òH[öYöXÿX⁄pÏ€àHÿ›[Y[ùX⁄pÏ€é»õ»€€ùò]X⁄pÏ€ã\‹YY›YKò\€Y»H‹ôY[ò⁄X[\Àÿ[Xö[»H\õZ\€‹À€‹ùHHŸ\ùöX⁄[»öHùY]õ‹»[ù∞Î[‹ÀÇÇääê””ïì”»’TîëSïääà[ÿ[òŸHôX[Xÿ]⁄\àHX]\öX⁄[»\ú€€ò[Ÿ\\òY‹Œ»YpÏ[»X]\öX⁄[Œ»ô\‹€úÿXõH0ÍX€öX€»ù[ò⁄[€ò[€ÿúô\⁄]À’‘ì»ﬁ\›[\Œ»Ÿ[pË[ùXÿHH€€][öXÿX⁄[€ô\»TëK’‘ì»€€[\Ààõ€òH[Y\öXÿK–€‹›W‘öXÿKà[‹›X›]õÀô\ú⁄pÏ€à[ú›[YK\ôö[›€‹ö›ôYH€€ú›[ZYÀõ›ôYY‹ã€[Ÿ[»H]][ùXÿX⁄pÏ€ã›Y[ùH⁄]–\HôX›\ú€‹»€›Y\‹€öXõ\»⁄Y›Y[àT–””ì–“Q‘»\›H]Y]‹∞ÎXH[‹›à‹»ôY⁄\›õ‹»\›0Ï‹öX€‹»Hÿ\\ò\»H‘”õ»ùYXò[àH[ú›[X⁄pÏ€àX›]òKà[\›Y»ù[ù[YH⁄Y›YH””ëíQ’TëQ’SïëTíQíQQ»õ»ŸHX€\òHZY‹òX⁄pÏ€àöH‹\òX⁄pÏ€àçÕÀÇÇääïTë—UôX€€Y[ôYŒääàŸ\ùöY‹à[ù^\ú⁄\›[ùH
+îÀ’ìJH\òHÿ]]ÿ^Kÿ[ò[⁄]–\\úò[ZY[ù\»H€‹öŸ\ú»ôXŸ\ÿ\ö[‹À€€à\ÿ€»\òY\õÀ\úò[ú]YH[ôZ[öX⁄X\àHôX›\\òX⁄pÏ€à›\\ùö\ÿYKà‘ì»€€úŸ\ùòH]]‹öYY\õZ\€‹À\ôX\»H]öY[ò⁄XH[à›\»\›ùX›\ò\»ÿ[∞Ï€öXÿ\Œ»‹[ê€]»€€úŸ\ùòH€€[Y[ùH[\›Y»0ÍX€öX€»ôXŸ\ÿ\ö[»Hò[ú‹‹ùK‹Ÿ\⁄pÏ€àH€‹ö‹‹XŸH€ÿô\õòYÀàXÿŸ\€»YZ[ö\›ò]]õ»ö]òY»YYX[ùHZ[ÿÿ[K‘‘“ÿ]]ÿ^H[à€‹òX⁄À⁄[à[ô[YZ[ö\›ò]]õ»0ÓòõX€ÀàŸ\\ò\àù[ù[YK›\›X\ö[»‘»HŸX‹ô]‹»\ú€€ò[\»H‹»[\ô\ÿ\öX[\Œ»[àYŸ[ùH€€\\ùY»[›[ù[òÿHôX⁄XôH[\ôö[\ú€€ò[[YpÏ[ÀÇÇääìì»ò\›H[›ô\à[ÿ]]ÿ^Nääà[ùô[ù\öX\àÿYH\[ô[ò⁄XNà[Ÿ[»ô[[›»»ÿÿ[]][ùXÿX⁄pÏ€àô[õ›òXõKP‘–TKò]ôYÿY‹ã–⁄õ€YHô[^K‘”\ò⁄]õ‹Àÿÿ\ú]\»ÿÿ[\Àõ‹õﬁ—ö]ôK‹õ€ã‹Ÿ\ùöX⁄[‹ÀîÀ’Tì»ÿÿ[‹›ò[úÿ‹ö\⁄pÏ€ã€YYXHHõŸ‹ÀŸ\‹‹⁄]]õ‹Àà\òHÿYHÿ\X⁄YYôY⁄\›ò\àZôX›]‹ãùY[ùKY[ùYY‹ÿ€‹KXöXÿX⁄pÏ€ã0Óõ[XHùYXòK\[ô[ò⁄XH[»H›\›]X⁄pÏ€à€›Y»0Î[Z]H^0ÎX⁄]ÀàôYô\ö\à€€ôX›‹ô\À–THŸöX⁄X[\Œ»ò]ôYÿY‹à€›Y€€»\òHYX€‹»\õZ]Y‹»HõÿòY‹Àà‹»€€ôX›‹ô\»\‹€öXõ\»[à⁄]‘õ»ŸH\ôY[à]]€pË]Xÿ[Y[ùH[à‹[ê€]Àà\»Xÿ⁄[€ô\»∞Î\⁄Xÿ\À€ÿÿ[\»\õX[ôXŸ[à‹⁄[€ò[\»H]Y\›ò[à\‹‹⁄]]õ»õ»\‹€öXõH⁄H\›0ËH\YÿYŒ»ù[òÿHõ‹]YX[à€€ú›[\»»\ôX\»€›Y[ô\[ôY[ù\ÀÇÇääï“U–TääàHÿ›[Y[ùX⁄pÏ€àŸöX⁄X[€€ú›[YH\ÿ‹öXôH[ÿ[ò[⁄]–\ŸXã–òZ[^\»€€àŸ\⁄pÏ€àö[ò›[YH‹àTé»õ»\]Z]ò[HHY]H⁄]–\ù\⁄[ô\‹»]õ‹õK–€›YTKà€€ôö\õX\àò[ú‹‹ùHôX[H0Î[Z]\»[ù\»[\ŸpÏ[»ö[ò[à€€úŸ\ùò\à[öX⁄X[Y[ùH∞ÓõY\õÀÿÿ[ò[öYŸ[ùH›X[ô»ŸXHöXXõN»õ»ÿ[XöX\àH€›YTH⁄[à[ò[^ò\à€€\]Xö[YY‹ù\‹À€‹›\»Hô\›öXÿ⁄[€ô\»ŸöX⁄X[\Àà[à0ÓõöX€»ZôX›]‹àX›]õ»‹à›Y[ùK‹Ÿ\⁄pÏ€à\ò[ùH€‹ùHHôX›\\òX⁄pÏ€éà›Y⁄[ô»⁄[à€€ú›[[»öH[ù∞Î[‹»õŸX›]õ‹Àà€€ù[ô\àôXYôXŸZ\Àô\‹Y\›\»H\›0Ï‹öX€À‹ôX€€õôX›Hô]öY\»ŸYÓõà€€ùò]»^\›[ùKà\›[ò]\ö[ÀY[ùYYÿ€‹KY[\›[ò⁄XHHôXŸZ\Hõ›ôYY‹àXô[àô\öYöXÿ\úŸN»[à^»Ÿ[ô\òY»õ»ùYXòH[ùôYÿKÇÇà»»»[\XX⁄pÏ€à€€à[»\YÿY»8†%MãÃLÃåçãNNå‘ÇÇääíP“»ëT‘ïQ»‹àX]\öX⁄[Œääà›H»\›0ËH\YÿYÀà\›»\õZ]H€€ù[ùX\àH[öYöXÿX⁄pÏ€àHô]ö\⁄pÏ€àÿ›[Y[ù[€›Y»õ»[]Y\›òH]YH‹[ê€]»\›0ÍHÿpÎY»öHù[ò⁄[€ò[ôÀàH]\Ÿ[ò⁄XH[»õ»õ‹]YXHòXòZõ»[ô\[ôY[ùKàH]Y]‹∞ÎXHÿÿ[]YYH[ôY[ùH0ÓõöXÿ[Y[ùH[à‹»\€‹»]YHôX[Y[ùHô\]ZY\ò[à\ŸH‹›»ô]ö\ÿ\àö[Y\õ»[ùô[ù\ö[»H\‹YY›Y\»ô[[›‹»XÿŸ\⁄Xõ\»€€àY[ùYY]]‹ö^òYKÇÇääì‹ô[à‹à[\X›Œääà€€ù[ùZYYHY[ùYY[ÿ[ò[»H€€ù^»€€\\ùY»]]‹ö^òY»HôXŸ\⁄pÏ€àÿ›[Y[ù[ÿ⁄Y\úôH[àõ‹úòY‹é»à[\X\àÿ\X⁄YY\»H‹[Z^ò\à€‹›Hò\»YY\ãà]ö]\à[òHZY‹òX⁄pÏ€àX\⁄]òHHŸ‹»‹»õﬁYX›‹»[ù\»H[[‹›ò\à[⁄\ò›Z]»pÎ[ö[[Ààõ»‹ôX\à]]€X]^òX⁄pÏ€àùY]òH‹à\›H[\XX⁄pÏ€ãÇÇü[öYYô\\òXõH⁄[à»ô\›[Y»^Y⁄Y»[ù\»HZôX›]\àô\‹€úÿXõHù[ò⁄[€ò[üKKHKKHKKHü[ùô[ù\ö[»€›Yõ›ôYY‹ã‹õﬁYX›»^\›[ùKõ‹Y]\ö[À[ù‹õõÀ\ú⁄\›[ò⁄XKôY⁄pÏ€ã›[›HHXÿŸ\€»€€\õÿòY‹Œ»Ÿ\\ò\à\‹€öXõHH›\Y\›»€ÿúô\⁄]»üX]ö^àH\[ô[ò⁄X\»ÿYHÿ\X⁄YYX\òÿYH€›Yÿÿ[»\ÿ€€õÿ⁄YN»ö[ô›[òHÿ\X⁄YY‹∞Î]XÿH]YYHÿ›[H]∞Ë\»Hÿÿ[‹›⁄õ€YHô[^H»ÿ\ú]H[»€ÿúô\⁄]»ü⁄\ò›Z]»pÎ[ö[[»Y[úÿZôHHùYXòH]]‹ö^òY»8°§àY[ùYY‹ÿ€‹H8°§à€€ú›[H‘ì»8°§àô\‹Y\›HHôXŸZ\»[òH\ôXHÿ[∞Ï€öXÿH€€ùõ€YH€€àôXYòX⁄À›X[ô»€‹úô\‹€ôH‘ì»€€[\»
+»€ÿúô\⁄]»ü€€ù^»[ùôHÿ[ò[\»‹[ê€]»€€ú›[HõﬁYX›‹»Hÿ›[Y[ù‹»ÿ[∞Ï€öX€‹»\õZ]Y‹Œ»ÿ\€»‹»LHÿ\õ»ôX›\\òH\›YÀŸùY[ùHöYŸ[ù\»⁄[à[ùô[ù\õ‹»öH€‹X\àŸ»[úòZ[à‘ì»€€[\»üôXŸ\⁄pÏ€àH⁄Y\úôHõ›X⁄\ã€Y[úÿZôH]]‹ö^òY»]YYHö[ò›[Y»HôX⁄K›Y[ùKX›‹àH⁄Y\úôH[àõ‹úòY‹é»€‹úôXÿ⁄pÏ€àô\ú⁄[€òYHH‹öY⁄[ò[›\›ŸXYÀ⁄[à\⁄Y[ù»»Y€»]]€pË]X€»öX€»
+»ö[€òHüô\›\Y\›»ô]ö\ÿXõH€‹›HY[ú›X[öZõÀ›ò\öXXõH‹à€€\€ô[ùK[€ôYK⁄[\Y\›‹À0Î[Z]\»HY‹òYX⁄pÏ€é»ôX⁄[»HôX⁄HH€€ú›[H[ù\»H€€ùò]\à€ÿúô\⁄]»õ‹€ôN»X]\öX⁄[»X⁄YHÇì‹»ô\‹€úÿXõ\»€€àõ€\»H\ŸpÏ[Œ»\›HXõHõ»X‹ôY]HYŸ[ù\»ZôX›]0Ë[ô‹ŸHöH[ù∞Î[‹»H[òÿ\ô€‹ÀÇÇääê€€ùò]»pÎ[ö[[»H€€ù[ùZYYääà›X\ô\à[]ô[ù»\õZ]Y»H›HôYô\ô[ò⁄XH\òXõH[ù\»HX\òÿ\õ»õÿŸ\ÿY»‹à‘ìŒ»Y[ùYöXÿ\à›Y[ùH
+»õ›ôYY‹ã€Y\‹ÿYŸHQ
+»[ò[ù‹ÿ€‹N»[õ^ò\àYX⁄pÏ€à€€à‹öY⁄[ò[ôX⁄H[]ô[ù»HôXŸ\⁄pÏ€ãàô]][^ò\àõ›\õò[€›]õﬁ‹ôXŸZ\»^\›[ù\»€€à€€\]Xö[YY€€\õÿòYKà[òH[ù\úù\⁄pÏ€à€€úŸ\ùòH⁄X⁄‹⁄[ùH[ôY[ù\Œ»‹»]ô[ù‹»[XöY›[‹»]YY[à[àô]ö\⁄pÏ€ãàõ»õ€Y]\àôX›\\ò\àY[úÿZô\»ù[òÿHôX⁄XöY‹»öH\›0Ï‹öX€»ùY\òHHH€ÿô\ù\òHôX[[õ›ôYY‹ãÇÇääîôX⁄\⁄pÏ€àHôX›\\òX⁄pÏ€éääàî»Lç\»ÿöô]]õ»[ô\‹[»H\ò⁄]õÀì»\õZ\€»\òH\ô\à[à0ÎXHHòXòZõÀàYö[ö\à\\ùHôX›\\òX⁄pÏ€àH]ô[ù‹»‹\ò]]õ‹»Hõÿò\àÿpÎY\»[ù\ÀŸ\‹pÍ\»H\ú⁄\›\àH[ù\ÀŸ\‹pÍ\»H[ùöX\ãà⁄Hò[[à]ô[ù‹»»õ»ŸHYYHõÿò\à[ùôYÿK[‹›ò\à€ÿô\ù\òH\ò⁄X[H€€ò⁄[X\é»õ»X\òÿ\à0Í^]»öHôY[Z]\àH⁄YYÿ\ÀÇÇääîùYXòHH[ô\[ô[ò⁄XH€‹úôY⁄YNääà\Yÿ\à»Z\€\à0ÓõöXÿ[Y[ùH[»HX]\öX⁄[»Hô\öYöXÿ\à\ŸHpÏ›ö[€€à]‹»pÏ›ö[\Ààõ»\ÿ€€ôX›\à[õ›]\àöH[ù\úù[\\à⁄KQöKôXŸ\⁄pÏ€ãpÍ\‹Y\»»⁄\›[X\»[›[\òHõÿò\ãà⁄[][\à0Í\ôYHH€€ôX›]öYY[€‹öŸ\à[à›Y⁄[ôÀà€€\õÿò\àY[pË\»ôZ[öX⁄[ÀŸ\⁄pÏ€à^\òYKõ›ôYY‹àPHÿpÎYÀYù[ù»ò[YÀ[Z\€‹àõ»]]‹ö^òY»Hô\^N»ÿYHò[»XôH€€úŸ\ùò\àòXòZõ»H[‹›ò\à]pÍHù[ò⁄pÏ€à\›0ËHYôX›YKÇÇääì‹\òX⁄pÏ€àÿöô]]õŒääàö\›H€€\X›H[\›Y»[ÿ[ò[€€ô^pÏ€à‘ìÀ0Óõ[[»]ô[ù»õÿŸ\ÿYÀ[ôY[ù\Àò[‹»H€‹›N»⁄[àŸX‹ô]‹»öH[ôõ‹õXX⁄pÏ€à\ú€€ò[\òHõ€\»[›[à[\ù\à‹àÿ[Xö[»X]\öX[HÿpÎYH€€\õÿòYKYYX[ùHÿ[ò[[\õõ»ô]öX[Y[ùH]]‹ö^òYŒ»ò[»HPHõ»XôH€€ôù[ô\úŸH€€àò[»H⁄]–\àX›X[^òX⁄[€ô\»Hô\ú⁄pÏ€à€€àòX⁄›\ùYXòHHô]ô\ú⁄pÏ€à€€\]XõN»õ»X›X[^òX⁄pÏ€à]]€pË]XÿH[ô\ÿ‹ö[Z[òYKÇÇääê⁄Y\úôHH\›H[\XX⁄pÏ€éääàô\]Z\⁄]‹»H‹ö]\ö[‹»ÿ›[Y[ùY‹Œ»[ùô[ù\ö[»€›YXÿŸ\€»[‹›€‹›Hö[ò[H[›»pÓõà[ôY[ù\»H]öY[ò⁄XKà∞Ïﬁ[XH[öYYZôX›]XõH⁄[àŒàô]ö\ÿ\à[ôúòY\›ùX›\òHô[[›HXÿŸ\⁄XõHH€€\]\àHX]ö^à€€àùY[ù\»ô\öYöXÿY\Àà[»€€»ŸHô\]ZY\ôH⁄H[\›Y»X›]õ»»\ò⁄]õ‹»ôXŸ\ÿ\ö[‹»ô\⁄Y[à^€\⁄]ò[Y[ùH[0ÎN»]ô[ùX[ö[ò›[X⁄pÏ€àH⁄]–\ŸHôX[^òH[à›HõZõ»ŸöX⁄X[\ŸH[[0ÍYõ€õÀÇÇà»»»ŸX›Y[ò⁄XH[ùõ»[òXòZõ»^\›[ùBÇüò\ŸHô\‹€úÿXõH[ùôYÿXõHH‹ö]\ö[»H\õZ[òY»üKKHKKHKKHüKà]Y]‹∞ÎXH€ÿúô\⁄]»
+»X]\öX⁄[»\òHXÿŸ\€»ŸY›\õ»ZôX›]\àXY€∞Ï‹›X€»ÿ[ôXY»^\›[ùH[à‹›]]‹ö^òYŒ»ÿÿ[^ò\àô\ú⁄pÏ€ãŸ\ùöX⁄[À\ôö[H\[ô[ò⁄XHHÿYHÿ\X⁄YYà⁄[àY\àöHXõXÿ\àŸX‹ô]‹Ààüãà\›[õ»H€‹›H€ÿúô\⁄]»õ‹€ôN»X]\öX⁄[»X⁄YHÿ\›»ô]ö\ÿ\àö[Y\õ»[ôúòY\›ùX›\òH^\›[ùKà€€\\ò\àÿ\X⁄YY\ú⁄\›[ùKòX⁄›\ôY⁄pÏ€ãôX›\ú€‹ÀX[ù[ö[ZY[ù»H€‹›H›[àŸ\ùöY‹à
+»\ÿ€»
+»òX⁄›\
+»PK–TH
+»YYXH
+»ÿ[ò[à⁄[à\öYòH[ùô[ùYHöH\›[Z\à]YH⁄]‘õ»›XúôHTKà[Y[ú⁄[€ò[ZY[ù»\‹pÍ\»HYY\àÿ\ôÿN»]ö]\à[ô\»]YH›\‹[ô[à[Ÿ\ùöX⁄[ÀàüÀà[›»€›YZ\€Y»€ÿúô\⁄]»ô\ú⁄pÏ€à€€\]XõHöZòYN»Ÿ\ùöX⁄[»\ú⁄\›[ùK\ÿ€ÀXÿŸ\€»ö]òYÀŸX‹ô]‹»õ›Y⁄Y‹À0Î[Z]\»Hÿ\›À€€ô^pÏ€à]][ùXÿYHH‘ì»HùYXò\»ôYÿ]]ò\Àà€€»]‹»⁄[ù0Í]X€‹»»]Y\›òH]]‹ö^òYN»⁄[àŸ\⁄pÏ€à⁄]–\õŸX›]òH⁄[][0Ë[ôXKàüàô\\òX⁄pÏ€àH€‹ùH€ÿúô\⁄]Œ»X]\öX⁄[»XŸ\Hô[ù[òHòX⁄›\€€ú⁄\›[ùHH⁄YúòY»H\›YÀ›€‹ö‹‹XŸHYYX[ùHYXÿ[ö\€[»€€\]XõH€€àô\ú⁄pÏ€à[ú›[YKô\›‹ôHõÿòYÀX[öYô\›ö]òY»H\õZ\€‹Œ»]\ÿHX€›YH[[Z\€‹à[ùY›[Àò\€Y»ŸY›\õ»»ö[ò›[X⁄pÏ€àŸöX⁄X[⁄HXŸHò[KX›]òX⁄pÏ€à0ÓõöXÿH[àùXôHH€€ò⁄[XX⁄pÏ€àH[ôY[ù\Ààõ»€‹X\à€€»€€ôöY›\òX⁄pÏ€àöHYÿ\à‹ôY[ò⁄X[\À‘Tà[à⁄]»»ô\‹⁄]‹ö[ÀàüKàXŸ\X⁄pÏ€à€ÿúô\⁄]»ô\öYöXÿN»X]\öX⁄[»XŸ\H»\YÿY»»Z\€YÀô\öYöXÿX⁄pÏ€à\ŸHpÏ›ö[€€à]‹»pÏ›ö[\»⁄[à[ù\úù[\\àHôY[›[»€€ú›[\À›\ôX\»€›YH[\ù\»ô]öX[Y[ùH]]‹ö^òY\»ù[ò⁄[€ò[ãàôZ[öX⁄[»[Ÿ\ùöY‹ãôX€€ô^pÏ€ãô\^HHô\›‹ôH€€àô\›[Y‹»ôY⁄\›òY‹ÀàÿúŸ\ùòX⁄pÏ€à[öX⁄X[ç8†$Õ»ô]\ò\à\[ô[ò⁄XHÿÿ[€€»\‹pÍ\»HXŸ\X⁄pÏ€ãàÇääìp‚UíP–T»»\õZ[òYŒääàY[úÿZô\À›\ôX\»\XÿY‹»[à[›H€€ùõ€YÀö[òX⁄[€ô\»[ùôH0Ë[Xö]‹ÀL	H]ô[ù‹»[›H€€ùXö[^òY‹»
+[ò€ZY\»^Ÿ\⁄[€ô\ K]öY[ò⁄XHH[ùôYÿH[àùYXò\»]]‹ö^òY\À\›Y»ö\⁄XõH‹àÿ\X⁄YYH0Óõ[XH⁄[ò‹õ€ö^òX⁄pÏ€ãàÿöô]]õ‹»[öX⁄X[\»Hô\‹[»î»Lç‘ï»M‹àò[Y\ãõ»”KàYY\à][ò⁄XKò[‹»H€‹›HX\ö[»\òHöZò\àô\›\Y\›Àà›\\ùö\⁄pÏ€à^\õòH[Ÿ\ùöX⁄[»HÿpÎYH‹àÿ[ò[[ô\[ôY[ùNà[à⁄]–\ÿpÎY»õ»YYHŸ\à›H0ÓõöX€»]ö\€Ààô]][^ò\à[€ö]‹ô[Àÿ€€\À‹ÿ⁄Y[\à^\›[ù\Œ»ôZ[öX⁄[»[õÿŸ\€»õ»‹ôXH›õ»‹ú]Y\›Y‹à[\ô\ÿ\öX[ÇÇääëêS»»””ïSïRQQ»ì”êP“Œääà][ô\àXÿ⁄[€ô\»\[ôY[ù\»[ùHY[ùYY[ò⁄Y\ùKŸ\⁄pÏ€à[ù∞Ë[YK[ù∞Î[»[XöY›[»»€€ò⁄[XX⁄pÏ€àò[YN»€€úŸ\ùò\à[ôY[ù\»ÿ[∞Ï€öX€‹»H€€ù[ùX\àX[ùX[Y[ùH[à⁄]–\“‹õ‹‹»ŸYÓõà€Z[ö[Ààõ»ôZ[ù[ù\à[ù∞Î[‹»[XöY›[‹»H⁄YYÿ\Àà\òHõ€ô\ã][ô\àHZ\€\àö[Y\õ»[€€ú›[ZY‹à€›Y€€ò⁄[X\à[ù∞Î[‹À‹[ôY[ù\ÀôX›\\ò\à\›Y»€€\]XõHöYŸ[ùHHôXX›]ò\à[à0ÓõöX€»€€ú›[ZY‹à[ù\ö[‹ãàô\›]\ò\à[àòX⁄›\[ùY›[»YYH\⁄[ò‹õ€ö^ò\à⁄]–\Hô]õÿŸY\àY\Kÿ\õÿòX⁄[€ô\Œàõ»ò]\õ»€€[»ô]ô\ú⁄pÏ€à]]€pË]XÿHöHôY[ùöX\à\›0Ï‹öX€ÀÇÇääëUíQSê“PH—íP“PS
+äà€€ú›[YHMÀÃLÃåçàU»
+MãÃL‘äNà”[ù^’î◊JŒãÀŸÿ‹Àõ‹[ò€]ÀòZK›ú KÿXÿŸ\€»ô[[›◊JŒãÀŸÿ‹Àõ‹[ò€]ÀòZKŸÿ]]ÿ^K‹ô[[›JK’⁄]–\JŒãÀŸÿ‹Àõ‹[ò€]ÀòZKÿ⁄[õô[À›⁄]ÿ\
+K€ZY‹òX⁄pÏ€óJŒãÀŸÿ‹Àõ‹[ò€]ÀòZK⁄[ú›[€ZY‹ò][ô Kà€€àÿ\X⁄YY\»HHÿ›[Y[ùX⁄pÏ€àX›X[»€€ùò\›\à€€àHô\ú⁄pÏ€à[ú›[YH[ù\»HZôX›]\à€€X[ô‹»»\›[Z\àõ‹õX]»H[XXŸ[ò[ZY[ùÀÇÇääëT’QŒääàP“»H[ùô\›YÿX⁄pÏ€àH[öYöXÿX⁄pÏ€à[ò€‹ú‹òY\Œ»ì‘QT’»H\ú]Z]X›\òK‹[›À€ZY‹òX⁄pÏ€é»ì‘UQPQ»\òHZôX›X⁄pÏ€àHXÿŸ\€»ŸY›\õ»[‹›X›]õ»H\›[õ»€›Yô\öYöXÿYÀ€‹›HHô[ù[òH€€ò‹ô]‹Œ»T–””ì–“Q»Hÿ\X⁄YYX›X[Hù[ò⁄[€ò[ZY[ù»LëKà⁄Y›ZY[ùHXÿ⁄pÏ€à0ÓõöXÿNà]Y]‹∞ÎXH[‹›€€à[ù[òõ€⁄»^\›[ùHHX]ö^àH\[ô[ò⁄X\À[ù\»H[Y⁄\à»€€\ò\àŸ\ùöY‹ãÇÇà»»»”TíUHX›àŸY›Z[ZY[ù»Hõ›X⁄X\»H]ö\€‹»\ú€€ò[\»8†%MÀÃLÃåçà‘ÇÇääëTëP’UêH»S–Sê—Nääà[ò€‹ú‹ò\à[[àŸ[ô\ò[H[ùô\›YÿX⁄pÏ€àH‹»0Óõ[[‹»ô\»0ÎX\»€ÿúôH[Y⁄][\‹Ÿ]X\öŸ]€\ö]HX›ŸàåçH
+îãàÕåÃ K›H\ú‹X›]òHH\õÿòX⁄pÏ€àH\»õ›X⁄X\»[\‹ù[ù\»]YHXô[à]ö\ÿ\úŸH[õ‹Y]\ö[»‹à⁄]–\YYX[ùH‹[ê€]ÀàH€€X⁄]Y[MÀÃL]]‹ö^òH\€‹»]ö\€‹»\ú€€ò[\»[ùõ»H\›Hõ‹0Ï‹⁄]ÀàH[ò€‹ú‹òX⁄pÏ€àÿ›[Y[ù[õ»X‹ôY]H]YH[[€ö]‹à»[ÿ[ò[XH\›0Í[àX›]õ‹ÀÇÇääìPTS»»íS‘íQQääà0Ë[Xö]»\ú€€ò[H‘ì»\ú€€ò[»ëU‘ì»ŸH][^òH€€[»]\]Y]H[pË]XÿKõ»€€[»ùY]õ»›Xú⁄\›[XKà‘ì»ô\ŸX\ò⁄ò[YHùY[ù\»Hô[]ò[ò⁄XN»‘ì»€õ›€YŸH€€úŸ\ùòHõÿŸY[ò⁄XHHôX⁄N»‘ì»€€[\»€ÿöY\õòHHõ›YöXÿX⁄pÏ€é»€ÿúô\⁄]À’‘ì»ﬁ\›[\»ô\öYöXÿHù[ù[YHH€€ù[ùZYYà€€àô\‹€úÿXö[YY\»ù[ò⁄[€ò[\Àõ»]öY[ò⁄XHHYŸ[ù\»ZôX›]0Ë[ô‹ŸKàö[‹öYYH\òH\›HŸY›Z[ZY[ùÀ\[ôY[ùHHH€€ù[ùZYYHY[ùYYH‹[ê€]»XH\ÿ‹ö]\Œ»ŸH[ùY‹òH[à‹õ◊€‹◊‹‹ùõ€[◊€X\›\ò⁄[àõﬁYX›»XY\›õ»\ò[[ÀÇÇà»»»»’TîëSï8†%[ùô\›YÿX⁄pÏ€àHõ‹]Y[»ÿúŸ\ùòY‹¬Çê€‹ùHHH[ùô\›YÿX⁄pÏ€éà
+äåMÀÃLÃåçã\õﬁ[XY[Y[ùHéç[Y\öXÿK–€‹›W‘öXÿJäé»ô[ù[òH[ôõ‹õX]]òH€€X⁄]YHM8†$ÃMÀÃLà\›HXõH€€úŸ\ùòH[òH0Î[ôXHò\ŸH\›0Ï‹öXÿHHXôHôYúô\ÿÿ\úŸH[ZôX›]\à[ŸY›Z[ZY[ùÀÇÇü[^ô€»ôX⁄H[X⁄»H]öY[ò⁄XH[\XÿX⁄pÏ€àH0Î[Z]HüKKHKKHKKHüÿ[YHH]öX⁄»⁄][\]Z\»HX›]õ‹»Y⁄][\»HHÿ\ÿHõ[òÿHHõÿ⁄»[ôõ‹õpÏ»[MÃLHÿ[YHHH^XÿX⁄pÏ€àH]YH\õZ[∞Ï»›H\⁄Y€òX⁄pÏ€à[\‹ò[»[MKÃLŸH[ôõ‹õpÏ»›H€€ôö\õXX⁄pÏ€àHôY‹ô\€»[ŸX›‹àö]òYÀà’Hõÿ⁄◊JŒãÀ›››ÀùXõÿ⁄Àò€À€ô]‹À‹ôY›[][€ãÃåçãLLLM]⁄]KZ›\ŸKX‹û\ÀXYö\Ÿ\ã\]öX⁄À]⁄]Y\\ùÀMNåLJK–€⁄[ù[Y‹ò\JŒãÀÿ€⁄[ù[Y‹ò\ò€€K€ô]‹À›⁄]KZ›\ŸKX‹û\ÀX€›[ò⁄[Y\ôX›‹ã\›\ÀY›€äK–‹û\‘€]WJŒãÀÿ‹û\‹€]Kò€€K›ù[\ÀX‹û\À\€XﬁK\›Ÿ\ã\⁄YùÀ]›ÿ\ô\ŸXÀX[ôXŸùÀX\À]⁄]KZ›\ŸK]X[KY[\Y\À Kà\»[àZ\€[»X€€ùX⁄[ZY[ù»€€àô\‹ùHH€€ôö\õXX⁄pÏ€à‹›\ö[‹ô\Àà‹⁄XõHYöX›[YH€€‹ô[òX⁄pÏ€éà[ôô\ô[ò⁄XH[Ÿ\òY[Y[ùHôYÿ]]òKõ»ùYXòHHXò[ô€õ»H”TíUHöHH0Í\ôYHHõ›‹Ààõ»ŸHY[ùYöXÏ»›XŸ\€‹à[à‹»ô\‹ù\»€€ú›[Y‹Ààüô\‹ùH€ÿúôH]\àHõ»[ô\»XõXÿX⁄pÏ€à[MKÃL€ÿúôHY€‹»H[òH[\ô\ÿH€‹õ‹YYYH[ô\»\ò[ùH›HòXòZõ»ô[X⁄[€òY»€€à—SíUT»X›à’‘“óJŒãÀ›››Àù‹⁄ãò€€K‹€]X‹À‹€XﬁKÿ‹û\À[]À]ù[\]]\ãXõÀZ[ô\ÀMXòŸMY
+Kà€€ù^»0Í]X€À‹€0Î]X€»[ô\ôX›Àà]öXùZ\à\»[YÿX⁄[€ô\»[YY[Œ»õ»€€ùô\ù\õ\»[à[^ô€»ùYX⁄X[öH[àõ‹]Y[»õ‹õX[ùY]õ»H”TíUKàüÿú›0ËX›[»Y⁄\€]]õ»HôYô\ô[ò⁄XH[MKÃKÃåçãõ›X⁄pÏ€àåÕ[Ÿ[òYŒàHHò]õ‹ãL[à€€ùòHHH]\Ÿ[ùH€ÿúôH€›\ôHHH[ÿ⁄pÏ€à\òHõÿŸY\àHîãàÕåÃŒ»[Xúò[ÀÕKõ‹õX[Y[ùHåà‘ôY⁄\›õ»ŸöX⁄X[JŒãÀ›››ÀúŸ[ò]Kô€›ã€Y⁄\€]]ôK”TÀ‹õ€ÿÿ[›õ›\À›õ›LLNLã›õ›WÃLNWÃóÃåÕöJKà\»[ùXŸY[ùH[Y\»[ù\ö[‹ãõ»õ›X⁄XHH\›‹»ô\»0ÎX\»öHõ›X⁄pÏ€àH\õÿòX⁄pÏ€àö[ò[HH^Kàüÿ[[ô\ö[»H]ò[òŸHõ‹õX[õ»ŸHY»ô\öYöXÿ\à[à]ò[òŸHõ‹õX[ùY]õ»[ùôH[MH[MÀÃL[à\»ùY[ù\»ŸöX⁄X[\»€€ú›[Y\Àà[ÿ[[ô\ö[»[ù]]õ»ŸpÏX[XòH›]H€‹ö»\ö[Ÿ[KÃL[ãÃLKà‘Ÿ[òY◊JŒãÀ›››ÀúŸ[ò]Kô€›ã€Y⁄\€]]ôKÃåçó‹ÿ⁄Y[KöJKàÿ[[ô\ö[»›Zô]»Hÿ[Xö[‹Œ»õ»\ÿÿ\ùHôY€ÿ⁄XX⁄[€ô\»ö]òY\»öHù]\ò\»€€ùõÿÿ]‹öX\Àà€€ô‹ô\‹Àô€›àõ»Y»Y\úŸH‹àô\›öXÿ⁄pÏ€àHXÿŸ\€ÀàHX›X[^òX⁄pÏ€à[0Î[ôXŸH[ùX[H€›í[ôõ»[MãÃLõ»€€ú›]^YH[òHùY]òHX›XX⁄pÏ€àY⁄\€]]òNàÎ[ôXŸWJŒãÀ›››Àô€›ö[ôõÀô€›ãÿ€€ù[ù‹ŸÀ–‘íKLåçã⁄[–‘íKLåçãQQ“USPT‘—USPTí—UP”TíUKPê—åNÀöJKàüŸpÏX[[Y\òÿY»HôYXÿ⁄pÏ€à⁄Ÿ[àY\»[€€ùò]»^X›Œà
+äçãMIJäà[MÃLH\»éçéåç‘àH
+äçKå	Jäà[MÀÃLH\»éçéåçà‘é»ÿ[Xö[»
+ä∏¢$åMH[ù‹»‹òŸ[ùX[\ äà[à\õﬁ[XY[Y[ùHÃà\]Z]ò[[ùHH8¢$éM	Hô[]]õÀàH0ËY⁄[òHôY€ôXXòHY\»HâKà–€€ùò]◊JŒãÀ‹€[X\öŸ]ò€€KŸ]ô[ùÿ€\ö]KXX›\⁄Y€ôYZ[ùÀ[]ÀZ[ãLåçäK⁄\›0Ï‹öX€»[öX⁄X[JŒãÀÿ€ÿãú€[X\öŸ]ò€€K‹öXŸ\ÀZ\›‹ûO€X\öŸ]LÕLNNMMçMéMåNMMMçLÕééLŒMMLçéLåçNMMÃÃåçLÕNççåLåéMNÕÃÃåÃ…ú›\ùœLMŒLNMççå	ô[ôœLMŒLNMéÃ	ôöY[]OLJK⁄\›0Ï‹öX€»ö[ò[JŒãÀÿ€ÿãú€[X\öŸ]ò€€K‹öXŸ\ÀZ\›‹ûO€X\öŸ]LÕLNNMMçMéMåNMMMçLÕééLŒMMLçéLåçNMMÃÃåçLÕNççåLåéMNÕÃÃåÃ…ú›\ùœLMŒLååçLå	ô[ôœLMŒLååçÃ	ôöY[]OLJKà€›^òX⁄pÏ€à\›0Ï‹öXÿH[Y\òÿYÀõ»õÿòXö[YYÿöô]]òKõ€∞Ï‹›X€»[ô\[ôY[ùHöHôX⁄[»ZôX›]XõKàŸHö[ò\õ€à‹»[ù‹»‹à[Y\›[\àHTH[XöpÍ[àYYHpÏXY\à[à[ù»ôX⁄Y[ùHùY\òHHHô[ù[òHYYKàõ»ŸH€€\õÿ∞Ï»Xúõ»H0Ï‹ô[ô\»öHŸH€€ú›[\õ€à‹⁄X⁄[€ô\»\ú€€ò[\ÀàÇääìX›\òH[€‹ùNääà\»õ›ôYY\»ô\öYöXÿY\»õ»\‹ùXò[à]öY[ò⁄XH\òH[]ò\àH^X›]]òHHö\õXH[àåçé»[Ÿ\Ÿ€»YŸ\ò[Y[ùHôYÿ]]õ»\»[òH[ù\úô]X⁄pÏ€ãõ»Ÿ\ù^òHöHôX€€Y[ôX⁄pÏ€àH‹\òX⁄pÏ€ãà[€€ùò]»H€[X\öŸ]€€ú›[Y»^YŸH]YHîãàÕåÃ»\ŸH[Xò\»Ë[X\ò\»HŸXHö\õXY»[ù\»[
+äåÃKÃLãÃåçàH\»åŒçNHU
+äãà[òHYYYHŸ[ô\ò[ò]õ‹òXõHH‹ö\»»[òHX›XX⁄pÏ€àH—PÀ–—ï»õ»›[\H‹àÎH€€H\ŸH]ô[ùÀà\»ôY€\»Xô[àô[Y\úŸH[ù\»H[ù\úô]\àÿ[Xö[‹»H^À›\›]X⁄[€ô\»»ô\€€X⁄pÏ€é»õ»ŸHÿúŸ\ù∞Ï»[òH€0Ë]\›[H^0ÎX⁄]H]YHYZ]H]]€pË]Xÿ[Y[ùH›òH^H\]Z]ò[[ùKàHŸX€\òX⁄pÏ€àH[Hÿ€›[MKÃWJŒãÀ›››Àòò[ö⁄[ôÀúŸ[ò]Kô€›ã€ô]‹‹õ€€K€XZõ‹ö]K‹ÿ€›\›][Y[ù[€ãX€\ö]KXX›]õ›JH€ÿúôHôY›[X⁄pÏ€àHYŸ[ò⁄X\»\»€€ù^»ô]ö[Àõ»\õÿòX⁄pÏ€à[õﬁYX›ÀÇÇääë\›Y»0ÍX€öX€»€€\õÿòY»[à\›HŸ\⁄pÏ€éääàõ»X∞ÎXH\úò[ZY[ùH\‹€öXõH\òH[ùöX\à‹à‹[ê€]À’⁄]–\HH∞Óú‹]YYHH[ùY‹òX⁄pÏ€à‹[ê€]»õ»]õ€öpÏ»[òHÿ\X⁄YY][^òXõKà[[ù[ù»Hò]ôYÿY‹à[ôõ‹õpÏ»]YHôXŸ\⁄]H[€€ù^»H‹öYŸ[à€€àH^[ú⁄pÏ€à€€ôX›YKà\›»[Z]H\›HŸ\⁄pÏ€é»õ»[]Y\›òH]YH[Ÿ\ùöX⁄[»‹[ê€]»\›0ÍHÿpÎYÀà‹›X›]õÀò[ú‹‹ùK›Y[ùK∞Î[ò›[»[\›[ò]\ö[»H[ùôYÿH^ô[[»H^ô[[»⁄Y›Y[à⁄[àô\öYöXÿ\ãà
+äìõ»ŸH‹ôpÏ»[òH]]€X]^òX⁄pÏ€à”TíUHöHŸH[ùöpÏ»[à⁄]–\ääÇÇà»»»»Të—U8†%ôY€Hô\\òYHH[\ù\»[\‹ù[ù\¬ÇãH
+äêÿY[ò⁄XHõ‹Y\›Nääà€€ú›[HHùY[ù\»0ÓòõXÿ\»ÿYH‹òK[à[Y\öXÿK–€‹›W‘öXÿN»[ùöX\à0ÓõöXÿ[Y[ùH[]X›\à[òHõ›ôYYX]\öX[€€à⁄[[ò⁄[»›X[ô»õ»H^XKàô]][^ò\à\»ôYô\ô[ò⁄X\»\ú€€ò[\»öYŸ[ù\»H‹ò\ö[»Hÿ[ò[»õ»[ùô[ù\à[òH]]‹ö^òX⁄pÏ€à\òHY€õ‹ò\õ\ÀàHúôX›Y[ò⁄XH\»õ‹Y\›H‹\ò]]òKõ»[òHôYô\ô[ò⁄XH‹ò\öXHX›YH‹à[õ‹Y]\ö[ÀÇãH
+äë\‹\òY‹ô\»X]\öX[\Œääà^»»X›Y\ô»ö\\ùY\›Hô\öYöXÿXõN»\ﬁ[‹»»ô]\õ‹»H\ﬁ[»]YH[\ô[àHõ‹õXHù[ôYHH‹⁄Xö[YYH[ÿ[ûò\à[[Xúò[ôXŸ\ÿ\ö[Œ»õ›X⁄pÏ€à»ôX⁄Hõ‹õX[H€€ú⁄Y\òX⁄pÏ€é»\õÿòX⁄pÏ€ãôX⁄^õÀö\õXH»õ‹]Y[»õÿŸY[Y[ù[»ÿ[Xö[‹»Hô\‹€úÿXõ\»€€àYôX›»€€ò‹ô]»€ÿúôHHôY€ÿ⁄XX⁄pÏ€ãà[òH‹[öpÏ€ãù[[‹ã\ù0ÎX›[»ôX⁄X€Y»»[›ö[ZY[ù»HôX⁄[»Z\€Y»õ»ò\›KÇãH
+äëùY[ù\»HôX⁄\⁄pÏ€éääàôYô\ö\à€€ô‹ô\€ÀŸ[òYÀ€€Z]0Í\»Hÿ\ÿHõ[òÿH\òHX›XX⁄[€ô\»ŸöX⁄X[\Œ»€€ùò\›\àõ›X⁄X\»€€àYY[‹»öXXõ\»H[õ^ò\à]öY[ò⁄XKàôY⁄\›ò\à‹àŸ\\òY»ôX⁄H[X⁄ÀôX⁄HHXõXÿX⁄pÏ€àH‹òHH€€\õÿòX⁄pÏ€ãà[ôXÿ\à›X[ô»€€»^\›H[àô\‹ùH]öXùZXõHHŸ\\ò\àX⁄À[∞Ë[\⁄\»€0Î]X€ÀôY›[X⁄pÏ€àHYŸ[ò⁄X\»HôX⁄[»HôYXÿ⁄pÏ€ãÇãH
+äëY\Nääà€€úŸ\ùò\àôYô\ô[ò⁄XHÿ[∞Ï€öXÿHHÿYHX€€ùX⁄[ZY[ù»HH›H0Óõ[XH[\ùKà[ô\‹ùHHH€€ôö\õXX⁄pÏ€àHHÿ[YHH⁄]€‹úô\‹€ô[à[Z\€[»X⁄Àà[õ›»[MKÃHH\›H0Î[ôXHò\ŸHXHùY\õ€à^XÿY‹»[à⁄]»õ»ô\Ÿ[ù\õ‹»\‹pÍ\»€€[»õ›X⁄X\»ùY]ò\Àà[ùöX\à[òHX›X[^òX⁄pÏ€à0ÓõöXÿ[Y[ùH›X[ô»\‹ùH[àÿ[Xö[»X]\öX[»[òH€‹úôXÿ⁄pÏ€àô[]ò[ùKÇãH
+äê€€ù[öY»H⁄]–\ääàúô]ôK[à\‹pÏ[€à]pÍH\Ï»H›pË[ôÀ‹à]pÍH[\‹ùH\òH”TíUKŸö\õXH[àåçãò[‹òX⁄pÏ€àò]õ‹òXõKŸ\Ÿò]õ‹òXõK⁄[ò⁄Y\ùH€€à›Hù[ô[Y[ù»H[õXŸHHHùY[ùKàpÏXY\à[ôX⁄[»[€€ùò]»^X›»€€»›X[ô»\›0ÍHôX⁄pÍ[àô\öYöXÿY»H^]YHH[ù[ô\àHõ›ôYY»Y[ùYöXÿ\õ»€€[»ŸpÏX[HY\òÿY»HôX⁄\õÀà⁄Hò\öX\»õ›X⁄X\»\ÿ‹öXô[à[Z\€[»X€€ùX⁄[ZY[ùÀ[ùöX\à[à€€»]ö\€ÀÇãH
+äë\›[õ»H[ÿ[òŸNääà0ÓõöXÿ[Y[ùH[⁄]–\\ú€€ò[[õ‹Y]\ö[Àô\›Y[»YYX[ùH[∞Î[ò›[»ö]òY»ô\öYöXÿY»H‘ì»Y[ù]HH\»ôYô\ô[ò⁄X\»H‘ì»\ú€€ò[à\›H\ôX›]òH]]‹ö^òH[ŸY›Z[ZY[ù»[ôõ‹õX]]õ»H›H[ù∞Î[Œ»õ»Xö[]H‹\òX⁄[€ô\»ö[ò[ò⁄Y\ò\ÀXÿŸ\€»H‹⁄X⁄[€ô\À]ö\€‹»H\òŸ\õ‹Àÿ\›‹ÀZY‹òX⁄[€ô\»»[\XX⁄[€ô\»H\õZ\€‹Àà[0ÍYõ€õ‹À‹ôY[ò⁄X[\À^[ÿY»\ú€€ò[\»HôXŸZ\»ö]òY‹»\õX[ôXŸ[àùY\òH[ô\‹⁄]‹ö[»0ÓòõX€ÀÇÇà»»»»ëV8†%X›]òX⁄pÏ€àH]öY[ò⁄XH[ùõ»[úô[ùH^\›[ùBÇåKà
+äîô\€€ô\àXÿŸ\€»H\›YŒääà]Y]\à[ù[ù[YH]]‹ö^òY»€€à’‘ì◊”‘Sê”U◊‘ïSïSQW–UQUJãã‹ù[òõ€⁄‹À’‘ì◊”‘Sê”U◊‘ïSïSQW–UQUõY
+K[\^ò[ô»‹àH[ôúòY\›ùX›\òHô[[›HXÿŸ\⁄XõKà⁄HŸH\ÿHH^[ú⁄pÏ€ãô]€X\à\ŸH›H€€ù^»Hò]ôYÿY‹à€€ôX›YÀàY[ùYöXÿ\à‹›ô\ú⁄pÏ€ãZôX›]‹à\ú⁄\›[ùKò[ú‹‹ùK€€ô^pÏ€àHùY[ù\»0ÓòõXÿ\»H\›[ò]\ö[»\ú€€ò[àõ»^Y⁄\à[òŸ[ô\à[»›X[ô»Hù]H€›YXHYYHô\öYöXÿ\úŸKÇåãà
+äîô]][^ò\à[⁄\ò›Z]Œääà[õ^ò\à\›HôY€H€€à’‘ì»⁄]–\»‹[ê€]»ÿ[YKPúòZ[àåWJ‘ì◊’“U–T”‘Sê”U◊‘–SQW–îêRSó’åKõY
+K‘ì»€€[\»H\»\[ô[ò⁄X\»^\›[ù\»»ÃLåóJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À⁄\‹›Y\ÀÃLåäK»ÃMÃJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À⁄\‹›Y\ÀÃMÃ
+K»ÃåWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À⁄\‹›Y\ÀÃåJKà[ú‹Xÿ⁄[€ò\àHô]][^ò\àÿ⁄Y[\ãõ›YöXÿ][€úÿõ›\õò[€›]õﬁY\HHôXŸZ\»€ÿô\õòY‹Àà‹»€€ôX›‹ô\»H⁄]‘õ»ŸHô\›[Y[à\‹€öXõ\»[à‹[ê€]ÀÇåÀà
+äê€€ôöY›\ò\à[òH€€HôY€NääàX]\öX[^ò\àH]]‹ö^òX⁄pÏ€àXHôX⁄XöYH[òHô^àô\öYöXÿY‹»XÿŸ\€ÀY[ùYYH0Î[Z]\»0ÍX€öX€‹Àà[[ùô[ù\ö[»€€ú›[Y»õ»[‹›òXòH[à[€ö]‹àYXÿY»H”TíUN»‹»òY\ô\»ëU‘ì»0™–Ÿ[ù[ô[K^‹òY‹àH]Y]‹∞Æ»HTQT’‘ì»0™‘òY\àHXõ‹ò]‹ö[Æ»\›Xò[à]\ÿY‹ÀH[òY\àŸ[X[ò[ö]€⁄[à[∞ÎXH›õ»[ÿ[òŸKà\›HôY⁄\›õ»õ»‹»ôXX›]òHöH[\òH›\»úôX›Y[ò⁄X\Àà›X[]ZY\à€€ú€€YX⁄pÏ€à‹›\ö[‹àXôHô\Ÿ\ùò\à›H[ÿ[òŸHH\›YÀÇçà
+äîõÿò\à[ô\›[Y»]]‹ö^òYŒääàôYúô\ÿÿ\àùY[ù\À]ò[X\àX]\öX[YY€€\õÿò\àY\HH[ùöX\à[õ‹Y]\ö[»H⁄Y›ZY[ùHõ›ôYYô[]ò[ùKY[ùYöXÿYH€€à›HôX⁄HH€‹ùKà⁄Hõ»^\›H[òHõ›ôYYX]\öX[ô\öYöXÿ\à[⁄X€»⁄[à[Z]\àY[úÿZô\ÀàôY⁄\›ò\à‹òKô\ú⁄pÏ€àHHôY€KùY[ùK\›[ò]\ö[»ö]òY»ô\öYöXÿYÀQHY[úÿZôHH\›Y»ôX[[õ›ôYY‹ãà\›[ô›Z\àXŸ\YÀ[ùöXY»H[ùôYÿYŒ»[òH\ôXH‹ôXYH»^»Ÿ[ô\òY»õ»X‹ôY]H[ùôYÿKÇçKà
+äêXŸ\\àHÿúŸ\ùò\éääà[[‹›ò\à[à⁄X€»€€\]»Hô\]X⁄pÏ€à⁄[à\XÿYŒ»[òH€€ú›[H⁄[àõ›ôYYXôHõŸX⁄\àŸ\õ»Y[úÿZô\Àà€€\õÿò\à€€ù[ùZYY€€à[»\YÿY»»Z\€Y»⁄[àYôX›\àHôY[›[\ú⁄\›[ò⁄XHò\»ôZ[öX⁄[»HôX›\\òX⁄pÏ€à⁄[àôY[ù∞Î[»⁄YY€Àà[‹›ò\à0Óõ[[»⁄\]Y[À0Óõ[[»]ö\€À[ôY[ù\»Hò[‹»[à[\›Y»ÿ[∞Ï€öX€Œ»€€»[ù€òŸ\»X€\ò\àX›]õ»[ŸY›Z[ZY[ùÀÇÇääëò[»»ô]ô\ú⁄pÏ€éääà[ùHY[ùYY[ò⁄Y\ùKŸ\⁄pÏ€à[ù∞Ë[YH»ô\›[Y»H[ù∞Î[»[XöY›[À€€úŸ\ùò\à[[ôY[ùHH€€ò⁄[X\à[ù\»HôZ[ù[ù\ãà]\ÿ\à0ÓõöXÿ[Y[ùH\›HôY€H›X[ô»ŸXHôXŸ\ÿ\ö[Àô\Ÿ\ùò[ô»[ÿ[ò[H‹»[pË\»òXòZõ‹Œ»õ»[ùöX\à[Z\€[»]ö\€»ô\]Y[Y[ùHöH[›ô\õ»H›õ»\›[ò]\ö[»»ÿ[ò[⁄[à]]‹ö^òX⁄pÏ€ãÇÇääëïUTëH»Ÿ[ô\ò[^òX⁄pÏ€éääàò\»õÿò\à\›Hÿ\€Àô]][^ò\àHÿ\X⁄YYH]ö\€‹»‹àÿ[Xö[‹»X]\öX[\»\òH›õ‹»[X\»^ô\ÿ[Y[ùH€€X⁄]Y‹À€€úŸ\ùò[ô»ôYô\ô[ò⁄X\ÀõÿŸY[ò⁄XK]]‹ö^òX⁄pÏ€àHY[ùYY‹à\›X\ö[Ààõ»‹ôX\à›õ»úòZ[ã[àòY\àŸ[ô\ò[ùY]õ»»[òHò\ŸH\ò[[KÇÇääëT’Q»H“QTîëH–’SQSïSääà[ùô\›YÿX⁄pÏ€ã‹ö]\ö[‹À]]‹ö^òX⁄pÏ€àX€›YHH\[ô[ò⁄X\»[ò€‹ú‹òY‹»[[àŸ[ô\ò[à
+äì‹\òX⁄pÏ€éàSëQSïH»ïSïSQHHSïëQ–Hì»ëTíQíP–Q‘Àääà∞Ïﬁ[XHXÿ⁄pÏ€éàô\öYöXÿ\à[XÿŸ\€»[‹[ê€]»X›]õ»H[∞Î[ò›[»ö]òY»[⁄]–\\ú€€ò[\òHZôX›]\à[⁄\ò›Z]»]]‹ö^òYÀÇÇãKKBÇà»»⁄]–\HôXŸ\⁄pÏ€ã›Y[ùH\ú€€ò[Hô\‹[»[ùY‹ò[8†%LÀÃLÃåçà‘ÇÇääëTëP’UêHUU‘íVêQH‹àX]\öX⁄[ŒääàôX€‹[\à€€][öXÿX⁄pÏ€àÿúŸ\ùòXõHH\õZ]YH[⁄]–\HôXŸ\⁄pÏ€à
+[X\»õ›Y⁄YÀ\õZ[òX⁄pÏ€à
+HHH›H⁄]–\\ú€€ò[
+\õZ[òX⁄pÏ€àÕŒLäK[õ^ò\õH€€àŸHH‹\òX⁄pÏ€à‘ì»H\ŸY›\ò\à\ò⁄]õ‹À‹ôX›\\òX⁄pÏ€é»»õ»€€\õÿòY»]YYH[ôXYÀà∞ÓõY\õ‹»€€\]‹»[àö[ô[ô»õ›Y⁄YÀù[òÿH[à\›Hô\»0ÓòõX€Àà
+äîÿ€‹NääàôX[Xÿ]⁄\à
+»X]\öX⁄[»\ú€€ò[ö]òY‹Œ»
+äõ›€ô\éääà‘ì»€€[\Àﬁ\›[\À’€€À“Y[ù]K\ú€€ò[]K–\‹Ÿ]»H€Z[ö[‹»YôX›Y‹Ààô]][^ò\à\‹›Y\»ÃLåã»ÃMÃ»ÃåN»õ»ùY]òHò\ŸKX\›\à[ã[òõﬁ»ÿ⁄Y[\ãÇÇääïTë—Uääà›Y[ùKÿ⁄]Ÿ]ô[ù»OàY[ùYY‹ÿ€‹HOàõ›\õò[]]‹ö^òY»HYù[ù‹»Oà€\⁄YöXÿX⁄pÏ€ãÿ]]‹öYYOàÿöô]»ÿ[∞Ï€öX€»^\›[ùHOàô]ö\⁄pÏ€ãÿXÿ⁄pÏ€à\õZ]YHOà]öY[ò⁄XHOàô\‹[À‹ô\›‹ôKà€ÿô\ù\òH[ùò[ù\À‹ÿ[Y[ù\À\›0Ï‹öX€À€ùY]õÀ\ôX›‹ÀŸ‹ù\‹»HYYXH^0ÎX⁄]N»õ»õ€Y]\à]‹»[òXÿŸ\⁄Xõ\ÀàôXY\àŸ\\òY»Hô\‹€ô\ãŸ[ùöX\ãà\ú€€ò[õ»ö\⁄XõH\òH›[‹àYôX›Œ»€€\\ù\à€€»]‹»[\ô\ÿ\öX[\»Ÿ[Xÿ⁄[€òY‹»H\õZ]Y‹ÀÇÇääê’TîëSïô\öYöXÿY»‹àY]Y]NääàôY⁄\›õ»‹ôÿ[ö^òX⁄[€ò[€€[][öXÿ][€óÿ⁄[õô[ÿö[ô[ô‹»^\›H€€àìŒ»[àÿ[ò[‹[ò€]»\›[ù»H‹»‹»€€X⁄]Y‹»\\ôXŸHX[K›ô\öYöYY\õ»\›‹ﬁ[ò◊ÿ][ù[»\[ô[òﬁHôY⁄\›ûH‹[ê€]»⁄Y›YHôYY◊ÿ]Y]à€€ùòYXÿ⁄pÏ€àôY⁄\›òYKõ»ô\›Y[H‹à[ôô\ô[ò⁄XKàõ»ö[ô[ô»‹ôÿ[ö^òX⁄[€ò[H‹»‹»∞ÓõY\õ‹»€€X⁄]Y‹Œ»[Ÿ[»\Ÿ\àò][õ€Z[ò[H‹›ö]òY»⁄[àò[Y\ãàŸT‹XZ»X›]õ»[àôY⁄\›ûHõ»ùYXòH\ŸH⁄]–\€€ôX›YÀàõ»X›\òHôX[[úõ€[ZY[ùÀ[ù∞Î[»öHô\›‹ôHYôX›XY‹ÀÇÇääìëVääà€€\õÿò\à‹›‹ù[ù[YHH›Y[ùHôXŸ\⁄pÏ€é»ô\€€ô\àY[ùYYÿ[ÿ[òŸKŸYôX›‹»Hÿ\\òN»[›»\›Hå]ô[ù‹»HHÿ\€»‹\ò]]õÀô\^HHùYXòHôYÿ]]òKà
+äîNääà›Y[ùH\ú€€ò[Z\€YH
+\›HL]ô[ù‹ÀÃH€€\õ€Z\€ K\ò⁄]õ»Hô\›‹ôH‹àÿ€‹Kà
+äîéääàòX⁄Ÿö[H[\XX⁄pÏ€à‹à›\»€€à0Î[Z]\Àÿ⁄X⁄‹⁄[ùÀ⁄YX€‹»ö\⁄Xõ\ÀàX]ö^à€€\]HH\[ô[ò⁄X\Àô\‹[»HXŸ\X⁄pÏ€à[à’‘ì»€€[\ÀŸXÿ⁄pÏ€àNWJ‘ì◊–””ST◊’åKõY
+N»ô\à‹ù[òõ€⁄»X›X[Jãã‹ù[òõ€⁄‹À’‘ì◊”‘Sê”U◊‘ïSïSQW–UQUõY
+Kà‹»€€ùò]‹»Hÿ›[Y[ù‹ÀŸõ›‹»[à›Y[»L8†$ÃLà\õX[ôXŸ[à[ò€ZY‹»[à\›HZ\€XHõ‹Y\›KÇÇääîô\‹[»ÿöô]]õŒääà\›Y»ö]òYÀ⁄[ô^[à›\Xò\ŸN»‹öY⁄[ò[\ÀŸ^‹ù\»]]‹ö^òY‹»[àõ‹õﬁ€€àŸ\\òX⁄pÏ€à[\ô\ÿ\öX[‹\ú€€ò[⁄X⁄‹›[K€X[öYô\›HP”»€€ùò]‹À‹ôYXÿ⁄[€ô\»[à⁄]Xé»YŸ\À–Z\ùXõK‘‹ù[€€[»õﬁYXÿ⁄[€ô\Ààõÿò\àô\›‹ôHH]‹»
+»ö[ò\ö[‹»
+»\õZ\€‹Œ»õ»X€\ò\àòX⁄›\‹à^\›\àÿ\ú]\Ààî»Lç‘ï»M€€àÿöô]]õ‹»[öX⁄X[\»‹àò[Y\ãõ»”HöYŸ[ùKÇÇääï\õZ[òYŒääà[òHÿ\\òHôX[‹à›Y[ùHõŸXŸHùY[ùKÿ€‹HHÿöô]‹»€€ò⁄[XY‹Œ»ô\^H⁄[à\XÿYÀŸ\õ»ö[òX⁄pÏ€à\ú€€ò[\ò⁄]õ‹»ôX›\\òXõ\»Hò[Hö\⁄XõKà‹õ‹‹»€€úŸ\ùòH]]‹öYY€€Y\ò⁄X[»ò[ò€À‹õÿŸ\ÿY‹ã–[Y‹òH€€úŸ\ùò[à\»›^X\Ààõ»ÿ[Xö[‹»\öYò\ö[‹ÀY€‹ÀY[úÿZô\»^\õõ‹À\õZ\€‹»[\[‹»»XõXÿX⁄pÏ€à‹àXô\àpÎY»[à⁄]à\›Y»ÿ›[Y[ù[]]‹ö^òYŒ»[ùY‹òX⁄pÏ€àHôX›\\òX⁄pÏ€àLëHSïëTíQíQQ\›HùYXòKÇÇà»»ô\‹ùHHôXŸ\⁄pÏ€à[ùY‹òY»Hô\\òX⁄pÏ€à‹\ò]]òHåçàLÇÇääê”‘îëP–“p‰”àTì–êQH‹àX]\öX⁄[»[LKÃLÃåçãåéçà‘à8†%]ò[ô\∞ÎXHHY[∞ÓéääàôX[Xÿ]⁄\àõ»Y[ôH\]Z\‹»öH]ò[ô\∞ÎXHõ‹XH\òHpÍ\‹Y\ÀàôXŸ\⁄pÏ€à€€‹ô[òH€€à[àõ›ôYY‹à^\õõŒàôX€ŸŸHHõ‹H[àHXpÏX[òHHH]ùY[ôH[àH\ôN»õ‹H[ùôYÿYH[àH\ôHŸH]ùY[ôH[0ÎXH⁄Y›ZY[ùH[àHXpÏX[òKàõ»pÏXY\à[òH‹òH^X›HH€‹ùHöHõ€Y]\àôX⁄[Àÿ›\»⁄[à€€ôö\õXX⁄pÏ€à[õ›ôYY‹ãà\›H\ôX›]òH›\›]^YHô\‹Y\›\»]YHô\Ÿ[ù[à]ò[ô\∞ÎXHõ‹XH»‹ò\ö[‹»∞ÎY⁄Y‹»õ»€‹úõÿõ‹òY‹Àà\Xÿ\à[à[€€õÿ⁄[ZY[ù»^\›[ùHHŸT‹XZÀ’TëHH\»›\\ôöX⁄Y\»HŸ\ùöX⁄[»öYŸ[ù\À⁄[àùY]òHò\ŸKàô]\ò\à
+ä∏†'\ÿÿH[0ÎXx†'Jäà[Y[∞ÓàHHô\‹Y\›\À‹ôX€€Y[ôX⁄[€ô\»›X[ô»ŸHX›X[XŸH[€€ù[öY»^\›[ùN»õ»›\›]Z\õ»‹à›õ»]»⁄[à]]‹ö^òX⁄pÏ€ãàùY[ùNà[ú›ùXÿ⁄pÏ€à\ôX›H[õ‹Y]\ö[»H‹ô\‹ùHHôXŸ\⁄pÏ€óJŒãÀÿ⁄]‹ò€€K‹‹XŸK‹YŸWÿMéLçŒMåôéNLXXôMçLÕçÃôô
+Kà\›Y»ÿ›[Y[ù[à\õÿòY»HôY⁄\›òYŒ»X›X[^òX⁄pÏ€àYôX›]òHHŸT‹XZÀ€Y[∞ÓàH[ùôYÿH[pÍ\‹Y‹õ›ôYY‹àpÓõà[ôY[ù\»HŸ\⁄pÏ€à]]‹ö^òYHHôXYòX⁄ÀàH\öYòKÿ›\»H]ò[ô\∞ÎXH\òH[LãÃL⁄Y›YH[ôY[ùN»ô\‹€ô\à[pÍ\‹Y»€€‹ô[ò\àô\‹Y\›H[\ò[òH‹à[ÿ[ò[]]‹ö^òYÀ⁄[àYö\õX\à[ùôYÿHôX[^òYKÇÇÇÇääêP’PSVêP“p‰”àUU‘íVêQHKÃLÃåçà8†%[ùôYÿH\ú€€ò[‹à‹[ê€]À’⁄]–\ääàX]\öX⁄[»€€X⁄]HôX⁄Xö\à\›\»[\ù\»‹à[ÿ[ò[ö]òY»^\›[ùHHô\\ò\à›HZôX›X⁄pÏ€à[à€‹öÀà[òÿ\ô€»[ùY‹òY»[à⁄\‹›YHÃåWJŒãÀŸ⁄]Xãò€€K—ò[Xÿ]⁄\ú›’‹õÀS‘À⁄\‹›Y\ÀÃåJK€€à\[ô[ò⁄X\»ÃLåà
+Y[ùYY
+HHÃMÃ
+X›\òJN»õ»‹ôX\àŸY›[ô»òX⁄€Ÿ»öHÿ⁄Y[\ãà€‹öÀ–€Ÿ^\»ZôX›]‹àX€›Y»òZõ»‘ì»€€[\»
+»€ÿúô\⁄]»H[€€ùõ€[ôKõ»ùY]òH]]‹öYYàH]]‹ö^òX⁄pÏ€à›XúôH[òHùYXòHõ»Ÿ[ú⁄XõHHù]\ò\»[\ù\»X]\öX[\À›\ôŸ[ù\»[õ‹Y]\ö[»ô\öYöXÿYŒ»õ»‹ù\‹ÀpÍ\‹Y\ÀùY]õ‹»ÿ\›‹»öHXÿ⁄[€ô\»ö[ò[ò⁄Y\ò\Àÿ€€Y\ò⁄X[\Àà[€‹öŸ\àHôXŸ\⁄pÏ€à€€úŸ\ùòH›HYŸKÿ\€‹ÀY\XÿX⁄pÏ€àHöYŸŸ\ú»€€\]‹Œ»Y\\à€€»[ùôYÿHYYX[ùH[Y[ùH^\›[ùKà\›YŒà[òÿ\ô€»ÿ›[Y[ùYÀŸ\⁄pÏ€àH€‹ö»YX⁄[€ò[õ»[öX⁄XYK]][ùXÿX⁄pÏ€àH[ù∞Î[»X›X[\»⁄[àùYXòKà[ù\»HX€\ò\à‹\ò]]õŒàô\öYöXÿ\à‹›‹Ÿ\⁄pÏ€ã⁄Y[ùYYÿù[ô\àôYô\ô[ò⁄XHH[ùôYÿHH[òHùYXòHH[òH[\ùHôX[õÿò\àô\^H⁄[à\XÿY‹»H[ôYÿX⁄pÏ€à‹àY[ùYY‹ÿ€‹H[ò€‹úôX›‹ÀàY[úÿZô\»8†'<'ÈÍàïQPêH0≠»ôXŸ\⁄pÏ€∏†'KpË^[[»Lå[Xúò\»H[õXŸHYŸN»⁄[àõ›ôYY\Àõ»õ›YöXÿ\ãà[ùHò[»»ô\›[Y»[XöY›[»€€úŸ\ùò\à[\ùH\]pÎKô\öYöXÿ\à\›Y»[ù\»HôZ[ù[ù\àHõ»[ù[ò⁄X\à[ù∞Î[Ààô]ô\ú⁄pÏ€àX€›YH[Y\\àH[ùôYÿK⁄[à]\ÿ\à[ŸXö€⁄»öH[\ò\à€‹ùH‹õ‹‹»»⁄Y\úô\»[X[õ‹ÀÇÇÇääëTëP’UêHTì–êQH‹àX]\öX⁄[»[ÃLÃåçãääà‘ëT‘ïHëP—T“S”óJŒãÀÿ⁄]‹ò€€K‹‹XŸK‹YŸWÿMéLçŒMåôéNLXXôMçLÕçÃôô
+H\»Hö\›H‹\ò]]òH[›[àpÍ\‹Y\»Hÿ[ò[\»€€\õÿòY‹Àõ›\»H[ùXŸY[ù\À€ÿúõ‹»Yô\ô[ò⁄XY‹À\ôX\Àÿ‹ö]\ö[‹»H⁄Y\úôKô\\òX⁄pÏ€àﬁK€XpÏX[òKÕÀÃÃŒL0ÎX\Àÿ[[ô\àHôX⁄\»\‹X⁄X[\ÀUH€€\\òX⁄pÏ€à[ùX[àõ»\»›òHùY[ùHò[úÿXÿ⁄[€ò[‘ìK€€H»Ÿ\ôXúõÀÇÇääíP“ŒääàYŸH[\XYHHpÎYN»€XZ[›[ÿ[[ô\àH€€ùX›»€€ú›[Y‹Œ»ô\Ÿ\ùò\»‘ìŒàÃ»ö[\À€ò\⁄›åKÃK]ôHH\›[ò⁄X\»åçKà]]€X]^òX⁄pÏ€à[\ù\»[ô\‹ùHôXŸ\⁄pÏ€òXö[]YHHö[ò›[YHHHYŸH‹àùY]õ‹»€‹úô[‹»ô[]ò[ù\»HYZ[êôX[Xÿ]⁄\ö›[ò€€N»ö[òH\›[ù‹»Hô\Ÿ\ùò\À”’K’ŸT‹XZÀ⁄pÍ\‹Y\À‹Y€‹ÀŸòX›\ò\Àÿ€€\õÿò[ù\»Hô\öYöXÿHô[]ò[ò⁄XH[ù\»HX›X\ãàö[Y\òHZôX›X⁄pÏ€à‹à]ô[ù»Ÿ]∞ÎXHì»ëTíQíP–QKàõ»ôXX›]ò\àH[\ùH[ù\ö[‹à]\ÿYKàõ»\Xÿ\à[ôŸ\›Kÿ›\ú€‹ú»H‘ì»€‹úô[‹»HY€‹ÀàH\ôXHX›X[^òHYŸHHõ›YöXÿH[ù\õò[Y[ùN»õ»[ù∞ÎXH⁄]–\öH[XZ[H\òŸ\õ‹ÀÇÇääêUU‘íQQTŒääà‹õ‹‹»€€úŸ\ùòHô\Ÿ\ùò\À[öYYõ›\»H€€ôX⁄[€ô\Œ»ò[ò€‹À‹õÿŸ\ÿY‹àô\öYöXÿ[àY€‹Œ»[Y‹òH€€úŸ\ùòH€€ùXö[YY»‘ì»\⁄‹ÀŸõ€››\»€€úŸ\ùòHXÿ⁄[€ô\»[\ô\ÿ\öX[\»òZõ»€€ùõ€[ôN»ÿ[[ô\à€€úŸ\ùòH]ô[ù‹Œ»€€ùX›»€€»ô\›Y[ôH€€ùX›Œ»\⁄‹À“ŸY\⁄Y›Y[à⁄[àY\\àLëHô\öYöXÿYÀàYŸHô\Ÿ\ùòHÿ[Xö[‹»[X[õ‹»H⁄Y\úô\»HY\XÿH‹àô\Ÿ\ùòKÿ€€ùô\úÿX⁄pÏ€ã›\»H\›[ù»pË\»Y\‹ÿYŸW⁄Yà[0ÍYõ€õ»[ù\õòX⁄[€ò[€‹úõÿõ‹òY»\òHÿKõYN»ÏŸY€‹»HXÿŸ\€À\öô]\Àÿ›[Y[ù‹»HŸX‹ô]‹»õ»ŸHXõXÿ[ãÇÇääîëTTêP“p‰”éääà\ÿ\àÿ[[ô\à^\›[ùHHô\öXY‹»€€ôX›Y‹Œ»Ÿ\\ò\àŸ[XúòX⁄pÏ€ãŸ0ÎXHô\›]õÀŸYôX›»Xõ‹ò[H€€ôö\õX\à]ô[ù‹»ÿÿ[\»[ù\»H[\ù\ãàô]ö\ÿ\à]‹»ÀÃÀÃH0ÎX\»[ù\Œ»]ö\€»‹à[HX]\öX[^õ»‹∞Î]X€»»ò[»ùY]õÀà[€‹öŸ\à‹à€‹úô[»õ»ÿ\ò[ù^òHô]ö\⁄pÏ€àX\öXHHÿ[[ô\àöHÿ[Xö[‹»^€\⁄]õ‹»H‹õ‹‹Àà[ò€‹ú‹ò\àô]ö\⁄pÏ€àHô\\òX⁄pÏ€àH[\ù\»[X[HúöYYàH⁄Y\úôHX\ö[»^\›[ù\À⁄[àÿ⁄Y[\à\ò[[ÀÇÇääìUHåçNääà0ÎX\»€€\]‹»[HHY\»\›H^Y\é»\ò⁄X[HﬁHŸ\\òYÀà€€\\ò\àZ\€[»[ù\ùò[À‹õ‹YYY›[öYY\Àÿÿ\X⁄YYX\öXK€[€ôYK⁄[\Y\›‹ÀàŸ\\ò\à[ô‹ô\€»‹à\›[ò⁄XK€ÿúõ‹À€‹ù\ÎX\Àÿÿ[öô\»H€ã]KXõ€⁄‹ÀàQèZ[ô‹ô\€»[⁄ò[ZY[ùÀ€õÿ⁄\»ô[ôY\Œ»ô]îTèZ[ô‹ô\€À€õÿ⁄\»\‹€öXõ\Œ»ÿ›\X⁄pÏ€è[õÿ⁄\»ô[ôY\ÀŸ\‹€öXõ\Àà[\XX⁄pÏ€àH[ùô[ù\ö[»ô\]ZY\ôH€€öù[ù»€€\\òXõKà⁄[à]‹»\›0Ï‹öX€‹»€€\]‹»»€ò\⁄›HY›X[XY[YNà“SàU‘Àù[òÿH‹òŸ[ùZôH[ùô[ùYÀÇÇääêì‘UQS‘ŒääàùY]òH€€ú›[H‹õ‹‹»ô\]ZY\ôHŸ⁄[à[à[ò]ôYÿY‹àH€‹öŒ»õ›\»[ù\õò\Àõ€Xúô\Àÿ€€ùX›‹»ô\›[ù\»Hÿ[‹»⁄[à€€\]\ãà⁄]–\”‹[ê€]»⁄[àôXŸZ\LëN»\›0Ï‹öX€»åçHH\‹Zõ»X›X[[ú›YöX⁄Y[ù\Ààõ»X\òÿ\àôXŸ\⁄pÏ€à⁄[ò‹õ€ö^òYHöHUÿ[›[YÀà
+äîö[‹öYYääàX›\òH‹õ‹‹»öYŸ[ùHHô[]õ»HXö]X⁄pÏ€àåH8°§à€€ò⁄[XX⁄pÏ€àH[ôY[ù\»X›X[\»8°§à\›0Ï‹öX€»€€\\òXõH8°§àô\öYöXÿX⁄pÏ€à[ö[Y\à]ô[ù»]]€pË]X€Àà[ÿ]0Ë[Ÿ€»HL€€ùõ€\»YX⁄[€ò[\»[àHYŸH\»ô\\òX⁄pÏ€àö[‹ö^òYKõ»L[ùY‹òX⁄[€ô\»ZôX›]Y\ÀÇÇãKKBÇà»»€€Ÿ€H€‹ö‹‹XŸH‹\ò]]õ»8†%€€Ÿ€H\⁄‹ÀŸY\ÿ[[ô\àHŸ\ùöX⁄[‹»€€ôX›Y‹»
+åçãLLL BÇääëTëP’UêHTì–êQH
+X]\öX⁄[ÀÀÃLÃåçäKääà[ùY‹ò\àõŸ‹ô\⁄]ò[Y[ùH‹»Ÿ\ùöX⁄[‹»ŸöX⁄X[\»H€€Ÿ€H€‹ö‹‹XŸHHYZ[êôX[Xÿ]⁄\ö›[ò€€X\òHÿ\\ò\àYX\À€€ùô\ù\à€€X⁄]Y\»ô\öYöXÿY\»[àòXòZõÀZôX›]\ãÿ€€ú›[\à\ŸH‘ì»‹ù[’⁄]–\HYZõ‹ò\à€€Xõ‹òX⁄pÏ€ãõŸX›]öYYHôX›\\òX⁄pÏ€àH[ôõ‹õXX⁄pÏ€ãà\›H^»[\0ÎXH[[à
+ä∞ÓõöX€ äãõ»‹ôXH[àŸY›[ô»òX⁄€ŸÀ[òHùY]òHò\ŸK[àùY]õ»YZ[ö\›òY‹ã[àùY]õ»ÿ⁄Y[\àöH]]‹ö^òHÿ\›»»[YÿX⁄pÏ€àH€Z[ö[Àà‘ì»úòZ[ã–€€ùõ€[ôH⁄Y›YHH0ÓõöXÿH]]‹öYYH‹ú]Y\›X⁄pÏ€àH\õÿòX⁄pÏ€à[\ô\ÿ\öX[ÇÇà»»»Y[ùYY\»H\›Y»ÿúŸ\ùòY¬ÇãH
+äíP“»»€€ô^pÏ€àH⁄]‘ò[YYHÀÃLääà€XZ[€€Ÿ€Hö]ôK€€Ÿ€Hÿ[[ô\àH€€Ÿ€H€€ùX›»‹\ò[àòZõ»HY[ùYY€€ôX›YHYZ[êôX[Xÿ]⁄\ö›[ò€€X»ÿ[[ô\àö[ò⁄\[Y[ôHõ€›€ô\òà[à\ÿH›Y[ùH^H
+äú€€»[àÿ[[ô\ö[»Y]XõHõ‹[ äàö\⁄XõK‹»[pË\»€€à›\ÿ‹ö\⁄[€ô\»Hô\öXY‹ÀŸò\Ÿ\»[ò\ô\»
+⁄[à›õ»ÿ[[ô\ö[»YXÿY»^Qõ›À”‹\òX⁄[€ô\»€€ôö\õXY Kà€XZ[›Y[ùH€€à]\]Y]\»‘ìÀŸö[ò[ûò\»H›[›ÿ\Œ»\›\»]\]Y]\»õ»€€à\⁄‹Àà€€Ÿ€H€€ùX›»ô\‹€ôHòZõ»HY[ùYY›[\òN»[òH€⁄[ò⁄Y[ò⁄XH[à0™€›õ‹»€€ùX›‹Æ»õ»ùYXòH\ôX›‹ö[»€‹ú‹ò]]õÀ‘ìH€€\]»öH]]‹ö^òX⁄pÏ€à\òH[ùöX\àY[úÿZô\Ààö]ôH[›[€€ùY[ôHÿ›[Y[ùX⁄pÏ€àZ^Nàõ»ôX[^ò\àZY‹òX⁄[€ô\»[àX\ÿHöH€€ôù[ô\õ»€€àH›Y[ùH\ú€€ò[ÇãH
+äî‘àSïQ‘êTà»⁄[àXÿŸ\€»HX›\òKŸ\ÿ‹ö]\òHô\öYöXÿYŒääà€€Ÿ€H\⁄‹»H€€Ÿ€HŸY\
+äõõ»\›0Ë[à^Y\›‹»€€[»€€ôX›‹ô\»\ôX›‹»\‹€öXõ\»[à\›HŸ\⁄pÏ€àH⁄]‘
+äãàH€€ô^pÏ€à^]‹ÿHHÿ[[ô\àì»[]Y\›òHXÿŸ\€»H€€Ÿ€H\⁄‹ÀöHö]ôHHŸY\à\»THŸöX⁄X[\»^\›[ã\õ»[\›Y»H‹ôY[ò⁄X[\À‹ÿ€‹\ÀYX⁄pÏ€àHZôX›X⁄pÏ€à[Y\\à‘ì»⁄Y›YHì’’ëTíQíQQ»ù[òÿHYö\õX\à⁄[ò‹õ€ö^òX⁄pÏ€ã[ùô[ù\öX\à\›\À€õ›\»öHŸ\úò\àXÿ⁄[€ô\»⁄[à[òHX›\òHôX[ÇãH
+äíY[ùYYH0Î[Z]\ŒääàYZ[êôX[Xÿ]⁄\ö›[ò€€X\»[ö[ò⁄\[[ú›]X⁄[€ò[»X]\öX⁄[Àôô\õò[ô^ãù‹õ–€XZ[ò€€XH›õ‹»ù^õ€ô\»€€ôX›Y‹»€€à0Ë[Xö]‹»Ÿ\\òY‹Ààõ»€‹X\àõ›\»ö]òY\À€€ùX›‹»\ú€€ò[\À[ùö]X⁄[€ô\À€‹úô[»»\ôX\»[ùôH‹ôÿ[ö^òX⁄[€ô\À‹õ‹YYY\ÀàH€€ôX⁄pÏ€à›\\àYZ[àÿúŸ\ùòYH[à€‹ö‹‹XŸHõ»€€òŸYH\õZ\€»[\0ÎX⁄]»\òH[\\ú€€òX⁄pÏ€à»€XZ[ã]⁄YH[Yÿ][€ãàö[‹ö^ò\à–]]‹à\›X\ö[»H€€úŸ[ù[ZY[ù»‹ò[ù[\ãàX[ù[ô\à[X\H€‹ö‹‹XŸH\Ÿ\ãÿ[X\ÀŸ‹ù\À‹õ›][ô»^\›[ùK⁄[à‹ôX\àXŸ[ò⁄X\»ùY]ò\»‹àYôX›ÀÇÇà»»»€€ùò]»H]]‹öYYà[òHXÿ⁄pÏ€ãò\öX\»›\\ôöX⁄Y\¬Çü›\\ôöX⁄YHù[ò⁄pÏ€à\õÿòYH]]‹öYYHôY€H[ùKY\XÿX⁄pÏ€àüKKHKKHKKHü‹\ò][€úÀù\⁄‹ÿ
+»€€ùõ€[ôK”›€ô\à][ù[€à\ôXH[\ô\ÿ\öX[ÿ[∞Ï€öXÿKô\‹€úÿXõKö[‹öYYôX⁄\Àõ‹]Y[‹ÀZôX›X⁄pÏ€ã\õÿòX⁄pÏ€àHôXŸZ\
+äï‘ì»0ÓõöX€»\ÿ‹ö]‹à0ÏŸ⁄X€ äãà€€ú›[\àö[Y\õ»Y[ùYY^\›[ùKõ»‹ôX\àŸY›[ô»òX⁄€Ÿ»[àZ\ùXõK—€€Ÿ€H\⁄‹À’⁄]–\àü
+äë€€Ÿ€H\⁄‹ äà\›H∞Ë\YH[ô\‹€úÿXõKÿ\\ò\ÀôX€‹ô]‹ö[‹»HXÿ⁄[€ô\»[X[ò\»⁄[\\»›\\ôöX⁄YH\ú€€ò[ŸH›Y[ùHH
+äúõﬁYXÿ⁄pÏ€à‹⁄[€ò[
+äàYÿYH[‹õ◊›\⁄◊⁄Y»[ôŸ\›Hÿ[ôY]Kà⁄[àX\[»õ»€€ùô\ù\õH[à€€\õ€Z\€»[\ô\ÿ\öX[à\»\ôX\»‹ôXY\»\ŸHÿ‹À–⁄]YY[àŸ\à\⁄Y€òY\»HH\ÿ‹ö]\òHô\›ö[ô⁄YN»€€úŸ\ùò\à‹öYŸ[ãàü
+äë€€Ÿ€HŸY\
+õ›\ Jäàÿ\\òHHYX\À€õ›\»Hõﬁã›^À\›\»H€€\òHô[[Z[ò\ô\À[ú‹\òX⁄pÏ€ã[ò⁄Y[ò⁄X\»ô[[Z[ò\ô\»
+äëùY[ùHHõ›Jäãõ»X⁄Ÿ]ZôX›]Y»öHY[[‹öXH€‹ú‹ò]]òKà€\⁄YöXÿ\àH^òY\àÿ[ôY]‹»[Z\€[»‹\ò][€úÀù\⁄‹ÿ»‹\ò][€úÀö€õ›€YŸW⁄][\ÿ€€»€€à[ÿ[òŸK€€úŸ[ù[ZY[ù»Hô\öYöXÿX⁄pÏ€ãà€€úŸ\ùò\àŸY\€õ›W€ò[YXŸùY[ùN»õ»›Xö\àŸ‹»‹»\[ù\»[ô\ÿ‹ö[Z[òY[Y[ùKàü
+äë€€Ÿ€Hÿ[[ô\ääàô][ö[€ô\Àõ‹]Y\»HY[\À€€ùõ€\»HY€»Hô[ò⁄[ZY[ù‹»ô]öX[Y[ùHô\öYöXÿY‹»õﬁYXÿ⁄pÏ€à[\‹ò[H‘ìÀ‘^Qõ›Àà]ô[ù‹»^\›[ù\»€€à0ÓõöX€‹»‹à[ùYY
+€ÿõYÿX⁄pÏ€ä‹\∞Î[Ÿ ‹õ€àõ»‹ôX\à]ô[ù‹»Hÿ[[ô\à\òHÿYH€€Ÿ€H\⁄»öH\Xÿ\àòX›\ò\ÀŸõ‹ôXÿ\›à\»\ôX\»ö\⁄Xõ\»[ùõ»Hÿ[[ô\à⁄Y›Y[à⁄Y[ô»\ôX\Àõ»]ô[ù‹»€€ú›[Xõ\»€€[»‹»]ô[ù‹»Hÿ[[ô\ãàü
+äë€XZ[
+äàùY[ùHH€€][öXÿX⁄pÏ€ãòX›\ò\»H]öY[ò⁄X\»H€€X⁄]Y\»€XZ[X[ôH[àY[úÿZôKô[Z][ùK‹òKYù[ù»H[Œ»[òH]\]Y]Kÿ€‹úô[À‹õ€Y\ÿHì»‹ôXH]]€pË]Xÿ[Y[ùH[òH\ôXKàô\öYöXÿ\à[ùöXYÀÿ€€ù\›X⁄pÏ€àH€€ú›[H‹õ‹‹À–[Y‹òHŸYÓõà€Z[ö[Àà€€ù[ùX\àXZ[⁄[ôŸ\›öYŸ[ùK⁄[àÿ⁄Y[\àùY]õÀàü
+äë€€Ÿ€Hö]ôK—ÿ‹À‘⁄Y]À—õ‹õ\ äàÿ›[Y[ùX⁄pÏ€à€€Xõ‹ò]]òK[ù[\Àõ‹õ][\ö[‹»H]öY[ò⁄XHö]ôH€€úŸ\ùòH\ò⁄]õÀ–P”»‘ì»›X\ôH[õXŸK⁄\⁄‹õ›ô[ò[ò⁄XKõ»\XÿHŸ‹»‹»ö[ò\ö[‹»öHôY[\^òHõ‹õﬁ€€[»\ò⁄]õ»‹öY⁄[ò[[àõZõ‹»X€‹ôY‹Ààÿ‹»\õZ]HZ[ù]KÿXÿ⁄pÏ€àõ‹Y\›N»€€Ÿ€Hõ‹õ\À⁄HŸH\ÿKXôH[[Y[ù\à›Y⁄[ô»H€€ùõ€[ù\»HXúö\à\ôXK⁄[à‹ôX\àŸY›[ôHò\ŸH‹\ò]]òH[à⁄Y]Ààü
+äë€€Ÿ€H€€ùX› äàÿÿ[^òX⁄pÏ€àH\ôXÿ⁄[€ô\»Hõ€\»\òHŸY›Z[ZY[ù»]]‹ö^òY»\ôX›‹ö[Àÿ€€ùX›»H›HõÿŸY[ò⁄XK
+äõõ»‘ìHXY\›õ äàöHô\öYöXÿX⁄pÏ€àHY[ùYY[[\XYÀàY\H‹àQ€€Ÿ€H
+»[XZ[õ‹õX[^òYÀŸ[ùYYH€›Zõ»^0ÎX⁄]»€€à‘ì»[‹N»õ»[ùöX\àöH[ùö]\à⁄[à[ÿ[òŸKàü
+äë€€Ÿ€H⁄]YY]\»ÿ‹ö\YZ[ãù\⁄[ô\‹»õŸö[KŸX\ò⁄€€ú€€K[ò[]X‹À–YÀ“›[ äà€€Xõ‹òX⁄pÏ€ãô][ö[€ô\À]]€X]^òX⁄pÏ€àHòZõ»ÏŸY€ÀŸY›\öYY\ÿ›Xúö[ZY[ùÀ€X\öŸ][ô»€€»›X[ô»^\›[à›Y[ù\ÀT\»H\õZ\€‹»ôX[\»Hÿ\€»H\€»ô[ùXõKàÿYH[õ»\»[àY\\ãÿÿ\X⁄YY[àÿ]0Ë[Ÿ€»^\›[ùKõ»›õ»⁄\›[XHHX[ôÀ‘ìHöHÿ⁄Y[\ãàX[ù[ô\à]]‹öYY€€Y\ò⁄X[H‹õ‹‹ÀàÇääìX\[»pÎ[ö[[»⁄[àùY]õ»\‹]Y[XNääà\ÿ\à[ùY‹ò][€úÀú€›\òŸWÿ]]‹ö]W‹ù[\ÿ[ùY‹ò][€úÀô^\õò[Ÿ\[ô[òﬁW‹ôY⁄\›ûX‹\ò][€úÀù\⁄‹ÿ‹\ò][€úÀö€õ›€YŸW⁄][\ÿ‹\ò][€úÀò€€[][öXÿ][€óŸõ€››\ÿHÿ\X⁄YY\»^\›[ù\Àà[õ^ò\à[ò[ù€‹ô◊⁄YXÿ€›[ùŸ[XZ[€›\òŸW‹ﬁ\›[X€›\òŸW€ÿöôX›⁄Y
+\⁄€\›⁄Y
+›\⁄◊⁄Y\òH\⁄‹»»õ›\À ò\òHŸY\
+K‹õ◊›\⁄◊⁄Y‹öY⁄[ò[ŸYöYYÿ]Ÿ]Yÿ\›‹ŸY[òﬁ[ò◊Ÿ\ôX›[€ò\õZ\‹⁄[€úÿ]öY[òŸK‹ôXŸZ\€ôHH\›ùX›\òH^\›[ùHYZ]H\€‹»]‹»Hõ‹õXHŸY›\òKàõ»[\ò\àXõ\»‹à\›H\ôX›]òN»\ŸpÏX\àX\[ô»H€€\õÿò\à[öX⁄YY‘ì»[ù\»H›X[]ZY\àÿ[Xö[»\›ùX›\ò[ÇÇääëõZõŒääàÿúŸ\ùòX⁄pÏ€ãÿÿ\\òH8°§àY[ùYöXÿ\àX›‹àH[\ô\ÿH8°§à€\⁄YöXÿ\àõ›K€Y[úÿZôK›\ôXKÿÿ[[ô\ö[»8°§àô\€€ô\à]]‹öYYH\XÿY‹»8°§àõ‹Y\›HH\⁄À⁄€õ›€YŸH^\›[ùH8°§à\õÿòX⁄pÏ€à›X[ô»€‹úô\‹€ôH8°§à\⁄»8°§à‹õ◊Ÿ^X›][€ó‹ù[à8°§àX\ŸKŸô[ò⁄[ô»8°§à€‹öŸ\à8°§àôXYòX⁄»8°§àôXŸZ\8°§à\›Y»ô\Ÿ[ùY»[à‹ù[’⁄]–\K⁄H\õZ]YÀõﬁYXÿ⁄pÏ€àH€€Ÿ€Kà⁄H[\›X\ö[»X\òÿH€€\]YH[òH\ôXHõﬁYX›YH[à€€Ÿ€KôY⁄\›ò\à
+äúŸpÏX[H‹⁄XõH⁄Y\úôJäé»Ÿ\úò\à[à‘ì»€€»€€à‹ö]\ö[‹ÀŸ]öY[ò⁄XHH]]‹ö^òX⁄[€ô\Àà]ö]\àùX€\»HX€»YYX[ùH€›\òŸW€ÿöôX›⁄Y
+›ô\ú⁄[€ãŸ]Y €‹öY⁄[òHôX€€ò⁄[XX⁄pÏ€à[ò‹ô[Y[ù[àõ⁄Xö\àô\^H\›ùX›]õÀõ‹úòY‹»[àÿ\ÿÿYHH⁄X€‹»H⁄[ò‹õ€ö^òX⁄pÏ€àõ»ô]ô\ú⁄Xõ\ÀÇÇääì[Z]X⁄[€ô\»HTHô\öYöXÿY\»[àÿ›[Y[ùX⁄pÏ€àH€€Ÿ€Nääà€€Ÿ€H\⁄‹»^€ôH\›\À\ôX\»HX›X[^òX⁄pÏ€à‹à\⁄‹Àô€€Ÿ€X\\Àò€€X\õ»YXTHô\ô\Ÿ[ùHôX⁄Kõ»‹òHöHXY[ôN»õ»õ€Y]\à⁄[ò‹õ€ö^òX⁄pÏ€à‹ò\öXK‹ôX€‹ô]‹ö[‹»^X›‹»Hò]∞Í\»H\ŸHÿ[\Àà€€Ÿ€HŸY\TH
+ŸY\ô€€Ÿ€X\\Àò€€X
+H\›0ËH‹öY[ùYHHYZ[ö\›òX⁄pÏ€à[\ô\ÿ\öX[»ŸúôXŸH‹ôX\ã€\›\ãÿ€€ú›[\ãÿõ‹úò\àõ›\»H[ŸYöXÿ\à\õZ\€‹À
+äõõ»[àpÍ]Ÿ»Ÿ[ô\ò[HYX⁄pÏ€ã‹]⁄Hõ›H^\›[ùJäãà\ŸpÏX\àŸY\€€[»X›\òKÿÿ\\òK€õ»\›ùX›]õÀõ»\‹Zõ»öY\ôXÿ⁄[€ò[Y]XõKàô\öYöXÿ\à[Y⁄Xö[YY€‹ö‹‹XŸK‹ÿ€‹\»[ù\»H[\[Y[ùX⁄pÏ€é»]ö]\à€XZ[ã]⁄YH[Yÿ][€à€€[»]ZõÀàôYô\ô[ò⁄X\ŒàŒãÀŸ]ô[‹\úÀô€€Ÿ€Kò€€K›€‹ö‹‹XŸK›\⁄‹À‹ôYô\ô[òŸK‹ô\›»ŒãÀŸ]ô[‹\úÀô€€Ÿ€Kò€€K›€‹ö‹‹XŸK›\⁄‹À‹ôYô\ô[òŸK‹ô\››åK›\⁄‹»»ŒãÀŸ]ô[‹\úÀô€€Ÿ€Kò€€K›€‹ö‹‹XŸK⁄ŸY\ÿ\KŸ›ZY\»»ŒãÀŸ]ô[‹\úÀô€€Ÿ€Kò€€K›€‹ö‹‹XŸK⁄ŸY\ÿ\K‹ôYô\ô[òŸK‹ô\››åK€õ›\»ÇÇà»»»[ùôYÿH‹àò\Ÿ\»H‹ö]\ö[‹»HXŸ\X⁄pÏ€ÇÇåKà
+äî8†%[ùô[ù\ö[»HŸY›\öYYääà[à[õﬁYX›À›\ôXH^\›[ùH€€Ÿ€Wÿ€€ùõ€‹[ôW‹ôXY€õW€X\Ãåçåçò»‹õ◊‹›\ôòXŸWÿÿ\Xö[]W‹\ö]WÃåçåLåòôY⁄\›ò\à\›Y»H€€ô^pÏ€à‹àŸ\ùöX⁄[ÀY[ùYY›[\òKÿ€‹\»pÎ[ö[[‹Àô\›öXÿ⁄[€ô\»€€Ÿ€H\⁄‹À“ŸY\XÿŸ\€‹»ôX[\»‹àõ€H\[ô[ò⁄X\Ààö[Y\õ»[ùô[ù\öX\à\›\À€õ›\»
+äú€€»ò\»–]]ù[ò⁄[€ò[
+äé»€€ù\àÿöô]‹»⁄[à^€ô\àX]\öX[ö]òYŒ»\›XõXŸ\àò\Ÿ[[ôHH\XÿY‹»Hõ»‹ôX\à\›\»ùY]ò\Ààÿ]HT‘Œà\›Y»H›Y[ù\À‹ÿ€‹\À€\›Q»»]öY[ò⁄XH^0ÎX⁄]HHõ‹]Y[»HX\HH]]‹öYY\»\õÿòYÀÇåãà
+äîH8†%[›»€€Ÿ€H\⁄‹ŒääàXö[]\à\⁄‹»TH\ŸH[€€ôX›‹à€‹ú‹ò]]õ»^\›[ùH
+õ»[àŸY›[ô»ÿ]]ÿ^JK–]]ôXY[€õH[öX⁄X[]Y\›ôX\àpË^[[»å\ôX\»ô[]ò[ù\»H€€ùò\›\à€€à‹\ò][€úÀù\⁄‹ÿ›\ôX\»‹õ‹‹ÀàŸ[Xÿ⁄[€ò\à[à0ÓõöX€»ÿ\€»ô]ô\ú⁄XõHH\ôXH[X[òNà‘ì»8°§à€€Ÿ€H\⁄‹»HX›X[^òX⁄pÏ€àHùY[H€€[»ŸpÏX[€€\õÿò[ô»\⁄◊⁄Y]YÿY[ùYYŸ\\òX⁄pÏ€àH0Ë[Xö]‹»HŸ\õ»\XÿY‹Àà€€»\ÿ\àH\ÿ‹ö]\òHYY€»H]]‹ö^òX⁄pÏ€ãŸÿ]H
+»ôXŸZ\Ààÿ]HT‘ŒàHÿ\€»LëHô\öYöXÿYÀ\XÿY‹ÀÃ⁄Y\úô\»ò[€‹»HX[ôZõ»HôZ[ù[ùÀŸYX⁄pÏ€à€€ò›\úô[ùKÇåÀà
+äîà8†%[›»ŸY\ääàô\öYöXÿ\à]YHTH[\ô\ÿ\öX[H€€úŸ[ù[ZY[ù»ù[ò⁄[€ô[à\òH\›H›Y[ùKàÿ\\ò\àŸ[X›]ò[Y[ùHLõ›\»
+äôHòXòZõ äà€€à‹öYŸ[àH⁄[àŸX‹ô]‹Œ»Y‹ù\\àYX\»ô\]Y\À^òY\àpË^[[»»Xÿ⁄[€ô\»ÿ[ôY]\À[õ^ò\àH\ôXK⁄€õ›€YŸH^\›[ùH»Zò\àô]ö\⁄pÏ€à[X[òKàõ»[\‹ù\àõ›\»\ú€€ò[\»öHõ‹úò\ã‹€ÿúô\ÿ‹öXö\àŸY\àÿ]HT‘ŒàLÃL€€àùY[ùK›[ò[ùö[òX⁄[€ô\»Hÿ[ôY]‹»XŸ\Y‹À‹ôX⁄^òY‹»€€àò^òXö[YY»⁄HŸY\THõ»\»[Y⁄XõKX[ù[ô\à\€»X[ùX[
+»ÿ‹»€€[»[\õò]]òHHõ›\»Y]Xõ\»[ú›]X⁄[€ò[\Àõ»Yÿ\à]Yõ‹õXHùY]òKÇçà
+äîà8†%õŸX›]öYY€€Ÿ€H€€\]NääàYZõ‹ò\à€XZ[8°§àŸY›Z[ZY[ùÀ‹ôXŸ\⁄pÏ€à⁄[à]]€X]^ò\àô\‹Y\›\Œ»ÿ[[ô\à8°§à‹ò\ö[‹»^\›[ù\À‘^Qõ›»⁄[à\XÿX⁄pÏ€é»€€ùX›»8°§àX\[»õ›ôYY‹ô\ÀŸ[\XY‹»ô\‹][ô»Y[ùYY\Œ»ö]ôK—ÿ‹À—õ‹õ\»8°§à]öY[ò⁄X\À€Z[ù]\»Hõ‹õ][\ö[‹»€€àP”àõ»\Xÿ\àÿ[Xö[‹»X\⁄]õ‹»H€€Ÿ€HYÀ—–î“›[Ÿ[ù\àöH‹ôX\à\›X\ö[‹»⁄\ôYö]ô\ÀÿYZ[ö\›òY‹ô\»\›HXY€∞Ï‹›X€»‹à⁄\›[XHHYôX›»X€€∞Ï€ZX€ÀÇçKà
+äì[€ö]‹ô[»\õX[ô[ùH“Sà\ôXHùY]òNääàY‹ôYÿ\àô]ö\⁄pÏ€à€€\X›HH€€Ÿ€H€‹ö‹‹XŸH€€õôX›‹àX[ÿ€‹\À\úõ‹ô\À\ÿHH\ôX\»\XÿY\À[ôY[ù\»‹∞Î]X€‹»€€Ÿ€K’‘ìÀ\€»ôX[H€‹›»X\ô⁄[ò[[
+äúô\‹ùHŸ[X[ò[^\›[ùH\›Y»Ÿ[X[ò[‘ìÿH‹»öY\õô\»MŒå€‹›HöXÿJäãà\›[ô›Z\à””ìëP’QëPQ””ìK‘íUW—–UQì’–””ëíQ’TëQUU‘ëTURTëQTîì‘é»^Y⁄\àùY[ùKŸôX⁄HH[Húô[ùH[€‹ùHô]ö[Àà\ÿ\à‘ì»€‹úô[‹»HY€‹ÿX\ö[»\òH^òY\àXÿ⁄[€ô\»HY[úÿZô\»^\›[ù\Àõ»ôX[ò[^ò\à[à\ò[[»öH\ÿ‹öXö\à€€Ÿ€H\⁄‹À“ŸY\⁄[à€‹öŸ\ãà€€»\ÿÿ[\àò[‹»]YH€€\õ€Y][à\ôX\»‹∞Î]Xÿ\Àö]òX⁄YY€‹›‹»»[ô‹ô\€‹ÀÇÇääí[ôXÿY‹ô\»ÿöô]]õ‹Œääà\ôX\»ùY]ò\»ÿ[ôY]\»»\õÿòY\»»\XÿY\Œ»	H\ôX\»[X[ò\»‹∞Î]Xÿ\»€€à›€ô\àHôX⁄N»\Ÿò\ŸH]Xÿ⁄pÏ€∏°§ùöXYŸN»	H⁄Y\úô\»€€àôXYòX⁄ ‹ôXŸZ\»õ›\»0Óù[\»õÿŸ\ÿY\»
+[õ€Z[òY‹à[ú‹Xÿ⁄[€òY N»€€ùX›‹»\XÿY‹»ôX[\Œ»€‹úô[‹»Xÿ⁄[€òXõ\»⁄[àô\‹Y\›N»ÿ[[ô\à]ô[ù‹»^Qõ›»pÍ\ôò[õ‹Œ»ÿ\›»YX⁄[€ò[‹à[ùY‹òX⁄pÏ€à
+ÿöô]]õ»	\›Hù\›YöXÿ\àXŸ[ò⁄X\À–TH»€‹›HôX[
+Kàõ»€€ù\àÿ›[Y[ùX⁄pÏ€à»€€ô^pÏ€à€€[»Z‹úõÀ‹ô[ùXö[YYöHX€\ò\à⁄[ò‹õ€ö^òX⁄pÏ€àUëH‹à^\›\à[à[ãÇÇääë\›Y»HZôX›X⁄pÏ€à[⁄Y\úôHH\›HX⁄\⁄pÏ€éääà[ãŸÿ›[Y[ùX⁄pÏ€àTì–êQN»‹»€€ôX›‹ô\»€XZ[–ÿ[[ô\ã—ö]ôK–€€ùX›»pÎY‹»Hô\öYöXÿY‹Œ»\⁄‹»HŸY\ì’–””ëíQ’TëQ”ì◊—TëP’–””ìëP’‘ò»Y\\àHLëHì’‘’TïQ’SïëTíQíQQàõ»ŸH‹ôX\õ€à€€Ÿ€H\⁄‹Àõ›\»ŸY\ÿ[[ô\ö[‹À\›X\ö[‹À\õZ\€‹ÀùY]õ‹»òX⁄€Ÿ‹»öH\ôX\»õŸ‹ò[XY\»[à\›H\€ÀÇÇãKKBÇà»»ô[ùXö[YYH€€ùô\ú⁄pÏ€à€‹›[öXõ\»8†%\ôX›]òHHX]\öX⁄[»åçãLLLÇÇääîÿ€‹NääàÿYHôY€ÿ⁄[»]]‹ö^òY»HZ\€Y»[à‘ìŒ»[›»ôX[Xÿ]⁄\à›[»‹õ»ûHôX[Xÿ]⁄\ãàääì›€ô\úŒääà‘ì»ô]ô[ùYH
+»‘ì»ö[ò[òŸH
+»‘ì»⁄[õô[Œ»TëH\òH€€ùô\ú⁄pÏ€ãàääë^\›[ô»õ⁄ôX›ääàô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿà
+äî›]Nääà’TîëSï€0Î]XÿH\õÿòYH»ëVô\öYöXÿX⁄pÏ€à‹àÿ[ò[ÇÇï‘ì»XôHù\ÿÿ\àHõ‹õXH€€ù[ùXH‹‹ù[öYY\»ô\öYöXÿXõ\»\òH][Y[ù\àHô[ùXö[YY][YYH€€ùô\ú⁄pÏ€à[ôY€ÿ⁄[»[ùõ»H›H[ÿ[òŸH]]‹ö^òYÀàö[‹ö^ò\à€€ùöXùX⁄pÏ€àH][YY€‹›[öXõH€ÿúôHÿ›\X⁄pÏ€ã\öYòHH\›H»[ô‹ô\€‹»úù]‹»Z\€Y‹Àà€€\\ò\à[ô‹ô\€‹»\‹pÍ\»H\ÿ›Y[ù‹»ö[ò[ò⁄XY‹»‹à[›[€€Z\⁄[€ô\À€ÿúõ‹»HY€À€‹›‹»[ò‹ô[Y[ù[\»H\ÿ^][õÀ‹Ÿ\ùöX⁄[Àÿ[òŸ[X⁄[€ô\»HôY[Xõ€€‹Œ»Ÿ\\ò\à[\Y\›‹»‹àô[Z]\ãàõ»[ùô[ù\à€‹›‹ÀZ‹úõ»»YZõ‹òHH][YYàYY\à[ô\›[Y»[ù\»HX€\ò\à[òH‹[Z^òX⁄pÏ€à^]‹ÿKÇÇèKKHëQ“Séê—U‘ëUëSïQW‘’êUQ÷WÃåçåLLKOÇà»»»]öY[ò⁄XHHY\òÿY»H\›ò]Y⁄XHH[ô‹ô\€‹»8†%ÃLKÃåçÇÇääê’TîëSï8†%\ôXÿ⁄pÏ€à\õÿòYH‹àX]\öX⁄[Œääà[ò€‹ú‹ò\à[\›Y[»[—U[Z\€[»ô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿ€€àô]ô[ùYH€€[»ô\‹€úÿXõH€€Y\ò⁄X[Hö[ò[òŸKTëK‹õ››H‹\ò][€ú»€€[»\ﬁ[»H€Z[ö[ÀàŸH[\0ÎXHH\›ò]Y⁄XH^\›[ùK⁄[à›õ»[ã€€\\òY‹ãÿ]0Ë[Ÿ€À\ÿ‹ö]‹à»õŸ‹ò[XX⁄pÏ€ãà[^YY[ùHö]òY»õ€⁄⁄[ô◊⁄‹õ‹‹◊›\öYò\◊ÃåçåLLÿ€€úŸ\ùòH[ô[ò⁄X\öÀ›\»ùY[ù\»HHZôX›X⁄pÏ€é»ö[ò[òŸW‹õ€€W›[ö]ŸX€€õ€ZX‹◊Ÿ[ô⁄[ôW›åX€€úŸ\ùòH[[Ÿ[»H€‹›‹ÀÇÇääë]öY[ò⁄XH^\õòK€€à›Hõ‹[»€‹ùNääà[‹ô\›[Y[à‹öY⁄[ò[[—UJŒãÀ›››ÀòŸ]X‹ãõ‹ôÀŸ\À⁄[ùô\›YÿX⁄[€ô\Àÿ[]Z[\ô\ÀX€‹ùÀ\^õÀX€‹›K\öXÿJHH[ÿ\ù0ÎX›[»H[ö[ò[ò⁄Y\õ»[åãÃKÃåçóJŒãÀ›››Àô[ö[ò[ò⁄Y\õÿ‹ãò€€K€ôY€ÿ⁄[‹Àÿ[]Z[\ô\ÀYKX€‹ùKY\›[ò⁄XKY[ãX€‹›K\öXÿKX›X[\À‘M÷‘P’T–êëRíëVPPç÷SQëTK‹›‹ûK H\ÿ‹öXô[à‹»ÿŸHY\Ÿ\»\õZ[òY‹»[àù[ö[»HåçãàÏÿò[õ»»ÿ[ùH\ô\ÿx†$”[€ù^ù[XH\\ôXŸH[ùôH‹»Y\òÿY‹»HX^[‹àòX›\òX⁄pÏ€à\›[XYKà[Y‹ôYÿY»[ò€^YH[òHõ€òHX^[‹à]YHÿ[ùH\ô\ÿHH[⁄ò[ZY[ù‹»H[XpÏ[‹»\›[ù‹Àà[ù[ò⁄[À[õ]YXõHHXö]X⁄pÏ€àõ»€€à[öYY\»\]Z]ò[[ù\ÀàòX›\òX⁄pÏ€ã\öYòHX\öXKÿ›\X⁄pÏ€àH][YYY[ô[àò\Ÿ\»Yô\ô[ù\Œàõ»€€ùô\ù\àõ€YY[‹»Hö]öY[ô\»€€\]\»[à[òH\öYòHÿöô]]õ»[›[öH[à[X[ôHöYŸ[ùKÇÇääìÿöô]]õŒääà][Y[ù\àH€€ùöXùX⁄pÏ€àôX[^òYH‹àõÿ⁄HHXö]X⁄pÏ€à∞Î\⁄XÿH\‹€öXõHHõ›YŸ\àÿ[YYÿZòHH][YY€‹›[öXõKà\ÿ\à[ô‹ô\€‹»\‹pÍ\»H\ÿ›Y[ù‹ÀôY[Xõ€€‹»H[\Y\›‹»‹àô[Z]\é»ô\›\à[òH€€Hô^à€€Z\⁄[€ô\»YôX›]ò\À€ÿúõÀÿY]Z\⁄X⁄pÏ€à]öXùZXõHH€‹›‹»ò\öXXõ\»H\›[ò⁄XKõÿ⁄KpÍ\‹YHŸ\ùöX⁄[Àà€‹›‹»[ò€€\]‹»õŸXŸ[à\ÿŸ[ò\ö[‹»H\€»[ôY[ùKù[òÿH€‹›»Ÿ\õÀàH][YY€€ùXõH\‹pÍ\»H€‹›‹»öZõ‹»ŸHò[YH‹àŸ\\òYÀà[[õ€Z[òY‹à\ùHH\»ôZ[ùHXö]X⁄[€ô\»∞Î\⁄Xÿ\»H›\»^€\⁄[€ô\»ô\öYöXÿY\Œ»[òHö[H€€ú›[YH›\»€€\€ô[ù\»ŸYÓõà[X\H\õÿòYÀÇÇääìëV8†%ô\»ö[‹öYY\»[ùõ»[úô[ùHöYŸ[ùNääÇÇü‹ô[àXÿ⁄pÏ€à‹ö]\ö[»HXŸ\X⁄pÏ€àüKKHKKHKKHüHŸ\úò\àH\ÿ‹ô\[ò⁄XHH\›öXùX⁄pÏ€àHX^[‹à[\X›»HYY\à[[›»^\›[ùNàôX⁄[»ö[ò[\ôX›À”’K\ÿ›Y[ù‹»X›[][Y‹ÀìÀ–êã\ÿ^][õ»Hÿ\ô€‹ÀàZ\€XH[öYYôX⁄\ÀpÍ\‹Y\À[€ôYK€€ôX⁄[€ô\»H[\Y\›‹Œ»[ù\ÀX›\ŸKX›\òH‹›\ö[‹àH€›^òX⁄pÏ€à0ÓòõXÿKà€€úŸ\ùò\àö[‹öYY\»H^€\⁄]öYYH[[›»Hÿ[\pÏX\»XHXöY\ù‹Ààüàõ‹€ô\à\öYò\»‹àÿ]Y€‹∞ÎXKôX⁄HH[ù[X⁄pÏ€àŸYÓõàö][»ô]»Hô\Ÿ\ùò\»H€‹›‹Œ»]ò[X\àö[KŸ‹ù\»úô[ùHH\»Xö]X⁄[€ô\»\‹^òY\ÀàùY[ùH€€Y\ò⁄X[öYŸ[ùK[ùô[ù\ö[»€€\\ùY»ò[YYÀ€€ùöXùX⁄pÏ€àH€‹›»H‹‹ù[öYY^0ÎX⁄]‹Œ»ö[ô›[òHô\›öXÿ⁄pÏ€à»\öYòHŸHX›]òH‹à[àõ€YY[»^\õõÀàü»YZõ‹ò\à€€ùô\ú⁄pÏ€à\ôX›HH^ò\»[àôX⁄\»0ÍXö[\»€€àô[ôYöX⁄[‹»ôX[\»H[úÿ^[‹»\]YpÏ[‹Ààô\Ÿ\ùòKŸ\›[ò⁄XH]öXùZXõHH€€ùöXùX⁄pÏ€à\‹pÍ\»H€‹›»[ò‹ô[Y[ù[»õ»\ÿ›Y[ù‹»Ÿ[ô\ò[\Àõ€Y\ÿ\»HY[õ‹àôX⁄[»ÿ\ò[ù^òY»öHÿ\X⁄YY‹õ›ôYY‹à⁄[àô\öYöXÿ\ãàÇääîŸY›Z[ZY[ù»H⁄Y\úôNääà€€ú›[Z\à]‹»ùY]õ‹»[àHô]ö\⁄pÏ€à€€Y\ò⁄X[[€€‹ô[òY‹à^\›[ùK€€[»pË^[[»[òHô^à[0ÎXKH⁄[ù]^ò\à[à›Hô\‹ùHŸ[X[ò[»õ»‹ôX\à›õ»[Y\ãà€€\\ò\à⁄Y]H0ÎX\»\ù[ô[ù\»[[›»€€à[ùô[ù\ö[À[ù[X⁄pÏ€ã0ÎXK]ô[ù»H€€ôX⁄[€ô\»€€\]Xõ\ÀH€€ôö\õX\à\‹pÍ\»[ô\›[Y»H\›[ò⁄X\»ôX[^òY\»Hÿ[òŸ[X⁄[€ô\Àà⁄[à€€ùõ€∞Ë[YÀ]Y\›òH»€‹›‹ŒàSê””ê”T”»»ì»QQQÀà‹ù[H⁄]–\Ÿ∞Ë[à[‹›ò\à\›\»X⁄\⁄[€ô\»YYX[ùH‹»€€ú›[ZY‹ô\»^\›[ù\»H›\»\õZ\€‹Œ»[ôY⁄\›õ»ÿ›[Y[ù[õ»ùYXòH€€ú›[[Àÿ[Xö[»XõXÿY»öHYZõ‹òHX€€∞Ï€ZXÿKà\»[ŸYöXÿX⁄[€ô\»€€Y\ò⁄X[\»€€úŸ\ùò[à[\ÿ‹ö]‹ã\»]]‹ö^òX⁄[€ô\»\‹XÎYöXÿ\»H‹»ôX⁄Xõ‹»öYŸ[ù\ÀÇÇèKKHSëê—U‘ëUëSïQW‘’êUQ÷WÃåçåLLKOÇÇà»»»]ö\€‹»X]\öX[\»Hÿ[ò[\»8†%€‹ùHåçãLLL¬Çääê’TîëSï8†%]ö\€»Hõ€⁄⁄[ôÀò€€KŸ]∞ÎXHõ»ô\öYöXÿXõH€€[»\]ZYX⁄pÏ€à\XÿYNääà[€€][öXÿY»ôX⁄XöY»‹à]ò\\›YpÏ[‹»[ÀÃLÃåçà[ù[ò⁄XH]YH\ŸH
+äåMÀÃLKÃåçääà[UêK—‘’»[\Y\›»Hô[ù\»\]Z]ò[[ùHõ‹õX\∞ËH\ùHHH
+äòò\ŸH€ÿúôHH›X[õ€⁄⁄[ôÀò€€Hÿ[›[H›H€€Z\⁄pÏ€ääãàŸYÓõà[Z\€[»]ö\€À\»ô\Ÿ\ùò\»‹ôXY\»[ù\»H\ÿHôX⁄HX[ùY[ô[à[Ë[›[»[ù\ö[‹ãà\›»õ»€€ôö\õXH[à‹òŸ[ùZôHùY]õ»H€€Z\⁄pÏ€àöHX‹ôY]HHXŸ\X⁄pÏ€ã€€ùò]»X›X[^òY»»ÿ\ô€‹»YôX›]ò[Y[ùH\]ZYY‹ÀàùY[ùNà€‹úô[»õ€⁄⁄[ôÀò€€HXLLMMåŸLYMLÕLXà
+äìëVääà‘ì»ô]ô[ùYK—ö[ò[òŸHXôHô]ö\ÿ\à[[ô^»H[Zô[\»ôX[[àH^ò[ô]\ò[ùHõ›öY[XúôK€€\\ò\à[ù\ÀŸ\‹pÍ\»‹àôX⁄HHô\Ÿ\ùòHH[⁄ò[ZY[ùÀHôXÿ[›[\à€€ùöXùX⁄pÏ€àô]H⁄[àÿ[XöX\à\öYò\À‹õ‹‹À\ÿ›Y[ù‹À€€ùò]‹»»Y€‹»‹à\›H]ö\€ÀàôX⁄HH€€ùõ€[à€€Ÿ€Hÿ[[ô\éàMÀÃLKÃåçãõ»ô[ò⁄[ZY[ù»HòX›\òKÇÇà»»»›[›ÿ\»8†%ÿ[ò[H[ù\òÿ[Xö[»€ÿô\õòY»»[›»\⁄XHåçÇÇääêP’PSVêP“p‰”àÀÃLÃåçéääàX]\öX⁄[»€€ôö\õXHX[ù[ô\à\»ô\»Xö]X⁄[€ô\»XH\‹⁄]Y\»
+ÃNLMäK⁄[àpÏXY\àöHô]\ò\àõÿ⁄\Ààõ»ŸHH[ŸYöXÿY»›[›ÿ\»öH‹õ‹‹Œ»⁄Y›YH[ôY[ùH€€ò⁄[X\à\‹€öXö[YY\òHô]ô[ö\à€ÿúô]ô[ù\Àà[\ùH^\›[ùHH⁄]‘[\XYHH›[›ÿ\Àõ€⁄⁄[ôÀò€€K^YXKZ\òõòãY€ŸK‹õ‹‹»HY[úÿZô\»\ôŸ[ù\»HpÍ\‹Y\À€€àX›\òH‹ò\öXHH€XZ[HY\XÿX⁄pÏ€é»õ»\»⁄[ò‹õ€ö^òX⁄pÏ€àöH[\ùH[ú›[ù0Ë[ôXKà\òHô]ö\ÿ\à[‹ù[HŸ\⁄pÏ€àpÏ›ö[õ»ŸH€€\\ùN»[ò]ôYÿY‹à€€ôX›Y»ôXŸ\⁄]H[öX⁄[»HŸ\⁄pÏ€àõ‹[Ààõ»[ò›\úö\à[àŸ\ùöX⁄[‹»ŸXà]]€X]^òY‹»HY€»⁄[à\õÿòX⁄pÏ€ãÇÇÇÇääêS–Sê—HH–íëUUì»
+›€ô\àÀÃLÃåçäNääàŸH[ùY‹òHHX[ô\òHTìPSëSïHHô]ô[ùYWÿõ€⁄⁄[ô◊‹›X⁄ÿHôX[Xÿ]⁄\à›[€€[»ÿ[ò[H[ù\òÿ[Xö[»€€\[Y[ù\ö[Àì»€€[»ŸY›[ôH’H[€ô]\öXHöHõﬁYX›»[ô\[ôY[ùKàÿöô]]õ»H€‹ù»^õŒàö[ò[ò⁄X\àõÿ⁄\»H[⁄ò[ZY[ù»HàY[‹»\ò[ùHöXZôHHö[ò[\»ÿ›Xúôx†$€õ›öY[XúôHåçà[àZ[[ôXKöY]ò[Kÿ[XõﬁXKò[K“[ô€ô\⁄XKŸpÓõ–€‹ôXKà‹ôX\àò[‹àôX[HXö]X⁄[€ô\»€€àòZòHõÿòXö[YYHô[ùH[àÿ›XúôKõ›Y⁄Y[ô»ô[ù\»[€ô]\öX\ÀôX⁄[»Hÿ]Y€‹∞ÎXKà
+äëX⁄\⁄pÏ€éääà€€ù[ùX\àò\⁄X»
+⁄[àôYH[ùX[
+HHõ»€€\ò\àô[Z][H\›Hô\›[Y»ô]»€€\õÿòYÀàHõ›HH[ùô\›YÿX⁄pÏ€àH]öY[ò⁄XH
+ì»]]‹öYYõ‹õX]]òJH\›0ËH[à“’S’–T◊—UêSPP“S”ó÷W‘S’◊–T“PWÃåçåLÀõYJãã‹ô\ŸX\ò⁄“’S’–T◊—UêSPP“S”ó÷W‘S’◊–T“PWÃåçåLÀõY
+KÇÇääê›Y[ùHHY[ùYY
+ÿúŸ\ùòY NääàYZ[ö\›òX⁄pÏ€àY[ùYöXÿYH[à‹ù[€€à›Y[ùHYZ[êôX[Xÿ]⁄\ö›[ò€€X›[X[òYŸ\àX]\öX⁄[»ô\õ∞Ë[ô^ãôX[Xÿ]⁄\à›[Y[Xúô\ÎXHò\⁄X»QNçåÿ»[€€ùò]»\õZ]H]YH›[X[òYŸ\à\Ÿ[\pÏYH›ÿ\X[òYŸ\à⁄[à‹ôX\à›õ»\›X\ö[Ààÿ\\ò\»[õ‹Y]\ö[»
+ÀÃL
+H]Y\›ò[à€⁄[ú»ò[[òŸH›[»€⁄[ú»ò[[òŸH›Y\›»^»
+äåL€⁄[ú»]òZ[XõHõ‹àò[úŸô\ääà
+€€ùòYXÿ⁄pÏ€à‹\ò]]òHì»ô\›Y[Nàõ»€€ùXö[^ò\à€€[»ÿ[»ôX[õ»ò[úŸô\ö\à⁄[àùYXòJKà‹ù[]][ùXÿY»ì»XÿŸ\⁄XõH\ŸH€€ôX›‹ô\»X›X[\Œàò]ôYÿY‹àpÏ›ö[õ»€€\\ùHŸ\⁄pÏ€é»‹\òHúõ›‹Ÿ\à€€õôX›‹à\ÿ€€ôX›YŒ»[ûQö\⁄⁄[à€€⁄⁄Y\»⁄Y€ôYZ[à\òH›[›ÿ\Àò€€Kàö[ôÓõàPHö]òY»öH€€ú›[HHô\Ÿ\ùò\»\⁄XHŸHX€\òHP“»‹àHÿ\\òKÇÇääë\›Y»H\0Ï‹⁄]»HöY\Ÿ€»
+]öY[ò⁄XJNääà€‹úô[»€XZ[XLLMÃLåÿçåYò€€][öXÿH\0Ï‹⁄]»NLMòH»Xö]X⁄[€ô\»∏†$ÃN€ÿ›Ãåçã\]Z]ò[[ùHHÕàXö]X⁄[€ô\À[õÿ⁄HŸô\ùY\»⁄H›\»[öYõ‹õYKà[ù[H8†$ÃMÀ€ÿ›]Y\›òH»õ€€J H\‹⁄]YŸ0ÎXK⁄[àôYô\ô[ò⁄X\»HpÍ\‹Y[àö[\»ö\⁄Xõ\»
+õ»Ÿ\ùYöXÿH›ò\»ôX⁄\ Kà[à\0Ï‹⁄]‹À›X[]ZY\àZY[Xúõ»€€àÿ[»YYHëT—TïêTàSàSP’Œ»€€ùò]»^YŸH€úò\àô\Ÿ\ùò\Àà
+äê€€ùõ€ÿúöYÿ]0Ï‹ö[Œääà€€\\ò\àÿYH0ÎXH
+»Hô\Ÿ\ùòH€€à‹õ‹‹»]]‹ö]]]õ»Hõ›YŸ\àÿ\X⁄YYÿ›\»\›0Ë[ô\àÿõH\]Z]ò[[ùH\òH]ö]\à’HÿõHô[ùH\ŸH[ù\»HXõXÿ\ãà⁄Hõ»^H›\»õ›Y⁄YÀô]\ò\à€€»õÿ⁄\»ì»ô\Ÿ\ùòY\Œ»ù[òÿHô]\ò\ãÿÿ[òŸ[\àõÿ⁄\»XH€€ôö\õXY\»⁄[àõZõ»HpÍ\‹YH€0Î]Xÿ\Àà\»€€X⁄]Y\»⁄[à\0Ï‹⁄]»€€àõ»ö[ò›[[ù\»\›HXŸ\\ã\õZ][à\õÿòX⁄pÏ€ã‹ôX⁄^õ»ô]öXH€€ú›[H‹õ‹‹Ààõ»€€\\ù\àXÿŸ\€»»]]€X]^ò\à]]X⁄[€ô\»⁄[àÿ]H[X[õ»HôXŸZ\ÇÇääï[öYY\»Hÿ]Y€‹∞ÎXNääà[€€ùò]»[Z]H\0Ï‹⁄]‹À‹ô\Ÿ\ùò\»HXö]X⁄[€ô\»ÿõ\»\›0Ë[ô\ãàô\Ÿ[Xÿ⁄pÏ€à[ò[0Î]XÿHõ»ö[ò›[[ùHÃãÕKŒKÃLÕ»ŸYÓõàÿ]0Ë[Ÿ€»ÿ[∞Ï€öX€»H‹õ‹‹»ôX[à^€Z\à›Z]\»ô[Z][HÃçK»ÃçãÃLHò[Z[X\ãÿ\\ù[Y[ùÀÃåK»Ãåàò[Z[X\ãö[\ÀZ[öH
+›Y⁄[ô HHÿ[ùH‹õ»
+ôY€ÿ⁄[»Ÿ\\òY KàX\[ô»∞Î\⁄X€»ì»€€ôö\õXYŒ»Ÿ\»\»Ÿô\ù\»\]Z]ò[[àH\›0Ë[ô\àÿõHõ€Y]YHH›õ»ZY[Xúõ»HXô[à›[\\àô\]Z\⁄]‹»XõX⁄]Y‹Ààõ›‹Àõ€XúôKŸ\ùöX⁄[‹ÀòpÏ[‹Àÿÿ[X\ÀXöXÿX⁄pÏ€ã€0Î]Xÿ\»\ÿ^][õ‹À[\Y\›‹ÀXÿŸ\€À⁄X⁄ÀZ[ã€›]ÿ[òŸ[X⁄pÏ€àHÿ\X⁄YYô\]ZY\ô[àPHH[›\à›[Xÿ€›[ùÇÇääëX€€õ€pÎXHH€€ùXö[YYääàò\⁄X»Ÿ[ô\òHÕIHH›[€⁄[àÿ⁄Y[H\òH
+äúô\Ÿ\ùò\»[ùò[ù\»””ëíTìPQT äé»\0Ï‹⁄]»‹àÎH€€»Ÿ[ô\òHà€⁄[ú»›[õ»ô[òŸ[àZY[ùò\»Y[Xúô\ÎXN»›Y\›ò[úŸô\öY‹»»€€\òY‹»àpÏ[‹À€€à€0Î]XÿHHÿ[òŸ[X⁄pÏ€àHô\Ÿ\ùò[ùH‹à^õ‹ÀôY\»õ»ôY[Xõ€ÿXõ\Àà›[›H›]õ›[ôò\⁄X»–îå—UTàåK’T—åL‹à€⁄[é»€€\òH^\õòHT—çLÿ€⁄[àŸYÓõàõ›ôYY‹ã⁄[àò[‹àHÿZòHÿ\ò[ù^òYÀàõ»€€ôù[ô\à€⁄[ã[ô‹ô\€Àÿ€ÿúõÀ\öYòHQãô\Ÿ\ùòK‹∞ÍY]»Hÿ\⁄»ö[ò[òŸK–[Y‹òH€€»€€àò][ZY[ù»ö\ÿÿ[ÿ€€ùXõHò[YYŒ»‘Hö[ò⁄\[Z‹úõ»ôX[H›[\⁄XHú»Y€»YôX›]õ»\]Z]ò[[ùKô]»ôY\À€‹›»ò\öXXõH[ôö]öpÏ€àHô[ù\»\‹^òY\Àà›X[]ZY\àò[‹àåUT—ÿ€⁄[à\»ôZ]ö[ôXÿX⁄pÏ€à[õ›ôYY‹ãõ»\]ZY^àÿ\ò[ù^òYKÇÇääï\›H\›[õ‹»ÀÃLÃåçà
+ëTëQT‘P„QíP–JNääàÿ]0Ë[Ÿ€»0ÓòõX€»Y[ùYöXÿHÿ\õXHÿ[ô\òH
+ò[JH\ŸH
+äçå›[€⁄[úÀ€õÿ⁄Jäã“Sà\‹€öXö[YYôX[[àõ›öY[XúôN»€€\òH\›0Í]XÿHHŸ‹»‹»å€⁄[ú»HôYH∞Ë\⁄X€»[àT—HT—çLã€õÿ⁄K^€^Y[ô»[\Y\›‹»^ò\À⁄H\XÿHôX⁄[»XõXÿYÀà\›0Ï‹öX€»ì»€€ôö\õXHX›]õŒàòX⁄›Z]\»ÿZY€€à
+»⁄HZ[öåN
+Kö]ô\ú»õÿ][ô»ŸŸH
+]ZHÿ[XõﬁXKåM
+K\òY\ŸHôXX⁄ô\€‹ù
+€⁄ÿ[]ZHZ[[ôXKåM
+K›[Y\òHX\ôH
+]^XHZ[[ôXKåM Kà\òHòX⁄›Z]\»[à⁄][»’H[ôõ‹õXHôYô\ô[ò⁄XHT—NMà[\Y\›‹»[ò€ZY‹ÀàY[‹ÀãÃLKÃåçã›Zô]»Hÿ[Xö[‹Œ»›[€⁄[à\ÿ€€õÿ⁄YÀàò[ô⁄€⁄À⁄X[ô»XZKZŸ]ŸpÓõ[∞Ï⁄K⁄Y[HôX\à“SàŸô\ùHö]òYH€€\õÿòYKõ»X€\ò\à]\Ÿ[ò⁄XKàëVà[àHŸ\⁄pÏ€à]][ùXÿYHù\ÿÿ\à\›[õ‹»
+[XöpÍ[àô\]Y\›[€õJKôX⁄\»à^[ùõ»ÃÃL8†$ÃåÃLKÃåçãÿ\\ò\à[ù[HHôX⁄[»^X›»›[€⁄[úÀôYK›X\ùÀ\‹€öXö[YY[ú›[ù‹ô\]Y\›€€ôX⁄[€ô\»H€€\\ò\à€€à›[ŸöX⁄X[”’HZ\€X\»ôX⁄\Ààô\Ÿ\ùò\à€€»YYX[ùH\õÿòX⁄pÏ€àH]öY[ò⁄XKÇÇääîô\]X⁄pÏ€ãŸ^\öY[ò⁄XNääà›[›ÿ\»X€\òHçÕãMÕ»ZY[Xúõ‹»[àÃÀÕÕpÎ\Ÿ\Œ»õ»⁄Y€öYöXÿHô\Ÿ\ùò\ÀöH\‹€öXö[YY[àÿöô]]õÀàX\úö[›ÿ›[Y[ùH€€Xõ‹òX⁄pÏ€àX€õ€0ÏŸ⁄XÿHH›[›ÿ\»\òH›[[åç\›[ùH[0Í^]»[Y\òÿY»ö]òY»H›[€⁄[úÀà\ÿÿ\Ÿ^àH‹[ö[€ô\»[ô\[ôY[ù\»ôX⁄Y[ù\À\›[[€ö[‹»õ‹Y]\ö[‹»]]‹Ÿ[Xÿ⁄[€òY‹»åMŒ»õ»[ùô[ù\à\ÿHH€€ùô\ú⁄pÏ€àöHôX€€Y[ô\àô[Z][H‹àõ€[ÿ⁄[€ô\Ààò[Y\à[X[ôHôX[ÿÿ[HY[\»õ€YY[»[\0Ï‹⁄]»€€à€‹‹ùKÇÇääì‹\òX⁄pÏ€ã[ùY‹òX⁄[€ô\»H[\ù\Œääà€XZ[]\]Y]H^\›[ùHååH0≠»’S’–TÿHöXZôHZ[[ôXHåçà»ÿ[öô\ÿ»õ‹úòY‹à[à[»XLLLòççLçÃåÃXLòô\]ZY\ôH[ù∞Î[»[X[õÀ\›Y»êQï[ÀÃLõ»ô\Ÿ[ù\õ»€€[»õ›ôYY‹à€€ùX›YÀàXH^\›H⁄]‘ÿ]⁄›[›ÿ\»[\ù\»\ôŸ[ù\ÿ’TìH
+€‹úô[»€XZ[
+Kõ»[ùöX\à\XÿY»Hõ»ô\Ÿ[ù\õ»€€[»[ú›[ù0Ë[ô[»öH⁄]–\à‹»]ö\€‹»Xÿ⁄[€òXõ\»Hô\Ÿ\ùò\Àÿÿ[òŸ[X⁄[€ô\À‹€€X⁄]Y\Àÿ€⁄[ú»ò[àH‘ì»€€[\»Oà›€ô\à][ù[€àOàZôX›X⁄pÏ€à€ÿô\õòYN»‹õ‹‹»⁄Y›YH\ÿ‹ö]‹à0ÓõöX€»€€Y\ò⁄X[àôY⁄\›ò\àôXŸ\⁄pÏ€ã€€ôö\õXX⁄pÏ€ã⁄\]Y[»TÀõ‹]Y[À⁄X⁄ÀZ[ã€›]X‹ôY]X⁄pÏ€àHÿ[öôH€€àQ»HôXYòX⁄Ààõ€\Œà›€ô\ãÿ\õÿòX⁄pÏ€àX]\öX⁄[Œ»ô]ö\⁄pÏ€à‹\ò]]òHôXŸ\⁄pÏ€à€€»[à[ÿ[òŸH]]‹ö^òYŒ»TëHõ»Ÿô\ùH\‹€öXö[YYõ»€€ôö\õXYKàõ‹õﬁ[XXŸ[òH‹öY⁄[ò[\»⁄H^Hÿ›[Y[ù‹»ô\öYöXÿXõ\»ùY]õ‹À⁄[àÿ\ú]Kÿ\ò⁄]õ»\XÿY»»ŸX‹ô]‹Ààõ»pÏXY\à‹ô^H[⁄[õô[›X⁄Œà\»]Yõ‹õXHHô[ùKÿ€€\òHH[õ]YXõ\»€€Y\ò⁄X[\À[XHŸ\\òY»[ÿ[ò[H[ù\òÿ[Xö[ÀÇÇääêòX⁄€Ÿ»ÿ[∞Ï€öX€»“SàTP–TéääàZ\ùXõHùY[ùHÀR’S’–TÀP“SìëS\ôX\»’S’–TÀLNLMãTëP””ê“SPUS”ò
+›\‹»‹õ‹‹ÀôX⁄\»Hÿ[ K’S’–TÀTS’Q’PTëêRSÿ
+Hÿ]Y€‹∞ÎXJ–\⁄XJŸX€€õ€pÎXHH€0Î]Xÿ\ N»õ»‹ôX\àùY]ò\»\ôX\À€‹öŸ\ã\⁄õÿ\ôöHò\ŸKàò\Ÿ\À—€ôNàJH€ò\⁄›]][ùXÿY»H‹ù[H€€\\òX⁄pÏ€à‹õ‹‹»‹àÿYH0ÎXH∏†$ÃN€ÿ›€€à›ô\úŸ[»äHô]ö\⁄pÏ€à€€\]H\ôö[›[\õZ\€‹Àò[[òŸHôX[ú»L\0Ï‹⁄]‹À‹ô\Ÿ\ùò\»H€0Î]Xÿ\Œ» H[Y[õ‹»»ùYXò\»H\›[õ»€€àôX⁄\ÀŸôY\»HH\›Y0ÎXH\⁄pË]XÿHô\Ÿ\ùòXõK‹€€X⁄]YXŸ\YH[[‹›òYN»
+H[›»Ã0ÎX\Œà€⁄[ú»ô]‹»ôX⁄XöY‹Àÿ[öô\»€€ò‹ô]‹»€€ôö\õXY‹ÀZ‹úõ»ô]»[[‹›òYŒ»[à]\Ÿ[ò⁄XHHÿ[öô\ÀôYX⁄\à^‹⁄X⁄pÏ€àHX[ù[ô\àò\⁄X»\⁄]õÀàŸ[X[ò[\»ô\‹ù\à€€»[\»X]\öX[\Àõ»ô]‹€]\úÀÇÇääëùY[ù\»HõÿŸY[ZY[ù‹ŒääàŒãÀ›››Àö›[›ÿ\Àò€€K⁄›[]\õ\ÀX€€ô][€ú»»ŒãÀ›››Àö›[›ÿ\Àò€€KÿXõ›]]\ÀYò\KZ›[»»ŒãÀ›››Àö›[›ÿ\Àò€€KÿXõ›]]\ÀYò\KY›Y\›»»ŒãÀ›››Àö›[›ÿ\Àò€€K€Y[Xô\ú⁄\[‹[€ú»»ŒãÀ›››Àö›[›ÿ\Àò€€K€Y[Xô\ú»»ŒãÀ‹Ÿ\ùôLÕåõX\úö[›ò€€K›‹X€€ù[ù›\ÿYÀÃåçÃã”X\úö[›‘›][Y[ùÃåçúààÿ\\ò\»›€ô\àH€XZ[€€à]öY[ò⁄XH‹\ò]]òKõ»ò[úÿXÿ⁄pÏ€à€€ôö\õXYKÇÇÇà»»»€€ùò]»Hÿ›\X⁄pÏ€ã\ÿ^][õ»H›\[Y[ù‹»HôX[Xÿ]⁄\à8†%åçãLLL¬Çê]]‹öYYàX€\òX⁄[€ô\»HXŸ\X⁄pÏ€àHX]\öX⁄[»[åçãLLLÀà\›H€€ùò]»›\›]^YHHXõHHÿöô]]õ‹À€\›H[åçãLLLé»\]Y[H]YYH€€[»]öY[ò⁄XH\›0Ï‹öXÿHH€€ôöY›\òX⁄pÏ€ãõ»€€[»€0Î]XÿHù]\òHÿõYÿ]‹öXKà›\Xò\ŸH€€ù[ùö›[ŸòX›ÀÿY][€ò[‹\ú€€ó‹öX⁄[ôÿ›Y\›ÿYŸWÿÿ]Y€‹öY\ÿHúôXZŸò\›‹öXŸX€€úŸ\ùò[à[€€ùò]»\›ùX›\òYŒ»Z\ùXõHX[ùY[ôH›HôYô\ô[ò⁄XH[X[òKà‹õ‹‹»HÿYHÿ[ò[⁄Y›Y[à⁄Y[ô»]]‹öYY€ÿúôH€€ôöY›\òX⁄pÏ€à\XÿYHH€›^òX⁄pÏ€àöYŸ[ùKÇÇüôY€H‹ö]\ö[»\õÿòY»»\›Y»üKKHKKHü[€ôYHÿöô]]õ»T—»ÿ[Xö[»H[€ôYHHõ‹YYYY€ŸH€€X⁄]YÀŸ]∞ÎXH[ôY[ùHH€€ôö\õXX⁄pÏ€àüÿ›\X⁄pÏ€à[ò€ZYHà\ú€€ò\»[àXö]X⁄[€ô\»HLà[àö[\Œ»õ»\]Z]ò[HHHÿ\X⁄YYpË^[XHüYY\»ôX∞Í\»8†$ÃÀöpÏ[‹»8†$ÃLY[‹»\ŸHLN»Ÿ‹»›Y[ù[à[ùõ»HHÿ\X⁄YYü\ÿ^][õ»T…MHö[ò[\»‹à\ú€€òHH\ÿ^][õŒ»Ÿ\\òY»[[⁄ò[ZY[ù»Hõ›Y⁄Y»úô[ùHH\ÿ›Y[ù‹»[[⁄ò[ZY[ù»ü\öYòH€€à\ÿ^][õ»[ò€^YHHY[‹»HöpÏ[‹Œ»\òHôX∞Í\»€€»H€€X⁄]YHT…MH‹à\ÿ^][õÀàõ»\Xÿ\àÿ\ô€‹»üÿ\X⁄YYôX[Xÿ]⁄\àö[Hç»\ú€€ò\ÀXö]X⁄[€ô\»8†$Õé»õ»ŸúôXŸ\à[òH^òHé⁄[àùY]òHô\öYöXÿX⁄pÏ€àü›ò\»ö[\»XZÿZ^òH¯†$ÃLKÿ\X⁄YYMŒ»‹õ»åx†$Ãéÿ\X⁄YYéKàõ»\Xÿ\àö[HH€€\€ô[ù\»üX\ÿ€›\»\›HLŸŒ»›X[]ZY\àÿ\ô€»H€€ôX⁄[€ô\»YX⁄[€ò[\»ô\]ZY\ô[à›HùY[ùHöYŸ[ùHÇê€€ôõX›»H[\[Y[ùX⁄pÏ€à[ôY[ùNà‹òÀ€Xã›‹õÀY]Kùÿÿöô]»ZﬁòŸ]∞ÎXH\ÿ‹öXôHXZÿZ^òH\òHMx†$Ãå\ú€€ò\Àà\»[à\ÿ‹ö\‹à[ù\ö[‹à]YH€€ùòYXŸH[pË^[[»M»€⁄[ò⁄Y[ùH[àZ\ùXõK‘›\Xò\ŸN»õ»XôH\ÿ\úŸH\òHõ€Y]\àÿ\X⁄YYà\›H›Hÿ›[Y[ù[ôY⁄\›òHH\ÿ‹ô\[ò⁄XK⁄[àX‹ôY]\à€‹úôXÿ⁄pÏ€àHH[ù\ôò^àöHXõXÿX⁄pÏ€à€€Y\ò⁄X[à[ôY⁄\›õ»Z\ùXõHH›[€€\]»[XöpÍ[àô\]ZY\ôH€€ò⁄[XX⁄pÏ€éàX€\òHåXö]X⁄[€ô\ÀÕÕ\ú€€ò\À\õ»[õ^òHNHH€Z]HHåãÇÇîôX€€Y[ôX⁄pÏ€àH[⁄ò[ZY[ù»[Y⁄YHòZõ»H[YÿX⁄pÏ€à[YpÏ[ŒàöpÏ[»ÕIH[›\[Y[ù»Y[»H
+äò[⁄ò[ZY[ù äé»ôX∞ÍH⁄[à›\[Y[ù»⁄Hõ»ôXŸ\⁄]Hÿ[XH^òK\õ»€€ù[ô»[àÿ\X⁄YYà[\ÿ^][õ»€€\]»õ»ôX⁄XôH\ŸH‹òŸ[ùZôKà[[\‹ùHY[»H[⁄ò[ZY[ù»H[ò][ZY[ù»ö\ÿÿ[pÓõàô\]ZY\ô[à€‹›‹ÀX\ôŸ[àHùYXòH‹àÿ[ò[à\›\»ôY€\»ôY⁄\›òY\»õ»ùYXò[à]YH‹õ‹‹ÀŸT‹XZ»öH\»’H^X[àÿ[XöXYŒ»€€úŸ\ùò\à0Í\õZ[õ‹»Hô\Ÿ\ùò\»€€ôö\õXY\ÀÇÇãH\òHÿYHÿ[ò[€€\\ò\àHZ\€XH[öYYôX⁄Kÿ›\X⁄pÏ€ã∞ÍY⁄[Y[àH€€ôX⁄[€ô\»[ù\ÀŸ\‹pÍ\»Hõ€[ÿ⁄[€ô\À[ò€^Y[ô»0Î[Z]\»HYYÀÕHLÃLKôY€ô[»Hò][ZY[ù»ö\ÿÿ[à€€\õÿò\à]YH\ÿ^][õ»›[XHT…MH‹àŸ\ùöX⁄[»[›[ö[ò[»[òH\ö]òX⁄pÏ€à‹òŸ[ùX[öZòHõ»»ÿ\ò[ù^òKÇãHÿ[›[\à[à›\[Y[ù»H\›HYYX[ùH[][\XÿY‹àX\ô⁄[ò[€€»›X[ô»ŸH^XH[[‹›òY»]pÍH\ÿ›Y[ù‹À⁄[\Y\›‹»H\Xÿ[ãàõ»ô]][^ò\àT…LÃLöH›\€ô\àÃ	HH\ÿ›Y[ù»€€[»ôXŸ]H[ö]ô\úÿ[ÇãH
+äêY€ŸHõ‹]YXYŒääàX[ù[ô\à[òX›]õ‹»ì»çÕNMMŒHHêàçLÃLçH\›H€€ôö\õX\àT—[\‹ù\À€ÿ›\X⁄pÏ€àHôXŸ\⁄pÏ€à\ŸH‹õ‹‹Àà€€X⁄]Y[àÿ\€»LLåÕéÕåÃNNMÕL»õ»\Xÿ\õHöHôXX›]ò\à\òHô\€€ô\à[à\úõ‹àH[à[òX›]õÀÇãH€€úŸ\ùò\àõ€Xúô\ÀQÀ€Y‹»H[õXŸ\»‹õ‹‹Ààõ»ÿ[XöX\àÿ[X\Àÿ\X⁄YY\»»õ›‹»‹à[ôô\ô[ò⁄XN»\»ŸZ\»€‹úô\‹€ô[ò⁄X\»Y€ŸHõ›ö\⁄[€ò[\»ô\]ZY\ô[àùYXòHHY[ùYYÇãH\òH‹ù\‹ÀŸúôXŸ\à\›Hô\»€€Xö[òX⁄[€ô\»0Óù[\»€€à\‹€öXö[YY⁄[][0Ë[ôXHH[õXŸ\»\õZ]Y‹»‹à[ÿ[ò[»õ»õ€Y]\à^€\⁄]öYY⁄[à]öY[ò⁄XKÇãHX[ù[ô\à[òH€€H€0Î]XÿHô\ú⁄[€òYH€€àùY[ùK\õÿòX⁄pÏ€ã]öY[ò⁄XHH\›Y»‹àÿ[ò[à›\Xò\ŸH€€úŸ\ùòH]‹Àÿ€€ùõ€»Z\ùXõHôYô\ô[ò⁄XN»õ‹õﬁ‹öY⁄[ò[\Œ»õ»‹ôX\àùY]ò\»ò\Ÿ\À[€ö]‹ô\»»[ô\»\ò[[‹ÀÇãH‹[Z^ò\àõ›‹À]\]Y]\»H[Y[ö]Y\»0ÓõöXÿ[Y[ùH€€ùòH]öY[ò⁄XHHH[öYY€‹úôX›KàYY\à€€ùô\ú⁄pÏ€à\›Hô\Ÿ\ùòHH[ô‹ô\€»€€ôö\õXYŒ»ö\⁄]\»»]\]Y]\»õ»[]Y\›ò[àpË\»ô[ù\ÀÇãH\ô[ô\àÿ\X⁄YY\»ôX[\»HÿYH\úò[ZY[ùHYYX[ùH€€ôöY›\òX⁄pÏ€àÿúŸ\ùòYKùYXò\»X€›Y\»HX›\òH‹›\ö[‹ãàôY⁄\›ò\à0Î[Z]\»H€‹úôXÿ⁄[€ô\»ô]][^òXõ\»⁄[à€‹X\à]‹»ö]òY‹»[ùôHôY€ÿ⁄[‹»öHX€\ò\à€Z[ö[»^\ù»‹àÿ›[Y[ùX⁄pÏ€ãÇãHö[‹ö^ò\à€€ùöXùX⁄pÏ€àô]HH€€ùô\ú⁄pÏ€àô\öYöXÿXõ\Ààö[ôÓõàÿ[Xö[»ÿ›[Y[ù[[]Y\›òH[ò‹ô[Y[ù»H][YYöHXõXÿX⁄pÏ€à€€Y\ò⁄X[ÇÇà»»»YZõ‹òH€€ù[ùXHH€€ùõ€Çï\ÿ\à[€€ùõ€[ôHH\»\ôX\»^\›[ù\ŒàÿúŸ\ùò\àOàö[‹ö^ò\à‹àò[‹àOàZôX›]\à[ùõ»H]]‹ö^òX⁄pÏ€àOàô\öYöXÿ\àOàYY\àOà€€úŸ\ùò\à»ô]ô\ù\ãàH\ôX›]òHõ»ôXX›]òHZôX›]‹ô\»›\‹[ôY‹Àõ»‹ôXH›õ»[ãÿò\ŸKÿYŸ[ùK‹ÿ⁄Y[\àHõ»[\0ÎXH\õZ\€‹Àô\›\Y\›»»[ù∞Î[‹»^\õõ‹ÀàH⁄Y›ZY[ùHZôX›X⁄pÏ€àXôHŸ\úò\à[ö[Y\àõ‹]Y[»X]\öX[€€à]öY[ò⁄XK⁄[àô\]\à[òH]Y]‹∞ÎXH€€\]KÇÇääêXŸ\X⁄pÏ€à[\‹YY›YH\öYò\ö[Œääà›\[Y[ù»ö[ò[€€\õÿòY»‹àÿ[ò[H∞ÍY⁄[Y[à[àôX⁄\»]]‹ö^òY\Œ»]öY[ò⁄XHH›X\ôY»HX›\òH‹›\ö[‹é»€‹›‹À€X\ôŸ[àY[ùYöXÿY‹»»X\òÿY‹»\ÿ€€õÿ⁄Y‹Œ»ö[ôÓõàõ€XúôH‹õ‹‹»[\òYŒ»ô\Ÿ\ùò\»^\›[ù\»ô\‹]Y\Àà[òH€0Î]XÿH›X\ôYH»^»ŸT‹XZ»X›X[^òY»õ»[]Y\›òH]YH[[›‹àHôX⁄[‹»H’HXH\›0ÍH[[ôXYÀÇÇãKKBÇà»»[ùô[ù\ö[»\ŸHòX›\ò\»H⁄]–\H\Ÿ[»åçàLL¬ÇääëTëP’UêHTì–êQH‹àX]\öX⁄[»[LÀÃLÃåçéääà[\X\à[õZõ»^\›[ùHH‘ì»€€\ò\»H[ùô[ù\ö[»\òH]YH\»0Î[ôX\»H€€\òHôX⁄XöY\»‹à€‹úô[ÀS‘ãõ›»»⁄]ô\\ô[à]]€pË]Xÿ[Y[ùH[ùòY\»H[ùô[ù\ö[»H‹»ô]\õ‹»ô\‹ùY‹»[à[‹ù\»H\Ÿ[»ô\\ô[àÿ[Y\Àò\€Y‹»»òZò\Àà^Qõ›»\»H‹ú]Y\›X⁄pÏ€àö[ò[ò⁄Y\òHÿ›[Y[ùYN»8†'õ\⁄8†'H]YYH⁄[àY[ùYYÿÿ\X⁄YYô\öYöXÿYHHõ»ŸHH\⁄Y€òH›õ»õÿŸ\ÿ[ZY[ùÀàô]][^ò\à‘ì»€‹úô[‹»HY€‹ÀXZ[⁄[ôŸ\›‹[ê€]À’⁄]–\€€ùõ€[ôHHH\ôXH‹◊›‹◊⁄›\ŸZŸY\[ô◊€][ôûW‹›ÿ⁄ÿ»⁄[à›òHò\ŸK€€Kÿ⁄Y[\àöHô\õÿŸ\ÿ[ZY[ù»X\⁄]õÀÇÇääë\›YŒääà€€ôöY›\òX⁄pÏ€à\õÿòYHHôY⁄\›òYN»^òXÿ⁄pÏ€ã\ÿ‹ö]\òH]]€pË]XÿHHÿ\\òHö]òH[‹ù\»ì»ëTíQíP–QTÀà\›HôY⁄\›õ»õ»X›]òHõÿŸ\€‹Àõ»X‹ôY]H€€\ò\À‹ôXŸ\⁄pÏ€àöH[ŸYöXÿH^\›[ò⁄X\»»€€ùXö[YYÇÇà»»»[ùòY\»\ŸH€€\ò\¬ÇåKàô]][^ò\àH[ôŸ\›HX›X[»ôYô\ö\àS›X[ô»^\›KY\àãŸõ›»€€[»[\õò]]òK€€úŸ\ùò\àÿ›[Y[ù»‹öY⁄[ò[HõÿŸY[ò⁄XKÇåãà^òY\à‹à0Î[ôXNàõ›ôYY‹ã€]ôK€∞ÓõY\õ»HòX›\òKôX⁄K\ù0ÎX›[À‘“’Kÿ[X\ÀX\òÿKô\Ÿ[ùX⁄pÏ€ãÿ[ùYYòX›\òYK[öYYòX›‹àH€€ùô\ú⁄pÏ€ãôX⁄[Àÿ€‹›À[€ôYHH[\Y\›‹»Ÿ\\òY‹ÀôY€ÿ⁄[À‹õ‹YYY‹õﬁYX›ÀXöXÿX⁄pÏ€àHôYô\ô[ò⁄XHHùY[ùKÇåÀàô\€€ô\àõŸX›»Hô\Ÿ[ùX⁄pÏ€à€€ùòHÿ]0Ë[Ÿ€»^\›[ùKà\ù0ÎX›[»ùY]õ»»[XöY›[»\ÿHHô]ö\⁄pÏ€ã⁄[àù\⁄[€ò\õ»‹à⁄[Z[]YàŸ\\ò\à€€ú›[ZXõ\ÀX›]õ‹»HŸ\ùöX⁄[‹ÀŸÿ\›‹»õ»[ùô[ù\öXXõ\Œ»^€Z\à€€\ò\»\ú€€ò[\»H›òHõ‹YYY⁄[à\⁄Y€òX⁄pÏ€à^0ÎX⁄]KÇçàHòX›\òH‹ôXH€€\òKŸ[ùòYH[ôY[ùHH]‹»[ÿ]0Ë[Ÿ€Àà[›ÿ⁄»\‹€öXõH][Y[ùH€€»‹àÿ[ùYYYôX›]ò[Y[ùHôX⁄XöYHH€€ôö\õXYK[ò€ZY»[à€€\õÿò[ùH]YHùYXôH[ùôYÿKàòX›\òX⁄pÏ€ãY€»HôXŸ\⁄pÏ€à€€à]ô[ù‹»\›[ù‹Œ»YZ]\à[ùôYÿ\»\ò⁄X[\»⁄[à›[X\àŸHHòX›\òKÇçKàô]\ÿ\à\‹Ÿ]Àú›ÿ⁄◊⁄][\ÿ\‹Ÿ]Àú›ÿ⁄◊€]ô[ÿ\‹Ÿ]Àö[ùô[ù‹ûW€[›ô[Y[ùÿ\‹Ÿ]Àú\ò⁄\ŸW‹ù[úÿH\‹Ÿ]Àú\ò⁄\ŸW‹ù[ó⁄][\ÿ»X›]õ‹»[à[XY\›õ»∞Î\⁄X€»^\›[ùKà›\Xò\ŸH\»\›[õ»\‹pÍ\»H\öYYÿ€€ù[»ô\öYöXÿY‹Œ»Z\ùXõH[ùô[ù\ö[»	àX›]õ‹»X[ùY[ôH[\[Yö[öY»‹à[€€ùò]»öYŸ[ùKà[Y‹òH€€úŸ\ùòH€€ùXö[YY»õ‹õﬁ€€úŸ\ùòH‹öY⁄[ò[\Œ»‹ù[H⁄]–\]Y\›ò[àõﬁYXÿ⁄[€ô\»[Z\€[»ÿ[ÀÇÇà»»»ÿ[Y\»\ŸH[‹ù\»H\Ÿ[¬Çí[ù\úô]\àY[úÿZô\»ò]\ò[\»‹à[\XYÀ›\õõÀ‹õ‹YYY]]‹ö^òY‹»H€€úŸ\ùò\àY\‹ÿYŸW⁄Y]]‹ãôX⁄K^ÀŸ]öY[ò⁄XK\ù0ÎX›[Àÿ[ùYY[öYY‹öYŸ[ã\›[õ»H[›]õÀàõ»^Y⁄\à›òH\àõ‹õX]»úô]ôH›YŸ\öYŒà8†'ô]\∞ÍHà]õ‹»H€‹õ»HõŸYÿH\òH‹õ¯†'KÇÇãH
+äïò\€YŒääàòZòH[àõŸYÿHH[H[à0Ë\ôXH\›[õŒ»›[[›[⁄[àÿ[Xö[ÀÇãH
+äê€€ú›[[Œääà\ÿ›Y[ùHÿ[ùYY€€ú›[ZYH[0Ë\ôXH€‹úô\‹€ôY[ùKÇãH
+äêòZòKpÏ[»»0Í\ôYNääà[›ö[ZY[ù»\‹XÎYöX€»H]öY[ò⁄XK‹ô]ö\⁄pÏ€àõ‹‹ò⁄[€ò[ÇãHõ[ò€‹ÀŸ\]Z\‹»[ùöXY‹»HXö]X⁄pÏ€à»]ò[ô\∞ÎXHÿ[XöX[àXöXÿX⁄pÏ€ãŸ\›YÀõ»\ÿ\\ôXŸ[à[[ùô[ù\ö[ÀÇãH8†'ŸHXÿX∞Ï¯†'K8†'ÿ\]pÍHòX∞Ï€∏†'H»ÿ[ùYY\À›[öYY\À›XöXÿX⁄pÏ€àY‹ÿ\»‹ôX[à^Ÿ\⁄pÏ€à\öY⁄YN»õ»[ùô[ù\àÿ[»öH[›ö[ZY[ùÀàY\à€€»[]»ò[[ùH›X[ô»H[ôŸ\›HH[ÿ[ò[\›0Í[à‹\ò]]õ‹ÀÇÇà»»»€€ôöY›\òX⁄pÏ€àH€€ùõ€\¬ÇíXö[]\à^òXÿ⁄pÏ€à]]€pË]XÿHHò[YX⁄pÏ€à€€[»ö[Y\à\€Œ»€€ùXö[^ò\à[›ö[ZY[ù‹»]]€pË]Xÿ[Y[ùH€€»€€àõŸX›À›[öYY›XöXÿX⁄pÏ€ã‹ôXŸ\⁄pÏ€à»€€ú›[[»[ô\]pÎ]õÿ€‹ÀY[ùYY]]‹ö^òYKò\Ÿ[[ôH∞Î\⁄X€»ô\öYöXÿY»H[›»\õÿòYÀà€]ôHHY\XÿX⁄pÏ€à‹à‹ôÿ[ö^òX⁄pÏ€à
+»òX›\òK‹õ›ôYY‹ãÿ€]ôHö\ÿÿ[
+»0Î[ôXH
+»ôXŸ\⁄pÏ€à\ò⁄X[»\òH⁄]–\‹ôÿ[ö^òX⁄pÏ€à
+»ÿ[ò[
+»Y\‹ÿYŸW⁄Y
+»[›ö[ZY[ùÀà€‹úô[»Hõ›»HHZ\€XHòX›\òHõŸXŸ[à[òH€€H€€\òN»ô\‹ùHHôXŸ\⁄pÏ€àHòX›\òHõ»›[X[à‹»ôXŸ\Œ»YX⁄[€ô\À‹ôY[ù∞Î[‹»€€àùY]ò\»ô\ú⁄[€ô\Àõ»[›ö[ZY[ù‹»YX⁄[€ò[\ÀÇÇê€€ùô\ù\àÿZòK‹\]Y]Kÿõ›[KŸÿ[0Ï€àH[öYYò\ŸHYYX[ùHô\Ÿ[ùX⁄pÏ€àô\öYöXÿYN»õ»\›[Z\à\]Z]ò[[ò⁄X\Ààõ‹]YX\àôYÿ]]õ‹»H€€úŸ\ùò\àYô\ô[ò⁄X\»\òH€€ò⁄[XX⁄pÏ€à∞Î\⁄XÿKà€‹úôXÿ⁄[€ô\ÀŸ]õ€X⁄[€ô\»\ÿ[àô]ô\ú€‹»»[›ö[ZY[ù‹»€€\[úÿ]‹ö[‹»€€àôYô\ô[ò⁄XH[‹öY⁄[ò[⁄[àõ‹úò\à\›‹öX[àõ›HH‹∞ÍY]»ö[ò[ò⁄Y\òHõ»\]Z]ò[H‹àÎH€€HH]õ€X⁄pÏ€à∞Î\⁄XÿKà[\ùH[Yÿ\à[pÎ[ö[[À‹[ù»Hô\‹⁄X⁄pÏ€à€€ôö\õXYŒ»›YŸ\ö\à\›HH€€\òH^\›[ùK⁄[àYY‹»»Y€‹»]]€pË]X€‹Àà[\ù\»‹à^Ÿ\⁄pÏ€àX]\öX[Hò[»ùY]õÀ⁄[àõ›YöXÿ\àÿYHY[úÿZôKÇÇà»»»ZôX›X⁄pÏ€àH\õZ[òY¬Çîô\‹€úÿXõ\»‹àõ€à⁄\›[X\»‘ì»€€ôöY›\òH[ôŸ\›K€X\[ÀŸY\XÿX⁄pÏ€é»YZ[ö\›òX⁄pÏ€ãŸö[ò[ûò\»ò[YHòX›\òK€‹›»H0Ë[Xö]Œ»[òÿ\ôÿY»H\Ÿ[ÀÿõŸYÿH€€ôö\õXHôXŸ\⁄pÏ€ã[öYYH€€ù[Œ»Ÿ\ô[ò⁄XH›\\ùö\ÿH^Ÿ\⁄[€ô\Ààõ»ŸH\⁄Y€ò[àùY]ò\»\ú€€ò\»öHôX⁄\»H€€\õ€Z\€ÀÇÇääêZ‹òNääàô\öYöXÿ\àò\Ÿ[[ôHöYŸ[ùKX›‹ô\»\‹€öXõ\»H›ÿ⁄»∞Î\⁄X€ÀX\X\àY^àõŸX›‹»úôX›Y[ù\»Hô\€€ô\à[X\Ÿ\À‹ô\Ÿ[ùX⁄[€ô\À›[öYY\Àà
+äë\‹pÍ\Œääà[›»€ÿúôH⁄[ò€»òX›\ò\»HY^àô\‹ù\»ôX[\»]]‹ö^òY‹»H\Ÿ[À€€àôXŸ\⁄pÏ€à\ò⁄X[\XÿY»€‹úô[ÀŸõ›Àò\€YÀ€€ú›[[ÀòZòK]õ€X⁄pÏ€ãY[úÿZôH[XöY›[»H›ÿ⁄»[ú›YöX⁄Y[ùKà
+äï\õZ[òYŒääàÿYHÿ\€»€€àùY[ùHHôX⁄XõÀ‹ôXYòX⁄Œ»Ÿ\õ»\XÿY‹ÀŸ\õ»Y^ò€\»H0Ë[Xö]‹ÀŸ\õ»ôYÿ]]õ‹»H€€ò⁄[XX⁄pÏ€àHÿ[‹»€€ùòH€€ù[ÀàY]Hõ‹Y\›Nà[Y[õ‹»L	HH0Î[ôX\»[[›»Y[ùYöXÿY\»⁄[àôXÿ\\òHX[ùX[»YY\à[ùòY\À‹ÿ[Y\»ô\öYöXÿY\À^Ÿ\⁄[€ô\À[[‹òHH^X›]YHÿ[»€€à[õ€Z[òY‹ãàòYHH\›»ŸHô\‹ùH€€[»Z‹úõ»»]]€X]^òX⁄pÏ€àX›]òH\›Hô\öYöXÿ\õÀÇÇî⁄Hò[HX›\òKŸ\ÿ‹ö]\òH»[ô\›[Y»\»[XöY›[À€€úŸ\ùò\à[ÿ[ôY]»⁄[àÿÿ\à›ÿ⁄À€€ù[ùX\à[ôY⁄\›õ»X[ùX[[à[⁄\›[XH]]‹ö]]]õ»Hô\öYöXÿ\à[ù\»HôZ[ù[ù\ãàô]ô\ú⁄pÏ€éà\ÿX›]ò\à€€»[Y\\àH[›ö[ZY[ù‹»H\ÿ\à€€\[úÿX⁄pÏ€àò^òXõH\òH\ÿ‹ö]\ò\»€€ôö\õXY\Œ»€€úŸ\ùò\à[ô\›»H€‹úô[À‘^Qõ›ÀÇÇîôYô\ô[ò⁄XHÿ[∞Ï€öXÿNà‹\ò][€úÀö€õ›€YŸW⁄][\À‹õÿ›\ô[Y[ù⁄[ùô[ù‹ûW€‹\ò][ô◊ÿ€€ùòX›ÃåçóÃW›åXH‹\ò][€úÀù\⁄‹À€‹◊›‹◊⁄›\ŸZŸY\[ô◊€][ôûW‹›ÿ⁄ÿÇÇÇà»»€‹úô[‹»H^Qõ›»8†%€€ù[ùZYY\õX[ô[ùHåçãLLL¬ÇääëX⁄\⁄pÏ€àHX]\öX⁄[ŒääàX[ù[ô\àHõ‹õXH[ôYö[öYH[[∞Ë[\⁄\»H€‹úô[‹»HH€€ò⁄[XX⁄pÏ€à[ÿ[[ô\ö[»HY€‹À[\X[ô»H^òXÿ⁄pÏ€àH[ôõ‹õXX⁄pÏ€à0Óù[àô]][^ò\à
+äù[òH0ÓõöXÿH\ôXHX\öXH^\›[ùJäà
+‘ì»€‹úô[‹»HY€‹ÿå[Y\öXÿK–€‹›W‘öXÿKîïSHX\ö[»⁄[àôX⁄HHö[äK[€€ùõ€^Qõ›»Ÿ[X[ò[H‹»[ô\»H[õ‹ôXÿ\›Y[ú›X[HL0ÎX\Œ»õ»‹ôX\à[àŸY›[ô»ö[ò[òŸH›X\ô[ãò[ôZòH»ÿ⁄Y[\àöHôXX›]ò\à\ÿ‹ö]‹ô\»ö[ò[ò⁄Y\õ‹»›\‹[ôY‹ÀÇÇääê’TîëSïÿúŸ\ùòY»ÀÃLääàô\»ù^õ€ô\»€XZ[H[õ»›]€⁄»]]‹ö^òY‹»\òHX›\òHŸ[X›]òN»Ÿ[ú€Àÿ⁄X⁄‹⁄[ù»[à[ùY‹ò][€úÀõXZ[⁄[ôŸ\› ò€€à\›‹öXH
+äö[ò€€\]Jäãà€€Ÿ€Hÿ[[ô\àö[ò›[Y»HYZ[êôX[Xÿ]⁄\ö›[ò€€X⁄Y›YH€€[»[ù\ôò^àHY€‹»^\›[ùK⁄[àÿ[[ô\ö[»Ÿ\\òY»‘ì»^Qõ›»0≠»ôX[Xÿ]⁄\òàŸHô\öYöXÿ\õ€àH‹ôX\õı€n¥Ó⁄$z{-ÆÈ‹j◊ùublicaci√≥n, nuevas cuentas o permisos.
 
 **CURRENT local:** el preflight autorizado aprob√≥ 15 comprobaciones. Supabase confirm√≥ proyecto ACTIVE_HEALTHY, URL can√≥nica y clave publishable activa; no se obtienen secretos privilegiados. Un build con esa configuraci√≥n detect√≥ que `/` invocaba el ledger legacy deshabilitado durante el prerender. Se conserva el fallo y el build previo; no se activa legacy para resolverlo. La entrada p√∫blica sigue a `/brain`; la entrada interna con legacy deshabilitado va a `/my-toro` antes de todo I/O antiguo, y la rama legacy expl√≠cita conserva su comportamiento existente. Este cambio no certifica su autenticaci√≥n.
 
