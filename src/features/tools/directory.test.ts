@@ -78,6 +78,19 @@ describe("complete catalogue boundary", () => {
     ]);
   });
 
+  it("keeps the Kross account/password route distinct from the operational dashboard", () => {
+    const rows = completeCatalogueRows();
+    rows[0] = {...rows[0],name:"Kross Admin · contraseña",provider:"Kross",category:"Acceso seguro",scope:"Cuenta administrador",lifecycle:"operativo",url:"https://passwords.google.com/"};
+    rows[47] = {...rows[47],name:"Kross Planner",provider:"Kross",category:"PMS",scope:"Dreamcatcher Hotel",lifecycle:"operativo",url:"https://dreamcatcherhotel.krossbooking.com/admin/dashboard#/admin/tableau/planner?id=dreamcatcherhotel"};
+    const groups = buildHotelServiceGroups(projectCompleteCatalogueRows(context, rows));
+    expect(groups.find(group => group.label === "Acceso seguro · Kross")?.destinations).toEqual([
+      {id:"LINK-001",label:"Kross Admin · contraseña",href:"https://passwords.google.com/",scope:"Cuenta administrador",lifecycle:"operativo"},
+    ]);
+    expect(groups.find(group => group.label === "PMS · Kross")?.destinations).toEqual([
+      {id:"LINK-048",label:"Kross Planner",href:"https://dreamcatcherhotel.krossbooking.com/admin/dashboard#/admin/tableau/planner?id=dreamcatcherhotel",scope:"Dreamcatcher Hotel",lifecycle:"operativo"},
+    ]);
+  });
+
   it("keeps a missing service destination pending without inventing an href", () => {
     const rows = completeCatalogueRows();
     rows[2] = {...rows[2],name:"Quovis",provider:"Quovis",category:"Facturación",scope:"Hotel",lifecycle:"operativo",url:""};
