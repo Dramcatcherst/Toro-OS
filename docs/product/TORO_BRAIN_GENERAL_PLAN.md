@@ -7,6 +7,21 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:TORO_PORTAL_INTEGRATED_WORKSPACE_20261108 -->
+## Portal integrado: dirección aceptada, comunicación, finanzas y accesos - 08/11/2026
+
+**DECISIÓN DEL PROPIETARIO:** acepta la experiencia diaria por rol y solicita ampliar WhatsApp/OpenClaw, operación, finanzas/contabilidad y accesos a todos los sistemas del hotel. Hoy por rol pasa a ser la entrada diaria objetivo; Cerebro conserva su función transversal, acceso directo de gestión y los dominios/IDs 00-11. Esta dirección sustituye la obligación TARGET anterior de abrir siempre en Cerebro; no elimina relaciones, fuentes ni privacidad.
+
+**CURRENT:** primer lote de navegación/lectura en PR #398; CI y preview comprobados para su head consultado, aceptación visual/autenticada aún pendiente. En la fuente privada del directorio se corrigió de forma reversible la mezcla entre fichas LINK contractuales y propuestas: entries conserva catálogo y candidate_entries propuestas, con respaldo y recibo en el mismo registro. Igualdad de contenido y contrato verificados; consumo autenticado pendiente. No cambian RPC, roles ni RLS.
+
+**TARGET:** un Portal para abrir sistemas, consultar fuentes o solicitar acciones según capacidad real; mensaje-caso-trabajo-respuesta-resultado y servicio-cobro-documento-liquidación-banco comparten identidad, ámbito y evidencia. Directorio completo por proveedor/cuenta/función, búsqueda y continuación sin perder cobertura; no confundir enlace con integración ni preparado con enviado. Finanzas conserva empresa, moneda, corte, originales y conciliación. Recuperar extracciones existentes antes de repetir ingesta histórica.
+
+**NEXT:** reutilizar el carril y los writers existentes para accesos/jornada, Comms y Finance. Probar usuario real, evento/caso real y fallo/recuperación pertinentes. La petición de eliminar trabas autoriza corregir causas dentro del alcance concedido, no convertir desconocidos en datos actuales ni conceder privilegios por apariencia. No se activaron envíos, publicaciones sociales, facturación, pagos, API pagada PMS, nuevas identidades, gateways ni schedulers.
+
+[Especificación de ampliación](../superpowers/specs/2026-11-08-portal-integrations-and-links-design.md) y [plan técnico](../superpowers/plans/2026-11-08-portal-integrations-and-links.md) son anexos subordinados de este único Plan. Diagnóstico detallado, cuentas y recibos sensibles permanecen privados.
+
+<!-- END:TORO_PORTAL_INTEGRATED_WORKSPACE_20261108 -->
+
 <!-- BEGIN:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
 ## Tarifas y distribución de Dreamcatcher · 7 de noviembre de 2026
 
