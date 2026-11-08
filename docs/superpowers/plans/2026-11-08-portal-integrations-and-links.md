@@ -50,6 +50,8 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 - [x] Definir contrato versionado de borrador/acción: operationKey idempotente, caso canónico, cuenta, propósito, chat, turno estable, destino verificado, versión esperada, contenido y adjuntos. Actor/ámbito se resuelven en servidor; el cliente no los concede. draft.save/reply.prepare permanecen fail-closed hasta conectar un writer canónico revisado.
 - [ ] Pruebas: otra identidad/ámbito denegados; toma humana evita doble respuesta; recarga/edición concurrente; cambio de contexto; adjunto incompleto; turno cruzando medianoche; fuente histórica.
 - [x] Preparar ampliación SQL canónica mínima y reversible: objeto append-only, lookup/readback y CAS atómico sobre el binding existente; server-only, RLS, sin grants de cliente ni apply runtime. Prueba PostgreSQL sintética cubre efecto único, versión obsoleta, identidad de operación, binding no verificado, adjuntos y rollback con drift.\n- [ ] Implementar contra contrato existente o ampliación revisada, conservando ID de proveedor y original. Persistencia no depende del estado React.
+- [x] Cerrar revisión técnica del release separado: bytes, dependencias, ACL/RLS, privacidad, advisory diff, readback y recuperación documentados en `docs/evidence/TORO_CHANNEL_DRAFT_RELEASE_REVIEW_20261108.md`. El dictamen permite revisión/aprobación; no aplica DDL ni enlaza writer.
+- [ ] Implementar contra contrato existente o ampliación revisada, conservando ID de proveedor y original. Persistencia no depende del estado React.
 - [ ] Un evento autorizado debe aparecer una vez en el mismo caso de Portal/canal. Transporte faltante conserva causa/borrador sin simular recepción.
 - [ ] Commit, preview y aceptación de persona real del rol.
 
