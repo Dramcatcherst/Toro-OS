@@ -174,6 +174,7 @@ function authorizeChannelDraftPolicy(
   context: ChannelDraftContext,
   action: ChannelDraftAction,
   transition: ChannelDraftTransition,
+  options: { enforceVersion?: boolean } = {},
 ): ChannelDraftPolicyDecision {
   const capability = transition === "draft.read" ? "conversation.read" : "conversation.write";
   if (!authorizeChannelLedger(actor, context, capability)) {
@@ -195,7 +196,11 @@ function authorizeChannelDraftPolicy(
   if (transition !== "draft.read" && context.humanTakeover) {
     return { ok: false, error: "human_takeover_active" };
   }
-  if (transition !== "draft.read" && action.expectedVersion !== context.currentVersion) {
+  if (
+    transition !== "draft.read" &&
+    (options.enforceVersion ?? true) &&
+    action.expectedVersion !== context.currentVersion
+  ) {
     return { ok: false, error: "draft_version_conflict" };
   }
   if (transition === "reply.prepare" && action.attachments.some((attachment) => attachment.state !== "ready")) {
@@ -443,7 +448,13 @@ export async function persistChannelDraft(
   const parsed = validateChannelDraftAction(input);
   if (!parsed.ok) return { ok: false, error: parsed.error, effect: "none" };
   const action = parsed.value;
-  const decision = authorizeChannelDraftPolicy(actor, context, action, "draft.save");
+  const decision = authorizeChannelDraftPolicy(
+    actor,
+    context,
+    action,
+    "draft.save",
+    { enforceVersion: false },
+  );
   if (!decision.ok) return { ...decision, effect: "none" };
   if (!store) {
     return { ok: false, error: "channel_draft_writer_unavailable", effect: "none" };
@@ -463,6 +474,10 @@ export async function persistChannelDraft(
       return { ok: true, replayed: true, record: existing };
     }
     return { ok: false, error: "draft_operation_conflict", effect: "none" };
+  }
+
+  if (action.expectedVersion !== context.currentVersion) {
+    return { ok: false, error: "draft_version_conflict", effect: "none" };
   }
 
   let applied: boolean;
