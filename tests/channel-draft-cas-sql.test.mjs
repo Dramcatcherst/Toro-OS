@@ -67,6 +67,19 @@ test("denies an actor without a current organization membership",async()=>{
   await db.query("update public.user_roles set status='active',revoked_at=null where user_id=$1::uuid",[user]);
 });
 
+test("hides persisted drafts after membership or destination authorization is revoked",async()=>{
+  const readSql="select public.toro_channel_draft_read_v1($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::uuid) as row";
+  const findSql="select public.toro_channel_draft_find_v1($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::uuid,$9) as row";
+  await db.query("update public.user_roles set status='revoked',revoked_at=now() where user_id=$1::uuid",[user]);
+  assert.equal((await db.query(readSql,args)).rows[0].row,null);
+  assert.equal((await db.query(findSql,[...args,"draft-op-001"])).rows[0].row,null);
+  await db.query("update public.user_roles set status='active',revoked_at=null where user_id=$1::uuid",[user]);
+  await db.query("update integrations.communication_channel_bindings set verification_status='partial' where id=$1::uuid",[binding]);
+  assert.equal((await db.query(readSql,args)).rows[0].row,null);
+  assert.equal((await db.query(findSql,[...args,"draft-op-001"])).rows[0].row,null);
+  await db.query("update integrations.communication_channel_bindings set verification_status='verified' where id=$1::uuid",[binding]);
+});
+
 test("keeps table and RPCs server-only and uses invoker security",async()=>{
   const rows=(await db.query(`select proname,prosecdef,has_function_privilege('anon',oid,'execute') as anon,
     has_function_privilege('authenticated',oid,'execute') as authenticated,

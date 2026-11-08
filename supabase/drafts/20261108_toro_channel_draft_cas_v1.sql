@@ -65,10 +65,20 @@ create function public.toro_channel_draft_find_v1(
     'sourceKind',d.source_kind,'attachments',d.attachments
   )
   from integrations.communication_channel_drafts d
+  join integrations.communication_channel_bindings b
+    on b.id=d.destination_binding_id and b.org_id=d.org_id
+    and b.active and b.draft_enabled
+    and b.auth_status='connected' and b.verification_status='verified'
+    and b.provider_account_ref=d.account_id
   where d.org_id=p_org_id and d.actor_user_id=p_actor_user_id and d.account_id=p_account_id
     and d.purpose_key=p_purpose_key and d.chat_ref=p_chat_ref and d.case_ref=p_case_ref
     and d.shift_ref=p_shift_ref and d.destination_binding_id=p_destination_binding_id
-    and d.operation_key=p_operation_key;
+    and d.operation_key=p_operation_key
+    and exists (
+      select 1 from public.user_roles ur
+      where ur.org_id=d.org_id and ur.user_id=d.actor_user_id
+        and ur.status='active' and ur.revoked_at is null
+    );
 $function$;
 
 create function public.toro_channel_draft_read_v1(
@@ -83,9 +93,19 @@ create function public.toro_channel_draft_read_v1(
     'sourceKind',d.source_kind,'attachments',d.attachments
   )
   from integrations.communication_channel_drafts d
+  join integrations.communication_channel_bindings b
+    on b.id=d.destination_binding_id and b.org_id=d.org_id
+    and b.active and b.draft_enabled
+    and b.auth_status='connected' and b.verification_status='verified'
+    and b.provider_account_ref=d.account_id
   where d.org_id=p_org_id and d.actor_user_id=p_actor_user_id and d.account_id=p_account_id
     and d.purpose_key=p_purpose_key and d.chat_ref=p_chat_ref and d.case_ref=p_case_ref
     and d.shift_ref=p_shift_ref and d.destination_binding_id=p_destination_binding_id
+    and exists (
+      select 1 from public.user_roles ur
+      where ur.org_id=d.org_id and ur.user_id=d.actor_user_id
+        and ur.status='active' and ur.revoked_at is null
+    )
   order by d.version desc limit 1;
 $function$;
 
