@@ -12,7 +12,8 @@ export type ToolCatalogueFilters = { query: string; project: string; category: s
 export type ToolCatalogueAction =
   | { type: "query" | "project" | "category" | "state" | "view"; value: string }
   | { type: "reset" }
-  | { type: "more" | "all" };
+  | { type: "more" }
+  | { type: "all" };
 
 export const initialToolCatalogueFilters: ToolCatalogueFilters = {
   query: "", project: "Todos", category: "Todas", state: "Todos", visibleCount: TOOL_CATALOGUE_BATCH_SIZE, view: "compact",
