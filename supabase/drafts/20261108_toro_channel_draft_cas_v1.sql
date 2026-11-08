@@ -115,10 +115,12 @@ begin
     seen_refs := pg_catalog.array_append(seen_refs,attachment->>'evidenceRef');
   end loop;
 
-  -- The existing binding row is the lock and the live capability gate. This
-  -- serializes writers for one destination without a second lock registry.
+  -- The existing binding row is the lock, canonical account identity and the
+  -- live capability gate. This prevents a verified destination from being
+  -- persisted under a caller-supplied shadow account scope.
   perform 1 from integrations.communication_channel_bindings b
     where b.id=p_destination_binding_id and b.org_id=p_org_id and b.active
+      and b.provider_account_ref=p_account_id
       and b.draft_enabled and b.auth_status='connected' and b.verification_status='verified'
     for update;
   if not found then return false; end if;

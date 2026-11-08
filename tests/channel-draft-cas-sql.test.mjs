@@ -21,9 +21,9 @@ before(async()=>{
   await db.exec(`create schema integrations; create role anon; create role authenticated; create role service_role;
     create table integrations.communication_channel_bindings(
       id uuid primary key,org_id uuid not null,active boolean not null,draft_enabled boolean not null,
-      auth_status text not null,verification_status text not null);
+      auth_status text not null,verification_status text not null,provider_account_ref text not null);
     insert into integrations.communication_channel_bindings values
-      ('${binding}','${org}',true,true,'connected','verified');`);
+      ('${binding}','${org}',true,true,'connected','verified','account-hotel');`);
   await db.exec(apply());
 });
 after(async()=>db.close());
@@ -46,6 +46,13 @@ test("denies unverified destinations, historical writes and malformed or duplica
   await assert.rejects(()=>db.query(`select ${rpc}`, [...args,"draft-op-004",1,"Blocked","historical_import",attachments]));
   const duplicate=JSON.stringify([{evidenceRef:"dropbox/media/x",state:"ready"},{evidenceRef:"dropbox/media/x",state:"ready"}]);
   await assert.rejects(()=>db.query(`select ${rpc}`, [...args,"draft-op-005",1,"Blocked","live_transport",duplicate]));
+});
+
+test("denies a caller-supplied account scope that does not match the locked binding",async()=>{
+  const shadowArgs=[...args]; shadowArgs[2]="account-shadow";
+  const call=await db.query(`select ${rpc} as applied`,[...shadowArgs,"draft-op-shadow",1,"Blocked","live_transport",attachments]);
+  assert.equal(call.rows[0].applied,false);
+  assert.equal((await db.query("select count(*)::int as n from integrations.communication_channel_drafts")).rows[0].n,1);
 });
 
 test("keeps table and RPCs server-only and uses invoker security",async()=>{
