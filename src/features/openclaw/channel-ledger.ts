@@ -255,6 +255,114 @@ export type ChannelDraftStore = {
   read(key: ChannelDraftStoreKey): Promise<ChannelDraftStoredRecord | null>;
 };
 
+export type ChannelDraftCanonicalPort = {
+  findByOperationKey(
+    key: ChannelDraftStoreKey & { operationKey: string },
+  ): Promise<{ data: unknown; error?: unknown }>;
+  compareAndSwap(input: {
+    key: ChannelDraftStoreKey;
+    expectedVersion: number;
+    next: ChannelDraftStoredRecord;
+  }): Promise<{ data: unknown; error?: unknown }>;
+  read(
+    key: ChannelDraftStoreKey,
+  ): Promise<{ data: unknown; error?: unknown }>;
+};
+
+const CHANNEL_DRAFT_STORED_FIELDS = new Set([
+  "orgId", "userId", "accountId", "purposeKey", "chatRef", "caseRef",
+  "shiftRef", "destinationBindingId", "operationKey", "version", "draftBody",
+  "sourceKind", "attachments",
+]);
+
+function normalizeChannelDraftStoredRecord(
+  input: unknown,
+  expectedKey: ChannelDraftStoreKey,
+  expectedOperationKey?: string,
+): ChannelDraftStoredRecord | null {
+  if (!input || typeof input !== "object" || Array.isArray(input)) return null;
+  const row = input as Record<string, unknown>;
+  if (Object.keys(row).some((field) => !CHANNEL_DRAFT_STORED_FIELDS.has(field))) return null;
+  if (!Object.entries(expectedKey).every(([field, value]) => row[field] === value)) return null;
+  if (
+    typeof row.operationKey !== "string" ||
+    !CHANNEL_REF.test(row.operationKey) ||
+    (expectedOperationKey !== undefined && row.operationKey !== expectedOperationKey) ||
+    !Number.isSafeInteger(row.version) ||
+    (row.version as number) < 1 ||
+    typeof row.draftBody !== "string" ||
+    !row.draftBody.trim() ||
+    row.draftBody.length > 10000 ||
+    (row.sourceKind !== "live_transport" && row.sourceKind !== "historical_import") ||
+    !Array.isArray(row.attachments) ||
+    row.attachments.length > 20
+  ) {
+    return null;
+  }
+  const attachments = row.attachments as unknown[];
+  if (!attachments.every((attachment) => {
+    if (!attachment || typeof attachment !== "object" || Array.isArray(attachment)) return false;
+    const item = attachment as Record<string, unknown>;
+    return Object.keys(item).every((field) => field === "evidenceRef" || field === "state") &&
+      Object.keys(item).length === 2 &&
+      typeof item.evidenceRef === "string" &&
+      CHANNEL_REF.test(item.evidenceRef) &&
+      (item.state === "ready" || item.state === "pending" || item.state === "failed");
+  })) {
+    return null;
+  }
+  const normalizedAttachments = attachments.map((attachment) => {
+    const item = attachment as ChannelDraftStoredRecord["attachments"][number];
+    return { evidenceRef: item.evidenceRef, state: item.state };
+  });
+  if (new Set(normalizedAttachments.map((attachment) => attachment.evidenceRef)).size !== normalizedAttachments.length) {
+    return null;
+  }
+  return {
+    ...expectedKey,
+    operationKey: row.operationKey,
+    version: row.version as number,
+    draftBody: row.draftBody,
+    sourceKind: row.sourceKind,
+    attachments: normalizedAttachments,
+  };
+}
+
+/**
+ * Reviewable adapter boundary for a future canonical backend.
+ * It binds no RPC name, credentials or live writer. The server must inject a
+ * reviewed port; transport errors and malformed/cross-scope rows fail closed.
+ */
+export function createChannelDraftCanonicalStoreAdapter(
+  port: ChannelDraftCanonicalPort,
+): ChannelDraftStore {
+  return {
+    async findByOperationKey(key) {
+      const result = await port.findByOperationKey(key);
+      if (result.error) throw new Error("channel_draft_lookup_failed");
+      if (result.data === null) return null;
+      const record = normalizeChannelDraftStoredRecord(result.data, key, key.operationKey);
+      if (!record) throw new Error("channel_draft_lookup_invalid");
+      return record;
+    },
+    async compareAndSwap(input) {
+      const result = await port.compareAndSwap(input);
+      if (result.error || typeof result.data !== "boolean") {
+        throw new Error("channel_draft_compare_invalid");
+      }
+      return result.data;
+    },
+    async read(key) {
+      const result = await port.read(key);
+      if (result.error) throw new Error("channel_draft_read_failed");
+      if (result.data === null) return null;
+      const record = normalizeChannelDraftStoredRecord(result.data, key);
+      if (!record) throw new Error("channel_draft_read_invalid");
+      return record;
+    },
+  };
+}
+
 export type ChannelDraftMutationResult =
   | { ok: true; replayed: boolean; record: ChannelDraftStoredRecord }
   | { ok: false; error: string; effect: "none" | "unknown" };
