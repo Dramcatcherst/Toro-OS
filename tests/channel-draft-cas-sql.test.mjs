@@ -19,6 +19,10 @@ const attachments=JSON.stringify([{evidenceRef:"dropbox/media/fixture-001",state
 
 before(async()=>{
   await db.exec(`create schema integrations; create role anon; create role authenticated; create role service_role;
+    create table public.user_roles(
+      id uuid primary key,org_id uuid not null,user_id uuid not null,status text not null,revoked_at timestamptz);
+    insert into public.user_roles values
+      ('33333333-3333-4333-8333-333333333333','${org}','${user}','active',null);
     create table integrations.communication_channel_bindings(
       id uuid primary key,org_id uuid not null,active boolean not null,draft_enabled boolean not null,
       auth_status text not null,verification_status text not null,provider_account_ref text not null);
@@ -53,6 +57,14 @@ test("denies a caller-supplied account scope that does not match the locked bind
   const call=await db.query(`select ${rpc} as applied`,[...shadowArgs,"draft-op-shadow",1,"Blocked","live_transport",attachments]);
   assert.equal(call.rows[0].applied,false);
   assert.equal((await db.query("select count(*)::int as n from integrations.communication_channel_drafts")).rows[0].n,1);
+});
+
+test("denies an actor without a current organization membership",async()=>{
+  await db.query("update public.user_roles set status='revoked',revoked_at=now() where user_id=$1::uuid",[user]);
+  const call=await db.query(`select ${rpc} as applied`,[...args,"draft-op-revoked",1,"Blocked","live_transport",attachments]);
+  assert.equal(call.rows[0].applied,false);
+  assert.equal((await db.query("select count(*)::int as n from integrations.communication_channel_drafts")).rows[0].n,1);
+  await db.query("update public.user_roles set status='active',revoked_at=null where user_id=$1::uuid",[user]);
 });
 
 test("keeps table and RPCs server-only and uses invoker security",async()=>{

@@ -13,6 +13,9 @@ begin
   if pg_catalog.to_regclass('integrations.communication_channel_bindings') is null then
     raise exception 'existing communication channel bindings are required';
   end if;
+  if pg_catalog.to_regclass('public.user_roles') is null then
+    raise exception 'existing user role memberships are required';
+  end if;
   if pg_catalog.to_regclass('integrations.communication_channel_drafts') is not null then
     raise exception 'channel draft object already exists; inspect instead of replacing it';
   end if;
@@ -123,6 +126,13 @@ begin
       and b.provider_account_ref=p_account_id
       and b.draft_enabled and b.auth_status='connected' and b.verification_status='verified'
     for update;
+  if not found then return false; end if;
+
+  -- The service boundary resolves capabilities, while the database independently
+  -- requires a live organization membership for the attributed human actor.
+  perform 1 from public.user_roles ur
+    where ur.org_id=p_org_id and ur.user_id=p_actor_user_id
+      and ur.status='active' and ur.revoked_at is null;
   if not found then return false; end if;
 
   select d.version into current_version
