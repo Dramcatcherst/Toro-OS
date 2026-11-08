@@ -651,6 +651,27 @@ Corte de la investigación: **17/10/2026, aproximadamente 02:48, America/Costa_R
 
 TORO debe buscar de forma continua oportunidades verificables para aumentar la rentabilidad, utilidad y conversión del negocio dentro de su alcance autorizado. Priorizar contribución y utilidad sostenible sobre ocupación, tarifa de lista o ingresos brutos aislados. Comparar ingresos después de descuentos financiados por el hotel, comisiones, cobros de pago, costos incrementales de desayuno/servicio, cancelaciones y reembolsos; separar impuestos por remitir. No inventar costos, ahorro o mejora de utilidad. Medir el resultado antes de declarar una optimización exitosa.
 
+<!-- BEGIN:CET_REVENUE_STRATEGY_20261108 -->
+### Evidencia de mercado y estrategia de ingresos — 08/11/2026
+
+**CURRENT — dirección aprobada por Mauricio:** incorporar el estudio del CET al mismo `revenue_booking_stack`, con Revenue como responsable comercial y Finance, TERE, Growth y Operations como apoyo de dominio. Se amplía la estrategia existente, sin otro plan, comparador, catálogo, escritor o programación. El expediente privado `booking_kross_tarifas_20261107` conserva el benchmark, sus fuentes y la ejecución; `finance_room_unit_economics_engine_v1` conserva el modelo de costos.
+
+**Evidencia externa, con su propio corte:** el [resumen original del CET](https://www.cet-cr.org/es/investigaciones/alquileres-corto-plazo-costa-rica) y el [artículo de El Financiero del 22/09/2026](https://www.elfinancierocr.com/negocios/alquileres-de-corta-estancia-en-costa-rica-cuales/Q7XWQCTYSBBEJH4VEYAB7YMFEQ/story/) describen los doce meses terminados en junio de 2026. Cóbano / Santa Teresa–Montezuma aparece entre los mercados de mayor facturación estimada. El agregado incluye una zona mayor que Santa Teresa y alojamientos de tamaños distintos. Anuncio, inmueble y habitación no son unidades equivalentes. Facturación, tarifa diaria, ocupación y utilidad tienen bases diferentes: no convertir promedios de viviendas completas en una tarifa objetivo del hotel ni en demanda vigente.
+
+**Objetivo:** aumentar la contribución realizada por noche de habitación física disponible y proteger calidad, caja y utilidad sostenible. Usar ingresos después de descuentos, reembolsos e impuestos por remitir; restar una sola vez comisiones efectivas, cobro/adquisición atribuible y costos variables de estancia, noche, huésped y servicio. Costos incompletos producen escenarios y piso pendiente, nunca costo cero. La utilidad contable después de costos fijos se valida por separado. El denominador parte de las veinte habitaciones físicas y sus exclusiones verificadas; una villa consume sus componentes según el mapa aprobado.
+
+**NEXT — tres prioridades dentro del frente vigente:**
+
+| Orden | Acción | Criterio de aceptación |
+| --- | --- | --- |
+| 1 | Cerrar la discrepancia de distribución de mayor impacto y medir el piloto existente: precio final directo/OTA, descuentos acumulados, RO/BB, desayuno y cargos. | Misma unidad, fechas, huéspedes, moneda, condiciones e impuestos; antes, acuse, lectura posterior y cotización pública. Conservar prioridades de exclusividad y el piloto de campañas ya abiertos. |
+| 2 | Proponer tarifas por categoría, fecha y antelación según ritmo neto de reservas y costos; evaluar villa/grupo frente a las habitaciones desplazadas. | Fuente comercial vigente, inventario compartido validado, contribución y costo de oportunidad explícitos; ninguna restricción o tarifa se activa por un promedio externo. |
+| 3 | Mejorar conversión directa y extras en fechas débiles con beneficios reales y ensayos pequeños. | Reserva/estancia atribuible y contribución después de costo incremental; no descuentos generales, promesas de menor precio garantizado ni capacidad/proveedor sin verificar. |
+
+**Seguimiento y cierre:** consumir datos nuevos en la revisión comercial del coordinador existente, como máximo una vez al día, y sintetizar en su reporte semanal; no crear otro timer. Comparar siete días pertinentes del piloto con inventario, antelación, día, evento y condiciones compatibles, y confirmar después el resultado de estancias realizadas y cancelaciones. Sin control válido, muestra o costos: INCONCLUSO / NO MEDIDO. Portal y WhatsApp podrán mostrar estas decisiones mediante los consumidores existentes y sus permisos; el registro documental no prueba consumo, cambio publicado ni mejora económica. Las modificaciones comerciales conservan el escritor, las autorizaciones específicas y los recibos vigentes.
+
+<!-- END:CET_REVENUE_STRATEGY_20261108 -->
+
 ### Avisos materiales de canales — corte 2026-10-07
 
 **CURRENT — aviso de Booking.com, todavía no verificable como liquidación aplicada:** el comunicado recibido por Atrapasueños el 07/10/2026 anuncia que desde **17/11/2026** el IVA/GST o impuesto de ventas equivalente formará parte de la **base sobre la cual Booking.com calcula su comisión**. Según el mismo aviso, las reservas creadas antes de esa fecha mantienen el cálculo anterior. Esto no confirma un porcentaje nuevo de comisión ni acredita la aceptación, contrato actualizado o cargos efectivamente liquidados. Fuente: correo Booking.com `1a11563e0ee53505`. **NEXT:** TORO Revenue/Finance debe revisar el anexo y el ejemplo real en la Extranet durante noviembre, comparar antes/después por fecha de reserva y alojamiento, y recalcular contribución neta sin cambiar tarifas, Kross, descuentos, contratos o pagos por este aviso. Fecha de control en Google Calendar: 17/11/2026, no vencimiento de factura.
