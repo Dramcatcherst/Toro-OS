@@ -86,3 +86,116 @@ export function channelCapabilityState(input: {
   if (!input.sourceFresh) return "STALE" as const;
   return "READY" as const;
 }
+
+
+export const CHANNEL_DRAFT_ACTION_SCHEMA = "channel-draft-action-v1" as const;
+
+export type ChannelDraftAction = {
+  schemaVersion: typeof CHANNEL_DRAFT_ACTION_SCHEMA;
+  accountId: string;
+  purposeKey: string;
+  chatRef: string;
+  caseRef: string;
+  destinationBindingId: string;
+  expectedVersion: number;
+  sourceKind: "live_transport" | "historical_import";
+  attachments: Array<{
+    evidenceRef: string;
+    state: "ready" | "pending" | "failed";
+  }>;
+};
+
+export type ChannelDraftContext = {
+  orgId: string;
+  userId: string;
+  accountId: string;
+  purposeKey: string;
+  chatRef: string;
+  caseRef: string;
+  destinationBindingId: string;
+  currentVersion: number;
+  humanTakeover: boolean;
+};
+
+export type ChannelDraftTransition = "draft.read" | "draft.save" | "reply.prepare";
+
+const CHANNEL_DRAFT_FIELDS = new Set([
+  "schemaVersion", "accountId", "purposeKey", "chatRef", "caseRef",
+  "destinationBindingId", "expectedVersion", "sourceKind", "attachments",
+]);
+const CHANNEL_REF = /^[A-Za-z0-9/_:.-]{4,300}$/;
+
+export function validateChannelDraftAction(input: unknown):
+  | { ok: true; value: ChannelDraftAction }
+  | { ok: false; error: string } {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return { ok: false, error: "Invalid channel draft action." };
+  }
+  const row = input as Record<string, unknown>;
+  if (Object.keys(row).some((field) => !CHANNEL_DRAFT_FIELDS.has(field))) {
+    return { ok: false, error: "Channel draft scope must be resolved by the server." };
+  }
+  const refs = ["accountId", "purposeKey", "chatRef", "caseRef", "destinationBindingId"] as const;
+  if (row.schemaVersion !== CHANNEL_DRAFT_ACTION_SCHEMA ||
+      !refs.every((field) => typeof row[field] === "string" && CHANNEL_REF.test(row[field] as string)) ||
+      !Number.isSafeInteger(row.expectedVersion) || (row.expectedVersion as number) < 0 ||
+      (row.sourceKind !== "live_transport" && row.sourceKind !== "historical_import") ||
+      !Array.isArray(row.attachments) || row.attachments.length > 20) {
+    return { ok: false, error: "Invalid channel draft fields." };
+  }
+  const attachments = row.attachments as unknown[];
+  if (!attachments.every((attachment) => {
+    if (!attachment || typeof attachment !== "object" || Array.isArray(attachment)) return false;
+    const item = attachment as Record<string, unknown>;
+    return Object.keys(item).every((field) => field === "evidenceRef" || field === "state") &&
+      typeof item.evidenceRef === "string" && CHANNEL_REF.test(item.evidenceRef) &&
+      (item.state === "ready" || item.state === "pending" || item.state === "failed");
+  })) {
+    return { ok: false, error: "Invalid channel draft attachments." };
+  }
+  const evidenceRefs = attachments.map((attachment) => (attachment as { evidenceRef: string }).evidenceRef);
+  if (new Set(evidenceRefs).size !== evidenceRefs.length) {
+    return { ok: false, error: "Duplicate channel draft attachments." };
+  }
+  return { ok: true, value: row as ChannelDraftAction };
+}
+
+export function authorizeChannelDraftAction(
+  actor: ChannelActor | null,
+  context: ChannelDraftContext,
+  action: ChannelDraftAction,
+  transition: ChannelDraftTransition,
+):
+  | { ok: true; capability: "conversation.read" | "conversation.write"; writer: "channel_draft_store" | null }
+  | { ok: false; error: string } {
+  const capability = transition === "draft.read" ? "conversation.read" : "conversation.write";
+  if (!authorizeChannelLedger(actor, context, capability)) {
+    return { ok: false, error: "channel_actor_denied" };
+  }
+  if (
+    action.accountId !== context.accountId ||
+    action.purposeKey !== context.purposeKey ||
+    action.chatRef !== context.chatRef ||
+    action.caseRef !== context.caseRef ||
+    action.destinationBindingId !== context.destinationBindingId
+  ) {
+    return { ok: false, error: "channel_context_mismatch" };
+  }
+  if (transition !== "draft.read" && action.sourceKind === "historical_import") {
+    return { ok: false, error: "historical_source_read_only" };
+  }
+  if (transition !== "draft.read" && context.humanTakeover) {
+    return { ok: false, error: "human_takeover_active" };
+  }
+  if (transition !== "draft.read" && action.expectedVersion !== context.currentVersion) {
+    return { ok: false, error: "draft_version_conflict" };
+  }
+  if (transition === "reply.prepare" && action.attachments.some((attachment) => attachment.state !== "ready")) {
+    return { ok: false, error: "attachment_incomplete" };
+  }
+  return {
+    ok: true,
+    capability,
+    writer: transition === "draft.read" ? null : "channel_draft_store",
+  };
+}
