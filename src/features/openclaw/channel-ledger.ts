@@ -166,7 +166,7 @@ export function authorizeChannelDraftAction(
   action: ChannelDraftAction,
   transition: ChannelDraftTransition,
 ):
-  | { ok: true; capability: "conversation.read" | "conversation.write"; writer: "channel_draft_store" | null }
+  | { ok: true; capability: "conversation.read"; writer: null }
   | { ok: false; error: string } {
   const capability = transition === "draft.read" ? "conversation.read" : "conversation.write";
   if (!authorizeChannelLedger(actor, context, capability)) {
@@ -193,9 +193,12 @@ export function authorizeChannelDraftAction(
   if (transition === "reply.prepare" && action.attachments.some((attachment) => attachment.state !== "ready")) {
     return { ok: false, error: "attachment_incomplete" };
   }
+  if (transition !== "draft.read") {
+    return { ok: false, error: "channel_draft_writer_unavailable" };
+  }
   return {
     ok: true,
-    capability,
-    writer: transition === "draft.read" ? null : "channel_draft_store",
+    capability: "conversation.read",
+    writer: null,
   };
 }
