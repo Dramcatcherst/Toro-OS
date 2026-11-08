@@ -306,18 +306,20 @@ describe("channel draft CAS runtime contract", () => {
 
   it("fails closed when the canonical port returns malformed or cross-scope data", async () => {
     const crossScope = {
-      ...context,
-      humanTakeover: undefined,
-      currentVersion: undefined,
       orgId: "other",
+      userId: context.userId,
+      accountId: context.accountId,
+      purposeKey: context.purposeKey,
+      chatRef: context.chatRef,
+      caseRef: context.caseRef,
+      shiftRef: context.shiftRef,
+      destinationBindingId: context.destinationBindingId,
       operationKey: action.operationKey,
       version: 8,
       draftBody: action.draftBody,
       sourceKind: action.sourceKind,
       attachments: action.attachments,
     };
-    delete crossScope.humanTakeover;
-    delete crossScope.currentVersion;
 
     const lookupStore = createChannelDraftCanonicalStoreAdapter({
       async findByOperationKey() { return { data: crossScope }; },
