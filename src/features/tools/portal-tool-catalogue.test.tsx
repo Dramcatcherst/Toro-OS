@@ -121,6 +121,23 @@ describe("tool catalogue selection", () => {
     expect(selection.groups).toEqual([{ project: "Dreamcatcher Marketing", links: [complete[0]] }]);
   });
 
+  it("builds compact service groups without merging same-provider account destinations", () => {
+    const complete = completeCatalogue();
+    const first = complete[0];
+    const second = complete[1];
+    const items = [
+      {...first, id:"LINK-901", name:"Booking Dreamcatcher", label:"Booking Dreamcatcher", provider:"Booking.com", category:"OTA", scope:"Cuenta Dreamcatcher", url:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=1"},
+      {...second, id:"LINK-902", name:"Booking Toro", label:"Booking Toro", provider:"Booking.com", category:"OTA", scope:"Cuenta Toro", url:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=2"},
+    ];
+    const [group] = selectToolCatalogue(items, filters()).serviceGroups;
+    expect(group.label).toBe("OTA · Booking.com");
+    expect(group.destinations).toEqual([
+      {id:"LINK-901",label:"Booking Dreamcatcher",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=1",scope:"Cuenta Dreamcatcher",lifecycle:first.lifecycle},
+      {id:"LINK-902",label:"Booking Toro",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=2",scope:"Cuenta Toro",lifecycle:second.lifecycle},
+    ]);
+    expect(group.links.map(item => item.id)).toEqual(["LINK-901", "LINK-902"]);
+  });
+
   it("does not expose URL text as searchable catalogue metadata", () => {
     const complete = completeCatalogue();
     expect(selectToolCatalogue(complete, filters({ query: "private-url-fragment" })).filteredLinks).toEqual([]);
@@ -135,6 +152,9 @@ describe("tool catalogue selection", () => {
     expect(first.hasMore).toBe(true);
     const more = toolCatalogueReducer(initialToolCatalogueFilters, { type: "more" });
     expect(selectToolCatalogue(complete, more).visibleLinks).toHaveLength(96);
+    const all = toolCatalogueReducer(more, { type: "all" });
+    expect(all).toMatchObject({ query: "", project: "Todos", category: "Todas", state: "Todos" });
+    expect(selectToolCatalogue(complete, all).visibleLinks).toHaveLength(244);
     const narrowed = toolCatalogueReducer(more, { type: "project", value: "Dreamcatcher Marketing" });
     expect(narrowed.visibleCount).toBe(TOOL_CATALOGUE_BATCH_SIZE);
     let nearEnd = initialToolCatalogueFilters;
@@ -148,6 +168,8 @@ describe("tool catalogue selection", () => {
     const html = renderToStaticMarkup(<PortalToolCatalogue items={complete} idPrefix="complete" mode="complete" />);
     expect(html.match(/\sdata-tool=/g)).toHaveLength(TOOL_CATALOGUE_BATCH_SIZE);
     expect(html).toContain("Mostrar 48 más");
+    expect(html).toContain("Ver todos");
+    expect(html).toContain('aria-pressed="true">Compacta');
   });
 
   it("recovers the catalogue after an empty result through reset", () => {
