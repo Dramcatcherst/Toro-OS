@@ -173,6 +173,27 @@ describe("tool catalogue selection", () => {
     expect(html).toContain('aria-pressed="true">Compacta');
   });
 
+  it("keeps active filters, detail mode and catalogue totals when showing all matches", () => {
+    const complete = completeCatalogue();
+    const detail = toolCatalogueReducer(initialToolCatalogueFilters, { type: "view", value: "detail" });
+    const queried = toolCatalogueReducer(detail, { type: "query", value: "Herramienta" });
+    const all = toolCatalogueReducer(queried, { type: "all" });
+    expect(all).toMatchObject({
+      query: "Herramienta",
+      project: "Todos",
+      category: "Todas",
+      state: "Todos",
+      view: "detail",
+      visibleCount: Number.MAX_SAFE_INTEGER,
+    });
+    expect(selectToolCatalogue(complete, all)).toMatchObject({
+      total: 244,
+      filteredTotal: 243,
+      hasMore: false,
+    });
+    expect(selectToolCatalogue(complete, all).visibleLinks).toHaveLength(243);
+  });
+
   it("recovers the catalogue after an empty result through reset", () => {
     const categoryState = toolCatalogueReducer(initialToolCatalogueFilters, { type: "category", value: "Otros" });
     const queryState = toolCatalogueReducer(categoryState, { type: "query", value: "unmatched synthetic term" });
