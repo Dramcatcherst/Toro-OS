@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { authorizeChannelLedger, channelCapabilityState, channelSubjectHash, validateChannelRecord } from "./channel-ledger";
+import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, validateChannelDraftAction, validateChannelRecord } from "./channel-ledger";
 
 const actor = {
   userId: "owner", orgId: "dreamcatcher", bindingStatus: "verified" as const,
@@ -36,5 +36,102 @@ describe("channel ledger boundaries", () => {
     expect(channelCapabilityState({ paired: false, allowed: true, sourceHealthy: true, sourceFresh: true })).toBe("DENIED");
     expect(channelCapabilityState({ paired: true, allowed: true, sourceHealthy: false, sourceFresh: true })).toBe("UNAVAILABLE");
     expect(channelCapabilityState({ paired: true, allowed: true, sourceHealthy: true, sourceFresh: false })).toBe("STALE");
+  });
+});
+
+
+describe("versioned channel draft contract", () => {
+  const action = {
+    schemaVersion: "channel-draft-action-v1" as const,
+    accountId: "account-hotel",
+    purposeKey: "hotel-operations",
+    chatRef: "chat-fixture-001",
+    caseRef: "case-fixture-001",
+    destinationBindingId: "binding-reception",
+    expectedVersion: 7,
+    sourceKind: "live_transport" as const,
+    attachments: [{ evidenceRef: "dropbox/media/fixture-001", state: "ready" as const }],
+  };
+  const context = {
+    orgId: "dreamcatcher",
+    userId: "owner",
+    accountId: action.accountId,
+    purposeKey: action.purposeKey,
+    chatRef: action.chatRef,
+    caseRef: action.caseRef,
+    destinationBindingId: action.destinationBindingId,
+    currentVersion: 7,
+    humanTakeover: false,
+  };
+
+  it("accepts only the versioned identity contract and never client-supplied actor scope", () => {
+    expect(validateChannelDraftAction(action)).toEqual({ ok: true, value: action });
+    expect(validateChannelDraftAction({ ...action, orgId: "other" })).toEqual({
+      ok: false,
+      error: "Channel draft scope must be resolved by the server.",
+    });
+    expect(validateChannelDraftAction({ ...action, attachments: [
+      ...action.attachments,
+      action.attachments[0],
+    ] }).ok).toBe(false);
+  });
+
+  it("maps each transition to the server capability and existing draft writer", () => {
+    expect(authorizeChannelDraftAction(actor, context, action, "draft.read")).toEqual({
+      ok: true,
+      capability: "conversation.read",
+      writer: null,
+    });
+    expect(authorizeChannelDraftAction(actor, context, action, "draft.save")).toEqual({
+      ok: true,
+      capability: "conversation.write",
+      writer: "channel_draft_store",
+    });
+    expect(authorizeChannelDraftAction(actor, context, action, "reply.prepare")).toEqual({
+      ok: true,
+      capability: "conversation.write",
+      writer: "channel_draft_store",
+    });
+  });
+
+  it.each([
+    ["accountId", "account-personal"],
+    ["purposeKey", "owner-private"],
+    ["chatRef", "chat-other"],
+    ["caseRef", "case-other"],
+    ["destinationBindingId", "binding-other"],
+  ] as const)("denies a context switch in %s", (field, value) => {
+    expect(authorizeChannelDraftAction(actor, context, { ...action, [field]: value }, "draft.save"))
+      .toEqual({ ok: false, error: "channel_context_mismatch" });
+  });
+
+  it("denies other identities and scopes before choosing a writer", () => {
+    expect(authorizeChannelDraftAction({ ...actor, userId: "employee" }, context, action, "draft.save"))
+      .toEqual({ ok: false, error: "channel_actor_denied" });
+    expect(authorizeChannelDraftAction({ ...actor, orgId: "other" }, context, action, "draft.save"))
+      .toEqual({ ok: false, error: "channel_actor_denied" });
+  });
+
+  it("prevents double response after human takeover and stale concurrent edits", () => {
+    expect(authorizeChannelDraftAction(actor, { ...context, humanTakeover: true }, action, "reply.prepare"))
+      .toEqual({ ok: false, error: "human_takeover_active" });
+    expect(authorizeChannelDraftAction(actor, { ...context, currentVersion: 8 }, action, "draft.save"))
+      .toEqual({ ok: false, error: "draft_version_conflict" });
+  });
+
+  it("preserves incomplete attachments as drafts but blocks reply preparation", () => {
+    const pending = { ...action, attachments: [{ ...action.attachments[0], state: "pending" as const }] };
+    expect(authorizeChannelDraftAction(actor, context, pending, "draft.save").ok).toBe(true);
+    expect(authorizeChannelDraftAction(actor, context, pending, "reply.prepare"))
+      .toEqual({ ok: false, error: "attachment_incomplete" });
+  });
+
+  it("keeps historical imports readable and rejects writes or simulated replies", () => {
+    const historical = { ...action, sourceKind: "historical_import" as const };
+    expect(authorizeChannelDraftAction(actor, context, historical, "draft.read").ok).toBe(true);
+    expect(authorizeChannelDraftAction(actor, context, historical, "draft.save"))
+      .toEqual({ ok: false, error: "historical_source_read_only" });
+    expect(authorizeChannelDraftAction(actor, context, historical, "reply.prepare"))
+      .toEqual({ ok: false, error: "historical_source_read_only" });
   });
 });
