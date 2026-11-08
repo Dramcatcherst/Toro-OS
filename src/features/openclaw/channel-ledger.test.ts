@@ -76,21 +76,19 @@ describe("versioned channel draft contract", () => {
     ] }).ok).toBe(false);
   });
 
-  it("maps each transition to the server capability and existing draft writer", () => {
+  it("maps reads to the existing ledger and fails closed without a verified draft writer", () => {
     expect(authorizeChannelDraftAction(actor, context, action, "draft.read")).toEqual({
       ok: true,
       capability: "conversation.read",
       writer: null,
     });
     expect(authorizeChannelDraftAction(actor, context, action, "draft.save")).toEqual({
-      ok: true,
-      capability: "conversation.write",
-      writer: "channel_draft_store",
+      ok: false,
+      error: "channel_draft_writer_unavailable",
     });
     expect(authorizeChannelDraftAction(actor, context, action, "reply.prepare")).toEqual({
-      ok: true,
-      capability: "conversation.write",
-      writer: "channel_draft_store",
+      ok: false,
+      error: "channel_draft_writer_unavailable",
     });
   });
 
@@ -119,9 +117,11 @@ describe("versioned channel draft contract", () => {
       .toEqual({ ok: false, error: "draft_version_conflict" });
   });
 
-  it("preserves incomplete attachments as drafts but blocks reply preparation", () => {
+  it("keeps incomplete attachments valid for recovery but never prepares a reply", () => {
     const pending = { ...action, attachments: [{ ...action.attachments[0], state: "pending" as const }] };
-    expect(authorizeChannelDraftAction(actor, context, pending, "draft.save").ok).toBe(true);
+    expect(validateChannelDraftAction(pending)).toEqual({ ok: true, value: pending });
+    expect(authorizeChannelDraftAction(actor, context, pending, "draft.save"))
+      .toEqual({ ok: false, error: "channel_draft_writer_unavailable" });
     expect(authorizeChannelDraftAction(actor, context, pending, "reply.prepare"))
       .toEqual({ ok: false, error: "attachment_incomplete" });
   });
