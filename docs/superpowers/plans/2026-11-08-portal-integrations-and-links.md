@@ -46,8 +46,8 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 **Files:** reutilizar src/features/openclaw/channel-ledger.ts, src/features/comms/alert-delivery.ts y API/Control Plane existentes; componentes de bandeja/compositor en src/features/comms tras resolver contrato.
 **Interfaces:** conservar ChannelActor, authorizeChannelLedger, validateChannelRecord, AlertDeliverySignal y prepareAlertDelivery. Usar objetos/sesiones/recibos canónicos existentes.
 
-- [ ] Recuperar cuenta/remitente/usuario/membresía/propósito/chat/caso del transporte; mapear capacidad y writer por transición antes de código.
-- [ ] Definir contrato versionado de borrador/acción: caso canónico, cuenta, destino verificado, versión y adjuntos. Actor/ámbito se resuelven en servidor; el cliente no los concede.
+- [x] Recuperar cuenta/remitente/usuario/membresía/propósito/chat/caso del transporte y mapear capacidad/writer por transición. Metadatos verificados el 08/11/2026: operations.communication_followups conserva SELECT autenticado; public.team_messages es mensajería interna con INSERT, sin UPDATE CAS, versión, caso ni destino de borrador. No se reutiliza ninguno como writer ficticio.
+- [x] Definir contrato versionado de borrador/acción: operationKey idempotente, caso canónico, cuenta, propósito, chat, turno estable, destino verificado, versión esperada, contenido y adjuntos. Actor/ámbito se resuelven en servidor; el cliente no los concede. draft.save/reply.prepare permanecen fail-closed hasta conectar un writer canónico revisado.
 - [ ] Pruebas: otra identidad/ámbito denegados; toma humana evita doble respuesta; recarga/edición concurrente; cambio de contexto; adjunto incompleto; turno cruzando medianoche; fuente histórica.
 - [ ] Implementar contra contrato existente o ampliación revisada, conservando ID de proveedor y original. Persistencia no depende del estado React.
 - [ ] Un evento autorizado debe aparecer una vez en el mismo caso de Portal/canal. Transporte faltante conserva causa/borrador sin simular recepción.
@@ -88,5 +88,5 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 
 ## Estado
 
-Dirección aceptada; reparación de datos y prevención de recurrencia verificadas. PR400 quedó fusionada en main e46f919 y la guardia de escritura fue aplicada con readback exacto sin modificar la fuente ni permisos. El directorio compacto continúa en #398; su CI/preview de c2f04a fueron exitosos, pero conserva aceptación visual/autenticada pendiente. No se activaron nuevas bandejas, envíos, escrituras contables o permisos.
+Dirección aceptada; reparación de datos y prevención de recurrencia verificadas. PR400 quedó fusionada en main e46f919 y la guardia de escritura fue aplicada con readback exacto sin modificar la fuente ni permisos. El directorio compacto continúa en #398 y conserva aceptación visual/autenticada pendiente. Task 2 ya tiene contrato de borrador versionado, idempotente y ligado a turno, pero el guardado sigue bloqueado: los objetos actuales inspeccionados no satisfacen CAS/readback sin cambiar su semántica. No se activaron nuevas bandejas, envíos, escrituras contables o permisos.
 
