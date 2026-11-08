@@ -92,12 +92,15 @@ export const CHANNEL_DRAFT_ACTION_SCHEMA = "channel-draft-action-v1" as const;
 
 export type ChannelDraftAction = {
   schemaVersion: typeof CHANNEL_DRAFT_ACTION_SCHEMA;
+  operationKey: string;
   accountId: string;
   purposeKey: string;
   chatRef: string;
   caseRef: string;
+  shiftRef: string;
   destinationBindingId: string;
   expectedVersion: number;
+  draftBody: string;
   sourceKind: "live_transport" | "historical_import";
   attachments: Array<{
     evidenceRef: string;
@@ -112,6 +115,7 @@ export type ChannelDraftContext = {
   purposeKey: string;
   chatRef: string;
   caseRef: string;
+  shiftRef: string;
   destinationBindingId: string;
   currentVersion: number;
   humanTakeover: boolean;
@@ -120,8 +124,8 @@ export type ChannelDraftContext = {
 export type ChannelDraftTransition = "draft.read" | "draft.save" | "reply.prepare";
 
 const CHANNEL_DRAFT_FIELDS = new Set([
-  "schemaVersion", "accountId", "purposeKey", "chatRef", "caseRef",
-  "destinationBindingId", "expectedVersion", "sourceKind", "attachments",
+  "schemaVersion", "operationKey", "accountId", "purposeKey", "chatRef", "caseRef",
+  "shiftRef", "destinationBindingId", "expectedVersion", "draftBody", "sourceKind", "attachments",
 ]);
 const CHANNEL_REF = /^[A-Za-z0-9/_:.-]{4,300}$/;
 
@@ -135,9 +139,10 @@ export function validateChannelDraftAction(input: unknown):
   if (Object.keys(row).some((field) => !CHANNEL_DRAFT_FIELDS.has(field))) {
     return { ok: false, error: "Channel draft scope must be resolved by the server." };
   }
-  const refs = ["accountId", "purposeKey", "chatRef", "caseRef", "destinationBindingId"] as const;
+  const refs = ["operationKey", "accountId", "purposeKey", "chatRef", "caseRef", "shiftRef", "destinationBindingId"] as const;
   if (row.schemaVersion !== CHANNEL_DRAFT_ACTION_SCHEMA ||
       !refs.every((field) => typeof row[field] === "string" && CHANNEL_REF.test(row[field] as string)) ||
+      typeof row.draftBody !== "string" || !row.draftBody.trim() || row.draftBody.length > 10000 ||
       !Number.isSafeInteger(row.expectedVersion) || (row.expectedVersion as number) < 0 ||
       (row.sourceKind !== "live_transport" && row.sourceKind !== "historical_import") ||
       !Array.isArray(row.attachments) || row.attachments.length > 20) {
@@ -177,6 +182,7 @@ export function authorizeChannelDraftAction(
     action.purposeKey !== context.purposeKey ||
     action.chatRef !== context.chatRef ||
     action.caseRef !== context.caseRef ||
+    action.shiftRef !== context.shiftRef ||
     action.destinationBindingId !== context.destinationBindingId
   ) {
     return { ok: false, error: "channel_context_mismatch" };
