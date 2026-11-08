@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, validateChannelDraftAction, validateChannelRecord } from "./channel-ledger";
+import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, persistChannelDraft, validateChannelDraftAction, validateChannelRecord, type ChannelDraftStore, type ChannelDraftStoredRecord } from "./channel-ledger";
 
 const actor = {
   userId: "owner", orgId: "dreamcatcher", bindingStatus: "verified" as const,
@@ -155,5 +155,122 @@ describe("versioned channel draft contract", () => {
       .toEqual({ ok: false, error: "historical_source_read_only" });
     expect(authorizeChannelDraftAction(actor, context, historical, "reply.prepare"))
       .toEqual({ ok: false, error: "historical_source_read_only" });
+  });
+});
+
+
+describe("channel draft CAS runtime contract", () => {
+  const action = {
+    schemaVersion: "channel-draft-action-v1" as const,
+    operationKey: "draft-op-runtime-001",
+    accountId: "account-hotel",
+    purposeKey: "hotel-operations",
+    chatRef: "chat-fixture-001",
+    caseRef: "case-fixture-001",
+    shiftRef: "shift-2026-11-07-night",
+    destinationBindingId: "binding-reception",
+    expectedVersion: 7,
+    draftBody: "Borrador operativo sin enviar.",
+    sourceKind: "live_transport" as const,
+    attachments: [{ evidenceRef: "dropbox/media/fixture-001", state: "ready" as const }],
+  };
+  const context = {
+    orgId: "dreamcatcher",
+    userId: "owner",
+    accountId: action.accountId,
+    purposeKey: action.purposeKey,
+    chatRef: action.chatRef,
+    caseRef: action.caseRef,
+    shiftRef: action.shiftRef,
+    destinationBindingId: action.destinationBindingId,
+    currentVersion: 7,
+    humanTakeover: false,
+  };
+
+  function fakeStore(options?: {
+    initial?: ChannelDraftStoredRecord | null;
+    currentVersion?: number;
+    readback?: ChannelDraftStoredRecord | null;
+    compareThrows?: boolean;
+  }) {
+    let record = options?.initial ?? null;
+    let version = options?.currentVersion ?? 7;
+    let casCalls = 0;
+    const store: ChannelDraftStore = {
+      async findByOperationKey(key) {
+        return record?.operationKey === key.operationKey ? record : null;
+      },
+      async compareAndSwap(input) {
+        casCalls += 1;
+        if (options?.compareThrows) throw new Error("ambiguous transport");
+        if (version !== input.expectedVersion) return false;
+        record = input.next;
+        version = input.next.version;
+        return true;
+      },
+      async read() {
+        return options && "readback" in options ? options.readback ?? null : record;
+      },
+    };
+    return { store, record: () => record, casCalls: () => casCalls };
+  }
+
+  it("fails closed when no canonical store is injected", async () => {
+    await expect(persistChannelDraft(actor, context, action)).resolves.toEqual({
+      ok: false,
+      error: "channel_draft_writer_unavailable",
+      effect: "none",
+    });
+  });
+
+  it("applies one CAS write, verifies readback and replays without a second effect", async () => {
+    const fixture = fakeStore();
+    const first = await persistChannelDraft(actor, context, action, fixture.store);
+    expect(first).toMatchObject({ ok: true, replayed: false, record: { version: 8 } });
+    expect(fixture.casCalls()).toBe(1);
+
+    const replay = await persistChannelDraft(actor, context, action, fixture.store);
+    expect(replay).toMatchObject({ ok: true, replayed: true, record: { version: 8 } });
+    expect(fixture.casCalls()).toBe(1);
+  });
+
+  it("rejects stale CAS and operation-key reuse with different content", async () => {
+    const stale = fakeStore({ currentVersion: 8 });
+    await expect(persistChannelDraft(actor, context, action, stale.store)).resolves.toEqual({
+      ok: false,
+      error: "draft_version_conflict",
+      effect: "none",
+    });
+
+    const applied = fakeStore();
+    await persistChannelDraft(actor, context, action, applied.store);
+    await expect(persistChannelDraft(
+      actor,
+      { ...context, currentVersion: 8 },
+      { ...action, expectedVersion: 8, draftBody: "Contenido distinto." },
+      applied.store,
+    )).resolves.toEqual({
+      ok: false,
+      error: "draft_operation_conflict",
+      effect: "none",
+    });
+  });
+
+  it("marks ambiguous write and failed readback as unknown instead of retrying", async () => {
+    const ambiguous = fakeStore({ compareThrows: true });
+    await expect(persistChannelDraft(actor, context, action, ambiguous.store)).resolves.toEqual({
+      ok: false,
+      error: "draft_write_result_unknown",
+      effect: "unknown",
+    });
+    expect(ambiguous.casCalls()).toBe(1);
+
+    const missingReadback = fakeStore({ readback: null });
+    await expect(persistChannelDraft(actor, context, action, missingReadback.store)).resolves.toEqual({
+      ok: false,
+      error: "draft_readback_mismatch",
+      effect: "unknown",
+    });
+    expect(missingReadback.casCalls()).toBe(1);
   });
 });
