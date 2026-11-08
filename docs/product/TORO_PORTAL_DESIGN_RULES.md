@@ -1,5 +1,11 @@
 # Reglas de diseño del Portal TORO
 
+## Dirección actual — rediseño funcional solicitado 07/11/2026
+
+Mauricio solicita aplicar un rediseño porque el Portal actual no le resulta útil. Esta decisión sustituye la jerarquía visual anterior: cuatro entradas principales **Hoy, Operación, Dinero y Más**, con las ocho rutas históricas accesibles, cabecera azul marino y superficies operativas claras según TORO Work. Inicio permite revisar hasta tres registros reales; prioridad histórica no significa urgencia actual. Búsqueda, filtros, orden, paginación y copia deben funcionar sobre la cobertura autorizada, mostrando procedencia y antigüedad. La actividad técnica sin señal queda fuera del primer plano.
+
+Se mantienen un Portal, marca y activos verificados, texto mínimo12px, objetivos44px, ancho mínimo320px, contexto/roles y límites de escritura. La autorización de implementar el rediseño no activa integraciones, modifica datos hoteleros ni cambia permisos. La [especificación subordinada](../superpowers/specs/2026-11-08-portal-operation-redesign-design.md) define el alcance; implementación, QA y publicación se acreditan por separado. Las direcciones fechadas siguientes son antecedentes cuando contradicen esta decisión.
+
 Vigentes desde 11/10/2026 por solicitud de Mauricio. Alcance: presentación del Portal y sus componentes compartidos. Documento subordinado al Plan General, sección 23 (Human Experience), la Constitución y `TORO_BRAND_CONTRACT.md`. No crea otro plan ni autoriza cambios de capacidades.
 
 1. **Un Portal.** Mi espacio es la vista personal de TORO; conservar rutas compatibles, orden 00–11 del Plan y fuentes autorizadas. DreamTeam pertenece a TORO People y conserva su sesión actual.

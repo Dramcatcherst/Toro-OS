@@ -5,7 +5,7 @@ import type { OwnerAttentionProjection } from "@/features/attention/owner-attent
 
 const projection: OwnerAttentionProjection = {
   contractVersion: "owner-attention-v1", generatedAt: "2026-10-12T18:00:00Z", total: 3, critical: 1, high: 1, normal: 1,
-  items: ["Revisar relevo", "Revisar mantenimiento", "Tercer detalle privado"].map((title, index) => ({
+  items: ["Revisar relevo", "Revisar mantenimiento", "Tercer registro", "Cuarto detalle privado"].map((title, index) => ({
     key: `qa-${index}`, dedupeRef: `qa-${index}`, kind: "communication", title,
     priority: index === 0 ? "critical" : "normal", state: "Por revisar", dueDate: "2026-10-12",
     amount: null, currency: null, ownerAgent: null, humanOwner: null, sourceSystem: "operations.communication_followups",
@@ -13,13 +13,20 @@ const projection: OwnerAttentionProjection = {
   })),
 };
 
-it("keeps a two-item summary with critical signal, cutoff and explicit partial coverage", () => {
+it("shows up to three historical records neutrally with their source dates and partial coverage", () => {
   const html = renderToStaticMarkup(<PortalAttentionSummary state="ready" projection={projection} />);
   expect(html).toContain("Revisar relevo");
   expect(html).toContain("Revisar mantenimiento");
-  expect(html).not.toContain("Tercer detalle privado");
-  expect(html).toContain("1 señales críticas · por verificar");
-  expect(html).toContain("2 de 3 disponibles");
+  expect(html).toContain("Tercer registro");
+  expect(html).not.toContain("Cuarto detalle privado");
+  expect(html).not.toContain("señales críticas");
+  expect(html).toContain("Registros por verificar");
+  expect(html).toContain("3 de 4 disponibles");
+  expect(html).not.toContain('data-priority="critical"');
+  expect(html).toContain("Prioridad calculada para esta revisión");
+  expect(html).not.toContain("Prioridad registrada");
+  expect(html).toContain("Seguimiento registrado");
+  expect(html).toContain("Consulta:");
   expect(html).toContain("Costa Rica");
   expect(html).toContain("Total de la organización no verificado");
   expect(html).not.toContain("token=secret");
