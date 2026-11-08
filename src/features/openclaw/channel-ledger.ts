@@ -165,14 +165,16 @@ export function validateChannelDraftAction(input: unknown):
   return { ok: true, value: row as ChannelDraftAction };
 }
 
-export function authorizeChannelDraftAction(
+type ChannelDraftPolicyDecision =
+  | { ok: true; capability: "conversation.read" | "conversation.write" }
+  | { ok: false; error: string };
+
+function authorizeChannelDraftPolicy(
   actor: ChannelActor | null,
   context: ChannelDraftContext,
   action: ChannelDraftAction,
   transition: ChannelDraftTransition,
-):
-  | { ok: true; capability: "conversation.read"; writer: null }
-  | { ok: false; error: string } {
+): ChannelDraftPolicyDecision {
   const capability = transition === "draft.read" ? "conversation.read" : "conversation.write";
   if (!authorizeChannelLedger(actor, context, capability)) {
     return { ok: false, error: "channel_actor_denied" };
@@ -199,6 +201,19 @@ export function authorizeChannelDraftAction(
   if (transition === "reply.prepare" && action.attachments.some((attachment) => attachment.state !== "ready")) {
     return { ok: false, error: "attachment_incomplete" };
   }
+  return { ok: true, capability };
+}
+
+export function authorizeChannelDraftAction(
+  actor: ChannelActor | null,
+  context: ChannelDraftContext,
+  action: ChannelDraftAction,
+  transition: ChannelDraftTransition,
+):
+  | { ok: true; capability: "conversation.read"; writer: null }
+  | { ok: false; error: string } {
+  const decision = authorizeChannelDraftPolicy(actor, context, action, transition);
+  if (!decision.ok) return decision;
   if (transition !== "draft.read") {
     return { ok: false, error: "channel_draft_writer_unavailable" };
   }
@@ -207,4 +222,151 @@ export function authorizeChannelDraftAction(
     capability: "conversation.read",
     writer: null,
   };
+}
+
+export type ChannelDraftStoreKey = {
+  orgId: string;
+  userId: string;
+  accountId: string;
+  purposeKey: string;
+  chatRef: string;
+  caseRef: string;
+  shiftRef: string;
+  destinationBindingId: string;
+};
+
+export type ChannelDraftStoredRecord = ChannelDraftStoreKey & {
+  operationKey: string;
+  version: number;
+  draftBody: string;
+  sourceKind: ChannelDraftAction["sourceKind"];
+  attachments: ChannelDraftAction["attachments"];
+};
+
+export type ChannelDraftStore = {
+  findByOperationKey(
+    key: ChannelDraftStoreKey & { operationKey: string },
+  ): Promise<ChannelDraftStoredRecord | null>;
+  compareAndSwap(input: {
+    key: ChannelDraftStoreKey;
+    expectedVersion: number;
+    next: ChannelDraftStoredRecord;
+  }): Promise<boolean>;
+  read(key: ChannelDraftStoreKey): Promise<ChannelDraftStoredRecord | null>;
+};
+
+export type ChannelDraftMutationResult =
+  | { ok: true; replayed: boolean; record: ChannelDraftStoredRecord }
+  | { ok: false; error: string; effect: "none" | "unknown" };
+
+function channelDraftStoreKey(
+  context: ChannelDraftContext,
+): ChannelDraftStoreKey {
+  return {
+    orgId: context.orgId,
+    userId: context.userId,
+    accountId: context.accountId,
+    purposeKey: context.purposeKey,
+    chatRef: context.chatRef,
+    caseRef: context.caseRef,
+    shiftRef: context.shiftRef,
+    destinationBindingId: context.destinationBindingId,
+  };
+}
+
+function canonicalDraftAttachments(attachments: ChannelDraftAction["attachments"]) {
+  return [...attachments]
+    .map((attachment) => ({
+      evidenceRef: attachment.evidenceRef,
+      state: attachment.state,
+    }))
+    .sort((left, right) => left.evidenceRef.localeCompare(right.evidenceRef));
+}
+
+function channelDraftRecordsEqual(
+  left: ChannelDraftStoredRecord,
+  right: ChannelDraftStoredRecord,
+) {
+  return JSON.stringify({
+    ...left,
+    attachments: canonicalDraftAttachments(left.attachments),
+  }) === JSON.stringify({
+    ...right,
+    attachments: canonicalDraftAttachments(right.attachments),
+  });
+}
+
+function channelDraftRecordForAction(
+  key: ChannelDraftStoreKey,
+  action: ChannelDraftAction,
+): ChannelDraftStoredRecord {
+  return {
+    ...key,
+    operationKey: action.operationKey,
+    version: action.expectedVersion + 1,
+    draftBody: action.draftBody,
+    sourceKind: action.sourceKind,
+    attachments: canonicalDraftAttachments(action.attachments),
+  };
+}
+
+/**
+ * Server-side persistence contract only. No live store is bound here.
+ * A caller must inject the reviewed canonical writer; missing bindings fail closed.
+ */
+export async function persistChannelDraft(
+  actor: ChannelActor | null,
+  context: ChannelDraftContext,
+  input: unknown,
+  store?: ChannelDraftStore,
+): Promise<ChannelDraftMutationResult> {
+  const parsed = validateChannelDraftAction(input);
+  if (!parsed.ok) return { ok: false, error: parsed.error, effect: "none" };
+  const action = parsed.value;
+  const decision = authorizeChannelDraftPolicy(actor, context, action, "draft.save");
+  if (!decision.ok) return { ...decision, effect: "none" };
+  if (!store) {
+    return { ok: false, error: "channel_draft_writer_unavailable", effect: "none" };
+  }
+
+  const key = channelDraftStoreKey(context);
+  let existing: ChannelDraftStoredRecord | null;
+  try {
+    existing = await store.findByOperationKey({ ...key, operationKey: action.operationKey });
+  } catch {
+    return { ok: false, error: "channel_draft_store_unavailable", effect: "none" };
+  }
+
+  const next = channelDraftRecordForAction(key, action);
+  if (existing) {
+    if (channelDraftRecordsEqual(existing, next)) {
+      return { ok: true, replayed: true, record: existing };
+    }
+    return { ok: false, error: "draft_operation_conflict", effect: "none" };
+  }
+
+  let applied: boolean;
+  try {
+    applied = await store.compareAndSwap({
+      key,
+      expectedVersion: action.expectedVersion,
+      next,
+    });
+  } catch {
+    return { ok: false, error: "draft_write_result_unknown", effect: "unknown" };
+  }
+  if (!applied) {
+    return { ok: false, error: "draft_version_conflict", effect: "none" };
+  }
+
+  let readback: ChannelDraftStoredRecord | null;
+  try {
+    readback = await store.read(key);
+  } catch {
+    return { ok: false, error: "draft_readback_unavailable", effect: "unknown" };
+  }
+  if (!readback || !channelDraftRecordsEqual(readback, next)) {
+    return { ok: false, error: "draft_readback_mismatch", effect: "unknown" };
+  }
+  return { ok: true, replayed: false, record: readback };
 }
