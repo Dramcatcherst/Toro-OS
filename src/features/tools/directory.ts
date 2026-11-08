@@ -43,6 +43,48 @@ export type DirectoryCatalogueItem = {
 export type ToolCatalogueItem = ReviewedCatalogueItem | DirectoryCatalogueItem;
 export type ToolCatalogueMode = "complete" | "reviewed" | "fallback";
 
+export type ServiceAccessDestination = {
+  id: string;
+  label: string;
+  href: string | null;
+  scope: string;
+  lifecycle: string;
+};
+export type ServiceAccessGroup = {
+  key: string;
+  label: string;
+  destinations: ServiceAccessDestination[];
+};
+
+const serviceAccessKey = (value: string) => value.normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+/**
+ * Groups presentation destinations without merging accounts or inventing URLs.
+ * Identity always remains the source item id; provider/category only label the group.
+ */
+export function buildHotelServiceGroups(items: readonly ToolCatalogueItem[]): ServiceAccessGroup[] {
+  const groups = new Map<string, ServiceAccessGroup>();
+  for (const item of items) {
+    const provider = item.kind === "directory" ? item.provider : "Accesos revisados";
+    const category = item.kind === "directory" ? item.category : "Navegación";
+    const key = `${serviceAccessKey(category) || "sin-categoria"}--${serviceAccessKey(provider) || "sin-proveedor"}`;
+    let group = groups.get(key);
+    if (!group) {
+      group = { key, label: `${category} · ${provider}`, destinations: [] };
+      groups.set(key, group);
+    }
+    group.destinations.push({
+      id: item.id,
+      label: item.label,
+      href: item.kind === "directory" ? item.url : item.url,
+      scope: item.kind === "directory" ? item.scope : "Acceso revisado",
+      lifecycle: item.kind === "directory" ? item.lifecycle : "revisado",
+    });
+  }
+  return [...groups.values()];
+}
+
 const CATALOGUE_FIELDS = [
   "id", "name", "url", "purpose", "project", "category", "provider", "state", "lifecycle",
   "priority", "link_type", "scope", "home_eligible",
