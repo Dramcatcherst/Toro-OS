@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, persistChannelDraft, validateChannelDraftAction, validateChannelRecord, type ChannelDraftStore, type ChannelDraftStoredRecord } from "./channel-ledger";
+import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, createChannelDraftCanonicalStoreAdapter, persistChannelDraft, validateChannelDraftAction, validateChannelRecord, type ChannelDraftStore, type ChannelDraftStoredRecord } from "./channel-ledger";
 
 const actor = {
   userId: "owner", orgId: "dreamcatcher", bindingStatus: "verified" as const,
@@ -273,4 +273,84 @@ describe("channel draft CAS runtime contract", () => {
     });
     expect(missingReadback.casCalls()).toBe(1);
   });
+
+  it("adapts a reviewed canonical port through one CAS, readback and idempotent replay", async () => {
+    let record: ChannelDraftStoredRecord | null = null;
+    let compareCalls = 0;
+    const store = createChannelDraftCanonicalStoreAdapter({
+      async findByOperationKey(key) {
+        return { data: record?.operationKey === key.operationKey ? record : null };
+      },
+      async compareAndSwap(input) {
+        compareCalls += 1;
+        record = input.next;
+        return { data: true };
+      },
+      async read() {
+        return { data: record };
+      },
+    });
+
+    await expect(persistChannelDraft(actor, context, action, store)).resolves.toMatchObject({
+      ok: true,
+      replayed: false,
+      record: { version: 8 },
+    });
+    await expect(persistChannelDraft(actor, context, action, store)).resolves.toMatchObject({
+      ok: true,
+      replayed: true,
+      record: { version: 8 },
+    });
+    expect(compareCalls).toBe(1);
+  });
+
+  it("fails closed when the canonical port returns malformed or cross-scope data", async () => {
+    const crossScope = {
+      ...context,
+      humanTakeover: undefined,
+      currentVersion: undefined,
+      orgId: "other",
+      operationKey: action.operationKey,
+      version: 8,
+      draftBody: action.draftBody,
+      sourceKind: action.sourceKind,
+      attachments: action.attachments,
+    };
+    delete crossScope.humanTakeover;
+    delete crossScope.currentVersion;
+
+    const lookupStore = createChannelDraftCanonicalStoreAdapter({
+      async findByOperationKey() { return { data: crossScope }; },
+      async compareAndSwap() { return { data: true }; },
+      async read() { return { data: null }; },
+    });
+    await expect(persistChannelDraft(actor, context, action, lookupStore)).resolves.toEqual({
+      ok: false,
+      error: "channel_draft_store_unavailable",
+      effect: "none",
+    });
+
+    const readbackStore = createChannelDraftCanonicalStoreAdapter({
+      async findByOperationKey() { return { data: null }; },
+      async compareAndSwap() { return { data: true }; },
+      async read() { return { data: crossScope }; },
+    });
+    await expect(persistChannelDraft(actor, context, action, readbackStore)).resolves.toEqual({
+      ok: false,
+      error: "draft_readback_unavailable",
+      effect: "unknown",
+    });
+
+    const malformedCompare = createChannelDraftCanonicalStoreAdapter({
+      async findByOperationKey() { return { data: null }; },
+      async compareAndSwap() { return { data: "true" }; },
+      async read() { return { data: null }; },
+    });
+    await expect(persistChannelDraft(actor, context, action, malformedCompare)).resolves.toEqual({
+      ok: false,
+      error: "draft_write_result_unknown",
+      effect: "unknown",
+    });
+  });
+
 });
