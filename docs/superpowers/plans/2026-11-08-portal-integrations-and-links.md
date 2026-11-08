@@ -35,7 +35,7 @@
 Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; destinations: Array<{ id: string; label: string; href: string | null; scope: string; lifecycle: string }> }. Se define junto al selector dentro del dominio tools. Pruebas propuestas: same_provider_distinct_accounts_preserve_href_and_scope, missing_destination_does_not_invent_href, candidates_do_not_enter_contractual_catalogue y show_all_preserves_filters_and_total.
 
 - [x] Reparar fuente con guardia de huella, respaldo y conservación de propuestas; verificar igualdad. Sin DDL ni permisos; recibo privado existente.
-- [ ] Identificar productor existente. Regresión: candidate en entries se rechaza antes de guardar y se preserva en candidate_entries; no instalar segundo escritor.
+- [x] Identificar productor existente y cerrar la causa: no hay writer de aplicación en el repositorio; las ediciones directas del registro canónico quedan protegidas por la guardia invoker de PR400/merge e46f919. Aplicada y releída el 08/11/2026: huellas exactas, RLS/ACL/owner preservados, trigger sobre las cuatro columnas, fuente v2.8 intacta con 244 fichas y 20 propuestas. Regresión SQL 10/10; no se instaló segundo escritor.
 - [ ] Regresiones: cuentas distintas del mismo proveedor conservan href/scope; URL ausente no crea enlace; ruta cuenta/contraseña no sustituye dashboard; catálogo parcial declara cobertura.
 - [ ] Implementar lanzador sobre destinos autorizados: compacta/detalle, búsqueda del conjunto y Ver todos, conservando filtros/retorno.
 - [ ] Ejecutar pruebas catálogo/directorio y test:hotel-tools, lint/tipos/build; inspección320/390/412/1440 y teclado en preview del mismo SHA.
@@ -88,5 +88,5 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 
 ## Estado
 
-Dirección aceptada; reparación de datos verificada; especificación, plan y directorio de revisión preparados. No se activaron nuevas bandejas, envíos, escrituras contables o permisos. #398 conserva aceptación autenticada pendiente.
+Dirección aceptada; reparación de datos y prevención de recurrencia verificadas. PR400 quedó fusionada en main e46f919 y la guardia de escritura fue aplicada con readback exacto sin modificar la fuente ni permisos. El directorio compacto continúa en #398; su CI/preview de c2f04a fueron exitosos, pero conserva aceptación visual/autenticada pendiente. No se activaron nuevas bandejas, envíos, escrituras contables o permisos.
 
