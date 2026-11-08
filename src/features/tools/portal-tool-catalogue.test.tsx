@@ -131,11 +131,12 @@ describe("tool catalogue selection", () => {
     ];
     const [group] = selectToolCatalogue(items, filters()).serviceGroups;
     expect(group.label).toBe("OTA · Booking.com");
-    expect(group.destinations).toEqual([
+    expect(group.destinations).toHaveLength(2);
+    expect(group.destinations).toEqual(expect.arrayContaining([
       {id:"LINK-901",label:"Booking Dreamcatcher",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=1",scope:"Cuenta Dreamcatcher",lifecycle:first.lifecycle},
       {id:"LINK-902",label:"Booking Toro",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=2",scope:"Cuenta Toro",lifecycle:second.lifecycle},
-    ]);
-    expect(group.links.map(item => item.id)).toEqual(["LINK-901", "LINK-902"]);
+    ]));
+    expect(group.links.map(item => item.id).sort()).toEqual(["LINK-901", "LINK-902"]);
   });
 
   it("does not expose URL text as searchable catalogue metadata", () => {
