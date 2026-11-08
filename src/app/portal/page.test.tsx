@@ -133,7 +133,7 @@ it("keeps the complete catalogue out of favorites and operational panels", async
   expect(catalogueItems).toHaveLength(244);
   mocks.directory.mockResolvedValue({ state: "ready", links, catalogueItems, catalogueMode: "complete" });
   const html = renderToStaticMarkup(await PortalPage());
-  const favorites = html.match(/<section[^>]*aria-labelledby="portal-favorites-heading"[\s\S]*?<\/section>/)?.[0] ?? "";
+  const favorites = html.match(/<details[^>]*aria-labelledby="portal-favorites-heading"[\s\S]*?<\/details>/)?.[0] ?? "";
   expect(html).toContain("244 fichas visibles");
   expect(html.match(/data-tool="LINK-001"/g)).toHaveLength(1);
   expect(favorites).toContain('data-tool="LINK-086"');
@@ -144,7 +144,7 @@ it("opens the native operation view through the scoped deep link without changin
   const context = view(); mocks.menu.mockResolvedValue(context);
   const html = renderToStaticMarkup(await PortalPage({ searchParams: Promise.resolve({ tab: "operations" }) }));
   expect(mocks.operations).toHaveBeenCalledExactlyOnceWith(context.context);
-  expect(html).toContain("Operación · Dreamcatcher"); expect(html).toContain("Sin dato actual verificado");
+  expect(html).toContain("Trabajo registrado"); expect(html).toContain("Sin dato actual verificado");
   const panel = html.match(/<div role="tabpanel"[^>]*id="[^"]*-panel-operations"[^>]*>/)?.[0];
   expect(panel).toBeDefined(); expect(panel).not.toContain("hidden");
   expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({ includeApprovedNavigation: true, includeCompleteCatalogue: true });

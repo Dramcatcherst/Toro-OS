@@ -53,11 +53,14 @@ export default async function PortalPage({ searchParams }: {
   const availableCount = modules.filter(module => module.href).length;
   return <>
     <PortalHeader current="overview" scopeLabel={scopeLabel} includeTools={hotelAllowed} />
-    <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
+    <main id="portal-content" className={`${styles.page} ${styles.workspacePage}`} tabIndex={-1}><div className={styles.content}>
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         initialTab={initialPortalTab(query?.tab, hotelAllowed)}
         hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
+        hotelOverview={operations ? { ready: operations.tasks.state === "ready", rowsRead: operations.tasks.rowsRead,
+          eligibleCount: operations.tasks.items.length, readAt: operations.readAt,
+          latestUpdatedAt: operations.tasks.items.reduce<string | null>((latest, task) => !latest || Date.parse(task.updatedAt) > Date.parse(latest) ? task.updatedAt : latest, null) } : undefined}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
