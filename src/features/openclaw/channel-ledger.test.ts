@@ -229,7 +229,12 @@ describe("channel draft CAS runtime contract", () => {
     expect(first).toMatchObject({ ok: true, replayed: false, record: { version: 8 } });
     expect(fixture.casCalls()).toBe(1);
 
-    const replay = await persistChannelDraft(actor, context, action, fixture.store);
+    const replay = await persistChannelDraft(
+      actor,
+      { ...context, currentVersion: 8 },
+      action,
+      fixture.store,
+    );
     expect(replay).toMatchObject({ ok: true, replayed: true, record: { version: 8 } });
     expect(fixture.casCalls()).toBe(1);
   });
@@ -256,7 +261,7 @@ describe("channel draft CAS runtime contract", () => {
     });
   });
 
-  it("marks ambiguous write and failed readback as unknown instead of retrying", async () => {
+  it("marks ambiguous write unknown and reconciles failed readback before retrying", async () => {
     const ambiguous = fakeStore({ compareThrows: true });
     await expect(persistChannelDraft(actor, context, action, ambiguous.store)).resolves.toEqual({
       ok: false,
@@ -270,6 +275,18 @@ describe("channel draft CAS runtime contract", () => {
       ok: false,
       error: "draft_readback_mismatch",
       effect: "unknown",
+    });
+    expect(missingReadback.casCalls()).toBe(1);
+
+    await expect(persistChannelDraft(
+      actor,
+      { ...context, currentVersion: 8 },
+      action,
+      missingReadback.store,
+    )).resolves.toMatchObject({
+      ok: true,
+      replayed: true,
+      record: { version: 8 },
     });
     expect(missingReadback.casCalls()).toBe(1);
   });
@@ -296,7 +313,12 @@ describe("channel draft CAS runtime contract", () => {
       replayed: false,
       record: { version: 8 },
     });
-    await expect(persistChannelDraft(actor, context, action, store)).resolves.toMatchObject({
+    await expect(persistChannelDraft(
+      actor,
+      { ...context, currentVersion: 8 },
+      action,
+      store,
+    )).resolves.toMatchObject({
       ok: true,
       replayed: true,
       record: { version: 8 },
