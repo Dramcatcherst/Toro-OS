@@ -7,6 +7,31 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+<!-- BEGIN:PORTFOLIO_RECONCILIATION_20261108 -->
+## Continuidad de proyectos y conversaciones — 8 de noviembre de 2026
+
+**Mandato:** revisar los proyectos y conversaciones accesibles, actuales e históricos, y reconciliarlos con este Plan General y el mismo TORO. El expediente privado de ejecución conserva el censo, fuentes, límites y recibos. No se certifica acceso a todas las conversaciones, cuentas, archivos locales o recursos de proveedores.
+
+**CURRENT:** la revisión de metadatos distingue proyectos canónicos, iniciativas históricas absorbidas, recursos técnicos, trabajo abierto y seguimientos programados. Los conteos pertenecen a universos diferentes y no se suman. Una ejecución registrada como completada acredita el ciclo del programador; su resultado, entrega, efecto transaccional y aceptación requieren evidencia propia. Las fechas de consulta no rejuvenecen las fuentes.
+
+**Autoridad y continuidad:** `operations.projects` y `operations.tasks` conservan identidad y estado de coordinación; `operations.knowledge_items/toro_master_execution_contract_v1` conserva el checkpoint `portfolio_alignment_20261108`. El mapa privado `toro_portfolio_relationship_map_v1` sigue siendo una proyección del portafolio. Kross conserva reservas, precios y disponibilidad; Alegra, contabilidad; bancos/procesadores, liquidación; Dropbox, originales. Airtable y los documentos subordinados conservan su papel por ámbito. Rumbo y los proyectos familiares/patrimoniales mantienen sus autoridades y privacidad; vincularlos no permite mezclarlos con la operación hotelera.
+
+**Tres resultados ejecutivos para el siguiente ciclo:**
+
+| Orden | Resultado y carril existente | Próxima unidad y aceptación |
+| --- | --- | --- |
+| 1 | Trabajo diario en el Portal — `toro_executive_control` | Continuar el candidato existente PR #398 y sus contratos de identidad, persistencia y replay. Cerrar una acción permitida con lectura posterior, pruebas de aislamiento y evidencia del candidato exacto; el writer productivo conserva su gate. No reiniciar el rediseño desde candidatos anteriores. |
+| 2 | Información comercial y continuidad de comunicaciones — `business_truth_bible` / `revenue_booking_stack` | Resolver el transporte y consumo vigentes de Kross y los bindings autorizados de OpenClaw. Una sesión asistida o un export no prueban adquisición programada ni entrega WhatsApp. Aceptar solo con corte, cobertura, claves, conciliación y recibo del consumidor; mantener continuación manual. |
+| 3 | Caja, reconstrucción y contribución — `finance_controls` / `revenue_booking_stack` | Reutilizar los casos Hacienda/PayFlow y el piloto Booking–Kross. Priorizar trazabilidad de créditos y conciliación, y verificar el acuerdo y la base comisionable anunciada para reservas creadas desde el 17/11/2026 antes de proponer tarifas. No tratar saldo documental como devolución aprobada ni índices como asientos. |
+
+Las obligaciones urgentes de huéspedes, seguridad, cumplimiento y caja conservan precedencia. Los frentes de web, reputación, mantenimiento, personas, agencias, sostenibilidad, sanduchería y patrimonio continúan en sus objetos existentes; incubadoras y asuntos absorbidos no se reactivan por antigüedad o similitud de nombres.
+
+**NEXT operativo:** los coordinadores existentes consultan el mismo checkpoint y el siguiente objeto pendiente de su ámbito. Reutilizar su escritor, cursor, lease y recibo; resolver resultados inciertos antes de repetir. La revisión de chats identifica candidatos y antecedentes, pero no archiva ni elimina conversaciones sin capacidad e identidad verificadas. Los seguimientos de investigación o lectura mantienen ese modo; esta alineación no activa escritores, API pagada, integraciones, permisos, cambios de cadencia ni otro scheduler.
+
+**Cierre de esta unidad:** metadata y documentos reconciliados con recibo, un destino existente por asunto, próximos pasos sin duplicar ejecutores y diferencias explícitas entre HECHO, PROPUESTO, BLOQUEADO y DESCONOCIDO. La aplicación documental no equivale al funcionamiento íntegro del Portal ni a resultados de utilidad o autonomía medidos. Los checkpoints históricos se conservan como evidencia fechada.
+
+<!-- END:PORTFOLIO_RECONCILIATION_20261108 -->
+
 <!-- BEGIN:BOOKING_KROSS_RATE_ACCEPTANCE_20261107 -->
 ## Tarifas y distribución de Dreamcatcher · 7 de noviembre de 2026
 
