@@ -77,6 +77,29 @@ export type AlertDeliveryCandidate = {
   blockers: string[];
 };
 
+export type AlertDeliveryState = "prepared" | "sent" | "delivered" | "failed" | "unknown";
+
+/** Durable transport evidence. This module reconciles receipts; it never performs a send. */
+export type AlertDeliveryReceipt = {
+  receiptId: string;
+  orgId: string;
+  destinationBindingId: string;
+  dedupeKey: string;
+  provider: "openclaw";
+  providerMessageRef: string | null;
+  state: Exclude<AlertDeliveryState, "prepared">;
+  observedAt: string;
+};
+
+export type AlertDeliveryResolution = {
+  state: AlertDeliveryState;
+  shouldAttempt: boolean;
+  replayed: boolean;
+  providerMessageRef: string | null;
+  receiptIds: string[];
+  blockers: string[];
+};
+
 const MODULE_ROOM_POLICY: Record<
   string,
   { room: ToroInternalRoom; privacy: AlertPrivacy }
@@ -265,6 +288,81 @@ function healthTimestamp(value: string | null) {
   const midnight = Date.parse(`${calendar}T00:00:00Z`);
   if (!Number.isFinite(midnight) || new Date(midnight).toISOString().slice(0, 10) !== calendar) return Number.NaN;
   return Date.parse(value);
+}
+
+function exactText(value: unknown): value is string {
+  return typeof value === "string" && value.length > 0 && value === value.trim();
+}
+
+function validDeliveryReceipt(receipt: AlertDeliveryReceipt) {
+  return record(receipt) && exactText(receipt.receiptId) && exactText(receipt.orgId) &&
+    exactText(receipt.destinationBindingId) && exactText(receipt.dedupeKey) &&
+    receipt.provider === "openclaw" &&
+    (receipt.providerMessageRef === null || exactText(receipt.providerMessageRef)) &&
+    ["sent", "delivered", "failed", "unknown"].includes(receipt.state) &&
+    Number.isFinite(healthTimestamp(receipt.observedAt));
+}
+
+/**
+ * Reconciles durable OpenClaw evidence before a caller decides whether it may invoke transport.
+ * Any receipt, including an ambiguous one, suppresses blind retry until that receipt is resolved.
+ */
+export function reconcileAlertDeliveryReceipts(
+  candidate: AlertDeliveryCandidate,
+  orgId: string,
+  receipts: AlertDeliveryReceipt[],
+): AlertDeliveryResolution {
+  const blocked = (blockers: string[], receiptIds: string[] = []): AlertDeliveryResolution => ({
+    state: "unknown", shouldAttempt: false, replayed: receiptIds.length > 0,
+    providerMessageRef: null, receiptIds, blockers,
+  });
+  if (candidate.status !== "ready" || !candidate.destinationBindingId) {
+    return blocked(["delivery_candidate_blocked"]);
+  }
+  if (!exactText(orgId) || !Array.isArray(receipts)) {
+    return blocked(["delivery_reconciliation_input_invalid"]);
+  }
+  if (receipts.length === 0) {
+    return {
+      state: "prepared", shouldAttempt: true, replayed: false,
+      providerMessageRef: null, receiptIds: [], blockers: [],
+    };
+  }
+  const receiptIds = receipts.filter(record).map((receipt) =>
+    typeof receipt.receiptId === "string" ? receipt.receiptId : "",
+  ).filter(Boolean);
+  if (!receipts.every(validDeliveryReceipt)) {
+    return blocked(["delivery_receipt_invalid"], [...new Set(receiptIds)]);
+  }
+  if (receipts.some((receipt) => receipt.orgId !== orgId ||
+    receipt.destinationBindingId !== candidate.destinationBindingId ||
+    receipt.dedupeKey !== candidate.dedupeKey)) {
+    return blocked(["delivery_receipt_scope_mismatch"], [...new Set(receiptIds)]);
+  }
+  const positive = receipts.filter((receipt) => receipt.state === "sent" || receipt.state === "delivered");
+  if (positive.some((receipt) => !receipt.providerMessageRef)) {
+    return blocked(["provider_message_reference_missing"], [...new Set(receiptIds)]);
+  }
+  const providerRefs = [...new Set(positive.map((receipt) => receipt.providerMessageRef as string))];
+  if (providerRefs.length > 1 || (positive.length > 0 && receipts.some((receipt) => receipt.state === "failed"))) {
+    return blocked(["delivery_receipt_conflict"], [...new Set(receiptIds)]);
+  }
+  const state: AlertDeliveryState = receipts.some((receipt) => receipt.state === "delivered")
+    ? "delivered"
+    : receipts.some((receipt) => receipt.state === "sent")
+      ? "sent"
+      : receipts.some((receipt) => receipt.state === "failed")
+        ? "failed"
+        : "unknown";
+  return {
+    state,
+    shouldAttempt: false,
+    replayed: true,
+    providerMessageRef: providerRefs[0] ?? null,
+    receiptIds: [...new Set(receiptIds)],
+    blockers: state === "unknown" ? ["provider_receipt_reconciliation_required"]
+      : state === "failed" ? ["explicit_retry_authorization_required"] : [],
+  };
 }
 
 function eligibleBinding(binding: WhatsAppGroupBinding, signal: AlertDeliverySignal, context: AlertDeliveryContext) {
