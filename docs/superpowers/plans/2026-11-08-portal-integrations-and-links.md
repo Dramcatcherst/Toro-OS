@@ -40,7 +40,8 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 - [x] Implementar lanzador sobre destinos autorizados: compacta/detalle, búsqueda del conjunto y Ver todos, conservando filtros/retorno. El estado de filtros, vista y totales queda cubierto por regresión dirigida; abrir destinos HTTPS en pestaña nueva conserva el retorno al Portal.
 - [x] Pruebas catálogo/directorio, test:hotel-tools, lint/tipos/build verificadas en TORO Brain CI 42533316422 para el SHA exacto 28fcb8bf88bb0ededdd95f6471476d496527bbd1.
 - [ ] Inspección visual 320/390/412/1440 y teclado en preview del mismo SHA con sesión autenticada.
-- [ ] Commit y recibo autenticado del consumidor; no declarar destinos probados por tener URL.
+- [x] Código del catálogo incorporado al candidato; CI y preview del HEAD 180446d94d9dc94c8dd4bc677f00ab582e43aef0 comprobados el 09/11/2026. No es publicación productiva.
+- [ ] Recibo autenticado del consumidor; no declarar destinos probados por tener URL.
 
 ### Task 2: bandeja, caso y borrador persistente
 
@@ -54,17 +55,20 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 - [x] Cerrar revisión técnica del release separado: bytes, dependencias, ACL/RLS, privacidad, advisory diff, readback y recuperación documentados en `docs/evidence/TORO_CHANNEL_DRAFT_RELEASE_REVIEW_20261108.md`. El dictamen permite revisión/aprobación; no aplica DDL ni enlaza writer.
 - [ ] Implementar contra contrato existente o ampliación revisada, conservando ID de proveedor y original. Persistencia no depende del estado React.
 - [ ] Un evento autorizado debe aparecer una vez en el mismo caso de Portal/canal. Transporte faltante conserva causa/borrador sin simular recepción.
-- [ ] Commit, preview y aceptación de persona real del rol.
+- [x] Contratos y revisión preparados en el candidato; CI y preview comprobados para el HEAD citado en Estado. No acreditan instalación de BD ni writer.
+- [ ] Aceptación del guardado/readback por una persona real del rol, después de completar su vía de release y adaptador.
 
 ### Task 3: transmisión Portal-canal
 
 **Files:** puente OpenClaw existente identificado por worktree/versión; alert-delivery.ts y ruta pertinente del Control Plane; no incrustar consola Gateway.
 **Interfaces:** prepareAlertDelivery produce candidato, no envío. El adaptador real devuelve referencia de proveedor y registra communication_channel_receipts/sessions mediante contrato autorizado.
 
+- [x] Definir en código los estados prepared/sent/delivered/failed/unknown y el recibo durable por organización, destino, clave y referencia del proveedor; src/features/comms/alert-delivery.ts.
+- [x] Preparar reconciliación por claves: resultado ambiguo bloquea reintento ciego; readback/replay evita nuevo intento cuando existe recibo. Las pruebas del candidato no envían mensajes.
 - [ ] Verificar runtime, cuenta/escucha, destino y frontera dueño/equipo/huésped.
 - [ ] Pruebas de éxito/rechazo/timeout incierto/reconnect/replay/doble clic: un efecto autorizado único, sin mensaje a otro ámbito.
 - [ ] Implementar solo flujo acotado del caso elegido; preparado/enviado/entregado/fallido/desconocido visibles.
-- [ ] Conciliar por claves y consultar resultado antes de reintento; recuperar sin nueva tarea/respuesta.
+- [ ] Conectar el reconciliador preparado al adaptador real y demostrar consulta/recuperación sin nueva tarea o respuesta. El código aislado no cierra esta aceptación.
 - [ ] Registrar aceptación y recuperación; no extender prueba individual a todos los grupos/cuentas.
 
 ### Task 4: ficha financiera
@@ -73,9 +77,10 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 **Interfaces:** conservar CanonicalAlegraReaderTarget, prepareAlegraWriteIntent, validateAlegraWriteApproval y verifyAlegraReadback; existencia no activa flags. Vínculos requieren ID, empresa, moneda y fecha del hecho.
 
 - [ ] Recuperar empresa/emisor/lectores y expediente original; localizar extracciones antes de ingerir otra vez.
-- [ ] Definir proyección del ámbito: total no es saldo y pago reportado no es banco.
-- [ ] Pruebas: anticipo/devolución/contracargo, comisión/retención, divisa, igual monto sin identidad, nota de crédito, cierre reabierto y fuente antigua.
-- [ ] Implementar primero lectura/revisión/vínculos; escritura únicamente por contrato autorizado y probado con readback/dedupe.
+- [x] Proyección del ámbito preparada en src/features/finance/reconciliation-card.ts: cadena servicio/cobro/documento/liquidación/banco por identidad, empresa y moneda; desconocido no es cero, total no es saldo y pago reportado no es banco.
+- [x] Regresiones de la proyección y componente incorporadas al candidato: anticipos, devolución/contracargo, comisión/retención, divisa, importe sin identidad, nota de crédito, cierre reabierto y fuente antigua. La CI citada en Estado cubre ese código; no constituye caso financiero real conciliado.
+- [x] Componente de presentación preparado en src/features/portal/portal-financial-reconciliation-card.tsx. Su prueba aislada no demuestra consumo en la página Dinero.
+- [ ] Conectar lector autorizado, expediente y componente en Dinero; preservar empresa, moneda, fechas y originales. Escritura únicamente por contrato autorizado y probado con readback/dedupe.
 - [ ] Aceptar caso completo o residual explicado con corte/fuentes; no ajustar saldos para forzar coincidencia.
 
 ### Task 5: adopción y release
@@ -86,10 +91,26 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 - [ ] Medir base de pasos/tiempo/errores y elegir casos/usuarios disponibles; no inventar compromisos laborales.
 - [ ] Probar normal/excepción/cambio de cuenta/continuidad/recuperación del lote.
 - [ ] Controles del delta y preview del mismo SHA/configuración; CI no sustituye aceptación autenticada.
-- [ ] Publicar solo lote aceptado dentro de autoridad, con reversión selectiva y originales disponibles.
+- [ ] Publicar solo lote aceptado dentro de autoridad, con reversión selectiva y originales disponibles. Un lote útil de lectura puede aceptarse por separado; no promover main completo ni cerrar el alcance total por esa entrega parcial.
 - [ ] Medir adopción, éxito sin ayuda, reabiertos, duplicados y costo neto de revisión; actualizar el mismo caso/Plan.
 
 ## Estado
 
-Dirección aceptada; reparación de datos y prevención de recurrencia verificadas. PR400 quedó fusionada en main e46f919 y la guardia de escritura fue aplicada con readback exacto sin modificar la fuente ni permisos. El directorio compacto continúa en #398 y conserva aceptación visual/autenticada pendiente. Task 2 ya tiene contrato de borrador versionado, idempotente y ligado a turno, pero el guardado sigue bloqueado: los objetos actuales inspeccionados no satisfacen CAS/readback sin cambiar su semántica. No se activaron nuevas bandejas, envíos, escrituras contables o permisos.
+**Reconciliación documental del 09/11/2026:** código observado en HEAD 180446d94d9dc94c8dd4bc677f00ab582e43aef0 de PR398, abierta/draft. TORO Brain CI42565591944 y Workstation42565591495 success; preview del mismo SHA READY. El estado siguiente no certifica autenticación, instalación de borradores, transporte ni publicación en producción.
+
+| Bloque | Preparación comprobada en el candidato | Aceptación que sigue pendiente |
+| --- | --- | --- |
+| 1. Accesos | Fuente reparada, guardia aplicada previamente y catálogo compacto incorporado. | Inspección visual/teclado con sesión legítima y recibo del consumidor. |
+| 2. Caso/borrador | Contrato, propuesta de persistencia y revisión del release de BD. | Vía de release, adaptador server-side, CAS/readback/replay real y rol. |
+| 3. Transmisión | Estados y reconciliador de recibos preparados. | Integración con transporte, destino correcto y ciclo real sin duplicados. |
+| 4. Finanzas | Proyección, componente y regresiones preparados. | Lector, montaje en Dinero y expediente real conciliado o residual explicado. |
+| 5. Adopción/release | Dirección y criterios definidos. | Uso autenticado por rol, lote publicado, recuperación y métricas. |
+
+PR400/main e46f919 y el readback de su guardia conservan su alcance anterior; esta reconciliación no repite la reparación de datos. Los objetos inspeccionados no acreditan un writer de borradores instalado; no se activaron nuevas bandejas, envíos, escrituras contables, permisos o producción.
+
+**Siguiente unidad:** obtener una vía autorizada de QA autenticada para el menor lote útil de lectura sobre la producción vigente. Si esa vía no está disponible, continuar una mejora independiente del lector/interfaz; conservar el bloqueo causal y no reintentar políticas rechazadas.
+
+**Pauta del propietario09/11:** por pasada, 10 mejoras funcionales/operativas y 10 avances adicionales de integración, simplificación o interfaz. Registrar efectos únicos y evidencia en el checkpoint privado existente; no contar dos veces el mismo cambio, reclasificar código como integración activa ni simular20 terminados si una dependencia impide completar el lote. Se conservan alcance, presupuesto y gates.
+
+[Evidencia de esta reconciliación](../../evidence/TORO_PORTAL_PROGRESS_RECONCILIATION_20261109.md).
 
