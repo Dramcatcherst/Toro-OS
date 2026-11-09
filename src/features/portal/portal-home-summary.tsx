@@ -10,6 +10,7 @@ export function PortalHomeSummary({ tasks, readAt }: { tasks: HotelOperationsVie
   const summary = buildHotelHomeSummary(tasks, readAt);
   if (summary.state !== "ready") return <p role="status" className={styles.emptyNote}>
     No se pudieron comprobar los pendientes. La ausencia de lectura no significa cero tareas.
+    {summary.queryAt ? <span className={styles.homeAttempt}>Intento de consulta: {formatAttentionCut(summary.queryAt)}.</span> : null}
   </p>;
   const metrics: Array<[string, number | null]> = [
     ["Prioridad crítica", summary.critical], ["Con fecha vencida", summary.pastDue],
@@ -38,7 +39,7 @@ export function PortalHomeSummary({ tasks, readAt }: { tasks: HotelOperationsVie
       <p>{summary.rowsRead === null ? "Cantidad de filas no comprobada" : `${summary.rowsRead} filas consultadas`}; cobertura acotada, total del hotel desconocido.
         {summary.limitReached ? " Límite de lectura alcanzado." : ""}</p>
       <p>Último cambio registrado: {summary.latestUpdatedAt ? formatAttentionCut(summary.latestUpdatedAt) : "sin fecha comprobada"}.
-        Consulta: {readAt && summary.day ? formatAttentionCut(readAt) : "hora no disponible"}. Consultar no renueva la fuente ni certifica ejecución física.</p>
+        Consulta: {summary.queryAt ? formatAttentionCut(summary.queryAt) : "hora no disponible"}. Consultar no renueva la fuente ni certifica ejecución física.</p>
     </details>
   </div>;
 }

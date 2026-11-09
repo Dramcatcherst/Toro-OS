@@ -96,6 +96,8 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 
 ## Estado
 
+**Hoy — candidato09/11:** resumen diario renderizado desde la misma lectura autorizada, con prioridades, fechas, responsable, tres tareas de revisión y calidad/cobertura desplegables. Se conserva compatibilidad y se retira cálculo duplicado de la página. [Evidencia y límites](../../evidence/TORO_PORTAL_HOY_TRIAGE_20261109.md). CI del SHA final y aceptación autenticada siguen sus recibos propios; este bloque no acredita producción.
+
 **Reconciliación documental del 09/11/2026:** código observado en HEAD 180446d94d9dc94c8dd4bc677f00ab582e43aef0 de PR398, abierta/draft. TORO Brain CI42565591944 y Workstation42565591495 success; preview del mismo SHA READY. El estado siguiente no certifica autenticación, instalación de borradores, transporte ni publicación en producción.
 
 | Bloque | Preparación comprobada en el candidato | Aceptación que sigue pendiente |

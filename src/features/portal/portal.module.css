@@ -463,3 +463,5 @@
  .homeDaily :is(p,dt,dd,h3,strong,small),.homeNext .homeRevalidation { color:CanvasText; }
  .homeNext li { border-color:CanvasText; }
 }
+
+.homeAttempt { display:block; margin-top:6px; font-size:12px; }

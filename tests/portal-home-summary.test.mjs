@@ -70,3 +70,16 @@ test("future modification does not make historical work look freshly updated", (
  const s=buildHotelHomeSummary(source([task(1),task(2,{updatedAt:"2026-11-10T12:00:00.000Z"})]),readAt);
  assert.equal(s.latestUpdatedAt,"2026-11-07T12:00:00.000Z");assert.equal(s.futureUpdates,1);
 });
+
+test("unknown query clock cannot verify a far-future modification", () => {
+ const s=buildHotelHomeSummary(source([task(1,{updatedAt:"2099-11-10T12:00:00Z"})]),null);
+ assert.equal(s.latestUpdatedAt,null);
+});
+test("failed read retains a valid attempt time while workload stays unknown", () => {
+ const s=buildHotelHomeSummary(source([],{state:"unavailable",rowsRead:null}),readAt);
+ assert.equal(s.queryAt,readAt);assert.equal(s.count,null);
+});
+test("failed read never adopts an offset-free attempt time", () => {
+ const s=buildHotelHomeSummary(source([],{state:"unavailable",rowsRead:null}),"2026-11-09T05:30:00");
+ assert.equal(s.queryAt,null);
+});

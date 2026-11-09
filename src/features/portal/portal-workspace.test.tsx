@@ -34,6 +34,7 @@ it("uses organization-specific wording and no hotel payload outside hotel contex
 
 it("uses the daily server summary before historical attention and keeps its coverage together", () => {
   const html = renderToStaticMarkup(<PortalWorkspace {...props} hotelDailySummary={<p>Daily triage fixture</p>} />);
+  expect(html).toContain("Daily triage fixture"); expect(html).toContain("Historical attention fixture");
   expect(html.indexOf("Daily triage fixture")).toBeLessThan(html.indexOf("Historical attention fixture"));
   expect(html).not.toContain("141 filas consultadas");
   expect(html).toContain("Revisar Operación");

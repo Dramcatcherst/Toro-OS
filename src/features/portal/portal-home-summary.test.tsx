@@ -10,8 +10,9 @@ it("renders actionable recorded counts with named metrics and Costa Rica date",(
  expect(html).toContain("Pendientes de revisión");expect(html).toContain("Prioridad crítica");expect(html).toContain("Con fecha vencida");expect(html).toContain("Para hoy");expect(html).toContain("Sin responsable");expect(html).toContain("Por revalidar");expect(html).toContain("08/11/2026");expect(html).toContain("<dl");
 });
 it("shows three source-backed next items with owner/date/revalidation and no fourth payload",()=>{
- const html=renderToStaticMarkup(<PortalHomeSummary tasks={view([task(1,{owner:null,needsRevalidation:true}),task(2,{dueDate:null}),task(3),task(4)])} readAt={at}/>);
+ const html=renderToStaticMarkup(<PortalHomeSummary tasks={view([task(1,{owner:null,needsRevalidation:true}),task(2,{dueDate:null,priority:"critical"}),task(3),task(4)])} readAt={at}/>);
  expect(html).toContain("Work 1");expect(html).toContain("Work 2");expect(html).toContain("Work 3");expect(html).not.toContain("Work 4");
+ expect(html.indexOf("Work 2")).toBeLessThan(html.indexOf("Work 1"));expect(html.indexOf("Work 1")).toBeLessThan(html.indexOf("Work 3"));
  expect(html).toContain("Sin responsable");expect(html).toContain("Sin fecha");expect(html).toContain("Revalidar antes de actuar");
 });
 it("keeps unavailable different from an empty batch",()=>{
@@ -30,4 +31,15 @@ it("unknown query day shows date-dependent metrics as unknown",()=>{
 it("flags future source clocks without adopting them as fresh work",()=>{
  const html=renderToStaticMarkup(<PortalHomeSummary tasks={view([task(1,{updatedAt:"2026-11-10T12:00:00Z"})])} readAt={at}/>);
  expect(html).toContain("Fechas de modificación futuras");expect(html).toContain("sin fecha comprobada");
+});
+
+it("preserves valid failed-attempt time without zero metrics or source modification",()=>{
+ const failed=renderToStaticMarkup(<PortalHomeSummary tasks={view([],{state:"unavailable",rowsRead:null})} readAt={at}/>);
+ const invalid=renderToStaticMarkup(<PortalHomeSummary tasks={view([],{state:"unavailable",rowsRead:null})} readAt="invalid"/>);
+ expect(failed).toContain("Intento de consulta");expect(failed).toContain("08/11/2026");expect(failed).not.toContain("Último cambio registrado");expect(failed).not.toContain("<dl");
+ expect(invalid).not.toContain("Intento de consulta");
+});
+it("an unknown query clock never certifies a far-future source modification",()=>{
+ const html=renderToStaticMarkup(<PortalHomeSummary tasks={view([task(1,{updatedAt:"2099-11-10T12:00:00Z"})])} readAt={null}/>);
+ expect(html).toContain("sin fecha comprobada");expect(html).not.toContain("2099");
 });
