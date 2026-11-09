@@ -7,6 +7,23 @@
 **Reference implementation:** Dreamcatcher Hotel
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
+
+<!-- BEGIN:EXECUTION_CONTINUITY_COVERAGE_20261109 -->
+## Continuidad obligatoria de tareas y cobertura de fuentes
+
+**CURRENT — mandato operativo del 9 de noviembre de 2026.** Cada tarea material y cada pasada debe recuperar el objeto canónico vigente, su último recibo y próxima unidad antes de repetir trabajo. La continuidad reside en el Plan General y en los registros privados de ejecución de TORO; no puede depender de que siga abierto un chat.
+
+**Cierre de cada pasada:** conservar identidad, ámbito, responsable, permisos y cambios humanos; registrar fuentes y corte, trabajo realizado, evidencia verificable, límites, faltantes, estado real, siguiente unidad y dependencias. Guardar con comparación de versión o `updated_at` y lectura posterior donde el proveedor lo permita. Reutilizar proyectos, tareas, casos, manifiestos e ingestas existentes; preservar escritores activos, leases y cursores. Un resultado ambiguo se concilia antes de reintentar.
+
+**Regla de cobertura:** inventariar primero el universo autorizado por cuenta, buzón/carpeta, base/tabla, entidad y período. Separar localizado, inventariado, revisado, original recuperado, extraído, clasificado, conciliado, incorporado en su destino y aprobado. Un índice no prueba lectura del original; una lectura no prueba incorporación ni cierre. El objetivo de cobertura completa solo puede declararse por alcance y etapa con denominador conocido y prueba de destino. Fuentes inaccesibles, paginación pendiente y períodos sin inventariar permanecen desconocidos o bloqueados; una búsqueda vacía no demuestra ausencia, saldo cero ni totalidad.
+
+**Evitar repeticiones:** usar ID nativo y hash/versión de la fuente, último estado y recibo para retomar deltas. Saltar lo ya completado y sin cambios, salvo excepción, nueva versión o revisión justificada. No resolver un límite de acceso mediante otro ingestor, libro, base maestra o programador.
+
+**Intercomunicación:** otras tareas y canales autorizados recuperan el mismo estado desde `operations.projects`, `operations.tasks` y el contrato privado `operations.knowledge_items/toro_master_execution_contract_v1`. La regla de continuidad y los cambios materiales de dirección se mantienen aquí; recibos rutinarios, contadores, documentos bancarios/fiscales, datos laborales y personales se conservan en sus objetos privados con referencias por ámbito. No concatenar esos datos al Plan General público ni ampliar audiencias por esta regla.
+
+**Aceptación:** otro ejecutor autorizado puede identificar qué se hizo, verificar la evidencia, distinguir lo pendiente y continuar la siguiente unidad sin repetir el barrido ni depender del historial completo del chat. Adoptar la regla no acredita que todos los ejecutores la consuman; verificar sus recibos progresivamente en los carriles existentes.
+<!-- END:EXECUTION_CONTINUITY_COVERAGE_20261109 -->
+
 <!-- BEGIN:TORO_PORTAL_INTEGRATED_WORKSPACE_20261108 -->
 ## Portal integrado: dirección aceptada, comunicación, finanzas y accesos - 08/11/2026
 
