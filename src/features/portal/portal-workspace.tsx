@@ -20,9 +20,9 @@ const titles: Record<PortalTab, string> = { home: "Hoy", operations: "Operación
 const secondary: PortalTab[] = ["people", "growth", "tools", "reports", "modules"];
 export type PortalHotelOverview = { ready: boolean; rowsRead: number | null; eligibleCount: number; readAt: string | null; latestUpdatedAt: string | null };
 
-export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, hotelOverview, initialTab = "home" }: {
+export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, hotelOverview, hotelDailySummary, initialTab = "home" }: {
   modules: PortalModule[]; links: ToolLink[]; catalogueItems: ToolCatalogueItem[]; catalogueMode: ToolCatalogueMode;
-  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; hotelOverview?: PortalHotelOverview; initialTab?: PortalTab;
+  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; hotelOverview?: PortalHotelOverview; hotelDailySummary?: ReactNode; initialTab?: PortalTab;
 }) {
   const search = useSyncExternalStore(subscribePortalNavigation, portalBrowserSearch, () => portalTabUrl(initialTab).slice(7));
   const tab = readPortalTab(search, hotelAllowed);
@@ -66,12 +66,14 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
       <div className={styles.ownerHome}>
         {hotelAllowed ? <section className={styles.panel + " " + styles.viewPanel} aria-labelledby={`${id}-work-heading`}>
           <div className={styles.panelHeading}><h2 id={`${id}-work-heading`}>Trabajo del hotel</h2><span className={styles.readOnlyBadge}>Solo lectura</span></div>
+          {hotelDailySummary ?? <>
           <p className={styles.homeMetric}>{hotelOverview?.ready ? `${hotelOverview.rowsRead} filas consultadas · ${hotelOverview.eligibleCount} tareas elegibles` : "Trabajo registrado no disponible en esta consulta"}</p>
-          <p className={styles.panelNote}>Kross: <strong>Sin dato actual verificado</strong>. Lo registrado requiere comprobar su vigencia.</p>
           <p className={styles.panelNote}>Último cambio registrado: {hotelOverview?.latestUpdatedAt ? formatAttentionCut(hotelOverview.latestUpdatedAt) : "sin fecha comprobada"}.</p>
+          </>}
+          <p className={styles.panelNote}>Kross: <strong>Sin dato actual verificado</strong>. Lo registrado requiere comprobar su vigencia.</p>
           <div className={styles.homeActions}><button type="button" onClick={() => openTab("operations")}>Revisar Operación<ArrowRight size={17} aria-hidden="true" /></button>
             {planner ? <a href={planner.url} target="_blank" rel="noopener noreferrer">Abrir planner Kross ↗</a> : null}</div>
-          <details className={styles.subtleDisclosure}><summary>Fuente y alcance de la consulta</summary><p>Consulta: {hotelOverview?.readAt ? formatAttentionCut(hotelOverview.readAt) : "hora no disponible"}. No renueva el corte original. Lote acotado; total del hotel no verificado. No certifica ejecución física.</p></details>
+          {!hotelDailySummary ? <details className={styles.subtleDisclosure}><summary>Fuente y alcance de la consulta</summary><p>Consulta: {hotelOverview?.readAt ? formatAttentionCut(hotelOverview.readAt) : "hora no disponible"}. No renueva el corte original. Lote acotado; total del hotel no verificado. No certifica ejecución física.</p></details> : null}
         </section> : null}
         <section className={styles.panel + " " + styles.viewPanel}><div className={styles.panelHeading}><h2>Accesos de trabajo</h2></div><div className={styles.homeActions}>
           <button type="button" onClick={() => openTab("money")}>Contar caja CRC + USD<ArrowRight size={17} aria-hidden="true" /></button>

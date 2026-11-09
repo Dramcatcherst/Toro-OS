@@ -31,3 +31,14 @@ it("uses organization-specific wording and no hotel payload outside hotel contex
   expect(html).not.toContain("Native hotel fixture"); expect(html).not.toContain("141 filas consultadas");
   expect(html).toContain("Tu organización");
 });
+
+it("uses the daily server summary before historical attention and keeps its coverage together", () => {
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} hotelDailySummary={<p>Daily triage fixture</p>} />);
+  expect(html.indexOf("Daily triage fixture")).toBeLessThan(html.indexOf("Historical attention fixture"));
+  expect(html).not.toContain("141 filas consultadas");
+  expect(html).toContain("Revisar Operación");
+});
+it("never renders daily hotel work outside the hotel context", () => {
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} hotelAllowed={false} hotelDailySummary={<p>Daily protected fixture</p>} />);
+  expect(html).not.toContain("Daily protected fixture");
+});

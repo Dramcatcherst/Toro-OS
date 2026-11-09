@@ -18,6 +18,7 @@ import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 import { canReadHotelOperations, initialPortalTab } from "@/features/portal/hotel-operations";
 import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
 import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
+import { PortalHomeSummary } from "@/features/portal/portal-home-summary";
 
 export const dynamic = "force-dynamic";
 
@@ -65,6 +66,7 @@ async function PortalContent(requestedTab?: string | string[]) {
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         initialTab={initialPortalTab(requestedTab, hotelAllowed)}
         hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
+        hotelDailySummary={operations ? <PortalHomeSummary tasks={operations.tasks} readAt={operations.readAt} /> : null}
         hotelOverview={operations ? { ready: operations.tasks.state === "ready", rowsRead: operations.tasks.rowsRead,
           eligibleCount: operations.tasks.items.length, readAt: operations.readAt,
           latestUpdatedAt: operations.tasks.items.reduce<string | null>((latest, task) => !latest || Date.parse(task.updatedAt) > Date.parse(latest) ? task.updatedAt : latest, null) } : undefined}
