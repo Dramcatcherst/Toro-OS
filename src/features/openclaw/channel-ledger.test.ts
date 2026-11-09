@@ -192,12 +192,18 @@ describe("channel draft CAS runtime contract", () => {
     currentVersion?: number;
     readback?: ChannelDraftStoredRecord | null;
     compareThrows?: boolean;
+    compareThrowsAfterWrite?: boolean;
+    compareReturnsFalseAfterWrite?: boolean;
+    lookupThrowsAfterCompare?: boolean;
   }) {
     let record = options?.initial ?? null;
     let version = options?.currentVersion ?? 7;
     let casCalls = 0;
     const store: ChannelDraftStore = {
       async findByOperationKey(key) {
+        if (options?.lookupThrowsAfterCompare && casCalls > 0) {
+          throw new Error("reconciliation unavailable");
+        }
         return record?.operationKey === key.operationKey ? record : null;
       },
       async compareAndSwap(input) {
@@ -206,6 +212,8 @@ describe("channel draft CAS runtime contract", () => {
         if (version !== input.expectedVersion) return false;
         record = input.next;
         version = input.next.version;
+        if (options?.compareThrowsAfterWrite) throw new Error("ambiguous transport after commit");
+        if (options?.compareReturnsFalseAfterWrite) return false;
         return true;
       },
       async read() {
@@ -261,7 +269,41 @@ describe("channel draft CAS runtime contract", () => {
     });
   });
 
-  it("marks ambiguous write unknown and reconciles failed readback before retrying", async () => {
+  it("reconciles committed ambiguous writes and false CAS responses without a retry", async () => {
+    const committedThenThrew = fakeStore({ compareThrowsAfterWrite: true });
+    await expect(persistChannelDraft(actor, context, action, committedThenThrew.store)).resolves.toMatchObject({
+      ok: true,
+      replayed: true,
+      record: { version: 8 },
+    });
+    expect(committedThenThrew.casCalls()).toBe(1);
+
+    const concurrentCommit = fakeStore({ compareReturnsFalseAfterWrite: true });
+    await expect(persistChannelDraft(actor, context, action, concurrentCommit.store)).resolves.toMatchObject({
+      ok: true,
+      replayed: true,
+      record: { version: 8 },
+    });
+    expect(concurrentCommit.casCalls()).toBe(1);
+
+    const reconciliationUnavailable = fakeStore({
+      currentVersion: 8,
+      lookupThrowsAfterCompare: true,
+    });
+    await expect(persistChannelDraft(
+      actor,
+      context,
+      action,
+      reconciliationUnavailable.store,
+    )).resolves.toEqual({
+      ok: false,
+      error: "draft_reconciliation_unavailable",
+      effect: "unknown",
+    });
+    expect(reconciliationUnavailable.casCalls()).toBe(1);
+  });
+
+  it("marks an unconfirmed ambiguous write unknown and reconciles failed readback immediately", async () => {
     const ambiguous = fakeStore({ compareThrows: true });
     await expect(persistChannelDraft(actor, context, action, ambiguous.store)).resolves.toEqual({
       ok: false,
@@ -271,19 +313,7 @@ describe("channel draft CAS runtime contract", () => {
     expect(ambiguous.casCalls()).toBe(1);
 
     const missingReadback = fakeStore({ readback: null });
-    await expect(persistChannelDraft(actor, context, action, missingReadback.store)).resolves.toEqual({
-      ok: false,
-      error: "draft_readback_mismatch",
-      effect: "unknown",
-    });
-    expect(missingReadback.casCalls()).toBe(1);
-
-    await expect(persistChannelDraft(
-      actor,
-      { ...context, currentVersion: 8 },
-      action,
-      missingReadback.store,
-    )).resolves.toMatchObject({
+    await expect(persistChannelDraft(actor, context, action, missingReadback.store)).resolves.toMatchObject({
       ok: true,
       replayed: true,
       record: { version: 8 },
