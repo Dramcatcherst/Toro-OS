@@ -38,7 +38,8 @@ Tipo de salida acordado: ServiceAccessGroup = { key: string; label: string; dest
 - [x] Identificar productor existente y cerrar la causa: no hay writer de aplicación en el repositorio; las ediciones directas del registro canónico quedan protegidas por la guardia invoker de PR400/merge e46f919. Aplicada y releída el 08/11/2026: huellas exactas, RLS/ACL/owner preservados, trigger sobre las cuatro columnas, fuente v2.8 intacta con 244 fichas y 20 propuestas. Regresión SQL 10/10; no se instaló segundo escritor.
 - [x] Regresiones: cuentas distintas del mismo proveedor conservan href/scope; URL ausente no crea enlace; ruta cuenta/contraseña no sustituye dashboard; catálogo parcial declara cobertura. Casos dirigidos en directory.test.ts y portal-tool-catalogue.test.tsx; el nuevo SHA debe conservar CI/preview antes del gate autenticado.
 - [x] Implementar lanzador sobre destinos autorizados: compacta/detalle, búsqueda del conjunto y Ver todos, conservando filtros/retorno. El estado de filtros, vista y totales queda cubierto por regresión dirigida; abrir destinos HTTPS en pestaña nueva conserva el retorno al Portal.
-- [ ] Ejecutar pruebas catálogo/directorio y test:hotel-tools, lint/tipos/build; inspección320/390/412/1440 y teclado en preview del mismo SHA.
+- [x] Pruebas catálogo/directorio, test:hotel-tools, lint/tipos/build verificadas en TORO Brain CI 42533316422 para el SHA exacto 28fcb8bf88bb0ededdd95f6471476d496527bbd1.
+- [ ] Inspección visual 320/390/412/1440 y teclado en preview del mismo SHA con sesión autenticada.
 - [ ] Commit y recibo autenticado del consumidor; no declarar destinos probados por tener URL.
 
 ### Task 2: bandeja, caso y borrador persistente
