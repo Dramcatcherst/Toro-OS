@@ -11,7 +11,7 @@ vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory 
 vi.mock("@/features/attention/owner-attention-server", () => ({ ownerAttentionReadEnabled: mocks.attentionEnabled, loadOwnerAttentionProjection: mocks.attention }));
 vi.mock("@/features/portal/hotel-operations-server", () => ({ loadHotelOperations: mocks.operations }));
 vi.mock("@/lib/server/public-demo", () => ({ isPublicDemo: mocks.publicDemo }));
-vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+vi.mock("next/navigation", () => ({ redirect: mocks.redirect, useRouter: () => ({ refresh: vi.fn() }) }));
 import PortalPage from "./page";
 
 function view(): ToroRealMenuView {
@@ -33,6 +33,7 @@ it("shows login without private navigation to anonymous visitors", async () => {
   mocks.menu.mockResolvedValue(null);
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain("/login?next=/portal");
+  expect(html).not.toContain("Actualizar ahora");
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).not.toContain("Dreamcatcher");
   expect(mocks.directory).not.toHaveBeenCalled();
@@ -77,6 +78,7 @@ it("incorporates reviewed tools into the same Portal without nested controls", a
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain('aria-label="Herramientas del hotel"');
   expect(html).toContain("Mi espacio");
+  expect(html).toContain("Actualizar ahora");
   expect(html).toContain("Equipo · sesión propia");
   expect(html).toContain('rel="noopener noreferrer"');
   expect(html).not.toMatch(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a[\s>]/);

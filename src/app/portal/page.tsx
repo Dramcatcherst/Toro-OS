@@ -20,6 +20,8 @@ import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
 import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
 import { PortalHomeSummary } from "@/features/portal/portal-home-summary";
 
+import { PortalReadRefresh } from "@/features/portal/portal-read-refresh-control";
+
 export const dynamic = "force-dynamic";
 
 async function PortalContent(requestedTab?: string | string[]) {
@@ -62,6 +64,7 @@ async function PortalContent(requestedTab?: string | string[]) {
   return <>
     <PortalHeader current="overview" scopeLabel={scopeLabel} includeTools={hotelAllowed} />
     <main id="portal-content" className={`${styles.page} ${styles.workspacePage}`} tabIndex={-1}><div className={styles.content}>
+      <PortalReadRefresh key={`reads:${view.context.userId}:${view.context.orgId}`} queriedAt={new Date().toISOString()} />
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         initialTab={initialPortalTab(requestedTab, hotelAllowed)}
