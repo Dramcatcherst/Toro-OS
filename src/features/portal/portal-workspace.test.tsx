@@ -43,3 +43,15 @@ it("never renders daily hotel work outside the hotel context", () => {
   const html = renderToStaticMarkup(<PortalWorkspace {...props} hotelAllowed={false} hotelDailySummary={<p>Daily protected fixture</p>} />);
   expect(html).not.toContain("Daily protected fixture");
 });
+
+it("mounts the authorized finance review in Dinero before the manual cash tool", () => {
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} initialTab="money" financeReview={<p>Finance review fixture</p>} />);
+  expect(html).toContain("Finance review fixture");
+  expect(html.indexOf("Finance review fixture")).toBeLessThan(html.indexOf("Conteo de caja"));
+});
+it("does not invent a finance review when no authorized projection is supplied", () => {
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} initialTab="money" />);
+  expect(html).not.toContain("Finance review fixture");
+  expect(html).toContain("Conteo de caja");
+});
+

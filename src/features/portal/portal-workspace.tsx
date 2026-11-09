@@ -20,9 +20,9 @@ const titles: Record<PortalTab, string> = { home: "Hoy", operations: "Operación
 const secondary: PortalTab[] = ["people", "growth", "tools", "reports", "modules"];
 export type PortalHotelOverview = { ready: boolean; rowsRead: number | null; eligibleCount: number; readAt: string | null; latestUpdatedAt: string | null };
 
-export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, hotelOverview, hotelDailySummary, initialTab = "home" }: {
+export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, hotelOverview, hotelDailySummary, financeReview, initialTab = "home" }: {
   modules: PortalModule[]; links: ToolLink[]; catalogueItems: ToolCatalogueItem[]; catalogueMode: ToolCatalogueMode;
-  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; hotelOverview?: PortalHotelOverview; hotelDailySummary?: ReactNode; initialTab?: PortalTab;
+  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; hotelOverview?: PortalHotelOverview; hotelDailySummary?: ReactNode; financeReview?: ReactNode; initialTab?: PortalTab;
 }) {
   const search = useSyncExternalStore(subscribePortalNavigation, portalBrowserSearch, () => portalTabUrl(initialTab).slice(7));
   const tab = readPortalTab(search, hotelAllowed);
@@ -93,7 +93,7 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
       {hotelOperations ?? <p className={styles.emptyNote}>La consulta de trabajo no está disponible para este contexto. Usa los accesos permitidos para consultar su fuente.</p>}
       <details className={styles.subtleDisclosure}><summary>Abrir fuentes y herramientas de operación</summary><PortalToolLinks links={toolsFor("Operación", "Comunicación")} wide idPrefix="operations" /></details>
     </section>) : null}
-    {panel("money", <section className={styles.panel + " " + styles.viewPanel}><div className={styles.sectionHeading}><h2>Conteo de caja</h2><span>Manual · CRC + USD</span></div><PortalCashTools />
+    {panel("money", <section className={styles.panel + " " + styles.viewPanel}>{financeReview}<div className={styles.sectionHeading}><h2>Conteo de caja</h2><span>Manual · CRC + USD</span></div><PortalCashTools />
       <details className={styles.subtleDisclosure}><summary>Consulta financiera y sistemas contables</summary><div className={styles.grid}>{modulesFor(2).map(module => <PortalModuleCard key={module.ordinal} module={module} />)}</div>
         {hotelAllowed ? <PortalToolLinks links={toolsFor("Dinero").concat(links.filter(link => link.id === "PORTAL-POS"))} wide idPrefix="money" /> : null}</details>
       <p className={styles.panelNote}>Este conteo no registra movimientos ni confirma pagos. Los documentos contables mantienen su fuente oficial.</p></section>)}
@@ -109,3 +109,4 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
     {panel("modules", <section className={styles.panel + " " + styles.viewPanel}><div className={styles.sectionHeading}><h2>Cerebro y módulos</h2><span>Plan General · 00–11</span></div><p className={styles.panelNote}>Consultas disponibles y funciones en preparación, con su cobertura.</p><div className={styles.grid}>{modules.map(module => <PortalModuleCard key={module.ordinal} module={module} />)}</div></section>)}
   </div>;
 }
+

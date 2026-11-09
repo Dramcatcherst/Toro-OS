@@ -19,6 +19,9 @@ import { canReadHotelOperations, initialPortalTab } from "@/features/portal/hote
 import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
 import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
 import { PortalHomeSummary } from "@/features/portal/portal-home-summary";
+import { canReadPortalFinance } from "@/features/portal/finance-review";
+import { loadFinanceReview } from "@/features/portal/finance-review-server";
+import { PortalFinanceReview } from "@/features/portal/portal-finance-review";
 
 export const dynamic = "force-dynamic";
 
@@ -46,14 +49,16 @@ async function PortalContent(requestedTab?: string | string[]) {
   const operationsAllowed = canReadHotelOperations(view.context);
   const scopeLabel = hotelAllowed ? "Dreamcatcher Hotel" : "Organización activa";
   const attentionAllowed = canViewOwnerAttention(view.context);
+  const financeAllowed = canReadPortalFinance(view.context);
   async function readAttention(): Promise<{ state: PortalAttentionState; projection: OwnerAttentionProjection | null }> {
     if (!attentionAllowed || !ownerAttentionReadEnabled()) return { state: "disabled", projection: null };
     try { return { state: "ready", projection: await loadOwnerAttentionProjection(view!.context) }; }
     catch { return { state: "unavailable", projection: null }; }
   }
-  const [directory, attention, operations] = await Promise.all([
+  const [directory, attention, operations, finance] = await Promise.all([
     hotelAllowed ? loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true,expectedContext:view.context}) : Promise.resolve(null),
     readAttention(), operationsAllowed ? loadHotelOperations(view.context) : Promise.resolve(null),
+    financeAllowed ? loadFinanceReview(view.context) : Promise.resolve(null),
   ]);
   const directoryAuthorized = directory?.state === "ready" || (directory?.state === "unavailable" && directory.navigationAuthorized === true);
   const operationalLinks = directoryAuthorized ? directory.links : [];
@@ -67,6 +72,7 @@ async function PortalContent(requestedTab?: string | string[]) {
         initialTab={initialPortalTab(requestedTab, hotelAllowed)}
         hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
         hotelDailySummary={operations ? <PortalHomeSummary tasks={operations.tasks} readAt={operations.readAt} /> : null}
+        financeReview={finance ? <PortalFinanceReview view={finance} /> : null}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
@@ -83,3 +89,4 @@ export default async function PortalPage({ searchParams }: {
   const query = await searchParams;
   return <PrivateViewGuard>{await PortalContent(query?.tab)}</PrivateViewGuard>;
 }
+
