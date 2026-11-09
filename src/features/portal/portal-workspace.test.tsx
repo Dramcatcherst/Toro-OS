@@ -44,14 +44,19 @@ it("never renders daily hotel work outside the hotel context", () => {
   expect(html).not.toContain("Daily protected fixture");
 });
 
-it("mounts the authorized finance review in Dinero before the manual cash tool", () => {
-  const html = renderToStaticMarkup(<PortalWorkspace {...props} initialTab="money" financeReview={<p>Finance review fixture</p>} />);
-  expect(html).toContain("Finance review fixture");
-  expect(html.indexOf("Finance review fixture")).toBeLessThan(html.indexOf("Conteo de caja"));
+it("mounts the existing authorized attention once in Dinero before manual cash", () => {
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} initialTab="money" />);
+  const home = html.match(/<div role="tabpanel" id="[^"]+-panel-home"[\s\S]*?(?=<div role="tabpanel"|$)/)?.[0] ?? "";
+  const money = html.match(/<div role="tabpanel" id="[^"]+-panel-money"[\s\S]*?(?=<div role="tabpanel"|$)/)?.[0] ?? "";
+  expect(money).toContain("Historical attention fixture");
+  expect(home).not.toContain("Historical attention fixture");
+  expect(html.match(/Historical attention fixture/g)).toHaveLength(1);
+  expect(money.indexOf("Historical attention fixture")).toBeLessThan(money.indexOf("Conteo de caja"));
 });
 it("does not invent a finance review when no authorized projection is supplied", () => {
-  const html = renderToStaticMarkup(<PortalWorkspace {...props} initialTab="money" />);
-  expect(html).not.toContain("Finance review fixture");
+  const html = renderToStaticMarkup(<PortalWorkspace {...props} attention={null} initialTab="money" />);
+  expect(html).not.toContain("Historical attention fixture");
+  expect(html).not.toContain("Registros financieros y seguimiento");
   expect(html).toContain("Conteo de caja");
 });
 
