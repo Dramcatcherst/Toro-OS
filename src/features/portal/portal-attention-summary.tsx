@@ -3,6 +3,8 @@ import { ArrowRight, CircleAlert, ExternalLink } from "lucide-react";
 import type { OwnerAttentionProjection } from "@/features/attention/owner-attention";
 import { formatAttentionAmountWithBasis, formatAttentionCut, formatAttentionDate, safeEvidenceHref } from "@/features/attention/owner-attention-presentation";
 import styles from "./portal.module.css";
+import { PortalAttentionFilter } from "./portal-attention-filter-control";
+import { attentionCurrency, attentionMonth } from "./portal-attention-filter";
 
 export type PortalAttentionState = "disabled" | "unavailable" | "ready";
 const priorities = { critical: "Crítica", high: "Alta", normal: "Normal" } as const;
@@ -16,9 +18,9 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
     </div>
     {ready ? <>
       <p className={styles.panelNote}>Registros seleccionados para revisar. La fecha de consulta no acredita urgencia ni saldo exigible actual.</p>
-      <div className={styles.pendingList}>{projection.items.slice(0, 3).map(item => {
+      <PortalAttentionFilter entries={projection.items.slice(0, 3).map(item => {
         const href = safeEvidenceHref(item.sourceUrl);
-        return <details key={item.dedupeRef} className={styles.pendingItem}>
+        return { currency: attentionCurrency(item.currency), month: attentionMonth(item.dueDate), content: <details key={item.dedupeRef} className={styles.pendingItem}>
           <summary><span className={styles.priority}>Revisar</span>
             <span className={styles.pendingCopy}><strong>{item.title}</strong><small>{item.kind === "invoice" || item.kind === "obligation" ? "Vencimiento registrado" : "Seguimiento registrado"}: {formatAttentionDate(item.dueDate)} · {item.state === "unknown" ? "Estado por verificar" : item.state}</small></span>
             <ArrowRight size={16} aria-hidden="true" />
@@ -31,8 +33,8 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
             {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmountWithBasis(item.kind, item.amount, item.currency)}</p> : null}
             {href ? <a href={href} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className={styles.textLink}>Abrir origen<ExternalLink size={15} aria-hidden="true" /></a> : null}
           </div>
-        </details>;
-      })}</div>
+        </details> };
+      })} />
       {!projection.items.length ? <p role="status" className={styles.emptyNote}>Sin coincidencias en esta consulta. La cobertura parcial no confirma ausencia de pendientes.</p> : null}
       <details className={styles.subtleDisclosure}><summary>{Math.min(projection.items.length, 3)} de {projection.items.length} disponibles · cobertura parcial</summary>
         {projection.selection?.truncated ? <p>{projection.selection.matchedInReadBatch} coincidencias en el lote leído; la vista completa también está limitada.</p> : null}

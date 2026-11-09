@@ -58,3 +58,16 @@ it("labels invoice total without pretending it is an unpaid balance", () => {
   expect(html).toContain("Total de factura (no es saldo pendiente confirmado): USD");
   expect(html).not.toContain("Saldo pendiente: USD");
 });
+
+it("keeps filter metadata limited to the same three authorized visible records",()=>{
+  const items=projection.items.map((item,index)=>({...item,currency:index===3?"EUR":index===1?"CRC":"USD",dueDate:index===3?"2099-12-01":"2026-10-12",mailbox:"PRIVATE_MAILBOX"}));
+  const html=renderToStaticMarkup(<PortalAttentionSummary state="ready" projection={{...projection,items}} />);
+  expect(html).toContain("Moneda registrada");expect(html).toContain("Mes de la fecha registrada");
+  expect(html).toContain("no es período contable");expect(html).toContain("3 registros de esta vista");
+  expect(html).not.toContain("Cuarto detalle privado");expect(html).not.toContain("EUR");expect(html).not.toContain("2099");
+  expect(html).not.toContain("PRIVATE_MAILBOX");
+});
+it("does not render filter options from denied/disabled payloads",()=>{
+  const html=renderToStaticMarkup(<PortalAttentionSummary state="disabled" projection={projection} />);
+  expect(html).not.toContain("Filtrar esta vista financiera");expect(html).not.toContain("Limpiar filtros");
+});
