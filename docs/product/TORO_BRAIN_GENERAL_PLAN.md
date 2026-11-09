@@ -8,6 +8,22 @@
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
 
+<!-- BEGIN:FULL_FINANCIAL_RECONSTRUCTION_SCOPE_20261109 -->
+## Reconstrucción financiera, contable y patrimonial integral
+
+**CURRENT — alcance documental adoptado el 9 de noviembre de 2026.** La reconstrucción comprende el circuito financiero y contable completo de cada ámbito autorizado, histórico y corriente, con la reclamación tributaria como frente prioritario por vigencia de derechos. Se integra en `finance_controls`, los objetos existentes del portafolio y los módulos Finance, Assets, Operations y TORO People. DreamTeam conserva su continuidad técnica dentro de TORO People; esta ampliación no crea otro proyecto maestro, portal, base, ingestor, libro, identidad ni escritor.
+
+**TARGET — cobertura por entidad, propiedad, moneda y período.** Preparar movimientos de bancos, tarjetas, caja y medios de pago; ingresos, cobros, reservas y liquidaciones OTA; compras, proveedores, facturas, notas, devoluciones y gastos; cuentas por cobrar y pagar; préstamos, intereses, garantías y obligaciones; activos, inventarios, inversiones, pasivos y patrimonio. Distinguir ingresos devengados, cobros, bruto, comisiones, impuestos, reembolsos, payout, depósito y transferencias internas; no duplicar pagos de tarjeta y gastos subyacentes ni compensar entidades o monedas por semejanza.
+
+**Assets y patrimonio.** Reutilizar los maestros existentes y vincular cada bien a identidad, titular legal, uso económico, custodio, ubicación, adquisición, soporte, costo, obligaciones y bajas verificables. Separar propiedad, uso, arrendamiento y aportes personales o entre entidades; un documento recuperado o un uso reportado no prueba titularidad ni permite reconocer un activo o gasto. OPEX, CAPEX, inventario, mantenimiento, depreciación, deterioro y asignaciones quedan como candidatos por su período y norma aplicable hasta revisión autorizada. No mover costos antiguos al período actual por recuperar ahora su archivo ni trasladar bienes entre titulares.
+
+**People y operación.** TORO People conserva empleados, contratos, asistencia, vacaciones, incapacidades y demás historia laboral; Finance concilia planillas, bruto, deducciones, neto, CCSS, INS, pago y registro contable por separado. Usar IDs y permisos existentes, sin asociar personas solo por nombre. El detalle individual permanece restringido; reportes para socios agregados. Operations, mantenimiento, compras e inventarios aportan evidencia de servicio, consumo y custodia mediante referencias a los mismos objetos; cada operación conserva responsable y siguiente unidad.
+
+**Autoridades y aceptación.** Alegra mantiene la autoridad contable y fiscal; Kross la operación hotelera de su dominio; Dropbox los originales; Supabase la identidad, vínculos, estados y auditoría TORO; Airtable el control humano transitorio según contrato. El Portal y WhatsApp muestran el mismo circuito autorizado. Reconstruir balances de apertura, movimientos, cierres, resultados, flujo de efectivo y patrimonio con evidencia, diferencias y cobertura explícitas; estados preparados o candidatos no equivalen a libros conciliados, cierre aprobado, declaraciones válidas o valores patrimoniales certificados. Cobertura completa exige universo inventariado y prueba por etapa/destino; no basta indexar archivos.
+
+**NEXT — continuidad verificable.** Cada pasada relee el caso y recibo actuales, procesa una unidad pendiente y guarda evidencia, clasificación, faltantes y próxima acción con CAS y readback. Mantener la prioridad fiscal por vencimiento individual y la obligación corriente separada de la reconstrucción histórica. Conservar escritores, leases, cursores, permisos y cambios humanos. Presentaciones fiscales, pagos, nóminas aprobadas, asientos definitivos, valoraciones y cambios de titularidad conservan sus gates de revisión y autorización. Este bloque adopta alcance y preparación; no acredita integración, despliegue ni ejecución oficial.
+<!-- END:FULL_FINANCIAL_RECONSTRUCTION_SCOPE_20261109 -->
+
 <!-- BEGIN:EXECUTION_CONTINUITY_COVERAGE_20261109 -->
 ## Continuidad obligatoria de tareas y cobertura de fuentes
 
