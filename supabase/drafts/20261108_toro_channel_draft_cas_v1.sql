@@ -150,9 +150,12 @@ begin
 
   -- The service boundary resolves capabilities, while the database independently
   -- requires a live organization membership for the attributed human actor.
+  -- Lock the qualifying membership through commit so a concurrent revocation
+  -- cannot cross between this authorization decision and the durable insert.
   perform 1 from public.user_roles ur
     where ur.org_id=p_org_id and ur.user_id=p_actor_user_id
-      and ur.status='active' and ur.revoked_at is null;
+      and ur.status='active' and ur.revoked_at is null
+    for key share;
   if not found then return false; end if;
 
   select d.version into current_version
