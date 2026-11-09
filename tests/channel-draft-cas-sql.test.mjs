@@ -67,6 +67,13 @@ test("denies an actor without a current organization membership",async()=>{
   await db.query("update public.user_roles set status='active',revoked_at=null where user_id=$1::uuid",[user]);
 });
 
+test("serializes membership revocation with the CAS authorization decision",async()=>{
+  const definition=(await db.query(`select pg_get_functiondef(
+    'public.toro_channel_draft_cas_v1(uuid,uuid,text,text,text,text,text,uuid,text,bigint,text,text,jsonb)'::regprocedure
+  ) as definition`)).rows[0].definition;
+  assert.match(definition,/public\.user_roles[\s\S]*status\s*=\s*'active'[\s\S]*revoked_at\s+is\s+null[\s\S]*for key share/i);
+});
+
 test("hides persisted drafts after membership or destination authorization is revoked",async()=>{
   const readSql="select public.toro_channel_draft_read_v1($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::uuid) as row";
   const findSql="select public.toro_channel_draft_find_v1($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::uuid,$9) as row";
