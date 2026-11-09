@@ -491,3 +491,35 @@ describe("server channel draft RPC binding (synthetic, not a live release)", () 
   });
 });
 
+
+describe("channel draft deployment isolation", () => {
+  it.each(["portal", "public", "typo", undefined])("rejects construction in %s deployment", mode => {
+    const previous = process.env.TORO_DEPLOYMENT_MODE;
+    try {
+      if (mode === undefined) delete process.env.TORO_DEPLOYMENT_MODE;
+      else process.env.TORO_DEPLOYMENT_MODE = mode;
+      expect(() => createChannelDraftServerStore(async () => ({data:null}), async () => null)).toThrow();
+    } finally {
+      if (previous === undefined) delete process.env.TORO_DEPLOYMENT_MODE;
+      else process.env.TORO_DEPLOYMENT_MODE = previous;
+    }
+  });
+  it("blocks an existing store before access/RPC after deployment changes", async () => {
+    const previous = process.env.TORO_DEPLOYMENT_MODE;
+    let accessCalls = 0;
+    let rpcCalls = 0;
+    try {
+      process.env.TORO_DEPLOYMENT_MODE = "internal";
+      const store = createChannelDraftServerStore(async () => { rpcCalls++; return {data:null}; },
+        async () => { accessCalls++; return null; });
+      process.env.TORO_DEPLOYMENT_MODE = "portal";
+      await expect(store.read({orgId:"organization",userId:"person",accountId:"account",purposeKey:"purpose",
+        chatRef:"chat",caseRef:"case",shiftRef:"shift",destinationBindingId:"binding"})).rejects.toThrow("channel_draft_runtime_unavailable");
+      expect(accessCalls).toBe(0);
+      expect(rpcCalls).toBe(0);
+    } finally {
+      if (previous === undefined) delete process.env.TORO_DEPLOYMENT_MODE;
+      else process.env.TORO_DEPLOYMENT_MODE = previous;
+    }
+  });
+});

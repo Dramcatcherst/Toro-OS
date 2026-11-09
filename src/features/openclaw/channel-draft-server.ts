@@ -1,4 +1,5 @@
 import "server-only";
+import { assertInternalRuntime, isPortalDeployment } from "@/lib/server/public-demo";
 import {
   authorizeChannelLedger, createChannelDraftCanonicalStoreAdapter, validateChannelDraftAction,
   CHANNEL_DRAFT_ACTION_SCHEMA, type ChannelActor, type ChannelDraftContext,
@@ -30,11 +31,19 @@ function params(key: ChannelDraftStoreKey) {
  * The existing privileged server must inject its RPC and freshly resolved canonical access.
  * Database release and real actor/case acceptance remain separate prerequisites.
  */
+function assertDraftRuntime() {
+  assertInternalRuntime();
+  if (isPortalDeployment()) throw new Error("channel_draft_runtime_unavailable");
+}
+
 export function createChannelDraftServerStore(rpc: ChannelDraftRpc, resolveAccess: ResolveChannelDraftAccess) {
+  assertDraftRuntime();
   async function authorize(key: ChannelDraftStoreKey, write: boolean) {
+    assertDraftRuntime();
     let access: Awaited<ReturnType<ResolveChannelDraftAccess>>;
     try { access = await resolveAccess(); }
     catch { throw new Error("channel_draft_access_denied"); }
+    assertDraftRuntime();
     if (!access || !authorizeChannelLedger(access.actor, key, write ? "conversation.write" : "conversation.read") ||
         !keyFields.every(field => access.context[field] === key[field]) ||
         (write && access.context.humanTakeover)) {
