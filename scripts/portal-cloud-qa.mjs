@@ -47,7 +47,7 @@ export async function run(env = process.env) {
     await page.goto(target.url, { waitUntil: "networkidle" });
     assert.equal(new URL(page.url()).origin, new URL(target.url).origin, "QA_BLOCKED_LOGIN_OR_REDIRECT");
     assert.equal(new URL(page.url()).pathname, "/portal", "QA_BLOCKED_LOGIN_OR_REDIRECT");
-    const response = await context.request.get(new URL("/api/brain/context", target.url).href);
+    const response = await context.request.get(new URL("/api/brain/context", target.url).href, { maxRedirects: 0 });
     assert.equal(response.status(), 200, "QA_BLOCKED_ORGANIZATION_SESSION");
     const actor = await response.json();
     assert.equal(actor.state, "resolved", "QA_BLOCKED_CONTEXT");
