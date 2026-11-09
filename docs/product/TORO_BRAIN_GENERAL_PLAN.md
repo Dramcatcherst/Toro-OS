@@ -8,6 +8,24 @@
 **Current readiness:** INTERNAL PROOF — external onboarding blocked by readiness gate
 
 
+<!-- BEGIN:UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109 -->
+## Estándar universal de coordinación y optimización continua
+
+**CURRENT — aclaración de alcance del 9 de noviembre de 2026.** TORO organiza vida, operaciones y finanzas de personas, sociedades, empresas, negocios y proyectos autorizados. El núcleo universal, los paquetes de industria y la configuración del ámbito conservan identidad, entidad, permisos, propósito y audiencias separados; el caso de referencia no limita el producto. Se mantienen los gates de incorporación de nuevos clientes.
+
+**Coordinación.** Portal, WhatsApp, PC, nube, móvil, ChatGPT y documentos son superficies o fuentes del mismo circuito. Resolver objeto canónico, responsable, escritor, fuente por hecho, recibo y siguiente unidad antes de actuar. Entregar requisitos del productor al carril Portal vigente y verificar su recibo de consumo, conservando leases, cursores y cambios humanos. Un adaptador configurado o una entrega preparada no prueba integración.
+
+**Cobertura y tareas.** Inventariar sólo los dispositivos, cuentas, carpetas, tablas y aplicaciones autorizados y accesibles; declarar corte, denominador, paginación, fases y pendientes. Distinguir censo, lectura, original, extracción, clasificación, conciliación, incorporación y aprobación; datos inaccesibles o no enumerados siguen desconocidos. Deduplicar por identidad y versión, retomar deltas y revisar dependencias; acceso a una superficie no acredita el contenido de las demás ni cobertura global completa.
+
+**Controles financieros TARGET.** Preparar cierres y vencimientos de tarjeta por cuenta y moneda, conciliación cargo–factura–pago, cobros/payouts/depositos, posibles duplicados, devoluciones y fugas, renovaciones, uso de suscripciones y costos completos. Cada control requiere fuente, fecha o vencimiento verificable, regla, umbral, dueño, excepción y destino. Separar alerta candidata, regla habilitada, alerta disparada y acción autorizada; no inventar cargos, fechas, ahorro ni liquidez.
+
+**Indicadores y acciones.** Las vistas existentes deben mostrar entidad/período/moneda, fecha de fuente, cobertura, confianza, diferencias, responsable y siguiente acción permitida, con acceso al soporte y estados legibles además del color. Comparar costo, ingresos, margen, caja, riesgo y tiempo con baseline y corte compatibles; un estimado, un aviso o una proyección no es ahorro realizado ni resultado operativo.
+
+**Evolución de herramientas.** Comprender uso, costos, dependencias y recuperación; simplificar y optimizar antes de proponer reemplazo. Evaluar costo total, calidad, trabajo liberado, portabilidad y retorno con evidencia. Probar la alternativa en paralelo analítico acotado y conciliado, manteniendo una autoridad y escritor oficial por ámbito; migrar y retirar por alcance aprobado sólo con aceptación, respaldo, ensayo de recuperación y rollback. La preparación de una alternativa contable no activa otro libro oficial.
+
+**Mejora gobernada.** Reutilizar contratos y trabajos existentes y llevar cada mejora por observado → candidato → validado → aprobado → activo → medido → revisado/retirado. Priorizar beneficio neto, urgencia, riesgo y dependencias; eliminar ruido, duplicados y complejidad sin pérdida de evidencia. La autonomía concedida conserva límites transaccionales, privacidad, permisos y autorizaciones aplicables. Cada pasada material deja resultado verificable, costo o ahorro medido/desconocido, faltantes y siguiente unidad; adoptar este estándar no prueba controles desplegados ni revisión de todas las superficies.
+<!-- END:UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109 -->
+
 <!-- BEGIN:FULL_FINANCIAL_RECONSTRUCTION_SCOPE_20261109 -->
 ## Reconstrucción financiera, contable y patrimonial integral
 

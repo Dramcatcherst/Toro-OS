@@ -17,6 +17,12 @@ operating_configuration:
   status: adopted_governance_runtime_changes_not_applied
   authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
   section_marker: TORO_OPERATING_CONFIGURATION_20261022
+  universal_scope_optimization:
+    directive_date: "2026-11-09"
+    authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    section_marker: UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109
+    status: adopted_governance_runtime_controls_require_receipts
+    registration_does_not_prove_coverage_savings_or_activation: true
   deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
   channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
   topology: existing_cloud_runtime_plus_local_development_and_recovery
