@@ -1,3 +1,5 @@
+import { createChannelDraftServerStore, type ChannelDraftRpc } from "./channel-draft-server";
+import type { ChannelActor, ChannelDraftContext } from "./channel-ledger";
 import { describe, expect, it } from "vitest";
 import { authorizeChannelDraftAction, authorizeChannelLedger, channelCapabilityState, channelSubjectHash, createChannelDraftCanonicalStoreAdapter, persistChannelDraft, validateChannelDraftAction, validateChannelRecord, type ChannelDraftStore, type ChannelDraftStoredRecord } from "./channel-ledger";
 
@@ -408,3 +410,84 @@ describe("channel draft CAS runtime contract", () => {
   });
 
 });
+
+describe("server channel draft RPC binding (synthetic, not a live release)", () => {
+  const who = { userId:"11111111-1111-4111-8111-111111111111", orgId:"22222222-2222-4222-8222-222222222222",
+    bindingStatus:"verified" as const, membershipStatus:"active" as const,
+    capabilities:["conversation.read","conversation.write"] };
+  const ctx = { orgId:who.orgId, userId:who.userId, accountId:"account-hotel", purposeKey:"hotel-operations",
+    chatRef:"chat-hashed", caseRef:"case-existing", shiftRef:"shift-today",
+    destinationBindingId:"33333333-3333-4333-8333-333333333333", currentVersion:0, humanTakeover:false };
+  const key = { orgId:ctx.orgId,userId:ctx.userId,accountId:ctx.accountId,purposeKey:ctx.purposeKey,
+    chatRef:ctx.chatRef,caseRef:ctx.caseRef,shiftRef:ctx.shiftRef,destinationBindingId:ctx.destinationBindingId };
+  const action = { schemaVersion:"channel-draft-action-v1" as const,operationKey:"operation-one",
+    accountId:ctx.accountId,purposeKey:ctx.purposeKey,chatRef:ctx.chatRef,caseRef:ctx.caseRef,
+    shiftRef:ctx.shiftRef,destinationBindingId:ctx.destinationBindingId,expectedVersion:0,
+    draftBody:"A private draft",sourceKind:"live_transport" as const,attachments:[] };
+  function harness() {
+    let access: { actor: ChannelActor | null; context: ChannelDraftContext } | null = {actor:who,context:ctx};
+    let record: ChannelDraftStoredRecord | null = null;
+    let writes = 0;
+    let loseWriteResponse = false;
+    let revokeAfterRead = false;
+    const calls: Array<{name:string;args:Record<string,unknown>}> = [];
+    const rpc: ChannelDraftRpc = async (name,args) => {
+      calls.push({name,args});
+      if (name === "toro_channel_draft_cas_v1") {
+        if (record) return {data:false};
+        writes++;
+        record = {...key,operationKey:String(args.p_operation_key),version:1,draftBody:String(args.p_draft_body),
+          sourceKind:"live_transport",attachments:[]};
+        if (loseWriteResponse) throw new Error("sensitive provider detail must not escape");
+        return {data:true};
+      }
+      if (revokeAfterRead) access = {actor:{...who,bindingStatus:"revoked"},context:ctx};
+      return {data:record};
+    };
+    return {store:createChannelDraftServerStore(rpc,async()=>access),calls,
+      writes:()=>writes,setAccess:(value:typeof access)=>{access=value;},
+      loseResponse:()=>{loseWriteResponse=true;},revokeRead:()=>{revokeAfterRead=true;}};
+  }
+  it("maps all eight scope keys and persists/readbacks/replays with one effect", async () => {
+    const h=harness();
+    const first=await persistChannelDraft(who,ctx,action,h.store);
+    expect(first).toMatchObject({ok:true,replayed:false,record:{version:1,caseRef:ctx.caseRef}});
+    expect(h.calls.map(call=>call.name)).toEqual(["toro_channel_draft_find_v1","toro_channel_draft_cas_v1","toro_channel_draft_read_v1"]);
+    expect(h.calls[1].args).toEqual({p_org_id:ctx.orgId,p_actor_user_id:ctx.userId,p_account_id:ctx.accountId,
+      p_purpose_key:ctx.purposeKey,p_chat_ref:ctx.chatRef,p_case_ref:ctx.caseRef,p_shift_ref:ctx.shiftRef,
+      p_destination_binding_id:ctx.destinationBindingId,p_operation_key:action.operationKey,p_expected_version:0,
+      p_draft_body:action.draftBody,p_source_kind:"live_transport",p_attachments:[]});
+    await expect(persistChannelDraft(who,ctx,action,h.store)).resolves.toMatchObject({ok:true,replayed:true});
+    expect(h.writes()).toBe(1);
+  });
+  it("reconciles a committed write with a lost response before another CAS", async () => {
+    const h=harness();h.loseResponse();
+    await expect(persistChannelDraft(who,ctx,action,h.store)).resolves.toMatchObject({ok:true,replayed:true});
+    expect(h.writes()).toBe(1);
+    expect(h.calls.filter(call=>call.name==="toro_channel_draft_cas_v1")).toHaveLength(1);
+  });
+  it.each(["orgId","userId","accountId","purposeKey","chatRef","caseRef","shiftRef","destinationBindingId"] as const)("rejects changed server %s without an RPC",async field=>{
+    const h=harness();h.setAccess({actor:who,context:{...ctx,[field]:"other-scope"}});
+    await expect(h.store.read(key)).rejects.toThrow("channel_draft_access_denied");
+    expect(h.calls).toHaveLength(0);
+  });
+  it("hides a durable draft when binding is revoked during a read", async () => {
+    const h=harness();await persistChannelDraft(who,ctx,action,h.store);h.revokeRead();
+    await expect(h.store.read(key)).rejects.toThrow("channel_draft_access_denied");
+  });
+  it("blocks takeover and missing canonical write capability before CAS", async () => {
+    for (const access of [{actor:who,context:{...ctx,humanTakeover:true}},
+      {actor:{...who,capabilities:["conversation.read"]},context:ctx}]) {
+      const h=harness();h.setAccess(access);
+      await expect(persistChannelDraft(who,ctx,action,h.store)).resolves.toMatchObject({ok:false,effect:"unknown"});
+      expect(h.calls.some(call=>call.name==="toro_channel_draft_cas_v1")).toBe(false);
+      expect(h.writes()).toBe(0);
+    }
+  });
+  it("does not turn historical input into a live RPC",async()=>{
+    const h=harness();
+    await expect(persistChannelDraft(who,ctx,{...action,sourceKind:"historical_import"},h.store)).resolves.toMatchObject({ok:false,error:"historical_source_read_only",effect:"none"});
+    expect(h.calls).toHaveLength(0);
+  });
+});
+
