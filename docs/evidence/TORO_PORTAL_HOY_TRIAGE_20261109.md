@@ -32,6 +32,7 @@ Tres mejoras de presentación/simplificación agrupadas: portada centrada en rev
 - Primer renderer:3be18e404e9256ac17e3c5326743971239bc6d82; CI42568658743 encontró una expectativa de fixture errónea, con339 otros tests de hotel-tools aprobados. La fixture se corrigió conforme al orden especificado, sin cambiar el modelo para satisfacer un resultado falso.
 - Se registraron8 pruebas SSR del componente y2 de integración en workspace, además de18 pruebas Node del modelo incorporadas al script test:hotel-tools existente.
 - La revisión fresca de código encontró2 puntos importantes y3 menores. Los puntos importantes fueron fixture y última modificación sin reloj. También se fortaleció el assert de presencia, se conservó hora de intento y se retiró cálculo/payload redundante.
+- El runner Node de este módulo declara ESM explícitamente mediante --experimental-default-type=module; no cambia el modo del repositorio ni oculta advertencias globalmente.
 - La CI y el preview del commit final se registran con SHA exacto en el checkpoint privado; no se atribuye al SHA final una ejecución anterior.
 
 ## Decisiones y límites
