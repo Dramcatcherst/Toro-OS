@@ -1,6 +1,6 @@
 import { ArrowUpRight, ClipboardList } from "lucide-react";
 import { formatAttentionCut, formatAttentionDate } from "@/features/attention/owner-attention-presentation";
-import { HOTEL_MANUAL_CONTINGENCY_URL, type HotelOperationsView } from "./hotel-operations";
+import { HOTEL_MANUAL_CONTINGENCY_URL, HOTEL_TASK_DISPLAY_LIMIT, type HotelOperationsView } from "./hotel-operations";
 import styles from "./portal.module.css";
 import hotel from "./hotel-operations.module.css";
 
@@ -14,17 +14,18 @@ const label = (value: string) => labels[value] ?? value;
 export function HotelOperationsPanel({ view }: { view: HotelOperationsView }) {
   const allowed = view.state !== "denied";
   if (!allowed) return null;
+  const visibleTasks = view.tasks.items.slice(0, HOTEL_TASK_DISPLAY_LIMIT);
   return <section className={hotel.panel} aria-labelledby="hotel-operations-heading">
     <div className={styles.sectionHeading}><h2 id="hotel-operations-heading"><ClipboardList size={18} aria-hidden="true" />Operación · Dreamcatcher</h2>
       <span>Consulta de TORO · sin escrituras</span></div>
     <div className={hotel.sourceGrid}>
-      <div className={hotel.source}><strong>Trabajo registrado</strong><span>{view.tasks.state === "ready" ? `${view.tasks.items.length} tareas visibles · muestra parcial` : "No disponible"}</span></div>
+      <div className={hotel.source}><strong>Trabajo registrado</strong><span>{view.tasks.state === "ready" ? `${visibleTasks.length} tareas visibles · muestra parcial` : "No disponible"}</span></div>
       <div className={hotel.source}><strong>Ocupación Kross</strong><span>Sin dato actual verificado</span></div>
     </div>
     {view.readAt ? <p className={hotel.cut}>Consulta: {formatAttentionCut(view.readAt)}. Cada tarea conserva la fecha de su último cambio.</p> : null}
     {view.state === "disabled" ? <p role="status" className={hotel.note}>La lectura canónica no está habilitada en este entorno.</p> : null}
     {view.tasks.state === "ready" ? <>
-      <ol className={hotel.tasks}>{view.tasks.items.map(task => <li key={task.canonicalRef}>
+      <ol className={hotel.tasks}>{visibleTasks.map(task => <li key={task.canonicalRef}>
         <details><summary><span className={hotel.priority} data-priority={task.priority.toLowerCase()}>{label(task.priority)}</span>
           <span className={hotel.taskCopy}><strong>{task.title}</strong><small>{label(task.status)} · {task.area} · {task.owner ?? "Responsable por verificar"}</small></span></summary>
           <div className={hotel.detail}><p>{task.title}</p><p>Fecha registrada: {formatAttentionDate(task.dueDate)}. Fuente: {task.sourceSystem}.</p>

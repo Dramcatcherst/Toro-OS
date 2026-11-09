@@ -14,9 +14,9 @@ import { PortalAgents } from "./portal-header";
 import styles from "./portal.module.css";
 type Tab = "home" | "operations" | "money" | "people" | "growth" | "tools" | "reports" | "modules";
 const preferred = ["LINK-048", "PORTAL-POS", "LINK-178", "PORTAL-WHATSAPP", "LINK-086", "PORTAL-ALEGRA", "LINK-131", "LINK-056", "PORTAL-GMAIL"];
-export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, initialTab }: {
+export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode, hotelAllowed, attention, hotelOperations, hotelDailySummary, initialTab }: {
   modules: PortalModule[]; links: ToolLink[]; catalogueItems: ToolCatalogueItem[]; catalogueMode: ToolCatalogueMode;
-  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; initialTab?: "home" | "operations";
+  hotelAllowed: boolean; attention: ReactNode; hotelOperations?: ReactNode; hotelDailySummary?: ReactNode; initialTab?: "home" | "operations";
 }) {
   const [tab, setTab] = useState<Tab>(() => hotelAllowed && initialTab === "operations" ? "operations" : "home");
   const [favorites, setFavorites] = useState(() => [...preferred.filter(key => links.some(link => link.id === key)), ...links.filter(link => !preferred.includes(link.id)).map(link => link.id)].slice(0, 9));
@@ -55,7 +55,7 @@ export function PortalWorkspace({ modules, links, catalogueItems, catalogueMode,
     <div className={styles.workspaceToolbar}><h1 className={styles.srOnly}>{tabs.find(item => item.key === tab)?.label}</h1><Link href="/my-toro" prefetch={false} className={styles.searchEntry}><Search size={18} aria-hidden="true" /><span>Pide o busca…</span><ArrowRight size={17} aria-hidden="true" /></Link></div>
     {panel("home", <>
       <div className={styles.homeGrid} data-hotel={hotelAllowed} data-attention={Boolean(attention)}>
-        <div className={styles.homeColumn}>{attention}{peoplePanel}</div>
+        <div className={styles.homeColumn}>{hotelDailySummary}{attention}{peoplePanel}</div>
         {hotelAllowed ? <>
           <section className={styles.panel + " " + styles.favoritesPanel} aria-labelledby="portal-favorites-heading">
             <div className={styles.panelHeading}><h2 id="portal-favorites-heading"><Star size={20} aria-hidden="true" />Favoritos</h2><button type="button" className={styles.textLink} onClick={() => openTab("tools")}>Ver todas<ArrowRight size={15} aria-hidden="true" /></button></div>

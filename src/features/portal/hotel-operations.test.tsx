@@ -4,6 +4,7 @@ import { authorizedContext } from "@/features/tools/fixtures.test-utils";
 import { canReadHotelOperations, emptyHotelOperations, HOTEL_OPERATIONS_SCOPE as scope, HOTEL_TASK_READ_LIMIT,
   initialPortalTab, projectHotelKrossHealth, projectHotelTasks } from "./hotel-operations";
 import { HotelOperationsPanel } from "./hotel-operations-panel";
+import { buildHotelHomeSummary } from "./hotel-home-summary";
 
 const cut = "2026-11-07T12:00:00.000Z";
 export const taskFixture = (overrides = {}) => ({ id: "11111111-1111-4111-8111-111111111111", org_id: scope.orgId,
@@ -54,7 +55,7 @@ it("keeps priorities and a bounded sample without pretending it is the hotel's t
     id: `11111111-1111-4111-8111-${String(index).padStart(12, "0")}`, priority: index === 19 ? "critical" : "normal",
   }));
   const result = projectHotelTasks(rows); expect(result.limitReached).toBe(true); expect(result.total).toBeNull();
-  expect(result.items).toHaveLength(12); expect(result.items[0].priority).toBe("critical"); expect(result.rowsRead).toBe(HOTEL_TASK_READ_LIMIT);
+  expect(result.items).toHaveLength(HOTEL_TASK_READ_LIMIT); expect(result.items[0].priority).toBe("critical"); expect(result.rowsRead).toBe(HOTEL_TASK_READ_LIMIT);
 });
 it("never converts historical live=false data into current occupation even when safe flag is true", () => {
   const health = projectHotelKrossHealth([healthFixture()], cut);
@@ -79,4 +80,18 @@ it("does not confuse a successful empty read with proof that there is no pending
   const missing = renderToStaticMarkup(<HotelOperationsPanel view={emptyHotelOperations("unavailable")} />);
   expect(missing).toContain("no significa cero pendientes"); expect(missing).toContain("acceso privado es independiente");
   expect(renderToStaticMarkup(<HotelOperationsPanel view={emptyHotelOperations("denied")} />)).toBe("");
+});
+
+it("keeps all read tasks for Hoy while rendering at most twelve operational details", () => {
+  const rows = Array.from({ length: 14 }, (_, index) => taskFixture({
+    id: `11111111-1111-4111-8111-${String(index).padStart(12,"0")}`,
+    task_name: `Release task ${index}`,
+  }));
+  const tasks = projectHotelTasks(rows);
+  expect(buildHotelHomeSummary(tasks, cut).count).toBe(14);
+  const html = renderToStaticMarkup(<HotelOperationsPanel view={{...emptyHotelOperations("ready"),readAt:cut,tasks}} />);
+  expect(html).toContain("12 tareas visibles");
+  expect(html).not.toContain("Release task 12");
+  expect(html).not.toContain("Release task 13");
+  expect(html).toContain("14 filas leídas");
 });
