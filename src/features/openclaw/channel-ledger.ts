@@ -435,6 +435,22 @@ function channelDraftRecordForAction(
   };
 }
 
+async function reconcileChannelDraftOperation(
+  store: ChannelDraftStore,
+  key: ChannelDraftStoreKey,
+  next: ChannelDraftStoredRecord,
+): Promise<ChannelDraftMutationResult | null> {
+  const existing = await store.findByOperationKey({
+    ...key,
+    operationKey: next.operationKey,
+  });
+  if (!existing) return null;
+  if (channelDraftRecordsEqual(existing, next)) {
+    return { ok: true, replayed: true, record: existing };
+  }
+  return { ok: false, error: "draft_operation_conflict", effect: "none" };
+}
+
 /**
  * Server-side persistence contract only. No live store is bound here.
  * A caller must inject the reviewed canonical writer; missing bindings fail closed.
@@ -488,9 +504,21 @@ export async function persistChannelDraft(
       next,
     });
   } catch {
+    try {
+      const reconciled = await reconcileChannelDraftOperation(store, key, next);
+      if (reconciled) return reconciled;
+    } catch {
+      // The write result and its durable operation lookup are both unknown.
+    }
     return { ok: false, error: "draft_write_result_unknown", effect: "unknown" };
   }
   if (!applied) {
+    try {
+      const reconciled = await reconcileChannelDraftOperation(store, key, next);
+      if (reconciled) return reconciled;
+    } catch {
+      return { ok: false, error: "draft_reconciliation_unavailable", effect: "unknown" };
+    }
     return { ok: false, error: "draft_version_conflict", effect: "none" };
   }
 
@@ -498,9 +526,21 @@ export async function persistChannelDraft(
   try {
     readback = await store.read(key);
   } catch {
+    try {
+      const reconciled = await reconcileChannelDraftOperation(store, key, next);
+      if (reconciled) return reconciled;
+    } catch {
+      // Preserve the narrower readback error when both read paths fail.
+    }
     return { ok: false, error: "draft_readback_unavailable", effect: "unknown" };
   }
   if (!readback || !channelDraftRecordsEqual(readback, next)) {
+    try {
+      const reconciled = await reconcileChannelDraftOperation(store, key, next);
+      if (reconciled) return reconciled;
+    } catch {
+      // A failed reconciliation leaves the accepted write result unknown.
+    }
     return { ok: false, error: "draft_readback_mismatch", effect: "unknown" };
   }
   return { ok: true, replayed: false, record: readback };
