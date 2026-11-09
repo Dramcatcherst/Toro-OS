@@ -14,6 +14,8 @@ export type OwnerAttentionItem = {
   priority: OwnerAttentionPriority;
   state: string;
   dueDate: string | null;
+  /** Date origin for obligations; absent on legacy projections. */
+  dateBasis?: "due" | "review" | "unknown";
   amount: number | null;
   currency: string | null;
   ownerAgent: string | null;
@@ -224,6 +226,7 @@ export function projectObligationAttention(
     priority,
     state: row.status,
     dueDate: row.next_due_date ?? row.next_review_date,
+    dateBasis: row.next_due_date !== null ? "due" : row.next_review_date !== null ? "review" : "unknown",
     amount: parseNumber(row.current_amount),
     currency: row.current_amount_currency,
     ownerAgent: row.owner_agent,

@@ -6,6 +6,8 @@
 .selectGrid label > select { width:0; min-width:0; flex:1 1 0; }
 .feedbackRow { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 10px; margin:6px 0 10px; }
 .feedbackRow p { margin:0; }
+.feedbackActions, .viewSwitch { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.viewSwitch [aria-pressed="true"] { color:#fff; background:#173a54; border-color:#173a54; }
 .catalogue .feedbackRow [role="status"] { color:#40576a; background:transparent; }
 .groups { display:grid; gap:8px; margin-top:10px; }
 .group { min-width:0; padding:8px; border:1px solid #9cb8ca; border-radius:8px; background:#dce8f0; color:#203c50; }
@@ -19,6 +21,6 @@
 @media (min-width:700px) { .group > nav { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (min-width:1000px) { .groups { grid-template-columns:repeat(2,minmax(0,1fr)); align-items:start; } }
 .group > nav:has(> :only-child) { grid-template-columns:minmax(0,1fr); }
-.moreRow { display:flex; justify-content:center; margin-top:12px; }
+.moreRow { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:12px; }
 @media (min-width:760px) { .selectGrid { flex-basis:560px; width:auto; grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media (forced-colors:active) { .catalogueIntro { color:CanvasText; } }
+@media (forced-colors:active) { .catalogueIntro { color:CanvasText; } .viewSwitch [aria-pressed="true"] { color:HighlightText; background:Highlight; border-color:Highlight; } }

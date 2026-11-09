@@ -56,9 +56,9 @@ export function PortalToolLinks({ links, compact = false, wide = false, favorite
           {!favorites ? <span className={styles.toolBrand}>{brand.name}</span> : null}
           <small id={idPrefix + "-note-" + link.id}>{favorites ? brand.title : brand.detail}
             {link.url?.startsWith("https://") ? <span className={styles.srOnly}> · abre otra pestaña</span> : null}</small>
-          {wide && directory ? <span className={styles.toolMetadata}>
+          {directory ? wide ? <span className={styles.toolMetadata}>
             <span>{directory.category}</span><span>{directory.state}</span><span>{directory.lifecycle}</span><span>{directory.scope}</span>
-          </span> : null}
+          </span> : <span className={styles.srOnly}> · Estado {directory.state} · ciclo {directory.lifecycle} · ámbito {directory.scope}</span> : null}
         </span>
         {link.url ? <ArrowUpRight className={styles.toolArrow} size={18} aria-hidden="true" />
           : <span className={styles.toolPending}>Destino pendiente</span>}

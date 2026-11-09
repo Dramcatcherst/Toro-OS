@@ -261,3 +261,21 @@ describe("Financial alert classification — never infer outstanding debt from d
     expect(projectInvoiceAttention(invoice("duplicate_billing_dispute_unresolved", null), "2026-10-20")?.priority).toBe("high");
   });
 });
+
+describe("Recorded attention date provenance", () => {
+  const row = {
+    obligation_key: "date-provenance", obligation_name: "Review the source",
+    counterparty: "Provider", status: "needs_verification", verification_status: null,
+    next_due_date: null, next_review_date: null, current_amount: null,
+    current_amount_currency: null, owner_agent: null, human_owner: null,
+    source_system: "Provider", source_path: null,
+  };
+  it.each([
+    { due: "2026-11-12", review: "2026-11-09", expected: "2026-11-12", basis: "due" },
+    { due: null, review: "2026-11-09", expected: "2026-11-09", basis: "review" },
+    { due: null, review: null, expected: null, basis: "unknown" },
+  ] as const)("preserves $basis date provenance without inventing a due date", ({ due, review, expected, basis }) => {
+    const item = projectObligationAttention({ ...row, next_due_date: due, next_review_date: review }, "2026-11-09");
+    expect(item).toMatchObject({ dueDate: expected, dateBasis: basis, priority: "high" });
+  });
+});

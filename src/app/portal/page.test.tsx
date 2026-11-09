@@ -11,7 +11,7 @@ vi.mock("@/features/tools/server", () => ({ loadHotelDirectory: mocks.directory 
 vi.mock("@/features/attention/owner-attention-server", () => ({ ownerAttentionReadEnabled: mocks.attentionEnabled, loadOwnerAttentionProjection: mocks.attention }));
 vi.mock("@/features/portal/hotel-operations-server", () => ({ loadHotelOperations: mocks.operations }));
 vi.mock("@/lib/server/public-demo", () => ({ isPublicDemo: mocks.publicDemo }));
-vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+vi.mock("next/navigation", () => ({ redirect: mocks.redirect, useRouter: () => ({ refresh: vi.fn() }) }));
 import PortalPage from "./page";
 
 function view(): ToroRealMenuView {
@@ -33,6 +33,7 @@ it("shows login without private navigation to anonymous visitors", async () => {
   mocks.menu.mockResolvedValue(null);
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain("/login?next=/portal");
+  expect(html).not.toContain("Actualizar ahora");
   expect(html).not.toContain('aria-label="Portal TORO"');
   expect(html).not.toContain("Dreamcatcher");
   expect(mocks.directory).not.toHaveBeenCalled();
@@ -77,6 +78,7 @@ it("incorporates reviewed tools into the same Portal without nested controls", a
   const html = renderToStaticMarkup(await PortalPage());
   expect(html).toContain('aria-label="Herramientas del hotel"');
   expect(html).toContain("Mi espacio");
+  expect(html).toContain("Actualizar ahora");
   expect(html).toContain("Equipo · sesión propia");
   expect(html).toContain('rel="noopener noreferrer"');
   expect(html).not.toMatch(/<a\b[^>]*>(?:(?!<\/a>)[\s\S])*<a[\s>]/);
@@ -121,7 +123,7 @@ it("opens the native operations tab through a strict deep link for an authorized
   const context = view(); mocks.menu.mockResolvedValue(context);
   const html = renderToStaticMarkup(await PortalPage({ searchParams: Promise.resolve({ tab: "operations" }) }));
   expect(mocks.operations).toHaveBeenCalledExactlyOnceWith(context.context);
-  expect(html).toContain("Operación · Dreamcatcher"); expect(html).toContain("Sin dato actual verificado");
+  expect(html).toContain("Trabajo registrado"); expect(html).toContain("Sin dato actual verificado");
   const panel = html.match(/<div role="tabpanel"[^>]*id="[^"]*-panel-operations"[^>]*>/)?.[0];
   expect(panel).toBeDefined(); expect(panel).not.toContain("hidden");
 });
@@ -154,7 +156,7 @@ it("keeps the complete catalogue out of favorites and operational panels", async
   expect(catalogueItems).toHaveLength(244);
   mocks.directory.mockResolvedValue({ state: "ready", links, catalogueItems, catalogueMode: "complete" });
   const html = renderToStaticMarkup(await PortalPage());
-  const favorites = html.match(/<section[^>]*aria-labelledby="portal-favorites-heading"[\s\S]*?<\/section>/)?.[0] ?? "";
+  const favorites = html.match(/<details[^>]*aria-labelledby="portal-favorites-heading"[\s\S]*?<\/details>/)?.[0] ?? "";
   expect(html).toContain("244 fichas visibles");
   expect(html.match(/data-tool="LINK-001"/g)).toHaveLength(1);
   expect(favorites).toContain('data-tool="LINK-086"');

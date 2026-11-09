@@ -17,6 +17,10 @@ export const healthFixture = (overrides = {}) => ({ id: "22222222-2222-4222-8222
 it.each(["ADMIN", "GERENCIA"] as const)("permits %s within the exact active hotel context", role => {
   const context = authorizedContext(); context.membership!.roles = [role]; expect(canReadHotelOperations(context)).toBe(true);
 });
+it.each(["home", "operations", "money", "people", "growth", "tools", "reports", "modules", "more"] as const)("preserves the historical %s destination while parsing only authorized known tabs", tab => {
+  expect(initialPortalTab(tab, true)).toBe(tab);
+  expect(initialPortalTab("operations", false)).toBe("home");
+});
 it.each(["AUDITOR", "JEFE_DEPARTAMENTO", "EMPLEADO"] as const)("does not expand operations to %s", role => {
   const context = authorizedContext(); context.membership!.roles = [role]; expect(canReadHotelOperations(context)).toBe(false);
 });
@@ -54,7 +58,21 @@ it("keeps priorities and a bounded sample without pretending it is the hotel's t
     id: `11111111-1111-4111-8111-${String(index).padStart(12, "0")}`, priority: index === 19 ? "critical" : "normal",
   }));
   const result = projectHotelTasks(rows); expect(result.limitReached).toBe(true); expect(result.total).toBeNull();
-  expect(result.items).toHaveLength(12); expect(result.items[0].priority).toBe("critical"); expect(result.rowsRead).toBe(HOTEL_TASK_READ_LIMIT);
+  expect(result.items).toHaveLength(200); expect(result.items[0].priority).toBe("critical"); expect(result.rowsRead).toBe(HOTEL_TASK_READ_LIMIT);
+});
+
+it("retains the whole authorized eligible batch for search while honoring the 201st-row sentinel", () => {
+  const rows = Array.from({ length: 201 }, (_, index) => taskFixture({
+    id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+    task_name: `Caso sintético ${index + 1}`,
+  }));
+  const result = projectHotelTasks(rows);
+  expect(result.items).toHaveLength(200);
+  expect(result.rowsRead).toBe(200);
+  expect(result.limitReached).toBe(true);
+  expect(result.total).toBeNull();
+  expect(result.items.some(item => item.canonicalRef.endsWith("000000000201"))).toBe(false);
+  expect(projectHotelTasks([...rows, taskFixture()]).state).toBe("unavailable");
 });
 it("never converts historical live=false data into current occupation even when safe flag is true", () => {
   const health = projectHotelKrossHealth([healthFixture()], cut);
@@ -79,4 +97,16 @@ it("does not confuse a successful empty read with proof that there is no pending
   const missing = renderToStaticMarkup(<HotelOperationsPanel view={emptyHotelOperations("unavailable")} />);
   expect(missing).toContain("no significa cero pendientes"); expect(missing).toContain("acceso privado es independiente");
   expect(renderToStaticMarkup(<HotelOperationsPanel view={emptyHotelOperations("denied")} />)).toBe("");
+});
+
+it("shows controls over the eligible batch but only twelve task details on the first page", () => {
+  const rows = Array.from({ length: 25 }, (_, index) => taskFixture({
+    id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`, task_name: `Fixture detail ${index + 1}`,
+  }));
+  const html = renderToStaticMarkup(<HotelOperationsPanel view={{ ...emptyHotelOperations("partial"), readAt: cut, tasks: projectHotelTasks(rows) }} />);
+  expect(html).toContain('aria-label="Buscar tareas registradas"');
+  expect(html).toContain("25 filas consultadas"); expect(html).toContain("25 tareas elegibles");
+  expect(html).toContain("Mostrando 1–12 de 25"); expect(html).not.toContain("Fixture detail 13");
+  expect(html).toContain("Sin responsable"); expect(html).toContain("Restablecer"); expect(html).toContain("Copiar resumen");
+  expect(html).toContain("Prioridad registrada"); expect(html).not.toContain('data-priority="critical"');
 });

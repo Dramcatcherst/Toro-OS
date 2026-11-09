@@ -2,25 +2,28 @@
 
 import { useId, useReducer } from "react";
 import { RotateCcw, Search } from "lucide-react";
-import type { ToolCatalogueItem, ToolCatalogueMode } from "./directory";
+import { buildHotelServiceGroups, type ToolCatalogueItem, type ToolCatalogueMode } from "./directory";
 import { getToolPresentation, PortalToolLinks } from "./portal-tool-links";
 import portalStyles from "@/features/portal/portal.module.css";
 import styles from "./portal-tool-catalogue.module.css";
 
 export const TOOL_CATALOGUE_BATCH_SIZE = 48;
-export type ToolCatalogueFilters = { query: string; project: string; category: string; state: string; visibleCount: number };
+export type ToolCatalogueFilters = { query: string; project: string; category: string; state: string; visibleCount: number; view: "compact" | "detail" };
 export type ToolCatalogueAction =
-  | { type: "query" | "project" | "category" | "state"; value: string }
+  | { type: "query" | "project" | "category" | "state" | "view"; value: string }
   | { type: "reset" }
-  | { type: "more" };
+  | { type: "more" }
+  | { type: "all" };
 
 export const initialToolCatalogueFilters: ToolCatalogueFilters = {
-  query: "", project: "Todos", category: "Todas", state: "Todos", visibleCount: TOOL_CATALOGUE_BATCH_SIZE,
+  query: "", project: "Todos", category: "Todas", state: "Todos", visibleCount: TOOL_CATALOGUE_BATCH_SIZE, view: "compact",
 };
 
 export function toolCatalogueReducer(state: ToolCatalogueFilters, action: ToolCatalogueAction): ToolCatalogueFilters {
   if (action.type === "reset") return initialToolCatalogueFilters;
   if (action.type === "more") return { ...state, visibleCount: state.visibleCount + TOOL_CATALOGUE_BATCH_SIZE };
+  if (action.type === "all") return { ...state, visibleCount: Number.MAX_SAFE_INTEGER };
+  if (action.type === "view") return { ...state, view: action.value === "detail" ? "detail" : "compact" };
   return { ...state, [action.type]: action.value, visibleCount: TOOL_CATALOGUE_BATCH_SIZE };
 }
 
@@ -68,7 +71,15 @@ export function selectToolCatalogue(items: ToolCatalogueItem[], filters: ToolCat
     if (previous?.project === project) previous.links.push(item);
     else groups.push({ project, links: [item] });
   }
-  return { filteredLinks, visibleLinks, groups, projects, categories, states, total: items.length,
+  const visibleById = new Map(visibleLinks.map(item => [item.id, item]));
+  const serviceGroups = buildHotelServiceGroups(visibleLinks).map(group => ({
+    ...group,
+    links: group.destinations.flatMap(destination => {
+      const item = visibleById.get(destination.id);
+      return item ? [item] : [];
+    }),
+  }));
+  return { filteredLinks, visibleLinks, groups, serviceGroups, projects, categories, states, total: items.length,
     filteredTotal: filteredLinks.length, hasMore: visibleLinks.length < filteredLinks.length };
 }
 
@@ -107,16 +118,22 @@ export function PortalToolCatalogue({ items, idPrefix, mode = "reviewed" }: {
     </div>
     <div className={styles.feedbackRow}>
       <p role="status" aria-live="polite" className={portalStyles.panelNote}>{selection.visibleLinks.length} mostrados · {selection.filteredTotal} coincidencias · {selection.total} en el catálogo</p>
-      <button type="button" className={portalStyles.utilityButton} disabled={!filtered} onClick={() => dispatch({ type: "reset" })}><RotateCcw size={15} aria-hidden="true" />Limpiar filtros</button>
+      <div className={styles.feedbackActions}>
+        <div className={styles.viewSwitch} aria-label="Presentación del catálogo">
+          <button type="button" className={portalStyles.utilityButton} aria-pressed={filters.view === "compact"} onClick={() => dispatch({ type: "view", value: "compact" })}>Compacta</button>
+          <button type="button" className={portalStyles.utilityButton} aria-pressed={filters.view === "detail"} onClick={() => dispatch({ type: "view", value: "detail" })}>Detalle</button>
+        </div>
+        <button type="button" className={portalStyles.utilityButton} disabled={!filtered} onClick={() => dispatch({ type: "reset" })}><RotateCcw size={15} aria-hidden="true" />Limpiar filtros</button>
+      </div>
     </div>
-    {selection.groups.length ? <div className={styles.groups}>{selection.groups.map((group, index) =>
-      <section key={group.project + "-" + index} className={styles.group} aria-labelledby={catalogueId + "-project-" + index}>
-        <div className={styles.groupHeading}><h3 id={catalogueId + "-project-" + index}>{group.project}</h3><span>{group.links.length} {group.links.length === 1 ? "ficha" : "fichas"} en este lote</span></div>
-        <PortalToolLinks links={group.links} wide idPrefix={catalogueId + "-group-" + index} ariaLabel={"Herramientas · " + group.project} />
+    {selection.serviceGroups.length ? <div className={styles.groups}>{selection.serviceGroups.map((group, index) =>
+      <section key={group.key} className={styles.group} aria-labelledby={catalogueId + "-service-" + index}>
+        <div className={styles.groupHeading}><h3 id={catalogueId + "-service-" + index}>{group.label}</h3><span>{group.links.length} {group.links.length === 1 ? "destino" : "destinos"} en este lote</span></div>
+        <PortalToolLinks links={group.links} compact={filters.view === "compact"} wide={filters.view === "detail"} idPrefix={catalogueId + "-group-" + index} ariaLabel={"Herramientas · " + group.label} />
       </section>)}</div>
       : <p className={portalStyles.emptyNote}>{selection.total ? "Sin coincidencias. Cambia la búsqueda o limpia los filtros." : "No hay destinos disponibles en esta consulta."}</p>}
     {selection.hasMore ? <div className={styles.moreRow}><button type="button" className={portalStyles.utilityButton} onClick={() => dispatch({ type: "more" })}>
       Mostrar {Math.min(TOOL_CATALOGUE_BATCH_SIZE, selection.filteredTotal - selection.visibleLinks.length)} más
-    </button></div> : null}
+    </button><button type="button" className={portalStyles.utilityButton} onClick={() => dispatch({ type: "all" })}>Ver todos</button></div> : null}
   </section>;
 }

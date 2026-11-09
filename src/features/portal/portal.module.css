@@ -372,3 +372,96 @@
  .viewPanel .card, .card .subtleDisclosure summary, .calcGrid { --toro-focus:Highlight; }
  .viewPanel :is(input,select):focus-visible, .calcGrid :is(input,select,button):focus-visible, .loginBox :focus-visible { outline-color:Highlight; }
 }
+
+/* Existing authenticated workspace: navy navigation, clear working surfaces. */
+.workspacePage { --toro-focus:#075fc8; --toro-text:#18344c; --toro-muted:#405a73; color-scheme:light; background:#edf3fa; color:#18344c; min-height:calc(100vh - 96px); }
+.workspacePage .content { padding-top:0; }
+.workspace { min-width:0; }
+.primaryTabs { display:flex; align-items:stretch; gap:2px; padding:0 8px; margin:0 -16px 20px; background:#081b2e; border-bottom:1px solid #456583; }
+.primaryTabs button { display:flex; align-items:center; justify-content:center; gap:9px; min-height:56px; padding:10px 22px; border:0; border-bottom:4px solid transparent; background:transparent; color:#e6eff9; font-size:14px; font-weight:650; cursor:pointer; }
+.primaryTabs button:hover { background:#173851; }
+.primaryTabs button[aria-selected="true"] { border-bottom-color:#4fa4ff; color:#fff; background:#12314c; }
+.primaryTabs button:focus-visible { outline:3px solid #f5cb76; outline-offset:-4px; }
+.workspaceHeading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 12px; margin:8px 0 16px; }
+.workspaceHeading p { color:#526c83; font-size:12px; margin:0 0 4px; }
+.workspaceHeading h1 { font-size:28px; font-weight:750; line-height:1.3; color:#102d48; letter-spacing:-.02em; }
+.workspaceHeading h1:focus-visible { outline:3px solid #075fc8; outline-offset:4px; }
+.findTools { display:flex; align-items:center; gap:8px; min-height:44px; padding:8px 12px; border:1px solid #91adc8; border-radius:6px; background:#fff; color:#164573; font-size:12px; font-weight:600; cursor:pointer; }
+.findTools:hover { background:#e2efff; }
+.secondaryTabs { display:flex; flex-wrap:wrap; gap:8px; padding:0 0 16px; }
+.secondaryTabs button { display:flex; align-items:center; justify-content:center; min-height:44px; padding:8px 14px; border:1px solid #a5bdd5; border-radius:6px; background:#fff; color:#17456e; font-size:13px; cursor:pointer; }
+.secondaryTabs button[aria-current] { background:#075fc8; color:#fff; border-color:#075fc8; }
+.workspacePage .panel { --section-accent:#2e7bc4; --toro-focus:#075fc8; background:#fff; color:#18344c; border:1px solid #b9cce0; border-top:2px solid #7ba9d7; border-radius:8px; box-shadow:0 3px 10px #0c31500a; padding:16px; }
+.workspacePage .panelHeading { margin:-3px 0 8px; }
+.workspacePage .panelHeading h2,.workspacePage .sectionHeading h2 { color:#18344c; }
+.workspacePage .textLink,.workspacePage .panelHeading svg { color:#0753ac; }
+.workspacePage .panelBody,.workspacePage .panelNote,.workspacePage .emptyNote,.workspacePage .sectionNote,.workspacePage .sectionHeading > span,.workspacePage .note,.workspacePage .contextDisclosure,.workspacePage .connectionNote { color:#405a73; }
+.workspacePage .subtleDisclosure { color:#405a73; border-color:#bfd3e6; }
+.workspacePage .panel .utilityNote,.workspacePage .panel .utilityField,.workspacePage .panel .responseTools h3 { color:#405a73; }
+.workspacePage .pendingPanel { background:#f5f9fe; border-color:#b9cce0; }
+.workspacePage .pendingPanel .pendingList { background:#fff; border-color:#bfd3e6; }
+.workspacePage .pendingPanel .priority { color:#214b77; background:#e8f1fd; border-color:#a2bddd; }
+.ownerHome { display:grid; gap:16px; align-items:start; }
+.homeMetric { font-size:18px; font-weight:650; line-height:1.5; color:#18344c; }
+.readOnlyBadge { display:inline-flex; padding:4px 8px; border-radius:5px; background:#dcecff; color:#0957a9; font-size:12px; font-weight:650; }
+.homeActions { display:grid; margin-top:10px; }
+.homeActions :is(a,button) { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; color:#0753ac; border:0; border-bottom:1px solid #d2dfed; background:transparent; text-decoration:none; font-size:13px; font-weight:650; text-align:left; cursor:pointer; }
+.homeActions :is(a,button):hover { background:#edf5ff; }
+.homeActions :is(a,button):last-child { border-bottom:0; }
+.homeDisclosure { margin-top:16px; border:1px solid #bfd3e6; border-radius:7px; background:#f8fbff; padding:0 12px 8px; color:#405a73; }
+.homeDisclosure > summary { display:flex; align-items:center; gap:8px; min-height:48px; cursor:pointer; font-size:13px; font-weight:600; list-style:revert; }
+.sourceDisclosure { margin-bottom:12px; color:#405a73; font-size:12px; border-bottom:1px solid #bfd3e6; }
+.sourceDisclosure summary { min-height:44px; align-content:center; cursor:pointer; }
+.sourceDisclosure p { padding-bottom:10px; line-height:1.6; }
+.workspacePage .tabPanel[hidden] { display:none; }
+.workspacePage .contextDisclosure { border-color:#bfd3e6; }
+.workspacePage .favoritesGrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.workspacePage .favoriteCard { background:#fff; border-color:#b9cce0; }
+.workspacePage .favoriteCard:hover { background:#edf5ff; }
+@media(min-width:900px) { .ownerHome { grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); } .workspacePage .favoritesGrid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:619px) {
+ .workspacePage .content { padding:8px 12px calc(90px + env(safe-area-inset-bottom)); }
+ .primaryTabs { position:fixed; z-index:35; left:0; right:0; bottom:0; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; padding:0 4px env(safe-area-inset-bottom); margin:0; border-top:1px solid #9ebad5; border-bottom:0; background:#fff; box-shadow:0 -4px 14px #12314c12; }
+ .primaryTabs button { flex-direction:column; gap:4px; min-height:64px; padding:8px 4px 6px; border-bottom-width:3px; color:#244b71; background:#fff; font-size:12px; }
+ .primaryTabs button[aria-selected="true"] { background:#f0f6fe; border-bottom-color:#075fc8; color:#0753ac; }
+ .primaryTabs button:hover { background:#e2efff; }
+ .primaryTabs button:focus-visible { outline-color:#075fc8; }
+ .workspaceHeading { margin:6px 0 16px; }
+ .workspaceHeading h1 { font-size:26px; }
+ .workspaceHeading p { font-size:12px; }
+ .findTools { padding:8px; }
+ .workspacePage .panel { padding:12px; }
+ .workspacePage .panelHeading h2 { font-size:16px; }
+ .homeMetric { font-size:16px; }
+ .secondaryTabs { gap:6px; }
+ .secondaryTabs button { padding:8px 10px; font-size:12px; flex:1 1 auto; }
+}
+@media(forced-colors:active) {
+ .workspacePage,.workspacePage .panel,.primaryTabs,.primaryTabs button,.secondaryTabs button,.findTools,.homeDisclosure,.workspacePage .pendingPanel,.workspacePage .pendingPanel .pendingList,.workspacePage .pendingPanel .priority,.readOnlyBadge { background:Canvas; color:CanvasText; border-color:CanvasText; }
+ .primaryTabs button[aria-selected="true"],.secondaryTabs button[aria-current] { background:Highlight; color:HighlightText; border-color:Highlight; }
+ .workspacePage :focus-visible { outline-color:Highlight; }
+}
+
+/* Daily work uses the existing authorized read; compact presentation, no new actions. */
+.homeDaily { min-width:0; }
+.homeDay { color:#405a73; font-size:12px; margin:3px 0 5px; }
+.homeDailyStats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:10px 0 0; }
+.homeDailyStats > div { min-width:0; padding:9px; border:1px solid #bfd3e6; background:#f4f8fd; border-radius:6px; }
+.homeDailyStats dt { color:#405a73; font-size:12px; line-height:1.4; overflow-wrap:anywhere; }
+.homeDailyStats dd { color:#18344c; font-size:18px; font-weight:700; margin:3px 0 0; line-height:1.3; }
+.homeNext { margin-top:12px; }
+.homeNext h3 { color:#18344c; font-size:13px; font-weight:700; }
+.homeNext ol { list-style:none; margin:3px 0 0; padding:0; }
+.homeNext li { border-bottom:1px solid #d2dfed; padding:8px 0; min-width:0; overflow-wrap:anywhere; }
+.homeNext li:last-child { border-bottom:0; }
+.homeNext strong { display:block; font-size:13px; line-height:1.5; color:#18344c; }
+.homeNext small { display:block; font-size:12px; line-height:1.5; color:#405a73; }
+.homeNext .homeRevalidation { color:#684514; }
+@media(min-width:720px) { .homeDailyStats { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media(forced-colors:active) {
+ .homeDailyStats > div { background:Canvas; border-color:CanvasText; }
+ .homeDaily :is(p,dt,dd,h3,strong,small),.homeNext .homeRevalidation { color:CanvasText; }
+ .homeNext li { border-color:CanvasText; }
+}
+
+.homeAttempt { display:block; margin-top:6px; font-size:12px; }

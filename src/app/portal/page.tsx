@@ -18,6 +18,9 @@ import { PortalAccessRecovery } from "@/features/auth/portal-access-recovery";
 import { canReadHotelOperations, initialPortalTab } from "@/features/portal/hotel-operations";
 import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
 import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
+import { PortalHomeSummary } from "@/features/portal/portal-home-summary";
+
+import { PortalReadRefresh } from "@/features/portal/portal-read-refresh-control";
 
 export const dynamic = "force-dynamic";
 
@@ -60,11 +63,13 @@ async function PortalContent(requestedTab?: string | string[]) {
   const availableCount = modules.filter(module => module.href).length;
   return <>
     <PortalHeader current="overview" scopeLabel={scopeLabel} includeTools={hotelAllowed} />
-    <main id="portal-content" className={styles.page} tabIndex={-1}><div className={styles.content}>
+    <main id="portal-content" className={`${styles.page} ${styles.workspacePage}`} tabIndex={-1}><div className={styles.content}>
+      <PortalReadRefresh key={`reads:${view.context.userId}:${view.context.orgId}`} queriedAt={new Date().toISOString()} />
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         initialTab={initialPortalTab(requestedTab, hotelAllowed)}
         hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
+        hotelDailySummary={operations ? <PortalHomeSummary tasks={operations.tasks} readAt={operations.readAt} /> : null}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>
         <p>{availableCount} módulos con destino disponible; {modules.length - availableCount} en preparación. Un destino puede ser una consulta o una guía.</p>
@@ -81,3 +86,4 @@ export default async function PortalPage({ searchParams }: {
   const query = await searchParams;
   return <PrivateViewGuard>{await PortalContent(query?.tab)}</PrivateViewGuard>;
 }
+

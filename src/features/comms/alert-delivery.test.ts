@@ -8,7 +8,9 @@ import {
   moduleAlertSignal,
   ownerAttentionSignal,
   prepareAlertDelivery,
+  reconcileAlertDeliveryReceipts,
   roomBindingRole,
+  type AlertDeliveryReceipt,
   type WhatsAppGroupBinding,
 } from "./alert-delivery";
 
@@ -191,6 +193,96 @@ describe("C50-01 protected alert byte budget", () => {
     expect(prepareAlertDelivery(managementSignal(), [verifiedManagementGroup], {
       ...deliveryContext, messageBudget: { maxFieldBytes: 10, maxMessageBytes },
     }).status).toBe("blocked");
+  });
+});
+
+describe("Task 3 durable delivery reconciliation", () => {
+  const receipt = (change: Partial<AlertDeliveryReceipt> = {}): AlertDeliveryReceipt => ({
+    receiptId: "receipt-1",
+    orgId: "org-hotel",
+    destinationBindingId: "binding-management",
+    dedupeKey: prepare().dedupeKey,
+    provider: "openclaw",
+    providerMessageRef: "openclaw-message-1",
+    state: "sent",
+    observedAt: "2026-10-13T20:01:30Z",
+    ...change,
+  });
+
+  it("permits one exact attempt only while the candidate has no receipt", () => {
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [])).toEqual({
+      state: "prepared", shouldAttempt: true, replayed: false,
+      providerMessageRef: null, receiptIds: [], blockers: [],
+    });
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [receipt()])).toMatchObject({
+      state: "sent", shouldAttempt: false, replayed: true,
+      providerMessageRef: "openclaw-message-1", blockers: [],
+    });
+  });
+
+  it("shows delivered and explicit rejection without silently retrying either", () => {
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [receipt({ state: "delivered" })])).toMatchObject({
+      state: "delivered", shouldAttempt: false,
+    });
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [receipt({
+      state: "failed", providerMessageRef: null,
+    })])).toMatchObject({
+      state: "failed", shouldAttempt: false, blockers: ["explicit_retry_authorization_required"],
+    });
+  });
+
+  it("holds an ambiguous timeout for provider reconciliation", () => {
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [receipt({
+      state: "unknown", providerMessageRef: null,
+    })])).toMatchObject({
+      state: "unknown", shouldAttempt: false,
+      blockers: ["provider_receipt_reconciliation_required"],
+    });
+  });
+
+  it("resolves an ambiguous timeout from a later provider readback without another attempt", () => {
+    const result = reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [
+      receipt({ state: "unknown", providerMessageRef: null }),
+      receipt({ receiptId: "receipt-2", state: "delivered", observedAt: "2026-10-13T20:02:00Z" }),
+    ]);
+    expect(result).toMatchObject({
+      state: "delivered", shouldAttempt: false, replayed: true,
+      providerMessageRef: "openclaw-message-1", receiptIds: ["receipt-1", "receipt-2"], blockers: [],
+    });
+  });
+
+  it("deduplicates replayed evidence and prevents a double-click from becoming a second effect", () => {
+    const existing = receipt();
+    const result = reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [existing, existing]);
+    expect(result).toMatchObject({
+      state: "sent", shouldAttempt: false, replayed: true,
+      receiptIds: ["receipt-1"], providerMessageRef: "openclaw-message-1",
+    });
+  });
+
+  it.each([
+    ["other organization", receipt({ orgId: "org-other" }), "delivery_receipt_scope_mismatch"],
+    ["other destination", receipt({ destinationBindingId: "binding-other" }), "delivery_receipt_scope_mismatch"],
+    ["other operation", receipt({ dedupeKey: "alert-delivery-v2:other" }), "delivery_receipt_scope_mismatch"],
+    ["missing provider ref", receipt({ providerMessageRef: null }), "provider_message_reference_missing"],
+  ])("fails closed for %s evidence", (_name, evidence, blocker) => {
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [evidence])).toMatchObject({
+      state: "unknown", shouldAttempt: false, blockers: [blocker],
+    });
+  });
+
+  it("treats conflicting provider effects as unknown instead of selecting one", () => {
+    expect(reconcileAlertDeliveryReceipts(prepare(), "org-hotel", [
+      receipt(), receipt({ receiptId: "receipt-2", providerMessageRef: "openclaw-message-2" }),
+    ])).toMatchObject({
+      state: "unknown", shouldAttempt: false, blockers: ["delivery_receipt_conflict"],
+    });
+  });
+
+  it("does not attempt transport for a blocked preparation", () => {
+    expect(reconcileAlertDeliveryReceipts(prepare(managementSignal(), []), "org-hotel", [])).toMatchObject({
+      state: "unknown", shouldAttempt: false, blockers: ["delivery_candidate_blocked"],
+    });
   });
 });
 

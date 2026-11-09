@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { ToroResolvedContext } from "@/features/context/types";
-import { canReadCompleteHotelDirectory, canReadHotelDirectory, projectCompleteCatalogueRows, projectHotelLinks } from "./directory";
+import { buildHotelServiceGroups, canReadCompleteHotelDirectory, canReadHotelDirectory, projectCompleteCatalogueRows, projectHotelLinks } from "./directory";
 import { authorizedContext, completeCatalogueRows, quoteEntry as entry, readKross, sourceRow as row } from "./fixtures.test-utils";
 
 const context = authorizedContext();
@@ -65,6 +65,44 @@ describe("complete catalogue boundary", () => {
     expect(new Set(projected.map(item => item.id)).size).toBe(244);
     expect(JSON.stringify(projected)).not.toContain("evidence");
     expect(JSON.stringify(projected)).not.toContain("account_refs");
+  });
+
+  it("preserves same-provider destinations as distinct accounts with their own scope and href", () => {
+    const rows = completeCatalogueRows();
+    rows[0] = {...rows[0],name:"Booking Dreamcatcher",provider:"Booking.com",category:"OTA",scope:"Cuenta Dreamcatcher",lifecycle:"operativo",url:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=1"};
+    rows[1] = {...rows[1],name:"Booking Toro",provider:"Booking.com",category:"OTA",scope:"Cuenta Toro",lifecycle:"operativo",url:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=2"};
+    const groups = buildHotelServiceGroups(projectCompleteCatalogueRows(context, rows));
+    expect(groups.find(group => group.label === "OTA · Booking.com")?.destinations).toEqual([
+      {id:"LINK-001",label:"Booking Dreamcatcher",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=1",scope:"Cuenta Dreamcatcher",lifecycle:"operativo"},
+      {id:"LINK-002",label:"Booking Toro",href:"https://admin.booking.com/hotel/hoteladmin/groupHome.html?hotel_id=2",scope:"Cuenta Toro",lifecycle:"operativo"},
+    ]);
+  });
+
+  it("keeps the Kross account/password route distinct from the operational dashboard", () => {
+    const rows = completeCatalogueRows();
+    rows[0] = {...rows[0],name:"Kross Admin · contraseña",provider:"Kross",category:"Acceso seguro",scope:"Cuenta administrador",lifecycle:"operativo",url:"https://passwords.google.com/"};
+    rows[47] = {...rows[47],name:"Kross Planner",provider:"Kross",category:"PMS",scope:"Dreamcatcher Hotel",lifecycle:"operativo",url:"https://dreamcatcherhotel.krossbooking.com/admin/dashboard#/admin/tableau/planner?id=dreamcatcherhotel"};
+    const groups = buildHotelServiceGroups(projectCompleteCatalogueRows(context, rows));
+    expect(groups.find(group => group.label === "Acceso seguro · Kross")?.destinations).toEqual([
+      {id:"LINK-001",label:"Kross Admin · contraseña",href:"https://passwords.google.com/",scope:"Cuenta administrador",lifecycle:"operativo"},
+    ]);
+    expect(groups.find(group => group.label === "PMS · Kross")?.destinations).toEqual([
+      {id:"LINK-048",label:"Kross Planner",href:"https://dreamcatcherhotel.krossbooking.com/admin/dashboard#/admin/tableau/planner?id=dreamcatcherhotel",scope:"Dreamcatcher Hotel",lifecycle:"operativo"},
+    ]);
+  });
+
+  it("keeps a missing service destination pending without inventing an href", () => {
+    const rows = completeCatalogueRows();
+    rows[2] = {...rows[2],name:"Quovis",provider:"Quovis",category:"Facturación",scope:"Hotel",lifecycle:"operativo",url:""};
+    const groups = buildHotelServiceGroups(projectCompleteCatalogueRows(context, rows));
+    expect(groups.find(group => group.label === "Facturación · Quovis")?.destinations).toEqual([
+      {id:"LINK-003",label:"Quovis",href:null,scope:"Hotel",lifecycle:"operativo"},
+    ]);
+  });
+
+  it("rejects proposed candidates mixed into contractual catalogue entries", () => {
+    const mixed: unknown[] = [...completeCatalogueRows(), {id:"candidate.quovis",status:"proposal"}];
+    expect(projectCompleteCatalogueRows(context, mixed)).toEqual([]);
   });
 
   it.each([
