@@ -71,3 +71,15 @@ it("does not render filter options from denied/disabled payloads",()=>{
   const html=renderToStaticMarkup(<PortalAttentionSummary state="disabled" projection={projection} />);
   expect(html).not.toContain("Filtrar esta vista financiera");expect(html).not.toContain("Limpiar filtros");
 });
+
+it.each([
+  { basis: "due" as const, label: "Vencimiento registrado" },
+  { basis: "review" as const, label: "Revisión registrada" },
+  { basis: "unknown" as const, label: "Fecha registrada" },
+  { basis: undefined, label: "Fecha registrada" },
+])("labels an obligation with $basis provenance without inventing a deadline", ({ basis, label }) => {
+  const item = { ...projection.items[0], kind: "obligation" as const, dateBasis: basis };
+  const html = renderToStaticMarkup(<PortalAttentionSummary state="ready" projection={{ ...projection, items: [item] }} />);
+  expect(html).toContain(label);
+  if (basis !== "due") expect(html).not.toContain("Vencimiento registrado");
+});

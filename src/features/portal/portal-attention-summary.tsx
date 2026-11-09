@@ -22,7 +22,7 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
         const href = safeEvidenceHref(item.sourceUrl);
         return { currency: attentionCurrency(item.currency), month: attentionMonth(item.dueDate), content: <details key={item.dedupeRef} className={styles.pendingItem}>
           <summary><span className={styles.priority}>Revisar</span>
-            <span className={styles.pendingCopy}><strong>{item.title}</strong><small>{item.kind === "invoice" || item.kind === "obligation" ? "Vencimiento registrado" : "Seguimiento registrado"}: {formatAttentionDate(item.dueDate)} · {item.state === "unknown" ? "Estado por verificar" : item.state}</small></span>
+            <span className={styles.pendingCopy}><strong>{item.title}</strong><small>{item.kind === "obligation" ? item.dateBasis === "due" ? "Vencimiento registrado" : item.dateBasis === "review" ? "Revisión registrada" : "Fecha registrada" : item.kind === "invoice" ? "Vencimiento registrado" : "Seguimiento registrado"}: {formatAttentionDate(item.dueDate)} · {item.state === "unknown" ? "Estado por verificar" : item.state}</small></span>
             <ArrowRight size={16} aria-hidden="true" />
           </summary>
           <div className={styles.pendingDetail}>
