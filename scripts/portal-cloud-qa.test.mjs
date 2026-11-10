@@ -23,3 +23,11 @@ test("retains exact approved target without returning session bytes", () => {
   const output = config(valid); assert.equal(output.url, valid.PORTAL_QA_URL);
   assert.equal(output.sha, valid.PORTAL_QA_SHA); assert.equal(output.sessionFile, valid.PORTAL_QA_SESSION_FILE);
 });
+
+test("accepts existing-account authentication without returning credentials", () => {
+  const input = { ...valid, PORTAL_QA_SESSION_FILE: undefined, PORTAL_QA_IDENTIFIER: "example", PORTAL_QA_PASSWORD: "test-only" };
+  const out = config(input); assert.equal(out.sessionFile, null);
+  assert(!JSON.stringify(out).includes("test-only"));
+  assert.throws(() => config({ ...input, PORTAL_QA_PASSWORD: undefined }), /QA_BLOCKED_CONFIGURATION/);
+  assert.throws(() => config({ ...input, PORTAL_QA_SESSION_FILE: valid.PORTAL_QA_SESSION_FILE }), /QA_BLOCKED_AMBIGUOUS_AUTH/);
+});

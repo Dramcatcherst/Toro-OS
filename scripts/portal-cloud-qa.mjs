@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+import { openAuthorizedSession } from "./portal-cloud-session.mjs";
 
 export function config(env) {
-  const required = ["PORTAL_QA_URL", "PORTAL_QA_SHA", "PORTAL_QA_SESSION_FILE", "PORTAL_QA_APPROVED_ORIGIN"];
+  const required = ["PORTAL_QA_URL", "PORTAL_QA_SHA", "PORTAL_QA_APPROVED_ORIGIN"];
   if (required.some(key => !env[key])) throw new Error("QA_BLOCKED_CONFIGURATION");
+  if (!env.PORTAL_QA_SESSION_FILE && !(env.PORTAL_QA_IDENTIFIER && env.PORTAL_QA_PASSWORD)) throw new Error("QA_BLOCKED_CONFIGURATION");
+  if (env.PORTAL_QA_SESSION_FILE && (env.PORTAL_QA_IDENTIFIER || env.PORTAL_QA_PASSWORD)) throw new Error("QA_BLOCKED_AMBIGUOUS_AUTH");
   const url = new URL(env.PORTAL_QA_URL);
   const origin = new URL(env.PORTAL_QA_APPROVED_ORIGIN);
   if (url.protocol !== "https:" || url.origin !== origin.href.replace(/\/$/, "") ||
@@ -12,13 +15,13 @@ export function config(env) {
     throw new Error("QA_BLOCKED_TARGET");
   }
   if (!/^[a-f0-9]{40}$/.test(env.PORTAL_QA_SHA)) throw new Error("QA_BLOCKED_SHA");
-  return { url: url.href, sha: env.PORTAL_QA_SHA, sessionFile: env.PORTAL_QA_SESSION_FILE };
+  return { url: url.href, sha: env.PORTAL_QA_SHA, sessionFile: env.PORTAL_QA_SESSION_FILE || null };
 }
 
 export async function run(env = process.env) {
   const target = config(env);
   // Session bytes are private input, never logged or exported as evidence.
-  const state = JSON.parse(await readFile(target.sessionFile, "utf8"));
+  const state = target.sessionFile ? JSON.parse(await readFile(target.sessionFile, "utf8")) : { cookies: [], origins: [] };
   assert(Array.isArray(state.cookies), "QA_BLOCKED_SESSION_FORMAT");
   const { chromium } = await import("playwright");
   const browser = await chromium.launch();
@@ -33,6 +36,7 @@ export async function run(env = process.env) {
   try {
     // No trace/video/HAR: they could disclose the account's data or credentials.
     const context = await browser.newContext({ storageState: state });
+    await openAuthorizedSession(context, target, env);
     // Never permit the harness to write business data or contact another origin.
     await context.route("**/*", route => {
       const request = route.request();
