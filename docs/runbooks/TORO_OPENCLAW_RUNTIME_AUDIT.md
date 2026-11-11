@@ -457,3 +457,94 @@ Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominad
 Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.
 
 
+
+## Administración remota sin PC del propietario — 11/11/2026
+
+**Estado: diseño autorizado; conector/enrolamiento y recuperación NO ejecutados.**
+Reutiliza la tarea de paridad de runtime y la auditoría #209/#170; el Plan General
+`CLOUD_AUTONOMY_OWNER_DIRECTIVE_20261111` es la autoridad de dirección. Los
+identificadores del host, cuentas y evidencia individual permanecen privados.
+
+### Evidencia y frontera
+
+La captura del propietario muestra acceso SSH y un servicio de sistema
+coincidente con OpenClaw activo/running; el nombre de unidad está truncado.
+No acredita versión, inicio automático, política de reinicio, cuenta WhatsApp,
+identidad TORO ni entrega. No confundir su terminal con una herramienta
+disponible para el agente. No repetir diagnósticos bloqueados sin un cambio
+de acceso. Conservar el corte de cada fuente.
+
+### Enrolamiento y conexión, una vez
+
+1. Desde una sesión AWS autorizada, comprobar el host y SSM Agent existentes;
+   si ya está inscrito, reutilizarlo. Para Lightsail contrastar el procedimiento
+   AWS de nodo administrado/hybrid activation con región, cuenta y versión.
+   Revisar costos aplicables antes de cualquier contratación.
+2. Preparar el rol de máquina y el operador por separado, limitados al recurso
+   y propósito. Revisar el cambio exacto IAM y su reversión antes de ejecutarlo;
+   no otorgar AdministratorAccess ni emitir credenciales en chat.
+3. Mantener Gateway en loopback/ruta privada autenticada. No abrir puertos del
+   Gateway o SSH al público para conectar este entorno. La ruta de administración
+   debe funcionar aunque WhatsApp esté caído.
+4. Integrar la capacidad de administración en el conector TORO existente bajo
+   autenticación de servidor, identidad/scope y Control Plane; no crear otro
+   motor de tareas o cron. SSM por sí solo no expone herramientas en ChatGPT.
+   Si el conector actual no soporta administración, preparar una extensión
+   mínima revisable, sin modificar su contrato de observaciones existente.
+5. Verificar una llamada de lectura y su recibo desde la superficie final.
+   El estado Online de SSM no acredita conexión del Gateway o las dos cuentas.
+
+### Acciones y privilegios mínimos
+
+- Primera fase: identidad saneada del host, versión instalada, unidad exacta,
+  estado de servicio, probe de canal y metadatos de respaldo; no shell libre.
+- Fijar documento SSM/versión revisados y argumentos tipados permitidos; no
+  exponer documentos genéricos de shell con comandos suministrados por el modelo.
+  El endpoint decide la acción autorizada, no un texto libre del usuario.
+- El diagnóstico existente se ejecuta con el usuario/perfil real del servicio,
+  rutas verificadas y su versión compatible; salida allowlist del script
+  `scripts/openclaw-host-diagnostics.mjs`, nunca stdout/log/config crudos.
+- Recuperación separada de lectura: reiniciar solo la unidad comprobada cuando
+  la acción esté autorizada, exista respaldo de estado y reversión, y se haya
+  comprobado ausencia de otro emisor/worker. No logout/login/reset ni
+  actualización automática de paquetes como intento genérico de reparación.
+- Guardar credenciales en el mecanismo seguro existente; no repositorio,
+  prompts, URL, stdout, parámetros auditables ni evidencias. Identidad de host
+  y de quien solicita se verifican antes de ejecutar.
+- Ningún grupo, empleado o huésped hereda herramientas de administración.
+  Restringir datos personales y del negocio por sus scopes actuales.
+
+### Ejecución y prueba de autonomía
+
+Reutilizar tarea → run → lease/fencing → acción acotada → verificación → receipt.
+Definir timeout, costo, concurrencia y reintentos antes de activar. Ante resultado
+ambiguo consultar ejecución/efecto y reconciliar antes de repetir. Los runs
+expirados señalados en el checkpoint de independencia requieren revisar sus
+recibos originales; no cerrarlos como éxito ni reejecutarlos por antigüedad.
+
+Aceptar en orden: lectura/no-op del host correcto; denegación de recurso/acción
+incorrectos; diagnóstico fresco; respaldo/restauración aislada; recuperación
+controlada y continuidad de cada cuenta; mensaje piloto autorizado con referencia
+y acuse; replay sin duplicado. Observar 24 horas propuestas con PC desconectado,
+al menos un evento real y una interrupción controlada, sin pruebas contra un
+huésped. Conservar recibos del proveedor, aplicación y resultado por separado.
+
+Arranque automático, reinicio con espera y límite, señal de salud independiente,
+respaldo cifrado protegido y alerta alternativa son controles a comprobar o
+implementar, no estados que este texto activa. Una revocación de WhatsApp/MFA
+puede necesitar intervención humana; no prometer disponibilidad absoluta.
+
+### Ampliación y reversión
+
+Después del primer workflow aceptado, repetir el contrato por área/fuente en el
+registro existente; no duplicar Correos y Pagos, Calendar, TORO Comms ni su ingesta.
+Preservar pausas y gates del Writer, API Kross y releases selectivos. Revertir
+solo el nuevo conector/consumidor o documento SSM a la versión revisada, revocar
+su identidad puntual y conservar objetos, cursores, recibos y webhooks. La vía
+manual queda como contingencia hasta que la restauración esté demostrada.
+
+Fuentes oficiales (capacidad documentada; compatibilidad instalada pendiente):
+- https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html
+- https://repost.aws/knowledge-center/add-lightsail-to-systems-manager
+- https://docs.aws.amazon.com/systems-manager/latest/userguide/hybrid-activation-managed-nodes.html
+- https://docs.openclaw.ai/gateway/remote
