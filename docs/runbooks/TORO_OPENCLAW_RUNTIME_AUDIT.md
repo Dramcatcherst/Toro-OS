@@ -548,3 +548,68 @@ Fuentes oficiales (capacidad documentada; compatibilidad instalada pendiente):
 - https://repost.aws/knowledge-center/add-lightsail-to-systems-manager
 - https://docs.aws.amazon.com/systems-manager/latest/userguide/hybrid-activation-managed-nodes.html
 - https://docs.openclaw.ai/gateway/remote
+
+### Primera implementación transportable: diagnóstico de servicio por SSM
+
+**Preparado en código; no inscrito, conectado ni ejecutado contra AWS.**
+Se reutiliza esta lane y PR409; no se crea un endpoint MCP, otro scheduler o
+un motor de permisos. `scripts/openclaw-ssm-diagnostics.mjs` es un adaptador
+interno para un ejecutor autorizado. `executionRunId` es correlación, nunca
+prueba de autorización: el caller debe comprobar task/policy/claim/lease
+del Control Plane antes de invocarlo. No habilitarlo directamente para grupos.
+
+- [x] Documento sin parámetros `data/openclaw_ssm_service_document_v1.json`:
+  Python aislado consulta solo `systemctl list-units/show`, máximo cinco
+  unidades, comandos de dos segundos y plugin de veinte segundos. Una fila
+  no parseable o salida truncada queda sin verificar; nombres, descripciones,
+  configuración, logs y datos WhatsApp no se imprimen.
+- [x] Adaptador con cuenta/rol asumido/nodo Linux exactos y documento fijo,
+  versión numérica y hash SHA256 protegidos; compara además el contenido
+  remoto completo con el artefacto revisado. No acepta shell ni parámetros
+  para el documento, ni versiones latest/default, ni credenciales en argumentos.
+- [x] Preparación por defecto sin llamadas AWS. Ejecución explícita emite un
+  solo SendCommand; resultado ambiguo conserva referencia cuando existe y
+  exige conciliación. Resume consulta el mismo CommandId, documento, nodo y
+  comentario TORO:runId, sin volver a despachar. No crea estado paralelo.
+- [x] Pruebas sintéticas y ejecución Python con systemctl simulado; revisión
+  independiente de privacidad, correlación y cobertura. Un servicio observado
+  no acredita que esté sano, que WhatsApp esté conectado ni que haya entrega.
+- [ ] Enrolar el host existente con acceso AWS autorizado, verificar versión
+  instalada de AWS CLI 2/SSM Agent y Python3, revisar permisos y costos.
+- [ ] Crear el documento revisado con operador separado; fijar versión/hash
+  devueltos por AWS en la configuración protegida existente. Rol de ejecución
+  sin Create/UpdateDocument, IAM, PassRole, StartSession ni documentos de
+  shell genérico; revisar los recursos soportados por cada acción SSM antes
+  de aplicar una política, sin grants amplios automáticos.
+- [ ] Enlazar al ejecutor/conector canónico y comprobar desde la superficie
+  final llamada autorizada, negativa de recurso/acción y recibo real.
+  La existencia del archivo no expone una herramienta a este chat.
+- [ ] Después: diagnóstico OpenClaw completo con su identidad real,
+  respaldo/restauración, recuperación y piloto de reporte autorizado.
+
+Configurar mediante el mecanismo protegido del ejecutor, sin valores en git
+o chat: `TORO_SSM_REGION`, `TORO_SSM_ACCOUNT_ID`, `TORO_SSM_NODE_ID`,
+`TORO_SSM_ROLE_NAME`, `TORO_SSM_DOCUMENT_VERSION`, `TORO_SSM_DOCUMENT_HASH`
+y `TORO_EXECUTION_RUN_ID`. Credenciales AWS temporales solo por el flujo seguro
+del operador; este cambio no las crea ni las descubre.
+
+Validación local: `node --test tests/openclaw-ssm-diagnostics.test.mjs`.
+El mismo archivo se incorpora a `npm run test:openclaw-host`.
+La CLI sin flags prepara; `--execute-read-only` invoca la capacidad autorizada;
+`--execute-read-only --resume-command-id` seguido del ID privado guardado
+solo consulta ese resultado. No volver a enviar tras `dispatch_unknown`:
+conciliar el run/comentario en AWS y registrar el resultado canónico.
+Presupuesto: hasta seis llamadas AWS por ejecución, doce segundos cada una,
+reintentos del cliente deshabilitados; no hay polling infinito. Salida resumida
+para el recibo privado, nunca como prueba de negocio ni reporte del día.
+
+Reversión antes de activar: retirar solo este adaptador/documento candidato.
+Si llega a activarse, deshabilitar su binding específico, conciliar el run y
+revocar únicamente su acceso revisado. No detener webhooks ni alterar cursores,
+casos, escritores o tareas ajenas.
+
+Referencias API verificadas:
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/send-command.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/get-command-invocation.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-document.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-instance-information.html
