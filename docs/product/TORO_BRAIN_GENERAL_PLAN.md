@@ -27,6 +27,30 @@
 
 <!-- END:DREAMCATCHER_WEB_CONTINUOUS_OPTIMIZATION_20261109 -->
 
+<!-- BEGIN:DREAMCATCHER_GUEST_JOURNEY_BRAND_CHANNELS_20261112 -->
+## Dreamcatcher — experiencia del huésped, canales y enlaces (12/11/2026)
+
+**CURRENT — mandato del propietario.** El recorrido incluye web pública, emails Kross, resumen y confirmación, Guest Portal, instrucciones check-in, manual de la casa, llegadas, servicios, incidencias, checkout, encuesta y reseñas. Identidad Dreamcatcher: entrar en un sueño donde todo puede pasar, sin perder precisión operacional. Reutilizar dreamcatcher_website, revenue_booking_stack y guest_journey_redesign_20261112. Sin nuevo portal, PMS, CMS, base, plan ni scheduler; Kross conserva la autoridad de reservas. El Portal TORO interno no es el Guest Portal de Kross.
+
+**Evidencia visual.** Captura del propietario con cabecera "Guest portal" (inglés), tarjetas y estados en español y detalles de trámites en italiano. Es una mezcla visible de idiomas en esa sesión; causa, alcance y editabilidad desconocidos. Verificar el idioma de la reserva, URL/locale, configuración del portal, contenido nativo, traducciones y comportamiento sin inferir que todas las reservas fallan. Hora de llegada informada y check-in online completado NO equivalen a check-in físico, recepción operativa ni habitación lista. No incluir datos de huéspedes en documentación pública.
+
+**Canal por canal — TARGET condicionado a soporte real.**
+- Reserva directa/motor Kross/frontdesk: mensaje de confirmación transaccional y vínculo seguro al portal; email HTML responsive solo si el canal lo admite, con datos y documentos contractuales emitidos por Kross.
+- Booking.com, Expedia/Hotels.com, Airbnb, Agoda y otros canales efectivos: comprobar canal activo, identidad, alias de email, políticas de enlaces, medios, adjuntos y automatizaciones. Priorizar el chat nativo y texto sin HTML cuando la plataforma no renderiza HTML; evitar enlaces bloqueados y no asumir entrega por tener una plantilla.
+- Villas, grupos y paquetes: instrucciones según modalidad/entrada verificadas, sin duplicar unidades de inventario.
+- WhatsApp/OpenClaw: requiere identidad, transporte, permisos, consentimiento y recibo propios; sin nuevos envíos solo porque existe un botón.
+
+**Secuencia editorial única, presentaciones distintas.** Confirmación, preparación, llegada, check-in, bienestar y solución de incidencias, checkout y despedida/reseña neutral. Mensaje pertinente por evento/estado, idioma y canal; evitar colisión para una noche, mensajes tras cancelación, duplicación email/OTA/WhatsApp, y envío por conversación humana o incidencia abierta. Definir clave candidata property/reservation/event/channel/version, verificar reglas y recibos antes de activarla; no crear una segunda maquinaria de mensajería. Mantener solicitud de reseña independiente de encuesta privada, nunca filtrar por puntuación ni incentivar cambios.
+
+**Cobertura obligatoria del Guest Portal y manual.** Acceso/login seguro; resumen de reserva y sus cambios; confirmación/PDF; llegada, localización/transporte, entrada, recepción y ayuda; check-in digital; Wi-Fi, normas, silencio, seguridad/emergencias, piscinas/jacuzzis, limpieza y servicios; desayuno según tarifa, restaurante y experiencias disponibles; mascotas/políticas verificadas; checkout, privacidad, términos, accesibilidad y reporte de problemas. Jerarquía móvil con navegación simple y tarjetas coherentes; cero textos de plantilla genérica sin adaptar. Probar teclado, lector de pantalla, 320/390/412 px y ES/EN. Kross nativo observado en en/es/fr/de/it; pt/nl/he son borradores, no idiomas nativos activos. No inventar códigos de acceso, tarifas, horarios, servicios ni políticas.
+
+**Regla transversal de favicon y vista previa de TODOS los enlaces controlados.** En páginas públicas indexables del hotel: favicon oficial verificado (16/32/180, manifest cuando aplique), título/description propios, lang, canonical, hreflang y tarjetas Open Graph/Twitter con og:title, og:description, og:image HTTPS absoluta, dimensiones y fallback de imagen autorizada, sin PII ni tokens. Incluir home, habitaciones, villas, galería, experiencias, servicios, información y enlaces ES/EN. Comprobar HTML servidor y preview al compartir en WhatsApp, redes y buscadores; imagen con derechos y coherente por ruta. No inventar imagen corporativa. Para páginas Kross/OTA o destinos de terceros, auditar controles soportados: no imponer favicon/OG, editar source, ni tocar DNS si no existe capacidad autorizada. En emails usar logo con alt, URL HTTPS, tablas e inline CSS, modo texto, botones accesibles; favicon y Open Graph no sustituyen formatos propios de correo/OTA.
+
+**Riesgo de doble confirmación.** Evidencia del productor: BE config1 selecciona Email3 con Attach PDF; regla 3 usa Email5 e incluye motor. Duplicación real no comprobada. Revisar trigger, estado, plantillas, PDF, destinatario y acuses antes de cambiar uno; importes del PDF y condiciones contractuales no formaron parte del P0 autorizado. P0: 18 cuerpos sin importes ya aplicados con recibo del escritor DC-GUEST-JOURNEY-20261112-R5, no repetir. No enviar pruebas a huéspedes reales.
+
+**NEXT y aceptación.** (1) Auditar en lectura Email3/PDF vs regla3/Email5 y capacidades reales del Guest Portal para branding/idioma/HTML. (2) Inventariar iconos, logos, imágenes y metadatos ya existentes de la web, con derechos y procedencia. (3) Preparar un incremento mínimo de idioma/portal y un contrato universal de metadatos/enlaces, separado por escritor Kross o web. (4) Prueba sintética ES/EN y por OTA soportada, móvil/teclado, consentimiento, entrega, rollback y readback; publicar solo por PR/gates vigentes. Guardar delta con CAS y recibo en expediente existente. Esta adopción documental NO acredita cambios ya publicados en portal, correos o páginas.
+<!-- END:DREAMCATCHER_GUEST_JOURNEY_BRAND_CHANNELS_20261112 -->
+
 <!-- BEGIN:UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109 -->
 ## Estándar universal de coordinación y optimización continua
 
