@@ -108,3 +108,44 @@ This is a reviewed branch-integration candidate, not a merge into main or a
 deployment. Provider dispatch and durable atomic admission remain unimplemented
 and `canSend=false` remains unchanged. Revert the integration revision to
 restore the prior PR branch; canonical main and external systems are untouched.
+
+## Portfolio communication alignment — 13 November 2026 owner date
+
+Documentary continuation of the same PR #308. Remote head inspected before
+editing: `5c61497147024b7120a3cd455ef55d1511f21043`; canonical main remains
+`425bfb0c61d0522f3362e42e80f19a99185a0838`. Their existing integration tree is
+`088d6f314802fe5a6358a59bb4ab5be9dc8639f3`. The read-only domain review took
+place on 12 November UTC; the owner's local date is 13 November.
+
+The owner requested broader communication handling aligned with the General
+Plan and accessible ongoing work. A new current-precedence block at the top
+of that same Plan resolves the scope and preserves all historical text. It
+maps incoming and sent messages to existing cases/domain writers, requires
+native identity and human-response checks, records handoff acknowledgement
+separately from producer preparation, and keeps reception, administration,
+finance and personal audiences separate. It does not claim complete chat
+access, provider integration or deployment.
+
+The review found a current owner correction identifying Quovis as the invoice
+emission system while older text grouped billing/fiscal authority under Alegra.
+The new block records the current division: Quovis emission, Alegra accounting,
+Hacienda fiscal acceptance/state, and bank/processor movement evidence. Native
+access, reconciliation and acceptance remain independent requirements. Private
+source messages and receipts remain in the existing operational contracts.
+Unresolved operating-hour facts are withheld from automatic answers rather
+than resolved from conversation summaries. Current domain checkpoints and
+successor writer routes take precedence over stale project next-action prose.
+
+Verification for this documentation-only increment: exactly the General Plan
+and this existing evidence file change; the new marker is unique and paired;
+removing the inserted block restores the prior General Plan byte for byte;
+the prior evidence file is an exact prefix; referenced local documents exist;
+and `git diff --check` passes. The diff contains no private message payloads,
+bank amounts, account identifiers, secrets or expanded grants. The previous
+code verification remains evidence for the unchanged code tree; no new
+application test, runtime or production result is claimed by this increment.
+
+Rollback is a revert of this documentation commit. No new PR, application,
+schema, queue, scheduler, provider sender, outbound message, transaction or
+permission is introduced. PR checks and merge/deployment gates remain in force;
+publishing this candidate to the existing branch is not merging or deploying it.
