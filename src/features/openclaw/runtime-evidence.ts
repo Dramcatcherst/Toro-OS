@@ -39,7 +39,7 @@ export type OpenClawRuntimeEvidencePacket = {
 };
 
 export type OpenClawRuntimeAuditCheck = {
-  key: OpenClawAuditGateKey | "audit_timestamp" | "secret_hygiene" | "safe_audit_mode";
+  key: OpenClawAuditGateKey | "audit_timestamp" | "secret_hygiene" | "safe_audit_mode" | "packet_schema";
   passed: boolean;
   detail: string;
 };
@@ -78,9 +78,56 @@ function parseTimestamp(value: string | null) {
   return Date.parse(value);
 }
 
+// Bounded packet parsing only; these ceilings do not authenticate evidence or certify runtime health.
+const MAX_ITEMS = 128;
+const PROFILES = new Set<OpenClawAuditProfileKey>([
+  "openclaw_personal_owner", "openclaw_company_shared", "openclaw_guest_channel",
+]);
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+function onlyKeys(value: Record<string, unknown>, keys: readonly string[]) {
+  return Object.keys(value).every((key) => keys.includes(key));
+}
+function boundedText(value: unknown, max: number) {
+  return typeof value === "string" && value.length <= max && value.trim().length > 0;
+}
+function textArray(value: unknown, maxLength: number) {
+  return Array.isArray(value) && value.length <= MAX_ITEMS &&
+    Array.from(value).every((item) => boundedText(item, maxLength));
+}
+function validPacket(value: unknown): value is OpenClawRuntimeEvidencePacket {
+  if (!record(value) || !onlyKeys(value, [
+        "auditAt", "profileKey", "runtimeVersion", "channelAliases", "rawSecretsIncluded",
+        "realGuestContactedForAudit", "productionMutationOccurred", "gates",
+      ]) || !PROFILES.has(value.profileKey as OpenClawAuditProfileKey) ||
+      !(value.auditAt === null || boundedText(value.auditAt, 128)) ||
+      !(value.runtimeVersion === null || boundedText(value.runtimeVersion, 128)) ||
+      !textArray(value.channelAliases, 128) ||
+      typeof value.rawSecretsIncluded !== "boolean" ||
+      typeof value.realGuestContactedForAudit !== "boolean" ||
+      typeof value.productionMutationOccurred !== "boolean" ||
+      !Array.isArray(value.gates) || value.gates.length > MAX_ITEMS) return false;
+  return Array.from(value.gates).every((gate) =>
+    record(gate) && onlyKeys(gate, ["key", "passed", "evidenceReference", "findingIds", "notes"]) &&
+    REQUIRED_GATES.includes(gate.key as OpenClawAuditGateKey) &&
+    typeof gate.passed === "boolean" &&
+    (gate.evidenceReference === null || boundedText(gate.evidenceReference, 2048)) &&
+    (gate.findingIds === undefined || textArray(gate.findingIds, 128)) &&
+    (gate.notes === undefined || (typeof gate.notes === "string" && gate.notes.length <= 4096)),
+  );
+}
+
 export function evaluateOpenClawRuntimeEvidence(
-  packet: OpenClawRuntimeEvidencePacket,
+  packet: unknown,
 ): OpenClawRuntimeAuditResult {
+  if (!validPacket(packet)) return {
+    packetComplete: false,
+    checks: [{ key: "packet_schema", passed: false, detail: "Audit packet fields must match the bounded evidence schema." }],
+    blockers: ["packet_schema"],
+    state: "CONFIGURED_UNVERIFIED",
+    evidenceCoverage: 0,
+  };
   const gateMap = new Map<OpenClawAuditGateKey, OpenClawAuditGateEvidence>();
   const duplicateGateKeys = new Set<OpenClawAuditGateKey>();
 
@@ -122,7 +169,7 @@ export function evaluateOpenClawRuntimeEvidence(
     checks.push({
       key,
       passed:
-        Boolean(gate?.passed) &&
+        gate?.passed === true &&
         evidenced &&
         unique &&
         runtimeIdentityExtra,

@@ -1,0 +1,28 @@
+.panel { display:grid; gap:8px; margin-bottom:12px; color:#203c50; }
+.panel h2 { display:flex; align-items:center; gap:6px; }
+.sourceGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.source { display:grid; gap:3px; padding:8px; border:1px solid #9db5c6; border-radius:6px; background:#f0f6fa; overflow-wrap:anywhere; }
+.source strong { font-size:13px; }
+.source span,.cut,.note,.detail,.coverage { font-size:12px; line-height:1.5; }
+.cut,.note { color:#40576a; margin:0; }
+.tasks { margin:0; padding:0; list-style:none; border:1px solid #9db5c6; border-radius:6px; background:#f4f8fb; }
+.tasks li+li { border-top:1px solid #b8c9d5; }
+.tasks summary { display:flex; align-items:flex-start; gap:7px; min-height:44px; padding:7px 8px; cursor:pointer; }
+.taskCopy { min-width:0; display:grid; gap:2px; overflow-wrap:anywhere; }
+.taskCopy strong { font-size:13px; font-weight:650; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.taskCopy small { font-size:12px; color:#40576a; }
+.priority { flex-shrink:0; padding:2px 4px; border:1px solid #7a94a5; border-radius:4px; font-size:12px; line-height:1.5; color:#314d60; background:#e1ebf1; }
+.priority[data-priority="critical"],.priority[data-priority="p0"] { color:#793013; background:#ffe4d7; border-color:#a97355; }
+.priority[data-priority="high"],.priority[data-priority="p1"] { color:#6b4a0b; background:#fff0c8; border-color:#ab8e49; }
+.detail { padding:0 10px 8px; color:#40576a; overflow-wrap:anywhere; }
+.detail p { margin:4px 0; }
+.reference { font-family:monospace; }
+.coverage { border-top:1px solid #9db5c6; color:#40576a; }
+.coverage summary { display:flex; align-items:center; min-height:44px; padding:5px 0; cursor:pointer; font-weight:600; }
+.coverage p { margin:4px 0 8px; }
+.coverage ul { padding-left:18px; }
+.coverage li { margin:5px 0; overflow-wrap:anywhere; }
+.manualLink { min-height:44px; display:inline-flex; align-items:center; gap:6px; color:#075d8b; text-decoration:underline; }
+.panel :is(summary,a):focus-visible { outline:3px solid #0969a2; outline-offset:2px; }
+@media (max-width:359px) { .sourceGrid { gap:6px; } .source { padding:6px; } }
+@media (forced-colors:active) { .source,.tasks,.priority,.tasks li+li,.coverage { border-color:CanvasText; color:CanvasText; background:Canvas; } .panel :is(summary,a):focus-visible { outline-color:Highlight; } }

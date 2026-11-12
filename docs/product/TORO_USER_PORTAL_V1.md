@@ -481,3 +481,10 @@ Portal v1 is ready when:
 - user can inspect/correct TORO memory;
 - role-specific navigation hides irrelevant complexity;
 - no critical function requires a second TORO-branded app.
+
+
+<!-- BEGIN:FINANCIAL_DOCUMENT_COVERAGE_20261021 -->
+## TORO Finance · Cobertura documental (owner-only target, 2026-10-21)
+
+In Dreamcatcher work context only, an authorized finance/owner view shall display one compact bank/card/mail coverage table and exception counters. Show institution, instrument class, masked suffix, holder-vs-business-use relationship (role-restricted), official receipt coverage, statement age, notification type, owner, next routing action, verification state and evidence link. Business-origin documents delivered only to personal mail are explicitly `CAMBIAR_DESTINATARIO`; personal-only documents stay private; mixed instruments require review. Flag rejected transfers and missed bank statements separately. No raw banking statements, full PAN/IBAN, sensitive balances or personal data in public portal snapshots. Scope switches clear data immediately; no live state inferred from legacy evidence. Routing changes remain an approval-backed offline banking process with a test receipt; portal indicators are not executable bank settings. See [governance contract](TORO_FINANCE_BANK_MAIL_COVERAGE_V1.md). **Implementation status: target spec, not deployed.**
+<!-- END:FINANCIAL_DOCUMENT_COVERAGE_20261021 -->

@@ -205,8 +205,10 @@ uncertain result before retry. Until that integration is verified, no automated
 send is enabled.
 
 **Integration boundary:** PR #308 was inspected at
-`194593be07980fbae47b505808588610d34b2840` and is divergent from current main.
-This slice imports only main's mailbox freshness/context contract and adapts
-its TORO Mail caller. It does not resolve unrelated conflicts or certify the
-whole PR ready for merge. Rollback is the revert of this slice; it has no live
+`194593be07980fbae47b505808588610d34b2840` and initially diverged from main.
+The 12 November continuation reconciles the same branch with main
+`425bfb0c61d0522f3362e42e80f19a99185a0838`: alert scope/health/message-budget
+contracts, cleanup protections and all current test scripts are preserved.
+Canonical tests, lint, typecheck and the declared build pass; no merge or
+production acceptance is claimed. Rollback is the revert of this slice; it has no live
 provider or database effects.

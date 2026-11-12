@@ -162,6 +162,9 @@ describe("TORO worker canary", () => {
     const existing = chain([
       {
         id: "run-existing",
+        task_id: "task-1",
+        action_key: "runtime.control_plane_read_canary",
+        safe_metadata: { canary: true, gitCommitSha: "abcdef1234567890", externalActions: 0 },
         status: "succeeded",
         verification_status: "passed",
       },
@@ -184,4 +187,37 @@ describe("TORO worker canary", () => {
     });
     expect(claimById).not.toHaveBeenCalled();
   });
+});
+
+it("R50-04 denies Portal canary writes before worker allocation", async () => {
+  vi.stubEnv("TORO_DEPLOYMENT_MODE", "portal");
+  const response = await POST(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-canary-token" } }));
+  expect(response.status).toBe(404);
+  expect(createWorkerClient).not.toHaveBeenCalled();
+});
+it.each(["factory", "existing", "insert"])("R50-06 contains canary %s errors without claiming or cleanup", async phase => {
+  createWorkerClient.mockImplementation(() => {
+    if (phase === "factory") throw new Error("synthetic-private-error");
+    return { from: () => ({ select: () => ({ eq: () => ({ eq: () => ({ limit: async () => {
+      if (phase === "existing") throw new Error("synthetic-private-error");
+      return { data: [], error: null };
+    } }) }) }), insert: () => { throw new Error("synthetic-private-error"); } }) };
+  });
+  const response = await POST(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-canary-token" } }));
+  expect(response.status).toBe(503);
+  expect(await response.text()).not.toContain("synthetic-private-error");
+  expect(claimById).not.toHaveBeenCalled();
+  expect(transition).not.toHaveBeenCalled();
+  expect(resolveFailure).not.toHaveBeenCalled();
+});
+it.each([
+  { task_id: "other-task" }, { action_key: "other-action" }, { safe_metadata: {} },
+  { safe_metadata: { canary: true, gitCommitSha: "other-commit", externalActions: 0 } },
+])("R50-07 rejects inconsistent canary replay binding %j", async mismatch => {
+  const existing = chain([{ id: "previous", status: "succeeded", verification_status: "passed", task_id: "task-1", action_key: "runtime.control_plane_read_canary", safe_metadata: { canary: true, gitCommitSha: "abcdef1234567890", externalActions: 0 }, ...mismatch }]);
+  createWorkerClient.mockReturnValue({ from: () => existing });
+  const response = await POST(new Request("https://synthetic.invalid", { headers: { authorization: "Bearer synthetic-canary-token" } }));
+  expect(response.status).toBe(409);
+  expect(existing.insert).not.toHaveBeenCalled();
+  expect(claimById).not.toHaveBeenCalled();
 });

@@ -51,3 +51,11 @@ it("does not read or render Finance for an unauthorized role", async () => {
   const context=authorizedContext();context.membership!.roles=["EMPLEADO"];
   expect(await OwnerAttentionPanel({context})).toBeNull();expect(mocks.load).not.toHaveBeenCalled();
 });
+
+it("labels an invoice total as a document total, never a confirmed amount due", async () => {
+  const data=projection();data.items[0]={...data.items[0], amount:180, currency:"USD", kind:"invoice"};
+  mocks.load.mockResolvedValue(data);
+  const html=await render();
+  expect(html).toContain("Total de factura (no es saldo pendiente confirmado): USD");
+  expect(html).not.toContain("Saldo pendiente: USD");
+});

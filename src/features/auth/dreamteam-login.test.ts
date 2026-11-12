@@ -50,7 +50,7 @@ beforeEach(() => {
   mocks.fetch.mockImplementation(async () => upstream());
   mocks.sdk.mockReturnValue(client); mocks.context.mockResolvedValue(context);
 });
-afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
+afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
 describe("fresh DreamTeam login adapter", () => {
   it("uses the authoritative fixed destination and forwards neither an existing session nor caller-controlled headers", async () => {
@@ -158,5 +158,44 @@ describe("fresh DreamTeam login adapter", () => {
     mocks.context.mockResolvedValue({ ...context, orgId: null, membership: null, requiresContextChoice: true, canUseOrganizationData: false });
     const response = await dreamTeamLogin(request({ ...credentials, nextPath: "/\\attacker.invalid" }));
     expect(await response.json()).toEqual({ ok: true, nextPath: "/my-toro" });
+  });
+
+  it.each([`/my-toro?search=${"a".repeat(300)}`, "/settings", "/api/auth/login", 42])("normalizes an unusable next destination without rejecting credentials: %j", async nextPath => {
+    const response = await dreamTeamLogin(request({ ...credentials, nextPath }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, nextPath: "/my-toro" });
+  });
+
+  it("bounds canonical verification within the same login budget and cancels its transport", async () => {
+    vi.useFakeTimers();
+    let transportSignal: AbortSignal | undefined;
+    mocks.fetch.mockImplementation((url, options) => {
+      if (url === DREAMTEAM_LOGIN_ENDPOINT) return Promise.resolve(upstream());
+      transportSignal = options?.signal;
+      return new Promise((_resolve, reject) => options?.signal?.addEventListener("abort", () => reject(new Error("synthetic timeout")), { once: true }));
+    });
+    mocks.sdk.mockImplementation((_url, _key, options) => ({ verify: () => (options.global?.fetch ?? fetch)("https://abtyrbqlqbsastmridzp.supabase.co/auth/v1/user") }));
+    mocks.context.mockImplementation(async client => { await client.verify(); return context; });
+    let response: Awaited<ReturnType<typeof dreamTeamLogin>> | undefined;
+    const pending = dreamTeamLogin(request()).then(value => { response = value; });
+    await vi.advanceTimersByTimeAsync(10_001);
+    expect(response?.status).toBe(503);
+    expect(transportSignal?.aborted).toBe(true);
+    await pending;
+    await failure(response!, 503);
+  });
+
+  it("times out an unfinished request body and cancels the reader without forwarding credentials", async () => {
+    vi.useFakeTimers();
+    const cancel = vi.fn();
+    const body = new ReadableStream<Uint8Array>({ cancel });
+    const slowRequest = new Request(`${origin}/api/auth/login`, { method: "POST", headers: { origin, "content-type": "application/json" }, body, duplex: "half" } as RequestInit);
+    let response: Awaited<ReturnType<typeof dreamTeamLogin>> | undefined;
+    const pending = dreamTeamLogin(slowRequest).then(value => { response = value; });
+    await vi.advanceTimersByTimeAsync(10_001);
+    expect(response?.status).toBe(503);
+    expect(cancel).toHaveBeenCalled();
+    expect(mocks.fetch).not.toHaveBeenCalled();
+    await pending;
   });
 });

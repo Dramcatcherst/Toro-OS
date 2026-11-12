@@ -1,4 +1,6 @@
-import { publicDemoResponse } from "@/lib/server/public-demo";
+import { internalCapabilityEnabled, publicDemoResponse } from "@/lib/server/public-demo";
+import { withAuthBudget } from "@/features/auth/request-budget";
+import { SUPABASE_READ_TIMEOUT_MS } from "@/lib/supabase/read-fetch";
 import { createWorkerSupabaseClient } from "@/lib/supabase/worker";
 import {
   buildToroRuntimeHealthConfig,
@@ -15,7 +17,7 @@ function noStoreHeaders() {
 export async function GET(request: Request) {
   const demo = publicDemoResponse();
   if (demo) return demo;
-  if (!isToroRuntimeHealthEnabled(process.env)) {
+  if (!internalCapabilityEnabled("TORO_RUNTIME_HEALTH_ENABLED") || !isToroRuntimeHealthEnabled(process.env)) {
     return new Response(null, {
       status: 404,
       headers: noStoreHeaders(),
@@ -56,16 +58,17 @@ export async function GET(request: Request) {
   }
 
   try {
-    const supabase = createWorkerSupabaseClient();
-
-    const [runs, receipts] = await Promise.all([
+    const [runs, receipts] = await withAuthBudget(SUPABASE_READ_TIMEOUT_MS, async signal => {
+      const supabase = createWorkerSupabaseClient({ signal });
+      return Promise.all([
       supabase
         .from("toro_execution_runs")
         .select("id", { count: "exact", head: true }),
       supabase
         .from("toro_execution_receipts")
         .select("id", { count: "exact", head: true }),
-    ]);
+      ]);
+    }, request.signal);
 
     const runsReadable = !runs.error;
     const receiptsReadable = !receipts.error;

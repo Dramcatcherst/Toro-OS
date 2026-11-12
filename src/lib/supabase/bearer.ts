@@ -4,6 +4,7 @@ import { assertInternalRuntime, isPublicDemo } from "@/lib/server/public-demo";
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 
 import { getSupabasePublicConfig } from "./env";
+import { boundedSupabaseReadFetch } from "./read-fetch";
 
 export type VerifiedBearerSupabase = {
   client: SupabaseClient;
@@ -26,6 +27,7 @@ export function createBearerSupabaseClient(accessToken: string): SupabaseClient 
       detectSessionInUrl: false,
     },
     global: {
+      fetch: boundedSupabaseReadFetch(),
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -40,13 +42,19 @@ export async function verifySupabaseBearerToken(
   const token = accessToken.trim();
   if (!token) return null;
 
-  const client = createBearerSupabaseClient(token);
-  const {
-    data: { user },
-    error,
-  } = await client.auth.getUser(token);
+  try {
+    const client = createBearerSupabaseClient(token);
+    const {
+      data: { user },
+      error,
+    } = await client.auth.getUser(token);
 
-  if (error || !user) return null;
+    if (error || !user) return null;
 
-  return { client, user };
+    return { client, user };
+  } catch {
+    // The MCP dependency logs thrown errors verbatim. Authentication failures
+    // remain ordinary denials without leaking provider/configuration details.
+    return null;
+  }
 }

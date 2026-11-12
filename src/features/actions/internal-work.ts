@@ -88,7 +88,7 @@ function optionalText(value: unknown, maxLength: number) {
 function validIsoDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = Date.parse(`${value}T00:00:00Z`);
-  return Number.isFinite(parsed);
+  return Number.isFinite(parsed) && new Date(parsed).toISOString().slice(0, 10) === value;
 }
 
 export function validateToroInternalWorkRequest(
@@ -119,16 +119,19 @@ export function validateToroInternalWorkRequest(
     return { ok: false, error: "Description is too long or invalid." };
   }
 
-  const priorityCandidate =
-    optionalText(body.priority, 16)?.toLowerCase() ?? "medium";
+  const priority = optionalText(body.priority, 16);
+  if (body.priority !== undefined && body.priority !== null && body.priority !== "" && priority === null) {
+    return { ok: false, error: "Priority is too long or invalid." };
+  }
+  const priorityCandidate = priority?.toLowerCase() ?? "medium";
   if (!PRIORITY_SET.has(priorityCandidate as ToroInternalWorkPriority)) {
     return { ok: false, error: "Priority must be low, medium, high, or critical." };
   }
 
   const projectKey = optionalText(body.projectKey, 128);
   if (
-    projectKey &&
-    !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,127}$/.test(projectKey)
+    (body.projectKey !== undefined && body.projectKey !== null && body.projectKey !== "" && projectKey === null) ||
+    (projectKey && !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,127}$/.test(projectKey))
   ) {
     return { ok: false, error: "Project key format is invalid." };
   }
@@ -138,7 +141,8 @@ export function validateToroInternalWorkRequest(
   }
 
   const dueDate = optionalText(body.dueDate, 10);
-  if (dueDate && !validIsoDate(dueDate)) {
+  if ((body.dueDate !== undefined && body.dueDate !== null && body.dueDate !== "" && dueDate === null) ||
+      (dueDate && !validIsoDate(dueDate))) {
     return { ok: false, error: "dueDate must be a valid YYYY-MM-DD date." };
   }
 
@@ -171,8 +175,12 @@ export function validateToroInternalWorkRequest(
 export function canCreateToroInternalWork(context: ToroResolvedContext) {
   if (
     context.mode !== "organization" ||
-    !context.orgId ||
+    !context.userId || context.userId !== context.userId.trim() ||
+    !context.orgId || context.orgId !== context.orgId.trim() ||
     !context.membership ||
+    context.membership.orgId !== context.orgId ||
+    context.membership.status !== "active" ||
+    !context.allowedDataScopes.includes("work_org") ||
     !context.canUseOrganizationData ||
     context.requiresContextChoice
   ) {
@@ -267,6 +275,7 @@ export function isExactToroInternalTaskReplay(
     existing.project_id === candidate.project_id &&
     existing.category === candidate.category &&
     existing.priority === candidate.priority &&
+    existing.area === candidate.area &&
     existing.due_date === candidate.due_date &&
     existing.description === candidate.description &&
     existing.canonical_module_key === candidate.canonical_module_key &&

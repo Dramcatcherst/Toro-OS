@@ -3,6 +3,7 @@ import {
   type KrossTransportIntake,
   type KrossTransportIntakeResult,
   type KrossTransportKind,
+  isKrossTransportKind,
 } from "./transport-intake";
 
 export type KrossEvidenceClaim<T> = {
@@ -32,6 +33,7 @@ export type KrossProviderEvidencePacket = {
   externalReservationIdentityAvailable: KrossEvidenceClaim<boolean>;
   fieldMapReady: KrossEvidenceClaim<boolean>;
   approvedForFirstRead: KrossEvidenceClaim<boolean>;
+  exportFrequencyMinutes?: KrossEvidenceClaim<number | null>;
 };
 
 export type KrossProviderEvidenceIssue = {
@@ -40,6 +42,7 @@ export type KrossProviderEvidenceIssue = {
 };
 
 export type KrossProviderEvidenceResult = {
+  observedAt: string | null;
   intake: KrossTransportIntake;
   intakeEvaluation: KrossTransportIntakeResult;
   evidenceIssues: KrossProviderEvidenceIssue[];
@@ -51,15 +54,44 @@ function nonEmpty(value: string | null | undefined) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
-function hasEvidence<T>(claim: KrossEvidenceClaim<T>) {
-  return nonEmpty(claim.evidenceReference);
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasEvidence(claim: unknown) {
+  return record(claim) && Object.hasOwn(claim, "evidenceReference") &&
+    typeof claim.evidenceReference === "string" && nonEmpty(claim.evidenceReference);
+}
+
+function readClaim(key: string, claim: unknown, issues: KrossProviderEvidenceIssue[]) {
+  if (!record(claim) || !Object.hasOwn(claim, "value") || !Object.hasOwn(claim, "evidenceReference") ||
+    (claim.evidenceReference !== null && typeof claim.evidenceReference !== "string")) {
+    issues.push({ key, message: `${key} requires a valid claim and evidence reference field.` });
+    return null;
+  }
+  return claim;
+}
+
+function evidenceTime(value: unknown) {
+  if (typeof value !== "string") return Number.NaN;
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!match || Number(match[2]) > 23 || Number(match[3]) > 59 || Number(match[4]) > 59) return Number.NaN;
+  const calendar = Date.parse(`${match[1]}T00:00:00Z`);
+  if (!Number.isFinite(calendar) || new Date(calendar).toISOString().slice(0, 10) !== match[1]) return Number.NaN;
+  return Date.parse(value);
 }
 
 function guardedBoolean(
   key: string,
-  claim: KrossEvidenceClaim<boolean>,
+  rawClaim: unknown,
   issues: KrossProviderEvidenceIssue[],
 ) {
+  const claim = readClaim(key, rawClaim, issues);
+  if (!claim) return false;
+  if (typeof claim.value !== "boolean") {
+    issues.push({ key, message: `${key} must be a boolean.` });
+    return false;
+  }
   if (claim.value === true && !hasEvidence(claim)) {
     issues.push({
       key,
@@ -72,9 +104,15 @@ function guardedBoolean(
 
 function guardedNullableBoolean(
   key: string,
-  claim: KrossEvidenceClaim<boolean | null>,
+  rawClaim: unknown,
   issues: KrossProviderEvidenceIssue[],
 ) {
+  const claim = readClaim(key, rawClaim, issues);
+  if (!claim) return null;
+  if (claim.value !== null && typeof claim.value !== "boolean") {
+    issues.push({ key, message: `${key} must be a boolean or unknown.` });
+    return null;
+  }
   if (claim.value !== null && !hasEvidence(claim)) {
     issues.push({
       key,
@@ -87,9 +125,15 @@ function guardedNullableBoolean(
 
 function guardedText(
   key: string,
-  claim: KrossEvidenceClaim<string | null>,
+  rawClaim: unknown,
   issues: KrossProviderEvidenceIssue[],
 ) {
+  const claim = readClaim(key, rawClaim, issues);
+  if (!claim) return null;
+  if (claim.value !== null && typeof claim.value !== "string") {
+    issues.push({ key, message: `${key} must be text or unknown.` });
+    return null;
+  }
   if (nonEmpty(claim.value) && !hasEvidence(claim)) {
     issues.push({
       key,
@@ -102,28 +146,27 @@ function guardedText(
 
 function guardedRequiredText(
   key: string,
-  claim: KrossEvidenceClaim<string>,
+  claim: unknown,
   issues: KrossProviderEvidenceIssue[],
 ) {
-  const value = claim.value.trim();
+  const value = guardedText(key, claim, issues);
   if (!value) {
     issues.push({ key, message: `${key} is required.` });
-    return "";
-  }
-  if (!hasEvidence(claim)) {
-    issues.push({
-      key,
-      message: `${key} requires an explicit evidence reference.`,
-    });
     return "";
   }
   return value;
 }
 
 function guardedTransportKind(
-  claim: KrossEvidenceClaim<KrossTransportKind>,
+  rawClaim: unknown,
   issues: KrossProviderEvidenceIssue[],
 ) {
+  const claim = readClaim("transport_kind", rawClaim, issues);
+  if (!claim) return "other" as const;
+  if (!isKrossTransportKind(claim.value)) {
+    issues.push({ key: "transport_kind", message: "transportKind must identify a supported transport kind." });
+    return "other" as const;
+  }
   if (!hasEvidence(claim)) {
     issues.push({
       key: "transport_kind",
@@ -135,9 +178,19 @@ function guardedTransportKind(
 }
 
 export function buildKrossTransportIntakeFromProviderEvidence(
-  packet: KrossProviderEvidencePacket,
+  rawPacket: unknown,
+  nowIso: string,
 ): KrossProviderEvidenceResult {
   const evidenceIssues: KrossProviderEvidenceIssue[] = [];
+  const packet = record(rawPacket) ? rawPacket : {};
+  const nowMs = evidenceTime(nowIso);
+  const observedMs = evidenceTime(packet.observedAt);
+  if (!Number.isFinite(nowMs)) {
+    evidenceIssues.push({ key: "evaluation_time", message: "A valid explicit evaluation timestamp is required." });
+  }
+  if (!Number.isFinite(observedMs) || (Number.isFinite(nowMs) && observedMs > nowMs)) {
+    evidenceIssues.push({ key: "observed_at", message: "Provider observation must have a valid timestamp and cannot be future." });
+  }
 
   const intake: KrossTransportIntake = {
     providerName: guardedRequiredText(
@@ -235,9 +288,18 @@ export function buildKrossTransportIntakeFromProviderEvidence(
     exportFrequencyMinutes: null,
   };
 
+  if (intake.transportKind === "scheduled_export" || packet.exportFrequencyMinutes !== undefined) {
+    const frequency = readClaim("export_frequency", packet.exportFrequencyMinutes, evidenceIssues);
+    if (frequency && typeof frequency.value === "number" && Number.isFinite(frequency.value) && frequency.value > 0 && hasEvidence(frequency)) {
+      intake.exportFrequencyMinutes = frequency.value;
+    } else if (frequency && (frequency.value !== null || intake.transportKind === "scheduled_export")) {
+      evidenceIssues.push({ key: "export_frequency", message: "Export frequency requires an evidenced finite positive number." });
+    }
+  }
+
   const intakeEvaluation = evaluateKrossTransportIntake(intake);
 
-  const evidenceClaims: Array<KrossEvidenceClaim<unknown>> = [
+  const evidenceClaims: unknown[] = [
     packet.providerName,
     packet.ticketReference,
     packet.transportKind,
@@ -259,6 +321,7 @@ export function buildKrossTransportIntakeFromProviderEvidence(
     packet.fieldMapReady,
     packet.approvedForFirstRead,
   ];
+  if (packet.exportFrequencyMinutes !== undefined) evidenceClaims.push(packet.exportFrequencyMinutes);
 
   const explicitEvidenceCoverage =
     evidenceClaims.length === 0
@@ -267,6 +330,7 @@ export function buildKrossTransportIntakeFromProviderEvidence(
         evidenceClaims.length;
 
   return {
+    observedAt: Number.isFinite(observedMs) ? packet.observedAt as string : null,
     intake,
     intakeEvaluation,
     evidenceIssues,

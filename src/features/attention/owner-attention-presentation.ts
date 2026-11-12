@@ -26,6 +26,21 @@ export function formatAttentionAmount(amount: number | null, currency: string | 
     : `${value} · moneda no informada`;
 }
 
+/** Never render invoice gross total as the amount a creditor can collect. */
+export function formatAttentionAmountWithBasis(
+  kind: "communication" | "obligation" | "invoice",
+  amount: number | null,
+  currency: string | null,
+): string {
+  const label =
+    kind === "invoice"
+      ? "Total de factura (no es saldo pendiente confirmado)"
+      : kind === "obligation"
+        ? "Importe registrado (verificar obligación y pago)"
+        : "Importe reportado (no conciliado)";
+  return `${label}: ${formatAttentionAmount(amount, currency)}`;
+}
+
 /** Keep the original civil date; never convert a date-only deadline between zones. */
 export function formatAttentionDate(value: string | null): string {
   if (!value) return "Sin fecha";

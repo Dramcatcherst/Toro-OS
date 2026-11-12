@@ -33,6 +33,11 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: Directory write contract SQL
+        run: |
+          npm install --prefix "$RUNNER_TEMP/toro-directory-sql-qa" --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.8
+          TORO_SQL_TEST_PGLITE_MODULE="file:$RUNNER_TEMP/toro-directory-sql-qa/node_modules/@electric-sql/pglite/dist/index.js" node --test tests/directory-write-contract.test.mjs
+
       - name: Lint
         run: npm run lint
 

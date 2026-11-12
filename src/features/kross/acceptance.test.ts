@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { evaluateKrossFirstLiveRead } from "./acceptance";
+import { evaluateKrossFirstLiveRead, type KrossLiveReadAcceptanceInput } from "./acceptance";
 
 const passing = {
   authorizedRealRunEvidenced: true,
@@ -21,6 +21,33 @@ const passing = {
 };
 
 describe("evaluateKrossFirstLiveRead", () => {
+  it.each(["authorizedRealRunEvidenced", "runReadOnly", "idempotentReplayPassed", "sourceIsLiveEvidenceVerified", "receptionRlsReadPassed", "unauthorizedReservationReadBlocked", "rollbackEvidencePresent", "eligibleCurrentReservationExpected", "zeroCurrentStateProvenFromKross"])("blocks a malformed proof boolean %s", key => {
+    const result = evaluateKrossFirstLiveRead({ ...passing, [key]: "false" } as unknown as KrossLiveReadAcceptanceInput);
+    expect(result.passed).toBe(false);
+    expect(result.unlocks).toEqual([]);
+    expect(result.checks.every(check => typeof check.passed === "boolean")).toBe(true);
+  });
+
+  it("blocks a claim of zero reservations contradicted by safe-view rows", () => {
+    const result = evaluateKrossFirstLiveRead({ ...passing, eligibleCurrentReservationExpected: false, zeroCurrentStateProvenFromKross: true, currentReservationsSafeRows: 4 });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain("current_state_truth");
+    expect(result.unlocks).toEqual([]);
+  });
+
+  it("blocks an expected occupied state contradicted by a claim of proven zero", () => {
+    const result = evaluateKrossFirstLiveRead({ ...passing, zeroCurrentStateProvenFromKross: true });
+    expect(result.passed).toBe(false);
+    expect(result.blockers).toContain("current_state_truth");
+  });
+
+  it.each([Infinity, NaN, -1, 0.5, Number.MAX_SAFE_INTEGER + 1])("rejects invalid acceptance counters %s", count => {
+    for (const field of ["currentReservationsSafeRows", "safeCurrentHealthSources", "duplicateGroups", "futureTimestampRows", "unsafeRowsInSafeView", "pmsWriteCount"] as const) {
+      const result = evaluateKrossFirstLiveRead({ ...passing, [field]: count });
+      expect(result.passed, field).toBe(false);
+      expect(result.unlocks, field).toEqual([]);
+    }
+  });
   it("passes only when the full read-only acceptance gate is satisfied", () => {
     const result = evaluateKrossFirstLiveRead(passing);
 

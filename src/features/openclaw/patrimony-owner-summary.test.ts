@@ -154,4 +154,43 @@ describe("OpenClaw patrimony owner summary controls", () => {
       "forbidden_registry_fields_absent",
     ]));
   });
+
+  it.each([null, "invalid", "2026-10-20T21:00:00Z", "2026-10-20T20:59:59Z"])(
+    "requires a finite session expiration strictly after now: %s", (expiresAt) => {
+      const request = validRequest();
+      request.session.expiresAt = expiresAt;
+      expect(evaluateOpenClawPatrimonyRequest(request, now).blockers).toContain("session_not_expired");
+    },
+  );
+
+  it.each([
+    { matrixVersion: "private document content fixture" },
+    { matrixVersion: "x".repeat(181) },
+    { observedAt: "private fixture" },
+    { verifiedAt: "2026-02-31T00:00:00Z" },
+    { observedAt: "2026-10-21T00:00:00Z" },
+    { observedAt: "2026-10-20T00:00:00Z", verifiedAt: "2026-10-19T00:00:00Z" },
+  ])("rejects metadata outside its bounded version and timestamp contract: %j", (change) => {
+    const payload = validPayload();
+    payload.snapshot = { ...payload.snapshot, ...change };
+    expect(evaluateOpenClawPatrimonyResponse(payload, { orgId: "org-private", actorId: "user-owner" }).safe).toBe(false);
+  });
+
+  it("accepts null snapshot dates without inventing verification", () => {
+    const payload = { ...validPayload(), snapshot: { matrixVersion: "matrix-v1", observedAt: null, verifiedAt: null } };
+    expect(evaluateOpenClawPatrimonyResponse(payload, { orgId: "org-private", actorId: "user-owner" }).safe).toBe(true);
+  });
+
+  it("rejects unsafe integers and incompatible conflict totals", () => {
+    const expected = { orgId: "org-private", actorId: "user-owner" };
+    const unsafe = validPayload();
+    unsafe.counts.assets = Number.MAX_SAFE_INTEGER + 1;
+    expect(evaluateOpenClawPatrimonyResponse(unsafe, expected).safe).toBe(false);
+    const severities = validPayload();
+    severities.conflicts = { open: 3, critical: 3, high: 3 };
+    expect(evaluateOpenClawPatrimonyResponse(severities, expected).safe).toBe(false);
+    const open = validPayload();
+    open.counts.conflicts = 12;
+    expect(evaluateOpenClawPatrimonyResponse(open, expected).safe).toBe(false);
+  });
 });

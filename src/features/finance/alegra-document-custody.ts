@@ -51,6 +51,14 @@ function extension(asset: AlegraOriginalAsset) {
   throw new Error("CUSTODY_FORMAT_UNSUPPORTED_OR_INVALID");
 }
 
+function validateProvenance(assets: Pick<AlegraPlannedAsset, "role" | "sha256" | "sourceRefs" | "parentSha256">[]) {
+  for (const asset of assets) {
+    if (!Array.isArray(asset.sourceRefs) || !asset.sourceRefs.length || [...asset.sourceRefs].some(ref => typeof ref !== "string" || !ref.trim())) throw new Error("CUSTODY_SOURCE_REQUIRED");
+    if (asset.role === "derived_preview" && !asset.parentSha256) throw new Error("CUSTODY_DERIVATIVE_PARENT_REQUIRED");
+    if (asset.parentSha256 && !assets.some(parent => parent.sha256 === asset.parentSha256 && parent.role !== "derived_preview")) throw new Error("CUSTODY_PARENT_NOT_IN_PACKAGE");
+  }
+}
+
 export function prepareAlegraDocumentCustody(input: CustodyInput): AlegraCustodyPlan {
   if (!/^[A-Za-z0-9_-]{1,128}$/.test(input.documentKey)) throw new Error("CUSTODY_DOCUMENT_KEY_INVALID");
   const scoped = scopeKey(input.scope);
@@ -81,9 +89,7 @@ export function prepareAlegraDocumentCustody(input: CustodyInput): AlegraCustody
         : original.bytes.byteLength > input.attachmentLimitBytes ? "ALEGRA_ATTACH_OVER_LIMIT" : "ALEGRA_ATTACH_PENDING",
       bytes: new Uint8Array(original.bytes) });
   }
-  for (const asset of assets) {
-    if (asset.parentSha256 && !assets.some(a => a.sha256 === asset.parentSha256 && a.role !== "derived_preview")) throw new Error("CUSTODY_PARENT_NOT_IN_PACKAGE");
-  }
+  validateProvenance(assets);
   return { scopeKey: scoped, documentKey: input.documentKey, state: "PREPARED", externalUpload: false, assets };
 }
 
@@ -99,6 +105,7 @@ function validateScopeAndPaths(value: AlegraCustodyPlan | AlegraCustodyManifest,
     const ext = formats[asset.role]?.[asset.mime];
     if (!ext || !/^[a-f0-9]{64}$/.test(asset.sha256) || asset.path !== `${value.scopeKey}/${value.documentKey}/${asset.role}/${asset.sha256}.${ext}` || !Number.isSafeInteger(asset.sizeBytes) || asset.sizeBytes <= 0) throw new Error("CUSTODY_MANIFEST_INVALID");
   }
+  validateProvenance(value.assets);
 }
 
 function manifestBytes(manifest: Omit<AlegraCustodyManifest, "manifestReceipt">) {
@@ -109,7 +116,35 @@ function requireScopedRef(ref: string, path: string) {
   if (ref !== path) throw new Error("CUSTODY_STORAGE_REFERENCE_INVALID");
 }
 
+function captureStorage(storage: AlegraCustodyStorage) {
+  const { locationKey, mode, putImmutable, read } = storage;
+  if (typeof locationKey !== "string" || !locationKey.trim() || locationKey !== locationKey.trim() ||
+      (mode !== "simulation" && mode !== "provider") || typeof putImmutable !== "function" || typeof read !== "function") throw new Error("CUSTODY_STORAGE_BINDING_INVALID");
+  const keys = ["locationKey", "mode", "putImmutable", "read"] as const;
+  const descriptors = keys.map(key => Object.getOwnPropertyDescriptor(storage, key));
+  function assertBinding() {
+    const unchangedDescriptors = keys.every((key, index) => {
+      const before = descriptors[index], after = Object.getOwnPropertyDescriptor(storage, key);
+      return before === undefined ? after === undefined : after !== undefined &&
+        (["value", "get", "set", "writable", "enumerable", "configurable"] as const).every(field => before[field] === after[field]);
+    });
+    if (!unchangedDescriptors || storage.locationKey !== locationKey || storage.mode !== mode || storage.putImmutable !== putImmutable || storage.read !== read) throw new Error("CUSTODY_STORAGE_BINDING_CHANGED");
+  }
+  // Keep the original receiver for adapters with private fields. Revalidate the
+  // declared binding around every await instead of freezing or cloning its host.
+  return { locationKey, mode, assertBinding,
+    async putImmutable(path: string, bytes: Uint8Array) {
+      assertBinding(); const result = await putImmutable.call(storage, path, bytes); assertBinding(); return result;
+    },
+    async read(ref: string) {
+      assertBinding(); const result = await read.call(storage, ref); assertBinding(); return result;
+    },
+  };
+}
+
 export async function materializeAlegraDocumentCustody(plan: AlegraCustodyPlan, expectedScope: AlegraWriteScope, storage: AlegraCustodyStorage): Promise<AlegraCustodyManifest> {
+  const capturedStorage = captureStorage(storage);
+  storage = capturedStorage;
   plan = structuredClone(plan);
   validateScopeAndPaths(plan, expectedScope);
   // Validate the complete package before any side effect, including caller mutation.
@@ -136,10 +171,14 @@ export async function materializeAlegraDocumentCustody(plan: AlegraCustodyPlan, 
   if (!saved.revision) throw new Error("CUSTODY_STORAGE_RECEIPT_REQUIRED");
   requireScopedRef(saved.ref, path);
   if (digest(await storage.read(saved.ref)) !== hash) throw new Error("CUSTODY_INTEGRITY_MISMATCH");
+  capturedStorage.assertBinding();
   return { ...manifest, manifestReceipt: { path, storageRef: saved.ref, sha256: hash, revision: saved.revision } };
 }
 
 export async function restoreAlegraDocumentCustody(manifest: AlegraCustodyManifest, expectedScope: AlegraWriteScope, source: AlegraCustodyStorage, destination: AlegraCustodyStorage): Promise<AlegraCustodyManifest> {
+  const capturedSource = captureStorage(source), capturedDestination = captureStorage(destination);
+  source = capturedSource;
+  destination = capturedDestination;
   manifest = structuredClone(manifest);
   validateScopeAndPaths(manifest, expectedScope);
   for (const asset of manifest.assets) requireScopedRef(asset.storageRef, asset.path);
@@ -158,5 +197,7 @@ export async function restoreAlegraDocumentCustody(manifest: AlegraCustodyManife
     originals.push({ ...asset, bytes });
   }
   const recovered = await materializeAlegraDocumentCustody({ scopeKey: manifest.scopeKey, documentKey: manifest.documentKey, state: "PREPARED", externalUpload: false, assets: originals }, expectedScope, destination);
+  capturedSource.assertBinding();
+  capturedDestination.assertBinding();
   return { ...recovered, state: "RESTORE_TESTED" };
 }

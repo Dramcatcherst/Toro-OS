@@ -1,5 +1,6 @@
 import "server-only";
-import { resolveToroContext } from "@/features/context/resolver";
+import { resolveToroContext, resolveToroContextWithSupabase } from "@/features/context/resolver";
+import type { ToroResolvedContext } from "@/features/context/types";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import {
   canReadCompleteHotelDirectory, canReadHotelDirectory, catalogueItemsFromLinks,
@@ -18,49 +19,70 @@ export type DirectoryView = {
   navigationAuthorized?: true;
 };
 
+const denied = (): DirectoryView => ({ state: "denied", links: [], catalogueItems: [], catalogueMode: "reviewed" });
+const unavailable = (): DirectoryView => ({ state: "unavailable", links: [], catalogueItems: [], catalogueMode: "fallback" });
 const connectionPending = (error: { code?: string } | null | undefined) =>
   error && ["PGRST106", "PGRST202"].includes(error.code ?? "") ? { reason: "connection_pending" as const } : {};
 
-export async function loadHotelDirectory({ includeApprovedNavigation = false, includeCompleteCatalogue = false }: {
+export async function loadHotelDirectory({ includeApprovedNavigation = false, includeCompleteCatalogue = false, expectedContext }: {
   includeApprovedNavigation?: boolean;
   includeCompleteCatalogue?: boolean;
+  expectedContext?: Pick<ToroResolvedContext, "userId" | "orgId">;
 } = {}): Promise<DirectoryView> {
   try {
-    const context = await resolveToroContext({ mode: "organization" });
-    if (!canReadHotelDirectory(context)) return { state: "denied", links: [], catalogueItems: [], catalogueMode: "reviewed" };
-    const account = context!.email ?? undefined;
+    // A page which already resolved its actor must never combine another actor's
+    // directory with its existing menu. The preference cookie is not authority.
+    const expected = expectedContext ? { userId: expectedContext.userId, orgId: expectedContext.orgId } : null;
+    const context = await resolveToroContext({ mode: "organization", ...(expected ? { orgId: expected.orgId } : {}) });
+    if (!canReadHotelDirectory(context) || (expected &&
+      (context.userId !== expected.userId || context.orgId !== expected.orgId))) return denied();
+    const requested = { userId: context.userId, orgId: context.orgId! };
+    const account = context.email ?? undefined;
     const navigation = includeApprovedNavigation ? portalNavigation(context) : [];
     const client = await createServerSupabaseClient();
     const navigationState = includeApprovedNavigation ? { navigationAuthorized: true as const } : {};
+    // Both returned errors and thrown transport errors use the same fallback.
+    const read = async (name: string) => {
+      try { return await client.rpc(name); }
+      catch { return { data: null, error: { code: "transport_unavailable" } }; }
+    };
+    const finish = async (view: DirectoryView, complete = false): Promise<DirectoryView> => {
+      // Recheck on this same session client after every awaited source/fallback.
+      // Even static navigation is withheld if the actor or authorization changed.
+      const current = await resolveToroContextWithSupabase(client, { mode: "organization", orgId: requested.orgId });
+      if (!canReadHotelDirectory(current) || current.userId !== requested.userId || current.orgId !== requested.orgId ||
+        (complete && !canReadCompleteHotelDirectory(current))) return denied();
+      return view;
+    };
 
     if (includeCompleteCatalogue && canReadCompleteHotelDirectory(context)) {
-      const full = await client.rpc("dreamcatcher_tool_catalog_v1");
+      const full = await read("dreamcatcher_tool_catalog_v1");
       const catalogueItems = full.error ? [] : projectCompleteCatalogueRows(context, full.data);
       const operational = full.error ? [] : projectToolRows(context, full.data);
       if (catalogueItems.length === 244) {
-        return { state: "ready", links: [...operational, ...navigation], catalogueItems, catalogueMode: "complete", account, ...navigationState };
+        return await finish({ state: "ready", links: [...operational, ...navigation],
+          catalogueItems: [...catalogueItems, ...catalogueItemsFromLinks(navigation)],
+          catalogueMode: "complete", account, ...navigationState }, true);
       }
-
-      // Preserve the existing reviewed surface while the versioned catalogue RPC
-      // is unavailable or fails strict validation. Full rows are never cached.
-      const reviewed = await client.rpc("dreamcatcher_tool_links_v1");
-      if (reviewed.error) return { state: "unavailable", links: navigation,
+      const reviewed = await read("dreamcatcher_tool_links_v1");
+      if (reviewed.error) return await finish({ state: "unavailable", links: navigation,
         catalogueItems: catalogueItemsFromLinks(navigation), catalogueMode: "fallback", account,
-        ...navigationState, ...connectionPending(reviewed.error ?? full.error) };
+        ...navigationState, ...connectionPending(reviewed.error ?? full.error) });
       const links = projectToolRows(context, reviewed.data);
       const fallbackLinks = [...links, ...navigation];
-      return { state: links.length ? "ready" : "unavailable", links: fallbackLinks,
-        catalogueItems: catalogueItemsFromLinks(fallbackLinks), catalogueMode: "fallback", account, ...navigationState };
+      return await finish({ state: links.length ? "ready" : "unavailable", links: fallbackLinks,
+        catalogueItems: catalogueItemsFromLinks(fallbackLinks), catalogueMode: "fallback", account, ...navigationState });
     }
 
-    const { data, error } = await client.rpc("dreamcatcher_tool_links_v1");
-    if (error) return { state: "unavailable", links: navigation, catalogueItems: catalogueItemsFromLinks(navigation),
-      catalogueMode: "fallback", account, ...navigationState, ...connectionPending(error) };
+    const { data, error } = await read("dreamcatcher_tool_links_v1");
+    if (error) return await finish({ state: "unavailable", links: navigation, catalogueItems: catalogueItemsFromLinks(navigation),
+      catalogueMode: "fallback", account, ...navigationState, ...connectionPending(error) });
     const links = projectToolRows(context, data);
     const reviewedLinks = [...links, ...navigation];
-    return { state: links.length ? "ready" : "unavailable", links: reviewedLinks,
-      catalogueItems: catalogueItemsFromLinks(reviewedLinks), catalogueMode: "reviewed", account, ...navigationState };
+    return await finish({ state: links.length ? "ready" : "unavailable", links: reviewedLinks,
+      catalogueItems: catalogueItemsFromLinks(reviewedLinks), catalogueMode: "reviewed", account, ...navigationState });
   } catch {
-    return { state: "unavailable", links: [], catalogueItems: [], catalogueMode: "fallback" };
+    // Failure to verify the session is different from a directory source outage.
+    return unavailable();
   }
 }

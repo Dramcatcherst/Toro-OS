@@ -179,3 +179,18 @@ describe("POST /api/brain/context/selection", () => {
     expect(mocks.resolveContext).not.toHaveBeenCalled();
   });
 });
+
+it.each(["deadline","abort"])("settles a stalled form read on %s without resolving Auth",async reason=> {
+  vi.useFakeTimers();
+  const controller=new AbortController();
+  const cancel=vi.fn(()=>new Promise<void>(()=>{}));
+  const body=new ReadableStream<Uint8Array>({start(c){c.enqueue(new TextEncoder().encode("intent=clear"));},cancel});
+  const req=new Request(`${ORIGIN}/api/brain/context/selection`,{method:"POST",headers:{origin:ORIGIN,"content-type":"application/x-www-form-urlencoded"},body,signal:controller.signal,duplex:"half"} as RequestInit);
+  const pending=POST(req);
+  await Promise.resolve();
+  if(reason==="abort")controller.abort();
+  await vi.advanceTimersByTimeAsync(5100);
+  const response=await pending;
+  expect(response.status).toBe(413);expect(mocks.resolveContext).not.toHaveBeenCalled();expect(cancel).toHaveBeenCalled();
+  vi.useRealTimers();
+});

@@ -150,6 +150,16 @@ export function KrossBookingAssist({
                 Una habitación por búsqueda en esta primera versión. Para varias habitaciones, abre Kross y configura la distribución allí.
               </span>
             </div>
+            {result.url ? (
+              <div className={styles.fallback}>
+                <span>Si no se abre una pestaña, usa este enlace.</span>
+                <a
+                  href={result.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Abrir búsqueda mediante enlace</a>
+              </div>
+            ) : null}
           </form>
 
           <details className={styles.limits}><summary>Cómo funciona</summary><p>

@@ -52,20 +52,155 @@ export type KrossDryRunResult = {
   importRun: KrossDryRunImportRunEvidence;
   adapterIssues: KrossAdapterIssue[];
   normalizationIssues: KrossNormalizationIssue[];
+  executionIssues: Array<"invalid_execution_envelope" | "rejected_source_replay" | "missing_replay_mirror" | "source_replay_conflict" | "stale_source" | "source_version_conflict" | "invalid_source_time">;
   canEnterSafeView: false;
   pmsWriteCount: 0;
 };
 
-function runKey(evidence: KrossTransportEvidence) {
-  return `${evidence.sourceReference.trim()}::${evidence.sourceHash.trim()}`;
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function nonEmptyText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+const requiredFieldMapKeys = [
+  "externalReservationId",
+  "checkIn",
+  "checkOut",
+  "status",
+] as const;
+const optionalFieldMapKeys = [
+  "reservationKey",
+  "roomId",
+  "roomCodeRaw",
+  "guestsCount",
+  "adults",
+  "children",
+  "channel",
+  "breakfastIncluded",
+] as const;
+
+function validExecutionEnvelope(value: unknown): value is KrossDryRunRequest {
+  if (!record(value) || !record(value.adapterConfig) || !record(value.evidence)) {
+    return false;
+  }
+  const adapter = value.adapterConfig;
+  const evidence = value.evidence;
+  if (!nonEmptyText(adapter.orgId) || !nonEmptyText(adapter.propertyId) ||
+    !record(adapter.fieldMap) || !nonEmptyText(value.nowIso)) {
+    return false;
+  }
+  const fieldMap = adapter.fieldMap;
+  if (![...requiredFieldMapKeys, ...optionalFieldMapKeys].every(key =>
+    fieldMap[key] === undefined || typeof fieldMap[key] === "string"
+  )) {
+    return false;
+  }
+  return ["sourceAsOf", "observedAt", "sourceReference", "sourceHash"]
+    .every(key => nonEmptyText(evidence[key])) &&
+    ["authorizedTransport", "directFromKross", "readOnly"]
+      .every(key => typeof evidence[key] === "boolean");
+}
+
+function invalidEnvelopeText(value: unknown) {
+  return nonEmptyText(value) ? value.trim() : "";
+}
+
+function invalidEnvelopeReceipt(
+  request: unknown,
+  store: KrossDryRunMirrorStore,
+): KrossDryRunResult {
+  const envelope = record(request) ? request : {};
+  const adapter = record(envelope.adapterConfig) ? envelope.adapterConfig : {};
+  const evidence = record(envelope.evidence) ? envelope.evidence : {};
+  const sourceReference = invalidEnvelopeText(evidence.sourceReference);
+  const sourceHash = invalidEnvelopeText(evidence.sourceHash);
+  const orgId = invalidEnvelopeText(adapter.orgId);
+  const propertyId = invalidEnvelopeText(adapter.propertyId);
+  const invalidRunKey = orgId && propertyId && sourceReference && sourceHash
+    ? JSON.stringify([orgId, propertyId, sourceReference, sourceHash])
+    : JSON.stringify([
+        "invalid_execution_envelope",
+        orgId,
+        propertyId,
+        null,
+        sourceReference,
+        sourceHash,
+      ]);
+  const stored = store.getImportRun(invalidRunKey);
+  const importRun: KrossDryRunImportRunEvidence = stored ?? {
+    runKey: invalidRunKey,
+    mode: "dry_run",
+    status: "rejected",
+    operation: "reject",
+    identityKey: null,
+    sourceReference,
+    sourceHash,
+    readOnly: true,
+    pmsWriteCount: 0,
+  };
+  if (!stored) store.saveImportRun(invalidRunKey, importRun);
+  return {
+    status: "rejected",
+    operation: "reject",
+    reservation: null,
+    importRun,
+    adapterIssues: [],
+    normalizationIssues: [],
+    executionIssues: ["invalid_execution_envelope"],
+    canEnterSafeView: false,
+    pmsWriteCount: 0,
+  };
+}
+
+function artifactRunKey(request: KrossDryRunRequest) {
+  return JSON.stringify([
+    request.adapterConfig.orgId.trim(),
+    request.adapterConfig.propertyId.trim(),
+    request.evidence.sourceReference.trim(),
+    request.evidence.sourceHash.trim(),
+  ]);
+}
+
+function runKey(request: KrossDryRunRequest, externalReservationId: string | null) {
+  return JSON.stringify([
+    request.adapterConfig.orgId.trim(),
+    request.adapterConfig.propertyId.trim(),
+    externalReservationId,
+    request.evidence.sourceReference.trim(),
+    request.evidence.sourceHash.trim(),
+  ]);
 }
 
 function identityKey(reservation: NormalizedKrossReservation) {
-  return [
+  return JSON.stringify([
     reservation.org_id,
     reservation.property_id,
     reservation.external_reservation_id,
-  ].join(":");
+  ]);
+}
+
+function reservationContent(reservation: NormalizedKrossReservation) {
+  // Sync timestamps and artifact hashes may change without a reservation change.
+  return JSON.stringify([
+    reservation.org_id, reservation.property_id, reservation.external_reservation_id,
+    reservation.reservation_key, reservation.room_id, reservation.room_code_raw,
+    reservation.check_in, reservation.check_out, reservation.status,
+    reservation.guests_count, reservation.adults, reservation.children,
+    reservation.channel, reservation.breakfast_included,
+  ]);
+}
+
+function credibleSourceVersion(reservation: NormalizedKrossReservation, nowMs: number) {
+  const source = Date.parse(reservation.snapshot_as_of);
+  const observed = Date.parse(reservation.last_synced_at);
+  // Business-quality review does not invalidate an otherwise credible version.
+  // Future or chronologically impossible provenance cannot establish ordering.
+  return Number.isFinite(source) && Number.isFinite(observed) && source <= observed && observed <= nowMs
+    ? source
+    : null;
 }
 
 export function createInMemoryKrossDryRunStore(): KrossDryRunMirrorStore {
@@ -86,39 +221,58 @@ export function executeKrossDryRun(
   request: KrossDryRunRequest,
   store: KrossDryRunMirrorStore,
 ): KrossDryRunResult {
-  const currentRunKey = runKey(request.evidence);
-  const existingRun = store.getImportRun(currentRunKey);
+  if (!validExecutionEnvelope(request)) {
+    return invalidEnvelopeReceipt(request, store);
+  }
 
   const adapted = adaptKrossReservationPayload(
     request.payload,
     request.adapterConfig,
   );
+  const currentRunKey = runKey(request, adapted.externalReservationId);
+  const existingRun = store.getImportRun(currentRunKey);
+  const existingArtifactRejection = store.getImportRun(artifactRunKey(request));
 
-  if (!adapted.candidate) {
+  function reject(
+    normalizationIssues: KrossNormalizationIssue[],
+    executionIssue?: KrossDryRunResult["executionIssues"][number],
+  ): KrossDryRunResult {
+    // Keep an accepted receipt immutable when a later conflicting attempt fails.
+    const rejectedKey = existingRun?.status === "accepted"
+      ? JSON.stringify([currentRunKey, "reject", executionIssue ?? "validation"])
+      : existingArtifactRejection?.status === "rejected"
+        ? artifactRunKey(request)
+        : adapted.externalReservationId
+          ? currentRunKey
+          : artifactRunKey(request);
+    const storedRejection = store.getImportRun(rejectedKey);
     const importRun: KrossDryRunImportRunEvidence = {
-      runKey: currentRunKey,
+      runKey: rejectedKey,
       mode: "dry_run",
       status: "rejected",
       operation: "reject",
-      identityKey: null,
+      identityKey: adapted.externalReservationId ? JSON.stringify([request.adapterConfig.orgId.trim(), request.adapterConfig.propertyId.trim(), adapted.externalReservationId]) : null,
       sourceReference: request.evidence.sourceReference,
       sourceHash: request.evidence.sourceHash,
       readOnly: true,
       pmsWriteCount: 0,
     };
-    if (!existingRun) store.saveImportRun(currentRunKey, importRun);
+    if (!storedRejection) store.saveImportRun(rejectedKey, importRun);
 
     return {
       status: "rejected",
       operation: "reject",
       reservation: null,
-      importRun: existingRun ?? importRun,
+      importRun: storedRejection ?? importRun,
       adapterIssues: adapted.issues,
-      normalizationIssues: [],
+      normalizationIssues,
+      executionIssues: executionIssue ? [executionIssue] : [],
       canEnterSafeView: false,
       pmsWriteCount: 0,
     };
   }
+
+  if (!adapted.candidate) return reject([]);
 
   // Dry-run provenance is intentionally never eligible for source_is_live.
   // The canonical normalizer still validates shape, scope, dates and hashes.
@@ -134,42 +288,40 @@ export function executeKrossDryRun(
     request.nowIso,
   );
 
-  if (!normalized.reservation) {
-    const importRun: KrossDryRunImportRunEvidence = {
-      runKey: currentRunKey,
-      mode: "dry_run",
-      status: "rejected",
-      operation: "reject",
-      identityKey: null,
-      sourceReference: request.evidence.sourceReference,
-      sourceHash: request.evidence.sourceHash,
-      readOnly: true,
-      pmsWriteCount: 0,
-    };
-    if (!existingRun) store.saveImportRun(currentRunKey, importRun);
-
-    return {
-      status: "rejected",
-      operation: "reject",
-      reservation: null,
-      importRun: existingRun ?? importRun,
-      adapterIssues: adapted.issues,
-      normalizationIssues: normalized.issues,
-      canEnterSafeView: false,
-      pmsWriteCount: 0,
-    };
-  }
+  if (!normalized.reservation) return reject(normalized.issues);
 
   const key = identityKey(normalized.reservation);
   const existingMirror = store.getMirror(key);
+  if (existingArtifactRejection?.status === "rejected" || existingRun?.status === "rejected") {
+    return reject(normalized.issues, "rejected_source_replay");
+  }
+  if (existingRun && (!existingMirror || existingRun.identityKey !== key)) {
+    return reject(normalized.issues, existingMirror ? "source_replay_conflict" : "missing_replay_mirror");
+  }
+  if (existingMirror) {
+    const nowMs = Date.parse(request.nowIso);
+    const incomingVersion = credibleSourceVersion(normalized.reservation, nowMs);
+    const currentVersion = credibleSourceVersion(existingMirror, nowMs);
+    if (currentVersion !== null) {
+      if (incomingVersion === null) return reject(normalized.issues, "invalid_source_time");
+      if (incomingVersion < currentVersion) return reject(normalized.issues, "stale_source");
+      if (incomingVersion === currentVersion && reservationContent(existingMirror) !== reservationContent(normalized.reservation)) {
+        return reject(normalized.issues, "source_version_conflict");
+      }
+    }
+    if (existingRun && (Date.parse(normalized.reservation.snapshot_as_of) !== Date.parse(existingMirror.snapshot_as_of) || reservationContent(existingMirror) !== reservationContent(normalized.reservation))) {
+      return reject(normalized.issues, "source_replay_conflict");
+    }
+  }
   if (existingRun) {
     return {
       status: "accepted",
       operation: "replay",
-      reservation: existingMirror ?? normalized.reservation,
+      reservation: existingMirror,
       importRun: existingRun,
       adapterIssues: adapted.issues,
       normalizationIssues: normalized.issues,
+      executionIssues: [],
       canEnterSafeView: false,
       pmsWriteCount: 0,
     };
@@ -198,6 +350,7 @@ export function executeKrossDryRun(
     importRun,
     adapterIssues: adapted.issues,
     normalizationIssues: normalized.issues,
+    executionIssues: [],
     canEnterSafeView: false,
     pmsWriteCount: 0,
   };

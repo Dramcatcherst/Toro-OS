@@ -166,3 +166,98 @@ describe("Owner Attention projection", () => {
     expect(item).toBeNull();
   });
 });
+
+describe("Obligations: overdue review dates are not automatically confirmed payment delinquency", () => {
+  const obligation = (status: string, verification_status: string) => ({
+    obligation_key: "synthetic-obligation",
+    obligation_name: "Synthetic service",
+    counterparty: "Synthetic supplier",
+    status,
+    verification_status,
+    next_due_date: "2026-10-01",
+    next_review_date: "2026-10-15",
+    current_amount: "9500",
+    current_amount_currency: "CRC",
+    owner_agent: "FIONA",
+    human_owner: null,
+    source_system: "Alegra",
+    source_path: null,
+  });
+
+  it.each([
+    "ESTIMADO_POR_HISTORIAL_CURRENT_PAYMENT_UNKNOWN",
+    "PAYMENT_REPORTED_ALEGRA_CANDIDATES_BANK_UNVERIFIED_SCOPE_AMOUNT_CURRENCY_MISMATCH",
+    "current_invoice_verified_payment_external_unconfirmed",
+    "TRIAL_EXPIRED_RUNTIME_DEPENDENCY_UNVERIFIED_DO_NOT_PURCHASE_YET",
+  ])("keeps %s as verification HIGH instead of invented debt CRITICAL", (evidence) => {
+    const item = projectObligationAttention(
+      obligation("needs_verification", evidence), "2026-10-20",
+    );
+    expect(item).toMatchObject({
+      priority: "high",
+      kind: "obligation",
+      state: "needs_verification",
+      amount: 9500,
+    });
+  });
+
+  it.each([
+    "PROVIDER_CONFIRMED_OVERDUE_DATE_BANK_UNMATCHED",
+    "PAYMENT_FAILED_PROVIDER_CONFIRMED_SUSPENSION_RISK_BANK_UNVERIFIED",
+  ])("preserves a real critical signal from %s", (evidence) => {
+    const item = projectObligationAttention(
+      obligation("needs_verification", evidence), "2026-10-20",
+    );
+    expect(item?.priority).toBe("critical");
+  });
+
+  it("keeps an active, unconfirmed overdue cycle critical for investigation", () => {
+    const item = projectObligationAttention(
+      obligation("active", "CONFIRMADO_INVOICE_OPEN_PAYMENT_UNVERIFIED"), "2026-10-20",
+    );
+    expect(item?.priority).toBe("critical");
+  });
+});
+
+describe("Financial alert classification — never infer outstanding debt from document date alone", () => {
+  const invoice = (payment_status: string | null, due_date: string | null = "2026-10-01") => ({
+    invoice_key: "synthetic-finance-invoice",
+    issuer_name: "Synthetic Provider",
+    document_number: "QA-1",
+    due_date,
+    currency: "CRC",
+    total: 15000,
+    payment_status,
+    obligation_key: null,
+    mailbox: null,
+    source_url: null,
+  });
+
+  it.each(["paid", "PAID", "credited", "no_payment_due_extranet_verified_2026_09_29"])(
+    "suppresses non-payable or settled status %s from overdue-payment alerts", (status) => {
+      expect(projectInvoiceAttention(invoice(status), "2026-10-20")).toBeNull();
+    },
+  );
+
+  it.each([
+    "unknown", "payment_reported", "payment_in_progress_2026_09_05",
+    "duplicate_billing_dispute_unresolved",
+    "paid_external_match_scope_pending", "paid_provider_confirmed_bank_match_pending",
+    "no_payment_due_unverified", "no_payment_due_not_verified", "no_payment_due_extranet_pending", "OPEN",
+  ])("marks %s as high verification rather than a verified overdue debt", (status) => {
+    expect(projectInvoiceAttention(invoice(status), "2026-10-20")).toMatchObject({
+      kind: "invoice", priority: "high", state: status, amount: 15000,
+    });
+  });
+
+  it.each(["due", "overdue", "unpaid"])(
+    "retains critical attention for explicit overdue status %s", (status) => {
+      expect(projectInvoiceAttention(invoice(status), "2026-10-20")?.priority).toBe("critical");
+    },
+  );
+
+  it("keeps a future due invoice out of attention unless dispute or processing warrants follow-up", () => {
+    expect(projectInvoiceAttention(invoice("unknown", "2026-11-10"), "2026-10-20")).toBeNull();
+    expect(projectInvoiceAttention(invoice("duplicate_billing_dispute_unresolved", null), "2026-10-20")?.priority).toBe("high");
+  });
+});

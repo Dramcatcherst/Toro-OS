@@ -81,6 +81,16 @@ Do not onboard external businesses until the readiness gate in `docs/product/NEW
 
 Never silently resolve a source conflict. Record the conflict, authority, freshness and required correction.
 
+## Operating configuration and optimization
+
+Apply `toro-context.yaml -> operating_configuration` and the General Plan section `TORO_OPERATING_CONFIGURATION_20261022` when changing deployment, agent/tool configuration or channel integration. They are governance/target contracts, not proof that a runtime setting was installed.
+
+- Reuse the existing channel bridge, Control Plane queue, identity and source registry before adding infrastructure. One account/action has one active writer; local development is not a second production consumer.
+- OpenClaw session separation is not a security boundary between mutually untrusted users. Do not expose an owner Gateway's shell, browser, secrets or session history to team/guest ingress. Pause that rollout until a verified boundary exists; a prompt or agent name cannot establish it.
+- Distinguish configured, tested, integrated, deployed, runtime-verified and measured. Check exact SHA/environment and a destination receipt before claiming completion. Do not turn improvement quotas or passing synthetic tests into operational outcomes.
+- Load task-relevant context and source slices; keep volatile facts out of durable profiles. Use bounded tools/models/workers with declared cost/time/retry limits. Reuse existing supervision/alerts; do not add another scheduler to solve missing access.
+- Classify advisory warnings before acting. Do not broaden grants, add permissive RLS policies, drop indexes or rotate secrets merely to make a checker green. Preserve consumers, verification and rollback.
+
 ## Brand
 
 Official identity is **TORO** only.

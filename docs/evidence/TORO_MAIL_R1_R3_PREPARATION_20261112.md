@@ -54,9 +54,9 @@ not added together as a unique-test count.
 
 ## Remaining gates and rollback
 
-PR #308 was already divergent/conflicted against main. Only its relevant
-mailbox freshness/context dependency was reconciled here; the whole PR is not
-certified merge-ready. CI/preview of the final revision must be inspected
+At the first preparation commit, PR #308 was already divergent/conflicted
+against main. Only its mailbox freshness/context dependency was reconciled in
+that slice. The continuation below supersedes that integration status. CI/preview of the final revision must be inspected
 separately before any merge. No merge or deployment was performed in this task.
 
 Future provider dispatch must re-read policy/identity/human state, bind the
@@ -68,3 +68,43 @@ are not proof that those controls exist in production.
 
 Rollback: revert this isolated commit. It changes only code, tests and contracts;
 there is no live provider, schema, permission or message side effect to reverse.
+
+
+## Integration continuation — 12 November 2026
+
+The same PR branch was reconciled with main
+`425bfb0c61d0522f3362e42e80f19a99185a0838`, preserving the first preparation
+revision `6201bd8423769fc55a549af4abf5a27c55f07942` as its other parent.
+The only four textual conflicts were the package test script, the alert
+delivery helper and tests, and the personal Gmail cleanup classifier.
+
+- All current-main test commands remain, including the newer Alegra caller
+  verification; the three TORO Mail suites are included in the canonical run.
+- Mail alert preparation now passes the required organization, health window
+  and UTF-8 message budget to the shared delivery guard. Main's strict input,
+  scope, freshness and destination checks remain unchanged. Personal mail
+  cannot enter a hotel group, and truthy non-Boolean privacy flags are rejected.
+- Cleanup retains main's malformed-metadata protection and plural grammar
+  while preserving the PR's purchase/order/shipping/delivery exclusions.
+- The General Plan and context combined without conflict. No runtime policy,
+  source data, scheduler, permissions or provider state changed.
+
+Integration validation: 247/247 targeted Comms and Maintenance tests passed.
+The full canonical `npm test` exited 0 (1,211 tests in its principal Vitest
+invocation; all additional Vitest and Node suites passed). Global lint has
+0 errors and one pre-existing unused-argument warning. The canonical
+`npm run build` using Next.js 16.3.8/Turbopack passed, including its TypeScript
+gate and generation of 53 pages; a fresh standalone TypeScript check passed.
+
+The optional webpack build exposed an existing default-parameter PageProps
+incompatibility in the unchanged main Portal page. This does not reproduce
+with the repository's declared Turbopack build and its generated validator.
+Portal code and type-checking policy were not changed. The task-worktree
+dependency symlink was replaced with a local copy of the same installed
+dependencies because Turbopack disallows a dependency symlink outside its root;
+no package version, dependency manifest or runtime configuration was changed.
+
+This is a reviewed branch-integration candidate, not a merge into main or a
+deployment. Provider dispatch and durable atomic admission remain unimplemented
+and `canSend=false` remains unchanged. Revert the integration revision to
+restore the prior PR branch; canonical main and external systems are untouched.

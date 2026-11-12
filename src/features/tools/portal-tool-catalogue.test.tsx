@@ -219,3 +219,30 @@ describe("tool catalogue markup", () => {
     expect(text).not.toMatch(/integracion activa|sincronizado|conexion verificada/);
   });
 });
+
+// I50-01: P0 priority remains first in the actual rendered project sequence.
+it("orders critical work before routine and unknown priorities across project groups", () => {
+  const base = completeCatalogue()[0];
+  const items = [
+    {...base, id:"LINK-901", name:"Critical", project:"Z project", priority:"P0 crítico"},
+    {...base, id:"LINK-902", name:"Routine", project:"A project", priority:"P1 diario"},
+    {...base, id:"LINK-903", name:"Unknown", project:"B project", priority:"P10 unknown"},
+    {...base, id:"LINK-904", name:"Rare", project:"C project", priority:"P3 ocasional"},
+  ];
+  const selection = selectToolCatalogue(items, filters());
+  expect(selection.filteredLinks.map(item => item.id)).toEqual(["LINK-901","LINK-902","LINK-904","LINK-903"]);
+  expect(selection.groups.map(group => group.links[0].id)).toEqual(["LINK-901","LINK-902","LINK-904","LINK-903"]);
+});
+
+it("never moves routine work above another project's critical work when a project spans priority bands",()=>{
+  const base=completeCatalogue()[0];
+  const items=[
+    {...base,id:"LINK-901",name:"Critical A",project:"A",priority:"P0 critical"},
+    {...base,id:"LINK-902",name:"Critical B",project:"B",priority:"P0 critical"},
+    {...base,id:"LINK-903",name:"Routine A",project:"A",priority:"P3 routine"},
+  ];
+  const selected=selectToolCatalogue(items,filters());
+  expect(selected.groups.flatMap(group=>group.links.map(item=>item.id))).toEqual(["LINK-901","LINK-902","LINK-903"]);
+  const html=renderToStaticMarkup(<PortalToolCatalogue items={items} idPrefix="mixed-priority"/>);
+  expect(html.indexOf('data-tool="LINK-902"')).toBeLessThan(html.indexOf('data-tool="LINK-903"'));
+});

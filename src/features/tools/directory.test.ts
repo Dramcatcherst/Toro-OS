@@ -85,3 +85,21 @@ describe("complete catalogue boundary", () => {
     expect(projectCompleteCatalogueRows(context, rows)).toEqual([]);
   });
 });
+
+// I50-03/04: prevent secret-fragment and decoded mail-header data escaping the projection.
+it.each([
+  "https://example.test/#/open?token=private?view=x",
+  "https://example.test/#token=private?view=x",
+  "https://example.test/#/open?%74oken=private?view=x",
+  "mailto:hotel%0d%0aX-Test:foo@example.test",
+  "mailto:hotel@example.test?subject=Hi%0d%0aBcc%3Aother%40example.test",
+  "mailto:hotel@example.test?subject=%00Hi",
+  "mailto:hotel%ZZ@example.test",
+])("rejects a destination carrying hidden unsafe data: %s", url => {
+  const rows = completeCatalogueRows(); rows[0].url = url;
+  expect(projectCompleteCatalogueRows(context, rows)).toEqual([]);
+});
+it.each(["https://example.test/#/open?view=x", "mailto:hotel@example.test?subject=Hello%20there&body=Good%20morning", "tel:+50626401234"])("retains safe contact and hash-route destinations: %s", url => {
+  const rows = completeCatalogueRows(); rows[0].url = url;
+  expect(projectCompleteCatalogueRows(context, rows)).toHaveLength(244);
+});

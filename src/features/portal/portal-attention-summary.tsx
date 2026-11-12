@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CircleAlert, ExternalLink } from "lucide-react";
 import type { OwnerAttentionProjection } from "@/features/attention/owner-attention";
-import { formatAttentionAmount, formatAttentionCut, formatAttentionDate, safeEvidenceHref } from "@/features/attention/owner-attention-presentation";
+import { formatAttentionAmountWithBasis, formatAttentionCut, formatAttentionDate, safeEvidenceHref } from "@/features/attention/owner-attention-presentation";
 import styles from "./portal.module.css";
 
 export type PortalAttentionState = "disabled" | "unavailable" | "ready";
@@ -27,7 +27,7 @@ export function PortalAttentionSummary({ state, projection }: { state: PortalAtt
             <p>{item.title}</p>
             <p>Fuente: {item.sourceSystem}</p>
             <p>Responsable: {item.humanOwner ?? item.ownerAgent ?? "Sin asignación verificada"}</p>
-            {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmount(item.amount, item.currency)}</p> : null}
+            {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmountWithBasis(item.kind, item.amount, item.currency)}</p> : null}
             {href ? <a href={href} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className={styles.textLink}>Abrir origen<ExternalLink size={15} aria-hidden="true" /></a> : null}
           </div>
         </details>;

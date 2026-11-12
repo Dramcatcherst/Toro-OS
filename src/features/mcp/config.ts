@@ -2,6 +2,7 @@ import "server-only";
 import { internalCapabilityEnabled } from "@/lib/server/public-demo";
 
 import { getSupabasePublicConfig } from "@/lib/supabase/env";
+import { normalizeToroMcpResourceUrl } from "./resource-url";
 
 export type ToroMcpRuntimeConfig = {
   resourceUrl: string;
@@ -15,28 +16,16 @@ export function isToroMcpEnabled() {
 export function getToroMcpRuntimeConfig(): ToroMcpRuntimeConfig | null {
   if (!isToroMcpEnabled()) return null;
 
-  const rawResourceUrl = process.env.TORO_MCP_RESOURCE_URL?.trim();
-  if (!rawResourceUrl) return null;
+  const resourceUrl = normalizeToroMcpResourceUrl(process.env.TORO_MCP_RESOURCE_URL);
+  if (!resourceUrl) return null;
 
-  let resourceUrl: URL;
-  try {
-    resourceUrl = new URL(rawResourceUrl);
-  } catch {
-    return null;
-  }
-
-  const isLocal =
-    resourceUrl.hostname === "localhost" ||
-    resourceUrl.hostname === "127.0.0.1";
-
-  if (resourceUrl.protocol !== "https:" && !isLocal) return null;
-  if (!resourceUrl.pathname.endsWith("/api/mcp")) return null;
-
-  const { url } = getSupabasePublicConfig();
+  let url: string;
+  try { ({ url } = getSupabasePublicConfig()); }
+  catch { return null; }
   const authServerUrl = `${url.replace(/\/$/, "")}/auth/v1`;
 
   return {
-    resourceUrl: resourceUrl.toString(),
+    resourceUrl,
     authServerUrl,
   };
 }

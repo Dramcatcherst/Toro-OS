@@ -153,3 +153,45 @@ No autentica usuarios, no evalúa RLS y no sustituye la aceptación del lector. 
 Reversión del mapa: restaurar únicamente la propiedad JSON modificada o retirar la ficha nueva con guardia de huella/versión y referencia de procedencia; conservar fuentes y proyectos. Nunca restaurar un registro completo encima de cambios concurrentes.
 
 Reversión del código/documentación: revert selectivo del PR. La incorporación documental no requiere despliegue de interfaz; cualquier release futuro tiene su propia evidencia.
+
+## 12. Acciones del propietario
+
+Dirección del 24 de octubre de 2026, subordinada al Plan General. Estado: contrato TARGET; no declara controles o escritores productivos habilitados. Reutilizar 10 Proyectos, el inspector de 00 Cerebro, los menús conversacionales y el Control Plane existentes.
+
+La ficha ofrece Cambiar prioridad, Pausar, Reactivar e Integrar; Más reúne Crear, Archivar, Eliminar y Exportar Word. Mostrar solo acciones permitidas y respaldadas por una capacidad real; si falta escritor, mostrar preparación/seguimiento con el efecto exacto, nunca un botón que finja ejecutar. El mismo pedido por conversación usa la misma identidad, política y recibo.
+
+| Acción | Efecto que debe quedar claro |
+| --- | --- |
+| Priorizar | Cambiar prioridad y orden del alcance; no reactivar ni ampliar permisos. Revisar urgencia, contribución, esfuerzo, caja y dependencias. Hasta tres resultados prioritarios del corte, no tres registros de inventario. |
+| Pausar | Detener nueva ejecución autorizada de ese alcance y dejar pendientes, trabajo en curso y revisión visibles. No cancelar reservas, pagos, obligaciones o tareas de seguridad. |
+| Reactivar | Revisar vigencia, capacidad, permisos y dependencias; no presentar hechos históricos como actuales. |
+| Crear | Buscar identidad/alias y receptor existente. Crear un proyecto solo si tiene resultado, alcance y dueño propios; una idea o mejora puede quedar como referencia FUTURE o trabajo del módulo actual. |
+| Integrar | Elegir receptor existente; conservar ID, alias, origen e información única. Comprobar tareas, documentos, usuarios, consumidores, permisos y recuperación antes de aplicar la fusión autorizada. Compartir capacidad no fusiona ámbitos. |
+| Archivar | Retirar del trabajo y de la vista activa, manteniendo recuperación e historia. No elimina hosting, código, documentos ni datos. |
+| Eliminar | Resolver recursos exactos y alcance, efectos/dependencias y autorización vigente. Ejecutar únicamente lo accesible y autorizado; separar retiro de ficha, eliminación del proveedor y copias externas no comprobadas. |
+| Exportar Word | Obtener un corte autorizado y versionado del mismo registro, con fuentes, decisiones y cambios; no otra lista manual. |
+
+Cada cambio preparado conserva actor/contexto autenticados, ID canónico, operación, motivo, valores antes/después, revisión esperada, alcance y receptor si integra, efectos, dependencias, autorización aplicable y clave de idempotencia. Resolver nombres ambiguos antes de mutar. Una autorización exacta aún vigente no se repite por cambiar de superficie; ampliar el alcance requiere su política propia.
+
+Reusar `operations.executive_decisions` para la decisión, `operations.toro_owner_attention_v1` para atención y `operations.tasks` para trabajo; `public.toro_execution_runs` y `public.toro_execution_receipts` para ejecución/evidencia. No crear otra tabla/cola ni resucitar `/api/approvals`, retirado con HTTP 410. La capacidad actual `project.followup` solo crea seguimiento y no constituye un escritor de proyectos.
+
+HECHO exige antes/después y recibo real; PREPARADO contiene cambio revisable sin efecto; BLOQUEADO identifica causa y siguiente acción; PENDIENTE DE VERIFICACIÓN separa el efecto externo incierto. Un timeout obliga a reconciliar antes de repetir. La revisión/CAS y el escritor único impiden pisar una decisión concurrente.
+
+Las exclusiones por decisión del propietario permanecen como anotaciones mínimas de procedencia/retención, fuera de la vista de trabajo por defecto. No convierten la política de conservación del inventario inicial en una prohibición de ejecutar una eliminación específica autorizada; tampoco autorizan borrar otros recursos por semejanza.
+
+## 13. Integración y separación
+
+Integrar navegación y capacidades comunes antes de fusionar registros o retirar aplicaciones. Una iniciativa tiene un hogar administrativo; las relaciones funcionales explican colaboraciones sin duplicarla. Un producto independiente conserva su operación e identidad aunque use TORO People, Comms, Finance o Tools bajo autorización explícita.
+
+Los módulos de equipo, comunicaciones, conocimiento, ejecución, medios y conectores pertenecen al TORO existente. Las tareas hoteleras pertenecen a sus módulos actuales. Inmuebles, sociedades, productos separados y proyectos personales conservan sus ámbitos. Compra/regularización del terreno, factibilidad de desarrollo, renovación del hotel y control de obra existente son objetivos distintos, aunque compartan fuentes y dependencias.
+
+No cambiar `merged_into_project_key` por una agrupación visual o una sugerencia del reporte. Conservar propuestas con fuente y estado de decisión; aplicar únicamente el lote autorizado y comprobado. Los históricos absorbidos siguen recuperables sin reactivación automática.
+
+## 14. Word y aceptación del control
+
+Mantener una sola identidad del Word privado y reemplazar su versión al actualizarlo. Incluir fecha local/corte, versión del reporte, catálogo conocido por tipo y hogar, estados de fuente, decisiones aprobadas separadas de propuestas, recursos/builds con su fecha propia y cambios desde la versión anterior. La cobertura técnica declara que no incluye todo el historial de builds. El Word no recibe secretos ni extiende acceso por contener un enlace.
+
+Generar por solicitud o al cerrar un lote material autorizado. Para seguimiento futuro, reutilizar el cierre/reporte/supervisor existente sin duplicar agenda, sin activar timers pausados y sin mandar otro mensaje por cada edición. Sin cambios materiales, conservar la versión y comunicar únicamente lo previsto por el reporte existente.
+
+La entrega del Word y su actualización de metadatos no prueban una interfaz publicada. La aceptación del futuro controlador requiere: alias antiguo/nuevo a la misma identidad; lista paginada completa autorizada; integración sin pérdida; pausa recuperable; rechazo de contexto/rol inválido y extremos ocultos; idempotencia; conflicto de revisión; recuperación selectiva; correspondencia exacta entre decisión, efecto, recibo y versión del Word.
+

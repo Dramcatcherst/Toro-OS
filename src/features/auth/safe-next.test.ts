@@ -24,4 +24,20 @@ describe("safeNextPath", () => {
     expect(safeNextPath("/my-toro?focus=projects.status#focus-heading")).toBe("/my-toro?focus=projects.status#focus-heading");
     expect(safeNextPath("/my-toro?search=legal%20finanzas")).toBe("/my-toro?search=legal%20finanzas");
   });
+
+  it("falls back for oversized navigation without turning valid credentials into an error", () => {
+    expect(safeNextPath(`/my-toro?search=${"a".repeat(300)}`)).toBe("/my-toro");
+  });
+
+  it.each(["/settings", "/api/auth/login", "/my-toro/private", "/%70ortal"])("does not send a Portal login to unavailable route %s", path => {
+    expect(safeNextPath(path, { portalOnly: true })).toBe("/my-toro");
+  });
+
+  it.each(["/", "/portal", "/brain", "/booking-assist", "/my-toro/herramientas?search=caja#equipo"])("preserves permitted Portal destination %s", path => {
+    expect(safeNextPath(path, { portalOnly: true })).toBe(path);
+  });
+
+  it("preserves existing internal-only destinations outside the published Portal", () => {
+    expect(safeNextPath("/onboarding?step=profile")).toBe("/onboarding?step=profile");
+  });
 });

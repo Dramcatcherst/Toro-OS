@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import vm from 'node:vm';
+import { isDeepStrictEqual } from 'node:util';
 
 // Isolated tests of the real gate. RPCs and the already-tested approval contract
 // are dependency doubles: this suite has no provider/database/network access.
@@ -37,6 +38,7 @@ vm.runInNewContext(compiled, {
   exports, structuredClone,
   require(name) {
     if (name === 'server-only') return {};
+    if (name === 'node:util') return { isDeepStrictEqual };
     if (name === './alegra-writer-contract') return contract;
     // The isolated gate test only exercises admission, heartbeat, and finalize.
     // Stub composed native dependencies, never allowing provider IO here.

@@ -74,6 +74,50 @@ describe("buildCanonicalBrainProjection", () => {
     });
   });
 
+
+  it("maps the real NOW project state to Active rather than Review", () => {
+    const slice = makeSlice();
+    slice.projects[0] = { ...slice.projects[0], status: "NOW" };
+    const projected = buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    );
+    expect(projected).toMatchObject({
+      status: "Active",
+      verification: "verified",
+    });
+  });
+
+  it("does not interpret a future project update as current provenance", () => {
+    const slice = makeSlice();
+    slice.projects[0] = {
+      ...slice.projects[0],
+      updatedAt: "2026-09-23T12:00:00.001Z",
+    };
+    const projected = buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    );
+    expect(projected?.freshness).toBe("unknown");
+
+    slice.projects[0].updatedAt = "2026-09-23T11:59:59.999Z";
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "project:p0",
+    )?.freshness).toBe("current");
+  });
+
+  it("treats invalid governance next-review timestamps as unknown, not current", () => {
+    const slice = makeSlice();
+    slice.domainGovernance[0] = {
+      ...slice.domainGovernance[0],
+      nextReviewAt: "not-a-date",
+    };
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (node) => node.id === "governance:g0",
+    )).toMatchObject({
+      freshness: "unknown",
+      status: "Review",
+    });
+  });
+
   it("keeps the focused projection under the Stage B visual budget", () => {
     const projection = buildCanonicalBrainProjection(makeSlice());
 
@@ -116,6 +160,120 @@ describe("buildCanonicalBrainProjection", () => {
       verification: "partially_verified",
       status: "Review",
       risk: "High",
+    });
+  });
+
+
+  it("never promotes deferred Kross sources or stale claims based on the registry safe flag alone", () => {
+    const cases = [
+      { label: "deferred source", overrides: { liveRequired: false } },
+      { label: "stale source", overrides: { freshness: "stale" } },
+      { label: "aging source", overrides: { freshness: "aging" } },
+      { label: "unknown freshness", overrides: { freshness: null } },
+      { label: "old source timestamp", overrides: { sourceAsOf: "2026-09-23T05:59:59.999Z" } },
+      { label: "old observation timestamp", overrides: { observedAt: "2026-09-23T05:59:59.999Z" } },
+      { label: "future source timestamp", overrides: { sourceAsOf: "2026-09-23T12:00:00.001Z" } },
+      { label: "future observation timestamp", overrides: { observedAt: "2026-09-23T12:00:00.001Z" } },
+      { label: "missing source time", overrides: { sourceAsOf: null } },
+      { label: "missing observation time", overrides: { observedAt: null } },
+      { label: "inverted timestamps", overrides: { observedAt: "2026-09-23T11:29:00.000Z" } },
+      { label: "registry says unsafe", overrides: { safeForCurrentState: false } },
+    ];
+
+    for (const { label, overrides } of cases) {
+      const slice = makeSlice();
+      slice.krossHealth[1] = { ...slice.krossHealth[1], ...overrides };
+      const node = buildCanonicalBrainProjection(slice).nodes.find(
+        (item) => item.id === "kross-health:k1",
+      );
+
+      expect(node, label).toMatchObject({
+        kind: "connector",
+        status: "Review",
+        risk: "High",
+        verification: "unverified",
+        health: "degraded",
+      });
+    }
+  });
+
+  it("marks only a current, direct-supporting live-required Kross health source as ready", () => {
+    const slice = makeSlice();
+    const current = buildCanonicalBrainProjection(slice).nodes.find(
+      (item) => item.id === "kross-health:k1",
+    );
+
+    expect(current).toMatchObject({
+      status: "Ready",
+      risk: "Low",
+      verification: "verified",
+      freshness: "current",
+      health: "healthy",
+    });
+
+    // The six-hour maximum documented in the first-live-read gate is inclusive.
+    slice.krossHealth[1] = {
+      ...slice.krossHealth[1],
+      sourceAsOf: "2026-09-23T06:00:00.000Z",
+      observedAt: "2026-09-23T06:01:00.000Z",
+    };
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (item) => item.id === "kross-health:k1",
+    )?.status).toBe("Ready");
+
+    slice.krossHealth[1].sourceAsOf = "2026-09-23T05:59:59.999Z";
+    expect(buildCanonicalBrainProjection(slice).nodes.find(
+      (item) => item.id === "kross-health:k1",
+    )?.status).toBe("Review");
+  });
+
+
+  it("recognizes a reviewed approved source rule as Ready policy, not as executable connector", () => {
+    const slice = makeSlice();
+    slice.sourceAuthority[0] = { ...slice.sourceAuthority[0], status: "approved" };
+    const projection = buildCanonicalBrainProjection(slice);
+    const rule = projection.nodes.find((n) => n.id === "authority:a0");
+    expect(rule).toMatchObject({
+      kind: "knowledge", status: "Ready", verification: "verified",
+      capabilities: { canExecute: false, actionCeiling: "observe" },
+    });
+    expect(projection.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: true, verification: "verified",
+    });
+  });
+
+  it("fails closed for inactive and unreviewed source authority, even when the source name is official", () => {
+    const retired = makeSlice();
+    retired.sourceAuthority[0] = { ...retired.sourceAuthority[0], status: "retired" };
+    const projection = buildCanonicalBrainProjection(retired);
+    expect(projection.nodes.find((n) => n.id === "authority:a0")).toMatchObject({
+      status: "Review", verification: "unverified",
+    });
+    expect(projection.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: false, verification: "unverified",
+    });
+
+    const unreviewed = makeSlice();
+    unreviewed.sourceAuthority[0] = {
+      ...unreviewed.sourceAuthority[0], status: "approved", lastReviewed: null,
+    };
+    const pending = buildCanonicalBrainProjection(unreviewed);
+    expect(pending.nodes.find((n) => n.id === "authority:a0")).toMatchObject({
+      status: "Review", verification: "unverified",
+    });
+    expect(pending.sources.find((s) => s.sourceSystem === "Kross")).toMatchObject({
+      authoritative: false, verification: "unverified",
+    });
+  });
+
+  it("cannot promote a quality score with unknown governance freshness to Ready", () => {
+    const slice = makeSlice();
+    slice.domainGovernance[1] = {
+      ...slice.domainGovernance[1], lastReviewedAt: null, nextReviewAt: null,
+    };
+    const projection = buildCanonicalBrainProjection(slice);
+    expect(projection.nodes.find((n) => n.id === "governance:g1")).toMatchObject({
+      freshness: "unknown", status: "Review",
     });
   });
 

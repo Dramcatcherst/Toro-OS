@@ -6,7 +6,7 @@ import { canViewOwnerAttention, type OwnerAttentionProjection, type OwnerAttenti
 import styles from "./attention.module.css";
 import { loadOwnerAttentionProjection, ownerAttentionReadEnabled } from "./owner-attention-server";
 import {
-  formatAttentionAmount,
+  formatAttentionAmountWithBasis,
   formatAttentionCut,
   formatAttentionDate,
   safeEvidenceHref,
@@ -33,7 +33,7 @@ function AttentionRow({ item }: { item: OwnerAttentionItem }) {
       <span className="ml-2 inline-block text-xs text-slate-300">{formatAttentionDate(item.dueDate)}</span>
     </summary>
     <div className="space-y-2 pb-2 text-xs leading-5 text-slate-300">
-      {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmount(item.amount, item.currency)}</p> : null}
+      {item.kind !== "communication" || item.amount !== null ? <p>{formatAttentionAmountWithBasis(item.kind, item.amount, item.currency)}</p> : null}
       <p className="break-words">Estado de origen: {item.state} · Fuente: {item.sourceSystem}</p>
       <p className="break-words">Responsable registrado: {item.humanOwner ?? item.ownerAgent ?? "Sin asignación verificada"}</p>
       {evidenceHref ? <a href={evidenceHref} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"

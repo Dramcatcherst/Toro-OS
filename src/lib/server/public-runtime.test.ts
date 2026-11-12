@@ -148,7 +148,7 @@ it("internal bearer verification preserves verified identity and rejects provide
   expect(io.getUser).toHaveBeenCalledWith("synthetic-token");
   expect(io.sdk).toHaveBeenCalledWith("https://synthetic.invalid", "synthetic-never-use", {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-    global: { headers: { Authorization: "Bearer synthetic-token" } },
+    global: { fetch: expect.any(Function), headers: { Authorization: "Bearer synthetic-token" } },
   });
   io.getUser.mockResolvedValue({ data: { user: null }, error: { message: "synthetic denial" } });
   expect(await verifySupabaseBearerToken("synthetic-token")).toBeNull();

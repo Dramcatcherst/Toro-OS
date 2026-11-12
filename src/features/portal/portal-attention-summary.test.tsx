@@ -44,3 +44,10 @@ it("preserves the signal when the full view is also truncated", () => {
   expect(html).toContain("145 coincidencias en el lote leído");
   expect(html).toContain("la vista completa también está limitada");
 });
+
+it("labels invoice total without pretending it is an unpaid balance", () => {
+  const items=[{...projection.items[0],kind:"invoice" as const,amount:180,currency:"USD"},...projection.items.slice(1)];
+  const html=renderToStaticMarkup(<PortalAttentionSummary state="ready" projection={{...projection,items}} />);
+  expect(html).toContain("Total de factura (no es saldo pendiente confirmado): USD");
+  expect(html).not.toContain("Saldo pendiente: USD");
+});

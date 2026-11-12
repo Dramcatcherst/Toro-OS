@@ -26,6 +26,87 @@ bounded, sanitized failure trace on the host. Do not publish raw logs or run
 automatic fixes. The script does not change Gateway configuration or send a
 message.
 
+### Dual-account diagnostics — 7 November 2026
+
+Scope: TORO Systems + TORO Comms, existing repair lane #170/#209 and General
+Plan §9. This extends the same read-only script; it creates no service,
+scheduler, writer, account, credential store or second Gateway.
+
+If OpenClaw or its Node runtime is outside the service user's PATH, specify
+both absolute executable paths. Run under the **existing Gateway service
+identity/profile** from an authorized checkout; do not guess a different home
+directory or use the administrator's credentials. Example with placeholder
+paths and account aliases (replace locally, never with phone numbers):
+
+```bash
+/absolute/node scripts/openclaw-host-diagnostics.mjs \
+  --node /absolute/node \
+  --cli /absolute/openclaw \
+  --expect-account personal \
+  --expect-account hotel
+```
+
+The script never changes the parent environment or discovers credentials.
+`--node` requires an explicit `--cli`; both accept absolute paths only.
+Without flags, the original `openclaw` lookup remains supported. An explicit
+Node path also supplies its directory to PATH **only for each child process**.
+This fixes the diagnostic launch mechanism, not the server-wide installation.
+
+Twenty implemented diagnostic controls, each exercised by the Node suite:
+
+| # | Improvement | Observable behavior |
+| --- | --- | --- |
+| 1 | Explicit CLI location | Uses the supplied absolute path instead of assuming a global command. |
+| 2 | Explicit Node runtime | Invokes the CLI through the supplied Node executable. |
+| 3 | Child-only Node PATH | CLI helpers can find Node without changing global or parent PATH. |
+| 4 | Strict launch options | Rejects unknown, repeated, incomplete and relative launch options; no shell evaluation. |
+| 5 | Stop after missing launcher | One ENOENT result skips redundant invocations; unsupported subcommands still allow other checks. |
+| 6 | Executable access diagnosis | EACCES is distinct from a provider authorization failure; no path is emitted. |
+| 7 | Enabled-only health | A deliberately disabled alias does not degrade healthy active accounts. |
+| 8 | Enabled-only probe | A disabled alias's stale negative probe does not invalidate active accounts. |
+| 9 | Empty active coverage | All-disabled inventory stays unknown/inconclusive. |
+| 10 | Expected-account absence | Another healthy account cannot conceal a missing expected line. |
+| 11 | Expected-account disablement | Reports count-only drift when an expected account is disabled. |
+| 12 | Duplicate account coverage | Duplicate probe identifiers cannot satisfy expected coverage. |
+| 13 | Bounded account expectations | Rejects duplicate, malformed, phone-shaped and more than 16 requested aliases before execution. |
+| 14 | Typed activation evidence | String, numeric or null enabled flags cannot prove an active account. |
+| 15 | Probe freshness | When a probe includes ts, invalid, older-than-30-second or over-5-second-future snapshots cannot pass. |
+| 16 | Observation-clock validity | An invalid collector clock cannot promote a health snapshot. |
+| 17 | Explicit Gateway health failure | Distinguishes ok=false from an old snapshot and blocks a connected packet verdict. |
+| 18 | Private security summary | Emits only validated critical/warn/info totals; inconsistent or unknown severities remain inconclusive. |
+| 19 | Conservative live consensus | Conflicting health/probe results produce degraded status; an unsupported WhatsApp adapter probe is supplemental. |
+| 20 | Coverage and proof separation | Counts executed/inconclusive/failed/skipped/unsupported checks; delivery, canonical identity, isolation and restore stay not_verified. |
+
+`accountCount` remains the complete observed inventory count, including malformed
+or disabled entries. `disabledAccountCount` is emitted when nonzero. Expected
+coverage includes only counts (`expected`, `matched`, `missing`, `disabled`,
+`duplicates`), never account identifiers. An enabled flag omitted by an older
+schema remains compatible; explicit false is intentionally disabled, and an
+explicit non-boolean is unknown. Do not silently drop malformed accounts.
+
+Interpret the new `whatsapp.state` as bounded technical evidence from this
+collection only. It does not replace the runtime evidence evaluator, prove a
+canonical TORO identity, or authorize staff/guest access. Security totals do not
+prove effective permissions: inspect the actual allow/deny/sender policy and
+run negative tests before changing it. Backup inventory is not a restore drill.
+Unsupported commands are reported without inventing fallback commands or fixes.
+
+Validation: `npm run test:openclaw-host` (49 tests locally at this cut, including
+real synthetic CLI subprocesses with spaces/metacharacters and child PATH).
+Positive evidence must still meet its freshness bound at final packet emission;
+a slow later audit cannot renew an old sample. Explicit account coverage drift
+still blocks a connected verdict when the adapter has no supported probe.
+This is code-level validation. No production OpenClaw process, configuration,
+account, permission or message is changed by this repository patch.
+
+NEXT: review/merge through the existing delivery gates, run the exact reviewed
+script on the authorized host with both expected aliases, then retain only its
+sanitized result. Separately verify two-line continuity, negative personal/work
+access, replay after reconnect and an isolated restore drill. Never restart or
+log out the hotel account merely to test the new diagnostic. Rollback: revert
+this script/runbook change or use the prior reviewed script; no runtime config
+or credential rollback is required for this read-only change.
+
 Official references:
 - https://docs.openclaw.ai/cli/channels
 - https://docs.openclaw.ai/gateway/security/running-the-audit
@@ -102,6 +183,8 @@ Record:
 
 Inspect sanitized config.
 
+**Trust-boundary gate first (22/10/2026):** per-peer/account sessions separate context; they do not isolate mutually untrusted users from a shared Gateway's tools, filesystem, secrets or unsandboxed session readers. Confirm the [official trust model](https://docs.openclaw.ai/gateway/security/trust-model) against the installed version. Keep employee/guest ingress away from the owner's privileged agent; if a real boundary cannot be demonstrated, mark rollout BLOCKED. Do not infer safety from agent names or create another Gateway during this audit. The same-brain product contract retains one TORO identity/governance model across appropriately isolated ingress.
+
 Required for TORO multi-user ingress:
 
 ```json5
@@ -175,6 +258,8 @@ Check:
 - gateway administration;
 - cross-agent session tools;
 - elevated execution.
+
+Also inspect effective cross-agent session visibility, agent-to-agent delegation and cross-provider/conversation sends. Current online defaults can expose more than the intended conversation. Validate supported keys with the installed CLI/schema before changing anything; do not run automatic fixes or record raw session/config contents.
 
 No employee/group channel should inherit founder/host-admin tool privileges.
 
@@ -345,11 +430,12 @@ Run on the existing authorized Gateway host, with its actual profile. These comm
 openclaw --version
 openclaw gateway status
 openclaw channels status --channel whatsapp --probe --json
+openclaw health --verbose --json --timeout 10000
 openclaw status --deep
 openclaw channels capabilities --channel whatsapp --json
 ```
 
-For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether the WhatsApp probe is **live** and successful, and any error category. A config-only fallback or `starting` is not a pass; wait for the Gateway to become ready and repeat the probe. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
+For M01 record only: timestamp with timezone, runtime version, Gateway reachability, the sanitized channel/account alias, whether an explicit provider probe/audit succeeded when supported, and the result of the forced live Gateway health snapshot. The current WhatsApp adapter does not expose `probeAccount` or `auditAccount`; therefore absence of those fields is not a pass or a failure by itself, and `channels status --probe` is supplemental. For the supported path, require a fresh `openclaw health --verbose --json` timestamp and every target WhatsApp account to be configured, linked, running, connected and lifecycle `ready`, with no unhealthy or ingress-failure state. A config-only fallback, stale/future health timestamp, `starting`, or ordinary runtime flags outside that forced live health snapshot is not a pass. Redact tokens, QR/auth files, phone numbers beyond the last four digits, group IDs, message bodies and private paths before sharing.
 
 Only after M01 passes and the target account and owner allowlist are confirmed, Mauricio can send `/status` as a standalone message from his own phone to the verified TORO test chat. It asks for channel status and does not itself establish TORO identity. For M02, send a harmless read-only owner request and inspect the real inbound sender mapping: exact channel account + sender ID -> canonical Mauricio user + Dreamcatcher organization + active membership; refuse display-name or message-text authorization. Record provider message ID, correlation ID and masked identifiers; no employee, guest or production writes. If identity or personal/work isolation fails, stop before testing tasks.
 
@@ -369,3 +455,5 @@ Aplicar TORO Comms sección 19 y la misma lane #122/#170/#209. Mantener endpoint
 Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominador, conteos de capturados/procesados/archivados/excepciones, checksums, cobertura, última sync confirmada, resultados de replay/negativas/restore y referencias privadas. Sin cuerpos de chat, teléfonos completos, grupo IDs, auth directories, QR/tokens o datos de terceros en GitHub.
 
 Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.
+
+

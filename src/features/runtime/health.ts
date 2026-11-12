@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 
 import { resolveSupabaseWorkerSecret } from "@/lib/supabase/worker-config";
+import { normalizeToroMcpResourceUrl } from "@/features/mcp/resource-url";
 
 export type ToroRuntimeHealthConfig = {
   enabled: boolean;
@@ -29,21 +30,7 @@ function configured(value: string | undefined) {
 }
 
 function resourceUrlConfigured(value: string | undefined) {
-  const raw = value?.trim();
-  if (!raw) return false;
-
-  try {
-    const url = new URL(raw);
-    const local =
-      url.hostname === "localhost" || url.hostname === "127.0.0.1";
-
-    return (
-      (url.protocol === "https:" || local) &&
-      url.pathname.endsWith("/api/mcp")
-    );
-  } catch {
-    return false;
-  }
+  return normalizeToroMcpResourceUrl(value) !== null;
 }
 
 function digest(value: string) {

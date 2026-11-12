@@ -1,3 +1,4 @@
+import { PrivateViewGuard } from "@/features/auth/private-view-guard";
 import Link from "next/link";
 import { loadHotelDirectory } from "@/features/tools/server";
 import { PortalHeader } from "@/features/portal/portal-header";
@@ -15,7 +16,7 @@ const shiftSteps = [
   { title: "Cerrar y preparar mañana", text: "Deja cada pendiente con responsable y siguiente paso en el relevo existente.", ids: ["LINK-131"] },
 ];
 
-export default async function ToolsPage() {
+async function ToolsContent() {
   const view = await loadHotelDirectory({includeApprovedNavigation:true,includeCompleteCatalogue:true});
   const authorized = view.state === "ready" || (view.state === "unavailable" && view.navigationAuthorized === true);
   const links = authorized ? view.links : [];
@@ -58,4 +59,8 @@ export default async function ToolsPage() {
       </> : null}
     </div>
   </main></>;
+}
+
+export default async function ToolsPage() {
+  return <PrivateViewGuard>{await ToolsContent()}</PrivateViewGuard>;
 }

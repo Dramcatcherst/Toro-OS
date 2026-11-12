@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { normalizeAlegraInvoiceEvidence as normalize, planEvidenceImport, resolveServiceMapping } from '../scripts/finance/alegra-evidence-preflight.mjs';
 const context = { orgId:'test-org', sourceAccountKey:'approved-account', expectedCostCenterId:'1', observedAt:'2026-10-15T23:00:00Z', accountBindingVerified:true };
 function invoice(change={}) { return { id:'001',date:'2026-10-13',status:'closed',subtotal:100,tax:13,total:113,totalPaid:113,balance:0,currency:{code:'USD',exchangeRate:'500.00000000'},costCenter:{id:'1'},client:{id:'751',name:'Huesped',email:'private@example.invalid'},numberTemplate:{fullNumber:'001',isElectronic:false},paymentMethod:'CARD',items:[{id:'1',quantity:1,price:100}],payments:[{id:'payment-1'}],...change }; }
@@ -57,3 +58,115 @@ test('explicit approved namespaced mapping returns correct target id',()=>{
   assert.equal(resolveServiceMapping(source,[approved]).targetId,'2');
 });
 test('unreconciled observations are staged, not active accounting data',()=>assert.equal(normalize(invoice(),context).status,'staging'));
+
+test('rejects changed projection content with a retained checksum before planning an insert',()=>{
+  const row=normalize(invoice(),context);
+  row.metadata.total='999999.00';
+  row.amount='999999.00';
+  assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+});
+test('rejects a changed persisted projection with its retained checksum',()=>{
+  const row=normalize(invoice(),context), persisted=structuredClone(row);
+  persisted.metadata.total='999999.00';
+  persisted.amount='999999.00';
+  assert.throws(()=>planEvidenceImport([row],[persisted]),/INVALID_OBSERVATION/);
+});
+for (const [field,value] of [['amount','999999.00'],['currency','CRC'],['document_number','another-document'],['issue_date','2026-10-14'],['source_key','account:other:sales_invoice:001']]) {
+  test(`rejects top-level ${field} inconsistent with the checksum-valid projection`,()=>{
+    const row=normalize(invoice(),context);
+    row[field]=value;
+    assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+  });
+}
+test('rejects an incomplete projection even if its checksum has a valid digest shape',()=>{
+  const row=normalize(invoice(),context);
+  delete row.metadata.client_native_id;
+  assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+});
+test('rejects numeric money whose cents exceed safe integer precision',()=>{
+  for (const total of [9007199254740992,-9007199254740992,90071992547409.92]) {
+    assert.throws(()=>normalize(invoice({total}),context),/INVALID_MONEY/);
+  }
+});
+test('preserves ordinary numeric cents and large exact decimal strings',()=>{
+  assert.equal(normalize(invoice({subtotal:0.29,tax:0,total:0.29}),context).amount,'0.29');
+  assert.equal(normalize(invoice({subtotal:'9007199254740993.01',tax:'0.00',total:'9007199254740993.01'}),context).amount,'9007199254740993.01');
+});
+test('rejects a price approval dated after the source effective date',()=>{
+  const source={orgId:'test-org',legalEntityKey:'test-entity',sourceSystem:'kross',sourceAccount:'test-account',sourceId:'3',unit:'per_person',salesMode:'own',chargeClass:'extra',effectiveDate:'2026-10-15'};
+  const mapping={...source,status:'approved',validFrom:'2026-01-01',validTo:null,targetSystem:'alegra',targetAccount:'test-target',targetId:'2',targetLegalEntityKey:source.legalEntityKey,accountingAccountId:'test-accounting',accountingAccountVerified:true,cabysCode:'test-cabys',cabysVerified:true,fiscalApproved:true,priceApproved:true,priceApprovedAt:'2026-10-16',priceEvidenceRef:'fixture:price',priceCurrency:'CRC',price:'1.00',taxNativeId:'test-tax',taxVerified:true,version:1};
+  assert.throws(()=>resolveServiceMapping(source,[mapping]),/SERVICE_MAPPING_NOT_APPROVED/);
+  assert.equal(resolveServiceMapping(source,[{...mapping,priceApprovedAt:'2026-10-15'}]).targetId,'2');
+  assert.equal(resolveServiceMapping(source,[{...mapping,priceApprovedAt:'2026-10-14'}]).targetId,'2');
+  assert.throws(()=>resolveServiceMapping({...source,effectiveDate:'2026-03-03'},[{...mapping,priceApprovedAt:'2026-02-31'}]),/SERVICE_MAPPING_NOT_APPROVED/);
+  assert.throws(()=>resolveServiceMapping({...source,effectiveDate:'2026-02-31'},[{...mapping,priceApprovedAt:'2026-02-28'}]),/SERVICE_MAPPING_NOT_APPROVED/);
+});
+
+test('rejects numeric amounts when their binary spacing can lose a cent',()=>{
+  for (const source of ['70368744177664.01','90071992547409.91','-70368744177664.01','-90071992547409.91']) {
+    const total=JSON.parse(source);
+    assert.throws(()=>normalize(invoice({subtotal:total,tax:0,total,totalPaid:0,balance:total}),context),/INVALID_MONEY/);
+  }
+});
+test('retains exact cents below the numeric spacing bound and above it as decimal strings',()=>{
+  assert.equal(normalize(invoice({subtotal:70368744177663.99,tax:0,total:70368744177663.99}),context).amount,'70368744177663.99');
+  assert.equal(normalize(invoice({subtotal:'70368744177664.01',tax:'0.00',total:'70368744177664.01'}),context).amount,'70368744177664.01');
+});
+for (const [field,value] of [['status','active'],['verification_status','verified'],['dropbox_backup_status','backed_up'],['org_id',42]]) {
+  test(`rejects an observation envelope claiming ${field}=${value}`,()=>{
+    const row=normalize(invoice(),context);
+    row[field]=value;
+    assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+  });
+}
+for (const [field,value] of [['write_to_alegra',true],['eligible_for_ledger_posting',true],['full_source_document_captured',true],['bank_match_status','matched'],['reservation_match_status','matched'],['fiscal_acceptance','verified'],['hash_scope','original_document']]) {
+  test(`rejects source-only metadata claiming ${field}=${value}`,()=>{
+    const row=normalize(invoice(),context);
+    row.metadata[field]=value;
+    assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+  });
+}
+function rehashProjection(row) {
+  const projection={...row.metadata};
+  for (const key of ['projection_sha256','hash_scope','observed_at','header_arithmetic_valid','issues','bank_match_status','reservation_match_status','fiscal_acceptance','write_to_alegra','eligible_for_ledger_posting','full_source_document_captured']) delete projection[key];
+  const stable=value=>Array.isArray(value)?value.map(stable):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])):value;
+  row.metadata.projection_sha256=createHash('sha256').update(JSON.stringify(stable(projection))).digest('hex');
+}
+for (const [field,value] of [['total','not-money'],['subtotal',100],['tax',null],['issue_date','2026-02-31'],['client_is_generic','true'],['electronic_numbering','false'],['payment_native_ids',['id',42]],['item_native_ids',['2','1']],['source_account_key',' approved-account ']]) {
+  test(`rejects malformed ${field} even with a matching recomputed projection checksum`,()=>{
+    const row=normalize(invoice(),context);
+    row.metadata[field]=value;
+    if (field==='total') row.amount=value;
+    if (field==='issue_date') row.issue_date=value;
+    if (field==='source_account_key') row.source_key=`account:${encodeURIComponent(value)}:sales_invoice:001`;
+    rehashProjection(row);
+    assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+  });
+}
+for (const [field,value] of [['header_arithmetic_valid',false],['header_arithmetic_valid','true'],['issues',[]],['issues','HEADER_TOTAL_MISMATCH'],['observed_at','2026-02-31T00:00:00Z'],['observed_at','2026-10-15T23:00:00']]) {
+  test(`rejects inconsistent or malformed observation metadata ${field}=${JSON.stringify(value)}`,()=>{
+    const row=normalize(invoice(),context);
+    row.metadata[field]=value;
+    assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+  });
+}
+test('retains truthful arithmetic and payment mismatch issues as staged observations',()=>{
+  const row=normalize(invoice({total:114,totalPaid:100,balance:10}),context);
+  assert.equal(row.metadata.header_arithmetic_valid,false);
+  assert.ok(row.metadata.issues.includes('HEADER_TOTAL_MISMATCH'));
+  assert.ok(row.metadata.issues.includes('PAYMENT_BALANCE_MISMATCH'));
+  assert.equal(planEvidenceImport([row],[]).insert.length,1);
+});
+test('rejects midnight rollover in observed timestamps instead of normalizing it to another day',()=>{
+  const observedAt='2026-10-15T24:00:00Z';
+  assert.throws(()=>normalize(invoice(),{...context,observedAt}),/INVALID_TIMESTAMP/);
+  const row=normalize(invoice(),context);
+  row.metadata.observed_at=observedAt;
+  assert.throws(()=>planEvidenceImport([row],[]),/INVALID_OBSERVATION/);
+});
+test('retains zoned observation timestamps with explicit fractional seconds',()=>{
+  for (const observedAt of ['2026-10-15T23:59:59.1Z','2026-10-15T23:59:59.123456789+05:30']) {
+    const row=normalize(invoice(),{...context,observedAt});
+    assert.equal(planEvidenceImport([row],[]).insert.length,1);
+  }
+});
