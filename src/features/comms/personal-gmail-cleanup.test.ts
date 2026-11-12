@@ -34,6 +34,7 @@ describe("personal Gmail cleanup recommendations", () => {
       "Factura de alojamiento", "Visa Japón aprobada",
       "Alerta de seguridad Google", "Pago rechazado para Instagram",
       "Booking reservation confirmed", "Transferencia bancaria",
+      "Your order has shipped", "Tu pedido fue entregado",
     ]) {
       const r = recommendPersonalGmailCleanup({ ...sample, subject });
       expect(r.classification).toBe("protected");

@@ -13,7 +13,7 @@ export type ToroPersonalMailAction =
 
 export type ToroPersonalMailboxConnection = {
   ownerUserId: string;
-  provider: "gmail";
+  provider: "gmail" | "outlook";
   status: "pending" | "connected" | "degraded" | "revoked" | "disconnected";
   verificationStatus: "unverified" | "verified" | "conflict";
   /** True only after TORO's own OAuth/runtime readback, not a ChatGPT connector login. */
@@ -54,14 +54,14 @@ export function canUsePersonalMailbox(
     !context.allowedDataScopes.includes("personal") ||
     !context.userId ||
     context.userId !== connection.ownerUserId ||
-    connection.provider !== "gmail" ||
     connection.status !== "connected" ||
     connection.verificationStatus !== "verified" ||
     !connection.runtimeVerified
   ) return false;
 
+  const toolProvider = connection.provider === "gmail" ? "gmail" : "outlook-email";
   const permissions = context.allowedTools.filter(
-    (tool) => tool.provider === "gmail" && tool.owner === "personal" && tool.orgId === null,
+    (tool) => tool.provider === toolProvider && tool.owner === "personal" && tool.orgId === null,
   );
   const allows = (grant: "read" | "draft" | "execute") =>
     permissions.some((tool) => tool.actions.includes(grant));

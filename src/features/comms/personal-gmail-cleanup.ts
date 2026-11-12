@@ -24,8 +24,8 @@ export type PersonalGmailRecommendation = {
 };
 
 const PROTECTED_TOPICS = [
-  /\b(invoices?|receipts?|statements?|payments?|refunds?|tax(?:es)?|salar(?:y|ies)|payroll|security|passwords?|sign.?in|verify|verification|accounts?|fraud|access|flights?|bookings?|reservations?|contracts?|legal|immigration|visas?|passports?)\b/i,
-  /factur|recibo|comprobante|transferenc|reembols|pago|dep[oó]sito|seguridad|contrase[ñn]a|acceso|alerta|banco|reserva|confirmaci[oó]n|vuel[oa]|pasaporte|visado|visa|impuesto|hacienda|asegur|contrato|n[oó]mina|suscripci[oó]n rechazada/i,
+  /\b(invoices?|receipts?|statements?|payments?|refunds?|tax(?:es)?|salar(?:y|ies)|payroll|security|passwords?|sign.?in|verify|verification|accounts?|fraud|access|flights?|bookings?|reservations?|contracts?|legal|immigration|visas?|passports?|orders?|purchases?|shipping|deliver(?:y|ies))\b/i,
+  /factur|recibo|comprobante|transferenc|reembols|pago|dep[oó]sito|seguridad|contrase[ñn]a|acceso|alerta|banco|reserva|confirmaci[oó]n|vuel[oa]|pasaporte|visado|visa|impuesto|hacienda|asegur|contrato|n[oó]mina|pedido|compra|env[ií]o|entrega|suscripci[oó]n rechazada/i,
 ];
 
 // Parser ceilings bound untrusted metadata; they are not provider limits or a retention policy.

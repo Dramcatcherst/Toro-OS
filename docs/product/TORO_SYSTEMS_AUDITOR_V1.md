@@ -259,3 +259,19 @@ A system is "TORO audited" only when:
 - permissions/isolation tested;
 - evidence retained;
 - next audit scheduled.
+
+## 10. Local workstation health baseline — 2026-10-21
+
+TORO Systems reuses the existing read-only command `npm run health:pc`; it does
+not create another agent, dashboard, database or scheduler. The probe reports
+system-drive capacity/free percentage, physical RAM, CPU load, page-file
+pressure, process pressure, uptime and—only when requested—sizes of known
+regenerable repository folders. The classifier returns `HEALTHY`, `CAUTION`,
+`STOP_HEAVY_WORK` or `DIAGNOSTIC_ERROR` and never deletes files, kills
+processes, stops WSL, changes page-file settings or claims physical savings.
+
+Automation may consume the latest receipt to decide whether a heavy local
+build is eligible. It may alert only on a material state transition, a newly
+crossed threshold or a required owner decision. Cleanup, cache deletion, WSL
+shutdown/compaction, service changes and recovery actions remain separately
+authorized workflows with before/after evidence.

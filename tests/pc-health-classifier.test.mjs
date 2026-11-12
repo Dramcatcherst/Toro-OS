@@ -19,9 +19,11 @@ function classify(metrics) {
 test("healthy workstation metrics are classified HEALTHY", () => {
   const result = classify({
     diskFreeGB: 100,
+    diskFreePercent: 40,
     ramAvailableGB: 8,
     ramAvailablePercent: 50,
     cpuPercent: 20,
+    pageFileUsagePercent: 20,
     heavyProcessCount: 1,
     largestGeneratedFolderGB: 0.5,
   });
@@ -31,9 +33,11 @@ test("healthy workstation metrics are classified HEALTHY", () => {
 test("low but non-critical headroom is classified CAUTION", () => {
   const result = classify({
     diskFreeGB: 15,
+    diskFreePercent: 8,
     ramAvailableGB: 2.5,
     ramAvailablePercent: 18,
     cpuPercent: 55,
+    pageFileUsagePercent: 82,
     heavyProcessCount: 4,
     largestGeneratedFolderGB: 2.5,
   });
@@ -44,9 +48,39 @@ test("low but non-critical headroom is classified CAUTION", () => {
 test("critically low disk blocks heavy local work", () => {
   const result = classify({
     diskFreeGB: 8,
+    diskFreePercent: 4,
     ramAvailableGB: 6,
     ramAvailablePercent: 40,
     cpuPercent: 25,
+    heavyProcessCount: 1,
+    largestGeneratedFolderGB: 0.5,
+  });
+  assert.equal(result.state, "STOP_HEAVY_WORK");
+});
+
+test("critical virtual-memory pressure blocks heavy local work", () => {
+  const result = classify({
+    diskFreeGB: 80,
+    diskFreePercent: 30,
+    ramAvailableGB: 1.5,
+    ramAvailablePercent: 8,
+    cpuPercent: 50,
+    pageFileUsagePercent: 96,
+    heavyProcessCount: 2,
+    largestGeneratedFolderGB: 0.5,
+  });
+  assert.equal(result.state, "STOP_HEAVY_WORK");
+  assert.ok(result.reasons.some(reason => reason.includes("Virtual-memory pressure")));
+});
+
+test("disk percentage protects small system volumes", () => {
+  const result = classify({
+    diskFreeGB: 25,
+    diskFreePercent: 4.5,
+    ramAvailableGB: 8,
+    ramAvailablePercent: 50,
+    cpuPercent: 20,
+    pageFileUsagePercent: 20,
     heavyProcessCount: 1,
     largestGeneratedFolderGB: 0.5,
   });
