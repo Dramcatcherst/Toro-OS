@@ -89,6 +89,8 @@ const organizationBinding: ToroMailboxBinding = {
   active: true,
 };
 
+const healthPolicy = { nowMs: Date.parse("2026-10-15T12:01:00Z"), maxSyncAgeMs: 120_000 };
+
 const accounts: ToroMailAccount[] = [
   {
     kind: "personal",
@@ -143,22 +145,22 @@ describe("TORO Mail governance baseline", () => {
 
 describe("TORO Mail account projection", () => {
   it("keeps personal and organization mailboxes in separate views", () => {
-    expect(projectToroMail(personalContext, accounts).map((item) => item.id)).toEqual([
+    expect(projectToroMail(personalContext, accounts, healthPolicy).map((item) => item.id)).toEqual([
       "personal-gmail", "personal-outlook",
     ]);
-    expect(projectToroMail(orgContext, accounts).map((item) => item.id)).toEqual([
+    expect(projectToroMail(orgContext, accounts, healthPolicy).map((item) => item.id)).toEqual([
       "hotel-mail",
     ]);
   });
 
   it("does not treat a ChatGPT connector session as TORO runtime OAuth", () => {
-    const [gmail, outlook] = projectToroMail(personalContext, accounts);
+    const [gmail, outlook] = projectToroMail(personalContext, accounts, healthPolicy);
     expect(gmail).toMatchObject({ runtimeState: "runtime_verified", readable: true });
     expect(outlook).toMatchObject({ runtimeState: "connector_only", readable: false });
   });
 
   it("requires explicit organization runtime acceptance evidence", () => {
-    const [hotel] = projectToroMail(orgContext, accounts);
+    const [hotel] = projectToroMail(orgContext, accounts, healthPolicy);
     expect(hotel.runtimeState).toBe("connector_only");
 
     const acceptedAccounts = accounts.map((account) =>
@@ -166,19 +168,19 @@ describe("TORO Mail account projection", () => {
         ? { ...account, runtimeAcceptanceVerified: true }
         : account,
     );
-    expect(projectToroMail(orgContext, acceptedAccounts)[0].runtimeState).toBe(
+    expect(projectToroMail(orgContext, acceptedAccounts, healthPolicy)[0].runtimeState).toBe(
       "runtime_verified",
     );
   });
 
   it("does not expose personal accounts to an organization administrator", () => {
-    const projections = projectToroMail(orgContext, accounts);
+    const projections = projectToroMail(orgContext, accounts, healthPolicy);
     expect(projections).toHaveLength(1);
     expect(projections[0].scope).toBe("organization");
   });
 
   it("requires explicit action gates instead of advertising unrestricted control", () => {
-    const [gmail] = projectToroMail(personalContext, accounts);
+    const [gmail] = projectToroMail(personalContext, accounts, healthPolicy);
     expect(gmail.actionPolicy).toEqual({
       labelAndArchive: "message_evidence_required",
       trash: "approval_and_readback_required",
@@ -197,7 +199,7 @@ describe("TORO Mail account projection", () => {
           }
         : account,
     );
-    const [gmail] = projectToroMail(personalContext, readOnlyAccounts);
+    const [gmail] = projectToroMail(personalContext, readOnlyAccounts, healthPolicy);
     expect(gmail.actionPolicy).toMatchObject({
       labelAndArchive: "blocked",
       trash: "blocked",
@@ -211,10 +213,11 @@ describe("TORO Mail account projection", () => {
         ? {
             ...account,
             binding: { ...account.binding, sendEnabled: true },
+            runtimeAcceptanceVerified: true,
           }
         : account,
     );
-    expect(projectToroMail(orgContext, sendAccounts)[0].actionPolicy.send).toBe(
+    expect(projectToroMail(orgContext, sendAccounts, healthPolicy)[0].actionPolicy.send).toBe(
       "blocked",
     );
 
@@ -230,8 +233,26 @@ describe("TORO Mail account projection", () => {
       ],
     };
     expect(
-      projectToroMail(grantedContext, sendAccounts)[0].actionPolicy.send,
+      projectToroMail(grantedContext, sendAccounts, healthPolicy)[0].actionPolicy.send,
     ).toBe("approval_and_readback_required");
+  });
+
+  it("withholds organizational mutations when runtime is unaccepted or the sync is stale, while preserving historical read access", () => {
+    const grantedContext: ToroResolvedContext = {
+      ...orgContext,
+      allowedTools: [{ provider: "gmail", actions: ["execute"], owner: "organization", orgId: "org-1" }],
+    };
+    const writableAccounts: ToroMailAccount[] = [{
+      kind: "organization", binding: { ...organizationBinding, sendEnabled: true, deleteEnabled: true },
+      connectorEvidence: { connectorSessionVerified: true, observedAt: organizationBinding.lastSyncAt },
+      runtimeAcceptanceVerified: false,
+    }];
+    const unaccepted = projectToroMail(grantedContext, writableAccounts, healthPolicy)[0];
+    expect(unaccepted.actionPolicy.send).toBe("blocked");
+    if (writableAccounts[0].kind === "organization") writableAccounts[0].runtimeAcceptanceVerified = true;
+    const stale = projectToroMail(grantedContext, writableAccounts, { ...healthPolicy, nowMs: healthPolicy.nowMs + 120_000 })[0];
+    expect(stale).toMatchObject({ runtimeState: "degraded", readable: true });
+    expect(stale.actionPolicy).toMatchObject({ send: "blocked", labelAndArchive: "blocked", trash: "blocked" });
   });
 });
 

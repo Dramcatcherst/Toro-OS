@@ -249,6 +249,8 @@ Las siguientes reglas refinan módulos y tareas existentes, no crean cuarenta pr
 
 **Cierre de grants/runtime — 16/10/2026:** la proyección TORO Mail ya no puede declarar `runtime_verified` para un buzón organizacional por conexión, verificación y `lastSyncAt` solamente; exige evidencia explícita de aceptación runtime. Las mutaciones personales quedan bloqueadas cuando `modifyEnabled=false`, aunque exista grant técnico `execute`. El envío organizacional requiere además un grant `execute` del actor, propietario `organization`, mismo `orgId` y proveedor. Son controles de presentación/autorización probados; no prueban OAuth, envío ni runtime productivo.
 
+**Preparación R1–R3 — 12/11/2026, carril existente #308:** código candidato server-only bajo TORO Comms/TORO Mail; nunca concede envío (`canSend=false`). Aplica identidad física de buzón y mensaje, separación de alias/binding, frescura, cutoff, destinatario directo, headers, persona/caso, takeover, resultados inciertos y cuotas leídas. Reasignar caso o plantilla no cambia la acción lógica. La autorización acotada del propietario queda reconocida en la política existente; `runtime_enabled=false` y `effective_activation_at=null` siguen vigentes hasta aceptación técnica. La reserva durable/atómica, transporte y prueba real continúan NEXT en el mismo Control Plane; sin otro scheduler ni permisos. Detalles y rollback en [TORO Mail](TORO_MAIL_V1.md). No certifica merge, despliegue ni respuesta automática productiva.
+
 ---
 
 ## Public Brain perimeter — local correction, 2026-09-30

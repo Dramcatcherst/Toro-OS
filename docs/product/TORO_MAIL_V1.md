@@ -148,3 +148,65 @@ not prove a send. Provider acceptance and verified delivery are distinct;
 delivery requires destination binding, dedupe key, timestamps and readback in a
 valid receipt. The current browser can reach the local OpenClaw gateway, but it
 requires its secret and is not an authenticated delivery session.
+
+
+## R1–R3 reply preparation — 12 November 2026
+
+**Scope:** existing TORO Comms / TORO Mail lane, subordinate to the one General
+Plan. **CURRENT:** reviewed preparation candidate on PR #308; **TARGET:**
+verified provider dispatch. This change adds no transport, OAuth, secret, schema,
+permission, scheduler, deployment or active writer.
+
+The owner adopted the bounded R1–R3 policy through “Ejecutar superprompt” under
+`external_email_specific_approval_policy_v1`. The operational record remains
+`runtime_enabled=false` and `effective_activation_at=null` until the technical
+acceptance gates pass. This is not a request to repeat the owner's authorization.
+The initial sender target is `info@dreamcatcherhotel.com`; verify its physical
+mailbox and send-as identity before activation. Admin and accounting remain
+restricted; labels or aliases do not establish reception access boundaries.
+
+`mail-reply-preparation.ts` is server-only and always returns `canSend=false`.
+A `prepared` result is a proposal for the existing Control Plane, not atomic
+admission or permission to send. Inputs must come from trusted server readers;
+receipt references provide provenance, not self-verifying grants. No route in
+this change accepts client JSON or email statements as trusted evidence.
+
+The preparation requires current runtime/binding evidence, an exact send-as
+identity, an adopted policy with an effective cutoff, a newer native message,
+a verified direct sender/recipient, inspected loop headers, a linked person
+and case, current human/dispatch state, an approved template and a current
+canonical quota snapshot. R1 needs approved current public knowledge; R2 may
+ask only arrival/departure dates and guest/room counts; R3 needs an actual
+canonical case persistence receipt. Restricted intents remain for review.
+
+Identity is `provider + physicalAccountRef + nativeMessageId`. The physical
+mailbox reference is stable across aliases, send-as identities and reconnection;
+it is not a connector/session/link ID or an address guessed from message text.
+A server readback must relate each binding to that physical identity. Action
+deduplication uses organization + native-message identity + reply operation;
+changing case assignment, template or policy receipt cannot create another
+automatic reply to the same source message. External address local-part case
+is preserved unless a future provider-verified equivalence explicitly allows it.
+
+WeSpeak/relay notifications require original conversation resolution and never
+become recipients by copying quoted guest addresses. Human takeover or a newer
+human reply blocks preparation. The source action outcome is distinct from
+the last response elsewhere in the case; an uncertain case send pauses the
+case, while a resolved earlier response does not prevent a new message from
+being prepared within its quota.
+
+Limits are at most 20 globally per operating day in `America/Costa_Rica` and
+at most 2 per case in a rolling 24 hours. Snapshot checks here do not implement
+durable counters or concurrency control. The future dispatcher must re-read
+policy/identity/human state, bind the exact approved template and final content
+hash, atomically reserve both quotas with the existing fenced outbox/ledger,
+emit verified anti-loop headers, obtain provider evidence and reconcile any
+uncertain result before retry. Until that integration is verified, no automated
+send is enabled.
+
+**Integration boundary:** PR #308 was inspected at
+`194593be07980fbae47b505808588610d34b2840` and is divergent from current main.
+This slice imports only main's mailbox freshness/context contract and adapts
+its TORO Mail caller. It does not resolve unrelated conflicts or certify the
+whole PR ready for merge. Rollback is the revert of this slice; it has no live
+provider or database effects.

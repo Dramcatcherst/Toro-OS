@@ -100,8 +100,20 @@ export function normalizeMailboxEndpoint(value: unknown) {
   return normalized;
 }
 
+/** Supplied by a trusted caller; health never substitutes for historical read authorization. */
+export type ToroMailboxHealthPolicy = { nowMs: number; maxSyncAgeMs: number };
+
+function syncTimestamp(value: string | null) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.test(value)) return Number.NaN;
+  const calendar = value.slice(0, 10);
+  const midnight = Date.parse(`${calendar}T00:00:00Z`);
+  if (!Number.isFinite(midnight) || new Date(midnight).toISOString().slice(0, 10) !== calendar) return Number.NaN;
+  return Date.parse(value);
+}
+
 export function mailboxBindingHealth(
   binding: ToroMailboxBinding,
+  policy: ToroMailboxHealthPolicy,
 ): ToroMailboxHealth {
   if (
     !binding.active ||
@@ -122,12 +134,18 @@ export function mailboxBindingHealth(
   }
 
   if (
+    binding.channel !== "email" ||
     binding.authStatus !== "connected" ||
-    binding.verificationStatus === "unverified"
+    binding.verificationStatus !== "verified" ||
+    binding.ingestionStatus !== "healthy"
   ) {
     return "unverified";
   }
 
+  const lastSyncAt = syncTimestamp(binding.lastSyncAt);
+  if (!policy || !Number.isFinite(policy.nowMs) || !Number.isSafeInteger(policy.maxSyncAgeMs) ||
+      policy.maxSyncAgeMs <= 0 || !Number.isFinite(lastSyncAt) || lastSyncAt > policy.nowMs ||
+      policy.nowMs - lastSyncAt > policy.maxSyncAgeMs) return "degraded";
   return "healthy";
 }
 
@@ -155,8 +173,11 @@ export function canUseMailboxBinding(
 ) {
   return Boolean(
     context.mode === "organization" &&
-      context.orgId &&
+      context.userId && context.userId === context.userId.trim() &&
+      context.orgId && context.orgId === context.orgId.trim() &&
       context.orgId === binding.orgId &&
+      context.membership?.orgId === context.orgId &&
+      context.allowedDataScopes.includes("work_org") &&
       context.membership?.status === "active" &&
       context.canUseOrganizationData &&
       !context.requiresContextChoice &&
@@ -166,6 +187,7 @@ export function canUseMailboxBinding(
 
 export function projectMailboxBindingStatus(
   binding: ToroMailboxBinding,
+  policy: ToroMailboxHealthPolicy,
 ): ToroMailboxStatusProjection {
   return {
     id: binding.id,
@@ -174,7 +196,7 @@ export function projectMailboxBindingStatus(
     endpointKind: binding.endpointKind,
     businessRole: binding.businessRole,
     readable: isMailboxBindingReadable(binding),
-    health: mailboxBindingHealth(binding),
+    health: mailboxBindingHealth(binding, policy),
     verificationStatus: binding.verificationStatus,
     lastSyncAt: binding.lastSyncAt,
     lastEventAt: binding.lastEventAt,

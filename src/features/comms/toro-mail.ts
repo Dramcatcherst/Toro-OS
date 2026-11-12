@@ -4,6 +4,7 @@ import {
   isMailboxBindingReadable,
   mailboxBindingHealth,
   type ToroMailboxBinding,
+  type ToroMailboxHealthPolicy,
 } from "./mailbox-bindings";
 import {
   canUsePersonalMailbox,
@@ -170,8 +171,9 @@ function personalRuntimeState(
 
 function organizationRuntimeState(
   account: ToroMailOrganizationAccount,
+  healthPolicy: ToroMailboxHealthPolicy,
 ): ToroMailRuntimeState {
-  const health = mailboxBindingHealth(account.binding);
+  const health = mailboxBindingHealth(account.binding, healthPolicy);
   if (health === "degraded" || health === "unavailable") return "degraded";
   if (
     health === "healthy" &&
@@ -209,6 +211,7 @@ function hasOrganizationToolGrant(
 export function projectToroMail(
   context: ToroResolvedContext,
   accounts: readonly ToroMailAccount[],
+  healthPolicy: ToroMailboxHealthPolicy,
 ): ToroMailAccountProjection[] {
   return accounts.flatMap<ToroMailAccountProjection>((account) => {
     if (account.kind === "personal") {
@@ -249,15 +252,17 @@ export function projectToroMail(
       account.binding,
       "execute",
     );
-    const canModify = readable && account.binding.deleteEnabled && canExecute;
-    const canSend = readable && account.binding.sendEnabled && canExecute;
+    const runtimeState = organizationRuntimeState(account, healthPolicy);
+    const runtimeReady = runtimeState === "runtime_verified";
+    const canModify = readable && runtimeReady && account.binding.deleteEnabled && canExecute;
+    const canSend = readable && runtimeReady && account.binding.sendEnabled && canExecute;
     return [{
       id: account.binding.id,
       endpoint: account.binding.normalizedEndpoint,
       displayName: account.binding.displayName ?? account.binding.normalizedEndpoint,
       provider: account.binding.provider,
       scope: "organization" as const,
-      runtimeState: organizationRuntimeState(account),
+      runtimeState,
       connectorObservedAt: account.connectorEvidence.observedAt,
       readable,
       actionPolicy: {

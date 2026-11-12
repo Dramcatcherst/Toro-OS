@@ -1,3 +1,5 @@
+import { parseSingleMailAddress, toroMailMessageKey } from "./mail-message-identity";
+
 export type HotelMailDepartment =
   | "reception"
   | "management"
@@ -17,6 +19,8 @@ export type HotelMailSignal =
   | "unclassified";
 
 export type HotelMailTriggerInput = {
+  /** Stable physical provider mailbox identity; aliases share this key, connector sessions do not own it. */
+  physicalAccountRef: string;
   providerMessageId: string;
   from: string;
   subject: string;
@@ -53,11 +57,9 @@ function trigger(
   input: HotelMailTriggerInput,
   value: Omit<HotelMailTrigger, "canMutateReservation" | "dedupeKey">,
 ): HotelMailTrigger {
-  return {
-    ...value,
-    canMutateReservation: false,
-    dedupeKey: `hotel-mail:${input.providerMessageId}:${value.signal}`,
-  };
+  const dedupeKey = toroMailMessageKey({ provider: "gmail", physicalAccountRef: input.physicalAccountRef, providerMessageId: input.providerMessageId });
+  if (!dedupeKey) throw new Error("Hotel mail requires verified account and native message IDs.");
+  return { ...value, canMutateReservation: false, dedupeKey };
 }
 
 /**
@@ -67,7 +69,8 @@ function trigger(
 export function classifyHotelMailTrigger(
   input: HotelMailTriggerInput,
 ): HotelMailTrigger {
-  const sender = normalized(input.from);
+  const sender = parseSingleMailAddress(input.from) ?? "";
+  const senderDomain = sender.split("@")[1] ?? "";
   const content = normalized(`${input.subject} ${input.snippet ?? ""}`);
   const labels = new Set(input.labels ?? []);
 
@@ -91,8 +94,8 @@ export function classifyHotelMailTrigger(
     });
   }
 
-  if (sender.includes("notifications@github.com") || sender.includes("notifications@vercel.com")) {
-    const providerLabel = sender.includes("github.com")
+  if (sender === "notifications@github.com" || sender === "notifications@vercel.com") {
+    const providerLabel = sender === "notifications@github.com"
       ? "40.1 · GITHUB / CI"
       : "40.2 · VERCEL / DEPLOYS";
     return trigger(input, {
@@ -116,7 +119,7 @@ export function classifyHotelMailTrigger(
     });
   }
 
-  const isKross = sender.includes("krossbooking.com");
+  const isKross = senderDomain === "krossbooking.com";
   if (
     isKross &&
     includesAny(content, ["guest portal", "checklist completion", "online check-in"])
@@ -131,12 +134,9 @@ export function classifyHotelMailTrigger(
     });
   }
 
-  const isReservationSource = includesAny(sender, [
-    "booking.com",
-    "airbnb.com",
-    "expedia",
-    "notifications@wespeak.news",
-  ]);
+  // Exact mailbox/domain hints classify metadata only; they never authenticate a sender.
+  const isReservationSource = ["booking.com", "airbnb.com", "expedia.com"].includes(senderDomain) ||
+    sender === "notifications@wespeak.news";
   const isReservationChange = includesAny(content, [
     "cancelacion",
     "cancellation",
@@ -176,7 +176,7 @@ export function classifyHotelMailTrigger(
     });
   }
 
-  if (sender.includes("notifications@wespeak.news")) {
+  if (sender === "notifications@wespeak.news") {
     return trigger(input, {
       signal: "guest_attention",
       department: "reception",
