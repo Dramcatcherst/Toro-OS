@@ -3,6 +3,30 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { openAuthorizedSession } from "./portal-cloud-session.mjs";
 
+const failureCodes = Object.freeze({
+  configuration: "QA_CONFIGURATION_FAILED",
+  session_input: "QA_SESSION_INPUT_FAILED",
+  browser_start: "QA_BROWSER_START_FAILED",
+  browser_context: "QA_BROWSER_CONTEXT_FAILED",
+  vercel_auth: "QA_VERCEL_AUTH_FAILED",
+  login: "QA_LOGIN_FAILED",
+  request_guard: "QA_REQUEST_GUARD_FAILED",
+  portal_navigation: "QA_PORTAL_NAVIGATION_FAILED",
+  organization_context: "QA_ORGANIZATION_CONTEXT_FAILED",
+  responsive_keyboard: "QA_RESPONSIVE_KEYBOARD_FAILED",
+  runtime: "QA_RUNTIME_FAILED",
+  receipt: "QA_RECEIPT_FAILED",
+  browser_close: "QA_BROWSER_CLOSE_FAILED",
+});
+
+// Only internal stage constants are emitted. Never inspect the thrown error.
+export function failureDiagnostic(stage) {
+  if (typeof stage !== "string" || !Object.hasOwn(failureCodes, stage)) {
+    return "QA_BLOCKED_OR_FAILED stage=unknown code=QA_UNEXPECTED_FAILURE";
+  }
+  return `QA_BLOCKED_OR_FAILED stage=${stage} code=${failureCodes[stage]}`;
+}
+
 export function config(env) {
   const required = ["PORTAL_QA_URL", "PORTAL_QA_SHA", "PORTAL_QA_APPROVED_ORIGIN"];
   if (required.some(key => !env[key])) throw new Error("QA_BLOCKED_CONFIGURATION");
@@ -18,11 +42,14 @@ export function config(env) {
   return { url: url.href, sha: env.PORTAL_QA_SHA, sessionFile: env.PORTAL_QA_SESSION_FILE || null };
 }
 
-export async function run(env = process.env) {
+export async function run(env = process.env, onStage = () => {}) {
+  onStage("configuration");
   const target = config(env);
   // Session bytes are private input, never logged or exported as evidence.
+  onStage("session_input");
   const state = target.sessionFile ? JSON.parse(await readFile(target.sessionFile, "utf8")) : { cookies: [], origins: [] };
   assert(Array.isArray(state.cookies), "QA_BLOCKED_SESSION_FORMAT");
+  onStage("browser_start");
   const { chromium } = await import("playwright");
   const browser = await chromium.launch();
   const evidence = {
@@ -35,9 +62,11 @@ export async function run(env = process.env) {
   };
   try {
     // No trace/video/HAR: they could disclose the account's data or credentials.
+    onStage("browser_context");
     const context = await browser.newContext({ storageState: state });
-    await openAuthorizedSession(context, target, env);
+    await openAuthorizedSession(context, target, env, onStage);
     // Never permit the harness to write business data or contact another origin.
+    onStage("request_guard");
     await context.route("**/*", route => {
       const request = route.request();
       const url = new URL(request.url());
@@ -48,9 +77,11 @@ export async function run(env = process.env) {
     const page = await context.newPage();
     let runtimeErrors = 0;
     page.on("pageerror", () => { runtimeErrors += 1; });
+    onStage("portal_navigation");
     await page.goto(target.url, { waitUntil: "networkidle" });
     assert.equal(new URL(page.url()).origin, new URL(target.url).origin, "QA_BLOCKED_LOGIN_OR_REDIRECT");
     assert.equal(new URL(page.url()).pathname, "/portal", "QA_BLOCKED_LOGIN_OR_REDIRECT");
+    onStage("organization_context");
     const response = await context.request.get(new URL("/api/brain/context", target.url).href, { maxRedirects: 0 });
     assert.equal(response.status(), 200, "QA_BLOCKED_ORGANIZATION_SESSION");
     const actor = await response.json();
@@ -58,6 +89,7 @@ export async function run(env = process.env) {
     assert.equal(actor.authenticatedContext, true, "QA_BLOCKED_CONTEXT");
     assert.equal(actor.organizationDataAllowed, true, "QA_BLOCKED_CONTEXT");
     evidence.authenticatedOrganizationContext = true;
+    onStage("responsive_keyboard");
     for (const width of [320, 390, 412, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       const tabs = page.getByRole("tablist", { name: "Vistas del Portal" });
@@ -79,11 +111,14 @@ export async function run(env = process.env) {
       assert.equal(await home.getAttribute("aria-selected"), "true", "QA_KEYBOARD_RETURN");
       evidence.widths.push({ width, visibleTasks, horizontalOverflow: false, tabKeyboardRoundTrip: true });
     }
+    onStage("runtime");
     assert.equal(runtimeErrors, 0, "QA_RUNTIME_ERRORS");
     // Output only non-sensitive counts/flags; never page text, URLs, cookies or screenshots.
     const output = env.PORTAL_QA_RESULT_DIR || "/tmp/toro-portal-qa";
+    onStage("receipt");
     await mkdir(output, { recursive: true, mode: 0o700 });
     await writeFile(output + "/result.json", JSON.stringify(evidence, null, 2), { mode: 0o600 });
+    onStage("browser_close");
     await context.close();
     return evidence;
   } finally {
@@ -92,6 +127,7 @@ export async function run(env = process.env) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  run().then(() => console.log("QA_PARTIAL_CHECKS_COMPLETED_NOT_RELEASE_ACCEPTANCE"))
-    .catch(() => { console.error("QA_BLOCKED_OR_FAILED: inspect authorized configuration and private runner"); process.exitCode = 1; });
+  let stage = "configuration";
+  run(process.env, value => { stage = value; }).then(() => console.log("QA_PARTIAL_CHECKS_COMPLETED_NOT_RELEASE_ACCEPTANCE"))
+    .catch(() => { console.error(failureDiagnostic(stage)); process.exitCode = 1; });
 }

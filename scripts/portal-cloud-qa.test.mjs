@@ -1,6 +1,42 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { config } from "./portal-cloud-qa.mjs";
+import * as qa from "./portal-cloud-qa.mjs";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+test("CLI identifies configuration failure without printing exception details", () => {
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL("./portal-cloud-qa.mjs", import.meta.url))], {
+    env: {}, encoding: "utf8",
+  });
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.equal(result.stderr.trim(), "QA_BLOCKED_OR_FAILED stage=configuration code=QA_CONFIGURATION_FAILED");
+});
+
+test("CLI identifies private session-input failure without leaking its path or target", () => {
+  const canary = "PRIVATE_IDENTITY_TOKEN_DO_NOT_LOG";
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL("./portal-cloud-qa.mjs", import.meta.url))], {
+    env: { PORTAL_QA_URL: "https://private-test.example/portal", PORTAL_QA_APPROVED_ORIGIN: "https://private-test.example",
+      PORTAL_QA_SHA: "a".repeat(40), PORTAL_QA_SESSION_FILE: `/nonexistent-${canary}/session.json` },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.equal(result.stderr.trim(), "QA_BLOCKED_OR_FAILED stage=session_input code=QA_SESSION_INPUT_FAILED");
+  assert(!result.stderr.includes(canary));
+  assert(!result.stderr.includes("private-test.example"));
+});
+
+test("unknown diagnostic stages and hostile error objects produce only fixed fallback constants", () => {
+  const sensitive = "PRIVATE_SECRET https://private.example/?token=canary";
+  const hostile = { get message() { throw new Error(sensitive); }, get stack() { throw new Error(sensitive); } };
+  for (const stage of [sensitive, "constructor", undefined, hostile, new Error(sensitive)]) {
+    const output = qa.failureDiagnostic?.(stage) ?? "";
+    assert.equal(output, "QA_BLOCKED_OR_FAILED stage=unknown code=QA_UNEXPECTED_FAILURE");
+    assert(!output.includes(sensitive));
+  }
+});
 const valid = { PORTAL_QA_URL: "https://approved.vercel.app/portal",
   PORTAL_QA_APPROVED_ORIGIN: "https://approved.vercel.app", PORTAL_QA_SHA: "a".repeat(40),
   PORTAL_QA_SESSION_FILE: "/private/session.json" };

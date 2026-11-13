@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 
 // Normal login only. No business endpoint, grant, account creation or session export.
-export async function openAuthorizedSession(context, target, env) {
+export async function openAuthorizedSession(context, target, env, onStage = () => {}) {
   const origin = new URL(target.url).origin;
   if (env.VERCEL_AUTOMATION_BYPASS_SECRET) {
+    onStage("vercel_auth");
     const response = await context.request.get(origin, {
       headers: { "x-vercel-protection-bypass": env.VERCEL_AUTOMATION_BYPASS_SECRET, "x-vercel-set-bypass-cookie": "true" },
       maxRedirects: 0,
@@ -15,7 +16,9 @@ export async function openAuthorizedSession(context, target, env) {
       c.domain.replace(/^\./, "") === new URL(origin).hostname), "QA_BLOCKED_VERCEL_AUTH");
   }
   if (!target.sessionFile) {
+    onStage("login");
     const response = await context.request.post(new URL("/api/auth/login", origin).href, {
+      headers: { Origin: origin },
       data: { identifier: env.PORTAL_QA_IDENTIFIER, password: env.PORTAL_QA_PASSWORD, nextPath: "/portal" },
       maxRedirects: 0,
     });
