@@ -613,3 +613,45 @@ Referencias API verificadas:
 - https://docs.aws.amazon.com/cli/latest/reference/ssm/get-command-invocation.html
 - https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-document.html
 - https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-instance-information.html
+
+## Paridad de fuentes y conectores desde cloud — 13/11/2026
+
+Aplicar el bloque `CLOUD_SOURCE_CONNECTOR_PARITY_20261113` del único Plan
+General y el checkpoint privado de la directiva cloud existente. Esta auditoría
+no activa SSM, permisos, credenciales, API Kross, Writer, OAuth o envíos.
+
+1. Recuperar tarea, lease, actor, host y cuenta autorizados; la fuente de
+   identidad es el registro canónico, nunca un nombre de chat o variable local.
+2. Leer el censo vigente por cuenta/base/recurso desde el registro existente.
+   El inventario Airtable de esta pasada enumera 14 bases; 8 están en el
+   registro canónico. Las otras 6 no se vuelven fuentes del hotel por aparecer.
+   Conservar pruebas de esquema, límites, cursores y cobertura en privado.
+3. Resolver en el ejecutor cloud el binding seguro propio o el broker
+   autorizado existente de cada fuente. Un plugin de ChatGPT o una sesión
+   del navegador cloud no transfiere automáticamente identidad al servidor.
+   No extraer ni copiar secretos/cookies entre esas superficies.
+4. Leer una proyección/objeto permitido y una negativa de ámbito incorrecto
+   por conexión; registrar fecha, corte, referencia de fuente y resultado
+   usando el Control Plane actual. No leer datos privados reales para probar
+   una denegación si existe un fixture autorizado.
+5. Comprobar `config_version/config_hash` contra el puntero canónico y adjuntar
+   al recibo la referencia exacta del Plan. Mantener AVAILABLE sin ACK hasta
+   que el runtime confirme realmente la carga. Sin campos de hash paralelos.
+6. Conciliar los runs con leases vencidos desde sus receipts/fuentes antes de
+   reintentar. No insertar runs de negocio o receipts de entrega para completar
+   un checklist documental.
+7. Ampliar por fuente aceptada, conservando un solo escritor por cuenta/acción
+   y aislamiento recepción/admin/personal. Verificar desconexión del PC,
+   reinicio y recuperación antes de retirar la contingencia local.
+
+**Resultado observado:** Supabase legible desde esta sesión; OpenClaw tiene
+cero sesiones y cero receipts canónicos pese a flags de conexión positivos.
+Vercel deniega metadata de variables sin descifrar y listado Connectors (403);
+la relación del proyecto responde404. No inferir ausencia de integraciones.
+El navegador no llegó a una consola AWS utilizable. No hay ejecutor AWS/SSM
+autenticado aquí. No repetir estas consultas sin una capacidad o permiso nuevo.
+
+**Siguiente unidad:** acceso seguro al host existente y caller de diagnóstico
+SSM revisado; lectura positiva/negativa y recibo fresco desde la superficie
+final. Hasta entonces acceso global desde OpenClaw y autonomía sin PC siguen
+sin comprobar. Mantener los gates y la reversión ya definidos en esta lane.

@@ -8,6 +8,8 @@ import {
   moduleAlertSignal,
   ownerAttentionSignal,
   prepareAlertDelivery,
+  prepareToroMailAlertDelivery,
+  validateToroMailAlertDeliveryReceipt,
   roomBindingRole,
   type WhatsAppGroupBinding,
 } from "./alert-delivery";
@@ -321,3 +323,133 @@ it("excludes invalid non-JSON identities from dedupe serialization", () => {
 
 });
 
+
+describe("TORO Mail to OpenClaw alert routing", () => {
+  const prepareMail = (input: Parameters<typeof prepareToroMailAlertDelivery>[0], bindings: WhatsAppGroupBinding[]) =>
+    prepareToroMailAlertDelivery(input, bindings, deliveryContext);
+  const hash = `sha256:${"a".repeat(64)}`;
+  const mailAlert = {
+    orgId: "org-hotel",
+    scope: "organization" as const,
+    accountId: "hotel-mail",
+    providerMessageIdHash: hash,
+    privacyReviewed: true,
+    alertClass: "guest_service" as const,
+    version: "1",
+    priority: "high" as const,
+    title: "Seguimiento de huésped",
+    summary: "El caso requiere revisión humana.",
+    impact: "La respuesta está pendiente.",
+    requiredAction: "Verificar el caso y preparar respuesta.",
+    owner: "Recepción",
+    dueAt: "Hoy",
+    sourceSystem: "Gmail hotel",
+    sourceCutoff: "16 oct 2026 · 08:00 CR",
+  };
+  const receptionBinding: WhatsAppGroupBinding = {
+    ...verifiedManagementGroup,
+    id: "binding-reception",
+    privacy: "internal",
+    businessRole: roomBindingRole("reception"),
+  };
+
+  it("routes hotel guest-service mail only to a verified reception group", () => {
+    const decision = prepareMail(mailAlert, [receptionBinding]);
+    expect(decision).toMatchObject({
+      status: "ready",
+      target: "reception_group",
+      blockers: [],
+    });
+    expect(decision.candidate?.destinationBindingId).toBe("binding-reception");
+  });
+
+  it("routes hotel financial evidence to restricted management", () => {
+    const decision = prepareMail({
+      ...mailAlert,
+      alertClass: "financial_evidence",
+      title: "Comprobante por verificar",
+      owner: "Gerencia",
+    }, [verifiedManagementGroup]);
+    expect(decision).toMatchObject({
+      status: "ready",
+      target: "management_group",
+      candidate: { privacy: "restricted", room: "management" },
+    });
+  });
+
+  it("never leaks personal or third-party mail into hotel groups", () => {
+    const decision = prepareMail({
+      ...mailAlert,
+      scope: "personal",
+      orgId: null,
+      alertClass: "security",
+    }, [verifiedManagementGroup, receptionBinding]);
+    expect(decision).toEqual({
+      status: "blocked",
+      target: "owner_direct",
+      candidate: null,
+      blockers: ["verified_owner_direct_binding_missing"],
+    });
+  });
+
+  it("forwards the protected organization, health window and message budget to the shared delivery guard", () => {
+    const wrongOrg = prepareMail({ ...mailAlert, orgId: "org-other" }, [receptionBinding]);
+    expect(wrongOrg.status).toBe("blocked");
+    expect(wrongOrg.candidate?.destinationBindingId).toBeNull();
+    for (const context of [
+      { ...deliveryContext, nowMs: deliveryContext.nowMs + 120_000 },
+      { ...deliveryContext, messageBudget: { maxFieldBytes: 10, maxMessageBytes: 30 } },
+    ]) {
+      const decision = prepareToroMailAlertDelivery(mailAlert, [receptionBinding], context);
+      expect(decision.status).toBe("blocked");
+      expect(decision.candidate?.destinationBindingId).toBeNull();
+    }
+  });
+
+  it("keeps malformed scope and truthy privacy strings out of hotel groups", () => {
+    for (const patch of [{ scope: "unknown" }, { orgId: null }, { privacyReviewed: "false" }, { alertClass: "unknown" }]) {
+      const decision = prepareMail({ ...mailAlert, ...patch } as never, [receptionBinding]);
+      expect(decision.status).toBe("blocked");
+      expect(decision.candidate?.destinationBindingId ?? null).toBeNull();
+    }
+  });
+
+  it("requires privacy review and a hashed provider reference", () => {
+    const decision = prepareMail({
+      ...mailAlert,
+      privacyReviewed: false,
+      providerMessageIdHash: "raw-provider-id",
+    }, [receptionBinding]);
+    expect(decision).toEqual({
+      status: "blocked",
+      target: "reception_group",
+      candidate: null,
+      blockers: ["privacy_review_required", "hashed_source_reference_required"],
+    });
+  });
+
+  it("treats provider acceptance as distinct from verified delivery", () => {
+    const decision = prepareMail(mailAlert, [receptionBinding]);
+    const accepted = validateToroMailAlertDeliveryReceipt(decision, {
+      receiptId: "receipt-1",
+      dedupeKey: decision.candidate!.dedupeKey,
+      destinationBindingId: "binding-reception",
+      providerStatus: "accepted",
+      attemptedAt: "2026-10-16T14:00:00Z",
+      deliveredAt: null,
+      readbackAt: null,
+    });
+    expect(accepted).toEqual({ valid: true, deliveryVerified: false, errors: [] });
+
+    const delivered = validateToroMailAlertDeliveryReceipt(decision, {
+      receiptId: "receipt-2",
+      dedupeKey: decision.candidate!.dedupeKey,
+      destinationBindingId: "binding-reception",
+      providerStatus: "delivered",
+      attemptedAt: "2026-10-16T14:00:00Z",
+      deliveredAt: "2026-10-16T14:00:01Z",
+      readbackAt: "2026-10-16T14:00:02Z",
+    });
+    expect(delivered).toEqual({ valid: true, deliveryVerified: true, errors: [] });
+  });
+});

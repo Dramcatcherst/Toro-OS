@@ -38,6 +38,10 @@ try {
   }
 
   $diskFreeGB = Round-2 ($disk.FreeSpace / 1GB)
+  $diskTotalGB = Round-2 ($disk.Size / 1GB)
+  $diskFreePercent = if ($disk.Size -gt 0) {
+    Round-2 (($disk.FreeSpace / $disk.Size) * 100)
+  } else { 0 }
   $ramAvailableGB = Round-2 ($os.FreePhysicalMemory / 1MB)
   $ramTotalGB = Round-2 ($os.TotalVisibleMemorySize / 1MB)
   $ramAvailablePercent = if ($os.TotalVisibleMemorySize -gt 0) {
@@ -49,13 +53,30 @@ try {
     Round-2 (($cpuValues | Measure-Object -Average).Average)
   } else { 0 }
 
+  $processes = @(Get-Process -ErrorAction SilentlyContinue)
   $heavyNames = @('node', 'python', 'python3', 'chrome', 'msedge', 'firefox', 'playwright', 'Code')
-  $heavyProcessCount = @(
-    Get-Process -ErrorAction SilentlyContinue |
+  $heavyProcesses = @(
+    $processes |
       Where-Object {
         $heavyNames -contains $_.ProcessName -and $_.WorkingSet64 -ge 300MB
       }
-  ).Count
+  )
+  $heavyProcessCount = $heavyProcesses.Count
+  $heavyWorkingSetBytes = ($heavyProcesses | Measure-Object -Property WorkingSet64 -Sum).Sum
+  if ($null -eq $heavyWorkingSetBytes) { $heavyWorkingSetBytes = 0 }
+  $heavyWorkingSetGB = Round-2 ($heavyWorkingSetBytes / 1GB)
+
+  $pageFiles = @(Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue)
+  $pageFileAllocatedMB = ($pageFiles | Measure-Object -Property AllocatedBaseSize -Sum).Sum
+  $pageFileCurrentMB = ($pageFiles | Measure-Object -Property CurrentUsage -Sum).Sum
+  $pageFilePeakMB = ($pageFiles | Measure-Object -Property PeakUsage -Sum).Sum
+  if ($null -eq $pageFileAllocatedMB) { $pageFileAllocatedMB = 0 }
+  if ($null -eq $pageFileCurrentMB) { $pageFileCurrentMB = 0 }
+  if ($null -eq $pageFilePeakMB) { $pageFilePeakMB = 0 }
+  $pageFileUsagePercent = if ($pageFileAllocatedMB -gt 0) {
+    Round-2 (($pageFileCurrentMB / $pageFileAllocatedMB) * 100)
+  } else { 0 }
+  $uptimeHours = Round-2 (((Get-Date) - $os.LastBootUpTime).TotalHours)
 
   $largestGeneratedFolderGB = 0
   $largestGeneratedFolder = $null
@@ -73,10 +94,15 @@ try {
 
   $metrics = [ordered]@{
     diskFreeGB = $diskFreeGB
+    diskFreePercent = $diskFreePercent
     ramAvailableGB = $ramAvailableGB
     ramAvailablePercent = $ramAvailablePercent
     cpuPercent = $cpuPercent
+    pageFileUsagePercent = $pageFileUsagePercent
     heavyProcessCount = $heavyProcessCount
+    heavyWorkingSetGB = $heavyWorkingSetGB
+    processCount = $processes.Count
+    uptimeHours = $uptimeHours
     largestGeneratedFolderGB = $largestGeneratedFolderGB
   }
 
@@ -93,11 +119,20 @@ try {
     recommendation = $result.recommendation
     metrics = [ordered]@{
       diskFreeGB = $diskFreeGB
+      diskTotalGB = $diskTotalGB
+      diskFreePercent = $diskFreePercent
       ramAvailableGB = $ramAvailableGB
       ramTotalGB = $ramTotalGB
       ramAvailablePercent = $ramAvailablePercent
       cpuPercent = $cpuPercent
+      pageFileCurrentGB = Round-2 ($pageFileCurrentMB / 1024)
+      pageFileAllocatedGB = Round-2 ($pageFileAllocatedMB / 1024)
+      pageFilePeakGB = Round-2 ($pageFilePeakMB / 1024)
+      pageFileUsagePercent = $pageFileUsagePercent
       heavyProcessCount = $heavyProcessCount
+      heavyWorkingSetGB = $heavyWorkingSetGB
+      processCount = $processes.Count
+      uptimeHours = $uptimeHours
       largestGeneratedFolderGB = $largestGeneratedFolderGB
       largestGeneratedFolder = $largestGeneratedFolder
       generatedFolderScanEnabled = [bool]$ScanGeneratedFolders
@@ -108,10 +143,12 @@ try {
     $output | ConvertTo-Json -Depth 6 -Compress
   } else {
     Write-Host "TORO PC Health: $($output.state)"
-    Write-Host "Disk free: $diskFreeGB GB"
+    Write-Host "Disk free: $diskFreeGB / $diskTotalGB GB ($diskFreePercent%)"
     Write-Host "RAM available: $ramAvailableGB / $ramTotalGB GB ($ramAvailablePercent%)"
     Write-Host "CPU: $cpuPercent%"
-    Write-Host "Heavy dev/browser processes: $heavyProcessCount"
+    Write-Host "Page file: $pageFileCurrentMB / $pageFileAllocatedMB MB ($pageFileUsagePercent%)"
+    Write-Host "Processes: $($processes.Count); heavy dev/browser: $heavyProcessCount ($heavyWorkingSetGB GB)"
+    Write-Host "Uptime: $uptimeHours hours"
     if ($ScanGeneratedFolders) {
       Write-Host "Largest generated folder: $largestGeneratedFolder ($largestGeneratedFolderGB GB)"
     }
