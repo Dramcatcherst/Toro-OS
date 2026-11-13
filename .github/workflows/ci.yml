@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -29,6 +29,20 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Chromium compatibility smoke without Portal credentials
+        run: |
+          npx --no-install playwright install --with-deps chromium
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          const browser = await chromium.launch();
+          try {
+            const page = await browser.newPage();
+            await page.goto('about:blank');
+          } finally {
+            await browser.close();
+          }
+          NODE
 
       - name: Tests
         run: npm test
@@ -44,7 +58,7 @@ jobs:
 
   cloud-qa-admission:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/release/portal-hoy-readonly-20261109-r14'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 2
     permissions:
       contents: read
@@ -74,7 +88,7 @@ jobs:
   cloud-qa:
     needs: [validate, cloud-qa-admission]
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/release/portal-hoy-readonly-20261109-r14'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     environment: portal-qa
     permissions:
