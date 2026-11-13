@@ -8,7 +8,58 @@
 
 ## Objective
 
-### Current checkpoint — optional-field quality integrated, 2026-10-24 UTC
+### Current checkpoint — written transport evidence, 2026-10-24 UTC
+
+**Result: BLOCKED; documentary reconciliation only.** The existing hotel
+mailbox, repository, hotel Drive and bounded Dropbox searches were checked.
+No reviewed source establishes a provisioned read transport for TORO. This is
+a bounded search result, not proof that no document exists anywhere.
+
+| Gate | Written evidence found | Accepted state |
+| --- | --- | --- |
+| Method | Ticket `KB-305650/26`, 16/09: hotel requested API activation, documentation, terms and pricing. Provider reply 18/09: local provider contacted; case closed. | UNKNOWN: a request/closed ticket does not confirm API, webhook, export, endpoints, environment or provisioning. |
+| Scope | The 24/09 follow-up requests read-only reservations/stays/arrivals and separates live rates/availability. It is still DRAFT, not a provider reply. | UNPROVEN: no confirmed read scopes, schema, identity/timestamp fields, limits or cancellation semantics. |
+| Costs | Provider reply 17/09 asks whether costs are understood, without quoting an amount, currency, setup/recurring/per-call fee or accepted offer. | UNKNOWN: keep billing nullable; do not infer either free access or a confirmed billable product. |
+| Authorization | The historical activation request is acknowledged; no reviewed provider message authorizes a defined read-only transport. The existing owner pause remains in force. | NOT GRANTED by this reconciliation: first-read approval stays false. |
+
+**Source custody and exclusions:** the primary records are the existing ticket
+messages dated 16, 17 and 18 September; the canonical 24/09 follow-up and
+superseded 23/09 follow-up both retain DRAFT labels. The bounded SENT check did
+not find a sent API follow-up. The sent Google Hotel Center and Santa Toro
+messages concern other issues and do not supply API entitlement. No originals,
+private mailbox identifiers, ticket action links or credentials are copied here.
+
+Hotel Drive returned the 15/10 Kross-versus-Booking price audit, not a transport
+agreement; exact-ticket search returned no document. Native Dropbox access was
+recovered using the existing connection, without an account/permission change.
+`Kross API` results were internal plans/audits or messaging material, not a
+provider contract. Exact-ticket search returned no match. The Kross-named
+folders were a Santa Toro invoice folder (outside this hotel read scope) and
+official-media export candidates; neither establishes transport authorization.
+The 29/09 execution mandate explicitly retains the paid Kross pause, but is
+owner governance, not provider evidence. Dash was unavailable without a valid
+license; the existing native Dropbox connection supplied the read instead.
+No license was bought and no account or access setting was changed.
+
+**Executed offline check:** the existing provider-evidence builder and intake
+evaluator were run with only provider identity and ticket reference evidenced.
+`readyForFirstAuthorizedRead=false`; reservation and rate/availability
+preparation are false; billing remains null and first-read approval false.
+Reported blockers: transport evidence, read-only confirmation, provider
+authorization, source timestamp, stable reservation identity and unknown billing.
+This check made zero provider/PMS calls and is not a live import or dry-run of
+an official reservation payload. The evidence templates remain unchanged.
+
+**Current boundary and next unit:** locate one existing written provider/local
+provider confirmation that fills the four missing gates above. Until it is
+available, keep the canonical lane blocked; do not send/reopen the drafts,
+contact support, activate the paid API, infer credentials or use cookies/OTP.
+Only then populate the existing packet for review; a real first read retains
+its separate authorization and operational acceptance requirements. No new
+connector, scheduler, data write or production action is authorized here.
+Rollback of this documentary reconciliation removes only this checkpoint.
+
+### Integrated optional-field code baseline — 2026-10-24 UTC
 
 **Code state:** PR #373 was reviewed and squash-merged into protected `main`
 as commit `0130000975a900cf937b8e7e863cd118984fdb03`. The exact candidate
@@ -33,7 +84,7 @@ historical at the last verified cut: 4,352 rows, two conflicts, zero live rows
 and zero current-safe rows. The paid API remains paused. No PMS, OTA, database,
 reservation, rate, accounting, permission or scheduler write occurred.
 
-**Next exact unit:** obtain written evidence for a supported Kross read method,
+**Remaining live-read requirements:** obtain written evidence for a supported Kross read method,
 scope, fields, limits and billing; then complete the existing provider-evidence
 packet and run one authorized read-only dry-run. Acceptance still requires
 freshness, stable external identity, idempotent replay, reconciliation, RLS
