@@ -1,5 +1,16 @@
 # TORO — Plan General
 
+<!-- BEGIN:MEDIA_LIBRARY_OWNER_DIRECTIVE_20261112 -->
+## Fototeca — gestión integral de originales y selecciones
+
+**Mandato del propietario, 12/11/2026.** Gestionar la fototeca existente y las fuentes aportadas dentro de `dreamcatcher_website`, alineada con `toro_media_master_operating_contract_v1`. Dropbox mantiene archivos y linaje; Supabase conserva inventario, intake, activos curados y recibos; Airtable actúa como proyección de revisión. GitHub contiene contratos y Vercel entrega exclusivamente derivados públicos aprobados mediante los proyectos existentes.
+
+El [contrato operativo de la fototeca](../runbooks/DREAMCATCHER_MEDIA_LIBRARY.md) recoge estructura compatible, nomenclatura, etiquetas, puntuación explicable, selección por canal, treinta mejoras y continuidad por lotes. Inventariar no equivale a revisar ni a publicar. Distinguir originales, vistas previas, miniaturas, derivados y campañas históricas; conservar bibliotecas Eagle, alias y consumidores. Comparar duplicados por contenido y revisar referencias y restauración antes de una retirada recuperable. Las fotos personales y otras propiedades mantienen sus ámbitos; no se crea otro catálogo maestro ni se habilita una aplicación o acceso nuevo.
+
+**Estado y continuación:** consultar el checkpoint privado `full_library_processing_20261112` del contrato de media existente. La programación específica autorizada procesa archivos y evidencia; no sustituye al escritor de la web o del PMS. Completar el 100% solo con universo autorizado conocido y conciliado, disposición verificable y fuentes accesibles; bloqueos, derechos pendientes y propuestas no cuentan como terminados. No publicación automática ni eliminación permanente.
+<!-- END:MEDIA_LIBRARY_OWNER_DIRECTIVE_20261112 -->
+
+
 **Status:** CURRENT MASTER PLAN
 **Date:** 2026-10-24
 **Master product:** TORO
