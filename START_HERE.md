@@ -113,6 +113,10 @@ Rules:
 
 Use the **single General Plan** section `OWNER_AI_WEALTH_STRATEGY_20261020` to prioritize verified Dreamcatcher net contribution, owner time recovered through governed TORO, productive assets and resilience. It contains 40 mapped controls, not 40 completed features. Do not invent financial results, create duplicate schedulers, or advance external client onboarding before the existing readiness gate.
 
+### Approved improvement execution — 2026-10-20
+
+For the owner's thirty approved improvements, consume the subordinate execution guide `docs/superpowers/plans/2026-10-20-toro-improvements30-execution.md` and the existing Supabase contract `toro_master_execution_contract_v1` at `structured_content.improvement_execution_20261020`. M01–M30 map to existing tasks and E01–E40; they are not thirty new projects or completed features. Reuse **Dreamcatcher · Ejecución del Plan** every hour, as explicitly requested by the owner on 2026-10-20, at most three active outcomes and a target of up to five material verified steps per run within current budgets. Existing task ownership, approvals, pauses and readiness gates prevail. Runtime state stays in Supabase; this guide does not replace the single General Plan.
+
 ## Product test
 
 Every feature should improve at least one of these outcomes:
@@ -129,3 +133,16 @@ Every feature should improve at least one of these outcomes:
 - greater safe autonomy.
 
 If a feature adds complexity without materially improving one of these outcomes, it should not ship.
+
+## Daily WeSpeak, Services, WhatsApp and pricing — 2026-10-20
+
+**Owner-approved direction; internal governance/configuration applied, native integration not declared operational.** This extends M07/M11/M13–M18/M20–M22/M25/M26/M28/M29 under the same General Plan, not another master plan or backlog.
+
+- Daily quality policy and selective evidence: existing `operations.knowledge_items/wespeak_qa_cadence_contract_2026_09_v1`, section `daily_quality_program_20261020`. The existing WeSpeak review scheduler now runs daily around 08:00 America/Costa_Rica; weekly and first-of-month synthesis consume daily evidence. The hourly Kross/WeSpeak executor consumes findings instead of rereading the corpus each hour. The technical task key `wespeak_weekly_conversation_qa` is retained for compatibility.
+- Services, operations and price governance: existing `kross_toro_housekeeping_integration_plan_2026_09_v1`, section `whatsapp_services_revenue_20261020`; linked from `toro_master_execution_contract_v1.services_comms_revenue_ref_20261020`.
+- Present experiences and individual menu dishes under **Services** using existing `catalog.experiences`, `catalog.dining_services`, `catalog.menu_categories` and `catalog.menu_items`. Preserve IDs, publication gates, historical/archived items and specialized types. Menu availability, allergens, instructor capacity and service acceptance require current evidence; a catalog price is not proof of availability or an order.
+- WhatsApp is the shared operational interface, not the database. Preserve guest/staff scopes, individual identity, one sender per event, assignment/acknowledgement, source readback and receipt. A human-open incident must not restart commercial follow-up solely because a timer elapsed. Native App, Platform, groups, Flows, voice, coexistence, Meta campaigns and attribution require separate provider/account capability checks; no universal availability is assumed.
+- Kross remains the single commercial publication master for approved accommodation rates and supported channel/service mappings. TORO analyzes forward demand and proposes; WeSpeak/Meta consume current verified offers. Numeric floors, ceilings, net-contribution limits and allowed change sizes remain unassigned until current costs/rate history and explicit approval exist. No second independent OTA price writer, retroactive reservation change or unapproved automatic repricing.
+- Acceptance order: daily evidence and regression packet; one eligible dish/experience mapped through Services; one scoped WhatsApp request with acknowledged owner and verified outcome; a forward pricing baseline and approved bounds; channel-side verification. Reuse the five task references in the private directive.
+
+**Evidence scope:** the applied alignment has a verified Control Plane receipt. Twelve regression cases are defined, not claimed passed. Existing knowledge payloads, prior checkpoints and task blocking state were preserved. No private conversation bodies, personal identifiers or operational amounts are published here. No native WeSpeak/Kross changes, Meta account changes, messages, payments, paid API activation, production deployment or complete conversation coverage are claimed. An open PR is not canonical `main` or a runtime release.
