@@ -23,6 +23,42 @@ operating_configuration:
     section_marker: UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109
     status: adopted_governance_runtime_controls_require_receipts
     registration_does_not_prove_coverage_savings_or_activation: true
+  cloud_autonomy:
+    directive_date: "2026-11-11"
+    authority: docs/product/TORO_BRAIN_GENERAL_PLAN.md
+    section_marker: CLOUD_AUTONOMY_OWNER_DIRECTIVE_20261111
+    status: owner_approved_target_runtime_acceptance_pending
+    routine_execution_requires_owner_computer: false
+    policy_is_not_runtime_proof: true
+    reuse_existing_control_plane_tasks_workers_and_schedules: true
+    management_target: aws_systems_manager_plus_scoped_toro_connector
+    management_connector_connected: false
+    host_enrollment_verified: false
+    arbitrary_shell_exposed: false
+    independent_failure_signal_required: true
+    backup_restore_and_pc_disconnected_acceptance_required: true
+    local_consumer_retirement_requires_per_workflow_parity: true
+    historical_runs_do_not_prove_current_autonomy: true
+    initial_authentication_mfa_or_provider_relink_may_require_human: true
+    new_infrastructure_permissions_spend_or_sends_activated_here: false
+    source_connector_parity:
+      directive_date: "2026-11-13"
+      general_plan_marker: CLOUD_SOURCE_CONNECTOR_PARITY_20261113
+      canonical_checkpoint: toro_master_execution_contract_v1.cloud_autonomy_owner_directive_20261111.source_connector_parity_20261113
+      state: audited_cloud_access_not_verified
+      chatgpt_plugin_availability_is_cloud_runtime_access: false
+      all_authorized_bases_and_connectors_require_per_resource_proof: true
+      known_airtable_bases_present_in_current_account: 8
+      visible_airtable_bases_metadata_only: 14
+      extra_bases_require_scope_and_source_classification: true
+      production_and_main_revision_equality_verified: false
+      exact_config_version_and_hash_ack_required: true
+      bounded_positive_and_wrong_scope_negative_read_required: true
+      pc_disconnected_and_recovery_receipts_required: true
+      current_access_blockers:
+        - aws_management_executor_not_authenticated
+        - vercel_environment_and_connector_metadata_forbidden
+      runtime_access_or_permission_changes_applied_here: false
   deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
   channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
   topology: existing_cloud_runtime_plus_local_development_and_recovery

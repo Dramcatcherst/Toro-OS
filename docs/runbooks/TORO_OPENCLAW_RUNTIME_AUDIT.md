@@ -457,3 +457,201 @@ Registrar: timestamp CR/UTC, alias de cuenta, scope, versión, ventana/denominad
 Objetivos del piloto (no SLA vigente): 0 duplicados/0 filtraciones, 100% eventos del lote contabilizados, RPO de archivo <=24h/RTO <=4h por validar. Lotear con 12 min/40 llamadas/2 retries seguros; watchdog/fencing y recuperación probados. Desactivar solo reader/adapter nuevo en rollback; no eliminar chats originales, alterar tareas ni apagar la escucha empresarial vigente.
 
 
+
+## Administración remota sin PC del propietario — 11/11/2026
+
+**Estado: diseño autorizado; conector/enrolamiento y recuperación NO ejecutados.**
+Reutiliza la tarea de paridad de runtime y la auditoría #209/#170; el Plan General
+`CLOUD_AUTONOMY_OWNER_DIRECTIVE_20261111` es la autoridad de dirección. Los
+identificadores del host, cuentas y evidencia individual permanecen privados.
+
+### Evidencia y frontera
+
+La captura del propietario muestra acceso SSH y un servicio de sistema
+coincidente con OpenClaw activo/running; el nombre de unidad está truncado.
+No acredita versión, inicio automático, política de reinicio, cuenta WhatsApp,
+identidad TORO ni entrega. No confundir su terminal con una herramienta
+disponible para el agente. No repetir diagnósticos bloqueados sin un cambio
+de acceso. Conservar el corte de cada fuente.
+
+### Enrolamiento y conexión, una vez
+
+1. Desde una sesión AWS autorizada, comprobar el host y SSM Agent existentes;
+   si ya está inscrito, reutilizarlo. Para Lightsail contrastar el procedimiento
+   AWS de nodo administrado/hybrid activation con región, cuenta y versión.
+   Revisar costos aplicables antes de cualquier contratación.
+2. Preparar el rol de máquina y el operador por separado, limitados al recurso
+   y propósito. Revisar el cambio exacto IAM y su reversión antes de ejecutarlo;
+   no otorgar AdministratorAccess ni emitir credenciales en chat.
+3. Mantener Gateway en loopback/ruta privada autenticada. No abrir puertos del
+   Gateway o SSH al público para conectar este entorno. La ruta de administración
+   debe funcionar aunque WhatsApp esté caído.
+4. Integrar la capacidad de administración en el conector TORO existente bajo
+   autenticación de servidor, identidad/scope y Control Plane; no crear otro
+   motor de tareas o cron. SSM por sí solo no expone herramientas en ChatGPT.
+   Si el conector actual no soporta administración, preparar una extensión
+   mínima revisable, sin modificar su contrato de observaciones existente.
+5. Verificar una llamada de lectura y su recibo desde la superficie final.
+   El estado Online de SSM no acredita conexión del Gateway o las dos cuentas.
+
+### Acciones y privilegios mínimos
+
+- Primera fase: identidad saneada del host, versión instalada, unidad exacta,
+  estado de servicio, probe de canal y metadatos de respaldo; no shell libre.
+- Fijar documento SSM/versión revisados y argumentos tipados permitidos; no
+  exponer documentos genéricos de shell con comandos suministrados por el modelo.
+  El endpoint decide la acción autorizada, no un texto libre del usuario.
+- El diagnóstico existente se ejecuta con el usuario/perfil real del servicio,
+  rutas verificadas y su versión compatible; salida allowlist del script
+  `scripts/openclaw-host-diagnostics.mjs`, nunca stdout/log/config crudos.
+- Recuperación separada de lectura: reiniciar solo la unidad comprobada cuando
+  la acción esté autorizada, exista respaldo de estado y reversión, y se haya
+  comprobado ausencia de otro emisor/worker. No logout/login/reset ni
+  actualización automática de paquetes como intento genérico de reparación.
+- Guardar credenciales en el mecanismo seguro existente; no repositorio,
+  prompts, URL, stdout, parámetros auditables ni evidencias. Identidad de host
+  y de quien solicita se verifican antes de ejecutar.
+- Ningún grupo, empleado o huésped hereda herramientas de administración.
+  Restringir datos personales y del negocio por sus scopes actuales.
+
+### Ejecución y prueba de autonomía
+
+Reutilizar tarea → run → lease/fencing → acción acotada → verificación → receipt.
+Definir timeout, costo, concurrencia y reintentos antes de activar. Ante resultado
+ambiguo consultar ejecución/efecto y reconciliar antes de repetir. Los runs
+expirados señalados en el checkpoint de independencia requieren revisar sus
+recibos originales; no cerrarlos como éxito ni reejecutarlos por antigüedad.
+
+Aceptar en orden: lectura/no-op del host correcto; denegación de recurso/acción
+incorrectos; diagnóstico fresco; respaldo/restauración aislada; recuperación
+controlada y continuidad de cada cuenta; mensaje piloto autorizado con referencia
+y acuse; replay sin duplicado. Observar 24 horas propuestas con PC desconectado,
+al menos un evento real y una interrupción controlada, sin pruebas contra un
+huésped. Conservar recibos del proveedor, aplicación y resultado por separado.
+
+Arranque automático, reinicio con espera y límite, señal de salud independiente,
+respaldo cifrado protegido y alerta alternativa son controles a comprobar o
+implementar, no estados que este texto activa. Una revocación de WhatsApp/MFA
+puede necesitar intervención humana; no prometer disponibilidad absoluta.
+
+### Ampliación y reversión
+
+Después del primer workflow aceptado, repetir el contrato por área/fuente en el
+registro existente; no duplicar Correos y Pagos, Calendar, TORO Comms ni su ingesta.
+Preservar pausas y gates del Writer, API Kross y releases selectivos. Revertir
+solo el nuevo conector/consumidor o documento SSM a la versión revisada, revocar
+su identidad puntual y conservar objetos, cursores, recibos y webhooks. La vía
+manual queda como contingencia hasta que la restauración esté demostrada.
+
+Fuentes oficiales (capacidad documentada; compatibilidad instalada pendiente):
+- https://docs.aws.amazon.com/systems-manager/latest/userguide/run-command.html
+- https://repost.aws/knowledge-center/add-lightsail-to-systems-manager
+- https://docs.aws.amazon.com/systems-manager/latest/userguide/hybrid-activation-managed-nodes.html
+- https://docs.openclaw.ai/gateway/remote
+
+### Primera implementación transportable: diagnóstico de servicio por SSM
+
+**Preparado en código; no inscrito, conectado ni ejecutado contra AWS.**
+Se reutiliza esta lane y PR409; no se crea un endpoint MCP, otro scheduler o
+un motor de permisos. `scripts/openclaw-ssm-diagnostics.mjs` es un adaptador
+interno para un ejecutor autorizado. `executionRunId` es correlación, nunca
+prueba de autorización: el caller debe comprobar task/policy/claim/lease
+del Control Plane antes de invocarlo. No habilitarlo directamente para grupos.
+
+- [x] Documento sin parámetros `data/openclaw_ssm_service_document_v1.json`:
+  Python aislado consulta solo `systemctl list-units/show`, máximo cinco
+  unidades, comandos de dos segundos y plugin de veinte segundos. Una fila
+  no parseable o salida truncada queda sin verificar; nombres, descripciones,
+  configuración, logs y datos WhatsApp no se imprimen.
+- [x] Adaptador con cuenta/rol asumido/nodo Linux exactos y documento fijo,
+  versión numérica y hash SHA256 protegidos; compara además el contenido
+  remoto completo con el artefacto revisado. No acepta shell ni parámetros
+  para el documento, ni versiones latest/default, ni credenciales en argumentos.
+- [x] Preparación por defecto sin llamadas AWS. Ejecución explícita emite un
+  solo SendCommand; resultado ambiguo conserva referencia cuando existe y
+  exige conciliación. Resume consulta el mismo CommandId, documento, nodo y
+  comentario TORO:runId, sin volver a despachar. No crea estado paralelo.
+- [x] Pruebas sintéticas y ejecución Python con systemctl simulado; revisión
+  independiente de privacidad, correlación y cobertura. Un servicio observado
+  no acredita que esté sano, que WhatsApp esté conectado ni que haya entrega.
+- [ ] Enrolar el host existente con acceso AWS autorizado, verificar versión
+  instalada de AWS CLI 2/SSM Agent y Python3, revisar permisos y costos.
+- [ ] Crear el documento revisado con operador separado; fijar versión/hash
+  devueltos por AWS en la configuración protegida existente. Rol de ejecución
+  sin Create/UpdateDocument, IAM, PassRole, StartSession ni documentos de
+  shell genérico; revisar los recursos soportados por cada acción SSM antes
+  de aplicar una política, sin grants amplios automáticos.
+- [ ] Enlazar al ejecutor/conector canónico y comprobar desde la superficie
+  final llamada autorizada, negativa de recurso/acción y recibo real.
+  La existencia del archivo no expone una herramienta a este chat.
+- [ ] Después: diagnóstico OpenClaw completo con su identidad real,
+  respaldo/restauración, recuperación y piloto de reporte autorizado.
+
+Configurar mediante el mecanismo protegido del ejecutor, sin valores en git
+o chat: `TORO_SSM_REGION`, `TORO_SSM_ACCOUNT_ID`, `TORO_SSM_NODE_ID`,
+`TORO_SSM_ROLE_NAME`, `TORO_SSM_DOCUMENT_VERSION`, `TORO_SSM_DOCUMENT_HASH`
+y `TORO_EXECUTION_RUN_ID`. Credenciales AWS temporales solo por el flujo seguro
+del operador; este cambio no las crea ni las descubre.
+
+Validación local: `node --test tests/openclaw-ssm-diagnostics.test.mjs`.
+El mismo archivo se incorpora a `npm run test:openclaw-host`.
+La CLI sin flags prepara; `--execute-read-only` invoca la capacidad autorizada;
+`--execute-read-only --resume-command-id` seguido del ID privado guardado
+solo consulta ese resultado. No volver a enviar tras `dispatch_unknown`:
+conciliar el run/comentario en AWS y registrar el resultado canónico.
+Presupuesto: hasta seis llamadas AWS por ejecución, doce segundos cada una,
+reintentos del cliente deshabilitados; no hay polling infinito. Salida resumida
+para el recibo privado, nunca como prueba de negocio ni reporte del día.
+
+Reversión antes de activar: retirar solo este adaptador/documento candidato.
+Si llega a activarse, deshabilitar su binding específico, conciliar el run y
+revocar únicamente su acceso revisado. No detener webhooks ni alterar cursores,
+casos, escritores o tareas ajenas.
+
+Referencias API verificadas:
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/send-command.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/get-command-invocation.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-document.html
+- https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-instance-information.html
+
+## Paridad de fuentes y conectores desde cloud — 13/11/2026
+
+Aplicar el bloque `CLOUD_SOURCE_CONNECTOR_PARITY_20261113` del único Plan
+General y el checkpoint privado de la directiva cloud existente. Esta auditoría
+no activa SSM, permisos, credenciales, API Kross, Writer, OAuth o envíos.
+
+1. Recuperar tarea, lease, actor, host y cuenta autorizados; la fuente de
+   identidad es el registro canónico, nunca un nombre de chat o variable local.
+2. Leer el censo vigente por cuenta/base/recurso desde el registro existente.
+   El inventario Airtable de esta pasada enumera 14 bases; 8 están en el
+   registro canónico. Las otras 6 no se vuelven fuentes del hotel por aparecer.
+   Conservar pruebas de esquema, límites, cursores y cobertura en privado.
+3. Resolver en el ejecutor cloud el binding seguro propio o el broker
+   autorizado existente de cada fuente. Un plugin de ChatGPT o una sesión
+   del navegador cloud no transfiere automáticamente identidad al servidor.
+   No extraer ni copiar secretos/cookies entre esas superficies.
+4. Leer una proyección/objeto permitido y una negativa de ámbito incorrecto
+   por conexión; registrar fecha, corte, referencia de fuente y resultado
+   usando el Control Plane actual. No leer datos privados reales para probar
+   una denegación si existe un fixture autorizado.
+5. Comprobar `config_version/config_hash` contra el puntero canónico y adjuntar
+   al recibo la referencia exacta del Plan. Mantener AVAILABLE sin ACK hasta
+   que el runtime confirme realmente la carga. Sin campos de hash paralelos.
+6. Conciliar los runs con leases vencidos desde sus receipts/fuentes antes de
+   reintentar. No insertar runs de negocio o receipts de entrega para completar
+   un checklist documental.
+7. Ampliar por fuente aceptada, conservando un solo escritor por cuenta/acción
+   y aislamiento recepción/admin/personal. Verificar desconexión del PC,
+   reinicio y recuperación antes de retirar la contingencia local.
+
+**Resultado observado:** Supabase legible desde esta sesión; OpenClaw tiene
+cero sesiones y cero receipts canónicos pese a flags de conexión positivos.
+Vercel deniega metadata de variables sin descifrar y listado Connectors (403);
+la relación del proyecto responde404. No inferir ausencia de integraciones.
+El navegador no llegó a una consola AWS utilizable. No hay ejecutor AWS/SSM
+autenticado aquí. No repetir estas consultas sin una capacidad o permiso nuevo.
+
+**Siguiente unidad:** acceso seguro al host existente y caller de diagnóstico
+SSM revisado; lectura positiva/negativa y recibo fresco desde la superficie
+final. Hasta entonces acceso global desde OpenClaw y autonomía sin PC siguen
+sin comprobar. Mantener los gates y la reversión ya definidos en esta lane.
