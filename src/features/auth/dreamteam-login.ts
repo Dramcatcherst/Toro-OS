@@ -80,6 +80,13 @@ export async function dreamTeamLogin(request: Request) {
           seconds && /^\d{1,4}$/.test(seconds) ? seconds : "900");
       }
       if (upstream.status === 400 || upstream.status === 401 || upstream.status === 403) {
+        // This fixed endpoint uses 400 for request validation, 401 for rejected
+        // credentials/identifier and 403 for its role gate. Keep account denials
+        // indistinguishable publicly; retain only a fixed, non-identifying code.
+        console.warn("[TORO portal login] identity rejection", { code: `PI${upstream.status}` });
+        if (upstream.status === 400) {
+          return reply("No pudimos tramitar el acceso con DreamTeam. Referencia: PI400.", 503);
+        }
         return reply("Usuario o contraseña incorrectos, o acceso no habilitado.", 401);
       }
       if (!upstream.ok) throw new Error("identity_unavailable");

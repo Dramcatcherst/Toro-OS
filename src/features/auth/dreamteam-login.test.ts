@@ -113,9 +113,32 @@ describe("fresh DreamTeam login adapter", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://other-project.supabase.co");
     await failure(await dreamTeamLogin(request()), 503); expect(mocks.fetch).not.toHaveBeenCalled();
   });
-  it.each([400, 401, 403])("sanitizes upstream rejection %s without issuing cookies", async status => {
+  it.each([401, 403])("sanitizes upstream rejection %s without issuing cookies", async status => {
     mocks.fetch.mockImplementation(async () => upstream({ status, body: JSON.stringify({ error: "private-upstream-detail" }) }));
     await failure(await dreamTeamLogin(request()), 401); expect(mocks.sdk).not.toHaveBeenCalled();
+  });
+  it("treats an upstream request-contract rejection as an integration failure, not an invalid password", async () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      mocks.fetch.mockImplementation(async () => upstream({ status: 400, body: JSON.stringify({ error: "private-upstream-detail" }) }));
+      const response = await dreamTeamLogin(request());
+      expect(response.status).toBe(503);
+      const body = await response.clone().json();
+      expect(body.error).toContain("PI400");
+      expect(body.error).not.toContain("contraseña incorrect");
+      await failure(response, 503);
+      expect(mocks.sdk).not.toHaveBeenCalled();
+      expect(mocks.context).not.toHaveBeenCalled();
+      expect(warning).toHaveBeenCalledExactlyOnceWith("[TORO portal login] identity rejection", { code: "PI400" });
+    } finally { warning.mockRestore(); }
+  });
+  it.each([401, 403])("distinguishes upstream status %s in fixed diagnostics without exposing identity or provider payloads", async status => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      mocks.fetch.mockImplementation(async () => upstream({ status, body: JSON.stringify({ error: "private-upstream-detail" }) }));
+      await failure(await dreamTeamLogin(request()), 401);
+      expect(warning).toHaveBeenCalledExactlyOnceWith("[TORO portal login] identity rejection", { code: `PI${status}` });
+    } finally { warning.mockRestore(); }
   });
   it.each([["45", "45"], ["invalid-date", "900"]])("preserves only a bounded numeric retry after %s", async (sent, expected) => {
     mocks.fetch.mockImplementation(async () => upstream({ status: 429, retryAfter: sent }));
