@@ -53,6 +53,8 @@ echo "PASS misbound trigger rejects apply"
 
 sql < "$apply"
 sql < "$suite"
+sql < "$repo_root/tests/sql/fixtures/inspection_rpc_contract.sql"
+sql < "$repo_root/tests/sql/inspection_rpc_contract.sql"
 expect_rejected "$apply" INSPECTION_APPROVAL_SOURCE_DRIFT
 echo "PASS apply cannot overwrite an already changed source"
 

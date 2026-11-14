@@ -44,6 +44,14 @@ The fixture uses synthetic rows and the original functions and views. The origin
 
 These are real PostgreSQL BEFORE/AFTER trigger and view executions, not predicate-only models. They do not test production RLS, real user roles, concurrent external consumers, maintenance chronology, current physical state or hotel release.
 
+## Existing RPC compatibility proof
+
+The database also has a public submit wrapper calling `private.submit_maintenance_inspection_check_impl` and a public confirmation wrapper calling `facilities.confirm_inspection_check`. The local RPC fixture copies those four exact definitions, checks their source MD5 values and uses explicit test doubles for `auth.uid()` and both authorization helpers. It does not copy production actors, roles or JWTs and does not prove production RLS or a real client login.
+
+Nineteen additional cases execute the actual RPC bodies through the BEFORE/AFTER path. The original trigger engine fails four cases; this candidate passes all nineteen. A first valid capture still returns PASS. Editing an already captured result with new evidence returns the stored pending state and updated aggregate, even when the requested result was PASS. A separate explicit recapture can then return PASS and the existing supervisor confirmation still works. This is a compatibility test, not authorization for automatic replay or a physical acceptance claim. An identical RPC replay does not close a target reopened by another action.
+
+Missing actor, rejected synthetic scope/helper admission, invalid status, empty responsible/evidence, supervisor restriction and existing fail/not-reviewed behavior are covered. The two RPC test files run in the same disposable CI container after the 31 trigger cases. Existing real-identity, RLS and external-client gates remain open; the repository search does not locate a live application caller for these RPC names.
+
 ## Existing ownership and remaining gates
 
 This continues the existing housekeeping handoff/preflight and Systems remediation, under the single General Plan. It does not activate the inactive turnover SOP, alter Kross, release a room or close a maintenance incident.
