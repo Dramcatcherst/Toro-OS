@@ -14,6 +14,8 @@ const failureCodes = Object.freeze({
   login_response: "QA_LOGIN_RESPONSE_FAILED",
   login_http_400: "QA_LOGIN_HTTP_400",
   login_http_401: "QA_LOGIN_HTTP_401",
+  login_http_401_unattributed: "QA_LOGIN_HTTP_401_UNATTRIBUTED",
+  login_toro_denial_compatible: "QA_LOGIN_TORO_DENIAL_COMPATIBLE",
   login_http_403: "QA_LOGIN_HTTP_403",
   login_http_404: "QA_LOGIN_HTTP_404",
   login_http_429: "QA_LOGIN_HTTP_429",

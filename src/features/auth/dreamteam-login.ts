@@ -75,6 +75,11 @@ export async function dreamTeamLogin(request: Request) {
         seconds && /^\d{1,4}$/.test(seconds) ? seconds : "900");
     }
     if (upstream.status === 400 || upstream.status === 401 || upstream.status === 403) {
+      const code = upstream.status === 400 ? "PI400" : upstream.status === 401 ? "PI401" : "PI403";
+      try {
+        // Private, finite diagnostics; public denials remain indistinguishable.
+        console.warn("[TORO portal login] identity rejection", { code });
+      } catch { /* A diagnostic failure must not change the denial. */ }
       return reply("Usuario o contraseña incorrectos, o acceso no habilitado.", 401);
     }
     if (!upstream.ok) throw new Error("identity_unavailable");

@@ -1,12 +1,24 @@
 import assert from "node:assert/strict";
 
 const loginHttpStages = Object.freeze({
-  400: "login_http_400", 401: "login_http_401", 403: "login_http_403",
+  400: "login_http_400", 401: "login_http_401_unattributed", 403: "login_http_403",
   404: "login_http_404", 429: "login_http_429", 503: "login_http_503",
 });
 
 async function rejectedLoginStage(response, status) {
   const stage = Object.hasOwn(loginHttpStages, status) ? loginHttpStages[status] : "login_http_other";
+  if (status === 401) {
+    try {
+      const body = await response.json();
+      // Match only the existing public denial, never emit response content.
+      return body && typeof body === "object" && !Array.isArray(body) &&
+        Object.keys(body).length === 1 && Object.hasOwn(body, "error") &&
+        body.error === "Usuario o contraseña incorrectos, o acceso no habilitado."
+        ? "login_toro_denial_compatible" : stage;
+    } catch {
+      return stage;
+    }
+  }
   if (status !== 403) return stage;
   try {
     const body = await response.json();

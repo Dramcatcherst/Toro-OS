@@ -24,7 +24,7 @@ async function failedLoginDiagnostic(post) {
 test("rejected login reports only a finite HTTP classification without retry", async () => {
   for (const [status, expected] of [
     [400, "QA_BLOCKED_OR_FAILED stage=login_http_400 code=QA_LOGIN_HTTP_400"],
-    [401, "QA_BLOCKED_OR_FAILED stage=login_http_401 code=QA_LOGIN_HTTP_401"],
+    [401, "QA_BLOCKED_OR_FAILED stage=login_http_401_unattributed code=QA_LOGIN_HTTP_401_UNATTRIBUTED"],
     [403, "QA_BLOCKED_OR_FAILED stage=login_http_403 code=QA_LOGIN_HTTP_403"],
     [404, "QA_BLOCKED_OR_FAILED stage=login_http_404 code=QA_LOGIN_HTTP_404"],
     [429, "QA_BLOCKED_OR_FAILED stage=login_http_429 code=QA_LOGIN_HTTP_429"],
@@ -32,6 +32,44 @@ test("rejected login reports only a finite HTTP classification without retry", a
     [418, "QA_BLOCKED_OR_FAILED stage=login_http_other code=QA_LOGIN_HTTP_OTHER"],
   ]) {
     const output = await failedLoginDiagnostic(async () => ({ status: () => status, json: async () => ({ error: "Public denial" }) }));
+    assert.equal(output, expected);
+  }
+});
+
+test("only the exact current public 401 denial is TORO-compatible without exposing its body", async () => {
+  const output = await failedLoginDiagnostic(async () => ({ status: () => 401,
+    json: async () => ({ error: "Usuario o contraseña incorrectos, o acceso no habilitado." }),
+    get headers() { throw new Error("PRIVATE_HEADER_MUST_NOT_BE_READ"); },
+  }));
+  assert.equal(output, "QA_BLOCKED_OR_FAILED stage=login_toro_denial_compatible code=QA_LOGIN_TORO_DENIAL_COMPATIBLE");
+});
+
+test("unknown, malformed and hostile 401 bodies remain unattributed without disclosure", async () => {
+  const fixed = "Usuario o contraseña incorrectos, o acceso no habilitado.";
+  const hostile = { get error() { throw new Error("PRIVATE_BODY_ACCESS_CANARY"); } };
+  const cases = [async () => null, async () => [], async () => fixed, async () => ({}),
+    async () => ({ error: fixed, identifier: "PRIVATE_IDENTITY" }),
+    async () => ({ error: `PRIVATE_SECRET ${fixed}` }), async () => ({ error: `${fixed}\n` }),
+    async () => ({ error: fixed.slice(0, -1) }), async () => Object.create({ error: fixed }),
+    async () => hostile, async () => { throw new SyntaxError("PRIVATE_INVALID_JSON_CANARY"); }];
+  for (const json of cases) {
+    const output = await failedLoginDiagnostic(async () => ({ status: () => 401, json }));
+    assert.equal(output, "QA_BLOCKED_OR_FAILED stage=login_http_401_unattributed code=QA_LOGIN_HTTP_401_UNATTRIBUTED");
+    assert(!output.includes("PRIVATE"));
+  }
+  const missingJson = await failedLoginDiagnostic(async () => ({ status: () => 401 }));
+  assert.equal(missingJson, "QA_BLOCKED_OR_FAILED stage=login_http_401_unattributed code=QA_LOGIN_HTTP_401_UNATTRIBUTED");
+});
+
+test("the public denial text cannot attribute another HTTP status to TORO's 401 branch", async () => {
+  for (const [status, expected] of [
+    [200, "QA_BLOCKED_OR_FAILED stage=login_response code=QA_LOGIN_RESPONSE_FAILED"],
+    [403, "QA_BLOCKED_OR_FAILED stage=login_http_403 code=QA_LOGIN_HTTP_403"],
+    [503, "QA_BLOCKED_OR_FAILED stage=login_http_503 code=QA_LOGIN_HTTP_503"],
+  ]) {
+    const output = await failedLoginDiagnostic(async () => ({ status: () => status,
+      json: async () => ({ error: "Usuario o contraseña incorrectos, o acceso no habilitado." }),
+    }));
     assert.equal(output, expected);
   }
 });

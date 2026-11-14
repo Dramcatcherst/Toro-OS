@@ -117,6 +117,42 @@ describe("fresh DreamTeam login adapter", () => {
     mocks.fetch.mockImplementation(async () => upstream({ status, body: JSON.stringify({ error: "private-upstream-detail" }) }));
     await failure(await dreamTeamLogin(request()), 401); expect(mocks.sdk).not.toHaveBeenCalled();
   });
+  it("keeps all upstream denials publicly identical and records only finite private codes", async () => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const observable = [];
+      for (const [status, code] of [[400, "PI400"], [401, "PI401"], [403, "PI403"]] as const) {
+        mocks.fetch.mockImplementation(async () => upstream({ status,
+          body: JSON.stringify({ error: "PRIVATE_PROVIDER_CANARY", identifier: credentials.identifier }) }));
+        const response = await dreamTeamLogin(request());
+        expect(response.status).toBe(401);
+        expect([...response.headers.keys()].sort()).toEqual(["cache-control", "content-type"]);
+        const body = await response.text();
+        expect(body).toBe(JSON.stringify({ error: "Usuario o contraseña incorrectos, o acceso no habilitado." }));
+        observable.push({ status: response.status, headers: [...response.headers], body });
+        expect(warning).toHaveBeenLastCalledWith("[TORO portal login] identity rejection", { code });
+      }
+      expect(observable[1]).toEqual(observable[0]);
+      expect(observable[2]).toEqual(observable[0]);
+      expect(warning).toHaveBeenCalledTimes(3);
+      expect(JSON.stringify(warning.mock.calls)).not.toContain("PRIVATE");
+      expect(JSON.stringify(warning.mock.calls)).not.toContain(credentials.identifier);
+      expect(JSON.stringify(warning.mock.calls)).not.toContain(credentials.password);
+      expect(mocks.sdk).not.toHaveBeenCalled();
+    } finally { warning.mockRestore(); }
+  });
+  it.each([400, 401, 403])("a failed private logger does not change upstream %s denial", async status => {
+    const warning = vi.spyOn(console, "warn").mockImplementation(() => { throw new Error("PRIVATE_LOGGER_CANARY"); });
+    try {
+      mocks.fetch.mockImplementation(async () => upstream({ status }));
+      const response = await dreamTeamLogin(request());
+      expect(response.status).toBe(401);
+      expect([...response.headers.keys()].sort()).toEqual(["cache-control", "content-type"]);
+      expect(await response.json()).toEqual({ error: "Usuario o contraseña incorrectos, o acceso no habilitado." });
+      expect(warning).toHaveBeenCalledOnce();
+      expect(mocks.sdk).not.toHaveBeenCalled();
+    } finally { warning.mockRestore(); }
+  });
   it.each([["45", "45"], ["invalid-date", "900"]])("preserves only a bounded numeric retry after %s", async (sent, expected) => {
     mocks.fetch.mockImplementation(async () => upstream({ status: 429, retryAfter: sent }));
     const response = await dreamTeamLogin(request());
