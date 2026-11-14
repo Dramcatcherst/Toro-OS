@@ -149,3 +149,18 @@ it("opens the native operation view through the scoped deep link without changin
   expect(panel).toBeDefined(); expect(panel).not.toContain("hidden");
   expect(mocks.directory).toHaveBeenCalledExactlyOnceWith({ includeApprovedNavigation: true, includeCompleteCatalogue: true });
 });
+
+it("mounts Hoy from the same operations read without truncating its count to twelve", async () => {
+  const data=view();mocks.menu.mockResolvedValue(data);
+  const operations=emptyHotelOperations("ready");operations.readAt="2026-11-09T18:00:00Z";
+  operations.tasks={state:"ready",rowsRead:14,limitReached:false,total:null,items:Array.from({length:14},(_,i)=>({
+    canonicalRef:`release-task-${i}`,title:`Bounded task ${i}`,status:"planned",priority:"normal",area:"Operación",
+    owner:null,dueDate:null,sourceSystem:"TORO",updatedAt:"2026-11-07T12:00:00Z",needsRevalidation:false,
+  }))};
+  mocks.operations.mockResolvedValue(operations);
+  const html=renderToStaticMarkup(await PortalPage());
+  expect(mocks.operations).toHaveBeenCalledExactlyOnceWith(data.context);
+  expect(html).toContain("Hoy · trabajo registrado");expect(html).toContain("<strong>14</strong>");
+  expect(html).toContain("12 tareas visibles");expect(html).not.toContain("Bounded task 12");
+  expect(html).not.toContain("Bounded task 13");
+});

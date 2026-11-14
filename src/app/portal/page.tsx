@@ -14,6 +14,7 @@ import { isPublicDemo } from "@/lib/server/public-demo";
 import { redirect } from "next/navigation";
 import { canReadHotelOperations, initialPortalTab } from "@/features/portal/hotel-operations";
 import { loadHotelOperations } from "@/features/portal/hotel-operations-server";
+import { PortalHomeSummary } from "@/features/portal/portal-home-summary";
 import { HotelOperationsPanel } from "@/features/portal/hotel-operations-panel";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,7 @@ export default async function PortalPage({ searchParams }: {
       <PortalWorkspace key={`${view.context.userId}:${view.context.orgId}`} modules={modules} links={operationalLinks} catalogueItems={catalogueItems}
         catalogueMode={directoryAuthorized ? directory.catalogueMode : "fallback"} hotelAllowed={hotelAllowed}
         initialTab={initialPortalTab(query?.tab, hotelAllowed)}
+        hotelDailySummary={operationsAllowed && operations ? <section className={styles.panel} aria-labelledby="portal-daily-heading"><div className={styles.panelHeading}><h2 id="portal-daily-heading">Hoy · trabajo registrado</h2></div><PortalHomeSummary tasks={operations.tasks} readAt={operations.readAt} /></section> : null}
         hotelOperations={operations ? <HotelOperationsPanel view={operations} /> : null}
         attention={attentionAllowed ? <PortalAttentionSummary {...attention} /> : null} />
       <details id="portal-scope" className={styles.contextDisclosure}><summary>Mi contexto · {scopeLabel}</summary>

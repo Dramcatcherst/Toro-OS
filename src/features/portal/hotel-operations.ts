@@ -74,7 +74,7 @@ export function projectHotelTasks(input: unknown): HotelOperationsView["tasks"] 
   eligible.sort((a, b) => rank(a.priority) - rank(b.priority) ||
     (a.due_date ?? "9999").localeCompare(b.due_date ?? "9999") || b.updated_at.localeCompare(a.updated_at) || a.id.localeCompare(b.id));
   return { state: "ready", rowsRead: batch.length, limitReached: parsed.data.length > HOTEL_TASK_READ_LIMIT,
-    total: null, items: eligible.slice(0, HOTEL_TASK_DISPLAY_LIMIT).map(row => ({
+    total: null, items: eligible.map(row => ({
       canonicalRef: row.id, title: row.task_name, status: row.status ?? "unknown", priority: row.priority ?? "unknown",
       area: row.area ?? "Área por verificar", owner: row.assignee_name ?? row.owner_name,
       dueDate: row.due_date, sourceSystem: row.source_system ?? "TORO", updatedAt: row.updated_at,
