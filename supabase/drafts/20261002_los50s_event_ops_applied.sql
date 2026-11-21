@@ -360,7 +360,7 @@ begin
         event_key, participant_ref, leg, route_choice, travel_date,
         seat_required, luggage_count, special_luggage, status, updated_by
       ) values (
-        v_event_key, v_ref, 'sjo_to_direct', 'direct', date '2026-11-28',
+        v_event_key, v_ref, 'sjo_to_direct', 'direct', date '2026-11-29',
         coalesce((v_person->>'seatRequired')::boolean, true),
         coalesce((v_person->>'luggageCount')::integer, 0),
         nullif(v_person->>'specialLuggage',''), 'planned',
@@ -377,10 +377,10 @@ begin
         event_key, participant_ref, leg, route_choice, travel_date,
         seat_required, luggage_count, special_luggage, status, updated_by
       ) values
-      (v_event_key, v_ref, 'sjo_to_manuel_antonio', 'manuel-antonio', date '2026-11-28',
+      (v_event_key, v_ref, 'sjo_to_manuel_antonio', 'manuel-antonio', date '2026-11-29',
        coalesce((v_person->>'seatRequired')::boolean, true), coalesce((v_person->>'luggageCount')::integer, 0),
        nullif(v_person->>'specialLuggage',''), 'planned', 'registration:' || p_registration_id::text),
-      (v_event_key, v_ref, 'manuel_antonio_to_st', 'manuel-antonio', date '2026-11-29',
+      (v_event_key, v_ref, 'manuel_antonio_to_st', 'manuel-antonio', date '2026-11-30',
        coalesce((v_person->>'seatRequired')::boolean, true), coalesce((v_person->>'luggageCount')::integer, 0),
        nullif(v_person->>'specialLuggage',''), 'planned', 'registration:' || p_registration_id::text)
       on conflict(event_key, participant_ref, leg) do update set
