@@ -33,6 +33,12 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: Install browser for Portal layout checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Portal layout checks
+        run: npx vitest run --config vitest.portal-layout.config.ts
+
       - name: Directory write contract SQL
         run: |
           npm install --prefix "$RUNNER_TEMP/toro-directory-sql-qa" --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.8
