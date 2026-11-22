@@ -217,6 +217,294 @@ export function createInMemoryKrossDryRunStore(): KrossDryRunMirrorStore {
   };
 }
 
+export type KrossSanitizedExtractIssue =
+  | "invalid_manifest"
+  | "scope_missing"
+  | "scope_mismatch"
+  | "invalid_source_hash"
+  | "source_artifact_mismatch"
+  | "invalid_source_time"
+  | "row_count_mismatch"
+  | "sanitization_unconfirmed"
+  | "invalid_field_map"
+  | "field_map_mismatch"
+  | "unmapped_fields_present"
+  | "unexpected_manifest_fields"
+  | "invalid_rows";
+
+export type KrossSanitizedExtractExpectedArtifact = {
+  sourceReference: string;
+  sourceHash: string;
+};
+
+export type KrossSanitizedExtractDryRunResult = {
+  mode: "dry_run";
+  status: "completed" | "rejected";
+  issues: KrossSanitizedExtractIssue[];
+  rows: KrossDryRunResult[];
+  summary: {
+    declaredRows: number;
+    executedRows: number;
+    acceptedRows: number;
+    rejectedRows: number;
+    mirrorCount: number;
+    importRunCount: number;
+    safeViewCount: number;
+    pmsWriteCount: 0;
+  };
+};
+
+const sha256Pattern = /^[a-f0-9]{64}$/i;
+const sanitizedManifestKeys = new Set([
+  "orgId",
+  "propertyId",
+  "sourceReference",
+  "sourceHash",
+  "sourceAsOf",
+  "observedAt",
+  "rowCount",
+  "fieldMap",
+  "sanitization",
+  "rows",
+]);
+const sanitizationKeys = new Set([
+  "credentialsExcluded",
+  "paymentCardDataExcluded",
+  "guestContactExcluded",
+]);
+const fieldMapKeys = new Set([
+  ...requiredFieldMapKeys,
+  ...optionalFieldMapKeys,
+]);
+
+function hasOnlyKeys(value: Record<string, unknown>, allowedKeys: Set<string>) {
+  return Object.keys(value).every(key => allowedKeys.has(key));
+}
+
+function validFieldMapPath(value: unknown): value is string {
+  if (!nonEmptyText(value)) return false;
+  return value
+    .split(".")
+    .map(part => part.trim())
+    .every(part =>
+      part.length > 0 &&
+      !["__proto__", "constructor", "prototype"].includes(part)
+    );
+}
+
+const maxSanitizedExtractDepth = 32;
+
+function collectLeafPaths(
+  value: unknown,
+  prefix = "",
+  depth = 0,
+  ancestors = new WeakSet<object>(),
+): string[] | null {
+  if (depth > maxSanitizedExtractDepth) return null;
+
+  if (record(value) || Array.isArray(value)) {
+    if (ancestors.has(value)) return null;
+    ancestors.add(value);
+    try {
+      const entries = Array.isArray(value)
+        ? value.map((child, index) => [String(index), child] as const)
+        : Object.entries(value);
+      if (!entries.length) {
+        if (!prefix) return [];
+        return [Array.isArray(value) ? `${prefix}[]` : prefix];
+      }
+
+      const paths: string[] = [];
+      for (const [key, child] of entries) {
+        const childPrefix = Array.isArray(value)
+          ? (prefix ? `${prefix}[${key}]` : `[${key}]`)
+          : (prefix ? `${prefix}.${key}` : key);
+        const childPaths = collectLeafPaths(
+          child,
+          childPrefix,
+          depth + 1,
+          ancestors,
+        );
+        if (childPaths === null) return null;
+        paths.push(...childPaths);
+      }
+      return paths;
+    } finally {
+      ancestors.delete(value);
+    }
+  }
+
+  return prefix ? [prefix] : [];
+}
+
+export function executeKrossSanitizedExtractDryRun(
+  rawManifest: unknown,
+  nowIso: string,
+  expectedConfig: KrossReservationAdapterConfig,
+  expectedArtifact: KrossSanitizedExtractExpectedArtifact,
+): KrossSanitizedExtractDryRunResult {
+  const issues: KrossSanitizedExtractIssue[] = [];
+  const manifest = record(rawManifest) ? rawManifest : {};
+  if (!record(rawManifest)) issues.push("invalid_manifest");
+  if (record(rawManifest) && !hasOnlyKeys(rawManifest, sanitizedManifestKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
+
+  const orgId = invalidEnvelopeText(manifest.orgId);
+  const propertyId = invalidEnvelopeText(manifest.propertyId);
+  if (!orgId || !propertyId) issues.push("scope_missing");
+
+  const expectedOrgId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.orgId)
+    : "";
+  const expectedPropertyId = record(expectedConfig)
+    ? invalidEnvelopeText(expectedConfig.propertyId)
+    : "";
+  if (!expectedOrgId || !expectedPropertyId ||
+    orgId !== expectedOrgId || propertyId !== expectedPropertyId) {
+    issues.push("scope_mismatch");
+  }
+
+  const sourceReference = invalidEnvelopeText(manifest.sourceReference);
+  const sourceHash = invalidEnvelopeText(manifest.sourceHash);
+  if (!sourceReference || !sha256Pattern.test(sourceHash)) {
+    issues.push("invalid_source_hash");
+  }
+
+  const expectedSourceReference = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceReference)
+    : "";
+  const expectedSourceHash = record(expectedArtifact)
+    ? invalidEnvelopeText(expectedArtifact.sourceHash)
+    : "";
+  if (!expectedSourceReference || !sha256Pattern.test(expectedSourceHash) ||
+    sourceReference !== expectedSourceReference ||
+    sourceHash.toLowerCase() !== expectedSourceHash.toLowerCase()) {
+    issues.push("source_artifact_mismatch");
+  }
+
+  const sourceAsOf = invalidEnvelopeText(manifest.sourceAsOf);
+  const observedAt = invalidEnvelopeText(manifest.observedAt);
+  const sourceMs = Date.parse(sourceAsOf);
+  const observedMs = Date.parse(observedAt);
+  const nowMs = Date.parse(nowIso);
+  if (!Number.isFinite(sourceMs) || !Number.isFinite(observedMs) ||
+    !Number.isFinite(nowMs) || sourceMs > observedMs || observedMs > nowMs) {
+    issues.push("invalid_source_time");
+  }
+
+  const rows = Array.isArray(manifest.rows) ? manifest.rows : [];
+  const rowCount = manifest.rowCount;
+  if (!Number.isSafeInteger(rowCount) || (rowCount as number) <= 0 ||
+    rowCount !== rows.length) {
+    issues.push("row_count_mismatch");
+  }
+  if (!rows.every(record)) issues.push("invalid_rows");
+
+  const sanitization = record(manifest.sanitization) ? manifest.sanitization : {};
+  if (!hasOnlyKeys(sanitization, sanitizationKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
+  if (sanitization.credentialsExcluded !== true ||
+    sanitization.paymentCardDataExcluded !== true ||
+    sanitization.guestContactExcluded !== true) {
+    issues.push("sanitization_unconfirmed");
+  }
+
+  const fieldMap = record(manifest.fieldMap) ? manifest.fieldMap : {};
+  if (!hasOnlyKeys(fieldMap, fieldMapKeys)) {
+    issues.push("unexpected_manifest_fields");
+  }
+  const validRequiredMap = requiredFieldMapKeys.every(key =>
+    validFieldMapPath(fieldMap[key])
+  );
+  const validOptionalMap = optionalFieldMapKeys.every(key =>
+    fieldMap[key] === undefined || validFieldMapPath(fieldMap[key])
+  );
+  if (!validRequiredMap || !validOptionalMap) issues.push("invalid_field_map");
+
+  const expectedFieldMap: Record<string, unknown> =
+    record(expectedConfig) && record(expectedConfig.fieldMap)
+      ? expectedConfig.fieldMap
+      : {};
+  const fieldMapMatchesExpected = [
+    ...requiredFieldMapKeys,
+    ...optionalFieldMapKeys,
+  ].every(key => fieldMap[key] === expectedFieldMap[key]);
+  if (!fieldMapMatchesExpected) issues.push("field_map_mismatch");
+
+  const governedSourcePaths = new Set(
+    [...requiredFieldMapKeys, ...optionalFieldMapKeys]
+      .map(key => expectedFieldMap[key])
+      .filter(nonEmptyText),
+  );
+  const rowLeafPaths = rows.map(row => collectLeafPaths(row));
+  if (rowLeafPaths.some(paths => paths === null)) {
+    issues.push("invalid_rows");
+  }
+  if (rowLeafPaths.some(paths =>
+    paths !== null && paths.some(path => !governedSourcePaths.has(path))
+  )) {
+    issues.push("unmapped_fields_present");
+  }
+
+  const uniqueIssues = [...new Set(issues)];
+  if (uniqueIssues.length) {
+    return {
+      mode: "dry_run",
+      status: "rejected",
+      issues: uniqueIssues,
+      rows: [],
+      summary: {
+        declaredRows: Number.isSafeInteger(rowCount) ? rowCount as number : 0,
+        executedRows: 0,
+        acceptedRows: 0,
+        rejectedRows: 0,
+        mirrorCount: 0,
+        importRunCount: 0,
+        safeViewCount: 0,
+        pmsWriteCount: 0,
+      },
+    };
+  }
+
+  const store = createInMemoryKrossDryRunStore();
+  const adapterConfig: KrossReservationAdapterConfig = {
+    orgId,
+    propertyId,
+    fieldMap: fieldMap as KrossReservationAdapterConfig["fieldMap"],
+  };
+  const evidence: KrossTransportEvidence = {
+    authorizedTransport: false,
+    directFromKross: false,
+    readOnly: true,
+    sourceAsOf,
+    observedAt,
+    sourceReference,
+    sourceHash,
+  };
+  const results = rows.map(payload =>
+    executeKrossDryRun({ payload, adapterConfig, evidence, nowIso }, store)
+  );
+
+  return {
+    mode: "dry_run",
+    status: "completed",
+    issues: [],
+    rows: results,
+    summary: {
+      declaredRows: rowCount as number,
+      executedRows: results.length,
+      acceptedRows: results.filter(result => result.status === "accepted").length,
+      rejectedRows: results.filter(result => result.status === "rejected").length,
+      mirrorCount: store.mirrorCount(),
+      importRunCount: store.importRunCount(),
+      safeViewCount: results.filter(result => result.canEnterSafeView).length,
+      pmsWriteCount: 0,
+    },
+  };
+}
+
 export function executeKrossDryRun(
   request: KrossDryRunRequest,
   store: KrossDryRunMirrorStore,
