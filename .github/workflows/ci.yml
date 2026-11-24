@@ -38,6 +38,11 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/toro-directory-sql-qa" --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.8
           TORO_SQL_TEST_PGLITE_MODULE="file:$RUNNER_TEMP/toro-directory-sql-qa/node_modules/@electric-sql/pglite/dist/index.js" node --test tests/directory-write-contract.test.mjs
 
+      - name: Inspection approval SQL regression
+        run: |
+          docker pull postgres@sha256:d3244e8ce3f165ee3c93d9c4a4b1d0fe48b3a89e2287b717fdcbbde92d405065
+          bash tests/sql/inspection_approval_invalidation.sh
+
       - name: Lint
         run: npm run lint
 
