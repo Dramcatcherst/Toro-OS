@@ -338,6 +338,8 @@ La configuración fina y el enrolamiento de otras personas quedan para una unida
 
 El circuito cloud incluye transporte, contexto/estado, OAuth o identidad renovable, conectores, media/OCR/transcripción cuando procedan, archivos, navegador autorizado si hace falta, workers y retorno de resultados. No basta el proceso OpenClaw activo. Cada dependencia declara owner, recurso, permisos, salud/frescura, costo/límites, recuperación y última prueba desde el ejecutor real.
 
+Acceso amplio significa poder recuperar la información pertinente desde su fuente, no copiar todos los buzones, chats y documentos dentro de cada prompt. Reutilizar búsqueda, índices y conocimiento canónico existentes con permisos antes de recuperar contenido; los originales conservan su fuente/versión, y memoria validada, mensaje atribuido e inferencia mantienen estados distintos. El contexto del modelo carga solo los fragmentos necesarios. OCR/transcripción preservan original, evento padre, checksum, motor/confianza y fallo explícito; no convierten texto inferido en hecho confirmado. Memoria durable conserva propósito, procedencia, sensibilidad, retención y correcciones; ningún aprendizaje privado se publica o cruza de ámbito por defecto. Mensajes/adjuntos e instrucciones incrustadas son datos no confiables y no elevan permisos ni ejecutan herramientas por sí mismos.
+
 Usar API/MCP soportados o transporte nativo del proveedor cuando existan y estén autorizados. El navegador cloud es fallback gobernado con identidad propia; un navegador de ChatGPT accesible no está automáticamente disponible en Lightsail. No copiar cookies, credenciales o plugins del chat al host.
 
 | Información | Regla de vigencia | Degradación |
