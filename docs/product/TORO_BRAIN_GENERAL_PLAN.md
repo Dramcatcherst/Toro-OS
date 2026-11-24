@@ -956,6 +956,12 @@ Usar el Control Plane y las tareas existentes: observar -> priorizar por valor -
 4. La factura crea compra/entrada pendiente y datos del catálogo. El stock disponible aumenta solo por cantidad efectivamente recibida y confirmada, incluido un comprobante que pruebe entrega. Facturación, pago y recepción son eventos distintos; admitir entregas parciales sin sumar toda la factura.
 5. Reusar `assets.stock_items`, `assets.stock_levels`, `assets.inventory_movements`, `assets.purchase_runs` y `assets.purchase_run_items`; activos en el maestro físico existente. Supabase es destino después de paridad/conteo verificados; Airtable Inventario & Activos mantiene el papel definido por el contrato vigente. Alegra conserva contabilidad; Dropbox conserva originales; Portal y WhatsApp muestran proyecciones del mismo saldo.
 
+### Historial de compras por producto y proveedor
+
+**Alcance aprobado el 24/11/2026.** En el mismo flujo de Compras e Inventario, usar las líneas de facturas para identificar qué productos se vuelven a comprar, en qué presentación, a quién y a qué precio. Mantener el vínculo entre el producto del catálogo y el SKU de cada proveedor. Comparar precios unitarios en la misma moneda y base de impuestos, con factor de empaque verificable y fecha de consulta.
+
+Para evaluar frecuencia, contar fechas de compra distintas dentro de un período explícito. Consolidar varias facturas de una visita y aplicar las notas de crédito al documento de origen. Identificar por separado abastecimiento habitual, eventos puntuales y destino pendiente de clasificación. Al preparar el siguiente pedido, mostrar proveedor disponible, última compra, precio comparable y stock contado. El equipo valida cantidades y recepción antes de registrar movimientos. Reutilizar el contrato operativo y el maestro de proveedores existentes en Supabase. El primer contraste documental corresponde a PriceSmart. Las referencias de facturas y los detalles de la muestra quedan en el registro privado de TORO.
+
 ### Salidas desde el grupo de aseo
 
 Interpretar mensajes naturales por empleado/turno/propiedad autorizados y conservar message_id, autor, fecha, texto/evidencia, artículo, cantidad, unidad, origen, destino y motivo. No exigir otra app. Formato breve sugerido: “Retiré 2 litros de cloro de bodega para Toro”.
