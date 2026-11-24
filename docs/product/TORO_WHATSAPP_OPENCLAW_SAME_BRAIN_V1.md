@@ -288,3 +288,118 @@ The owner accepts source data up to **60 minutes old** for informational hotel o
 - The shared read provider and channel operation belong to existing PR206/#209. Register the tool in the actual OpenClaw runtime only after configuration/version review. Portal session RPC has no reservation contract yet; do not silently downgrade it into privileged/direct access or expose another public route.
 
 Acceptance: non-live at59min and exactly60min admitted;60min+1ms rejected for current use; old source with recent sync stays old; future/malformed cutoff rejected; org/property and role denial preserved; duplicates/conflicts do not count twice; partial/missing/empty sources do not imply hotel-wide zero; source time/coverage preserved across WhatsApp and supported Portal consumption. Code tests and policy adoption do not prove acquisition, deployment or delivery.
+
+## 14. WhatsApp integral del propietario y recepción en nube — 25/11/2026
+
+**Parent:** ampliación del 25/11, Asia/Tokyo, dentro de `CLOUD_SOURCE_CONNECTOR_PARITY_20261113` del único Plan General. **Estado:** dirección del propietario registrada; diseño y ejecución técnica por revisar/aceptar, sin activación de runtime. Esta sección actualiza el diseño existente y el [plan de ejecución Same-Brain](../superpowers/plans/2026-09-23-toro-whatsapp-openclaw-same-brain.md), no crea otro plan maestro. Las observaciones anteriores conservan fecha y alcance.
+
+### 14.1. Resultado y elección de arquitectura
+
+Mauricio debe poder trabajar habitualmente desde su WhatsApp con información verificable y competencias amplias sobre todos sus ámbitos autorizados: vida personal, negocios, propiedades, finanzas, personas, proyectos, documentos, investigación, creación, comunicación y desarrollo técnico. Recepción es la primera entrega operativa de Dreamcatcher; no limita las capacidades universales. Las dos cuentas y su privacidad se resuelven conforme a TORO Comms §19, sin publicar identificadores protegidos.
+
+Se propone completar la **nube existente con un único TORO lógico**: Lightsail para transporte persistente, servicios internos y Control Plane autorizados para ejecución, Supabase para estado TORO, GitHub para contratos/código, Vercel para las superficies verificadas y Dropbox para originales permitidos. El computador local es desarrollo/recuperación, sin consumidor productivo competidor. Operarlo todo en el PC no cumple continuidad; sustituir ahora todo el stack agrega una migración antes de demostrar necesidad. No se crea otro Gateway, cola o scheduler por esta decisión.
+
+```mermaid
+flowchart TD
+  Owner[WhatsApp del propietario] --> Gateway[OpenClaw cloud existente]
+  Hotel[Canal hotel y futuros usuarios] -. ingreso aislado pendiente de verificar .-> Scoped[Ingreso con capacidades limitadas]
+  Gateway --> Bridge[Bridge existente: identidad y ámbito]
+  Scoped --> Bridge
+  ChatGPT[ChatGPT / cliente Codex] -. MCP autenticado compatible .-> Brain[TORO: contexto, política y autoridad]
+  Portal[Portal autenticado] --> Brain
+  Bridge --> Brain
+  Brain --> Sources[Conectores por cuenta y recurso]
+  Brain --> Plane[Control Plane: tarea, admisión, lease]
+  Plane --> Workers[Workers cloud / IA / Builder admitidos]
+  Sources --> Evidence[Verificación y recibo canónico]
+  Workers --> Evidence
+  Evidence --> Brain
+  Brain --> Reply[Respuesta y seguimiento al destino autorizado]
+```
+
+Diagrama TARGET: las flechas no certifican conexiones instaladas. La superficie privilegiada interna no es el Portal público en modo `portal`. El ingreso del equipo/huéspedes no hereda el Gateway del propietario; agentes y sesiones en un mismo Gateway no establecen aislamiento entre usuarios mutuamente no confiables.
+
+### 14.2. Competencia amplia, autoridad comprobada
+
+El propietario selecciona el ámbito permitido; el sistema mantiene la cuenta, identidad, organización o espacio privado y propósito correctos. Cambiar hotel → personal, u otra organización, limpia foco y aprobación pendiente que no pertenezcan al nuevo ámbito. Una comparación autorizada del portafolio usa referencias/visibilidad explícitas; no mezcla archivos, destinatarios o credenciales de los ámbitos.
+
+| Clase | Comportamiento objetivo del propietario | Condición de ejecución |
+| --- | --- | --- |
+| Consultar, buscar, analizar, investigar y explicar | Acceso amplio a las fuentes autorizadas y resultados útiles con evidencia | Identidad, ámbito, permiso, recurso y frescura comprobados; sin reconfirmar cada paso ya autorizado |
+| Crear borradores, documentos, planes y preparar acciones | Preparación proactiva y reversible, enlazada a los objetos existentes | Autoría/versión/propósito y destino correctos; el borrador no se publica ni envía por crearse |
+| Tareas y actualizaciones internas de bajo impacto | Ejecutar cuando la capacidad y la política vigente ya lo permitan | Idempotencia y readback; el intake actual solo cubre cuatro acciones y no acredita asignación/cierre completo |
+| Delegar trabajo técnico o análisis largo | Tarea canónica y worker acotado; progreso, artefacto y resultado devueltos | Recurso, modelo/runtime, presupuesto y herramientas permitidos; cancelación y verificación |
+| Responder, notificar, publicar o cambiar un proveedor | Ampliar hasta el máximo útil admitido por cada workflow | Emisor/destino, consentimiento/toma humana y política de efecto propios; no permiso universal de envío |
+| Dinero, reservas, fiscalidad, permisos, borrado o producción material | Preparar y ejecutar únicamente con la autoridad específica correspondiente | Gates, confirmaciones y verificación del dominio; propietario amplio no elimina esos requisitos |
+
+La configuración fina y el enrolamiento de otras personas quedan para una unidad posterior. No bloquean el trabajo permitido del dueño ni la preparación de recepción. Identidad y aislamiento existen desde el primer piloto; hasta autorizar y probar cada rol, nuevos remitentes no reciben herramientas internas. Una cuenta de recepción compartida no identifica automáticamente al empleado ni concede ADMIN; mantener `operador_no_identificado` cuando corresponda.
+
+### 14.3. Información actual y disponible sin depender del PC
+
+El circuito cloud incluye transporte, contexto/estado, OAuth o identidad renovable, conectores, media/OCR/transcripción cuando procedan, archivos, navegador autorizado si hace falta, workers y retorno de resultados. No basta el proceso OpenClaw activo. Cada dependencia declara owner, recurso, permisos, salud/frescura, costo/límites, recuperación y última prueba desde el ejecutor real.
+
+Usar API/MCP soportados o transporte nativo del proveedor cuando existan y estén autorizados. El navegador cloud es fallback gobernado con identidad propia; un navegador de ChatGPT accesible no está automáticamente disponible en Lightsail. No copiar cookies, credenciales o plugins del chat al host.
+
+| Información | Regla de vigencia | Degradación |
+| --- | --- | --- |
+| PMS informativo: llegadas, salidas, condiciones incluidas | Contrato §13: corte real hasta 60 minutos inclusive, con ámbito/cobertura | Más antiguo, futuro o corte inválido no sirve como estado actual; mostrar límite, solicitar actualización por el carril existente |
+| Precio, disponibilidad y efecto de reserva/pago | Revalidación vigente específica del proveedor/acción | No extender la tolerancia informativa a cotizaciones o transacciones |
+| Tareas, casos, responsable, ACK y bloqueos TORO | Leer objeto/version vigente antes del cambio y al devolver resultado | Timeout o estado incierto se concilia; no anunciar cierre ni entrega inferidos |
+| Políticas, horarios, servicios y plantillas | Fuente aprobada, fecha/versión y vigencia; reconciliar cambios humanos | Conflicto o falta de fuente excluye la afirmación; no grabar datos variables en personalidad |
+| Correo, calendario, archivos y conocimiento personal/portafolio | Cuenta/recurso y versión nativa; corte/cursor y cobertura explícitos | Cache o índice no acredita mensaje/archivo actual, bytes ni cobertura completa |
+
+No se fijan TTL nuevos por suposición. Objetivo: reducir retraso mediante eventos o adquisición por el worker/cadencia existentes, con fallback según fuente. Falta de API o acceso se presenta como dependencia concreta, no como información actual inventada. La API Kross pagada sigue pausada.
+
+El contrato de consumo y recibo conserva como mínimo los campos existentes equivalentes a: cuenta/binding, actor/ámbito, objeto/capacidad/acción, fuente/recurso/version, corte y hora observada separados, cobertura/limitaciones, `config_version`/`config_hash` y referencia exacta al Plan, idempotencia/correlación, ejecución/destino, resultado y siguiente acción. Son requisitos de proyección/recibo, no nuevas tablas obligatorias. Reloj del hotel para trabajo operativo: `America/Costa_Rica`; UTC para trazas, y zona explícita para solicitudes personales.
+
+### 14.4. Recepción: cartera inicial de resultados
+
+Toda la tabla es TARGET. Primero puede operar Mauricio dentro de su ámbito autorizado de Dreamcatcher; habilitar a empleados es aceptación separada. Los flujos que exigen escritura PMS o bancaria no bloquean lectura, preparación, casos y relevo.
+
+| Flujo | Resultado y autoridad | Primera aceptación |
+| --- | --- | --- |
+| Hotel hoy | Llegadas/salidas y pendientes desde Kross y TORO, con corte/cobertura | 59/60 minutos admitidos; 60 minutos+1ms no actual; fuente vacía/parcial no afirma hotel vacío |
+| Buscar huésped o reserva | Coincidencia por identidad/ID nativo y campos necesarios | Ambigüedad aclarada; otro huésped/organización no se mezcla ni expone |
+| Unidad lista | Limpieza Kross, averías y QA aplicable por separado | Limpieza actual evita confirmación duplicada; avería impediente no se oculta; no imponer inspección inexistente |
+| Preparar check-in/out | Checklist de reserva, peticiones y pendientes comprobados | Checklist no marca llegada/salida física ni cambia PMS sin su workflow |
+| Derecho de desayuno | Kross/confirmación vigente; beneficio incluido, extras o conflicto | Desconocido no niega beneficio; conflicto no genera cargo por inferencia |
+| Pedido y servicio de desayuno | Orden común por fecha/unidad/personas, cambios y entrega | Un pedido desde dos canales cuenta una vez; ACK cocina y entrega se distinguen |
+| Conversación y respuesta | Caso/hilo y conocimiento guest-safe; emisor vigente | Captura/borrador primero; una respuesta permitida como máximo; takeover humano suprime competencia |
+| Cotización | Catálogo y enlace útiles; precio/cupo revalidados en Kross | Snapshot informativo no se convierte en cotización actual ni reserva confirmada |
+| Incidencia / aseo / mantenimiento | Un caso, impacto, responsable, ACK y evidencia de resultado | Replay actualiza el mismo caso; sin silencio como aceptación o reparación |
+| Servicios y solicitudes especiales | Oferta/proveedor, aceptación y cumplimiento trazables | Solicitud, compromiso, servicio y pago son estados distintos |
+| Comprobante / estado de pago | Soporte enlazado; Kross, banco y contabilidad separados | Foto/texto no confirma dinero; mismo soporte por correo/WhatsApp no duplica |
+| Cierre de turno y caja | Cierre existente por fecha/cuenta/moneda y faltantes concretos | No reabrir faltante resuelto ni aprobar cierre sin evidencia; reutilizar PR291 |
+| Compras e inventario | Solicitud, SKU/unidad/ubicación, recepción y consumo físicos | Factura no suma stock sin recepción; entrega parcial registra solo lo recibido |
+| Relevo y recordatorios | Mismos IDs, promesas, dueño, plazo y siguiente acción | Reinicio/cambio de turno no pierde compromiso ni duplica aviso |
+| Reportes y excepciones | Resumen vigente y decisiones materiales al destino correcto | Fallo repetido sin cambio no inunda; receipt de entrega separado de ACK y resultado |
+
+Reutilizar el contenido/recorrido del huésped del carril PR410, sus fuentes y correcciones; no crear otra biblioteca ni fijar aquí horarios, descuentos o reglas hoteleras variables. Conservar Kross como PMS, Quovis para emisión, Alegra contabilidad, Hacienda aceptación fiscal y bancos/procesadores para liquidación. Writer Alegra permanece OFF pendiente del piloto vigente.
+
+Captura, borrador, respuesta, administración de canal y escritura empresarial son permisos separados. Si WeSpeak/TERE ya responde una conversación, OpenClaw no se convierte en segundo emisor. Verificar `cuenta + conversación + clase de acción → escritor vigente`, takeover y resultados inciertos antes de habilitar respuestas. El piloto lector debe probar efectos secundarios de read receipts y respuestas tras reconexión; no afirmar lectura pasiva por el nombre del adapter.
+
+### 14.5. ChatGPT, Codex y conexión universal por capacidad
+
+| Dirección | Interfaz objetivo | Qué debe acreditarse |
+| --- | --- | --- |
+| ChatGPT / cliente Codex → TORO | MCP/OAuth compatible, servicios y objetos comunes | Identidad, audience/scopes/expiración según contrato, lectura positiva/negativa; los seis lectores actuales no son writers |
+| WhatsApp/OpenClaw → TORO | Bridge `toro-openclaw-integration` y broker autenticado existente | Runtime+remitente verificados, ámbito/rol vigente, configuración consumida, objeto y recibo |
+| TORO → modelo/IA | Adaptador server-side hacia runtime/API oficialmente soportado y admitido | Autenticación propia, acceso al modelo, herramientas/retención y costo; no se elige/compra otro servicio por este diseño |
+| TORO → Builder/Codex cloud | Tarea/run → ejecutor técnico autorizado → artefacto/PR/CI/preview → receipt | Worker real y retorno al hilo; `builder.task`, payload `prepare_only` o PR verde no prueban ejecución completa |
+| TORO → demás proveedores | Broker de capacidad y binding propio por cuenta/recurso | Conexión y autorización desde cloud, frescura, resultado, negativa y recuperación por fuente |
+
+ChatGPT Work, Projects, Dots y los chats de Codex conservan sus capacidades disponibles; no se presupone control API de la barra lateral, acceso a todos los chats ni sincronización de historiales. La continuidad operativa vive en TORO. Otro chat autorizado puede consumir la misma tarea y devolver un handoff con recibo; se identifica y concilia su escritor antes de compartir trabajo. No crear un chat o agente permanente por cada tarea.
+
+La cartera amplia incluye Supabase, Airtable, Gmail/Outlook, Calendar/Contacts, Dropbox/Drive, GitHub/Vercel, Kross/Quovis/Alegra y las demás fuentes autorizadas que requiera el trabajo. No es una lista cerrada ni una declaración de conexiones actuales. Reutilizar el catálogo y distinguir disponible, conectada, autorizada, operativa y medida por capacidad. No dar SQL arbitrario, `service_role` o shell universal al modelo para aparentar amplitud.
+
+### 14.6. Paralelo, costos, continuidad y terminado
+
+Tres prioridades ejecutivas agrupan unidades independientes: **runtime/identidad**, **fuentes y capacidades del propietario**, **recepción completa**. Pueden prepararse y probarse varias unidades en paralelo sin activar consumidores/escritores competidores ni cambiar el responsable de una tarea ajena. Reconciliar los heads de PR206/210 (bridge/continuidad), PR391/121 (worker/admisión), PR291 (cierre/reportes), PR409 (SSM) y PR410 (contenido) antes de extraer código o promoverlo. PR391 cubre un run L0/L1 read-only, no escrituras internas o transaccionales ni un servicio persistente instalado.
+
+Los presupuestos iniciales existentes por lote siguen siendo **12 minutos, 40 llamadas y hasta dos reintentos transitorios seguros**, más checkpoint. El piloto recepción mantiene hasta **20 eventos permitidos y un caso**. Esos límites de gobierno necesitan enforcement/prueba; no autorizan un importe monetario. Reutilizar modelos/suscripciones/ejecutores vigentes cuando su elegibilidad se compruebe; establecer tope monetario finito antes de nuevo consumo facturable. Un timeout posterior a posible efecto requiere conciliación, no reintento automático. Agotar un worker no detiene la escucha persistente; reanudar desde checkpoint y conservar backpressure.
+
+Terminado por resultado: propietario verificado en cuenta/ámbito correcto; una fuente actual/permitida con negativa de ámbito; una operación de recepción completa con mismo objeto en Portal; entrega y ACK cuando correspondan; replay/reconexión sin doble efecto; versión/hash y Plan consumidos; revocación efectiva; respaldo/restauración de muestra con ACL; funcionamiento con PC/navegador del dueño apagados. La ventana de 24 horas es piloto propuesto, no SLA. Medir flujos elegibles completados, frescura/cobertura, latencia/fallos/recuperación, duplicados, costo y tiempo/intervenciones del dueño. Cero filtraciones/duplicados se comprueba en el alcance probado, no se certifica globalmente por pruebas sintéticas.
+
+Ante bloqueo informar capacidad afectada, evidencia, responsable, intervención mínima y trabajo independiente que continúa. Autenticación segura AWS, OAuth/MFA/relink, presupuesto o aceptación del responsable físico pueden requerir al propietario. No pedir secretos en mensajes. La definición de usuarios detallados, onboarding externo, gastos y transacciones mantiene sus gates; no congela análisis, código revisable y pruebas independientes ya autorizados.
+
+La aceptación documental se distingue de implementación, deployment, runtime y resultado medido. Esta actualización no modifica cloud, grants, tablas, envíos, reserva o pago alguno. Las pruebas, referencias y límites de la preparación están en [evidencia del 25/11](../evidence/TORO_WHATSAPP_CLOUD_PLANNING_20261125.md).

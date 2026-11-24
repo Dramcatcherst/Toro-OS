@@ -59,6 +59,30 @@ operating_configuration:
         - aws_management_executor_not_authenticated
         - vercel_environment_and_connector_metadata_forbidden
       runtime_access_or_permission_changes_applied_here: false
+      owner_whatsapp_expansion:
+        directive_date: "2026-11-25"
+        directive_timezone: Asia/Tokyo
+        status: owner_direction_recorded_execution_plan_review_pending
+        general_plan_section: CLOUD_SOURCE_CONNECTOR_PARITY_20261113
+        design_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
+        execution_plan: docs/superpowers/plans/2026-09-23-toro-whatsapp-openclaw-same-brain.md
+        capability_scope: all_owner_authorized_personal_business_property_and_project_scopes
+        first_operational_outcome: reception_current_read_case_owner_ack_evidence_and_followup
+        reception_is_first_delivery_not_product_boundary: true
+        repeated_confirmation_for_already_authorized_routine_steps_required: false
+        per_action_identity_scope_policy_and_source_checks_required: true
+        routine_full_chain_requires_owner_pc_or_browser: false
+        third_party_profile_detail_and_enrollment: later_existing_governed_lane
+        isolation_and_unknown_sender_denial_deferred: false
+        independent_units_may_progress_in_parallel: true
+        maximum_active_executive_priorities: 3
+        source_timestamp_coverage_and_degraded_status_required: true
+        native_cloud_source_access_preferred: true
+        chatgpt_codex_toro_directions_need_separate_acceptance: true
+        chat_history_or_plugin_credentials_inherited_by_gateway: false
+        provider_ai_auth_cost_and_retention_review_required: true
+        new_monetary_budget_or_subscription_approved_here: false
+        runtime_activation_or_permission_expansion_applied_here: false
   deployment_contract: docs/product/TORO_VERCEL_CANONICAL_DEPLOYMENT_V1.md
   channel_contract: docs/product/TORO_WHATSAPP_OPENCLAW_SAME_BRAIN_V1.md
   topology: existing_cloud_runtime_plus_local_development_and_recovery
