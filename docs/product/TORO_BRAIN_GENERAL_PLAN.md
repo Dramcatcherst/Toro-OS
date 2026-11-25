@@ -154,6 +154,29 @@ Referencias subordinadas: [TORO Mail](TORO_MAIL_V1.md), [bindings de comunicaci�
 **Mejora gobernada.** Reutilizar contratos y trabajos existentes y llevar cada mejora por observado → candidato → validado → aprobado → activo → medido → revisado/retirado. Priorizar beneficio neto, urgencia, riesgo y dependencias; eliminar ruido, duplicados y complejidad sin pérdida de evidencia. La autonomía concedida conserva límites transaccionales, privacidad, permisos y autorizaciones aplicables. Cada pasada material deja resultado verificable, costo o ahorro medido/desconocido, faltantes y siguiente unidad; adoptar este estándar no prueba controles desplegados ni revisión de todas las superficies.
 <!-- END:UNIVERSAL_OPTIMIZATION_OPERATING_STANDARD_20261109 -->
 
+<!-- BEGIN:DREAMCATCHER_LICORES_EVENTOS_20261125 -->
+## Dreamcatcher · Licencia turística de licores y habilitación de eventos
+
+**CURRENT — mandato del propietario del 25/11/2026, America/Costa_Rica.** Continuar el trámite de licores para establecimiento con declaratoria turística que ya existe e incorporar la habilitación de eventos al mismo Plan General. El expediente de licencia permanece en `finance_controls`, coordinado por `liquor_e1_application_followup_2026_09_19`; las tareas hijas de soportes y permiso sanitario conservan su identidad. La matriz privada y las fuentes viven en `operations.knowledge_items/liquor_e1_signed_form_audit_2026_09_18_v1`; el contrato maestro enlaza el frente mediante `hotel_licensing_events_20261125`. El registro y la investigación no acreditan licencia concedida ni habilitación integral de eventos.
+
+**Autoridad y continuidad.** Supabase conserva coordinación y evidencia estructurada; Airtable mantiene sus registros humanos como proyección transitoria; Dropbox conserva originales y versiones; la comunicación municipal nativa acredita recepción o respuesta; ICT, Salud y la autoridad municipal acreditan sus propios actos. Contrastar la cronología completa antes de repetir una corrección: un formulario subsanado y un acuse posterior prevalecen sobre una nota antigua de “borrador no enviado”. Mantener separados fecha del hecho, recepción y consulta, incluidas UTC y hora local. Conservar firmas y originales; no completar declaraciones con cifras inferidas ni sustituir la solicitud que la administración recibió.
+
+**TARGET — resultado de negocio.** Obtener resolución y licencia con titular, establecimiento, categoría, áreas autorizadas, condiciones y vigencia verificables; definir después qué formatos de eventos puede comercializar el hotel. La declaratoria turística, su categoría, el contrato de incentivos, la licencia de alcohol y el permiso de eventos son hechos diferentes. Consultar texto normativo consolidado y reformas antes de aplicar un formulario o resumen histórico. Registrar fuente oficial, artículo, jurisdicción, vigencia, obligación, aplicabilidad, evidencia, incertidumbre y fecha de revisión en la matriz existente. No asumir que ausencia de límite horario para venta de alcohol habilita ruido, espectáculos o uso de playa.
+
+| Frente existente | Siguiente unidad | Criterio de terminado |
+| --- | --- | --- |
+| Finance / cumplimiento | Recuperar resolución o prevención posterior al último acuse; conciliar solicitud corregida, categoría turística, inventario físico cubierto y autoridad tramitadora/resolutora. | Acto oficial leído y enlazado; requisitos pendientes concretos, sin inferir aprobación por recibido. |
+| Soportes / Salud | Verificar permiso sanitario emitido y constancias exigibles por fecha; distinguir renovación solicitada, pago, inscripción y estar al día. | Documento emitido y aplicable al titular, actividad, inmueble y período correctos. |
+| Revenue / TERE / SKY | Preparar bodas boutique, retiros, celebraciones y eventos empresariales con aforo, uso de suelo, ruido, seguridad, música, alcohol, seguros y playa cuando corresponda. | Formato viable documentado y costos verificables antes de oferta firme; capacidad de hospedaje no sustituye aforo. |
+| TORO Radar / FIONA | Reutilizar el seguimiento diario existente para una unidad documental o normativa útil y su recibo. | Cambio guardado y releído en el mismo expediente; alerta solo por avance, bloqueo nuevo, plazo verificado o decisión necesaria. |
+
+**NEXT — avance automático acotado.** La ampliación expresa del propietario permite investigación y actualización interna reversible de este expediente en las conexiones autorizadas. Mantener el radar existente, su alcance general y horario; no abrir otro expediente, base, scheduler o escritor. Cada corrida recupera el último checkpoint, identifica fuentes cambiadas, procesa una unidad pendiente y registra resultado, cobertura, siguiente acción y responsable. Si el acceso falla, conservar el cursor y declarar solo ese límite. Evitar repetir búsquedas agotadas y antiguas alertas. El envío de mensajes, presentación formal, firma, pago y aceptación jurídica requieren su autorización específica; esta ampliación no los ejecuta.
+
+**Mejora reusable.** Actualizar el procedimiento de FIONA para continuidad de permisos, autoridad por hecho, sucesión documental y cierre con resolución. Los datos del hotel quedan en el expediente privado. Medir documentos aplicables verificados y requisitos pendientes sobre denominador explícito; no convertir documentos encontrados en porcentaje ficticio de autorización legal.
+
+**Alcance familiar.** Conservar la indicación del propietario de que la celebración del 04/12/2026 ya está atendida; este frente desarrolla la capacidad futura del hotel y no reabre su organización. No inferir de esa indicación una certificación administrativa.
+<!-- END:DREAMCATCHER_LICORES_EVENTOS_20261125 -->
+
 <!-- BEGIN:FULL_FINANCIAL_RECONSTRUCTION_SCOPE_20261109 -->
 ## Reconstrucción financiera, contable y patrimonial integral
 
