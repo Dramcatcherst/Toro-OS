@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -32,6 +32,12 @@ jobs:
 
       - name: Tests
         run: npm test
+
+      - name: Install browser for Portal layout checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Portal layout checks
+        run: npx vitest run --config vitest.portal-layout.config.ts
 
       - name: Directory write contract SQL
         run: |
